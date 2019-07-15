@@ -1,0 +1,695 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		FF50109F22DD21420035E83C /* BridgeInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = FF50109E22DD21420035E83C /* BridgeInfo.plist */; };
+		FF5010A122DD214A0035E83C /* BridgeInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = FF5010A022DD214A0035E83C /* BridgeInfo.plist */; };
+		FF5010A822DD22A50035E83C /* psorcast-validation.pem in Resources */ = {isa = PBXBuildFile; fileRef = FF5010A622DD22A50035E83C /* psorcast-validation.pem */; };
+		FF5010A922DD22A50035E83C /* BridgeInfo-private.plist in Resources */ = {isa = PBXBuildFile; fileRef = FF5010A722DD22A50035E83C /* BridgeInfo-private.plist */; };
+		FFABCBC222DD1EEB00D11109 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFABCBC122DD1EEB00D11109 /* AppDelegate.swift */; };
+		FFABCBC422DD1EEB00D11109 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFABCBC322DD1EEB00D11109 /* ViewController.swift */; };
+		FFABCBC722DD1EEB00D11109 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FFABCBC522DD1EEB00D11109 /* Main.storyboard */; };
+		FFABCBC922DD1EEC00D11109 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FFABCBC822DD1EEC00D11109 /* Assets.xcassets */; };
+		FFABCBCC22DD1EEC00D11109 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FFABCBCA22DD1EEC00D11109 /* LaunchScreen.storyboard */; };
+		FFABCBD722DD1EEC00D11109 /* PsorcastTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFABCBD622DD1EEC00D11109 /* PsorcastTests.swift */; };
+		FFABCBE822DD1F2800D11109 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFABCBE722DD1F2800D11109 /* AppDelegate.swift */; };
+		FFABCBEA22DD1F2800D11109 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFABCBE922DD1F2800D11109 /* ViewController.swift */; };
+		FFABCBED22DD1F2800D11109 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FFABCBEB22DD1F2800D11109 /* Main.storyboard */; };
+		FFABCBEF22DD1F2800D11109 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FFABCBEE22DD1F2800D11109 /* Assets.xcassets */; };
+		FFABCBF222DD1F2800D11109 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FFABCBF022DD1F2800D11109 /* LaunchScreen.storyboard */; };
+		FFABCBF822DD1FAB00D11109 /* Research.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FFABCBF722DD1FAB00D11109 /* Research.framework */; };
+		FFABCBF922DD1FAB00D11109 /* Research.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FFABCBF722DD1FAB00D11109 /* Research.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		FFABCBFC22DD1FB500D11109 /* ResearchUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FFABCBFB22DD1FB500D11109 /* ResearchUI.framework */; };
+		FFABCBFD22DD1FB500D11109 /* ResearchUI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FFABCBFB22DD1FB500D11109 /* ResearchUI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		FFABCBFF22DD1FBC00D11109 /* ResearchMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FFABCBFE22DD1FBC00D11109 /* ResearchMotion.framework */; };
+		FFABCC0022DD1FBC00D11109 /* ResearchMotion.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FFABCBFE22DD1FBC00D11109 /* ResearchMotion.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		FFABCC0222DD1FC900D11109 /* MotorControl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FFABCC0122DD1FC900D11109 /* MotorControl.framework */; };
+		FFABCC0322DD1FC900D11109 /* MotorControl.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FFABCC0122DD1FC900D11109 /* MotorControl.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		FFABCC0522DD1FCF00D11109 /* BridgeApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FFABCC0422DD1FCF00D11109 /* BridgeApp.framework */; };
+		FFABCC0622DD1FCF00D11109 /* BridgeApp.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FFABCC0422DD1FCF00D11109 /* BridgeApp.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		FFABCC0822DD1FDB00D11109 /* BridgeSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FFABCC0722DD1FDB00D11109 /* BridgeSDK.framework */; };
+		FFABCC0922DD1FDB00D11109 /* BridgeSDK.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FFABCC0722DD1FDB00D11109 /* BridgeSDK.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		FFABCBD322DD1EEC00D11109 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FFABCBB622DD1EEB00D11109 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = FFABCBBD22DD1EEB00D11109;
+			remoteInfo = Psorcast;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		FFABCBFA22DD1FAC00D11109 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				FFABCC0622DD1FCF00D11109 /* BridgeApp.framework in Embed Frameworks */,
+				FFABCC0322DD1FC900D11109 /* MotorControl.framework in Embed Frameworks */,
+				FFABCC0922DD1FDB00D11109 /* BridgeSDK.framework in Embed Frameworks */,
+				FFABCC0022DD1FBC00D11109 /* ResearchMotion.framework in Embed Frameworks */,
+				FFABCBF922DD1FAB00D11109 /* Research.framework in Embed Frameworks */,
+				FFABCBFD22DD1FB500D11109 /* ResearchUI.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		FF50109E22DD21420035E83C /* BridgeInfo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = BridgeInfo.plist; sourceTree = "<group>"; };
+		FF5010A022DD214A0035E83C /* BridgeInfo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = BridgeInfo.plist; sourceTree = "<group>"; };
+		FF5010A622DD22A50035E83C /* psorcast-validation.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "psorcast-validation.pem"; path = "../../../iOSPrivateProjectInfo/PsorcastValidation/psorcast-validation.pem"; sourceTree = "<group>"; };
+		FF5010A722DD22A50035E83C /* BridgeInfo-private.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "BridgeInfo-private.plist"; path = "../../../iOSPrivateProjectInfo/PsorcastValidation/BridgeInfo-private.plist"; sourceTree = "<group>"; };
+		FFABCBBE22DD1EEB00D11109 /* Psorcast.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Psorcast.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		FFABCBC122DD1EEB00D11109 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		FFABCBC322DD1EEB00D11109 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		FFABCBC622DD1EEB00D11109 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		FFABCBC822DD1EEC00D11109 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		FFABCBCB22DD1EEC00D11109 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		FFABCBCD22DD1EEC00D11109 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FFABCBD222DD1EEC00D11109 /* PsorcastTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PsorcastTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		FFABCBD622DD1EEC00D11109 /* PsorcastTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PsorcastTests.swift; sourceTree = "<group>"; };
+		FFABCBD822DD1EEC00D11109 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FFABCBE522DD1F2800D11109 /* PsorcastValidation.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PsorcastValidation.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		FFABCBE722DD1F2800D11109 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		FFABCBE922DD1F2800D11109 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		FFABCBEC22DD1F2800D11109 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		FFABCBEE22DD1F2800D11109 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		FFABCBF122DD1F2800D11109 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		FFABCBF322DD1F2800D11109 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FFABCBF722DD1FAB00D11109 /* Research.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Research.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FFABCBFB22DD1FB500D11109 /* ResearchUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = ResearchUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FFABCBFE22DD1FBC00D11109 /* ResearchMotion.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = ResearchMotion.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FFABCC0122DD1FC900D11109 /* MotorControl.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = MotorControl.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FFABCC0422DD1FCF00D11109 /* BridgeApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BridgeApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FFABCC0722DD1FDB00D11109 /* BridgeSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BridgeSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		FFABCBBB22DD1EEB00D11109 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FFABCBCF22DD1EEC00D11109 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FFABCBE222DD1F2800D11109 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FFABCC0522DD1FCF00D11109 /* BridgeApp.framework in Frameworks */,
+				FFABCC0222DD1FC900D11109 /* MotorControl.framework in Frameworks */,
+				FFABCC0822DD1FDB00D11109 /* BridgeSDK.framework in Frameworks */,
+				FFABCBFF22DD1FBC00D11109 /* ResearchMotion.framework in Frameworks */,
+				FFABCBF822DD1FAB00D11109 /* Research.framework in Frameworks */,
+				FFABCBFC22DD1FB500D11109 /* ResearchUI.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		FF50109C22DD20DE0035E83C /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				FF5010A022DD214A0035E83C /* BridgeInfo.plist */,
+				FFABCBCD22DD1EEC00D11109 /* Info.plist */,
+			);
+			name = "Support Files";
+			sourceTree = "<group>";
+		};
+		FF50109D22DD20F70035E83C /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				FF5010A722DD22A50035E83C /* BridgeInfo-private.plist */,
+				FF5010A622DD22A50035E83C /* psorcast-validation.pem */,
+				FF50109E22DD21420035E83C /* BridgeInfo.plist */,
+				FFABCBF322DD1F2800D11109 /* Info.plist */,
+			);
+			name = "Support Files";
+			sourceTree = "<group>";
+		};
+		FFABCBB522DD1EEB00D11109 = {
+			isa = PBXGroup;
+			children = (
+				FFABCBC022DD1EEB00D11109 /* Psorcast */,
+				FFABCBE622DD1F2800D11109 /* PsorcastValidation */,
+				FFABCBD522DD1EEC00D11109 /* PsorcastTests */,
+				FFABCC0A22DD1FE800D11109 /* Frameworks */,
+				FFABCBBF22DD1EEB00D11109 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		FFABCBBF22DD1EEB00D11109 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FFABCBBE22DD1EEB00D11109 /* Psorcast.app */,
+				FFABCBD222DD1EEC00D11109 /* PsorcastTests.xctest */,
+				FFABCBE522DD1F2800D11109 /* PsorcastValidation.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		FFABCBC022DD1EEB00D11109 /* Psorcast */ = {
+			isa = PBXGroup;
+			children = (
+				FFABCBC122DD1EEB00D11109 /* AppDelegate.swift */,
+				FFABCBC322DD1EEB00D11109 /* ViewController.swift */,
+				FFABCBC522DD1EEB00D11109 /* Main.storyboard */,
+				FFABCBC822DD1EEC00D11109 /* Assets.xcassets */,
+				FFABCBCA22DD1EEC00D11109 /* LaunchScreen.storyboard */,
+				FF50109C22DD20DE0035E83C /* Support Files */,
+			);
+			path = Psorcast;
+			sourceTree = "<group>";
+		};
+		FFABCBD522DD1EEC00D11109 /* PsorcastTests */ = {
+			isa = PBXGroup;
+			children = (
+				FFABCBD622DD1EEC00D11109 /* PsorcastTests.swift */,
+				FFABCBD822DD1EEC00D11109 /* Info.plist */,
+			);
+			path = PsorcastTests;
+			sourceTree = "<group>";
+		};
+		FFABCBE622DD1F2800D11109 /* PsorcastValidation */ = {
+			isa = PBXGroup;
+			children = (
+				FFABCBE722DD1F2800D11109 /* AppDelegate.swift */,
+				FFABCBE922DD1F2800D11109 /* ViewController.swift */,
+				FFABCBEB22DD1F2800D11109 /* Main.storyboard */,
+				FFABCBEE22DD1F2800D11109 /* Assets.xcassets */,
+				FFABCBF022DD1F2800D11109 /* LaunchScreen.storyboard */,
+				FF50109D22DD20F70035E83C /* Support Files */,
+			);
+			path = PsorcastValidation;
+			sourceTree = "<group>";
+		};
+		FFABCC0A22DD1FE800D11109 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				FFABCC0722DD1FDB00D11109 /* BridgeSDK.framework */,
+				FFABCC0422DD1FCF00D11109 /* BridgeApp.framework */,
+				FFABCC0122DD1FC900D11109 /* MotorControl.framework */,
+				FFABCBFE22DD1FBC00D11109 /* ResearchMotion.framework */,
+				FFABCBFB22DD1FB500D11109 /* ResearchUI.framework */,
+				FFABCBF722DD1FAB00D11109 /* Research.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		FFABCBBD22DD1EEB00D11109 /* Psorcast */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FFABCBDB22DD1EEC00D11109 /* Build configuration list for PBXNativeTarget "Psorcast" */;
+			buildPhases = (
+				FFABCBBA22DD1EEB00D11109 /* Sources */,
+				FFABCBBB22DD1EEB00D11109 /* Frameworks */,
+				FFABCBBC22DD1EEB00D11109 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Psorcast;
+			productName = Psorcast;
+			productReference = FFABCBBE22DD1EEB00D11109 /* Psorcast.app */;
+			productType = "com.apple.product-type.application";
+		};
+		FFABCBD122DD1EEC00D11109 /* PsorcastTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FFABCBDE22DD1EEC00D11109 /* Build configuration list for PBXNativeTarget "PsorcastTests" */;
+			buildPhases = (
+				FFABCBCE22DD1EEC00D11109 /* Sources */,
+				FFABCBCF22DD1EEC00D11109 /* Frameworks */,
+				FFABCBD022DD1EEC00D11109 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				FFABCBD422DD1EEC00D11109 /* PBXTargetDependency */,
+			);
+			name = PsorcastTests;
+			productName = PsorcastTests;
+			productReference = FFABCBD222DD1EEC00D11109 /* PsorcastTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		FFABCBE422DD1F2800D11109 /* PsorcastValidation */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FFABCBF422DD1F2800D11109 /* Build configuration list for PBXNativeTarget "PsorcastValidation" */;
+			buildPhases = (
+				FFABCBE122DD1F2800D11109 /* Sources */,
+				FFABCBE222DD1F2800D11109 /* Frameworks */,
+				FFABCBE322DD1F2800D11109 /* Resources */,
+				FFABCBFA22DD1FAC00D11109 /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = PsorcastValidation;
+			productName = PsorcastValidation;
+			productReference = FFABCBE522DD1F2800D11109 /* PsorcastValidation.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		FFABCBB622DD1EEB00D11109 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1020;
+				LastUpgradeCheck = 1020;
+				ORGANIZATIONNAME = "Sage Bionetworks";
+				TargetAttributes = {
+					FFABCBBD22DD1EEB00D11109 = {
+						CreatedOnToolsVersion = 10.2.1;
+					};
+					FFABCBD122DD1EEC00D11109 = {
+						CreatedOnToolsVersion = 10.2.1;
+						TestTargetID = FFABCBBD22DD1EEB00D11109;
+					};
+					FFABCBE422DD1F2800D11109 = {
+						CreatedOnToolsVersion = 10.2.1;
+					};
+				};
+			};
+			buildConfigurationList = FFABCBB922DD1EEB00D11109 /* Build configuration list for PBXProject "Psorcast" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = FFABCBB522DD1EEB00D11109;
+			productRefGroup = FFABCBBF22DD1EEB00D11109 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				FFABCBBD22DD1EEB00D11109 /* Psorcast */,
+				FFABCBE422DD1F2800D11109 /* PsorcastValidation */,
+				FFABCBD122DD1EEC00D11109 /* PsorcastTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		FFABCBBC22DD1EEB00D11109 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FFABCBCC22DD1EEC00D11109 /* LaunchScreen.storyboard in Resources */,
+				FFABCBC922DD1EEC00D11109 /* Assets.xcassets in Resources */,
+				FFABCBC722DD1EEB00D11109 /* Main.storyboard in Resources */,
+				FF5010A122DD214A0035E83C /* BridgeInfo.plist in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FFABCBD022DD1EEC00D11109 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FFABCBE322DD1F2800D11109 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FFABCBF222DD1F2800D11109 /* LaunchScreen.storyboard in Resources */,
+				FFABCBEF22DD1F2800D11109 /* Assets.xcassets in Resources */,
+				FFABCBED22DD1F2800D11109 /* Main.storyboard in Resources */,
+				FF5010A822DD22A50035E83C /* psorcast-validation.pem in Resources */,
+				FF50109F22DD21420035E83C /* BridgeInfo.plist in Resources */,
+				FF5010A922DD22A50035E83C /* BridgeInfo-private.plist in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		FFABCBBA22DD1EEB00D11109 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FFABCBC422DD1EEB00D11109 /* ViewController.swift in Sources */,
+				FFABCBC222DD1EEB00D11109 /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FFABCBCE22DD1EEC00D11109 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FFABCBD722DD1EEC00D11109 /* PsorcastTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FFABCBE122DD1F2800D11109 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FFABCBEA22DD1F2800D11109 /* ViewController.swift in Sources */,
+				FFABCBE822DD1F2800D11109 /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		FFABCBD422DD1EEC00D11109 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = FFABCBBD22DD1EEB00D11109 /* Psorcast */;
+			targetProxy = FFABCBD322DD1EEC00D11109 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		FFABCBC522DD1EEB00D11109 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				FFABCBC622DD1EEB00D11109 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		FFABCBCA22DD1EEC00D11109 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				FFABCBCB22DD1EEC00D11109 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		FFABCBEB22DD1F2800D11109 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				FFABCBEC22DD1F2800D11109 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		FFABCBF022DD1F2800D11109 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				FFABCBF122DD1F2800D11109 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		FFABCBD922DD1EEC00D11109 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		FFABCBDA22DD1EEC00D11109 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		FFABCBDC22DD1EEC00D11109 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = KA9Z8R6M6K;
+				INFOPLIST_FILE = Psorcast/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = org.sagebionetworks.Psorcast;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		FFABCBDD22DD1EEC00D11109 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = KA9Z8R6M6K;
+				INFOPLIST_FILE = Psorcast/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = org.sagebionetworks.Psorcast;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		FFABCBDF22DD1EEC00D11109 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = KA9Z8R6M6K;
+				INFOPLIST_FILE = PsorcastTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = org.sagebionetworks.PsorcastTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Psorcast.app/Psorcast";
+			};
+			name = Debug;
+		};
+		FFABCBE022DD1EEC00D11109 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = KA9Z8R6M6K;
+				INFOPLIST_FILE = PsorcastTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = org.sagebionetworks.PsorcastTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Psorcast.app/Psorcast";
+			};
+			name = Release;
+		};
+		FFABCBF522DD1F2800D11109 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = KA9Z8R6M6K;
+				INFOPLIST_FILE = PsorcastValidation/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = org.sagebionetworks.psorcastValidation0;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		FFABCBF622DD1F2800D11109 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = KA9Z8R6M6K;
+				INFOPLIST_FILE = PsorcastValidation/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = org.sagebionetworks.psorcastValidation0;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		FFABCBB922DD1EEB00D11109 /* Build configuration list for PBXProject "Psorcast" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FFABCBD922DD1EEC00D11109 /* Debug */,
+				FFABCBDA22DD1EEC00D11109 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FFABCBDB22DD1EEC00D11109 /* Build configuration list for PBXNativeTarget "Psorcast" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FFABCBDC22DD1EEC00D11109 /* Debug */,
+				FFABCBDD22DD1EEC00D11109 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FFABCBDE22DD1EEC00D11109 /* Build configuration list for PBXNativeTarget "PsorcastTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FFABCBDF22DD1EEC00D11109 /* Debug */,
+				FFABCBE022DD1EEC00D11109 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FFABCBF422DD1F2800D11109 /* Build configuration list for PBXNativeTarget "PsorcastValidation" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FFABCBF522DD1F2800D11109 /* Debug */,
+				FFABCBF622DD1F2800D11109 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = FFABCBB622DD1EEB00D11109 /* Project object */;
+}
