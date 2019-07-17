@@ -1,0 +1,65 @@
+{
+    "taskIdentifier"            : "FootImaging",
+    "schemaIdentifier"          : "FootImaging",
+    "progressMarkers":[],
+    "steps":
+    [
+        {
+            "identifier":"handInstruction1",
+            "type":"instruction",
+            "title":"Feet without shoes",
+            "text":"Let’s first begin by photographing the toes on a flat surface. You should not be wearing any socks, sandals or shoes for this activity.",
+            "image":{
+                "type":"fetchable",
+                "imageName": "Foot1",
+                "placementType":"topBackground"
+            },
+            "actions":{
+                "goForward":{
+                    "type":"default",
+                    "buttonTitle":"I’m not wearing shoes"
+                }
+            }
+        },
+        {
+            "identifier":"handInstruction2",
+            "type":"instruction",
+            "title":"Capture your toes",
+            "text":"Capture your toes as closely as you can from directly above. Your toenails should be in focus.",
+            "image":{
+                "type":"fetchable",
+                "imageName": "Foot2",
+                "placementType":"topBackground"
+            },
+            "actions":{
+                "goForward":{
+                    "type":"default",
+                    "buttonTitle":"Capture left toes"
+                }
+            },
+            "shouldHideActions": ["goBackward"]
+        },
+        {
+            "identifier"    : "leftHand",
+            "type"          : "imageCapture",
+            "title"         : "Left Toes"
+        },
+        {
+            "identifier"    : "rightHand",
+            "type"          : "imageCapture",
+            "title"         : "Right Toes"
+        },
+        {
+            "identifier":"completion",
+            "type":"completion",
+            "title":"Great job!",
+            "text":"You just completed the activity.",
+            "actions": {
+                "goForward":{
+                    "type":"default",
+                    "buttonTitle":"Done"
+                }
+            }
+        }
+    ]
+}

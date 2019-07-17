@@ -7,6 +7,17 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CBD67D8122DFB8DE00998516 /* Psorcast.strings in Resources */ = {isa = PBXBuildFile; fileRef = CBD67D8022DFB8DE00998516 /* Psorcast.strings */; };
+		CBD67D8422DFB90C00998516 /* ExternalIDRegistrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBD67D8322DFB90C00998516 /* ExternalIDRegistrationViewController.swift */; };
+		CBD67D8822DFC59B00998516 /* TaskListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBD67D8722DFC59B00998516 /* TaskListTableViewController.swift */; };
+		CBD67D8B22DFC5CA00998516 /* TaskListScheduleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBD67D8A22DFC5CA00998516 /* TaskListScheduleManager.swift */; };
+		CBD67D8D22DFC5EE00998516 /* MotorControl+Bridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBD67D8C22DFC5EE00998516 /* MotorControl+Bridge.swift */; };
+		CBD67D9122DFC6B400998516 /* BuildDateUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = CBD67D9022DFC6B400998516 /* BuildDateUtil.m */; };
+		CBD67D9322DFC71E00998516 /* TaskFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBD67D9222DFC71E00998516 /* TaskFactory.swift */; };
+		CBD67D9622DFDABE00998516 /* HandImaging.json in Resources */ = {isa = PBXBuildFile; fileRef = CBD67D9522DFDABE00998516 /* HandImaging.json */; };
+		CBD67D9922DFDC4E00998516 /* ImageCaptureStepViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CBD67D9722DFDC4E00998516 /* ImageCaptureStepViewController.xib */; };
+		CBD67D9A22DFDC4E00998516 /* ImageCaptureStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBD67D9822DFDC4E00998516 /* ImageCaptureStepViewController.swift */; };
+		CBD67D9C22DFE11B00998516 /* FootImaging.json in Resources */ = {isa = PBXBuildFile; fileRef = CBD67D9B22DFE11A00998516 /* FootImaging.json */; };
 		FF50109F22DD21420035E83C /* BridgeInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = FF50109E22DD21420035E83C /* BridgeInfo.plist */; };
 		FF5010A122DD214A0035E83C /* BridgeInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = FF5010A022DD214A0035E83C /* BridgeInfo.plist */; };
 		FF5010A822DD22A50035E83C /* psorcast-validation.pem in Resources */ = {isa = PBXBuildFile; fileRef = FF5010A622DD22A50035E83C /* psorcast-validation.pem */; };
@@ -66,6 +77,19 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		CBD67D8022DFB8DE00998516 /* Psorcast.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = Psorcast.strings; sourceTree = "<group>"; };
+		CBD67D8322DFB90C00998516 /* ExternalIDRegistrationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExternalIDRegistrationViewController.swift; sourceTree = "<group>"; };
+		CBD67D8622DFC45200998516 /* PsorcastValidation.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PsorcastValidation.entitlements; sourceTree = "<group>"; };
+		CBD67D8722DFC59B00998516 /* TaskListTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskListTableViewController.swift; sourceTree = "<group>"; };
+		CBD67D8A22DFC5CA00998516 /* TaskListScheduleManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskListScheduleManager.swift; sourceTree = "<group>"; };
+		CBD67D8C22DFC5EE00998516 /* MotorControl+Bridge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MotorControl+Bridge.swift"; sourceTree = "<group>"; };
+		CBD67D8F22DFC6B400998516 /* PsorcastValidation-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PsorcastValidation-Bridging-Header.h"; sourceTree = "<group>"; };
+		CBD67D9022DFC6B400998516 /* BuildDateUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BuildDateUtil.m; sourceTree = "<group>"; };
+		CBD67D9222DFC71E00998516 /* TaskFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskFactory.swift; sourceTree = "<group>"; };
+		CBD67D9522DFDABE00998516 /* HandImaging.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = HandImaging.json; sourceTree = "<group>"; };
+		CBD67D9722DFDC4E00998516 /* ImageCaptureStepViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ImageCaptureStepViewController.xib; sourceTree = "<group>"; };
+		CBD67D9822DFDC4E00998516 /* ImageCaptureStepViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCaptureStepViewController.swift; sourceTree = "<group>"; };
+		CBD67D9B22DFE11A00998516 /* FootImaging.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = FootImaging.json; sourceTree = "<group>"; };
 		FF50109E22DD21420035E83C /* BridgeInfo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = BridgeInfo.plist; sourceTree = "<group>"; };
 		FF5010A022DD214A0035E83C /* BridgeInfo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = BridgeInfo.plist; sourceTree = "<group>"; };
 		FF5010A622DD22A50035E83C /* psorcast-validation.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "psorcast-validation.pem"; path = "../../../iOSPrivateProjectInfo/PsorcastValidation/psorcast-validation.pem"; sourceTree = "<group>"; };
@@ -126,6 +150,54 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		CBD67D7F22DFB8C400998516 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				CBD67D9422DFDAA700998516 /* JSON */,
+				CBD67D8022DFB8DE00998516 /* Psorcast.strings */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		CBD67D8222DFB8F600998516 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				CBD67D8722DFC59B00998516 /* TaskListTableViewController.swift */,
+				CBD67D8322DFB90C00998516 /* ExternalIDRegistrationViewController.swift */,
+				CBD67D9822DFDC4E00998516 /* ImageCaptureStepViewController.swift */,
+				CBD67D9722DFDC4E00998516 /* ImageCaptureStepViewController.xib */,
+			);
+			name = ViewControllers;
+			sourceTree = "<group>";
+		};
+		CBD67D8922DFC5B500998516 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				CBD67D9222DFC71E00998516 /* TaskFactory.swift */,
+				CBD67D8C22DFC5EE00998516 /* MotorControl+Bridge.swift */,
+				CBD67D8A22DFC5CA00998516 /* TaskListScheduleManager.swift */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		CBD67D8E22DFC69700998516 /* ObjC */ = {
+			isa = PBXGroup;
+			children = (
+				CBD67D9022DFC6B400998516 /* BuildDateUtil.m */,
+				CBD67D8F22DFC6B400998516 /* PsorcastValidation-Bridging-Header.h */,
+			);
+			name = ObjC;
+			sourceTree = "<group>";
+		};
+		CBD67D9422DFDAA700998516 /* JSON */ = {
+			isa = PBXGroup;
+			children = (
+				CBD67D9B22DFE11A00998516 /* FootImaging.json */,
+				CBD67D9522DFDABE00998516 /* HandImaging.json */,
+			);
+			name = JSON;
+			sourceTree = "<group>";
+		};
 		FF50109C22DD20DE0035E83C /* Support Files */ = {
 			isa = PBXGroup;
 			children = (
@@ -138,6 +210,7 @@
 		FF50109D22DD20F70035E83C /* Support Files */ = {
 			isa = PBXGroup;
 			children = (
+				CBD67D8622DFC45200998516 /* PsorcastValidation.entitlements */,
 				FF5010A722DD22A50035E83C /* BridgeInfo-private.plist */,
 				FF5010A622DD22A50035E83C /* psorcast-validation.pem */,
 				FF50109E22DD21420035E83C /* BridgeInfo.plist */,
@@ -197,6 +270,10 @@
 				FFABCBEB22DD1F2800D11109 /* Main.storyboard */,
 				FFABCBEE22DD1F2800D11109 /* Assets.xcassets */,
 				FFABCBF022DD1F2800D11109 /* LaunchScreen.storyboard */,
+				CBD67D8922DFC5B500998516 /* Model */,
+				CBD67D8222DFB8F600998516 /* ViewControllers */,
+				CBD67D8E22DFC69700998516 /* ObjC */,
+				CBD67D7F22DFB8C400998516 /* Resources */,
 				FF50109D22DD20F70035E83C /* Support Files */,
 			);
 			path = PsorcastValidation;
@@ -290,6 +367,15 @@
 					};
 					FFABCBE422DD1F2800D11109 = {
 						CreatedOnToolsVersion = 10.2.1;
+						LastSwiftMigration = 1020;
+						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
+							com.apple.DataProtection = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -336,12 +422,16 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CBD67D8122DFB8DE00998516 /* Psorcast.strings in Resources */,
 				FFABCBF222DD1F2800D11109 /* LaunchScreen.storyboard in Resources */,
 				FFABCBEF22DD1F2800D11109 /* Assets.xcassets in Resources */,
 				FFABCBED22DD1F2800D11109 /* Main.storyboard in Resources */,
+				CBD67D9922DFDC4E00998516 /* ImageCaptureStepViewController.xib in Resources */,
 				FF5010A822DD22A50035E83C /* psorcast-validation.pem in Resources */,
+				CBD67D9C22DFE11B00998516 /* FootImaging.json in Resources */,
 				FF50109F22DD21420035E83C /* BridgeInfo.plist in Resources */,
 				FF5010A922DD22A50035E83C /* BridgeInfo-private.plist in Resources */,
+				CBD67D9622DFDABE00998516 /* HandImaging.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -369,8 +459,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CBD67D9122DFC6B400998516 /* BuildDateUtil.m in Sources */,
+				CBD67D9A22DFDC4E00998516 /* ImageCaptureStepViewController.swift in Sources */,
 				FFABCBEA22DD1F2800D11109 /* ViewController.swift in Sources */,
+				CBD67D9322DFC71E00998516 /* TaskFactory.swift in Sources */,
 				FFABCBE822DD1F2800D11109 /* AppDelegate.swift in Sources */,
+				CBD67D8822DFC59B00998516 /* TaskListTableViewController.swift in Sources */,
+				CBD67D8422DFB90C00998516 /* ExternalIDRegistrationViewController.swift in Sources */,
+				CBD67D8D22DFC5EE00998516 /* MotorControl+Bridge.swift in Sources */,
+				CBD67D8B22DFC5CA00998516 /* TaskListScheduleManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -618,8 +715,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = KA9Z8R6M6K;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = PsorcastValidation/PsorcastValidation.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = PsorcastValidation/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -627,6 +727,9 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.sagebionetworks.psorcastValidation0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "PsorcastValidation/PsorcastValidation-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -636,8 +739,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = KA9Z8R6M6K;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = PsorcastValidation/PsorcastValidation.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = PsorcastValidation/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -645,6 +751,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.sagebionetworks.psorcastValidation0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "PsorcastValidation/PsorcastValidation-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
