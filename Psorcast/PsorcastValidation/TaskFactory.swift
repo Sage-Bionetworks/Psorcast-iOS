@@ -41,10 +41,6 @@ open class TaskFactory: SBAFactory {
     /// Override the base factory to vend PKU specific step objects.
     override open func decodeStep(from decoder: Decoder, with type: RSDStepType) throws -> RSDStep? {
         switch type {
-//        case .brainBaseline:
-//            return try BrainBaselineStepObject(from: decoder)
-//        case .brainBaselineOverview:
-//            return try BrainBaselineOverviewStepObject(from: decoder)
         case .imageCapture:
             return try ImageCaptureStepObject(from: decoder)
         default:
