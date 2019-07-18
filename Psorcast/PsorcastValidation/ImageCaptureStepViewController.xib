@@ -26,17 +26,21 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nCy-4g-nIJ" userLabel="Content View">
                     <rect key="frame" x="0.0" y="0.0" width="375" height="700"/>
                     <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Bb7-gd-Spk" userLabel="CaptureView">
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="700"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fxA-Tz-ZiS" customClass="RSDNavigationHeaderView" customModule="ResearchUI">
-                            <rect key="frame" x="0.0" y="0.0" width="375" height="126.66666666666667"/>
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="150.66666666666666"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Walk and Balance" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="d3p-ES-nu8" userLabel="Title Label">
-                                    <rect key="frame" x="24" y="74" width="327" height="28.666666666666671"/>
+                                    <rect key="frame" x="24" y="98" width="327" height="28.666666666666671"/>
                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="24"/>
                                     <nil key="textColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MAO-q7-fPw" userLabel="Cancel Button">
-                                    <rect key="frame" x="12" y="24" width="50" height="50"/>
+                                    <rect key="frame" x="12" y="48" width="50" height="50"/>
                                     <constraints>
                                         <constraint firstAttribute="width" secondItem="MAO-q7-fPw" secondAttribute="height" multiplier="1:1" id="FQP-6M-XIU"/>
                                         <constraint firstAttribute="width" constant="50" id="oUt-Bl-kZX"/>
@@ -51,7 +55,7 @@
                                 <constraint firstItem="MAO-q7-fPw" firstAttribute="leading" secondItem="fxA-Tz-ZiS" secondAttribute="leading" constant="12" id="9OQ-QY-59V"/>
                                 <constraint firstAttribute="trailing" secondItem="d3p-ES-nu8" secondAttribute="trailing" constant="24" id="Smt-1Y-XlF"/>
                                 <constraint firstItem="d3p-ES-nu8" firstAttribute="leading" secondItem="fxA-Tz-ZiS" secondAttribute="leading" constant="24" id="bQC-or-EVq"/>
-                                <constraint firstItem="MAO-q7-fPw" firstAttribute="top" secondItem="fxA-Tz-ZiS" secondAttribute="top" constant="24" id="c4z-r0-dQU"/>
+                                <constraint firstItem="MAO-q7-fPw" firstAttribute="top" secondItem="fxA-Tz-ZiS" secondAttribute="top" constant="48" id="c4z-r0-dQU"/>
                                 <constraint firstAttribute="bottom" secondItem="d3p-ES-nu8" secondAttribute="bottom" constant="24" id="cVl-fj-3jj"/>
                             </constraints>
                             <connections>
@@ -59,11 +63,7 @@
                                 <outlet property="titleLabel" destination="d3p-ES-nu8" id="LaJ-GO-IzF"/>
                             </connections>
                         </view>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Bb7-gd-Spk" userLabel="CaptureView">
-                            <rect key="frame" x="0.0" y="126.66666666666666" width="375" height="399.33333333333337"/>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        </view>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0fq-Hc-Mvl" customClass="RSDShadowGradient" customModule="ResearchUI">
+                        <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0fq-Hc-Mvl" customClass="RSDShadowGradient" customModule="ResearchUI">
                             <rect key="frame" x="0.0" y="518" width="375" height="8"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
@@ -79,7 +79,7 @@
                                 </userDefinedRuntimeAttribute>
                             </userDefinedRuntimeAttributes>
                         </view>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yDS-5l-Zwt" userLabel="CaptureFooter">
+                        <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yDS-5l-Zwt" userLabel="CaptureFooter">
                             <rect key="frame" x="0.0" y="526" width="375" height="174"/>
                             <subviews>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0ZV-YQ-Xsi" customClass="CameraShutterButton" customModule="PsorcastValidation" customModuleProvider="target">
@@ -110,17 +110,17 @@
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstAttribute="trailing" secondItem="fxA-Tz-ZiS" secondAttribute="trailing" id="3JV-je-hxC"/>
-                        <constraint firstItem="Bb7-gd-Spk" firstAttribute="top" secondItem="fxA-Tz-ZiS" secondAttribute="bottom" id="62L-fx-bgt"/>
-                        <constraint firstItem="yDS-5l-Zwt" firstAttribute="top" secondItem="Bb7-gd-Spk" secondAttribute="bottom" id="APu-J1-9xe"/>
+                        <constraint firstItem="Bb7-gd-Spk" firstAttribute="top" secondItem="nCy-4g-nIJ" secondAttribute="top" id="3vl-YN-yci"/>
                         <constraint firstAttribute="trailing" secondItem="Bb7-gd-Spk" secondAttribute="trailing" id="Bd0-Lg-k57"/>
                         <constraint firstAttribute="trailing" secondItem="yDS-5l-Zwt" secondAttribute="trailing" id="CLu-YQ-poj"/>
                         <constraint firstItem="yDS-5l-Zwt" firstAttribute="leading" secondItem="nCy-4g-nIJ" secondAttribute="leading" id="Dup-Y5-tlE"/>
                         <constraint firstItem="0fq-Hc-Mvl" firstAttribute="leading" secondItem="nCy-4g-nIJ" secondAttribute="leading" id="Rfa-9R-XcE"/>
                         <constraint firstItem="fxA-Tz-ZiS" firstAttribute="top" secondItem="nCy-4g-nIJ" secondAttribute="top" id="SC4-I8-O5N"/>
                         <constraint firstAttribute="trailing" secondItem="0fq-Hc-Mvl" secondAttribute="trailing" id="TOQ-Sa-dU2"/>
-                        <constraint firstItem="Bb7-gd-Spk" firstAttribute="leading" secondItem="nCy-4g-nIJ" secondAttribute="leading" id="Z99-jG-b4c"/>
                         <constraint firstAttribute="bottom" secondItem="yDS-5l-Zwt" secondAttribute="bottom" id="cCk-rd-KYt"/>
+                        <constraint firstAttribute="bottom" secondItem="Bb7-gd-Spk" secondAttribute="bottom" id="gZr-Mm-QQ6"/>
                         <constraint firstItem="yDS-5l-Zwt" firstAttribute="top" secondItem="0fq-Hc-Mvl" secondAttribute="bottom" id="juc-tP-E3G"/>
+                        <constraint firstItem="Bb7-gd-Spk" firstAttribute="leading" secondItem="nCy-4g-nIJ" secondAttribute="leading" id="mgY-QI-c9q"/>
                         <constraint firstItem="fxA-Tz-ZiS" firstAttribute="leading" secondItem="nCy-4g-nIJ" secondAttribute="leading" id="rEg-ZD-hZb"/>
                     </constraints>
                 </view>

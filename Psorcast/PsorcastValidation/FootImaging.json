@@ -40,12 +40,12 @@
             "shouldHideActions": ["goBackward"]
         },
         {
-            "identifier"    : "leftHand",
+            "identifier"    : "leftFoot",
             "type"          : "imageCapture",
             "title"         : "Left Toes"
         },
         {
-            "identifier"    : "rightHand",
+            "identifier"    : "rightFoot",
             "type"          : "imageCapture",
             "title"         : "Right Toes"
         },

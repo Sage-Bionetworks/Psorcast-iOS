@@ -131,6 +131,9 @@ open class ImageCaptureStepViewController: RSDStepViewController, UIImagePickerC
         
         if placement == .footer {
             self.captureButton.backgroundColor = self.designSystem.colorRules.tintedButtonColor(on: background)
+        } else if placement == .header {
+            self.navigationHeader?.backgroundColor = UIColor.clear
+            self.navigationHeader?.titleLabel?.textColor = UIColor.white
         }
     }
 }
