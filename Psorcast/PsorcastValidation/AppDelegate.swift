@@ -47,8 +47,8 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate {
                                               accent: RSDColorMatrix.shared.colorKey(for: .palette(.rose),
                                                                                      shade: .dark))
     static let designSystem = RSDDesignSystem(version: 1,
-                                              colorRules: PSOColorRules(palette: colorPalette, version: 1),
-                                              fontRules: PSOFontRules(version: 1))
+                                              colorRules: PSRColorRules(palette: colorPalette, version: 1),
+                                              fontRules: PSRFontRules(version: 1))
     
     override func instantiateColorPalette() -> RSDColorPalette? {
         return AppDelegate.colorPalette
@@ -69,7 +69,7 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate {
         Localization.insert(bundle: mainBundle, at: 0)
         
         // Set up font rules.
-        RSDStudyConfiguration.shared.fontRules = PSOFontRules(version: 0)
+        RSDStudyConfiguration.shared.fontRules = PSRFontRules(version: 0)
         
         return super.application(application, willFinishLaunchingWithOptions: launchOptions)
     }
@@ -117,11 +117,11 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate {
     }
 }
 
-open class PSOColorRules: RSDColorRules {
+open class PSRColorRules: RSDColorRules {
     
 }
 
-open class PSOFontRules: RSDFontRules {
+open class PSRFontRules: RSDFontRules {
     
     public let latoRegularName      = "Lato-Regular"
     public let latoBoldName         = "Lato-Bold"
@@ -132,6 +132,17 @@ open class PSOFontRules: RSDFontRules {
     public let latoLightItalicName  = "Lato-LightItalic"
     
     override open func font(ofSize fontSize: CGFloat, weight: RSDFont.Weight = .regular) -> RSDFont {
-        return RSDFont.systemFont(ofSize: fontSize, weight: weight)
+        
+        // TODO: mdephillips 7/18/19 there is no weight for italic, how can we get italic fonts?
+        switch weight {
+        case .light:
+            return RSDFont(name: latoLightName, size: 20)!
+        case .bold:
+            return RSDFont(name: latoBoldName, size: 20)!
+        case .black:
+            return RSDFont(name: latoBlackName, size: fontSize)!
+        default:  // includes .regular and everything else
+            return RSDFont(name: latoRegularName, size: fontSize)!
+        }
     }
 }

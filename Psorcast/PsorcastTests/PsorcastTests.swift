@@ -7,7 +7,6 @@
 //
 
 import XCTest
-@testable import Psorcast
 
 class PsorcastTests: XCTestCase {
 
