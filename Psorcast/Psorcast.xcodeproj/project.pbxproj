@@ -7,6 +7,35 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CB9F5E1F22E0BED3003FBCEF /* lato_black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CB9F5E1422E0BEA3003FBCEF /* lato_black.ttf */; };
+		CB9F5E2022E0BED3003FBCEF /* lato_bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CB9F5E1222E0BEA3003FBCEF /* lato_bold.ttf */; };
+		CB9F5E2122E0BED3003FBCEF /* lato_bolditalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CB9F5E1522E0BEA3003FBCEF /* lato_bolditalic.ttf */; };
+		CB9F5E2222E0BED3003FBCEF /* lato_italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CB9F5E1622E0BEA3003FBCEF /* lato_italic.ttf */; };
+		CB9F5E2322E0BED3003FBCEF /* lato_light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CB9F5E1322E0BEA3003FBCEF /* lato_light.ttf */; };
+		CB9F5E2422E0BED3003FBCEF /* lato_lightitalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CB9F5E1822E0BEA3003FBCEF /* lato_lightitalic.ttf */; };
+		CB9F5E2522E0BED3003FBCEF /* lato_regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CB9F5E1722E0BEA3003FBCEF /* lato_regular.ttf */; };
+		CB9F5E2622E0BED4003FBCEF /* lato_black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CB9F5E1422E0BEA3003FBCEF /* lato_black.ttf */; };
+		CB9F5E2722E0BED4003FBCEF /* lato_bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CB9F5E1222E0BEA3003FBCEF /* lato_bold.ttf */; };
+		CB9F5E2822E0BED4003FBCEF /* lato_bolditalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CB9F5E1522E0BEA3003FBCEF /* lato_bolditalic.ttf */; };
+		CB9F5E2922E0BED4003FBCEF /* lato_italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CB9F5E1622E0BEA3003FBCEF /* lato_italic.ttf */; };
+		CB9F5E2A22E0BED4003FBCEF /* lato_light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CB9F5E1322E0BEA3003FBCEF /* lato_light.ttf */; };
+		CB9F5E2B22E0BED4003FBCEF /* lato_lightitalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CB9F5E1822E0BEA3003FBCEF /* lato_lightitalic.ttf */; };
+		CB9F5E2C22E0BED4003FBCEF /* lato_regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CB9F5E1722E0BEA3003FBCEF /* lato_regular.ttf */; };
+		CB9F5E4A22E0C2AA003FBCEF /* TaskListScheduleManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB9F5E3322E0C1A5003FBCEF /* TaskListScheduleManagerTests.swift */; };
+		CB9F5E5222E0C2BA003FBCEF /* PsorcastTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB9F5E5122E0C2BA003FBCEF /* PsorcastTests.swift */; };
+		CB9F5E5B22E0C531003FBCEF /* CopyStepTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB9F5E5922E0C530003FBCEF /* CopyStepTests.swift */; };
+		CB9F5E5C22E0C531003FBCEF /* CodableStepObjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB9F5E5A22E0C531003FBCEF /* CodableStepObjectTests.swift */; };
+		CBD67D8122DFB8DE00998516 /* Psorcast.strings in Resources */ = {isa = PBXBuildFile; fileRef = CBD67D8022DFB8DE00998516 /* Psorcast.strings */; };
+		CBD67D8422DFB90C00998516 /* ExternalIDRegistrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBD67D8322DFB90C00998516 /* ExternalIDRegistrationViewController.swift */; };
+		CBD67D8822DFC59B00998516 /* TaskListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBD67D8722DFC59B00998516 /* TaskListTableViewController.swift */; };
+		CBD67D8B22DFC5CA00998516 /* TaskListScheduleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBD67D8A22DFC5CA00998516 /* TaskListScheduleManager.swift */; };
+		CBD67D8D22DFC5EE00998516 /* MotorControl+Bridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBD67D8C22DFC5EE00998516 /* MotorControl+Bridge.swift */; };
+		CBD67D9122DFC6B400998516 /* BuildDateUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = CBD67D9022DFC6B400998516 /* BuildDateUtil.m */; };
+		CBD67D9322DFC71E00998516 /* TaskFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBD67D9222DFC71E00998516 /* TaskFactory.swift */; };
+		CBD67D9622DFDABE00998516 /* HandImaging.json in Resources */ = {isa = PBXBuildFile; fileRef = CBD67D9522DFDABE00998516 /* HandImaging.json */; };
+		CBD67D9922DFDC4E00998516 /* ImageCaptureStepViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CBD67D9722DFDC4E00998516 /* ImageCaptureStepViewController.xib */; };
+		CBD67D9A22DFDC4E00998516 /* ImageCaptureStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBD67D9822DFDC4E00998516 /* ImageCaptureStepViewController.swift */; };
+		CBD67D9C22DFE11B00998516 /* FootImaging.json in Resources */ = {isa = PBXBuildFile; fileRef = CBD67D9B22DFE11A00998516 /* FootImaging.json */; };
 		FF50109F22DD21420035E83C /* BridgeInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = FF50109E22DD21420035E83C /* BridgeInfo.plist */; };
 		FF5010A122DD214A0035E83C /* BridgeInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = FF5010A022DD214A0035E83C /* BridgeInfo.plist */; };
 		FF5010A822DD22A50035E83C /* psorcast-validation.pem in Resources */ = {isa = PBXBuildFile; fileRef = FF5010A622DD22A50035E83C /* psorcast-validation.pem */; };
@@ -16,7 +45,6 @@
 		FFABCBC722DD1EEB00D11109 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FFABCBC522DD1EEB00D11109 /* Main.storyboard */; };
 		FFABCBC922DD1EEC00D11109 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FFABCBC822DD1EEC00D11109 /* Assets.xcassets */; };
 		FFABCBCC22DD1EEC00D11109 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FFABCBCA22DD1EEC00D11109 /* LaunchScreen.storyboard */; };
-		FFABCBD722DD1EEC00D11109 /* PsorcastTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFABCBD622DD1EEC00D11109 /* PsorcastTests.swift */; };
 		FFABCBE822DD1F2800D11109 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFABCBE722DD1F2800D11109 /* AppDelegate.swift */; };
 		FFABCBEA22DD1F2800D11109 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFABCBE922DD1F2800D11109 /* ViewController.swift */; };
 		FFABCBED22DD1F2800D11109 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FFABCBEB22DD1F2800D11109 /* Main.storyboard */; };
@@ -37,7 +65,14 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		FFABCBD322DD1EEC00D11109 /* PBXContainerItemProxy */ = {
+		CB9F5E4522E0C27D003FBCEF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FFABCBB622DD1EEB00D11109 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = FFABCBE422DD1F2800D11109;
+			remoteInfo = PsorcastValidation;
+		};
+		CB9F5E5422E0C2BA003FBCEF /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FFABCBB622DD1EEB00D11109 /* Project object */;
 			proxyType = 1;
@@ -66,6 +101,34 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		CB9F5E1222E0BEA3003FBCEF /* lato_bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = lato_bold.ttf; path = Fonts/lato_bold.ttf; sourceTree = "<group>"; };
+		CB9F5E1322E0BEA3003FBCEF /* lato_light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = lato_light.ttf; path = Fonts/lato_light.ttf; sourceTree = "<group>"; };
+		CB9F5E1422E0BEA3003FBCEF /* lato_black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = lato_black.ttf; path = Fonts/lato_black.ttf; sourceTree = "<group>"; };
+		CB9F5E1522E0BEA3003FBCEF /* lato_bolditalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = lato_bolditalic.ttf; path = Fonts/lato_bolditalic.ttf; sourceTree = "<group>"; };
+		CB9F5E1622E0BEA3003FBCEF /* lato_italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = lato_italic.ttf; path = Fonts/lato_italic.ttf; sourceTree = "<group>"; };
+		CB9F5E1722E0BEA3003FBCEF /* lato_regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = lato_regular.ttf; path = Fonts/lato_regular.ttf; sourceTree = "<group>"; };
+		CB9F5E1822E0BEA3003FBCEF /* lato_lightitalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = lato_lightitalic.ttf; path = Fonts/lato_lightitalic.ttf; sourceTree = "<group>"; };
+		CB9F5E3322E0C1A5003FBCEF /* TaskListScheduleManagerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskListScheduleManagerTests.swift; sourceTree = "<group>"; };
+		CB9F5E4022E0C27C003FBCEF /* PsorcastValidationTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PsorcastValidationTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		CB9F5E4422E0C27D003FBCEF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CB9F5E4F22E0C2BA003FBCEF /* PsorcastTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PsorcastTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		CB9F5E5122E0C2BA003FBCEF /* PsorcastTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PsorcastTests.swift; sourceTree = "<group>"; };
+		CB9F5E5322E0C2BA003FBCEF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CB9F5E5922E0C530003FBCEF /* CopyStepTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CopyStepTests.swift; sourceTree = "<group>"; };
+		CB9F5E5A22E0C531003FBCEF /* CodableStepObjectTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodableStepObjectTests.swift; sourceTree = "<group>"; };
+		CBD67D8022DFB8DE00998516 /* Psorcast.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = Psorcast.strings; sourceTree = "<group>"; };
+		CBD67D8322DFB90C00998516 /* ExternalIDRegistrationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExternalIDRegistrationViewController.swift; sourceTree = "<group>"; };
+		CBD67D8622DFC45200998516 /* PsorcastValidation.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PsorcastValidation.entitlements; sourceTree = "<group>"; };
+		CBD67D8722DFC59B00998516 /* TaskListTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskListTableViewController.swift; sourceTree = "<group>"; };
+		CBD67D8A22DFC5CA00998516 /* TaskListScheduleManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskListScheduleManager.swift; sourceTree = "<group>"; };
+		CBD67D8C22DFC5EE00998516 /* MotorControl+Bridge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MotorControl+Bridge.swift"; sourceTree = "<group>"; };
+		CBD67D8F22DFC6B400998516 /* PsorcastValidation-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PsorcastValidation-Bridging-Header.h"; sourceTree = "<group>"; };
+		CBD67D9022DFC6B400998516 /* BuildDateUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BuildDateUtil.m; sourceTree = "<group>"; };
+		CBD67D9222DFC71E00998516 /* TaskFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskFactory.swift; sourceTree = "<group>"; };
+		CBD67D9522DFDABE00998516 /* HandImaging.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = HandImaging.json; sourceTree = "<group>"; };
+		CBD67D9722DFDC4E00998516 /* ImageCaptureStepViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ImageCaptureStepViewController.xib; sourceTree = "<group>"; };
+		CBD67D9822DFDC4E00998516 /* ImageCaptureStepViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCaptureStepViewController.swift; sourceTree = "<group>"; };
+		CBD67D9B22DFE11A00998516 /* FootImaging.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = FootImaging.json; sourceTree = "<group>"; };
 		FF50109E22DD21420035E83C /* BridgeInfo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = BridgeInfo.plist; sourceTree = "<group>"; };
 		FF5010A022DD214A0035E83C /* BridgeInfo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = BridgeInfo.plist; sourceTree = "<group>"; };
 		FF5010A622DD22A50035E83C /* psorcast-validation.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "psorcast-validation.pem"; path = "../../../iOSPrivateProjectInfo/PsorcastValidation/psorcast-validation.pem"; sourceTree = "<group>"; };
@@ -77,7 +140,6 @@
 		FFABCBC822DD1EEC00D11109 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FFABCBCB22DD1EEC00D11109 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		FFABCBCD22DD1EEC00D11109 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		FFABCBD222DD1EEC00D11109 /* PsorcastTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PsorcastTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		FFABCBD622DD1EEC00D11109 /* PsorcastTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PsorcastTests.swift; sourceTree = "<group>"; };
 		FFABCBD822DD1EEC00D11109 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FFABCBE522DD1F2800D11109 /* PsorcastValidation.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PsorcastValidation.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -96,14 +158,21 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		FFABCBBB22DD1EEB00D11109 /* Frameworks */ = {
+		CB9F5E3D22E0C27C003FBCEF /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		FFABCBCF22DD1EEC00D11109 /* Frameworks */ = {
+		CB9F5E4C22E0C2BA003FBCEF /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FFABCBBB22DD1EEB00D11109 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -126,6 +195,89 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		CB9F5E1122E0BE8D003FBCEF /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				CB9F5E1422E0BEA3003FBCEF /* lato_black.ttf */,
+				CB9F5E1222E0BEA3003FBCEF /* lato_bold.ttf */,
+				CB9F5E1522E0BEA3003FBCEF /* lato_bolditalic.ttf */,
+				CB9F5E1622E0BEA3003FBCEF /* lato_italic.ttf */,
+				CB9F5E1322E0BEA3003FBCEF /* lato_light.ttf */,
+				CB9F5E1822E0BEA3003FBCEF /* lato_lightitalic.ttf */,
+				CB9F5E1722E0BEA3003FBCEF /* lato_regular.ttf */,
+			);
+			name = Fonts;
+			sourceTree = "<group>";
+		};
+		CB9F5E4122E0C27D003FBCEF /* PsorcastValidationTests */ = {
+			isa = PBXGroup;
+			children = (
+				CB9F5E5A22E0C531003FBCEF /* CodableStepObjectTests.swift */,
+				CB9F5E5922E0C530003FBCEF /* CopyStepTests.swift */,
+				CB9F5E3322E0C1A5003FBCEF /* TaskListScheduleManagerTests.swift */,
+				CB9F5E4422E0C27D003FBCEF /* Info.plist */,
+			);
+			path = PsorcastValidationTests;
+			sourceTree = "<group>";
+		};
+		CB9F5E5022E0C2BA003FBCEF /* PsorcastTests */ = {
+			isa = PBXGroup;
+			children = (
+				CB9F5E5122E0C2BA003FBCEF /* PsorcastTests.swift */,
+				CB9F5E5322E0C2BA003FBCEF /* Info.plist */,
+			);
+			path = PsorcastTests;
+			sourceTree = "<group>";
+		};
+		CBD67D7F22DFB8C400998516 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				CB9F5E1122E0BE8D003FBCEF /* Fonts */,
+				CBD67D9422DFDAA700998516 /* JSON */,
+				CBD67D8022DFB8DE00998516 /* Psorcast.strings */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		CBD67D8222DFB8F600998516 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				CBD67D8722DFC59B00998516 /* TaskListTableViewController.swift */,
+				CBD67D8322DFB90C00998516 /* ExternalIDRegistrationViewController.swift */,
+				CBD67D9822DFDC4E00998516 /* ImageCaptureStepViewController.swift */,
+				CBD67D9722DFDC4E00998516 /* ImageCaptureStepViewController.xib */,
+			);
+			name = ViewControllers;
+			sourceTree = "<group>";
+		};
+		CBD67D8922DFC5B500998516 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				CBD67D9222DFC71E00998516 /* TaskFactory.swift */,
+				CBD67D8C22DFC5EE00998516 /* MotorControl+Bridge.swift */,
+				CBD67D8A22DFC5CA00998516 /* TaskListScheduleManager.swift */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		CBD67D8E22DFC69700998516 /* ObjC */ = {
+			isa = PBXGroup;
+			children = (
+				CBD67D9022DFC6B400998516 /* BuildDateUtil.m */,
+				CBD67D8F22DFC6B400998516 /* PsorcastValidation-Bridging-Header.h */,
+			);
+			name = ObjC;
+			sourceTree = "<group>";
+		};
+		CBD67D9422DFDAA700998516 /* JSON */ = {
+			isa = PBXGroup;
+			children = (
+				CBD67D9B22DFE11A00998516 /* FootImaging.json */,
+				CBD67D9522DFDABE00998516 /* HandImaging.json */,
+			);
+			name = JSON;
+			sourceTree = "<group>";
+		};
 		FF50109C22DD20DE0035E83C /* Support Files */ = {
 			isa = PBXGroup;
 			children = (
@@ -138,6 +290,7 @@
 		FF50109D22DD20F70035E83C /* Support Files */ = {
 			isa = PBXGroup;
 			children = (
+				CBD67D8622DFC45200998516 /* PsorcastValidation.entitlements */,
 				FF5010A722DD22A50035E83C /* BridgeInfo-private.plist */,
 				FF5010A622DD22A50035E83C /* psorcast-validation.pem */,
 				FF50109E22DD21420035E83C /* BridgeInfo.plist */,
@@ -152,6 +305,8 @@
 				FFABCBC022DD1EEB00D11109 /* Psorcast */,
 				FFABCBE622DD1F2800D11109 /* PsorcastValidation */,
 				FFABCBD522DD1EEC00D11109 /* PsorcastTests */,
+				CB9F5E4122E0C27D003FBCEF /* PsorcastValidationTests */,
+				CB9F5E5022E0C2BA003FBCEF /* PsorcastTests */,
 				FFABCC0A22DD1FE800D11109 /* Frameworks */,
 				FFABCBBF22DD1EEB00D11109 /* Products */,
 			);
@@ -161,8 +316,9 @@
 			isa = PBXGroup;
 			children = (
 				FFABCBBE22DD1EEB00D11109 /* Psorcast.app */,
-				FFABCBD222DD1EEC00D11109 /* PsorcastTests.xctest */,
 				FFABCBE522DD1F2800D11109 /* PsorcastValidation.app */,
+				CB9F5E4022E0C27C003FBCEF /* PsorcastValidationTests.xctest */,
+				CB9F5E4F22E0C2BA003FBCEF /* PsorcastTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -197,6 +353,10 @@
 				FFABCBEB22DD1F2800D11109 /* Main.storyboard */,
 				FFABCBEE22DD1F2800D11109 /* Assets.xcassets */,
 				FFABCBF022DD1F2800D11109 /* LaunchScreen.storyboard */,
+				CBD67D8922DFC5B500998516 /* Model */,
+				CBD67D8222DFB8F600998516 /* ViewControllers */,
+				CBD67D8E22DFC69700998516 /* ObjC */,
+				CBD67D7F22DFB8C400998516 /* Resources */,
 				FF50109D22DD20F70035E83C /* Support Files */,
 			);
 			path = PsorcastValidation;
@@ -218,6 +378,42 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		CB9F5E3F22E0C27C003FBCEF /* PsorcastValidationTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CB9F5E4722E0C27D003FBCEF /* Build configuration list for PBXNativeTarget "PsorcastValidationTests" */;
+			buildPhases = (
+				CB9F5E3C22E0C27C003FBCEF /* Sources */,
+				CB9F5E3D22E0C27C003FBCEF /* Frameworks */,
+				CB9F5E3E22E0C27C003FBCEF /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				CB9F5E4622E0C27D003FBCEF /* PBXTargetDependency */,
+			);
+			name = PsorcastValidationTests;
+			productName = PsorcastValidationTests;
+			productReference = CB9F5E4022E0C27C003FBCEF /* PsorcastValidationTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		CB9F5E4E22E0C2BA003FBCEF /* PsorcastTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CB9F5E5622E0C2BA003FBCEF /* Build configuration list for PBXNativeTarget "PsorcastTests" */;
+			buildPhases = (
+				CB9F5E4B22E0C2BA003FBCEF /* Sources */,
+				CB9F5E4C22E0C2BA003FBCEF /* Frameworks */,
+				CB9F5E4D22E0C2BA003FBCEF /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				CB9F5E5522E0C2BA003FBCEF /* PBXTargetDependency */,
+			);
+			name = PsorcastTests;
+			productName = PsorcastTests;
+			productReference = CB9F5E4F22E0C2BA003FBCEF /* PsorcastTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		FFABCBBD22DD1EEB00D11109 /* Psorcast */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = FFABCBDB22DD1EEC00D11109 /* Build configuration list for PBXNativeTarget "Psorcast" */;
@@ -234,24 +430,6 @@
 			productName = Psorcast;
 			productReference = FFABCBBE22DD1EEB00D11109 /* Psorcast.app */;
 			productType = "com.apple.product-type.application";
-		};
-		FFABCBD122DD1EEC00D11109 /* PsorcastTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = FFABCBDE22DD1EEC00D11109 /* Build configuration list for PBXNativeTarget "PsorcastTests" */;
-			buildPhases = (
-				FFABCBCE22DD1EEC00D11109 /* Sources */,
-				FFABCBCF22DD1EEC00D11109 /* Frameworks */,
-				FFABCBD022DD1EEC00D11109 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				FFABCBD422DD1EEC00D11109 /* PBXTargetDependency */,
-			);
-			name = PsorcastTests;
-			productName = PsorcastTests;
-			productReference = FFABCBD222DD1EEC00D11109 /* PsorcastTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		FFABCBE422DD1F2800D11109 /* PsorcastValidation */ = {
 			isa = PBXNativeTarget;
@@ -281,15 +459,28 @@
 				LastUpgradeCheck = 1020;
 				ORGANIZATIONNAME = "Sage Bionetworks";
 				TargetAttributes = {
-					FFABCBBD22DD1EEB00D11109 = {
+					CB9F5E3F22E0C27C003FBCEF = {
 						CreatedOnToolsVersion = 10.2.1;
+						TestTargetID = FFABCBE422DD1F2800D11109;
 					};
-					FFABCBD122DD1EEC00D11109 = {
+					CB9F5E4E22E0C2BA003FBCEF = {
 						CreatedOnToolsVersion = 10.2.1;
 						TestTargetID = FFABCBBD22DD1EEB00D11109;
 					};
+					FFABCBBD22DD1EEB00D11109 = {
+						CreatedOnToolsVersion = 10.2.1;
+					};
 					FFABCBE422DD1F2800D11109 = {
 						CreatedOnToolsVersion = 10.2.1;
+						LastSwiftMigration = 1020;
+						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
+							com.apple.DataProtection = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -308,27 +499,42 @@
 			targets = (
 				FFABCBBD22DD1EEB00D11109 /* Psorcast */,
 				FFABCBE422DD1F2800D11109 /* PsorcastValidation */,
-				FFABCBD122DD1EEC00D11109 /* PsorcastTests */,
+				CB9F5E3F22E0C27C003FBCEF /* PsorcastValidationTests */,
+				CB9F5E4E22E0C2BA003FBCEF /* PsorcastTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		CB9F5E3E22E0C27C003FBCEF /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CB9F5E4D22E0C2BA003FBCEF /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		FFABCBBC22DD1EEB00D11109 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CB9F5E2222E0BED3003FBCEF /* lato_italic.ttf in Resources */,
 				FFABCBCC22DD1EEC00D11109 /* LaunchScreen.storyboard in Resources */,
+				CB9F5E2522E0BED3003FBCEF /* lato_regular.ttf in Resources */,
+				CB9F5E1F22E0BED3003FBCEF /* lato_black.ttf in Resources */,
+				CB9F5E2322E0BED3003FBCEF /* lato_light.ttf in Resources */,
 				FFABCBC922DD1EEC00D11109 /* Assets.xcassets in Resources */,
 				FFABCBC722DD1EEB00D11109 /* Main.storyboard in Resources */,
+				CB9F5E2122E0BED3003FBCEF /* lato_bolditalic.ttf in Resources */,
+				CB9F5E2422E0BED3003FBCEF /* lato_lightitalic.ttf in Resources */,
 				FF5010A122DD214A0035E83C /* BridgeInfo.plist in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		FFABCBD022DD1EEC00D11109 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
+				CB9F5E2022E0BED3003FBCEF /* lato_bold.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -336,18 +542,47 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CB9F5E2922E0BED4003FBCEF /* lato_italic.ttf in Resources */,
+				CB9F5E2622E0BED4003FBCEF /* lato_black.ttf in Resources */,
+				CBD67D8122DFB8DE00998516 /* Psorcast.strings in Resources */,
 				FFABCBF222DD1F2800D11109 /* LaunchScreen.storyboard in Resources */,
 				FFABCBEF22DD1F2800D11109 /* Assets.xcassets in Resources */,
 				FFABCBED22DD1F2800D11109 /* Main.storyboard in Resources */,
+				CB9F5E2722E0BED4003FBCEF /* lato_bold.ttf in Resources */,
+				CBD67D9922DFDC4E00998516 /* ImageCaptureStepViewController.xib in Resources */,
+				CB9F5E2822E0BED4003FBCEF /* lato_bolditalic.ttf in Resources */,
+				CB9F5E2A22E0BED4003FBCEF /* lato_light.ttf in Resources */,
 				FF5010A822DD22A50035E83C /* psorcast-validation.pem in Resources */,
+				CB9F5E2C22E0BED4003FBCEF /* lato_regular.ttf in Resources */,
+				CBD67D9C22DFE11B00998516 /* FootImaging.json in Resources */,
 				FF50109F22DD21420035E83C /* BridgeInfo.plist in Resources */,
+				CB9F5E2B22E0BED4003FBCEF /* lato_lightitalic.ttf in Resources */,
 				FF5010A922DD22A50035E83C /* BridgeInfo-private.plist in Resources */,
+				CBD67D9622DFDABE00998516 /* HandImaging.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		CB9F5E3C22E0C27C003FBCEF /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CB9F5E5B22E0C531003FBCEF /* CopyStepTests.swift in Sources */,
+				CB9F5E5C22E0C531003FBCEF /* CodableStepObjectTests.swift in Sources */,
+				CB9F5E4A22E0C2AA003FBCEF /* TaskListScheduleManagerTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CB9F5E4B22E0C2BA003FBCEF /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CB9F5E5222E0C2BA003FBCEF /* PsorcastTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		FFABCBBA22DD1EEB00D11109 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -357,30 +592,34 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		FFABCBCE22DD1EEC00D11109 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				FFABCBD722DD1EEC00D11109 /* PsorcastTests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		FFABCBE122DD1F2800D11109 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CBD67D9122DFC6B400998516 /* BuildDateUtil.m in Sources */,
+				CBD67D9A22DFDC4E00998516 /* ImageCaptureStepViewController.swift in Sources */,
 				FFABCBEA22DD1F2800D11109 /* ViewController.swift in Sources */,
+				CBD67D9322DFC71E00998516 /* TaskFactory.swift in Sources */,
 				FFABCBE822DD1F2800D11109 /* AppDelegate.swift in Sources */,
+				CBD67D8822DFC59B00998516 /* TaskListTableViewController.swift in Sources */,
+				CBD67D8422DFB90C00998516 /* ExternalIDRegistrationViewController.swift in Sources */,
+				CBD67D8D22DFC5EE00998516 /* MotorControl+Bridge.swift in Sources */,
+				CBD67D8B22DFC5CA00998516 /* TaskListScheduleManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		FFABCBD422DD1EEC00D11109 /* PBXTargetDependency */ = {
+		CB9F5E4622E0C27D003FBCEF /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = FFABCBE422DD1F2800D11109 /* PsorcastValidation */;
+			targetProxy = CB9F5E4522E0C27D003FBCEF /* PBXContainerItemProxy */;
+		};
+		CB9F5E5522E0C2BA003FBCEF /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = FFABCBBD22DD1EEB00D11109 /* Psorcast */;
-			targetProxy = FFABCBD322DD1EEC00D11109 /* PBXContainerItemProxy */;
+			targetProxy = CB9F5E5422E0C2BA003FBCEF /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -420,6 +659,86 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		CB9F5E4822E0C27D003FBCEF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = KA9Z8R6M6K;
+				INFOPLIST_FILE = PsorcastValidationTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = org.sagebionetworks.PsorcastValidationTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PsorcastValidation.app/PsorcastValidation";
+			};
+			name = Debug;
+		};
+		CB9F5E4922E0C27D003FBCEF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = KA9Z8R6M6K;
+				INFOPLIST_FILE = PsorcastValidationTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = org.sagebionetworks.PsorcastValidationTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PsorcastValidation.app/PsorcastValidation";
+			};
+			name = Release;
+		};
+		CB9F5E5722E0C2BA003FBCEF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = KA9Z8R6M6K;
+				INFOPLIST_FILE = PsorcastTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = org.sagebionetworks.PsorcastTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Psorcast.app/Psorcast";
+			};
+			name = Debug;
+		};
+		CB9F5E5822E0C2BA003FBCEF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = KA9Z8R6M6K;
+				INFOPLIST_FILE = PsorcastTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = org.sagebionetworks.PsorcastTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Psorcast.app/Psorcast";
+			};
+			name = Release;
+		};
 		FFABCBD922DD1EEC00D11109 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -572,61 +891,25 @@
 			};
 			name = Release;
 		};
-		FFABCBDF22DD1EEC00D11109 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = KA9Z8R6M6K;
-				INFOPLIST_FILE = PsorcastTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = org.sagebionetworks.PsorcastTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Psorcast.app/Psorcast";
-			};
-			name = Debug;
-		};
-		FFABCBE022DD1EEC00D11109 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = KA9Z8R6M6K;
-				INFOPLIST_FILE = PsorcastTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = org.sagebionetworks.PsorcastTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Psorcast.app/Psorcast";
-			};
-			name = Release;
-		};
 		FFABCBF522DD1F2800D11109 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_STYLE = Automatic;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = PsorcastValidation/PsorcastValidation.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = KA9Z8R6M6K;
 				INFOPLIST_FILE = PsorcastValidation/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = org.sagebionetworks.psorcastValidation0;
+				PRODUCT_BUNDLE_IDENTIFIER = org.sageBionetworks.psorcastValidation0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = psorcastValidationDev;
+				SWIFT_OBJC_BRIDGING_HEADER = "PsorcastValidation/PsorcastValidation-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -636,15 +919,20 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = KA9Z8R6M6K;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = PsorcastValidation/PsorcastValidation.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = PsorcastValidation/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = org.sagebionetworks.psorcastValidation0;
+				PRODUCT_BUNDLE_IDENTIFIER = org.sageBionetworks.psorcastValidation0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "PsorcastValidation/PsorcastValidation-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -653,6 +941,24 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		CB9F5E4722E0C27D003FBCEF /* Build configuration list for PBXNativeTarget "PsorcastValidationTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CB9F5E4822E0C27D003FBCEF /* Debug */,
+				CB9F5E4922E0C27D003FBCEF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CB9F5E5622E0C2BA003FBCEF /* Build configuration list for PBXNativeTarget "PsorcastTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CB9F5E5722E0C2BA003FBCEF /* Debug */,
+				CB9F5E5822E0C2BA003FBCEF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		FFABCBB922DD1EEB00D11109 /* Build configuration list for PBXProject "Psorcast" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -667,15 +973,6 @@
 			buildConfigurations = (
 				FFABCBDC22DD1EEC00D11109 /* Debug */,
 				FFABCBDD22DD1EEC00D11109 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		FFABCBDE22DD1EEC00D11109 /* Build configuration list for PBXNativeTarget "PsorcastTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				FFABCBDF22DD1EEC00D11109 /* Debug */,
-				FFABCBE022DD1EEC00D11109 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

@@ -1,0 +1,65 @@
+{
+    "taskIdentifier"            : "HandImaging",
+    "schemaIdentifier"          : "HandImaging",
+    "progressMarkers":[],
+    "steps":
+    [
+        {
+            "identifier":"handInstruction1",
+            "type":"instruction",
+            "title":"Find a flat, solid surface",
+            "text":"Find a flat surface which you can place your hands on. Capture your image on a solid colored surface which is different from your skin color if possible.",
+            "image":{
+                "type":"fetchable",
+                "imageName": "Hand1",
+                "placementType":"topBackground"
+            },
+            "actions":{
+                "goForward":{
+                    "type":"default",
+                    "buttonTitle":"I found a flat surface"
+                }
+            }
+        },
+        {
+            "identifier":"handInstruction2",
+            "type":"instruction",
+            "title":"Capture from directly above",
+            "text":"Using the grid, capture from directly above. Your fingernails should be in focus.",
+            "image":{
+                "type":"fetchable",
+                "imageName": "Hand2",
+                "placementType":"topBackground"
+            },
+            "actions":{
+                "goForward":{
+                    "type":"default",
+                    "buttonTitle":"Capture left hand"
+                }
+            },
+            "shouldHideActions": ["goBackward"]
+        },
+        {
+            "identifier"    : "leftHand",
+            "type"          : "imageCapture",
+            "title"         : "Left Hand"
+        },
+        {
+            "identifier"    : "rightHand",
+            "type"          : "imageCapture",
+            "title"         : "Right Hand"
+        },
+        {
+            "identifier":"completion",
+            "type":"completion",
+            "title":"Great job!",
+            "text":"You just completed the activity.",
+            "actions": {
+                "goForward":{
+                    "type":"default",
+                    "buttonTitle":"Done"
+                }
+            }
+        }
+    ]
+}

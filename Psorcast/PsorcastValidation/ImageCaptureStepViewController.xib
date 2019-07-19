@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina5_9" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ImageCaptureStepViewController" customModule="PsorcastValidation" customModuleProvider="target">
+            <connections>
+                <outlet property="cameraContainerView" destination="Bb7-gd-Spk" id="T7c-Xy-WCO"/>
+                <outlet property="captureButton" destination="0ZV-YQ-Xsi" id="jbi-hu-v9T"/>
+                <outlet property="navigationHeader" destination="fxA-Tz-ZiS" id="agX-5m-P7G"/>
+                <outlet property="view" destination="Be1-UX-e65" id="eci-s9-hNP"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="Be1-UX-e65" customClass="RSDStepNavigationView" customModule="PsorcastValidation" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="700"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nCy-4g-nIJ" userLabel="Content View">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="700"/>
+                    <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Bb7-gd-Spk" userLabel="CaptureView">
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="700"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </view>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fxA-Tz-ZiS" customClass="RSDNavigationHeaderView" customModule="ResearchUI">
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="150.66666666666666"/>
+                            <subviews>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Walk and Balance" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="d3p-ES-nu8" userLabel="Title Label">
+                                    <rect key="frame" x="24" y="98" width="327" height="28.666666666666671"/>
+                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="24"/>
+                                    <nil key="textColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MAO-q7-fPw" userLabel="Cancel Button">
+                                    <rect key="frame" x="12" y="48" width="50" height="50"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" secondItem="MAO-q7-fPw" secondAttribute="height" multiplier="1:1" id="FQP-6M-XIU"/>
+                                        <constraint firstAttribute="width" constant="50" id="oUt-Bl-kZX"/>
+                                    </constraints>
+                                    <state key="normal" image="closeActivity"/>
+                                </button>
+                            </subviews>
+                            <color key="backgroundColor" red="0.99006377479999996" green="0.26231237190000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                            <constraints>
+                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="120" id="3NJ-SN-k7m"/>
+                                <constraint firstItem="d3p-ES-nu8" firstAttribute="top" secondItem="MAO-q7-fPw" secondAttribute="bottom" id="717-ek-QdP"/>
+                                <constraint firstItem="MAO-q7-fPw" firstAttribute="leading" secondItem="fxA-Tz-ZiS" secondAttribute="leading" constant="12" id="9OQ-QY-59V"/>
+                                <constraint firstAttribute="trailing" secondItem="d3p-ES-nu8" secondAttribute="trailing" constant="24" id="Smt-1Y-XlF"/>
+                                <constraint firstItem="d3p-ES-nu8" firstAttribute="leading" secondItem="fxA-Tz-ZiS" secondAttribute="leading" constant="24" id="bQC-or-EVq"/>
+                                <constraint firstItem="MAO-q7-fPw" firstAttribute="top" secondItem="fxA-Tz-ZiS" secondAttribute="top" constant="48" id="c4z-r0-dQU"/>
+                                <constraint firstAttribute="bottom" secondItem="d3p-ES-nu8" secondAttribute="bottom" constant="24" id="cVl-fj-3jj"/>
+                            </constraints>
+                            <connections>
+                                <outlet property="cancelButton" destination="MAO-q7-fPw" id="XfG-a0-FE9"/>
+                                <outlet property="titleLabel" destination="d3p-ES-nu8" id="LaJ-GO-IzF"/>
+                            </connections>
+                        </view>
+                        <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0fq-Hc-Mvl" customClass="RSDShadowGradient" customModule="ResearchUI">
+                            <rect key="frame" x="0.0" y="518" width="375" height="8"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="8" id="922-hR-54D"/>
+                                <constraint firstAttribute="height" constant="8" id="XF9-W8-8lA"/>
+                            </constraints>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="topAlpha">
+                                    <real key="value" value="0.0"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="number" keyPath="bottomAlpha">
+                                    <real key="value" value="0.10000000000000001"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                        </view>
+                        <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yDS-5l-Zwt" userLabel="CaptureFooter">
+                            <rect key="frame" x="0.0" y="526" width="375" height="174"/>
+                            <subviews>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0ZV-YQ-Xsi" customClass="CameraShutterButton" customModule="PsorcastValidation" customModuleProvider="target">
+                                    <rect key="frame" x="152" y="32" width="71" height="71"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" secondItem="0ZV-YQ-Xsi" secondAttribute="height" multiplier="1:1" id="QmD-ZJ-c9D"/>
+                                        <constraint firstAttribute="width" constant="71" id="awX-nA-8nq"/>
+                                    </constraints>
+                                    <state key="normal" image="Camera"/>
+                                </button>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Capture image" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="R3h-gD-ohp">
+                                    <rect key="frame" x="131" y="120" width="113" height="21"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                    <nil key="textColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                            </subviews>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="174" id="93Y-Gn-I2l"/>
+                                <constraint firstItem="R3h-gD-ohp" firstAttribute="top" secondItem="0ZV-YQ-Xsi" secondAttribute="bottom" constant="17" id="We5-RG-xnh"/>
+                                <constraint firstItem="R3h-gD-ohp" firstAttribute="centerX" secondItem="yDS-5l-Zwt" secondAttribute="centerX" id="Zo4-8h-BHo"/>
+                                <constraint firstItem="0ZV-YQ-Xsi" firstAttribute="top" secondItem="yDS-5l-Zwt" secondAttribute="top" constant="32" id="aaj-uR-cJe"/>
+                                <constraint firstItem="0ZV-YQ-Xsi" firstAttribute="centerX" secondItem="yDS-5l-Zwt" secondAttribute="centerX" id="cdX-0l-WIh"/>
+                            </constraints>
+                        </view>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="trailing" secondItem="fxA-Tz-ZiS" secondAttribute="trailing" id="3JV-je-hxC"/>
+                        <constraint firstItem="Bb7-gd-Spk" firstAttribute="top" secondItem="nCy-4g-nIJ" secondAttribute="top" id="3vl-YN-yci"/>
+                        <constraint firstAttribute="trailing" secondItem="Bb7-gd-Spk" secondAttribute="trailing" id="Bd0-Lg-k57"/>
+                        <constraint firstAttribute="trailing" secondItem="yDS-5l-Zwt" secondAttribute="trailing" id="CLu-YQ-poj"/>
+                        <constraint firstItem="yDS-5l-Zwt" firstAttribute="leading" secondItem="nCy-4g-nIJ" secondAttribute="leading" id="Dup-Y5-tlE"/>
+                        <constraint firstItem="0fq-Hc-Mvl" firstAttribute="leading" secondItem="nCy-4g-nIJ" secondAttribute="leading" id="Rfa-9R-XcE"/>
+                        <constraint firstItem="fxA-Tz-ZiS" firstAttribute="top" secondItem="nCy-4g-nIJ" secondAttribute="top" id="SC4-I8-O5N"/>
+                        <constraint firstAttribute="trailing" secondItem="0fq-Hc-Mvl" secondAttribute="trailing" id="TOQ-Sa-dU2"/>
+                        <constraint firstAttribute="bottom" secondItem="yDS-5l-Zwt" secondAttribute="bottom" id="cCk-rd-KYt"/>
+                        <constraint firstAttribute="bottom" secondItem="Bb7-gd-Spk" secondAttribute="bottom" id="gZr-Mm-QQ6"/>
+                        <constraint firstItem="yDS-5l-Zwt" firstAttribute="top" secondItem="0fq-Hc-Mvl" secondAttribute="bottom" id="juc-tP-E3G"/>
+                        <constraint firstItem="Bb7-gd-Spk" firstAttribute="leading" secondItem="nCy-4g-nIJ" secondAttribute="leading" id="mgY-QI-c9q"/>
+                        <constraint firstItem="fxA-Tz-ZiS" firstAttribute="leading" secondItem="nCy-4g-nIJ" secondAttribute="leading" id="rEg-ZD-hZb"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="nCy-4g-nIJ" firstAttribute="leading" secondItem="W8i-xX-fUy" secondAttribute="leading" id="4pq-1G-cUp"/>
+                <constraint firstItem="nCy-4g-nIJ" firstAttribute="top" secondItem="Be1-UX-e65" secondAttribute="top" id="DFJ-h3-V8m"/>
+                <constraint firstAttribute="bottom" secondItem="nCy-4g-nIJ" secondAttribute="bottom" id="Dqz-k4-Dgb"/>
+                <constraint firstItem="nCy-4g-nIJ" firstAttribute="trailing" secondItem="W8i-xX-fUy" secondAttribute="trailing" id="Xje-i7-OTa"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="W8i-xX-fUy"/>
+            <point key="canvasLocation" x="645.60000000000002" y="487.6847290640394"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="Camera" width="48" height="48"/>
+        <image name="closeActivity" width="50" height="50"/>
+    </resources>
+</document>
