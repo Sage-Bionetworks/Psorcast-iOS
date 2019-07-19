@@ -6,7 +6,7 @@
 	<string>NSFileProtectionComplete</string>
 	<key>com.apple.security.application-groups</key>
 	<array>
-		<string>group.org.sagebionetworks.psorcastValidation0</string>
+		<string>group.org.sagebionetworks.psorcast</string>
 	</array>
 </dict>
 </plist>

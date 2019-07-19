@@ -61,6 +61,7 @@ open class ImageCaptureStepViewController: RSDStepViewController, UIImagePickerC
             picker.allowsEditing = false
             picker.sourceType = UIImagePickerController.SourceType.camera
             picker.cameraCaptureMode = .photo
+            picker.modalPresentationStyle = .overCurrentContext
             
             // Embed the picker in this view.
             picker.edgesForExtendedLayout = UIRectEdge(rawValue: 0)
@@ -80,8 +81,8 @@ open class ImageCaptureStepViewController: RSDStepViewController, UIImagePickerC
         goBack()
     }
     
-    public func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        guard let chosenImage = info[UIImagePickerController.InfoKey.originalImage.rawValue] as? UIImage else {
+    public func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        guard let chosenImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage else {
             debugPrint("Failed to capture image: \(info)")
             self.goForward()
             return

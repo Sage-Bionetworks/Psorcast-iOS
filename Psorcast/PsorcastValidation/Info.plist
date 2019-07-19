@@ -18,6 +18,8 @@
 	<string>1.0</string>
 	<key>CFBundleVersion</key>
 	<string>4</string>
+	<key>LSRequiresIPhoneOS</key>
+	<true/>
 	<key>NSCameraUsageDescription</key>
 	<string>This app would like to access your camera to capture images of your Psoriasis.</string>
 	<key>UIAppFonts</key>
@@ -30,8 +32,6 @@
 		<string>lato_lightitalic.ttf</string>
 		<string>lato_regular.ttf</string>
 	</array>
-	<key>LSRequiresIPhoneOS</key>
-	<true/>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>

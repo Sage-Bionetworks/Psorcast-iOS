@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>appGroupIdentifier</key>
-	<string>group.org.sagebionetworks.psorcastValidation0</string>
+	<string>group.org.sagebionetworks.psorcast</string>
 	<key>studyIdentifier</key>
 	<string>sample-study</string>
 	<key>certificateName</key>
