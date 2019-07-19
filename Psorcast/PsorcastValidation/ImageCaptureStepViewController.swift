@@ -141,7 +141,7 @@ open class ImageCaptureStepViewController: RSDStepViewController, UIImagePickerC
 
 open class ImageCaptureStepObject: RSDUIStepObject, RSDStepViewControllerVendor {
     
-    /// Default type is `.brainBaselineOverview`.
+    /// Default type is `.imageCapture`.
     open override class func defaultType() -> RSDStepType {
         return .imageCapture
     }
