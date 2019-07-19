@@ -185,6 +185,25 @@ public class TaskListScheduleManager : SBAScheduleManager {
         
         return RSDVideoViewUIActionObject(url: videoUrlUnwrapped, buttonTitle: Localization.localizedString("SEE_THIS_IN_ACTION"), bundleIdentifier: Bundle.main.bundleIdentifier)
     }
+    
+    /// Call from the view controller that is used to display the task when the task is ready to save.
+    override open func taskController(_ taskController: RSDTaskController, readyToSave taskViewModel: RSDTaskViewModel) {
+        
+        let history = taskController.taskViewModel.taskResult.stepHistory
+        // TODO: mdephillips 7/19/19 figure out why ImageCaptureStepViewController is adding duplicate
+        // file results for each step so I don't have to manually check
+        ["leftHand", "rightHand", "leftFoot", "rightFoot"].forEach { (identifier) in
+            let count = history.filter({ (result) -> Bool in
+                return result.identifier == identifier
+            }).count
+            if count == 2,
+                let dupIndex = history.firstIndex(where: { $0.identifier == identifier } ) {
+                taskController.taskViewModel.taskResult.stepHistory.remove(at: dupIndex)
+            }
+        }
+        
+        super.saveResults(from: taskViewModel)
+    }
 }
 
 ///
