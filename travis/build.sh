@@ -9,7 +9,7 @@ elif [[ -z "$TRAVIS_TAG" && "$TRAVIS_BRANCH" == "master" ]]; then  # non-tag com
     bundle exec fastlane keychains
     bundle exec fastlane certificates
     # bundle exec fastlane archive scheme:"Psorcast" export_method:"ad-hoc"
-    bundle exec fastlane archive scheme:"Psorcast" export_method:"ad-hoc" project:"Psorcast/Psorcast.xcodeproj"
+    bundle exec fastlane ci_archive scheme:"Psorcast" export_method:"ad-hoc" project:"Psorcast/Psorcast.xcodeproj"
 elif [[ -z "$TRAVIS_TAG" && "$TRAVIS_BRANCH" =~ ^stable-.* ]]; then # non-tag commits to stable branches
     echo "Build on stable branch"
     FASTLANE_EXPLICIT_OPEN_SIMULATOR=2 bundle exec fastlane test scheme:"Psorcast"
@@ -17,6 +17,6 @@ elif [[ -z "$TRAVIS_TAG" && "$TRAVIS_BRANCH" =~ ^stable-.* ]]; then # non-tag co
     bundle exec fastlane keychains
     bundle exec fastlane certificates
     # bundle exec fastlane archive scheme:"Psorcast" export_method:"ad-hoc"
-    bundle exec fastlane archive scheme:"Psorcast" export_method:"ad-hoc" project:"Psorcast/Psorcast.xcodeproj"
+    bundle exec fastlane ci_archive scheme:"Psorcast" export_method:"ad-hoc" project:"Psorcast/Psorcast.xcodeproj"
 fi
 exit $?
