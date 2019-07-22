@@ -36,7 +36,7 @@ import BridgeApp
 import MotorControl
 
 public extension RSDIdentifier {
-    static let walkingTask: RSDIdentifier = "Walk30Seconds"
+    static let walkingTask: RSDIdentifier = MCTTaskIdentifier.walk30Seconds.identifier    
     static let handImagingTask: RSDIdentifier = "HandImaging"
     static let footImagingTask: RSDIdentifier = "FootImaging"
 }

@@ -43,6 +43,9 @@ class TaskListTableViewController: UITableViewController, RSDTaskViewControllerD
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // Register the 30 second walking task with the motor control framework
+        SBABridgeConfiguration.shared.addMapping(with: MCTTaskInfo(.walk30Seconds).task)
+        
         // reload the schedules and add an observer to observe changes.
         scheduleManager.reloadData()
         NotificationCenter.default.addObserver(forName: .SBAUpdatedScheduledActivities, object: scheduleManager, queue: OperationQueue.main) { (notification) in
