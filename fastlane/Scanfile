@@ -1,4 +1,4 @@
-scheme "Psorcast"
+scheme "PsorcastValidation"
 clean false
 code_coverage false
 skip_build true

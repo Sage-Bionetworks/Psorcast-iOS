@@ -22,6 +22,7 @@ platform :ios do
     ENV["TEAM_SAGEBIO"] = "4B822CZK9N"
     ENV["TEAM_SAGEBIO_NOT_FOR_PROFIT"] = "KA9Z8R6M6K"
     ENV["APP_ID"] = "org.sagebionetworks.psorcast"
+    ENV["VALIDATION_APP_ID"] = "org.sageBionetworks.psorcastValidation0"
     ENV["WORKSPACE"] = "./Psorcast.xcworkspace"
     ENV["FRAMEWORK_PROJECT"] = "Psorcast/Psorcast.xcodeproj"
     ENV["FRAMEWORK_VERSION_TARGET"] = "Psorcast"
@@ -56,6 +57,24 @@ platform :ios do
       git_branch: ENV["TEAM_SAGEBIO_NOT_FOR_PROFIT"],
       type: "adhoc",
       app_identifier: ENV["APP_ID"],
+      team_id: ENV["TEAM_SAGEBIO_NOT_FOR_PROFIT"],
+      keychain_name: ENV["MATCH_KEYCHAIN_NAME"],
+      keychain_password: ENV["MATCH_PASSWORD"],
+      readonly: true
+    )
+    match(
+      git_branch: ENV["TEAM_SAGEBIO_NOT_FOR_PROFIT"],
+      type: "development",
+      app_identifier: ENV["VALIDATION_APP_ID"],
+      team_id: ENV["TEAM_SAGEBIO_NOT_FOR_PROFIT"],
+      keychain_name: ENV["MATCH_KEYCHAIN_NAME"],
+      keychain_password: ENV["MATCH_PASSWORD"],
+      readonly: true
+    )
+    match(
+      git_branch: ENV["TEAM_SAGEBIO_NOT_FOR_PROFIT"],
+      type: "adhoc",
+      app_identifier: ENV["VALIDATION_APP_ID"],
       team_id: ENV["TEAM_SAGEBIO_NOT_FOR_PROFIT"],
       keychain_name: ENV["MATCH_KEYCHAIN_NAME"],
       keychain_password: ENV["MATCH_PASSWORD"],
