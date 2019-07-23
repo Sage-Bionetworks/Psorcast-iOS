@@ -87,6 +87,7 @@ class ExternalIDRegistrationViewController: RSDTableStepViewController {
         signUp.externalId = externalId
         signUp.password = "\(externalId)foo#$H0"   // Add some additional characters match password requirements
         signUp.dataGroups = ["test_user"]
+        signUp.sharingScope = "all_qualified_researchers"
         
         BridgeSDK.authManager.signUpStudyParticipant(signUp, completion: { (task, result, error) in
             guard error == nil else {
