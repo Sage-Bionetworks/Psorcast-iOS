@@ -63,6 +63,12 @@ platform :ios do
     )
   end
 
+  # https://docs.travis-ci.com/user/common-build-problems/#mac-macos-sierra-1012-code-signing-errors
+  desc "disable prompt asking for password for codesign to access the keychain"
+  lane :noprompt do |options|
+    sh("security set-key-partition-list -S apple-tool:,apple: -k $MATCH_PASSWORD ~/Library/Keychains/ios-build.keychain-db")
+  end
+
   desc "Execute tests"
   lane :test do |options|
     scheme = options[:scheme]

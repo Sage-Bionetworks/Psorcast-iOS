@@ -26,6 +26,11 @@ Create keychains to store certificates
 fastlane ios certificates
 ```
 Fetches provisioning profile and certificates from github repo
+### ios noprompt
+```
+fastlane ios noprompt
+```
+disable prompt asking for password for codesign to access the keychain
 ### ios test
 ```
 fastlane ios test
