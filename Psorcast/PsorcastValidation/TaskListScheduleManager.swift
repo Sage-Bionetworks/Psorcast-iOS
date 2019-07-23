@@ -33,6 +33,7 @@
 
 import Foundation
 import BridgeApp
+import Research
 import MotorControl
 
 /// Subclass the schedule manager to set up a predicate to filter the schedules.
@@ -200,6 +201,11 @@ public class TaskListScheduleManager : SBAScheduleManager {
                 let dupIndex = history.firstIndex(where: { $0.identifier == identifier } ) {
                 taskController.taskViewModel.taskResult.stepHistory.remove(at: dupIndex)
             }
+        }
+        
+        // It is a requirement for our app to always upload the participantID with an upload
+        if let participantID = UserDefaults.standard.string(forKey: "participantID") {
+            taskController.taskViewModel.taskResult.stepHistory.append(RSDAnswerResultObject(identifier: "participantID", answerType: .string, value: participantID))
         }
         
         super.saveResults(from: taskViewModel)

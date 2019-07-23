@@ -52,16 +52,32 @@ open class ImageCaptureStepViewController: RSDStepViewController, UIImagePickerC
     open override func viewDidLoad() {
         super.viewDidLoad()
         
-        if UIImagePickerController.isSourceTypeAvailable(.camera) {
+        var isSupported = UIImagePickerController.isSourceTypeAvailable(.camera)
+        
+        // The simulator does not have image capture capability,
+        // but allow it to show a photo library picker instead
+        #if targetEnvironment(simulator)
+            isSupported = true
+        #endif
+        
+        if isSupported {
             // hide the capture button (it's included for simulator)
             self.captureButton.isHidden = true
             
             // Set up the picker.
             picker.delegate = self
             picker.allowsEditing = false
-            picker.sourceType = UIImagePickerController.SourceType.camera
-            picker.cameraCaptureMode = .photo
-            picker.modalPresentationStyle = .overCurrentContext
+            
+            // The simulator does not have image capture capability,
+            // but it does have gallery picker capability
+            // So allow that source for testing the tasks
+            #if targetEnvironment(simulator)
+                picker.sourceType = UIImagePickerController.SourceType.photoLibrary
+            #else
+                picker.sourceType = UIImagePickerController.SourceType.camera
+                picker.cameraCaptureMode = .photo
+                picker.modalPresentationStyle = .overCurrentContext
+            #endif
             
             // Embed the picker in this view.
             picker.edgesForExtendedLayout = UIRectEdge(rawValue: 0)
