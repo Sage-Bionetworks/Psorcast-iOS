@@ -5,7 +5,8 @@ type "appstore" # The default type, can be: appstore, adhoc, enterprise or devel
 
 # The bundle identifier of your app
 app_identifier [
-  "org.sagebionetworks.Psorcast"
+  "org.sagebionetworks.Psorcast",
+  "org.sageBionetworks.psorcastValidation0"
 ]
 
 username "appleservicer@sagebase.org" # Your Apple Developer Portal username
