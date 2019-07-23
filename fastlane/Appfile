@@ -1,4 +1,4 @@
-app_identifier "org.sagebionetworks.Psorcast" # The bundle identifier of your app
+app_identifier "org.sageBionetworks.psorcastValidation0" # The bundle identifier of your app
 apple_id "appleservicer@sagebase.org" # Your Apple email address
 
 team_id "KA9Z8R6M6K"  # Developer Portal Team ID
