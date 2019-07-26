@@ -55,7 +55,7 @@ platform :ios do
     )
     match(
       git_branch: ENV["TEAM_SAGEBIO_NOT_FOR_PROFIT"],
-      type: "adhoc",
+      type: "appstore",
       app_identifier: ENV["APP_ID"],
       team_id: ENV["TEAM_SAGEBIO_NOT_FOR_PROFIT"],
       keychain_name: ENV["MATCH_KEYCHAIN_NAME"],
@@ -73,7 +73,7 @@ platform :ios do
     )
     match(
       git_branch: ENV["TEAM_SAGEBIO_NOT_FOR_PROFIT"],
-      type: "adhoc",
+      type: "appstore",
       app_identifier: ENV["VALIDATION_APP_ID"],
       team_id: ENV["TEAM_SAGEBIO_NOT_FOR_PROFIT"],
       keychain_name: ENV["MATCH_KEYCHAIN_NAME"],

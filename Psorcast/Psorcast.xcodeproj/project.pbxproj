@@ -863,7 +863,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = KA9Z8R6M6K;
 				INFOPLIST_FILE = Psorcast/Info.plist;
@@ -873,7 +873,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.sagebionetworks.Psorcast;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = psorcastAdHoc;
+				PROVISIONING_PROFILE_SPECIFIER = "match Development org.sagebionetworks.Psorcast";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -893,7 +893,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.sagebionetworks.Psorcast;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = psorcastAdHoc;
+				PROVISIONING_PROFILE_SPECIFIER = "match Distribution org.sagebionetworks.Psorcast";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -905,7 +905,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = PsorcastValidation/PsorcastValidation.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = KA9Z8R6M6K;
 				INFOPLIST_FILE = PsorcastValidation/Info.plist;
@@ -915,7 +915,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.sageBionetworks.psorcastValidation0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = psorcastValidationAdHoc;
+				PROVISIONING_PROFILE_SPECIFIER = "match Development org.sageBionetworks.psorcastValidation0";
 				SWIFT_OBJC_BRIDGING_HEADER = "PsorcastValidation/PsorcastValidation-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -939,7 +939,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.sageBionetworks.psorcastValidation0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = psorcastValidationAdHoc;
+				PROVISIONING_PROFILE_SPECIFIER = "match Distribution org.sageBionetworks.psorcastValidation0";
 				SWIFT_OBJC_BRIDGING_HEADER = "PsorcastValidation/PsorcastValidation-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
