@@ -68,6 +68,7 @@ class TaskListTableViewController: UITableViewController, RSDTaskViewControllerD
         tableFooter?.backgroundColor = AppDelegate.designSystem.colorRules.backgroundPrimary.color
         tableFooter?.titleLabel?.textColor = designSystem.colorRules.textColor(on: designSystem.colorRules.backgroundPrimary, for: .smallHeader)
         tableFooter?.titleLabel?.font = designSystem.fontRules.font(for: .small)
+        tableFooter?.doneButton?.setDesignSystem(designSystem, with: designSystem.colorRules.backgroundLight)
     }
     
     func updateHeaderFooterText() {
@@ -79,8 +80,8 @@ class TaskListTableViewController: UITableViewController, RSDTaskViewControllerD
         let releaseDateStr = Localization.localizedStringWithFormatKey("RELEASE_DATE_%@", releaseDate)
         
         // For the trial app, show the user their external id
-        if let externalIdStr = SBAParticipantManager.shared.studyParticipant?.externalId {
-            tableFooter?.titleLabel?.text = String(format: "%@\n%@\n%@", externalIdStr, versionStr, releaseDateStr)
+        if let participantID = UserDefaults.standard.string(forKey: "participantID") {
+            tableFooter?.titleLabel?.text = String(format: "%@\n%@\n%@", participantID, versionStr, releaseDateStr)
         } else { // For the study app, don't show the external ID
             tableFooter?.titleLabel?.text = String(format: "%@\n%@", versionStr, releaseDateStr)
         }
@@ -126,6 +127,11 @@ class TaskListTableViewController: UITableViewController, RSDTaskViewControllerD
 //                (AppDelegate.shared as? AppDelegate)?.connectToFitbit()
 //            }
         }
+    }
+    
+    @IBAction func doneTapped() {
+        UserDefaults.standard.removeObject(forKey: "participantID")
+         (AppDelegate.shared as? AppDelegate)?.showAppropriateViewController(animated: true)
     }
 
     func taskController(_ taskController: RSDTaskController, didFinishWith reason: RSDTaskFinishReason, error: Error?) {
@@ -193,4 +199,6 @@ open class TaskTableHeaderView: UIView {
 open class TaskTableFooterView: UIView {
     /// Title label that is associated with this cell.
     @IBOutlet open var titleLabel: UILabel?
+    // Done button for switch participant IDs
+    @IBOutlet open var doneButton: RSDRoundedButton?
 }

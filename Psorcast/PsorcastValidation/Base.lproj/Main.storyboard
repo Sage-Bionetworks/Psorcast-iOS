@@ -54,18 +54,36 @@
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="PKU App  Version 0.1 Released on 02/02/19" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="df5-in-c8F" userLabel="Version">
-                                    <rect key="frame" x="138" y="83.5" width="138" height="33"/>
+                                    <rect key="frame" x="139" y="119" width="136" height="34"/>
                                     <fontDescription key="fontDescription" name="Lato-Regular" family="Lato" pointSize="14"/>
                                     <nil key="textColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="au4-Pd-fQr" customClass="RSDRoundedButton" customModule="ResearchUI">
+                                    <rect key="frame" x="16" y="35" width="382" height="58"/>
+                                    <color key="backgroundColor" red="0.25490196079999999" green="0.40784313729999999" blue="0.79215686269999996" alpha="1" colorSpace="calibratedRGB"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="58" id="mRT-tr-02y"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" name="Lato-Bold" family="Lato" pointSize="20"/>
+                                    <state key="normal" title="Done">
+                                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </state>
+                                    <connections>
+                                        <action selector="doneTapped" destination="8VH-3N-L74" eventType="touchUpInside" id="eLw-AK-3qA"/>
+                                    </connections>
+                                </button>
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
-                                <constraint firstItem="df5-in-c8F" firstAttribute="centerY" secondItem="gn5-IW-Ds6" secondAttribute="centerY" id="RNk-Jm-ooZ"/>
+                                <constraint firstItem="au4-Pd-fQr" firstAttribute="centerY" secondItem="gn5-IW-Ds6" secondAttribute="centerY" constant="-36" id="9B0-hf-2fP"/>
+                                <constraint firstAttribute="trailing" secondItem="au4-Pd-fQr" secondAttribute="trailing" constant="16" id="Per-bj-Ba4"/>
+                                <constraint firstItem="df5-in-c8F" firstAttribute="centerY" secondItem="gn5-IW-Ds6" secondAttribute="centerY" constant="36" id="RNk-Jm-ooZ"/>
+                                <constraint firstItem="au4-Pd-fQr" firstAttribute="leading" secondItem="gn5-IW-Ds6" secondAttribute="leading" constant="16" id="UBj-Gn-paq"/>
                                 <constraint firstItem="df5-in-c8F" firstAttribute="centerX" secondItem="gn5-IW-Ds6" secondAttribute="centerX" id="ZB0-ul-wre"/>
                             </constraints>
                             <connections>
+                                <outlet property="doneButton" destination="au4-Pd-fQr" id="pi9-B7-2fO"/>
                                 <outlet property="titleLabel" destination="df5-in-c8F" id="YI6-v9-vNg"/>
                             </connections>
                         </view>
@@ -81,13 +99,13 @@
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="104"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lkB-86-JjD">
-                                                    <rect key="frame" x="18" y="32.5" width="188" height="21"/>
+                                                    <rect key="frame" x="18" y="32" width="188" height="22"/>
                                                     <fontDescription key="fontDescription" name="Lato-Bold" family="Lato" pointSize="18"/>
                                                     <color key="textColor" red="0.1647058824" green="0.1647058824" blue="0.1647058824" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Subtitle" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ycb-v3-zSd" userLabel="Subtitle Label">
-                                                    <rect key="frame" x="18" y="59" width="188" height="17"/>
+                                                    <rect key="frame" x="18" y="58.5" width="188" height="17"/>
                                                     <fontDescription key="fontDescription" name="Lato-Light" family="Lato" pointSize="14"/>
                                                     <color key="textColor" red="0.1647058824" green="0.1647058824" blue="0.1647058824" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -96,8 +114,8 @@
                                                     <rect key="frame" x="246" y="30" width="150" height="52"/>
                                                     <color key="backgroundColor" red="0.25490196079999999" green="0.40784313729999999" blue="0.79215686269999996" alpha="1" colorSpace="calibratedRGB"/>
                                                     <constraints>
+                                                        <constraint firstAttribute="width" constant="150" id="Do0-iL-XTR"/>
                                                         <constraint firstAttribute="height" constant="52" id="Guc-hy-Jry"/>
-                                                        <constraint firstAttribute="width" constant="150" id="hSe-ib-1g4"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" name="Lato-Bold" family="Lato" pointSize="20"/>
                                                     <state key="normal" title="Begin">
