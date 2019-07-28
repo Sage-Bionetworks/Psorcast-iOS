@@ -76,6 +76,7 @@ open class ImageCaptureStepViewController: RSDStepViewController, UIImagePickerC
             #else
                 picker.sourceType = UIImagePickerController.SourceType.camera
                 picker.cameraCaptureMode = .photo
+                picker.cameraFlashMode = .on
                 picker.modalPresentationStyle = .overCurrentContext
             #endif
             
