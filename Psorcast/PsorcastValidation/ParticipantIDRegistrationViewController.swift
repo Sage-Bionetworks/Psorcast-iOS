@@ -37,18 +37,11 @@ import Research
 import BridgeSDK
 import BridgeApp
 
-class ParticipantIDRegistrationStep : RSDUIStepObject, RSDFormUIStep, RSDStepViewControllerVendor {
+class ParticipantIDRegistrationStep : RSDUIStepObject, RSDStepViewControllerVendor {
     
     open func instantiateViewController(with parent: RSDPathComponent?) -> (UIViewController & RSDStepController)? {
         return ParticipantIDRegistrationViewController(step: self, parent: parent)
     }
-    
-    let inputFields: [RSDInputField] = {
-        let prompt = NSLocalizedString("participant ID", comment: "Localized string for the participant ID prompt")
-        let inputField = RSDInputFieldObject(identifier: "participantID", dataType: .base(.string), uiHint: .textfield, prompt: prompt)
-        inputField.isOptional = false
-        return [inputField]
-    }()
     
     required init(identifier: String, type: RSDStepType?) {
         super.init(identifier: identifier, type: type)
@@ -67,30 +60,115 @@ class ParticipantIDRegistrationStep : RSDUIStepObject, RSDFormUIStep, RSDStepVie
     }
 }
 
-class ParticipantIDRegistrationViewController: RSDTableStepViewController {
+class ParticipantIDRegistrationViewController: RSDStepViewController {
 
-    func participantID() -> String? {
-        let participantIDResultIdentifier = "participantID"
-        guard let taskResult = self.stepViewModel?.taskResult,
-            let participantID = taskResult.findAnswerResult(with: participantIDResultIdentifier)?.value as? String
-            else {
-                return nil
-        }
-        return participantID
+    // The first participant ID entry, they need to enter it twice
+    var firstEntry: String?
+    
+    // Error label for particpant ID entry
+    @IBOutlet public var errorLabel: UILabel!
+    
+    // Textfield for particpant ID entry
+    @IBOutlet public var textField: UITextField!
+    
+    // The textfield underline
+    @IBOutlet public var ruleView: UIView!
+    
+    // The logout button
+    @IBOutlet public var logoutButton: UIButton!
+    
+    // The submit button
+    @IBOutlet public var submitButton: RSDRoundedButton!
+    
+    @IBAction func logoutTapped() {
+        self.logoutButton.isEnabled = false
+        self.submitButton.isEnabled = false
+        BridgeSDK.authManager.signOut(completion: { (_, _, error) in
+            DispatchQueue.main.async {
+                self.logoutButton.isEnabled = true
+                self.submitButton.isEnabled = true
+                self.goBack()
+            }
+        })
     }
     
-    override func goForward() {
-        guard validateAndSave()
-            else {
-                return
+    override open func viewDidLoad() {
+        super.viewDidLoad()
+        
+        self.designSystem = AppDelegate.designSystem
+        let background = self.designSystem.colorRules.backgroundPrimary
+        self.view.backgroundColor = background.color
+        self.view.subviews[0].backgroundColor = background.color
+        
+        self.textField.font = self.designSystem.fontRules.font(for: .largeBody, compatibleWith: traitCollection)
+        self.textField.textColor = UIColor.white
+        
+        self.ruleView.backgroundColor = UIColor.white
+        
+        self.submitButton.setDesignSystem(self.designSystem, with: self.designSystem.colorRules.backgroundLight)
+        self.submitButton.setTitle(Localization.localizedString("BUTTON_SUBMIT"), for: .normal)
+        
+        self.errorLabel.text = nil
+        self.errorLabel.font = self.designSystem.fontRules.font(for: .mediumHeader)
+        
+        self.setFirstEntryTitle()
+    }
+    
+    override open func cancel() {
+        super.cancel()
+        self.firstEntry = nil
+        self.setFirstEntryTitle()
+        self.clearParticipantIDTextField()
+    }
+    
+    func setTextFieldPlaceholder(text: String) {
+        self.textField.attributedPlaceholder = NSAttributedString(string: text,
+                                                               attributes: [NSAttributedString.Key.foregroundColor: UIColor.white])
+    }
+    
+    func setRentryTitle() {
+        self.setTextFieldPlaceholder(text: Localization.localizedString("RE_ENTER_PARTICIPANT_ID"))
+    }
+    
+    func setFirstEntryTitle() {
+        self.setTextFieldPlaceholder(text: Localization.localizedString("ENTER_PARTICIPANT_ID"))
+    }
+    
+    func setMismatchedParticipantIDTitle() {
+        self.errorLabel.text = Localization.localizedString("PARTICPANT_IDS_DID_NOT_MATCH")
+    }
+    
+    func clearParticipantIDTextField() {
+        textField.text = nil
+    }
+    
+    func participantID() -> String? {
+        let text = self.textField?.text
+        if text?.isEmpty ?? true { return nil }
+        return text
+    }
+    
+    @IBAction func submitTapped() {
+        
+        self.errorLabel.text = nil
+        
+        if self.firstEntry == nil {
+            self.firstEntry = self.participantID()
+            self.setRentryTitle()
+            self.clearParticipantIDTextField()
+            return
         }
         
-        guard let participantID = self.participantID(), !participantID.isEmpty else { return }
+        if self.participantID() != self.firstEntry {
+            self.firstEntry = nil
+            self.setFirstEntryTitle()
+            self.setMismatchedParticipantIDTitle()
+            self.clearParticipantIDTextField()
+            return
+        }
         
-        // TODO: mdephillips 7/19/19 check bridge and see if participant id is already taken
-        // For now, just save it locally
         let defaults = UserDefaults.standard
-        defaults.set(participantID, forKey: "participantID")
+        defaults.set(self.participantID(), forKey: "participantID")
         
         super.goForward()
     }

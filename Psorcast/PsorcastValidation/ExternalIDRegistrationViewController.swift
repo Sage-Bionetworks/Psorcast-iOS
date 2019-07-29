@@ -37,7 +37,11 @@ import Research
 import BridgeSDK
 import BridgeApp
 
-class ExternalIDRegistrationStep : RSDUIStepObject, RSDFormUIStep, RSDStepViewControllerVendor {
+class ExternalIDRegistrationStep : RSDUIStepObject, RSDFormUIStep, RSDStepViewControllerVendor, RSDNavigationSkipRule {
+    
+    func shouldSkipStep(with result: RSDTaskResult?, isPeeking: Bool) -> Bool {
+        return BridgeSDK.authManager.isAuthenticated()
+    }    
     
     open func instantiateViewController(with parent: RSDPathComponent?) -> (UIViewController & RSDStepController)? {
         return ExternalIDRegistrationViewController(step: self, parent: parent)

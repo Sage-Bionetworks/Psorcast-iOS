@@ -37,3 +37,7 @@
 "RELEASE_DATE_%@" = "Released on %@";
 "STUDY_TITLE" = "A Psoriasis Research Study";
 "BUTTON_TITLE_BEGIN" = "Begin";
+
+"ENTER_PARTICIPANT_ID" = "Enter Participant ID";
+"RE_ENTER_PARTICIPANT_ID" = "Please confirm your participant ID";
+"PARTICPANT_IDS_DID_NOT_MATCH" = "Participant IDs did not match, please enter your participant ID again";
