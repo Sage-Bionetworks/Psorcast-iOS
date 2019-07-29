@@ -111,8 +111,10 @@ class ExternalIDRegistrationViewController: RSDStepViewController, UITextFieldDe
         self.submitButton.isEnabled = false
         
         BridgeSDK.authManager.signUpStudyParticipant(signUp, completion: { (task, result, error) in
-            
-            self.submitButton.isEnabled = true
+
+            DispatchQueue.main.async {
+                self.submitButton.isEnabled = true
+            }
             
             guard error == nil else {
                 completion(task, result, error)
