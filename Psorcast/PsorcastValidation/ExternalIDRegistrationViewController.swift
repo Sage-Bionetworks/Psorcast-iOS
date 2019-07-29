@@ -37,7 +37,7 @@ import Research
 import BridgeSDK
 import BridgeApp
 
-class ExternalIDRegistrationStep : RSDUIStepObject, RSDFormUIStep, RSDStepViewControllerVendor, RSDNavigationSkipRule {
+class ExternalIDRegistrationStep : RSDUIStepObject, RSDStepViewControllerVendor, RSDNavigationSkipRule {
     
     func shouldSkipStep(with result: RSDTaskResult?, isPeeking: Bool) -> Bool {
         return BridgeSDK.authManager.isAuthenticated()
@@ -46,41 +46,56 @@ class ExternalIDRegistrationStep : RSDUIStepObject, RSDFormUIStep, RSDStepViewCo
     open func instantiateViewController(with parent: RSDPathComponent?) -> (UIViewController & RSDStepController)? {
         return ExternalIDRegistrationViewController(step: self, parent: parent)
     }
-    
-    let inputFields: [RSDInputField] = {
-        let prompt = NSLocalizedString("external ID", comment: "Localized string for the external ID prompt")
-        let inputField = RSDInputFieldObject(identifier: "externalId", dataType: .base(.string), uiHint: .textfield, prompt: prompt)
-        inputField.isOptional = false
-        return [inputField]
-    }()
-    
-    required init(identifier: String, type: RSDStepType?) {
-        super.init(identifier: identifier, type: type)
-        commonInit()
-    }
-
-    required init(from decoder: Decoder) throws {
-        try super.init(from: decoder)
-        commonInit()
-    }
-    
-    private func commonInit() {
-        if self.text == nil && self.title == nil {
-            self.text = NSLocalizedString("Enter your external ID to get started.", comment: "Default text for an external ID registration step.")
-        }
-    }
 }
 
-class ExternalIDRegistrationViewController: RSDTableStepViewController {
+class ExternalIDRegistrationViewController: RSDStepViewController, UITextFieldDelegate {
+    
+    // Title label for external ID entry
+    @IBOutlet public var titleLabel: UILabel!
+    
+    // Textfield for external ID entry
+    @IBOutlet public var textField: UITextField!
+    
+    // The textfield underline
+    @IBOutlet public var ruleView: UIView!
+    
+    // The submit button
+    @IBOutlet public var submitButton: RSDRoundedButton!
+    
+    override open func viewDidLoad() {
+        super.viewDidLoad()
+        
+        self.designSystem = AppDelegate.designSystem
+        let background = self.designSystem.colorRules.backgroundLight
+        self.view.backgroundColor = background.color
+        self.view.subviews[0].backgroundColor = background.color
+        
+        self.textField.font = self.designSystem.fontRules.font(for: .largeBody, compatibleWith: traitCollection)
+        self.textField.textColor = self.designSystem.colorRules.textColor(on: background, for: .largeBody)
+        self.textField.delegate = self
+        
+        self.ruleView.backgroundColor = self.designSystem.colorRules.textColor(on: background, for: .largeBody)
+        
+        self.submitButton.setDesignSystem(self.designSystem, with: self.designSystem.colorRules.backgroundLight)
+        self.submitButton.setTitle(Localization.localizedString("BUTTON_SUBMIT"), for: .normal)
+        self.submitButton.isEnabled = false
+        
+        self.titleLabel.text = Localization.localizedString("WELCOME_STUDY")
+        self.titleLabel.font = self.designSystem.fontRules.font(for: .xLargeHeader)
+        self.titleLabel.textColor = self.designSystem.colorRules.textColor(on: background, for: .xLargeHeader)
+    }
     
     func externalId() -> String? {
-        let externalIdResultIdentifier = "externalId"
-        guard let taskResult = self.stepViewModel?.taskResult,
-            let externalId = taskResult.findAnswerResult(with: externalIdResultIdentifier)?.value as? String
-            else {
-                return nil
+        return self.textField.text
+    }
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        if let text = textField.text,
+            let textRange = Range(range, in: text) {
+            let updatedText = text.replacingCharacters(in: textRange, with: string)
+            self.submitButton.isEnabled = !updatedText.isEmpty
         }
-        return externalId
+        return true
     }
     
     func signUpAndSignIn(completion: @escaping SBBNetworkManagerCompletionBlock) {
@@ -93,10 +108,12 @@ class ExternalIDRegistrationViewController: RSDTableStepViewController {
         signUp.dataGroups = ["test_user"]
         signUp.sharingScope = "all_qualified_researchers"
         
-        // TODO: mdephillips 7/20/19 how to add all sharing scope?
-        //signUp.sharingScope = "all"
+        self.submitButton.isEnabled = false
         
         BridgeSDK.authManager.signUpStudyParticipant(signUp, completion: { (task, result, error) in
+            
+            self.submitButton.isEnabled = true
+            
             guard error == nil else {
                 completion(task, result, error)
                 return
@@ -109,12 +126,7 @@ class ExternalIDRegistrationViewController: RSDTableStepViewController {
         })
     }
     
-    override func goForward() {
-        guard validateAndSave()
-            else {
-                return
-        }
-        
+    @IBAction func submitTapped() {
         self.nextButton?.isEnabled = false
         self.signUpAndSignIn { (task, result, error) in
             DispatchQueue.main.async {

@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		CB5E95FB22EE7A390001AAFE /* ParticipantIDRegistrationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB5E95FA22EE7A390001AAFE /* ParticipantIDRegistrationViewController.xib */; };
+		CB5E960A22EE920D0001AAFE /* ExternalIDRegistrationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB5E960922EE920D0001AAFE /* ExternalIDRegistrationViewController.xib */; };
 		CB6F54F022E25C5B0073BFE9 /* ParticipantIDRegistrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6F54EF22E25C5B0073BFE9 /* ParticipantIDRegistrationViewController.swift */; };
 		CB9F5E1F22E0BED3003FBCEF /* lato_black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CB9F5E1422E0BEA3003FBCEF /* lato_black.ttf */; };
 		CB9F5E2022E0BED3003FBCEF /* lato_bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CB9F5E1222E0BEA3003FBCEF /* lato_bold.ttf */; };
@@ -104,6 +105,7 @@
 
 /* Begin PBXFileReference section */
 		CB5E95FA22EE7A390001AAFE /* ParticipantIDRegistrationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ParticipantIDRegistrationViewController.xib; sourceTree = "<group>"; };
+		CB5E960922EE920D0001AAFE /* ExternalIDRegistrationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExternalIDRegistrationViewController.xib; sourceTree = "<group>"; };
 		CB6F54EF22E25C5B0073BFE9 /* ParticipantIDRegistrationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParticipantIDRegistrationViewController.swift; sourceTree = "<group>"; };
 		CB9F5E1222E0BEA3003FBCEF /* lato_bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = lato_bold.ttf; path = Fonts/lato_bold.ttf; sourceTree = "<group>"; };
 		CB9F5E1322E0BEA3003FBCEF /* lato_light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = lato_light.ttf; path = Fonts/lato_light.ttf; sourceTree = "<group>"; };
@@ -248,6 +250,7 @@
 			children = (
 				CBD67D8722DFC59B00998516 /* TaskListTableViewController.swift */,
 				CBD67D8322DFB90C00998516 /* ExternalIDRegistrationViewController.swift */,
+				CB5E960922EE920D0001AAFE /* ExternalIDRegistrationViewController.xib */,
 				CB6F54EF22E25C5B0073BFE9 /* ParticipantIDRegistrationViewController.swift */,
 				CB5E95FA22EE7A390001AAFE /* ParticipantIDRegistrationViewController.xib */,
 				CBD67D9822DFDC4E00998516 /* ImageCaptureStepViewController.swift */,
@@ -560,6 +563,7 @@
 				CB9F5E2822E0BED4003FBCEF /* lato_bolditalic.ttf in Resources */,
 				CB9F5E2A22E0BED4003FBCEF /* lato_light.ttf in Resources */,
 				FF5010A822DD22A50035E83C /* psorcast-validation.pem in Resources */,
+				CB5E960A22EE920D0001AAFE /* ExternalIDRegistrationViewController.xib in Resources */,
 				CB9F5E2C22E0BED4003FBCEF /* lato_regular.ttf in Resources */,
 				CBD67D9C22DFE11B00998516 /* FootImaging.json in Resources */,
 				FF50109F22DD21420035E83C /* BridgeInfo.plist in Resources */,

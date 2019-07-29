@@ -60,7 +60,7 @@ class ParticipantIDRegistrationStep : RSDUIStepObject, RSDStepViewControllerVend
     }
 }
 
-class ParticipantIDRegistrationViewController: RSDStepViewController {
+class ParticipantIDRegistrationViewController: RSDStepViewController, UITextFieldDelegate {
 
     // The first participant ID entry, they need to enter it twice
     var firstEntry: String?
@@ -102,11 +102,13 @@ class ParticipantIDRegistrationViewController: RSDStepViewController {
         
         self.textField.font = self.designSystem.fontRules.font(for: .largeBody, compatibleWith: traitCollection)
         self.textField.textColor = UIColor.white
+        self.textField.delegate = self
         
         self.ruleView.backgroundColor = UIColor.white
         
         self.submitButton.setDesignSystem(self.designSystem, with: self.designSystem.colorRules.backgroundLight)
         self.submitButton.setTitle(Localization.localizedString("BUTTON_SUBMIT"), for: .normal)
+        self.submitButton.isEnabled = false
         
         self.errorLabel.text = nil
         self.errorLabel.font = self.designSystem.fontRules.font(for: .mediumHeader)
@@ -146,6 +148,15 @@ class ParticipantIDRegistrationViewController: RSDStepViewController {
         let text = self.textField?.text
         if text?.isEmpty ?? true { return nil }
         return text
+    }
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        if let text = textField.text,
+            let textRange = Range(range, in: text) {
+            let updatedText = text.replacingCharacters(in: textRange, with: string)
+            self.submitButton.isEnabled = !updatedText.isEmpty
+        }
+        return true
     }
     
     @IBAction func submitTapped() {
