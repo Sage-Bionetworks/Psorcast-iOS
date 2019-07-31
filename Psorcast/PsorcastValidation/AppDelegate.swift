@@ -55,7 +55,8 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate {
     }
     
     func showAppropriateViewController(animated: Bool) {
-        if BridgeSDK.authManager.isAuthenticated() {
+        let participantID = UserDefaults.standard.string(forKey: "participantID")
+        if BridgeSDK.authManager.isAuthenticated() && participantID != nil {
             showMainViewController(animated: animated)
         } else {
             showSignInViewController(animated: animated)
@@ -93,7 +94,10 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate {
         guard self.rootViewController?.state != .onboarding else { return }
         
         let externalIDStep = ExternalIDRegistrationStep(identifier: "enterExternalID", type: "externalID")
+        externalIDStep.shouldHideActions = [.navigation(.goBackward), .navigation(.skip
+            )]
         let participantIDStep = ParticipantIDRegistrationStep(identifier: "enterParticipantID", type: "participantID")
+        
         var navigator = RSDConditionalStepNavigatorObject(with: [externalIDStep, participantIDStep])
         navigator.progressMarkers = []
         let task = RSDTaskObject(identifier: "signin", stepNavigator: navigator)
