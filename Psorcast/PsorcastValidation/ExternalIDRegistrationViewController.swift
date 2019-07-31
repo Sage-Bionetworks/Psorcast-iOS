@@ -98,6 +98,10 @@ class ExternalIDRegistrationViewController: RSDStepViewController, UITextFieldDe
         return true
     }
     
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        return textField.endEditing(false)
+    }
+    
     func signUpAndSignIn(completion: @escaping SBBNetworkManagerCompletionBlock) {
         guard let externalId = self.externalId(), !externalId.isEmpty else { return }
         
