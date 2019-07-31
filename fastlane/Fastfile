@@ -21,7 +21,7 @@ platform :ios do
     ENV["MATCH_KEYCHAIN_NAME"] = "ios-build.keychain"
     ENV["TEAM_SAGEBIO"] = "4B822CZK9N"
     ENV["TEAM_SAGEBIO_NOT_FOR_PROFIT"] = "KA9Z8R6M6K"
-    ENV["APP_ID"] = "org.sagebionetworks.psorcast"
+    ENV["APP_ID"] = "org.sagebionetworks.Psorcast"
     ENV["VALIDATION_APP_ID"] = "org.sageBionetworks.psorcastValidation0"
     ENV["WORKSPACE"] = "./Psorcast.xcworkspace"
     ENV["FRAMEWORK_PROJECT"] = "Psorcast/Psorcast.xcodeproj"
