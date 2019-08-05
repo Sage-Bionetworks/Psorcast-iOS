@@ -197,6 +197,10 @@ class ParticipantIDRegistrationViewController: RSDStepViewController, UITextFiel
         return true
     }
     
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        return self.textField.endEditing(false)
+    }
+    
     @IBAction func submitTapped() {
         
         self.errorLabel.text = nil
