@@ -50,6 +50,9 @@ class ExternalIDRegistrationStep : RSDUIStepObject, RSDStepViewControllerVendor,
 
 class ExternalIDRegistrationViewController: RSDStepViewController, UITextFieldDelegate {
     
+    // The image header
+    @IBOutlet public var imageView: UIImageView!
+    
     // Title label for external ID entry
     @IBOutlet public var titleLabel: UILabel!
     
@@ -65,10 +68,19 @@ class ExternalIDRegistrationViewController: RSDStepViewController, UITextFieldDe
     override open func viewDidLoad() {
         super.viewDidLoad()
         
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+        
+        // Looks for single taps to dismiss keyboard
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        view.addGestureRecognizer(tap)
+        
         self.designSystem = AppDelegate.designSystem
         let background = self.designSystem.colorRules.backgroundLight
         self.view.backgroundColor = background.color
         self.view.subviews[0].backgroundColor = background.color
+        
+        self.imageView.backgroundColor = self.designSystem.colorRules.backgroundPrimary.color
         
         self.textField.font = self.designSystem.fontRules.font(for: .largeBody, compatibleWith: traitCollection)
         self.textField.textColor = self.designSystem.colorRules.textColor(on: background, for: .largeBody)
@@ -83,6 +95,23 @@ class ExternalIDRegistrationViewController: RSDStepViewController, UITextFieldDe
         self.titleLabel.text = Localization.localizedString("WELCOME_STUDY")
         self.titleLabel.font = self.designSystem.fontRules.font(for: .xLargeHeader)
         self.titleLabel.textColor = self.designSystem.colorRules.textColor(on: background, for: .xLargeHeader)
+    }
+    
+    /// Calls this function when the tap is recognized.
+    @objc func dismissKeyboard() {
+        //Causes the view (or one of its embedded text fields) to resign the first responder status.
+        view.endEditing(true)
+        self.view.frame.origin.y = 0
+    }
+    
+    @objc func keyboardWillShow(notification: NSNotification) {
+        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+            self.view.frame.origin.y -= keyboardSize.height
+        }
+    }
+    
+    @objc func keyboardWillHide(notification: NSNotification) {
+        self.view.frame.origin.y = 0
     }
     
     func externalId() -> String? {

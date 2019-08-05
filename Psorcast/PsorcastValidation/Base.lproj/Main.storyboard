@@ -31,13 +31,22 @@
                         <color key="separatorColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <color key="sectionIndexBackgroundColor" red="0.96078431369999995" green="0.70196078429999997" blue="0.23529411759999999" alpha="1" colorSpace="calibratedRGB"/>
                         <view key="tableHeaderView" contentMode="scaleAspectFit" id="bnI-qz-uTB" customClass="TaskTableHeaderView" customModule="PsorcastValidation" customModuleProvider="target">
-                            <rect key="frame" x="0.0" y="0.0" width="414" height="100"/>
+                            <rect key="frame" x="0.0" y="0.0" width="414" height="140"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2rk-Oa-qdI" userLabel="CenterContainer">
                                     <rect key="frame" x="0.0" y="0.0" width="414" height="100"/>
+                                    <subviews>
+                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="AppHeader" translatesAutoresizingMaskIntoConstraints="NO" id="QWa-ss-TgW">
+                                            <rect key="frame" x="48" y="48" width="318" height="52"/>
+                                        </imageView>
+                                    </subviews>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
+                                        <constraint firstAttribute="trailing" secondItem="QWa-ss-TgW" secondAttribute="trailing" constant="48" id="Pek-Pv-f44"/>
+                                        <constraint firstAttribute="bottom" secondItem="QWa-ss-TgW" secondAttribute="bottom" id="SFU-mg-0IJ"/>
+                                        <constraint firstItem="QWa-ss-TgW" firstAttribute="leading" secondItem="2rk-Oa-qdI" secondAttribute="leading" constant="48" id="Sfh-ra-Uea"/>
+                                        <constraint firstItem="QWa-ss-TgW" firstAttribute="top" secondItem="2rk-Oa-qdI" secondAttribute="top" constant="48" id="fb5-m8-bqx"/>
                                         <constraint firstAttribute="height" constant="100" id="mDb-iG-Brn"/>
                                     </constraints>
                                 </view>
@@ -50,7 +59,7 @@
                             </constraints>
                         </view>
                         <view key="tableFooterView" contentMode="scaleToFill" id="gn5-IW-Ds6" customClass="TaskTableFooterView" customModule="PsorcastValidation" customModuleProvider="target">
-                            <rect key="frame" x="0.0" y="240" width="414" height="200"/>
+                            <rect key="frame" x="0.0" y="280" width="414" height="200"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="PKU App  Version 0.1 Released on 02/02/19" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="df5-in-c8F" userLabel="Version">
@@ -89,7 +98,7 @@
                         </view>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="PKUTaskCell" rowHeight="112" id="dWA-AL-Q3I" userLabel="TaskCell" customClass="TaskTableviewCell" customModule="PsorcastValidation" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="128" width="414" height="112"/>
+                                <rect key="frame" x="0.0" y="168" width="414" height="112"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="dWA-AL-Q3I" id="7cq-VO-33E">
                                     <rect key="frame" x="0.0" y="0.0" width="414" height="112"/>
@@ -99,7 +108,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="104"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lkB-86-JjD">
-                                                    <rect key="frame" x="18" y="32" width="188" height="22"/>
+                                                    <rect key="frame" x="18" y="32.5" width="188" height="21"/>
                                                     <fontDescription key="fontDescription" name="Lato-Bold" family="Lato" pointSize="18"/>
                                                     <color key="textColor" red="0.1647058824" green="0.1647058824" blue="0.1647058824" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -172,4 +181,7 @@
             <point key="canvasLocation" x="447.82608695652175" y="90.401785714285708"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="AppHeader" width="241" height="41"/>
+    </resources>
 </document>

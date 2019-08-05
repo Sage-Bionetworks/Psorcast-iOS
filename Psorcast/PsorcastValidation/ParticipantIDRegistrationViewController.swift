@@ -80,6 +80,8 @@ class ParticipantIDRegistrationViewController: RSDStepViewController, UITextFiel
     // The submit button
     @IBOutlet public var submitButton: RSDRoundedButton!
     
+    var originalSubmitY: CGFloat? = nil
+    
     @IBAction func logoutTapped() {
         self.logoutButton.isEnabled = false
         self.submitButton.isEnabled = false
@@ -94,6 +96,13 @@ class ParticipantIDRegistrationViewController: RSDStepViewController, UITextFiel
     
     override open func viewDidLoad() {
         super.viewDidLoad()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+        
+        // Looks for single taps to dismiss keyboard
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        view.addGestureRecognizer(tap)
         
         self.designSystem = AppDelegate.designSystem
         let background = self.designSystem.colorRules.backgroundPrimary
@@ -114,6 +123,35 @@ class ParticipantIDRegistrationViewController: RSDStepViewController, UITextFiel
         self.errorLabel.font = self.designSystem.fontRules.font(for: .mediumHeader)
         
         self.setFirstEntryTitle()
+    }
+    
+    func getOriginalSubmitButtonY() -> CGFloat {
+        if let submitY = self.originalSubmitY {
+            return submitY
+        }
+        let submitY = self.submitButton.frame.origin.y
+        self.originalSubmitY = submitY
+        return submitY
+    }
+    
+    /// Calls this function when the tap is recognized.
+    @objc func dismissKeyboard() {
+        //Causes the view (or one of its embedded text fields) to resign the first responder status.
+        view.endEditing(true)
+        self.submitButton.frame.origin.y = self.getOriginalSubmitButtonY()
+    }
+    
+    @objc func keyboardWillShow(notification: NSNotification) {
+        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+            if (self.originalSubmitY == nil) {
+                self.originalSubmitY = self.submitButton.frame.origin.y
+            }
+            self.submitButton.frame.origin.y -= keyboardSize.height
+        }
+    }
+    
+    @objc func keyboardWillHide(notification: NSNotification) {
+        self.submitButton.frame.origin.y = self.getOriginalSubmitButtonY()
     }
     
     override open func cancel() {

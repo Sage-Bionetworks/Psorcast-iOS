@@ -141,9 +141,9 @@ open class PSRFontRules: RSDFontRules {
         // TODO: mdephillips 7/18/19 there is no weight for italic, how can we get italic fonts?
         switch weight {
         case .light:
-            return RSDFont(name: latoLightName, size: 20)!
+            return RSDFont(name: latoLightName, size: fontSize)!
         case .bold:
-            return RSDFont(name: latoBoldName, size: 20)!
+            return RSDFont(name: latoBoldName, size: fontSize)!
         case .black:
             return RSDFont(name: latoBlackName, size: fontSize)!
         default:  // includes .regular and everything else
