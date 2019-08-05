@@ -12,6 +12,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ExternalIDRegistrationViewController" customModule="PsorcastValidation" customModuleProvider="target">
             <connections>
+                <outlet property="imageView" destination="kSV-sG-Szr" id="pwh-Od-XRt"/>
                 <outlet property="ruleView" destination="OUa-ZL-tEd" id="G8Y-d8-2uU"/>
                 <outlet property="submitButton" destination="tP3-Sz-Seq" id="ZHo-3t-HfR"/>
                 <outlet property="textField" destination="c4V-1s-iHv" id="7Vg-t5-TXc"/>
@@ -31,24 +32,27 @@
                             <rect key="frame" x="0.0" y="0.0" width="375" height="624"/>
                             <subviews>
                                 <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Enter Researcher ID" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="c4V-1s-iHv">
-                                    <rect key="frame" x="32" y="419.66666666666669" width="311" height="17"/>
+                                    <rect key="frame" x="32" y="492" width="311" height="17"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                     <textInputTraits key="textInputTraits"/>
                                 </textField>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OUa-ZL-tEd" userLabel="Rule View">
-                                    <rect key="frame" x="32" y="452.66666666666669" width="311" height="1"/>
+                                    <rect key="frame" x="32" y="525" width="311" height="1"/>
                                     <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="1" id="1On-gv-R8T"/>
                                     </constraints>
                                 </view>
+                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="AppHeaderPrimary" translatesAutoresizingMaskIntoConstraints="NO" id="8ED-gO-YIL" userLabel="App Logo">
+                                    <rect key="frame" x="48" y="298.66666666666669" width="279" height="16"/>
+                                </imageView>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Welcome to Psorcast Validation Study" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ztf-Jf-7Ws" userLabel="Title Label">
-                                    <rect key="frame" x="48" y="278.33333333333331" width="279" height="71.666666666666686"/>
+                                    <rect key="frame" x="48" y="350.66666666666669" width="279" height="71.666666666666686"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="30"/>
                                     <nil key="highlightedColor"/>
                                 </label>
-                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ExternalIDHeader" translatesAutoresizingMaskIntoConstraints="NO" id="kSV-sG-Szr">
+                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="bottom" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ExternalIDHeader" translatesAutoresizingMaskIntoConstraints="NO" id="kSV-sG-Szr">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="262.66666666666669"/>
                                     <constraints>
                                         <constraint firstAttribute="width" secondItem="kSV-sG-Szr" secondAttribute="height" multiplier="10:7" id="AkW-AG-sgd"/>
@@ -58,12 +62,15 @@
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstAttribute="trailing" secondItem="kSV-sG-Szr" secondAttribute="trailing" id="0MW-0u-MAb"/>
+                                <constraint firstItem="8ED-gO-YIL" firstAttribute="top" secondItem="kSV-sG-Szr" secondAttribute="bottom" constant="36" id="0Ve-BO-PRe"/>
                                 <constraint firstAttribute="trailing" secondItem="OUa-ZL-tEd" secondAttribute="trailing" constant="32" id="0Zn-My-rYg"/>
+                                <constraint firstAttribute="trailing" secondItem="8ED-gO-YIL" secondAttribute="trailing" constant="48" id="4j2-2K-rTL"/>
                                 <constraint firstItem="OUa-ZL-tEd" firstAttribute="top" secondItem="c4V-1s-iHv" secondAttribute="bottom" constant="16" id="Kax-j7-ScD"/>
+                                <constraint firstItem="8ED-gO-YIL" firstAttribute="leading" secondItem="FUY-ES-cUr" secondAttribute="leading" constant="48" id="RG8-tl-qtd"/>
                                 <constraint firstItem="OUa-ZL-tEd" firstAttribute="leading" secondItem="FUY-ES-cUr" secondAttribute="leading" constant="32" id="Rtt-hM-DRC"/>
                                 <constraint firstAttribute="trailing" secondItem="ztf-Jf-7Ws" secondAttribute="trailing" constant="48" id="SBq-AU-iLT"/>
-                                <constraint firstItem="ztf-Jf-7Ws" firstAttribute="top" secondItem="kSV-sG-Szr" secondAttribute="bottom" constant="15.666666666666629" id="ZHU-AE-ZU7"/>
                                 <constraint firstItem="ztf-Jf-7Ws" firstAttribute="leading" secondItem="FUY-ES-cUr" secondAttribute="leading" constant="48" id="fD7-4N-EoI"/>
+                                <constraint firstItem="ztf-Jf-7Ws" firstAttribute="top" secondItem="8ED-gO-YIL" secondAttribute="bottom" constant="36" id="fMz-MA-xyq"/>
                                 <constraint firstItem="c4V-1s-iHv" firstAttribute="leading" secondItem="FUY-ES-cUr" secondAttribute="leading" constant="32" id="i4e-9K-zcC"/>
                                 <constraint firstItem="kSV-sG-Szr" firstAttribute="leading" secondItem="FUY-ES-cUr" secondAttribute="leading" id="rcQ-Gl-9l4"/>
                                 <constraint firstAttribute="trailing" secondItem="c4V-1s-iHv" secondAttribute="trailing" constant="32" id="sK2-0G-txK"/>
@@ -105,6 +112,7 @@
         </view>
     </objects>
     <resources>
-        <image name="ExternalIDHeader" width="282" height="204"/>
+        <image name="AppHeaderPrimary" width="153" height="26"/>
+        <image name="ExternalIDHeader" width="375" height="253"/>
     </resources>
 </document>
