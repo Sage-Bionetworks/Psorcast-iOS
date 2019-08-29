@@ -1,0 +1,76 @@
+{
+    "taskIdentifier"            : "JointCounting",
+    "schemaIdentifier"          : "JointCounting",
+    "progressMarkers":[],
+    "steps":
+    [
+        {
+            "identifier":"jointCountInstruction",
+            "type":"instruction",
+            "title":"Select joint pain",
+            "text":"Select your joints that are causing you pain and discomfort. You can touch the joints you have selected to undo the selection.",
+            "image":{
+                "type": "animated",
+                "imageNames": ["JointCount1", "JointCount2", "JointCount3", "JointCount4", "JointCount5", "JointCount6"],
+                "placementType": "topMarginBackground",
+                "animationDuration": 6.0
+            },
+            "actions":{
+                "goForward":{
+                    "type":"default",
+                    "buttonTitle":"Begin"
+                }
+            }
+        },
+        {
+            "identifier": "jointSelection",
+            "type": "jointSelection",
+            "title": "Which joints give you pain?",
+            "text": "Select all of the joints which bother you.",
+            "inputFields": [
+                {
+                    "uiHint": "list",
+                    "type": "multipleChoice.string",
+                    "choices": [
+                        {
+                            "text": "Above the waist",
+                            "detail": "Shoulders, elbows, wrists",
+                            "value": "AboveTheWaist"
+                        },
+                        {
+                            "text": "Below the waist",
+                            "detail": "Hips, knees, ankles",
+                            "value": "BelowTheWaist"
+                        },
+                        {
+                            "text": "Hands",
+                            "detail": "Left hand, right hand",
+                            "value": "Hands"
+                        },
+                        {
+                            "text": "Feet",
+                            "detail": "Left foot, right foot",
+                            "value": "Feet"
+                        },
+                        {
+                            "text": "No joints bother me",
+                            "isExclusive": true
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "identifier":"completion",
+            "type":"completion",
+            "title":"Great job!",
+            "text":"You just completed the activity.",
+            "actions": {
+                "goForward":{
+                    "type":"default",
+                    "buttonTitle":"Done"
+                }
+            }
+        }
+    ]
+}

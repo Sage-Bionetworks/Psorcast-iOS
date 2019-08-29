@@ -39,7 +39,7 @@ import MotorControl
 /// Subclass the schedule manager to set up a predicate to filter the schedules.
 public class TaskListScheduleManager : SBAScheduleManager {
     
-    public let sortOrder: [RSDIdentifier] = [.walkingTask, .handImagingTask, .footImagingTask]
+    public let sortOrder: [RSDIdentifier] = [.walkingTask, .jointCountingTask, .handImagingTask, .footImagingTask]
     
     ///
     /// - returns: the total table row count including activities
@@ -55,7 +55,7 @@ public class TaskListScheduleManager : SBAScheduleManager {
     }
     
     override public func availablePredicate() -> NSPredicate {
-        return SBBScheduledActivity.notFinishedAvailableNowPredicate()
+        return NSPredicate(value: true) // returns all scheduled once 
     }
     
     ///

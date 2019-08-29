@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CB55C7152317391600EA0C19 /* JointCounting.json in Resources */ = {isa = PBXBuildFile; fileRef = CB55C7142317391600EA0C19 /* JointCounting.json */; };
+		CB55C71723173D6A00EA0C19 /* JointSelectionStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB55C71623173D6A00EA0C19 /* JointSelectionStepViewController.swift */; };
 		CB5E95FB22EE7A390001AAFE /* ParticipantIDRegistrationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB5E95FA22EE7A390001AAFE /* ParticipantIDRegistrationViewController.xib */; };
 		CB5E960A22EE920D0001AAFE /* ExternalIDRegistrationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB5E960922EE920D0001AAFE /* ExternalIDRegistrationViewController.xib */; };
 		CB6F54F022E25C5B0073BFE9 /* ParticipantIDRegistrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6F54EF22E25C5B0073BFE9 /* ParticipantIDRegistrationViewController.swift */; };
@@ -104,6 +106,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		CB55C7142317391600EA0C19 /* JointCounting.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = JointCounting.json; sourceTree = "<group>"; };
+		CB55C71623173D6A00EA0C19 /* JointSelectionStepViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JointSelectionStepViewController.swift; sourceTree = "<group>"; };
 		CB5E95FA22EE7A390001AAFE /* ParticipantIDRegistrationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ParticipantIDRegistrationViewController.xib; sourceTree = "<group>"; };
 		CB5E960922EE920D0001AAFE /* ExternalIDRegistrationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExternalIDRegistrationViewController.xib; sourceTree = "<group>"; };
 		CB6F54EF22E25C5B0073BFE9 /* ParticipantIDRegistrationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParticipantIDRegistrationViewController.swift; sourceTree = "<group>"; };
@@ -255,6 +259,7 @@
 				CB5E95FA22EE7A390001AAFE /* ParticipantIDRegistrationViewController.xib */,
 				CBD67D9822DFDC4E00998516 /* ImageCaptureStepViewController.swift */,
 				CBD67D9722DFDC4E00998516 /* ImageCaptureStepViewController.xib */,
+				CB55C71623173D6A00EA0C19 /* JointSelectionStepViewController.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -283,6 +288,7 @@
 			children = (
 				CBD67D9B22DFE11A00998516 /* FootImaging.json */,
 				CBD67D9522DFDABE00998516 /* HandImaging.json */,
+				CB55C7142317391600EA0C19 /* JointCounting.json */,
 			);
 			name = JSON;
 			sourceTree = "<group>";
@@ -560,6 +566,7 @@
 				FFABCBED22DD1F2800D11109 /* Main.storyboard in Resources */,
 				CB9F5E2722E0BED4003FBCEF /* lato_bold.ttf in Resources */,
 				CBD67D9922DFDC4E00998516 /* ImageCaptureStepViewController.xib in Resources */,
+				CB55C7152317391600EA0C19 /* JointCounting.json in Resources */,
 				CB9F5E2822E0BED4003FBCEF /* lato_bolditalic.ttf in Resources */,
 				CB9F5E2A22E0BED4003FBCEF /* lato_light.ttf in Resources */,
 				FF5010A822DD22A50035E83C /* psorcast-validation.pem in Resources */,
@@ -613,6 +620,7 @@
 				CBD67D9322DFC71E00998516 /* TaskFactory.swift in Sources */,
 				FFABCBE822DD1F2800D11109 /* AppDelegate.swift in Sources */,
 				CBD67D8822DFC59B00998516 /* TaskListTableViewController.swift in Sources */,
+				CB55C71723173D6A00EA0C19 /* JointSelectionStepViewController.swift in Sources */,
 				CBD67D8422DFB90C00998516 /* ExternalIDRegistrationViewController.swift in Sources */,
 				CBD67D8D22DFC5EE00998516 /* MotorControl+Bridge.swift in Sources */,
 				CB6F54F022E25C5B0073BFE9 /* ParticipantIDRegistrationViewController.swift in Sources */,
