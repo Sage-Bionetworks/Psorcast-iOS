@@ -1,5 +1,5 @@
 //
-//  PKUCodableStepObjectTests.swift
+//  CodableStepObjectTests.swift
 //  PsorcastValidationTests
 //
 //  Copyright © 2019 Sage Bionetworks. All rights reserved.
@@ -33,6 +33,7 @@
 
 import XCTest
 @testable import Research
+@testable import PsorcastValidation
 
 class CodableStepObjectTests: XCTestCase {
     
@@ -49,6 +50,158 @@ class CodableStepObjectTests: XCTestCase {
     override func tearDown() {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
+    }
+    
+    func testJointPainStepObject_Codable() {
+        
+        let json = """
+        {
+            "identifier": "foo",
+            "type": "jointPain",
+            "title": "bar",
+            "text": "foobar",
+            "textSelectionFormat": "%@ foobar",
+            "textMultipleSelectionFormat": "%@ foobars",
+            "image":{
+                "type":"fetchable",
+                "imageName": "before",
+                "placementType":"topBackground"
+            },
+            "jointPainMap": {
+                "region": "aboveTheWaist",
+                "subregion": "none",
+                "imageSize": {
+                    "width": 375,
+                    "height": 425
+                },
+                "jointSize": {
+                    "width": 40,
+                    "height": 40
+                },
+                "joints": [
+                    {
+                        "identifier": "rightHand",
+                        "center": {
+                            "x": 63,
+                            "y": 306
+                        }
+                    },
+                    {
+                        "identifier": "rightElbow",
+                        "center": {
+                            "x": 106,
+                            "y": 240
+                        }
+                    },
+                    {
+                        "identifier": "rightShoulder",
+                        "center": {
+                            "x": 130,
+                            "y": 140
+                        }
+                    }
+                ]
+            }
+        }
+        """.data(using: .utf8)! // our data in native (JSON) format
+        
+        do {
+            
+            let factory = TaskFactory()
+            let decoder = factory.createJSONDecoder()
+            
+            let object = try decoder.decode(JointPainStepObject.self, from: json)
+            
+            XCTAssertEqual(object.identifier, "foo")
+            XCTAssertEqual(object.title, "bar")
+            XCTAssertEqual(object.text, "foobar")
+            XCTAssertEqual((object.imageTheme as? RSDFetchableImageThemeElementObject)?.imageName, "before")
+            
+            XCTAssertEqual(object.textSelectionFormat, "%@ foobar")
+            XCTAssertEqual(object.textMultipleSelectionFormat, "%@ foobars")
+            
+            XCTAssertEqual(object.jointPainMap?.region, .aboveTheWaist)
+            XCTAssertEqual(object.jointPainMap?.subregion, JointPainSubRegion.none)
+            XCTAssertEqual(object.jointPainMap?.imageSize.width, 375)
+            XCTAssertEqual(object.jointPainMap?.imageSize.height, 425)
+            XCTAssertEqual(object.jointPainMap?.jointSize.width, 40)
+            XCTAssertEqual(object.jointPainMap?.jointSize.height, 40)
+            XCTAssertEqual(object.jointPainMap?.joints.count, 3)
+            
+            XCTAssertEqual(object.jointPainMap?.joints[0].identifier, "rightHand")
+            XCTAssertEqual(object.jointPainMap?.joints[0].center.x, 63)
+            XCTAssertEqual(object.jointPainMap?.joints[0].center.y, 306)
+            
+            XCTAssertEqual(object.jointPainMap?.joints[1].identifier, "rightElbow")
+            XCTAssertEqual(object.jointPainMap?.joints[1].center.x, 106)
+            XCTAssertEqual(object.jointPainMap?.joints[1].center.y, 240)
+            
+            XCTAssertEqual(object.jointPainMap?.joints[2].identifier, "rightShoulder")
+            XCTAssertEqual(object.jointPainMap?.joints[2].center.x, 130)
+            XCTAssertEqual(object.jointPainMap?.joints[2].center.y, 140)
+            
+            if let map = object.jointPainMap {
+                let encoder = factory.createJSONEncoder()
+                let jsonData = try encoder.encode(map)
+                guard let dictionary = try JSONSerialization.jsonObject(with: jsonData, options: []) as? [String : Any]
+                    else {
+                        XCTFail("Encoded object is not a dictionary")
+                        return
+                }
+                
+                XCTAssertEqual(dictionary["region"] as? String, "aboveTheWaist")
+                XCTAssertEqual(dictionary["subregion"] as? String, "none")
+                
+                if let imageSize = dictionary["imageSize"] as? [String : Int] {
+                    XCTAssertEqual(imageSize["width"], 375)
+                    XCTAssertEqual(imageSize["height"], 425)
+                } else {
+                    XCTFail("imageSize object is not the correct dictionary format")
+                }
+                if let jointSize = dictionary["jointSize"] as? [String : Int] {
+                    XCTAssertEqual(jointSize["width"], 40)
+                    XCTAssertEqual(jointSize["height"], 40)
+                } else {
+                    XCTFail("jointSize object is not the correct dictionary format")
+                }
+                
+                if let joints = dictionary["joints"] as? [[String : Any]] {
+                    XCTAssertEqual(joints.count, 3)
+                    
+                    XCTAssertEqual(joints[0]["identifier"] as? String, "rightHand")
+                    if let center = joints[0]["center"] as? [String : Int] {
+                        XCTAssertEqual(center["x"], 63)
+                        XCTAssertEqual(center["y"], 306)
+                    } else {
+                        XCTFail("joint 0 center object is not the correct dictionary format")
+                    }
+
+                    XCTAssertEqual(joints[1]["identifier"] as? String, "rightElbow")
+                    if let center = joints[1]["center"] as? [String : Int] {
+                        XCTAssertEqual(center["x"], 106)
+                        XCTAssertEqual(center["y"], 240)
+                    } else {
+                        XCTFail("joint 1 center object is not the correct dictionary format")
+                    }
+                    
+                    XCTAssertEqual(joints[2]["identifier"] as? String, "rightShoulder")
+                    if let center = joints[2]["center"] as? [String : Int] {
+                        XCTAssertEqual(center["x"], 130)
+                        XCTAssertEqual(center["y"], 140)
+                    } else {
+                        XCTFail("joint 2 center object is not the correct dictionary format")
+                    }
+                } else {
+                    XCTFail("joints array is nil or malformed")
+                }
+            } else {
+                XCTFail("joint pain map is nil")
+            }
+            
+        } catch let err {
+            XCTFail("Failed to decode/encode object: \(err)")
+            return
+        }
     }
 }
 
