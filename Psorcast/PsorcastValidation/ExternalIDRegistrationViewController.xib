@@ -32,13 +32,13 @@
                             <rect key="frame" x="0.0" y="0.0" width="375" height="624"/>
                             <subviews>
                                 <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Enter Researcher ID" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="c4V-1s-iHv">
-                                    <rect key="frame" x="32" y="492" width="311" height="17"/>
+                                    <rect key="frame" x="32" y="466.33333333333331" width="311" height="17"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                     <textInputTraits key="textInputTraits"/>
                                 </textField>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OUa-ZL-tEd" userLabel="Rule View">
-                                    <rect key="frame" x="32" y="525" width="311" height="1"/>
+                                    <rect key="frame" x="32" y="499.33333333333331" width="311" height="1"/>
                                     <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="1" id="1On-gv-R8T"/>
@@ -48,7 +48,7 @@
                                     <rect key="frame" x="48" y="298.66666666666669" width="279" height="16"/>
                                 </imageView>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Welcome to Psorcast Validation Study" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ztf-Jf-7Ws" userLabel="Title Label">
-                                    <rect key="frame" x="48" y="350.66666666666669" width="279" height="71.666666666666686"/>
+                                    <rect key="frame" x="12" y="346.66666666666669" width="351" height="71.666666666666686"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="30"/>
                                     <nil key="highlightedColor"/>
                                 </label>
@@ -68,13 +68,13 @@
                                 <constraint firstItem="OUa-ZL-tEd" firstAttribute="top" secondItem="c4V-1s-iHv" secondAttribute="bottom" constant="16" id="Kax-j7-ScD"/>
                                 <constraint firstItem="8ED-gO-YIL" firstAttribute="leading" secondItem="FUY-ES-cUr" secondAttribute="leading" constant="48" id="RG8-tl-qtd"/>
                                 <constraint firstItem="OUa-ZL-tEd" firstAttribute="leading" secondItem="FUY-ES-cUr" secondAttribute="leading" constant="32" id="Rtt-hM-DRC"/>
-                                <constraint firstAttribute="trailing" secondItem="ztf-Jf-7Ws" secondAttribute="trailing" constant="48" id="SBq-AU-iLT"/>
-                                <constraint firstItem="ztf-Jf-7Ws" firstAttribute="leading" secondItem="FUY-ES-cUr" secondAttribute="leading" constant="48" id="fD7-4N-EoI"/>
-                                <constraint firstItem="ztf-Jf-7Ws" firstAttribute="top" secondItem="8ED-gO-YIL" secondAttribute="bottom" constant="36" id="fMz-MA-xyq"/>
+                                <constraint firstAttribute="trailing" secondItem="ztf-Jf-7Ws" secondAttribute="trailing" constant="12" id="SBq-AU-iLT"/>
+                                <constraint firstItem="ztf-Jf-7Ws" firstAttribute="leading" secondItem="FUY-ES-cUr" secondAttribute="leading" constant="12" id="fD7-4N-EoI"/>
+                                <constraint firstItem="ztf-Jf-7Ws" firstAttribute="top" secondItem="8ED-gO-YIL" secondAttribute="bottom" constant="32" id="fMz-MA-xyq"/>
                                 <constraint firstItem="c4V-1s-iHv" firstAttribute="leading" secondItem="FUY-ES-cUr" secondAttribute="leading" constant="32" id="i4e-9K-zcC"/>
                                 <constraint firstItem="kSV-sG-Szr" firstAttribute="leading" secondItem="FUY-ES-cUr" secondAttribute="leading" id="rcQ-Gl-9l4"/>
                                 <constraint firstAttribute="trailing" secondItem="c4V-1s-iHv" secondAttribute="trailing" constant="32" id="sK2-0G-txK"/>
-                                <constraint firstItem="c4V-1s-iHv" firstAttribute="top" secondItem="ztf-Jf-7Ws" secondAttribute="bottom" constant="69.666666666666714" id="t4N-iS-Tb9"/>
+                                <constraint firstItem="c4V-1s-iHv" firstAttribute="top" secondItem="ztf-Jf-7Ws" secondAttribute="bottom" constant="48" id="t4N-iS-Tb9"/>
                                 <constraint firstItem="kSV-sG-Szr" firstAttribute="top" secondItem="FUY-ES-cUr" secondAttribute="top" id="tN7-HX-oAw"/>
                             </constraints>
                         </view>

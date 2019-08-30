@@ -35,22 +35,22 @@
                         {
                             "text": "Above the waist",
                             "detail": "Shoulders, elbows, wrists",
-                            "value": "AboveTheWaist"
+                            "value": "aboveTheWaist"
                         },
                         {
                             "text": "Below the waist",
                             "detail": "Hips, knees, ankles",
-                            "value": "BelowTheWaist"
+                            "value": "belowTheWaist"
                         },
                         {
                             "text": "Hands",
                             "detail": "Left hand, right hand",
-                            "value": "Hands"
+                            "value": "hands"
                         },
                         {
                             "text": "Feet",
                             "detail": "Left foot, right foot",
-                            "value": "Feet"
+                            "value": "feet"
                         },
                         {
                             "text": "No joints bother me",
@@ -59,6 +59,602 @@
                     ]
                 }
             ]
+        },
+        {
+            "identifier": "aboveTheWaist",
+            "type": "jointPain",
+            "title": "Select your joint pain",
+            "text": "Select all that apply",
+            "textSelectionFormat": "%@ joint selected",
+            "textMultipleSelectionFormat": "%@ joints selected",
+            "image":{
+                "type":"fetchable",
+                "imageName": "AboveTheWaist",
+                "placementType":"topBackground"
+            },
+            "jointPainMap": {
+                "region": "aboveTheWaist",
+                "subregion": "none",
+                "imageSize": {
+                    "width": 375,
+                    "height": 428
+                },
+                "jointSize": {
+                    "width": 40,
+                    "height": 40
+                },
+                "joints": [
+                    {
+                        "identifier": "rightWrist",
+                        "center": {
+                            "x": 66,
+                            "y": 306
+                        }
+                    },
+                    {
+                        "identifier": "rightElbow",
+                        "center": {
+                            "x": 110,
+                            "y": 240
+                        }
+                    },
+                    {
+                        "identifier": "rightShoulder",
+                        "center": {
+                            "x": 130,
+                            "y": 140
+                        }
+                    },
+                    {
+                        "identifier": "leftWrist",
+                        "center": {
+                            "x": 307,
+                            "y": 306
+                        }
+                    },
+                    {
+                        "identifier": "leftElbow",
+                        "center": {
+                            "x": 265,
+                            "y": 240
+                        }
+                    },
+                    {
+                        "identifier": "leftShoulder",
+                        "center": {
+                            "x": 244,
+                            "y": 140
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "identifier": "belowTheWaist",
+            "type": "jointPain",
+            "title": "Select your joint pain",
+            "text": "Select all that apply",
+            "textSelectionFormat": "%@ joint selected",
+            "textMultipleSelectionFormat": "%@ joints selected",
+            "image":{
+                "type":"fetchable",
+                "imageName": "BelowTheWaist",
+                "placementType":"topBackground"
+            },
+            "jointPainMap": {
+                "region": "belowTheWaist",
+                "subregion": "none",
+                "imageSize": {
+                    "width": 375,
+                    "height": 411
+                },
+                "jointSize": {
+                    "width": 40,
+                    "height": 40
+                },
+                "joints": [
+                    {
+                        "identifier": "rightHip",
+                        "center": {
+                            "x": 132,
+                            "y": 40
+                        }
+                    },
+                    {
+                        "identifier": "rightKnee",
+                        "center": {
+                            "x": 154,
+                            "y": 220
+                        }
+                    },
+                    {
+                        "identifier": "rightAnkle",
+                        "center": {
+                            "x": 160,
+                            "y": 340
+                        }
+                    },
+                    {
+                        "identifier": "leftHip",
+                        "center": {
+                            "x": 238,
+                            "y": 40
+                        }
+                    },
+                    {
+                        "identifier": "leftKnee",
+                        "center": {
+                            "x": 218,
+                            "y": 220
+                        }
+                    },
+                    {
+                        "identifier": "leftAnkle",
+                        "center": {
+                            "x": 216,
+                            "y": 340
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "identifier": "leftHand",
+            "type": "jointPain",
+            "title": "Left hand joint pain",
+            "text": "Select all that apply",
+            "textSelectionFormat": "%@ joint selected",
+            "textMultipleSelectionFormat": "%@ joints selected",
+            "image":{
+                "type":"fetchable",
+                "imageName": "LeftHand",
+                "placementType":"topBackground"
+            },
+            "jointPainMap": {
+                "region": "hands",
+                "subregion": "left",
+                "imageSize": {
+                    "width": 367,
+                    "height": 476
+                },
+                "jointSize": {
+                    "width": 40,
+                    "height": 40
+                },
+                "joints": [
+                    {
+                        "identifier": "leftPinkyFingerTip",
+                        "center": {
+                            "x": 50,
+                            "y": 170
+                        }
+                    },
+                    {
+                        "identifier": "leftPinkyFingerMid",
+                        "center": {
+                            "x": 62,
+                            "y": 221
+                        }
+                    },
+                    {
+                        "identifier": "leftPinkyFingerBase",
+                        "center": {
+                            "x": 78,
+                            "y": 275
+                        }
+                    },
+                    {
+                        "identifier": "leftRingFingerTip",
+                        "center": {
+                            "x": 120,
+                            "y": 108
+                        }
+                    },
+                    {
+                        "identifier": "leftRingFingerMid",
+                        "center": {
+                            "x": 120,
+                            "y": 167
+                        }
+                    },
+                    {
+                        "identifier": "leftRingFingerBase",
+                        "center": {
+                            "x": 119,
+                            "y": 234
+                        }
+                    },
+                    {
+                        "identifier": "leftMiddleFingerTip",
+                        "center": {
+                            "x": 185,
+                            "y": 82
+                        }
+                    },
+                    {
+                        "identifier": "leftMiddleFingerMid",
+                        "center": {
+                            "x": 178,
+                            "y": 149
+                        }
+                    },
+                    {
+                        "identifier": "leftMiddleFingerBase",
+                        "center": {
+                            "x": 171,
+                            "y": 233
+                        }
+                    },
+                    {
+                        "identifier": "leftIndexFingerTip",
+                        "center": {
+                            "x": 248,
+                            "y": 124
+                        }
+                    },
+                    {
+                        "identifier": "leftIndexFingerMid",
+                        "center": {
+                            "x": 235,
+                            "y": 175
+                        }
+                    },
+                    {
+                        "identifier": "leftIndexFingerBase",
+                        "center": {
+                            "x": 222,
+                            "y": 236
+                        }
+                    },
+                    {
+                        "identifier": "leftThumbFingerTip",
+                        "center": {
+                            "x": 300,
+                            "y": 300
+                        }
+                    },
+                    {
+                        "identifier": "leftThumbFingerMid",
+                        "center": {
+                            "x": 273,
+                            "y": 354
+                        }
+                    },
+                    {
+                        "identifier": "leftThumbFingerBase",
+                        "center": {
+                            "x": 223,
+                            "y": 411
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "identifier": "rightHand",
+            "type": "jointPain",
+            "title": "Right hand joint pain",
+            "text": "Select all that apply",
+            "textSelectionFormat": "%@ joint selected",
+            "textMultipleSelectionFormat": "%@ joints selected",
+            "image":{
+                "type":"fetchable",
+                "imageName": "RightHand",
+                "placementType":"topBackground"
+            },
+            "jointPainMap": {
+                "region": "hands",
+                "subregion": "right",
+                "imageSize": {
+                    "width": 375,
+                    "height": 474
+                },
+                "jointSize": {
+                    "width": 40,
+                    "height": 40
+                },
+                "joints": [
+                    {
+                        "identifier": "rightPinkyFingerTip",
+                        "center": {
+                            "x": 325,
+                            "y": 167
+                        }
+                    },
+                    {
+                        "identifier": "rightPinkyFingerMid",
+                        "center": {
+                            "x": 313,
+                            "y": 217
+                        }
+                    },
+                    {
+                        "identifier": "rightPinkyFingerBase",
+                        "center": {
+                            "x": 297,
+                            "y": 272
+                        }
+                    },
+                    {
+                        "identifier": "rightRingFingerTip",
+                        "center": {
+                            "x": 255,
+                            "y": 104
+                        }
+                    },
+                    {
+                        "identifier": "rightRingFingerMid",
+                        "center": {
+                            "x": 255,
+                            "y": 164
+                        }
+                    },
+                    {
+                        "identifier": "rightRingFingerBase",
+                        "center": {
+                            "x": 255,
+                            "y": 230
+                        }
+                    },
+                    {
+                        "identifier": "rightMiddleFingerTip",
+                        "center": {
+                            "x": 190,
+                            "y": 79
+                        }
+                    },
+                    {
+                        "identifier": "rightMiddleFingerMid",
+                        "center": {
+                            "x": 197,
+                            "y": 147
+                        }
+                    },
+                    {
+                        "identifier": "rightMiddleFingerBase",
+                        "center": {
+                            "x": 204,
+                            "y": 230
+                        }
+                    },
+                    {
+                        "identifier": "rightIndexFingerTip",
+                        "center": {
+                            "x": 126,
+                            "y": 121
+                        }
+                    },
+                    {
+                        "identifier": "rightIndexFingerMid",
+                        "center": {
+                            "x": 138,
+                            "y": 172
+                        }
+                    },
+                    {
+                        "identifier": "rightIndexFingerBase",
+                        "center": {
+                            "x": 153,
+                            "y": 234
+                        }
+                    },
+                    {
+                        "identifier": "rightThumbFingerTip",
+                        "center": {
+                            "x": 76,
+                            "y": 297
+                        }
+                    },
+                    {
+                        "identifier": "rightThumbFingerMid",
+                        "center": {
+                            "x": 102,
+                            "y": 351
+                        }
+                    },
+                    {
+                        "identifier": "rightThumbFingerBase",
+                        "center": {
+                            "x": 152,
+                            "y": 408
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "identifier": "leftFoot",
+            "type": "jointPain",
+            "title": "Left foot joint pain",
+            "text": "Select all that apply",
+            "textSelectionFormat": "%@ joint selected",
+            "textMultipleSelectionFormat": "%@ joints selected",
+            "image":{
+                "type":"fetchable",
+                "imageName": "LeftFoot",
+                "placementType":"topBackground"
+            },
+            "jointPainMap": {
+                "region": "feet",
+                "subregion": "left",
+                "imageSize": {
+                    "width": 375,
+                    "height": 466
+                },
+                "jointSize": {
+                    "width": 40,
+                    "height": 40
+                },
+                "joints": [
+                    {
+                        "identifier": "leftPinkyToeTip",
+                        "center": {
+                            "x": 48,
+                            "y": 155
+                        }
+                    },
+                    {
+                        "identifier": "leftPinkyToeBase",
+                        "center": {
+                            "x": 48,
+                            "y": 214
+                        }
+                    },
+                    {
+                        "identifier": "leftFourthToeTip",
+                        "center": {
+                            "x": 105,
+                            "y": 124
+                        }
+                    },
+                    {
+                        "identifier": "leftFourthToeBase",
+                        "center": {
+                            "x": 105,
+                            "y": 183
+                        }
+                    },
+                    {
+                        "identifier": "leftMiddleToeTip",
+                        "center": {
+                            "x": 163,
+                            "y": 102
+                        }
+                    },
+                    {
+                        "identifier": "leftMiddleToeBase",
+                        "center": {
+                            "x": 163,
+                            "y": 163
+                        }
+                    },
+                    {
+                        "identifier": "leftIndexToeTip",
+                        "center": {
+                            "x": 220,
+                            "y": 86
+                        }
+                    },
+                    {
+                        "identifier": "leftIndexToeBase",
+                        "center": {
+                            "x": 219,
+                            "y": 150
+                        }
+                    },
+                    {
+                        "identifier": "leftBigToeTip",
+                        "center": {
+                            "x": 301,
+                            "y": 79
+                        }
+                    },
+                    {
+                        "identifier": "leftBigToeBase",
+                        "center": {
+                            "x": 301,
+                            "y": 146
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "identifier": "rightFoot",
+            "type": "jointPain",
+            "title": "Right foot joint pain",
+            "text": "Select all that apply",
+            "textSelectionFormat": "%@ joint selected",
+            "textMultipleSelectionFormat": "%@ joints selected",
+            "image":{
+                "type":"fetchable",
+                "imageName": "RightFoot",
+                "placementType":"topBackground"
+            },
+            "jointPainMap": {
+                "region": "feet",
+                "subregion": "right",
+                "imageSize": {
+                    "width": 375,
+                    "height": 463
+                },
+                "jointSize": {
+                    "width": 40,
+                    "height": 40
+                },
+                "joints": [
+                    {
+                        "identifier": "rightPinkyToeTip",
+                        "center": {
+                            "x": 329,
+                            "y": 153
+                        }
+                    },
+                    {
+                        "identifier": "rightPinkyToeBase",
+                        "center": {
+                            "x": 328,
+                            "y": 211
+                        }
+                    },
+                    {
+                        "identifier": "rightFourthToeTip",
+                        "center": {
+                            "x": 272,
+                            "y": 120
+                        }
+                    },
+                    {
+                        "identifier": "rightFourthToeBase",
+                        "center": {
+                            "x": 272,
+                            "y": 179
+                        }
+                    },
+                    {
+                        "identifier": "rightMiddleToeTip",
+                        "center": {
+                            "x": 214,
+                            "y": 99
+                        }
+                    },
+                    {
+                        "identifier": "rightMiddleToeBase",
+                        "center": {
+                            "x": 214,
+                            "y": 159
+                        }
+                    },
+                    {
+                        "identifier": "rightIndexToeTip",
+                        "center": {
+                            "x": 157,
+                            "y": 84
+                        }
+                    },
+                    {
+                        "identifier": "rightIndexToeBase",
+                        "center": {
+                            "x": 157,
+                            "y": 146
+                        }
+                    },
+                    {
+                        "identifier": "rightBigToeTip",
+                        "center": {
+                            "x": 76,
+                            "y": 76
+                        }
+                    },
+                    {
+                        "identifier": "rightBigToeBase",
+                        "center": {
+                            "x": 76,
+                            "y": 142
+                        }
+                    }
+                ]
+            }
         },
         {
             "identifier":"completion",

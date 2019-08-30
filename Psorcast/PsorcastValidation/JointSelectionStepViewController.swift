@@ -37,7 +37,7 @@ import BridgeApp
 
 open class JointSelectionStepObject: RSDFormUIStepObject, RSDStepViewControllerVendor {
     
-    /// Default type is `.emojiChoice`.
+    /// Default type is `.jointSelection`.
     open override class func defaultType() -> RSDStepType {
         return .jointSelection
     }
@@ -104,4 +104,3 @@ public class JointSelectionTableViewCell: RSDSelectionTableViewCell {
         }
     }
 }
-
