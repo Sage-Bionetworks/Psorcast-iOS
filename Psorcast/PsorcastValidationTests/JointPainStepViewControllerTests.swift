@@ -36,9 +36,9 @@ import XCTest
 import BridgeApp
 @testable import PsorcastValidation
 
-class ActivityViewControllerTests: XCTestCase {
+class JointPainStepViewControllerTests: XCTestCase {
     
-    let vc = JointPainStepViewController(nibName: "", bundle: Bundle.main)
+    let vc = MockJointPainStepViewController(nibName: nil, bundle: Bundle.main)
     
     override func setUp() {
         super.setUp()
@@ -50,119 +50,24 @@ class ActivityViewControllerTests: XCTestCase {
         super.tearDown()
     }
     
-    func testTranslatePointToAspectFitCoordinates_scaledUp_fillsHeight() {
-        // Image is scaled up and fills the height dimension
-        let imageSize = CGSize(width: 100, height: 150)
-        _ = CGSize(width: 300, height: 300) // image view size
-        let aspectFitRect = CGRect(x: 50, y: 0, width: 200, height: 300)
-        let center = CGPoint(x: 10, y: 10)
-        let jointSize = CGSize(width: 4, height: 4)
-        
-        let translated = vc.translateCenterPointToAspectFitCoordinateSpace(imageSize: imageSize, aspectFitRect: aspectFitRect, center: center, jointSize: jointSize)
-        XCTAssertEqual(translated.jointLeadingTop.x, 66)
-        XCTAssertEqual(translated.jointLeadingTop.y, 16)
-        XCTAssertEqual(translated.jointSize.width, 8)
-        XCTAssertEqual(translated.jointSize.height, 8)
+    func testSelectionText() {
+        let step = JointPainStepObject(identifier: "foo")
+        step.text = "foobar"
+        step.textSelectionFormat = "%@ foobar"
+        step.textMultipleSelectionFormat = "%@ foobars"
+        vc.mockStep = step
+        XCTAssertEqual(vc.selectedJointText(count: 0), "foobar")
+        XCTAssertEqual(vc.selectedJointText(count: 1), "1 foobar")
+        for i in 2...100 {
+            XCTAssertEqual(vc.selectedJointText(count: i), "\(i) foobars")
+        }
     }
-    
-    func testTranslatePointToAspectFitCoordinates_scaledDown_fillsHeight() {
-        // Image is scaled up and fills the height dimension
-        let imageSize = CGSize(width: 150, height: 300)
-        _ = CGSize(width: 100, height: 100) // image view size
-        let aspectFitRect = CGRect(x: 25, y: 0, width: 50, height: 100)
-        let center = CGPoint(x: 30, y: 30)
-        let jointSize = CGSize(width: 6, height: 9)
-        
-        let translated = vc.translateCenterPointToAspectFitCoordinateSpace(imageSize: imageSize, aspectFitRect: aspectFitRect, center: center, jointSize: jointSize)
-        XCTAssertEqual(translated.jointLeadingTop.x, 34)
-        XCTAssertEqual(translated.jointLeadingTop.y, 8.5)
-        XCTAssertEqual(translated.jointSize.width, 2)
-        XCTAssertEqual(translated.jointSize.height, 3)
-    }
-    
-    func testTranslatePointToAspectFitCoordinates_scaledUp_fillsWidth() {
-        // Image is scaled up and fills the height dimension
-        let imageSize = CGSize(width: 150, height: 100)
-        _ = CGSize(width: 300, height: 300) // image view size
-        let aspectFitRect = CGRect(x: 0, y: 50, width: 300, height: 200)
-        let center = CGPoint(x: 10, y: 10)
-        let jointSize = CGSize(width: 4, height: 4)
-        
-        let translated = vc.translateCenterPointToAspectFitCoordinateSpace(imageSize: imageSize, aspectFitRect: aspectFitRect, center: center, jointSize: jointSize)
-        XCTAssertEqual(translated.jointLeadingTop.x, 16)
-        XCTAssertEqual(translated.jointLeadingTop.y, 66)
-        XCTAssertEqual(translated.jointSize.width, 8)
-        XCTAssertEqual(translated.jointSize.height, 8)
-    }
-    
-    func testTranslatePointToAspectFitCoordinates_scaledDown_fillsWidth() {
-        // Image is scaled up and fills the height dimension
-        let imageSize = CGSize(width: 300, height: 150)
-        _ = CGSize(width: 100, height: 100) // image view size
-        let aspectFitRect = CGRect(x: 0, y: 25, width: 100, height: 50)
-        let center = CGPoint(x: 30, y: 60)
-        let jointSize = CGSize(width: 9, height: 6)
-        
-        let translated = vc.translateCenterPointToAspectFitCoordinateSpace(imageSize: imageSize, aspectFitRect: aspectFitRect, center: center, jointSize: jointSize)
-        XCTAssertEqual(translated.jointLeadingTop.x, 8.5)
-        XCTAssertEqual(translated.jointLeadingTop.y, 44)
-        XCTAssertEqual(translated.jointSize.width, 3)
-        XCTAssertEqual(translated.jointSize.height, 2)
-    }
-    
-    /// Test an image that's scaled up and fills height dimension
-    func testCalculateAspectFits_scaleUp_fillsHeight() {
-        let image = CGSize(width: 100, height: 150)
-        let imageView = CGSize(width: 300, height: 300)
-        let aspectFit = vc.calculateAspectFit(imageWidth: image.width, imageHeight: image.height, imageViewWidth: imageView.width, imageViewHeight: imageView.height)
-        XCTAssertEqual(aspectFit.origin.x, 50)
-        XCTAssertEqual(aspectFit.origin.y, 0)
-        XCTAssertEqual(aspectFit.size.width, 200)
-        XCTAssertEqual(aspectFit.size.height, 300)
-    }
-    
-    /// Test an image that's scaled down and fills height dimension
-    func testCalculateAspectFits_scaleDown_fillsHeight() {
-        let image = CGSize(width: 150, height: 300)
-        let imageView = CGSize(width: 100, height: 100)
-        let aspectFit = vc.calculateAspectFit(imageWidth: image.width, imageHeight: image.height, imageViewWidth: imageView.width, imageViewHeight: imageView.height)
-        XCTAssertEqual(aspectFit.origin.x, 25)
-        XCTAssertEqual(aspectFit.origin.y, 0)
-        XCTAssertEqual(aspectFit.size.width, 50)
-        XCTAssertEqual(aspectFit.size.height, 100)
-    }
-    
-    /// Test an image that's scaled up and fills width dimension
-    func testCalculateAspectFits_scaleUp_fillsWidth() {
-        let image = CGSize(width: 150, height: 100)
-        let imageView = CGSize(width: 300, height: 300)
-        let aspectFit = vc.calculateAspectFit(imageWidth: image.width, imageHeight: image.height, imageViewWidth: imageView.width, imageViewHeight: imageView.height)
-        XCTAssertEqual(aspectFit.origin.x, 0)
-        XCTAssertEqual(aspectFit.origin.y, 50)
-        XCTAssertEqual(aspectFit.size.width, 300)
-        XCTAssertEqual(aspectFit.size.height, 200)
-    }
-    
-    /// Test an image that's scaled down and fills width dimension
-    func testCalculateAspectFits_scaleDown_fillsWidth() {
-        let image = CGSize(width: 300, height: 150)
-        let imageView = CGSize(width: 100, height: 100)
-        let aspectFit = vc.calculateAspectFit(imageWidth: image.width, imageHeight: image.height, imageViewWidth: imageView.width, imageViewHeight: imageView.height)
-        XCTAssertEqual(aspectFit.origin.x, 0)
-        XCTAssertEqual(aspectFit.origin.y, 25)
-        XCTAssertEqual(aspectFit.size.width, 100)
-        XCTAssertEqual(aspectFit.size.height, 50)
-    }
-    
-    /// Test an image that's equal size to its imageview
-    func testCalculateAspectFits_equal() {
-        let image = CGSize(width: 123, height: 456)
-        let imageView = CGSize(width: 123, height: 456)
-        let aspectFit = vc.calculateAspectFit(imageWidth: image.width, imageHeight: image.height, imageViewWidth: imageView.width, imageViewHeight: imageView.height)
-        XCTAssertEqual(aspectFit.origin.x, 0)
-        XCTAssertEqual(aspectFit.origin.y, 0)
-        XCTAssertEqual(aspectFit.size.width, 123)
-        XCTAssertEqual(aspectFit.size.height, 456)
+}
+
+open class MockJointPainStepViewController: JointPainStepViewController {
+    fileprivate var mockStep: JointPainStepObject?
+    override open var jointPainStep: JointPainStepObject? {
+        return mockStep
     }
 }
 

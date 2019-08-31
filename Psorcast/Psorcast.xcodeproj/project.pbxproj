@@ -13,7 +13,12 @@
 		CB55C72D2317859700EA0C19 /* JointPainStepViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB55C72C2317859700EA0C19 /* JointPainStepViewController.xib */; };
 		CB55C72F231848CD00EA0C19 /* JointPainResultObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB55C72E231848CD00EA0C19 /* JointPainResultObject.swift */; };
 		CB55C73123187BB300EA0C19 /* CodableResultObjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB55C73023187BB300EA0C19 /* CodableResultObjectTests.swift */; };
-		CB55C7332318832400EA0C19 /* JointPainStepViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB55C7322318832400EA0C19 /* JointPainStepViewControllerTests.swift */; };
+		CB55C7332318832400EA0C19 /* JointPainImageViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB55C7322318832400EA0C19 /* JointPainImageViewTests.swift */; };
+		CB55C7382319718D00EA0C19 /* JointPainStepObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB55C7372319718D00EA0C19 /* JointPainStepObject.swift */; };
+		CB55C73A231972BE00EA0C19 /* JointPainImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB55C739231972BE00EA0C19 /* JointPainImageView.swift */; };
+		CB55C73C23198A1F00EA0C19 /* JointPainStepViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB55C73B23198A1F00EA0C19 /* JointPainStepViewControllerTests.swift */; };
+		CB55C73E23198C1000EA0C19 /* JointPainCompletionStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB55C73D23198C1000EA0C19 /* JointPainCompletionStepViewController.swift */; };
+		CB55C7402319A18300EA0C19 /* JointPainCompletionStepViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB55C73F2319A18300EA0C19 /* JointPainCompletionStepViewController.xib */; };
 		CB5E95FB22EE7A390001AAFE /* ParticipantIDRegistrationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB5E95FA22EE7A390001AAFE /* ParticipantIDRegistrationViewController.xib */; };
 		CB5E960A22EE920D0001AAFE /* ExternalIDRegistrationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB5E960922EE920D0001AAFE /* ExternalIDRegistrationViewController.xib */; };
 		CB6F54F022E25C5B0073BFE9 /* ParticipantIDRegistrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6F54EF22E25C5B0073BFE9 /* ParticipantIDRegistrationViewController.swift */; };
@@ -117,7 +122,12 @@
 		CB55C72C2317859700EA0C19 /* JointPainStepViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JointPainStepViewController.xib; sourceTree = "<group>"; };
 		CB55C72E231848CD00EA0C19 /* JointPainResultObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JointPainResultObject.swift; sourceTree = "<group>"; };
 		CB55C73023187BB300EA0C19 /* CodableResultObjectTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodableResultObjectTests.swift; sourceTree = "<group>"; };
-		CB55C7322318832400EA0C19 /* JointPainStepViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JointPainStepViewControllerTests.swift; sourceTree = "<group>"; };
+		CB55C7322318832400EA0C19 /* JointPainImageViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JointPainImageViewTests.swift; sourceTree = "<group>"; };
+		CB55C7372319718D00EA0C19 /* JointPainStepObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JointPainStepObject.swift; sourceTree = "<group>"; };
+		CB55C739231972BE00EA0C19 /* JointPainImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JointPainImageView.swift; sourceTree = "<group>"; };
+		CB55C73B23198A1F00EA0C19 /* JointPainStepViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JointPainStepViewControllerTests.swift; sourceTree = "<group>"; };
+		CB55C73D23198C1000EA0C19 /* JointPainCompletionStepViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JointPainCompletionStepViewController.swift; sourceTree = "<group>"; };
+		CB55C73F2319A18300EA0C19 /* JointPainCompletionStepViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JointPainCompletionStepViewController.xib; sourceTree = "<group>"; };
 		CB5E95FA22EE7A390001AAFE /* ParticipantIDRegistrationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ParticipantIDRegistrationViewController.xib; sourceTree = "<group>"; };
 		CB5E960922EE920D0001AAFE /* ExternalIDRegistrationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExternalIDRegistrationViewController.xib; sourceTree = "<group>"; };
 		CB6F54EF22E25C5B0073BFE9 /* ParticipantIDRegistrationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParticipantIDRegistrationViewController.swift; sourceTree = "<group>"; };
@@ -232,7 +242,8 @@
 		CB9F5E4122E0C27D003FBCEF /* PsorcastValidationTests */ = {
 			isa = PBXGroup;
 			children = (
-				CB55C7322318832400EA0C19 /* JointPainStepViewControllerTests.swift */,
+				CB55C73B23198A1F00EA0C19 /* JointPainStepViewControllerTests.swift */,
+				CB55C7322318832400EA0C19 /* JointPainImageViewTests.swift */,
 				CB55C73023187BB300EA0C19 /* CodableResultObjectTests.swift */,
 				CB9F5E5A22E0C531003FBCEF /* CodableStepObjectTests.swift */,
 				CB9F5E5922E0C530003FBCEF /* CopyStepTests.swift */,
@@ -272,9 +283,13 @@
 				CBD67D9822DFDC4E00998516 /* ImageCaptureStepViewController.swift */,
 				CBD67D9722DFDC4E00998516 /* ImageCaptureStepViewController.xib */,
 				CB55C71623173D6A00EA0C19 /* JointSelectionStepViewController.swift */,
+				CB55C7372319718D00EA0C19 /* JointPainStepObject.swift */,
+				CB55C72E231848CD00EA0C19 /* JointPainResultObject.swift */,
+				CB55C739231972BE00EA0C19 /* JointPainImageView.swift */,
 				CB55C724231773FF00EA0C19 /* JointPainStepViewController.swift */,
 				CB55C72C2317859700EA0C19 /* JointPainStepViewController.xib */,
-				CB55C72E231848CD00EA0C19 /* JointPainResultObject.swift */,
+				CB55C73D23198C1000EA0C19 /* JointPainCompletionStepViewController.swift */,
+				CB55C73F2319A18300EA0C19 /* JointPainCompletionStepViewController.xib */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -573,6 +588,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CB5E95FB22EE7A390001AAFE /* ParticipantIDRegistrationViewController.xib in Resources */,
+				CB55C7402319A18300EA0C19 /* JointPainCompletionStepViewController.xib in Resources */,
 				CB9F5E2922E0BED4003FBCEF /* lato_italic.ttf in Resources */,
 				CB9F5E2622E0BED4003FBCEF /* lato_black.ttf in Resources */,
 				CBD67D8122DFB8DE00998516 /* Psorcast.strings in Resources */,
@@ -604,8 +620,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				CB55C73123187BB300EA0C19 /* CodableResultObjectTests.swift in Sources */,
-				CB55C7332318832400EA0C19 /* JointPainStepViewControllerTests.swift in Sources */,
+				CB55C7332318832400EA0C19 /* JointPainImageViewTests.swift in Sources */,
 				CB9F5E5B22E0C531003FBCEF /* CopyStepTests.swift in Sources */,
+				CB55C73C23198A1F00EA0C19 /* JointPainStepViewControllerTests.swift in Sources */,
 				CB9F5E5C22E0C531003FBCEF /* CodableStepObjectTests.swift in Sources */,
 				CB9F5E4A22E0C2AA003FBCEF /* TaskListScheduleManagerTests.swift in Sources */,
 			);
@@ -633,16 +650,19 @@
 			buildActionMask = 2147483647;
 			files = (
 				CBD67D9122DFC6B400998516 /* BuildDateUtil.m in Sources */,
+				CB55C7382319718D00EA0C19 /* JointPainStepObject.swift in Sources */,
 				CBD67D9A22DFDC4E00998516 /* ImageCaptureStepViewController.swift in Sources */,
 				FFABCBEA22DD1F2800D11109 /* ViewController.swift in Sources */,
 				CBD67D9322DFC71E00998516 /* TaskFactory.swift in Sources */,
 				FFABCBE822DD1F2800D11109 /* AppDelegate.swift in Sources */,
 				CB55C725231773FF00EA0C19 /* JointPainStepViewController.swift in Sources */,
+				CB55C73E23198C1000EA0C19 /* JointPainCompletionStepViewController.swift in Sources */,
 				CBD67D8822DFC59B00998516 /* TaskListTableViewController.swift in Sources */,
 				CB55C71723173D6A00EA0C19 /* JointSelectionStepViewController.swift in Sources */,
 				CBD67D8422DFB90C00998516 /* ExternalIDRegistrationViewController.swift in Sources */,
 				CB55C72F231848CD00EA0C19 /* JointPainResultObject.swift in Sources */,
 				CBD67D8D22DFC5EE00998516 /* MotorControl+Bridge.swift in Sources */,
+				CB55C73A231972BE00EA0C19 /* JointPainImageView.swift in Sources */,
 				CB6F54F022E25C5B0073BFE9 /* ParticipantIDRegistrationViewController.swift in Sources */,
 				CBD67D8B22DFC5CA00998516 /* TaskListScheduleManager.swift in Sources */,
 			);

@@ -77,7 +77,7 @@
                 "subregion": "none",
                 "imageSize": {
                     "width": 375,
-                    "height": 428
+                    "height": 423
                 },
                 "jointSize": {
                     "width": 40,
@@ -85,45 +85,45 @@
                 },
                 "joints": [
                     {
-                        "identifier": "rightWrist",
+                        "identifier": "right_wrist",
                         "center": {
                             "x": 66,
-                            "y": 306
+                            "y": 296
                         }
                     },
                     {
-                        "identifier": "rightElbow",
+                        "identifier": "right_elbow",
                         "center": {
                             "x": 110,
-                            "y": 240
+                            "y": 228
                         }
                     },
                     {
-                        "identifier": "rightShoulder",
+                        "identifier": "right_shoulder",
                         "center": {
                             "x": 130,
-                            "y": 140
+                            "y": 128
                         }
                     },
                     {
-                        "identifier": "leftWrist",
+                        "identifier": "left_wrist",
                         "center": {
-                            "x": 307,
-                            "y": 306
+                            "x": 310,
+                            "y": 296
                         }
                     },
                     {
-                        "identifier": "leftElbow",
+                        "identifier": "left_elbow",
                         "center": {
                             "x": 265,
-                            "y": 240
+                            "y": 228
                         }
                     },
                     {
-                        "identifier": "leftShoulder",
+                        "identifier": "left_shoulder",
                         "center": {
                             "x": 244,
-                            "y": 140
+                            "y": 128
                         }
                     }
                 ]
@@ -146,7 +146,7 @@
                 "subregion": "none",
                 "imageSize": {
                     "width": 375,
-                    "height": 411
+                    "height": 423
                 },
                 "jointSize": {
                     "width": 40,
@@ -154,45 +154,45 @@
                 },
                 "joints": [
                     {
-                        "identifier": "rightHip",
+                        "identifier": "right_hip",
                         "center": {
                             "x": 132,
-                            "y": 40
+                            "y": 30
                         }
                     },
                     {
-                        "identifier": "rightKnee",
+                        "identifier": "right_knee",
                         "center": {
-                            "x": 154,
-                            "y": 220
+                            "x": 157,
+                            "y": 209
                         }
                     },
                     {
-                        "identifier": "rightAnkle",
+                        "identifier": "right_ankle",
                         "center": {
                             "x": 160,
-                            "y": 340
+                            "y": 337
                         }
                     },
                     {
-                        "identifier": "leftHip",
+                        "identifier": "left_hip",
                         "center": {
-                            "x": 238,
-                            "y": 40
+                            "x": 240,
+                            "y": 30
                         }
                     },
                     {
-                        "identifier": "leftKnee",
+                        "identifier": "left_knee",
                         "center": {
                             "x": 218,
-                            "y": 220
+                            "y": 209
                         }
                     },
                     {
-                        "identifier": "leftAnkle",
+                        "identifier": "left_ankle",
                         "center": {
                             "x": 216,
-                            "y": 340
+                            "y": 337
                         }
                     }
                 ]
@@ -215,7 +215,7 @@
                 "subregion": "left",
                 "imageSize": {
                     "width": 367,
-                    "height": 476
+                    "height": 423
                 },
                 "jointSize": {
                     "width": 40,
@@ -223,108 +223,108 @@
                 },
                 "joints": [
                     {
-                        "identifier": "leftPinkyFingerTip",
+                        "identifier": "left_dip_5",
                         "center": {
-                            "x": 50,
-                            "y": 170
+                            "x": 51,
+                            "y": 147
                         }
                     },
                     {
-                        "identifier": "leftPinkyFingerMid",
+                        "identifier": "left_pip_5",
                         "center": {
-                            "x": 62,
-                            "y": 221
+                            "x": 61,
+                            "y": 193
                         }
                     },
                     {
-                        "identifier": "leftPinkyFingerBase",
+                        "identifier": "left_mcp_5",
                         "center": {
                             "x": 78,
-                            "y": 275
+                            "y": 242
                         }
                     },
                     {
-                        "identifier": "leftRingFingerTip",
-                        "center": {
-                            "x": 120,
-                            "y": 108
-                        }
-                    },
-                    {
-                        "identifier": "leftRingFingerMid",
-                        "center": {
-                            "x": 120,
-                            "y": 167
-                        }
-                    },
-                    {
-                        "identifier": "leftRingFingerBase",
+                        "identifier": "left_dip_4",
                         "center": {
                             "x": 119,
-                            "y": 234
+                            "y": 87
                         }
                     },
                     {
-                        "identifier": "leftMiddleFingerTip",
+                        "identifier": "left_pip_4",
+                        "center": {
+                            "x": 120,
+                            "y": 140
+                        }
+                    },
+                    {
+                        "identifier": "left_mcp_4",
+                        "center": {
+                            "x": 120,
+                            "y": 201
+                        }
+                    },
+                    {
+                        "identifier": "left_dip_3",
                         "center": {
                             "x": 185,
-                            "y": 82
+                            "y": 63
                         }
                     },
                     {
-                        "identifier": "leftMiddleFingerMid",
+                        "identifier": "left_pip_3",
                         "center": {
                             "x": 178,
-                            "y": 149
+                            "y": 129
                         }
                     },
                     {
-                        "identifier": "leftMiddleFingerBase",
+                        "identifier": "left_mcp_3",
                         "center": {
                             "x": 171,
-                            "y": 233
+                            "y": 201
                         }
                     },
                     {
-                        "identifier": "leftIndexFingerTip",
+                        "identifier": "left_dip_2",
                         "center": {
                             "x": 248,
-                            "y": 124
+                            "y": 103
                         }
                     },
                     {
-                        "identifier": "leftIndexFingerMid",
+                        "identifier": "left_pip_2",
                         "center": {
                             "x": 235,
-                            "y": 175
+                            "y": 147
                         }
                     },
                     {
-                        "identifier": "leftIndexFingerBase",
-                        "center": {
-                            "x": 222,
-                            "y": 236
-                        }
-                    },
-                    {
-                        "identifier": "leftThumbFingerTip",
-                        "center": {
-                            "x": 300,
-                            "y": 300
-                        }
-                    },
-                    {
-                        "identifier": "leftThumbFingerMid",
-                        "center": {
-                            "x": 273,
-                            "y": 354
-                        }
-                    },
-                    {
-                        "identifier": "leftThumbFingerBase",
+                        "identifier": "left_mcp_2",
                         "center": {
                             "x": 223,
-                            "y": 411
+                            "y": 204
+                        }
+                    },
+                    {
+                        "identifier": "left_pip_1",
+                        "center": {
+                            "x": 301,
+                            "y": 259
+                        }
+                    },
+                    {
+                        "identifier": "left_mcp_1",
+                        "center": {
+                            "x": 272,
+                            "y": 319
+                        }
+                    },
+                    {
+                        "identifier": "left_cmc_1",
+                        "center": {
+                            "x": 223,
+                            "y": 367
                         }
                     }
                 ]
@@ -347,7 +347,7 @@
                 "subregion": "right",
                 "imageSize": {
                     "width": 375,
-                    "height": 474
+                    "height": 423
                 },
                 "jointSize": {
                     "width": 40,
@@ -355,108 +355,108 @@
                 },
                 "joints": [
                     {
-                        "identifier": "rightPinkyFingerTip",
+                        "identifier": "right_dip_5",
                         "center": {
                             "x": 325,
-                            "y": 167
-                        }
-                    },
-                    {
-                        "identifier": "rightPinkyFingerMid",
-                        "center": {
-                            "x": 313,
-                            "y": 217
-                        }
-                    },
-                    {
-                        "identifier": "rightPinkyFingerBase",
-                        "center": {
-                            "x": 297,
-                            "y": 272
-                        }
-                    },
-                    {
-                        "identifier": "rightRingFingerTip",
-                        "center": {
-                            "x": 255,
-                            "y": 104
-                        }
-                    },
-                    {
-                        "identifier": "rightRingFingerMid",
-                        "center": {
-                            "x": 255,
-                            "y": 164
-                        }
-                    },
-                    {
-                        "identifier": "rightRingFingerBase",
-                        "center": {
-                            "x": 255,
-                            "y": 230
-                        }
-                    },
-                    {
-                        "identifier": "rightMiddleFingerTip",
-                        "center": {
-                            "x": 190,
-                            "y": 79
-                        }
-                    },
-                    {
-                        "identifier": "rightMiddleFingerMid",
-                        "center": {
-                            "x": 197,
                             "y": 147
                         }
                     },
                     {
-                        "identifier": "rightMiddleFingerBase",
+                        "identifier": "right_pip_5",
+                        "center": {
+                            "x": 313,
+                            "y": 193
+                        }
+                    },
+                    {
+                        "identifier": "right_mcp_5",
+                        "center": {
+                            "x": 297,
+                            "y": 244
+                        }
+                    },
+                    {
+                        "identifier": "right_dip_4",
+                        "center": {
+                            "x": 255,
+                            "y": 88
+                        }
+                    },
+                    {
+                        "identifier": "right_pip_4",
+                        "center": {
+                            "x": 255,
+                            "y": 139
+                        }
+                    },
+                    {
+                        "identifier": "right_mcp_4",
+                        "center": {
+                            "x": 255,
+                            "y": 201
+                        }
+                    },
+                    {
+                        "identifier": "right_dip_3",
+                        "center": {
+                            "x": 190,
+                            "y": 62
+                        }
+                    },
+                    {
+                        "identifier": "right_pip_3",
+                        "center": {
+                            "x": 197,
+                            "y": 129
+                        }
+                    },
+                    {
+                        "identifier": "right_mcp_3",
                         "center": {
                             "x": 204,
-                            "y": 230
+                            "y": 202
                         }
                     },
                     {
-                        "identifier": "rightIndexFingerTip",
+                        "identifier": "right_dip_2",
                         "center": {
                             "x": 126,
-                            "y": 121
+                            "y": 103
                         }
                     },
                     {
-                        "identifier": "rightIndexFingerMid",
+                        "identifier": "right_pip_2",
                         "center": {
                             "x": 138,
-                            "y": 172
+                            "y": 149
                         }
                     },
                     {
-                        "identifier": "rightIndexFingerBase",
+                        "identifier": "right_mcp_2",
                         "center": {
                             "x": 153,
-                            "y": 234
+                            "y": 202
                         }
                     },
                     {
-                        "identifier": "rightThumbFingerTip",
+                        "identifier": "right_pip_1",
                         "center": {
-                            "x": 76,
-                            "y": 297
+                            "x": 75,
+                            "y": 259
                         }
                     },
                     {
-                        "identifier": "rightThumbFingerMid",
+                        "identifier": "right_mcp_1",
                         "center": {
-                            "x": 102,
-                            "y": 351
+                            "x": 103,
+                            "y": 319
                         }
                     },
                     {
-                        "identifier": "rightThumbFingerBase",
+                        "identifier": "right_cmc_1",
                         "center": {
                             "x": 152,
-                            "y": 408
+                            "y": 367
                         }
                     }
                 ]
@@ -479,7 +479,7 @@
                 "subregion": "left",
                 "imageSize": {
                     "width": 375,
-                    "height": 466
+                    "height": 423
                 },
                 "jointSize": {
                     "width": 40,
@@ -487,73 +487,73 @@
                 },
                 "joints": [
                     {
-                        "identifier": "leftPinkyToeTip",
+                        "identifier": "left_ft_pip_5",
                         "center": {
                             "x": 48,
-                            "y": 155
+                            "y": 144
                         }
                     },
                     {
-                        "identifier": "leftPinkyToeBase",
+                        "identifier": "left_ft_mtp_5",
                         "center": {
                             "x": 48,
-                            "y": 214
+                            "y": 200
                         }
                     },
                     {
-                        "identifier": "leftFourthToeTip",
+                        "identifier": "left_ft_pip_4",
                         "center": {
                             "x": 105,
-                            "y": 124
+                            "y": 118
                         }
                     },
                     {
-                        "identifier": "leftFourthToeBase",
+                        "identifier": "left_ft_mtp_4",
                         "center": {
                             "x": 105,
-                            "y": 183
+                            "y": 177
                         }
                     },
                     {
-                        "identifier": "leftMiddleToeTip",
+                        "identifier": "left_ft_pip_3",
                         "center": {
                             "x": 163,
-                            "y": 102
+                            "y": 96
                         }
                     },
                     {
-                        "identifier": "leftMiddleToeBase",
+                        "identifier": "left_ft_mtp_3",
                         "center": {
                             "x": 163,
-                            "y": 163
+                            "y": 154
                         }
                     },
                     {
-                        "identifier": "leftIndexToeTip",
+                        "identifier": "left_ft_pip_2",
                         "center": {
                             "x": 220,
-                            "y": 86
+                            "y": 77
                         }
                     },
                     {
-                        "identifier": "leftIndexToeBase",
+                        "identifier": "left_ft_mtp_2",
                         "center": {
                             "x": 219,
-                            "y": 150
+                            "y": 142
                         }
                     },
                     {
-                        "identifier": "leftBigToeTip",
+                        "identifier": "left_ft_pip_1",
                         "center": {
                             "x": 301,
-                            "y": 79
+                            "y": 71
                         }
                     },
                     {
-                        "identifier": "leftBigToeBase",
+                        "identifier": "left_ft_mtp_1",
                         "center": {
                             "x": 301,
-                            "y": 146
+                            "y": 138
                         }
                     }
                 ]
@@ -576,7 +576,7 @@
                 "subregion": "right",
                 "imageSize": {
                     "width": 375,
-                    "height": 463
+                    "height": 423
                 },
                 "jointSize": {
                     "width": 40,
@@ -584,73 +584,73 @@
                 },
                 "joints": [
                     {
-                        "identifier": "rightPinkyToeTip",
+                        "identifier": "right_ft_pip_5",
                         "center": {
                             "x": 329,
-                            "y": 153
+                            "y": 144
                         }
                     },
                     {
-                        "identifier": "rightPinkyToeBase",
+                        "identifier": "right_ft_mtp_5",
                         "center": {
                             "x": 328,
-                            "y": 211
+                            "y": 200
                         }
                     },
                     {
-                        "identifier": "rightFourthToeTip",
+                        "identifier": "right_ft_pip_4",
                         "center": {
                             "x": 272,
-                            "y": 120
+                            "y": 118
                         }
                     },
                     {
-                        "identifier": "rightFourthToeBase",
+                        "identifier": "right_ft_mtp_4",
                         "center": {
                             "x": 272,
-                            "y": 179
+                            "y": 176
                         }
                     },
                     {
-                        "identifier": "rightMiddleToeTip",
+                        "identifier": "right_ft_pip_3",
                         "center": {
                             "x": 214,
-                            "y": 99
+                            "y": 95
                         }
                     },
                     {
-                        "identifier": "rightMiddleToeBase",
+                        "identifier": "right_ft_mtp_3",
                         "center": {
                             "x": 214,
-                            "y": 159
+                            "y": 155
                         }
                     },
                     {
-                        "identifier": "rightIndexToeTip",
+                        "identifier": "right_ft_pip_2",
                         "center": {
                             "x": 157,
-                            "y": 84
+                            "y": 77
                         }
                     },
                     {
-                        "identifier": "rightIndexToeBase",
+                        "identifier": "right_ft_mtp_2",
                         "center": {
                             "x": 157,
-                            "y": 146
+                            "y": 140
                         }
                     },
                     {
-                        "identifier": "rightBigToeTip",
+                        "identifier": "right_ft_pip_1",
                         "center": {
-                            "x": 76,
-                            "y": 76
+                            "x": 75,
+                            "y": 72
                         }
                     },
                     {
-                        "identifier": "rightBigToeBase",
+                        "identifier": "right_ft_mtp_1",
                         "center": {
                             "x": 76,
-                            "y": 142
+                            "y": 139
                         }
                     }
                 ]
@@ -658,14 +658,209 @@
         },
         {
             "identifier":"completion",
-            "type":"completion",
-            "title":"Great job!",
-            "text":"You just completed the activity.",
+            "type":"completionJointPain",
+            "title":"Activity complete",
+            "detail":"Today you identified",
+            "text": "%@ joints selected",
+            "textSelectionFormat": "%@ joint selected",
+            "textMultipleSelectionFormat": "%@ joints selected",
             "actions": {
                 "goForward":{
                     "type":"default",
                     "buttonTitle":"Done"
                 }
+            },
+            "jointRegions": [
+                {
+                    "jointMapIdentifier": "left_shoulder",
+                    "jointCompleteIdentifiers": ["left_shoulder"]
+                },
+                {
+                    "jointMapIdentifier": "right_shoulder",
+                    "jointCompleteIdentifiers": ["right_shoulder"]
+                },
+                {
+                    "jointMapIdentifier": "left_elbow",
+                    "jointCompleteIdentifiers": ["left_elbow"]
+                },
+                {
+                    "jointMapIdentifier": "right_elbow",
+                    "jointCompleteIdentifiers": ["right_elbow"]
+                },
+                {
+                    "jointMapIdentifier": "leftHandAndWrist",
+                    "jointCompleteIdentifiers": [
+                        "left_wrist",
+                        "left_dip_5", "left_pip_5", "left_mcp_5",
+                        "left_dip_4", "left_pip_4", "left_mcp_4",
+                        "left_dip_3", "left_pip_3", "left_mcp_3",
+                        "left_dip_2", "left_pip_2", "left_mcp_2",
+                        "left_pip_1", "left_mcp_1", "left_cmc_1"]
+                },
+                {
+                    "jointMapIdentifier": "rightHandAndWrist",
+                    "jointCompleteIdentifiers": [
+                        "right_wrist",
+                        "right_dip_5", "right_pip_5", "right_mcp_5",
+                        "right_dip_4", "right_pip_4", "right_mcp_4",
+                        "right_dip_3", "right_pip_3", "right_mcp_3",
+                        "right_dip_2", "right_pip_2", "right_mcp_2",
+                        "right_pip_1", "right_mcp_1", "right_cmc_1"]
+                },
+                {
+                    "jointMapIdentifier": "left_hip",
+                    "jointCompleteIdentifiers": ["left_hip"]
+                },
+                {
+                    "jointMapIdentifier": "right_hip",
+                    "jointCompleteIdentifiers": ["right_hip"]
+                },
+                {
+                    "jointMapIdentifier": "left_knee",
+                    "jointCompleteIdentifiers": ["left_knee"]
+                },
+                {
+                    "jointMapIdentifier": "right_knee",
+                    "jointCompleteIdentifiers": ["right_knee"]
+                },
+                {
+                    "jointMapIdentifier": "left_ankle",
+                    "jointCompleteIdentifiers": ["left_ankle"]
+                },
+                {
+                    "jointMapIdentifier": "right_ankle",
+                    "jointCompleteIdentifiers": ["right_ankle"]
+                },
+                {
+                    "jointMapIdentifier": "leftFoot",
+                    "jointCompleteIdentifiers": [
+                        "left_ft_pip_5", "leftPinkyToeMid", "left_ft_mtp_5",
+                        "left_ft_pip_4", "leftFourthToeMid", "left_ft_mtp_4",
+                        "left_ft_pip_3", "leftMiddleToeMid", "left_ft_mtp_3",
+                        "left_ft_pip_2", "leftIndexToeMid", "left_ft_mtp_2",
+                        "left_ft_pip_1", "leftBigToeMid", "left_ft_mtp_1"]
+                },
+                {
+                    "jointMapIdentifier": "rightFoot",
+                    "jointCompleteIdentifiers": [
+                        "right_ft_pip_5", "rightPinkyToeMid", "right_ft_mtp_5",
+                        "right_ft_pip_4", "rightFourthToeMid", "right_ft_mtp_4",
+                        "right_ft_pip_3", "rightMiddleToeMid", "right_ft_mtp_3",
+                        "right_ft_pip_2", "rightIndexToeMid", "right_ft_mtp_2",
+                        "right_ft_pip_1", "rightBigToeMid", "right_ft_mtp_1"]
+                }
+            ],
+            "jointPainMap": {
+                "region": "fullBody",
+                "subregion": "none",
+                "imageSize": {
+                    "width": 121,
+                    "height": 231
+                },
+                "jointSize": {
+                    "width": 15,
+                    "height": 15
+                },
+                "joints": [
+                    {
+                        "identifier": "left_shoulder",
+                        "center": {
+                            "x": 80,
+                            "y": 46
+                        }
+                    },
+                    {
+                        "identifier": "right_shoulder",
+                        "center": {
+                            "x": 40,
+                            "y": 46
+                        }
+                    },
+                    {
+                        "identifier": "left_elbow",
+                        "center": {
+                            "x": 90,
+                            "y": 84
+                        }
+                    },
+                    {
+                        "identifier": "right_elbow",
+                        "center": {
+                            "x": 30,
+                            "y": 84
+                        }
+                    },
+                    {
+                        "identifier": "leftHandAndWrist",
+                        "center": {
+                            "x": 111,
+                            "y": 115
+                        }
+                    },
+                    {
+                        "identifier": "rightHandAndWrist",
+                        "center": {
+                            "x": 10,
+                            "y": 115
+                        }
+                    },
+                    {
+                        "identifier": "left_hip",
+                        "center": {
+                            "x": 83,
+                            "y": 105
+                        }
+                    },
+                    {
+                        "identifier": "right_hip",
+                        "center": {
+                            "x": 37,
+                            "y": 105
+                        }
+                    },
+                    {
+                        "identifier": "left_knee",
+                        "center": {
+                            "x": 72,
+                            "y": 158
+                        }
+                    },
+                    {
+                        "identifier": "right_knee",
+                        "center": {
+                            "x": 48,
+                            "y": 158
+                        }
+                    },
+                    {
+                        "identifier": "left_ankle",
+                        "center": {
+                            "x": 71,
+                            "y": 205
+                        }
+                    },
+                    {
+                        "identifier": "right_ankle",
+                        "center": {
+                            "x": 50,
+                            "y": 205
+                        }
+                    },
+                    {
+                        "identifier": "leftFoot",
+                        "center": {
+                            "x": 73,
+                            "y": 224
+                        }
+                    },
+                    {
+                        "identifier": "rightFoot",
+                        "center": {
+                            "x": 48,
+                            "y": 224
+                        }
+                    }
+                ]
             }
         }
     ]
