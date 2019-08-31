@@ -198,4 +198,92 @@ class CodableResultObjectTests: XCTestCase {
             return
         }
     }
+    
+    func testSummaryResultObject_Codable() {
+        let json = """
+        {
+            "identifier": "foo",
+            "type": "jointPainSummary",
+            "startDate": "2017-10-16T22:30:09.000-02:30",
+            "endDate": "2017-10-16T22:30:09.000-02:30",
+            "simpleJoints": [
+                {
+                    "identifier": "rightHand",
+                    "isSelected": true
+                },
+                {
+                    "identifier": "leftHand",
+                    "isSelected": false
+                },
+                {
+                    "identifier": "leftFoot",
+                    "isSelected": false
+                },
+                {
+                    "identifier": "rightFoot",
+                    "isSelected": true
+                },
+            ]
+        }
+        """.data(using: .utf8)! // our data in native (JSON) format
+        
+        do {
+            
+            let factory = TaskFactory()
+            let decoder = factory.createJSONDecoder()
+            
+            let object = try decoder.decode(JointPainSummaryResultObject.self, from: json)
+            
+            XCTAssertEqual(object.identifier, "foo")
+            XCTAssertEqual(object.startDate, object.endDate)
+            
+            XCTAssertEqual(object.simpleJoints.count, 4)
+            
+            XCTAssertEqual(object.simpleJoints[0].identifier, "rightHand")
+            XCTAssertEqual(object.simpleJoints[0].isSelected, true)
+            XCTAssertEqual(object.simpleJoints[1].identifier, "leftHand")
+            XCTAssertEqual(object.simpleJoints[1].isSelected, false)
+            XCTAssertEqual(object.simpleJoints[2].identifier, "leftFoot")
+            XCTAssertEqual(object.simpleJoints[2].isSelected, false)
+            XCTAssertEqual(object.simpleJoints[3].identifier, "rightFoot")
+            XCTAssertEqual(object.simpleJoints[3].isSelected, true)
+            
+            
+            let encoder = factory.createJSONEncoder()
+            let jsonData = try encoder.encode(object)
+            guard let dictionaryBase = try JSONSerialization.jsonObject(with: jsonData, options: []) as? [String : Any]
+                else {
+                    XCTFail("Encoded object is not a dictionary")
+                    return
+            }
+            
+            XCTAssertEqual(dictionaryBase["identifier"] as? String, "foo")
+            XCTAssertEqual(dictionaryBase["type"] as? String, "jointPainSummary")
+            XCTAssertEqual(dictionaryBase["startDate"] as? String, "2017-10-16T22:30:09.000-02:30")
+            XCTAssertEqual(dictionaryBase["endDate"] as? String, "2017-10-16T22:30:09.000-02:30")
+            
+            guard let joints = dictionaryBase["simpleJoints"] as? [[String : Any]] else {
+                XCTFail("simpleJoints Encoded object is not an array of dictionarys")
+                return
+            }
+            
+            XCTAssertEqual(joints.count, 4)
+            
+            XCTAssertEqual(joints[0]["identifier"] as? String, "rightHand")
+            XCTAssertEqual(joints[0]["isSelected"] as? Bool, true)
+
+            XCTAssertEqual(joints[1]["identifier"] as? String, "leftHand")
+            XCTAssertEqual(joints[1]["isSelected"] as? Bool, false)
+            
+            XCTAssertEqual(joints[2]["identifier"] as? String, "leftFoot")
+            XCTAssertEqual(joints[2]["isSelected"] as? Bool, false)
+            
+            XCTAssertEqual(joints[3]["identifier"] as? String, "rightFoot")
+            XCTAssertEqual(joints[3]["isSelected"] as? Bool, true)
+            
+        } catch let err {
+            XCTFail("Failed to decode/encode object: \(err)")
+            return
+        }
+    }
 }
