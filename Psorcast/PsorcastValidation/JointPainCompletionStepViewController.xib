@@ -75,7 +75,10 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="0 joints selected" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="lPO-0H-hWO" userLabel="Selected Text Label">
-                            <rect key="frame" x="12" y="424.33333333333331" width="351" height="36"/>
+                            <rect key="frame" x="12" y="412.33333333333331" width="351" height="99.999999999999943"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="100" id="Vxx-Tg-UrF"/>
+                            </constraints>
                             <fontDescription key="fontDescription" type="system" pointSize="30"/>
                             <nil key="highlightedColor"/>
                         </label>
@@ -93,7 +96,7 @@
                         <constraint firstAttribute="trailing" secondItem="kjp-vl-acf" secondAttribute="trailing" id="Oum-Vk-NiV"/>
                         <constraint firstAttribute="trailing" secondItem="Ncg-SY-6dE" secondAttribute="trailing" id="XDw-dP-K6d"/>
                         <constraint firstItem="kjp-vl-acf" firstAttribute="top" secondItem="nCy-4g-nIJ" secondAttribute="top" id="aP1-H6-AJI"/>
-                        <constraint firstItem="lPO-0H-hWO" firstAttribute="top" secondItem="mct-jM-Lzp" secondAttribute="bottom" constant="24" id="aRr-lM-QNL"/>
+                        <constraint firstItem="lPO-0H-hWO" firstAttribute="top" secondItem="mct-jM-Lzp" secondAttribute="bottom" constant="12" id="aRr-lM-QNL"/>
                         <constraint firstItem="mct-jM-Lzp" firstAttribute="top" secondItem="eMZ-8x-koe" secondAttribute="bottom" constant="12" id="c2R-mI-9l5"/>
                         <constraint firstItem="eMZ-8x-koe" firstAttribute="top" secondItem="kjp-vl-acf" secondAttribute="bottom" constant="32" id="nqg-cK-0qX"/>
                         <constraint firstItem="kjp-vl-acf" firstAttribute="leading" secondItem="nCy-4g-nIJ" secondAttribute="leading" id="nrX-k7-h40"/>

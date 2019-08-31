@@ -1,6 +1,6 @@
 {
-    "taskIdentifier"            : "JointCounting",
-    "schemaIdentifier"          : "JointCounting",
+    "taskIdentifier"            : "MDJointCounting",
+    "schemaIdentifier"          : "MDJointCounting",
     "progressMarkers":[],
     "steps":
     [

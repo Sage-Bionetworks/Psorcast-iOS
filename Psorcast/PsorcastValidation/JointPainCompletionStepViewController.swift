@@ -147,8 +147,30 @@ open class JointPainCompletionStepViewController: RSDStepViewController, JointPa
         self.setupJointImageView()
         
         // Reflect the joint counts in text
-        let count = self.jointImageView.selectedJoints.count
-        self.navigationHeader?.textLabel?.text = self.selectedJointText(count: count)
+        let count = self.allJointResults.filter({ $0.isSelected ?? false }).count
+        
+        // Text has unique formatting of large number and normal text after
+        let backgroundLight = self.designSystem.colorRules.backgroundLight
+        self.navigationHeader?.textLabel?.textColor =
+            self.designSystem.colorRules.textColor(on: backgroundLight, for: .smallNumber)
+        
+        let numberFont = self.designSystem.fontRules.font(for: .smallNumber)
+        let textFont = self.designSystem.fontRules.font(for: .bodyDetail)
+        
+        // Here will assign different fonts to the selected joint number and the text following
+        // We will also adjust the baseline of the joint number to be centered with the text follow
+        // Lastly, we will increase spacing between the number and the following text
+        if let text = self.selectedJointText(count: count),
+            let firstSpaceIdx = text.firstIndex(of: " ") {
+            let attributedText = NSMutableAttributedString(string: text, attributes: [NSAttributedString.Key.font: textFont])
+            let textRange = NSMakeRange(0, firstSpaceIdx.utf16Offset(in: text))
+            let textRangeSpace = NSMakeRange(firstSpaceIdx.utf16Offset(in: text) - 1,
+                                             firstSpaceIdx.utf16Offset(in: text))
+            attributedText.addAttribute(NSAttributedString.Key.font , value: numberFont, range: textRange)
+            attributedText.addAttribute(NSAttributedString.Key.kern , value: 10.0, range: textRangeSpace)
+            attributedText.addAttribute(NSAttributedString.Key.baselineOffset , value: -10.0, range: textRange)
+            self.navigationHeader?.textLabel?.attributedText = attributedText
+        }
     }
     
     func setupJointImageView() {
