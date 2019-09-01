@@ -141,7 +141,15 @@ open class JointPainCompletionStepViewController: RSDStepViewController, JointPa
     /// the imageview is generated dynamically within the joint pain view
     override open func setupHeader(_ header: RSDStepNavigationView) {
         self.navigationHeader?.imageView = self.jointImageView.imageView
+        let image = self.jointImageView.image
         super.setupHeader(header)
+        // TODO: mdephillips 9/1/19 figure out root cause,
+        // but quick fix in here for now
+        // Back story: an update to the research framework
+        // is causing the setupHeader function to re-create the imageview
+        // so it back to ours afterwards.
+        self.navigationHeader?.imageView = self.jointImageView.imageView
+        self.jointImageView?.imageView?.image = image
         
         // Setup the joint paint imageview
         self.setupJointImageView()
