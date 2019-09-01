@@ -1,8 +1,8 @@
 //
-//  MotorControl+Bridge.swift
-//  PsorcastValidation
-//
-//  Copyright © 2019 Sage Bionetworks. All rights reserved.
+// JointPainStepViewControllerTests.swift
+// PsorcastValidationTests
+
+// Copyright © 2019 Sage Bionetworks. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without modification,
 // are permitted provided that the following conditions are met:
@@ -32,25 +32,42 @@
 //
 
 import Foundation
+import XCTest
 import BridgeApp
-import MotorControl
+@testable import PsorcastValidation
 
-public extension RSDIdentifier {
-    static let walkingTask: RSDIdentifier = MCTTaskIdentifier.walk30Seconds.identifier    
-    static let handImagingTask: RSDIdentifier = "HandImaging"
-    static let footImagingTask: RSDIdentifier = "FootImaging"
-    static let jointCountingTask: RSDIdentifier = "JointCounting"
-    static let mdJointCountingTask: RSDIdentifier = "MDJointCounting"
-}
-
-extension MCTTaskInfo : SBAActivityInfo {
-    public var moduleId: SBAModuleIdentifier? {
-        return SBAModuleIdentifier(rawValue: self.identifier)
+class JointPainStepViewControllerTests: XCTestCase {
+    
+    let vc = MockJointPainStepViewController(nibName: nil, bundle: Bundle.main)
+    
+    override func setUp() {
+        super.setUp()
+        // Put setup code here. This method is called before the invocation of each test method in the class.
+    }
+    
+    override func tearDown() {
+        // Put teardown code here. This method is called after the invocation of each test method in the class.
+        super.tearDown()
+    }
+    
+    func testSelectionText() {
+        let step = JointPainStepObject(identifier: "foo")
+        step.text = "foobar"
+        step.textSelectionFormat = "%@ foobar"
+        step.textMultipleSelectionFormat = "%@ foobars"
+        vc.mockStep = step
+        XCTAssertEqual(vc.selectedJointText(count: 0), "foobar")
+        XCTAssertEqual(vc.selectedJointText(count: 1), "1 foobar")
+        for i in 2...100 {
+            XCTAssertEqual(vc.selectedJointText(count: i), "\(i) foobars")
+        }
     }
 }
 
-extension MCTTaskIdentifier {
-    public var rsdIdentifier : RSDIdentifier {
-        return RSDIdentifier(rawValue: self.rawValue)
+open class MockJointPainStepViewController: JointPainStepViewController {
+    fileprivate var mockStep: JointPainStepObject?
+    override open var jointPainStep: JointPainStepObject? {
+        return mockStep
     }
 }
+
