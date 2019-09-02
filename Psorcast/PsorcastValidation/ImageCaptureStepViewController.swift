@@ -119,7 +119,7 @@ open class ImageCaptureStepViewController: RSDStepViewController, UIImagePickerC
         // Create the result and set it as the result for this step
         var result = RSDFileResultObject(identifier: self.step.identifier)
         result.url = url
-        self.stepViewModel.parentTaskPath?.taskResult.stepHistory.append(result)
+        _ = self.stepViewModel.parent?.taskResult.appendStepHistory(with: result)
         
         // Go to the next step.
         self.goForward()

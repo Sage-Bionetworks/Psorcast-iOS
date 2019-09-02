@@ -41,8 +41,8 @@ class TaskListScheduleManagerTests: XCTestCase {
     var activities: [SBBScheduledActivity] = []
     var manager: TaskListScheduleManager = TaskListScheduleManager()
     
-    let taskRowEndIndex = 4
-    let rowCount = 4
+    let taskRowEndIndex = 6
+    let rowCount = 6
     let sectionCount = 1
     
     override func setUp() {
@@ -57,7 +57,7 @@ class TaskListScheduleManagerTests: XCTestCase {
     
     func testSortOrderSchedules() {
         // Unknown tasks should be sorted at the end
-        let expectedResult = ["Walk30Seconds", "HandImaging", "FootImaging", "Unknown Task"]
+        let expectedResult = ["Walk30Seconds", "JointCounting", "MDJointCounting", "HandImaging", "FootImaging", "Unknown Task"]
         
         var actualResult = manager.sortActivities(activities)
         XCTAssertNotNil(actualResult)
@@ -106,7 +106,7 @@ class TaskListScheduleManagerTests: XCTestCase {
     }
     
     func testSortedScheduledActivity() {
-        let expectedResultIdentifiers = ["Walk30Seconds", "HandImaging", "FootImaging", "Unknown Task", "Unknown Task"]
+        let expectedResultIdentifiers = ["Walk30Seconds", "JointCounting", "MDJointCounting", "HandImaging", "FootImaging", "Unknown Task", "Unknown Task"]
         
         for (index) in 0..<rowCount {
             if (index < taskRowEndIndex) { // Task Rows
@@ -118,7 +118,7 @@ class TaskListScheduleManagerTests: XCTestCase {
     }
     
     func testTableRowTitles() {
-        let expectedTitles = ["30 second walk", "Finger photo", "Toe photo", "Unknown Task Title"]
+        let expectedTitles = ["30 second walk", "Joint Counting", "MD Joint Counting", "Finger photo", "Toe photo", "Unknown Task Title"]
 
         XCTAssertEqual(expectedTitles.count, rowCount)
         for (index) in 0..<rowCount {
@@ -128,7 +128,7 @@ class TaskListScheduleManagerTests: XCTestCase {
     }
     
     func testTableRowDetails() {
-        let expectedDetail = ["Version 0.1", "Version 0.2", "Version 0.3", "Version 0.4"]
+        let expectedDetail = ["Version 0.1", "Version 1.0", "Version 1.1", "Version 0.2", "Version 0.3", "Version 0.4"]
         
         XCTAssertEqual(expectedDetail.count, rowCount)
         for (index) in 0..<rowCount {
@@ -165,6 +165,8 @@ class MockScheduledActivity: SBBScheduledActivity {
     static func mockActivities() -> [SBBScheduledActivity] {
         var activities = [SBBScheduledActivity]()
         activities.append(MockScheduledActivity(identifier: "Walk30Seconds", label: "30 second walk", detail: "Version 0.1"))
+        activities.append(MockScheduledActivity(identifier: "JointCounting", label: "Joint Counting", detail: "Version 1.0"))
+        activities.append(MockScheduledActivity(identifier: "MDJointCounting", label: "MD Joint Counting", detail: "Version 1.1"))
         activities.append(MockScheduledActivity(identifier: "HandImaging", label: "Finger photo", detail: "Version 0.2"))
         activities.append(MockScheduledActivity(identifier: "FootImaging", label: "Toe photo", detail: "Version 0.3"))
         activities.append(MockScheduledActivity(identifier: "Unknown Task", label: "Unknown Task Title", detail: "Version 0.4"))

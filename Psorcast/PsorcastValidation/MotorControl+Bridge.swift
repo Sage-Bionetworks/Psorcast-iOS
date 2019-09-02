@@ -39,6 +39,8 @@ public extension RSDIdentifier {
     static let walkingTask: RSDIdentifier = MCTTaskIdentifier.walk30Seconds.identifier    
     static let handImagingTask: RSDIdentifier = "HandImaging"
     static let footImagingTask: RSDIdentifier = "FootImaging"
+    static let jointCountingTask: RSDIdentifier = "JointCounting"
+    static let mdJointCountingTask: RSDIdentifier = "MDJointCounting"
 }
 
 extension MCTTaskInfo : SBAActivityInfo {
