@@ -39,6 +39,9 @@ import MotorControl
 class TaskListTableViewController: UITableViewController, RSDTaskViewControllerDelegate, RSDButtonCellDelegate {
     
     let scheduleManager = TaskListScheduleManager()
+    let jointCountTransitioningDelegate = JointPainTransitioningDelegate()
+    
+    public var lastRectOfJointCountRow: CGRect?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -112,21 +115,20 @@ class TaskListTableViewController: UITableViewController, RSDTaskViewControllerD
     }
     
     func didTapButton(on cell: RSDButtonCell) {
-        if (self.scheduleManager.isTaskRow(for: cell.indexPath)) {
-            RSDFactory.shared = TaskFactory()
-            // This is an activity
-            guard let activity = self.scheduleManager.sortedScheduledActivity(for: cell.indexPath) else { return }
-            let taskViewModel = scheduleManager.instantiateTaskViewModel(for: activity)
-            let taskVc = RSDTaskViewController(taskViewModel: taskViewModel)
-            taskVc.delegate = self            
-            self.present(taskVc, animated: true, completion: nil)
-        } else {
-            // TODO: mdephillips 5/18/19 transition to appropriate screen
-//            guard let supplementalRow = self.scheduleManager.supplementalRow(for: cell.indexPath) else { return }
-//            if (supplementalRow == .ConnectFitbit) {
-//                (AppDelegate.shared as? AppDelegate)?.connectToFitbit()
-//            }
+        RSDFactory.shared = TaskFactory()
+        // This is an activity
+        guard let activity = self.scheduleManager.sortedScheduledActivity(for: cell.indexPath) else { return }
+        let taskViewModel = scheduleManager.instantiateTaskViewModel(for: activity)
+        let taskVc = RSDTaskViewController(taskViewModel: taskViewModel)
+        taskVc.delegate = self
+        
+        if activity.activityIdentifier == RSDIdentifier.jointCountingTask.rawValue {
+            self.lastRectOfJointCountRow = self.tableView.rectForRow(at: cell.indexPath)
+            self.lastRectOfJointCountRow = self.lastRectOfJointCountRow?.offsetBy(dx: -self.tableView.contentOffset.x, dy: -self.tableView.contentOffset.y)
+            taskVc.transitioningDelegate = self.jointCountTransitioningDelegate
         }
+        
+        self.present(taskVc, animated: true, completion: nil)
     }
     
     @IBAction func doneTapped() {
