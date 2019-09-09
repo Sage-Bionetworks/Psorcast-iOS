@@ -33,6 +33,7 @@
 
 import UIKit
 import BridgeApp
+import BridgeAppUI
 
 @IBDesignable
 open class JointPainImageView: UIView, RSDViewDesignable {

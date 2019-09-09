@@ -33,6 +33,7 @@
 
 import Foundation
 import BridgeApp
+import BridgeAppUI
 
 open class JointPainCompletionStepObject: JointPainStepObject {
     

@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CB422D2A23316EB700787FEE /* BridgeAppUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB422D2923316EB700787FEE /* BridgeAppUI.framework */; };
+		CB422D2B23316EB700787FEE /* BridgeAppUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB422D2923316EB700787FEE /* BridgeAppUI.framework */; };
+		CB422D2C23316EB700787FEE /* BridgeAppUI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CB422D2923316EB700787FEE /* BridgeAppUI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		CB55C7152317391600EA0C19 /* JointCounting.json in Resources */ = {isa = PBXBuildFile; fileRef = CB55C7142317391600EA0C19 /* JointCounting.json */; };
 		CB55C71723173D6A00EA0C19 /* JointSelectionStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB55C71623173D6A00EA0C19 /* JointSelectionStepViewController.swift */; };
 		CB55C725231773FF00EA0C19 /* JointPainStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB55C724231773FF00EA0C19 /* JointPainStepViewController.swift */; };
@@ -109,6 +112,7 @@
 				FFABCC0922DD1FDB00D11109 /* BridgeSDK.framework in Embed Frameworks */,
 				FFABCC0022DD1FBC00D11109 /* ResearchMotion.framework in Embed Frameworks */,
 				FFABCBF922DD1FAB00D11109 /* Research.framework in Embed Frameworks */,
+				CB422D2C23316EB700787FEE /* BridgeAppUI.framework in Embed Frameworks */,
 				FFABCBFD22DD1FB500D11109 /* ResearchUI.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -117,6 +121,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		CB422D2923316EB700787FEE /* BridgeAppUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BridgeAppUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB55C7142317391600EA0C19 /* JointCounting.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = JointCounting.json; sourceTree = "<group>"; };
 		CB55C71623173D6A00EA0C19 /* JointSelectionStepViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JointSelectionStepViewController.swift; sourceTree = "<group>"; };
 		CB55C724231773FF00EA0C19 /* JointPainStepViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JointPainStepViewController.swift; sourceTree = "<group>"; };
@@ -215,10 +220,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CB422D2A23316EB700787FEE /* BridgeAppUI.framework in Frameworks */,
 				FFABCC0522DD1FCF00D11109 /* BridgeApp.framework in Frameworks */,
 				FFABCC0222DD1FC900D11109 /* MotorControl.framework in Frameworks */,
 				FFABCC0822DD1FDB00D11109 /* BridgeSDK.framework in Frameworks */,
 				FFABCBFF22DD1FBC00D11109 /* ResearchMotion.framework in Frameworks */,
+				CB422D2B23316EB700787FEE /* BridgeAppUI.framework in Frameworks */,
 				FFABCBF822DD1FAB00D11109 /* Research.framework in Frameworks */,
 				FFABCBFC22DD1FB500D11109 /* ResearchUI.framework in Frameworks */,
 			);
@@ -413,6 +420,7 @@
 		FFABCC0A22DD1FE800D11109 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CB422D2923316EB700787FEE /* BridgeAppUI.framework */,
 				FFABCC0722DD1FDB00D11109 /* BridgeSDK.framework */,
 				FFABCC0422DD1FCF00D11109 /* BridgeApp.framework */,
 				FFABCC0122DD1FC900D11109 /* MotorControl.framework */,

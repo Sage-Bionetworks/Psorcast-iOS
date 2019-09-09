@@ -34,6 +34,7 @@
 
 import Foundation
 import BridgeApp
+import BridgeAppUI
 
 open class JointPainStepObject: RSDUIStepObject, RSDStepViewControllerVendor, RSDNavigationSkipRule {
     
