@@ -118,6 +118,9 @@ public struct JointPainMap: Codable {
     public var subregion: JointPainSubRegion
     /// The size of the image the map will be displayed over
     public var imageSize: SizeWrapper
+    /// The number of translucent concentric circles that represent a joint
+    /// The default joint circle count of 1 will show as a solid opaque circle
+    public var jointCircleCount: Int? = 1
     /// The size of each joint button to be displayed
     /// For best visual results, width and height should be equal
     public var jointSize: SizeWrapper

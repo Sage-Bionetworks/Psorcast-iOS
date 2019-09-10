@@ -237,16 +237,66 @@ open class JointPainImageView: UIView, RSDViewDesignable {
         // Set the selected state colors
         // Use design system if overrides are nil
         if let selectedOverride = self.overrideSelectedButtonColor {
-            button.setBackgroundColor(color: selectedOverride, forState: .selected)
+            self.setBackgroundButtonImage(button: button, color: selectedOverride, forState: .selected)
         } else if let design = self.designSystem {
-            button.setBackgroundColor(color: design.colorRules.palette.accent.normal.color, forState: .selected)
+            self.setBackgroundButtonImage(button: button, color: design.colorRules.palette.accent.normal.color, forState: .selected)
         }
         
         if let unselectedOverride = self.overrideUnselectedButtonColor {
-            button.setBackgroundColor(color: unselectedOverride, forState: .normal)
+            self.setBackgroundButtonImage(button: button, color: unselectedOverride, forState: .normal)
         } else if let design = self.designSystem {
-            button.setBackgroundColor(color: design.colorRules.palette.secondary.normal.color, forState: .normal)
+            self.setBackgroundButtonImage(button: button, color: design.colorRules.palette.secondary.normal.color, forState: .normal)
         }
+    }
+    
+    func setBackgroundButtonImage(button: UIButton, color: UIColor, forState: UIControl.State) {
+        self.clipsToBounds = true  // add this to maintain corner radius
+        
+        // The width and height of button
+        let width = self.jointPainMap?.jointSize.width ?? 40
+        let height = self.jointPainMap?.jointSize.height ?? 40
+        
+        // Concentric circle drawing constants
+        let circleCount = self.jointPainMap?.jointCircleCount ?? 1
+        
+        UIGraphicsBeginImageContext(CGSize(width: width, height: height))
+        if let context = UIGraphicsGetCurrentContext() {
+            
+            for i in 0..<circleCount {
+                let background = self.buttonBackgroundRect(circleIdx: i, circleCount: circleCount, width: width, height: height)
+                // If the color was transparent already, keep it as so,
+                // otherwise, let the circles be dynamically calculated
+                if color.cgColor.alpha > 0 {
+                    context.setFillColor(color.withAlphaComponent(background.alpha).cgColor)
+                } else {
+                    context.setFillColor(color.cgColor)
+                }
+                context.fillEllipse(in: background.rect)
+            }
+            
+            let colorImage = UIGraphicsGetImageFromCurrentImageContext()
+            UIGraphicsEndImageContext()
+            button.setBackgroundImage(colorImage, for: forState)
+        }
+    }
+    
+    ///
+    /// - parameter circleIdx: the index of the concentric circle to fit, 0 means largest and outer most circle
+    /// - parameter circleCount: total number of concentric circles
+    /// - parameter width: width of the largest, outer most circle
+    /// - parameter height: height of the largest, outer most circle
+    ///
+    /// - returns: true if this index is for a task row, false otherwise
+    ///
+    func buttonBackgroundRect(circleIdx: Int, circleCount: Int, width: CGFloat, height: CGFloat) -> (alpha: CGFloat, rect: CGRect) {
+        let circleSizeFactor = (CGFloat(1) / CGFloat(circleCount))
+        let iFloat = CGFloat(circleIdx)
+        let x = width * (iFloat * circleSizeFactor * CGFloat(0.5))
+        let y = height * (iFloat * circleSizeFactor * CGFloat(0.5))
+        let circleWidth = width - (width * iFloat * circleSizeFactor)
+        let circleHeight = height - (height * iFloat * circleSizeFactor)
+        let colorAlpha = (iFloat + 1) * circleSizeFactor
+        return (colorAlpha, CGRect(x: x, y: y, width: circleWidth, height: circleHeight))
     }
     
     public func styleExistingJointButtons() {
@@ -315,20 +365,6 @@ open class JointPainImageView: UIView, RSDViewDesignable {
 public protocol JointPainImageViewDelegate {
     func buttonTapped(button: UIButton?)
     func didLayoutButtons()
-}
-
-extension UIButton {
-    func setBackgroundColor(color: UIColor, forState: UIControl.State) {
-        self.clipsToBounds = true  // add this to maintain corner radius
-        UIGraphicsBeginImageContext(CGSize(width: 1, height: 1))
-        if let context = UIGraphicsGetCurrentContext() {
-            context.setFillColor(color.cgColor)
-            context.fill(CGRect(x: 0, y: 0, width: 1, height: 1))
-            let colorImage = UIGraphicsGetImageFromCurrentImageContext()
-            UIGraphicsEndImageContext()
-            self.setBackgroundImage(colorImage, for: forState)
-        }
-    }
 }
 
 extension UIView {
