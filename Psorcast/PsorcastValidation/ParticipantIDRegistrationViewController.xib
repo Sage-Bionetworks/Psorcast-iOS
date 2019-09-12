@@ -13,6 +13,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ParticipantIDRegistrationViewController" customModule="PsorcastValidation" customModuleProvider="target">
             <connections>
                 <outlet property="errorLabel" destination="ztf-Jf-7Ws" id="IGP-Z4-a6K"/>
+                <outlet property="loadingSpinner" destination="HlO-2M-aPs" id="yTL-US-4br"/>
                 <outlet property="logoutButton" destination="Bb0-9N-wht" id="b6u-qo-gEi"/>
                 <outlet property="ruleView" destination="OUa-ZL-tEd" id="G8Y-d8-2uU"/>
                 <outlet property="submitButton" destination="tP3-Sz-Seq" id="ZHo-3t-HfR"/>
@@ -31,6 +32,9 @@
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FUY-ES-cUr" userLabel="UpperContent">
                             <rect key="frame" x="0.0" y="0.0" width="375" height="624"/>
                             <subviews>
+                                <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="HlO-2M-aPs">
+                                    <rect key="frame" x="268" y="49" width="20" height="20"/>
+                                </activityIndicatorView>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Bb0-9N-wht">
                                     <rect key="frame" x="268" y="32" width="107" height="54"/>
                                     <constraints>
@@ -73,9 +77,11 @@
                                 <constraint firstItem="OUa-ZL-tEd" firstAttribute="leading" secondItem="FUY-ES-cUr" secondAttribute="leading" constant="32" id="Rtt-hM-DRC"/>
                                 <constraint firstAttribute="trailing" secondItem="ztf-Jf-7Ws" secondAttribute="trailing" constant="32" id="SBq-AU-iLT"/>
                                 <constraint firstAttribute="trailing" secondItem="Bb0-9N-wht" secondAttribute="trailing" id="btq-98-4XB"/>
+                                <constraint firstItem="HlO-2M-aPs" firstAttribute="centerY" secondItem="Bb0-9N-wht" secondAttribute="centerY" id="cCY-5c-1qw"/>
                                 <constraint firstItem="ztf-Jf-7Ws" firstAttribute="leading" secondItem="FUY-ES-cUr" secondAttribute="leading" constant="32" id="fD7-4N-EoI"/>
                                 <constraint firstItem="c4V-1s-iHv" firstAttribute="top" secondItem="ztf-Jf-7Ws" secondAttribute="bottom" constant="69.666666666666686" id="hmv-Ts-p86"/>
                                 <constraint firstItem="c4V-1s-iHv" firstAttribute="leading" secondItem="FUY-ES-cUr" secondAttribute="leading" constant="32" id="i4e-9K-zcC"/>
+                                <constraint firstItem="Bb0-9N-wht" firstAttribute="leading" secondItem="HlO-2M-aPs" secondAttribute="trailing" constant="-20" id="iHP-84-Dk4"/>
                                 <constraint firstItem="c4V-1s-iHv" firstAttribute="centerY" secondItem="FUY-ES-cUr" secondAttribute="centerY" id="jxa-IA-SaA"/>
                                 <constraint firstAttribute="trailing" secondItem="c4V-1s-iHv" secondAttribute="trailing" constant="32" id="sK2-0G-txK"/>
                             </constraints>
