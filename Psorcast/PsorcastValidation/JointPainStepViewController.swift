@@ -55,6 +55,9 @@ open class JointPainStepViewController: RSDStepViewController, JointPainImageVie
         return self.designSystem.colorRules.backgroundLight
     }
     
+    /// The initial result of the step if the user navigated back to this step
+    open var initialResult: JointPainResultObject?
+    
     /// The image view container that adds the joint buttons
     @IBOutlet public var jointImageView: JointPainImageView!
     
@@ -62,6 +65,10 @@ open class JointPainStepViewController: RSDStepViewController, JointPainImageVie
     /// - parameter step: The step to be presented.
     public override init(step: RSDStep, parent: RSDPathComponent?) {
         super.init(nibName: nil, bundle: nil)
+        
+        // Set the initial result if available.
+        self.initialResult = (parent as? RSDHistoryPathComponent)?
+            .previousResult(for: step) as? JointPainResultObject
     }
     
     required public init?(coder aDecoder: NSCoder) {
@@ -89,7 +96,15 @@ open class JointPainStepViewController: RSDStepViewController, JointPainImageVie
         // Setup the joint paint imageview
         self.jointImageView.setDesignSystem(self.designSystem, with: self.background)
         self.jointImageView.delegate = self
-        self.jointImageView.jointPainMap = self.jointPainMap
+        
+        var map = self.jointPainMap
+        // If there is an initial result, apply the selected state to the joints
+        if let result = self.initialResult {
+            map?.joints = result.jointPainMap.joints.map({ (joint) -> Joint in
+                return Joint(identifier: joint.identifier, center: joint.center, isSelected: joint.isSelected)
+            })
+        }
+        self.jointImageView.jointPainMap = map
     }
     
     /// Override the default background for all the placements
