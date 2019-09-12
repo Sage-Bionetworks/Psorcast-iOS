@@ -1,0 +1,839 @@
+{
+    "taskIdentifier"            : "MDJointSwelling",
+    "schemaIdentifier"          : "MDJointSwelling",
+    "progressMarkers":[],
+    "steps":
+    [
+        {
+            "identifier":"jointCountInstruction",
+            "type":"instruction",
+            "title":"Select joint pain",
+            "text":"First select the areas of your body with painful joints, then tap the individual joints within those areas on the next screens. You can touch the joints you have selected to undo the selection.",
+            "image":{
+                "type": "animated",
+                "imageNames": ["JointCount1", "JointCount2", "JointCount3", "JointCount4", "JointCount5", "JointCount6"],
+                "placementType": "topMarginBackground",
+                "animationDuration": 6.0
+            },
+            "actions":{
+                "goForward":{
+                    "type":"default",
+                    "buttonTitle":"Begin"
+                }
+            }
+        },
+        {
+            "identifier": "jointSelection",
+            "type": "jointSelection",
+            "title": "Which areas of your body have painful joints?",
+            "text": "Select all areas with joints that bother you.",
+            "inputFields": [
+                {
+                    "uiHint": "list",
+                    "type": "multipleChoice.string",
+                    "choices": [
+                        {
+                            "text": "Above the waist",
+                            "detail": "Shoulders, elbows, wrists",
+                            "value": "aboveTheWaist"
+                        },
+                        {
+                            "text": "Below the waist",
+                            "detail": "Knees, ankles",
+                            "value": "belowTheWaist"
+                        },
+                        {
+                            "text": "Hands",
+                            "detail": "Left hand, right hand",
+                            "value": "hands"
+                        },
+                        {
+                            "text": "Feet",
+                            "detail": "Left foot, right foot",
+                            "value": "feet"
+                        },
+                        {
+                            "text": "No joints bother me",
+                            "detail": "Skip joint selection",
+                            "isExclusive": true
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "identifier": "aboveTheWaist",
+            "type": "jointPain",
+            "title": "Select your joint pain",
+            "text": "Select all that apply",
+            "textSelectionFormat": "%@ joint selected",
+            "textMultipleSelectionFormat": "%@ joints selected",
+            "image":{
+                "type":"fetchable",
+                "imageName": "AboveTheWaist",
+                "placementType":"topBackground"
+            },
+            "jointPainMap": {
+                "region": "aboveTheWaist",
+                "subregion": "none",
+                "imageSize": {
+                    "width": 375,
+                    "height": 423
+                },
+                "jointCircleCount": 3,
+                "jointSize": {
+                    "width": 40,
+                    "height": 40
+                },
+                "joints": [
+                    {
+                        "identifier": "right_wrist",
+                        "center": {
+                            "x": 66,
+                            "y": 296
+                        }
+                    },
+                    {
+                        "identifier": "right_elbow",
+                        "center": {
+                            "x": 110,
+                            "y": 228
+                        }
+                    },
+                    {
+                        "identifier": "right_shoulder",
+                        "center": {
+                            "x": 130,
+                            "y": 128
+                        }
+                    },
+                    {
+                        "identifier": "left_wrist",
+                        "center": {
+                            "x": 310,
+                            "y": 296
+                        }
+                    },
+                    {
+                        "identifier": "left_elbow",
+                        "center": {
+                            "x": 265,
+                            "y": 228
+                        }
+                    },
+                    {
+                        "identifier": "left_shoulder",
+                        "center": {
+                            "x": 244,
+                            "y": 128
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "identifier": "belowTheWaist",
+            "type": "jointPain",
+            "title": "Select your joint pain",
+            "text": "Select all that apply",
+            "textSelectionFormat": "%@ joint selected",
+            "textMultipleSelectionFormat": "%@ joints selected",
+            "image":{
+                "type":"fetchable",
+                "imageName": "BelowTheWaist",
+                "placementType":"topBackground"
+            },
+            "jointPainMap": {
+                "region": "belowTheWaist",
+                "subregion": "none",
+                "imageSize": {
+                    "width": 375,
+                    "height": 423
+                },
+                "jointCircleCount": 3,
+                "jointSize": {
+                    "width": 40,
+                    "height": 40
+                },
+                "joints": [
+                    {
+                        "identifier": "right_knee",
+                        "center": {
+                            "x": 157,
+                            "y": 209
+                        }
+                    },
+                    {
+                        "identifier": "right_ankle",
+                        "center": {
+                            "x": 160,
+                            "y": 337
+                        }
+                    },
+                    {
+                        "identifier": "left_knee",
+                        "center": {
+                            "x": 218,
+                            "y": 209
+                        }
+                    },
+                    {
+                        "identifier": "left_ankle",
+                        "center": {
+                            "x": 216,
+                            "y": 337
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "identifier": "leftHand",
+            "type": "jointPain",
+            "title": "Left hand joint pain",
+            "text": "Select all that apply",
+            "textSelectionFormat": "%@ joint selected",
+            "textMultipleSelectionFormat": "%@ joints selected",
+            "image":{
+                "type":"fetchable",
+                "imageName": "LeftHand",
+                "placementType":"topBackground"
+            },
+            "jointPainMap": {
+                "region": "hands",
+                "subregion": "left",
+                "imageSize": {
+                    "width": 367,
+                    "height": 423
+                },
+                "jointCircleCount": 3,
+                "jointSize": {
+                    "width": 40,
+                    "height": 40
+                },
+                "joints": [
+                    {
+                        "identifier": "left_dip_5",
+                        "center": {
+                            "x": 51,
+                            "y": 147
+                        }
+                    },
+                    {
+                        "identifier": "left_pip_5",
+                        "center": {
+                            "x": 61,
+                            "y": 193
+                        }
+                    },
+                    {
+                        "identifier": "left_mcp_5",
+                        "center": {
+                            "x": 78,
+                            "y": 242
+                        }
+                    },
+                    {
+                        "identifier": "left_dip_4",
+                        "center": {
+                            "x": 119,
+                            "y": 87
+                        }
+                    },
+                    {
+                        "identifier": "left_pip_4",
+                        "center": {
+                            "x": 120,
+                            "y": 140
+                        }
+                    },
+                    {
+                        "identifier": "left_mcp_4",
+                        "center": {
+                            "x": 120,
+                            "y": 201
+                        }
+                    },
+                    {
+                        "identifier": "left_dip_3",
+                        "center": {
+                            "x": 185,
+                            "y": 63
+                        }
+                    },
+                    {
+                        "identifier": "left_pip_3",
+                        "center": {
+                            "x": 178,
+                            "y": 129
+                        }
+                    },
+                    {
+                        "identifier": "left_mcp_3",
+                        "center": {
+                            "x": 171,
+                            "y": 201
+                        }
+                    },
+                    {
+                        "identifier": "left_dip_2",
+                        "center": {
+                            "x": 248,
+                            "y": 103
+                        }
+                    },
+                    {
+                        "identifier": "left_pip_2",
+                        "center": {
+                            "x": 235,
+                            "y": 147
+                        }
+                    },
+                    {
+                        "identifier": "left_mcp_2",
+                        "center": {
+                            "x": 223,
+                            "y": 204
+                        }
+                    },
+                    {
+                        "identifier": "left_pip_1",
+                        "center": {
+                            "x": 301,
+                            "y": 259
+                        }
+                    },
+                    {
+                        "identifier": "left_mcp_1",
+                        "center": {
+                            "x": 272,
+                            "y": 319
+                        }
+                    },
+                    {
+                        "identifier": "left_cmc_1",
+                        "center": {
+                            "x": 223,
+                            "y": 367
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "identifier": "rightHand",
+            "type": "jointPain",
+            "title": "Right hand joint pain",
+            "text": "Select all that apply",
+            "textSelectionFormat": "%@ joint selected",
+            "textMultipleSelectionFormat": "%@ joints selected",
+            "image":{
+                "type":"fetchable",
+                "imageName": "RightHand",
+                "placementType":"topBackground"
+            },
+            "jointPainMap": {
+                "region": "hands",
+                "subregion": "right",
+                "imageSize": {
+                    "width": 375,
+                    "height": 423
+                },
+                "jointCircleCount": 3,
+                "jointSize": {
+                    "width": 40,
+                    "height": 40
+                },
+                "joints": [
+                    {
+                        "identifier": "right_dip_5",
+                        "center": {
+                            "x": 325,
+                            "y": 147
+                        }
+                    },
+                    {
+                        "identifier": "right_pip_5",
+                        "center": {
+                            "x": 313,
+                            "y": 193
+                        }
+                    },
+                    {
+                        "identifier": "right_mcp_5",
+                        "center": {
+                            "x": 297,
+                            "y": 244
+                        }
+                    },
+                    {
+                        "identifier": "right_dip_4",
+                        "center": {
+                            "x": 255,
+                            "y": 88
+                        }
+                    },
+                    {
+                        "identifier": "right_pip_4",
+                        "center": {
+                            "x": 255,
+                            "y": 139
+                        }
+                    },
+                    {
+                        "identifier": "right_mcp_4",
+                        "center": {
+                            "x": 255,
+                            "y": 201
+                        }
+                    },
+                    {
+                        "identifier": "right_dip_3",
+                        "center": {
+                            "x": 190,
+                            "y": 62
+                        }
+                    },
+                    {
+                        "identifier": "right_pip_3",
+                        "center": {
+                            "x": 197,
+                            "y": 129
+                        }
+                    },
+                    {
+                        "identifier": "right_mcp_3",
+                        "center": {
+                            "x": 204,
+                            "y": 202
+                        }
+                    },
+                    {
+                        "identifier": "right_dip_2",
+                        "center": {
+                            "x": 126,
+                            "y": 103
+                        }
+                    },
+                    {
+                        "identifier": "right_pip_2",
+                        "center": {
+                            "x": 138,
+                            "y": 149
+                        }
+                    },
+                    {
+                        "identifier": "right_mcp_2",
+                        "center": {
+                            "x": 153,
+                            "y": 202
+                        }
+                    },
+                    {
+                        "identifier": "right_pip_1",
+                        "center": {
+                            "x": 75,
+                            "y": 259
+                        }
+                    },
+                    {
+                        "identifier": "right_mcp_1",
+                        "center": {
+                            "x": 103,
+                            "y": 319
+                        }
+                    },
+                    {
+                        "identifier": "right_cmc_1",
+                        "center": {
+                            "x": 152,
+                            "y": 367
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "identifier": "leftFoot",
+            "type": "jointPain",
+            "title": "Left foot joint pain",
+            "text": "Select all that apply",
+            "textSelectionFormat": "%@ joint selected",
+            "textMultipleSelectionFormat": "%@ joints selected",
+            "image":{
+                "type":"fetchable",
+                "imageName": "LeftFoot",
+                "placementType":"topBackground"
+            },
+            "jointPainMap": {
+                "region": "feet",
+                "subregion": "left",
+                "imageSize": {
+                    "width": 375,
+                    "height": 423
+                },
+                "jointCircleCount": 3,
+                "jointSize": {
+                    "width": 40,
+                    "height": 40
+                },
+                "joints": [
+                    {
+                        "identifier": "left_ft_pip_5",
+                        "center": {
+                            "x": 48,
+                            "y": 144
+                        }
+                    },
+                    {
+                        "identifier": "left_ft_mtp_5",
+                        "center": {
+                            "x": 48,
+                            "y": 200
+                        }
+                    },
+                    {
+                        "identifier": "left_ft_pip_4",
+                        "center": {
+                            "x": 105,
+                            "y": 118
+                        }
+                    },
+                    {
+                        "identifier": "left_ft_mtp_4",
+                        "center": {
+                            "x": 105,
+                            "y": 177
+                        }
+                    },
+                    {
+                        "identifier": "left_ft_pip_3",
+                        "center": {
+                            "x": 163,
+                            "y": 96
+                        }
+                    },
+                    {
+                        "identifier": "left_ft_mtp_3",
+                        "center": {
+                            "x": 163,
+                            "y": 154
+                        }
+                    },
+                    {
+                        "identifier": "left_ft_pip_2",
+                        "center": {
+                            "x": 220,
+                            "y": 77
+                        }
+                    },
+                    {
+                        "identifier": "left_ft_mtp_2",
+                        "center": {
+                            "x": 219,
+                            "y": 142
+                        }
+                    },
+                    {
+                        "identifier": "left_ft_pip_1",
+                        "center": {
+                            "x": 301,
+                            "y": 71
+                        }
+                    },
+                    {
+                        "identifier": "left_ft_mtp_1",
+                        "center": {
+                            "x": 301,
+                            "y": 138
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "identifier": "rightFoot",
+            "type": "jointPain",
+            "title": "Right foot joint pain",
+            "text": "Select all that apply",
+            "textSelectionFormat": "%@ joint selected",
+            "textMultipleSelectionFormat": "%@ joints selected",
+            "image":{
+                "type":"fetchable",
+                "imageName": "RightFoot",
+                "placementType":"topBackground"
+            },
+            "jointPainMap": {
+                "region": "feet",
+                "subregion": "right",
+                "imageSize": {
+                    "width": 375,
+                    "height": 423
+                },
+                "jointCircleCount": 3,
+                "jointSize": {
+                    "width": 40,
+                    "height": 40
+                },
+                "joints": [
+                    {
+                        "identifier": "right_ft_pip_5",
+                        "center": {
+                            "x": 329,
+                            "y": 144
+                        }
+                    },
+                    {
+                        "identifier": "right_ft_mtp_5",
+                        "center": {
+                            "x": 328,
+                            "y": 200
+                        }
+                    },
+                    {
+                        "identifier": "right_ft_pip_4",
+                        "center": {
+                            "x": 272,
+                            "y": 118
+                        }
+                    },
+                    {
+                        "identifier": "right_ft_mtp_4",
+                        "center": {
+                            "x": 272,
+                            "y": 176
+                        }
+                    },
+                    {
+                        "identifier": "right_ft_pip_3",
+                        "center": {
+                            "x": 214,
+                            "y": 95
+                        }
+                    },
+                    {
+                        "identifier": "right_ft_mtp_3",
+                        "center": {
+                            "x": 214,
+                            "y": 155
+                        }
+                    },
+                    {
+                        "identifier": "right_ft_pip_2",
+                        "center": {
+                            "x": 157,
+                            "y": 77
+                        }
+                    },
+                    {
+                        "identifier": "right_ft_mtp_2",
+                        "center": {
+                            "x": 157,
+                            "y": 140
+                        }
+                    },
+                    {
+                        "identifier": "right_ft_pip_1",
+                        "center": {
+                            "x": 75,
+                            "y": 72
+                        }
+                    },
+                    {
+                        "identifier": "right_ft_mtp_1",
+                        "center": {
+                            "x": 76,
+                            "y": 139
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "identifier":"completion",
+            "type":"completionJointPain",
+            "title":"Activity complete",
+            "detail":"Today you identified",
+            "text": "0 Painful joints",
+            "textSelectionFormat": "%@ Painful joint",
+            "textMultipleSelectionFormat": "%@ Painful joints",
+            "actions": {
+                "goForward":{
+                    "type":"default",
+                    "buttonTitle":"Done"
+                }
+            },
+            "jointRegions": [
+                {
+                    "jointMapIdentifier": "left_shoulder",
+                    "jointCompleteIdentifiers": ["left_shoulder"]
+                },
+                {
+                    "jointMapIdentifier": "right_shoulder",
+                    "jointCompleteIdentifiers": ["right_shoulder"]
+                },
+                {
+                    "jointMapIdentifier": "left_elbow",
+                    "jointCompleteIdentifiers": ["left_elbow"]
+                },
+                {
+                    "jointMapIdentifier": "right_elbow",
+                    "jointCompleteIdentifiers": ["right_elbow"]
+                },
+                {
+                    "jointMapIdentifier": "leftHandAndWrist",
+                    "jointCompleteIdentifiers": [
+                        "left_wrist",
+                        "left_dip_5", "left_pip_5", "left_mcp_5",
+                        "left_dip_4", "left_pip_4", "left_mcp_4",
+                        "left_dip_3", "left_pip_3", "left_mcp_3",
+                        "left_dip_2", "left_pip_2", "left_mcp_2",
+                        "left_pip_1", "left_mcp_1", "left_cmc_1"]
+                },
+                {
+                    "jointMapIdentifier": "rightHandAndWrist",
+                    "jointCompleteIdentifiers": [
+                        "right_wrist",
+                        "right_dip_5", "right_pip_5", "right_mcp_5",
+                        "right_dip_4", "right_pip_4", "right_mcp_4",
+                        "right_dip_3", "right_pip_3", "right_mcp_3",
+                        "right_dip_2", "right_pip_2", "right_mcp_2",
+                        "right_pip_1", "right_mcp_1", "right_cmc_1"]
+                },
+                {
+                    "jointMapIdentifier": "left_knee",
+                    "jointCompleteIdentifiers": ["left_knee"]
+                },
+                {
+                    "jointMapIdentifier": "right_knee",
+                    "jointCompleteIdentifiers": ["right_knee"]
+                },
+                {
+                    "jointMapIdentifier": "left_ankle",
+                    "jointCompleteIdentifiers": ["left_ankle"]
+                },
+                {
+                    "jointMapIdentifier": "right_ankle",
+                    "jointCompleteIdentifiers": ["right_ankle"]
+                },
+                {
+                    "jointMapIdentifier": "leftFoot",
+                    "jointCompleteIdentifiers": [
+                        "left_ft_pip_5", "leftPinkyToeMid", "left_ft_mtp_5",
+                        "left_ft_pip_4", "leftFourthToeMid", "left_ft_mtp_4",
+                        "left_ft_pip_3", "leftMiddleToeMid", "left_ft_mtp_3",
+                        "left_ft_pip_2", "leftIndexToeMid", "left_ft_mtp_2",
+                        "left_ft_pip_1", "leftBigToeMid", "left_ft_mtp_1"]
+                },
+                {
+                    "jointMapIdentifier": "rightFoot",
+                    "jointCompleteIdentifiers": [
+                        "right_ft_pip_5", "rightPinkyToeMid", "right_ft_mtp_5",
+                        "right_ft_pip_4", "rightFourthToeMid", "right_ft_mtp_4",
+                        "right_ft_pip_3", "rightMiddleToeMid", "right_ft_mtp_3",
+                        "right_ft_pip_2", "rightIndexToeMid", "right_ft_mtp_2",
+                        "right_ft_pip_1", "rightBigToeMid", "right_ft_mtp_1"]
+                }
+            ],
+            "jointPainMap": {
+                "region": "fullBody",
+                "subregion": "none",
+                "imageSize": {
+                    "width": 121,
+                    "height": 231
+                },
+                "jointCircleCount": 3,
+                "jointSize": {
+                    "width": 15,
+                    "height": 15
+                },
+                "joints": [
+                    {
+                        "identifier": "left_shoulder",
+                        "center": {
+                            "x": 80,
+                            "y": 46
+                        }
+                    },
+                    {
+                        "identifier": "right_shoulder",
+                        "center": {
+                            "x": 40,
+                            "y": 46
+                        }
+                    },
+                    {
+                        "identifier": "left_elbow",
+                        "center": {
+                            "x": 90,
+                            "y": 84
+                        }
+                    },
+                    {
+                        "identifier": "right_elbow",
+                        "center": {
+                            "x": 31,
+                            "y": 84
+                        }
+                    },
+                    {
+                        "identifier": "leftHandAndWrist",
+                        "center": {
+                            "x": 111,
+                            "y": 115
+                        }
+                    },
+                    {
+                        "identifier": "rightHandAndWrist",
+                        "center": {
+                            "x": 10,
+                            "y": 115
+                        }
+                    },
+                    {
+                        "identifier": "left_knee",
+                        "center": {
+                            "x": 72,
+                            "y": 158
+                        }
+                    },
+                    {
+                        "identifier": "right_knee",
+                        "center": {
+                            "x": 48,
+                            "y": 158
+                        }
+                    },
+                    {
+                        "identifier": "left_ankle",
+                        "center": {
+                            "x": 71,
+                            "y": 205
+                        }
+                    },
+                    {
+                        "identifier": "right_ankle",
+                        "center": {
+                            "x": 50,
+                            "y": 205
+                        }
+                    },
+                    {
+                        "identifier": "leftFoot",
+                        "center": {
+                            "x": 73,
+                            "y": 224
+                        }
+                    },
+                    {
+                        "identifier": "rightFoot",
+                        "center": {
+                            "x": 48,
+                            "y": 224
+                        }
+                    }
+                ]
+            }
+        }
+    ]
+}

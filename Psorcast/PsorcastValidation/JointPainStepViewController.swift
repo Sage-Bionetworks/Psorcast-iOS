@@ -33,6 +33,7 @@
 
 import Foundation
 import BridgeApp
+import BridgeAppUI
 
 /// The 'JointPainStepViewController' displays a joint pain image that has
 /// buttons overlayed at specific parts of the images to represent joints
@@ -56,6 +57,20 @@ open class JointPainStepViewController: RSDStepViewController, JointPainImageVie
     
     /// The image view container that adds the joint buttons
     @IBOutlet public var jointImageView: JointPainImageView!
+    
+    /// Returns a new step view controller for the specified step.
+    /// - parameter step: The step to be presented.
+    public override init(step: RSDStep, parent: RSDPathComponent?) {
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required public init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+    
+    public override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+    }
     
     /// Inject our imageview as the header's imageview
     /// because we can't set it in the xib because

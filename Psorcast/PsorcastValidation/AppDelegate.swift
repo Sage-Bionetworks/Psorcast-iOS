@@ -35,6 +35,7 @@ import UIKit
 import BridgeApp
 import BridgeSDK
 import Research
+import BridgeAppUI
 
 @UIApplicationMain
 class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate {

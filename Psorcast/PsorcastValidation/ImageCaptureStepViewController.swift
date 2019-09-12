@@ -33,6 +33,7 @@
 
 import UIKit
 import BridgeApp
+import BridgeAppUI
 
 open class ImageCaptureStepViewController: RSDStepViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     

@@ -34,6 +34,7 @@
 import Foundation
 import UserNotifications
 import BridgeApp
+import BridgeAppUI
 
 open class JointSelectionStepObject: RSDFormUIStepObject, RSDStepViewControllerVendor {
     
