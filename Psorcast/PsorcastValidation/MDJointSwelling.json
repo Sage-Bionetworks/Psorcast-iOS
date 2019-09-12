@@ -663,6 +663,7 @@
                     "buttonTitle":"Done"
                 }
             },
+            "shouldHideActions": ["goBackward", "cancel"],
             "jointRegions": [
                 {
                     "jointMapIdentifier": "left_shoulder",
