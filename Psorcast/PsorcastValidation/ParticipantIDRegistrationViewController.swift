@@ -62,32 +62,41 @@ class ParticipantIDRegistrationStep : RSDUIStepObject, RSDStepViewControllerVend
 
 class ParticipantIDRegistrationViewController: RSDStepViewController, UITextFieldDelegate {
 
-    // The first participant ID entry, they need to enter it twice
+    /// The first participant ID entry, they need to enter it twice
     var firstEntry: String?
     
-    // Error label for particpant ID entry
+    /// Error label for particpant ID entry
     @IBOutlet public var errorLabel: UILabel!
     
-    // Textfield for particpant ID entry
+    /// Textfield for particpant ID entry
     @IBOutlet public var textField: UITextField!
     
-    // The textfield underline
+    /// The textfield underline
     @IBOutlet public var ruleView: UIView!
     
-    // The logout button
+    /// The logout button
     @IBOutlet public var logoutButton: UIButton!
     
-    // The submit button
+    /// The submit button
     @IBOutlet public var submitButton: RSDRoundedButton!
+    
+    /// The loading spinner when logout is tapped
+    @IBOutlet public var loadingSpinner: UIActivityIndicatorView!
     
     var originalSubmitY: CGFloat? = nil
     
     @IBAction func logoutTapped() {
-        self.logoutButton.isEnabled = false
-        self.submitButton.isEnabled = false
+        DispatchQueue.main.async {
+            self.logoutButton.isEnabled = false
+            self.logoutButton.alpha = CGFloat(0.35)
+            self.submitButton.isEnabled = false            
+            self.loadingSpinner.isHidden = false
+        }
         BridgeSDK.authManager.signOut(completion: { (_, _, error) in
             DispatchQueue.main.async {
+                self.loadingSpinner.isHidden = true
                 self.logoutButton.isEnabled = true
+                self.logoutButton.alpha = CGFloat(1.0)
                 self.submitButton.isEnabled = true
                 self.goBack()
             }
@@ -121,6 +130,8 @@ class ParticipantIDRegistrationViewController: RSDStepViewController, UITextFiel
         
         self.errorLabel.text = nil
         self.errorLabel.font = self.designSystem.fontRules.font(for: .mediumHeader)
+        
+        self.loadingSpinner.isHidden = true
         
         self.setFirstEntryTitle()
     }

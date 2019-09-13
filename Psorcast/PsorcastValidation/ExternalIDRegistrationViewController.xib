@@ -13,6 +13,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ExternalIDRegistrationViewController" customModule="PsorcastValidation" customModuleProvider="target">
             <connections>
                 <outlet property="imageView" destination="kSV-sG-Szr" id="pwh-Od-XRt"/>
+                <outlet property="loadingSpinner" destination="Fum-84-y9Q" id="BMZ-z2-0Pm"/>
                 <outlet property="ruleView" destination="OUa-ZL-tEd" id="G8Y-d8-2uU"/>
                 <outlet property="submitButton" destination="tP3-Sz-Seq" id="ZHo-3t-HfR"/>
                 <outlet property="textField" destination="c4V-1s-iHv" id="7Vg-t5-TXc"/>
@@ -85,13 +86,18 @@
                                 <action selector="submitTapped" destination="-1" eventType="touchUpInside" id="8gY-cp-kEa"/>
                             </connections>
                         </button>
+                        <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="Fum-84-y9Q">
+                            <rect key="frame" x="282" y="631.66666666666663" width="37" height="37"/>
+                        </activityIndicatorView>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstAttribute="bottom" secondItem="tP3-Sz-Seq" secondAttribute="bottom" constant="24" id="3M4-yI-XpO"/>
                         <constraint firstItem="tP3-Sz-Seq" firstAttribute="top" secondItem="FUY-ES-cUr" secondAttribute="bottom" id="4Wp-JH-3Kc"/>
                         <constraint firstAttribute="trailing" secondItem="tP3-Sz-Seq" secondAttribute="trailing" constant="32" id="ElC-dh-n37"/>
+                        <constraint firstItem="Fum-84-y9Q" firstAttribute="centerY" secondItem="tP3-Sz-Seq" secondAttribute="centerY" id="MIW-gN-Uq2"/>
                         <constraint firstItem="FUY-ES-cUr" firstAttribute="top" secondItem="nCy-4g-nIJ" secondAttribute="top" id="c6w-eX-Oik"/>
+                        <constraint firstItem="Fum-84-y9Q" firstAttribute="trailing" secondItem="tP3-Sz-Seq" secondAttribute="trailing" constant="-24" id="g3z-sB-ydy"/>
                         <constraint firstAttribute="trailing" secondItem="FUY-ES-cUr" secondAttribute="trailing" id="khT-Dk-8Q4"/>
                         <constraint firstItem="tP3-Sz-Seq" firstAttribute="leading" secondItem="nCy-4g-nIJ" secondAttribute="leading" constant="32" id="raN-EW-mlX"/>
                         <constraint firstItem="FUY-ES-cUr" firstAttribute="leading" secondItem="nCy-4g-nIJ" secondAttribute="leading" id="z6b-1W-V9e"/>

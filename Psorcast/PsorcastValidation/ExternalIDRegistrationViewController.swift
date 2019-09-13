@@ -50,20 +50,23 @@ class ExternalIDRegistrationStep : RSDUIStepObject, RSDStepViewControllerVendor,
 
 class ExternalIDRegistrationViewController: RSDStepViewController, UITextFieldDelegate {
     
-    // The image header
+    /// The image header
     @IBOutlet public var imageView: UIImageView!
     
-    // Title label for external ID entry
+    /// Title label for external ID entry
     @IBOutlet public var titleLabel: UILabel!
     
-    // Textfield for external ID entry
+    /// Textfield for external ID entry
     @IBOutlet public var textField: UITextField!
     
-    // The textfield underline
+    /// The textfield underline
     @IBOutlet public var ruleView: UIView!
     
-    // The submit button
+    /// The submit button
     @IBOutlet public var submitButton: RSDRoundedButton!
+    
+    /// The loading spinner
+    @IBOutlet public var loadingSpinner: UIActivityIndicatorView!
     
     override open func viewDidLoad() {
         super.viewDidLoad()
@@ -141,13 +144,7 @@ class ExternalIDRegistrationViewController: RSDStepViewController, UITextFieldDe
         signUp.dataGroups = ["test_user"]
         signUp.sharingScope = "all_qualified_researchers"
         
-        self.submitButton.isEnabled = false
-        
         BridgeSDK.authManager.signUpStudyParticipant(signUp, completion: { (task, result, error) in
-
-            DispatchQueue.main.async {
-                self.submitButton.isEnabled = true
-            }
             
             guard error == nil else {
                 completion(task, result, error)
@@ -162,13 +159,17 @@ class ExternalIDRegistrationViewController: RSDStepViewController, UITextFieldDe
     }
     
     @IBAction func submitTapped() {
-        self.nextButton?.isEnabled = false
+        DispatchQueue.main.async {
+            self.submitButton.isEnabled = false
+            self.loadingSpinner.isHidden = false
+        }
         self.signUpAndSignIn { (task, result, error) in
             DispatchQueue.main.async {
+                self.loadingSpinner.isHidden = true
+                self.submitButton.isEnabled = true
                 if error == nil {
                    super.goForward()
                 } else {
-                    self.nextButton?.isEnabled = true
                     self.presentAlertWithOk(title: "Error attempting sign in", message: error!.localizedDescription, actionHandler: nil)
                     // TODO: emm 2018-04-25 handle error from Bridge
                     // 400 is the response for an invalid external ID
