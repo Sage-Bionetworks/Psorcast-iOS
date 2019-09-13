@@ -164,5 +164,42 @@ class JointPainImageViewTests: XCTestCase {
         XCTAssertEqual(aspectFit.size.width, 123)
         XCTAssertEqual(aspectFit.size.height, 456)
     }
+    
+    /// Test the concentric joint button background image size and alpha
+    func testJointCircles() {
+        
+        var width = CGFloat(40)
+        var height = CGFloat(40)
+        
+        var circleCount = 1
+        var background = vc.buttonBackgroundRect(circleIdx: 0, circleCount: circleCount, width: width, height: height)
+        XCTAssertEqual(background.alpha, CGFloat(1.0))
+        XCTAssertEqual(background.rect, CGRect(x: CGFloat(0), y: CGFloat(0), width: width, height: height))
+        
+        circleCount = 2
+        background = vc.buttonBackgroundRect(circleIdx: 0, circleCount: circleCount, width: width, height: height)
+        XCTAssertEqual(background.alpha, CGFloat(0.5))
+        XCTAssertEqual(background.rect, CGRect(x: CGFloat(0), y: CGFloat(0), width: width, height: height))
+        
+        background = vc.buttonBackgroundRect(circleIdx: 1, circleCount: circleCount, width: width, height: height)
+        XCTAssertEqual(background.alpha, CGFloat(1.0))
+        XCTAssertEqual(background.rect, CGRect(x: CGFloat(10), y: CGFloat(10), width: CGFloat(20), height: CGFloat(20)))
+        
+        // Switch to 66,66 so we get even numbers
+        width = CGFloat(66)
+        height = CGFloat(66)
+        circleCount = 3
+        background = vc.buttonBackgroundRect(circleIdx: 0, circleCount: circleCount, width: width, height: height)
+        XCTAssertEqual(background.alpha, CGFloat(1.0/3.0))
+        XCTAssertEqual(background.rect, CGRect(x: CGFloat(0), y: CGFloat(0), width: width, height: height))
+        
+        background = vc.buttonBackgroundRect(circleIdx: 1, circleCount: circleCount, width: width, height: height)
+        XCTAssertEqual(background.alpha, CGFloat(2.0/3.0))
+        XCTAssertEqual(background.rect, CGRect(x: CGFloat(11), y: CGFloat(11), width: CGFloat(44), height: CGFloat(44)))
+        
+        background = vc.buttonBackgroundRect(circleIdx: 2, circleCount: circleCount, width: width, height: height)
+        XCTAssertEqual(background.alpha, CGFloat(1.0))
+        XCTAssertEqual(background.rect, CGRect(x: CGFloat(22), y: CGFloat(22), width: CGFloat(22), height: CGFloat(22)))
+    }
 }
 

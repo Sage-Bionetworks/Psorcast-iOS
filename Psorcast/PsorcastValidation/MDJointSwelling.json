@@ -1,6 +1,6 @@
 {
-    "taskIdentifier"            : "MDJointCounting",
-    "schemaIdentifier"          : "MDJointCounting",
+    "taskIdentifier"            : "MDJointSwelling",
+    "schemaIdentifier"          : "MDJointSwelling",
     "progressMarkers":[],
     "steps":
     [
@@ -39,7 +39,7 @@
                         },
                         {
                             "text": "Below the waist",
-                            "detail": "Hips, knees, ankles",
+                            "detail": "Knees, ankles",
                             "value": "belowTheWaist"
                         },
                         {
@@ -80,6 +80,7 @@
                     "width": 375,
                     "height": 423
                 },
+                "jointCircleCount": 3,
                 "jointSize": {
                     "width": 40,
                     "height": 40
@@ -149,18 +150,12 @@
                     "width": 375,
                     "height": 423
                 },
+                "jointCircleCount": 3,
                 "jointSize": {
                     "width": 40,
                     "height": 40
                 },
                 "joints": [
-                    {
-                        "identifier": "right_hip",
-                        "center": {
-                            "x": 132,
-                            "y": 30
-                        }
-                    },
                     {
                         "identifier": "right_knee",
                         "center": {
@@ -173,13 +168,6 @@
                         "center": {
                             "x": 160,
                             "y": 337
-                        }
-                    },
-                    {
-                        "identifier": "left_hip",
-                        "center": {
-                            "x": 240,
-                            "y": 30
                         }
                     },
                     {
@@ -218,6 +206,7 @@
                     "width": 367,
                     "height": 423
                 },
+                "jointCircleCount": 3,
                 "jointSize": {
                     "width": 40,
                     "height": 40
@@ -350,6 +339,7 @@
                     "width": 375,
                     "height": 423
                 },
+                "jointCircleCount": 3,
                 "jointSize": {
                     "width": 40,
                     "height": 40
@@ -482,6 +472,7 @@
                     "width": 375,
                     "height": 423
                 },
+                "jointCircleCount": 3,
                 "jointSize": {
                     "width": 40,
                     "height": 40
@@ -579,6 +570,7 @@
                     "width": 375,
                     "height": 423
                 },
+                "jointCircleCount": 3,
                 "jointSize": {
                     "width": 40,
                     "height": 40
@@ -710,14 +702,6 @@
                         "right_pip_1", "right_mcp_1", "right_cmc_1"]
                 },
                 {
-                    "jointMapIdentifier": "left_hip",
-                    "jointCompleteIdentifiers": ["left_hip"]
-                },
-                {
-                    "jointMapIdentifier": "right_hip",
-                    "jointCompleteIdentifiers": ["right_hip"]
-                },
-                {
                     "jointMapIdentifier": "left_knee",
                     "jointCompleteIdentifiers": ["left_knee"]
                 },
@@ -759,6 +743,7 @@
                     "width": 121,
                     "height": 231
                 },
+                "jointCircleCount": 3,
                 "jointSize": {
                     "width": 15,
                     "height": 15
@@ -804,20 +789,6 @@
                         "center": {
                             "x": 10,
                             "y": 115
-                        }
-                    },
-                    {
-                        "identifier": "left_hip",
-                        "center": {
-                            "x": 83,
-                            "y": 105
-                        }
-                    },
-                    {
-                        "identifier": "right_hip",
-                        "center": {
-                            "x": 37,
-                            "y": 105
                         }
                     },
                     {

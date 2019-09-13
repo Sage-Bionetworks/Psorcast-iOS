@@ -33,6 +33,7 @@
 
 import Foundation
 import BridgeApp
+import BridgeAppUI
 
 /// The 'JointPainStepViewController' displays a joint pain image that has
 /// buttons overlayed at specific parts of the images to represent joints
@@ -54,8 +55,29 @@ open class JointPainStepViewController: RSDStepViewController, JointPainImageVie
         return self.designSystem.colorRules.backgroundLight
     }
     
+    /// The initial result of the step if the user navigated back to this step
+    open var initialResult: JointPainResultObject?
+    
     /// The image view container that adds the joint buttons
     @IBOutlet public var jointImageView: JointPainImageView!
+    
+    /// Returns a new step view controller for the specified step.
+    /// - parameter step: The step to be presented.
+    public override init(step: RSDStep, parent: RSDPathComponent?) {
+        super.init(nibName: nil, bundle: nil)
+        
+        // Set the initial result if available.
+        self.initialResult = (parent as? RSDHistoryPathComponent)?
+            .previousResult(for: step) as? JointPainResultObject
+    }
+    
+    required public init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+    
+    public override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+    }
     
     /// Inject our imageview as the header's imageview
     /// because we can't set it in the xib because
@@ -74,7 +96,15 @@ open class JointPainStepViewController: RSDStepViewController, JointPainImageVie
         // Setup the joint paint imageview
         self.jointImageView.setDesignSystem(self.designSystem, with: self.background)
         self.jointImageView.delegate = self
-        self.jointImageView.jointPainMap = self.jointPainMap
+        
+        var map = self.jointPainMap
+        // If there is an initial result, apply the selected state to the joints
+        if let result = self.initialResult {
+            map?.joints = result.jointPainMap.joints.map({ (joint) -> Joint in
+                return Joint(identifier: joint.identifier, center: joint.center, isSelected: joint.isSelected)
+            })
+        }
+        self.jointImageView.jointPainMap = map
     }
     
     /// Override the default background for all the placements

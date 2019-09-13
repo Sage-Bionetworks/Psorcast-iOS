@@ -41,6 +41,7 @@ public extension RSDIdentifier {
     static let footImagingTask: RSDIdentifier = "FootImaging"
     static let jointCountingTask: RSDIdentifier = "JointCounting"
     static let mdJointCountingTask: RSDIdentifier = "MDJointCounting"
+    static let mdJointSwellingTask: RSDIdentifier = "MDJointSwelling"
 }
 
 extension MCTTaskInfo : SBAActivityInfo {

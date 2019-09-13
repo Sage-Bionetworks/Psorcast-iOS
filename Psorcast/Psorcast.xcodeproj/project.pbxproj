@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CB422D2A23316EB700787FEE /* BridgeAppUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB422D2923316EB700787FEE /* BridgeAppUI.framework */; };
+		CB422D2B23316EB700787FEE /* BridgeAppUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB422D2923316EB700787FEE /* BridgeAppUI.framework */; };
+		CB422D2C23316EB700787FEE /* BridgeAppUI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CB422D2923316EB700787FEE /* BridgeAppUI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		CB422D2E23316EB700787FEE /* MDJointCounting.json in Resources */ = {isa = PBXBuildFile; fileRef = CB422D2D23316EB700787FEE /* MDJointCounting.json */; };
 		CB55C7152317391600EA0C19 /* JointCounting.json in Resources */ = {isa = PBXBuildFile; fileRef = CB55C7142317391600EA0C19 /* JointCounting.json */; };
 		CB55C71723173D6A00EA0C19 /* JointSelectionStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB55C71623173D6A00EA0C19 /* JointSelectionStepViewController.swift */; };
 		CB55C725231773FF00EA0C19 /* JointPainStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB55C724231773FF00EA0C19 /* JointPainStepViewController.swift */; };
@@ -22,7 +26,7 @@
 		CB5E95FB22EE7A390001AAFE /* ParticipantIDRegistrationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB5E95FA22EE7A390001AAFE /* ParticipantIDRegistrationViewController.xib */; };
 		CB5E960A22EE920D0001AAFE /* ExternalIDRegistrationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB5E960922EE920D0001AAFE /* ExternalIDRegistrationViewController.xib */; };
 		CB6F54F022E25C5B0073BFE9 /* ParticipantIDRegistrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6F54EF22E25C5B0073BFE9 /* ParticipantIDRegistrationViewController.swift */; };
-		CB737FEC231B100600FA1D3A /* MDJointCounting.json in Resources */ = {isa = PBXBuildFile; fileRef = CB737FEB231B100600FA1D3A /* MDJointCounting.json */; };
+		CB737FEC231B100600FA1D3A /* MDJointSwelling.json in Resources */ = {isa = PBXBuildFile; fileRef = CB737FEB231B100600FA1D3A /* MDJointSwelling.json */; };
 		CB9F5E1F22E0BED3003FBCEF /* lato_black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CB9F5E1422E0BEA3003FBCEF /* lato_black.ttf */; };
 		CB9F5E2022E0BED3003FBCEF /* lato_bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CB9F5E1222E0BEA3003FBCEF /* lato_bold.ttf */; };
 		CB9F5E2122E0BED3003FBCEF /* lato_bolditalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CB9F5E1522E0BEA3003FBCEF /* lato_bolditalic.ttf */; };
@@ -109,6 +113,7 @@
 				FFABCC0922DD1FDB00D11109 /* BridgeSDK.framework in Embed Frameworks */,
 				FFABCC0022DD1FBC00D11109 /* ResearchMotion.framework in Embed Frameworks */,
 				FFABCBF922DD1FAB00D11109 /* Research.framework in Embed Frameworks */,
+				CB422D2C23316EB700787FEE /* BridgeAppUI.framework in Embed Frameworks */,
 				FFABCBFD22DD1FB500D11109 /* ResearchUI.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -117,6 +122,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		CB422D2923316EB700787FEE /* BridgeAppUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BridgeAppUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		CB422D2D23316EB700787FEE /* MDJointCounting.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = MDJointCounting.json; sourceTree = "<group>"; };
 		CB55C7142317391600EA0C19 /* JointCounting.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = JointCounting.json; sourceTree = "<group>"; };
 		CB55C71623173D6A00EA0C19 /* JointSelectionStepViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JointSelectionStepViewController.swift; sourceTree = "<group>"; };
 		CB55C724231773FF00EA0C19 /* JointPainStepViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JointPainStepViewController.swift; sourceTree = "<group>"; };
@@ -132,7 +139,7 @@
 		CB5E95FA22EE7A390001AAFE /* ParticipantIDRegistrationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ParticipantIDRegistrationViewController.xib; sourceTree = "<group>"; };
 		CB5E960922EE920D0001AAFE /* ExternalIDRegistrationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExternalIDRegistrationViewController.xib; sourceTree = "<group>"; };
 		CB6F54EF22E25C5B0073BFE9 /* ParticipantIDRegistrationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParticipantIDRegistrationViewController.swift; sourceTree = "<group>"; };
-		CB737FEB231B100600FA1D3A /* MDJointCounting.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = MDJointCounting.json; sourceTree = "<group>"; };
+		CB737FEB231B100600FA1D3A /* MDJointSwelling.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = MDJointSwelling.json; sourceTree = "<group>"; };
 		CB9F5E1222E0BEA3003FBCEF /* lato_bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = lato_bold.ttf; path = Fonts/lato_bold.ttf; sourceTree = "<group>"; };
 		CB9F5E1322E0BEA3003FBCEF /* lato_light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = lato_light.ttf; path = Fonts/lato_light.ttf; sourceTree = "<group>"; };
 		CB9F5E1422E0BEA3003FBCEF /* lato_black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = lato_black.ttf; path = Fonts/lato_black.ttf; sourceTree = "<group>"; };
@@ -215,10 +222,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CB422D2A23316EB700787FEE /* BridgeAppUI.framework in Frameworks */,
 				FFABCC0522DD1FCF00D11109 /* BridgeApp.framework in Frameworks */,
 				FFABCC0222DD1FC900D11109 /* MotorControl.framework in Frameworks */,
 				FFABCC0822DD1FDB00D11109 /* BridgeSDK.framework in Frameworks */,
 				FFABCBFF22DD1FBC00D11109 /* ResearchMotion.framework in Frameworks */,
+				CB422D2B23316EB700787FEE /* BridgeAppUI.framework in Frameworks */,
 				FFABCBF822DD1FAB00D11109 /* Research.framework in Frameworks */,
 				FFABCBFC22DD1FB500D11109 /* ResearchUI.framework in Frameworks */,
 			);
@@ -321,7 +330,8 @@
 				CBD67D9B22DFE11A00998516 /* FootImaging.json */,
 				CBD67D9522DFDABE00998516 /* HandImaging.json */,
 				CB55C7142317391600EA0C19 /* JointCounting.json */,
-				CB737FEB231B100600FA1D3A /* MDJointCounting.json */,
+				CB737FEB231B100600FA1D3A /* MDJointSwelling.json */,
+				CB422D2D23316EB700787FEE /* MDJointCounting.json */,
 			);
 			name = JSON;
 			sourceTree = "<group>";
@@ -413,6 +423,7 @@
 		FFABCC0A22DD1FE800D11109 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CB422D2923316EB700787FEE /* BridgeAppUI.framework */,
 				FFABCC0722DD1FDB00D11109 /* BridgeSDK.framework */,
 				FFABCC0422DD1FCF00D11109 /* BridgeApp.framework */,
 				FFABCC0122DD1FC900D11109 /* MotorControl.framework */,
@@ -598,6 +609,7 @@
 				FFABCBF222DD1F2800D11109 /* LaunchScreen.storyboard in Resources */,
 				FFABCBEF22DD1F2800D11109 /* Assets.xcassets in Resources */,
 				FFABCBED22DD1F2800D11109 /* Main.storyboard in Resources */,
+				CB422D2E23316EB700787FEE /* MDJointCounting.json in Resources */,
 				CB9F5E2722E0BED4003FBCEF /* lato_bold.ttf in Resources */,
 				CB55C72D2317859700EA0C19 /* JointPainStepViewController.xib in Resources */,
 				CBD67D9922DFDC4E00998516 /* ImageCaptureStepViewController.xib in Resources */,
@@ -605,7 +617,7 @@
 				CB9F5E2822E0BED4003FBCEF /* lato_bolditalic.ttf in Resources */,
 				CB9F5E2A22E0BED4003FBCEF /* lato_light.ttf in Resources */,
 				FF5010A822DD22A50035E83C /* psorcast-validation.pem in Resources */,
-				CB737FEC231B100600FA1D3A /* MDJointCounting.json in Resources */,
+				CB737FEC231B100600FA1D3A /* MDJointSwelling.json in Resources */,
 				CB5E960A22EE920D0001AAFE /* ExternalIDRegistrationViewController.xib in Resources */,
 				CB9F5E2C22E0BED4003FBCEF /* lato_regular.ttf in Resources */,
 				CBD67D9C22DFE11B00998516 /* FootImaging.json in Resources */,

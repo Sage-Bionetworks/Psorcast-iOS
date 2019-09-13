@@ -50,7 +50,7 @@ class CopyStepTests: XCTestCase {
     func testCopy_JointPainStepObject() {
         
         let joints = [Joint(identifier: "a", center: PointWrapper(CGPoint(x: 1, y: 1))!, isSelected: false), Joint(identifier: "b", center: PointWrapper(CGPoint(x: 2, y: 2))!, isSelected: false)]
-        let map = JointPainMap(region: .aboveTheWaist, subregion: .none, imageSize: SizeWrapper(CGSize(width: 1, height: 1))!, jointSize: SizeWrapper(CGSize(width: 3, height: 3))!, joints: joints)
+        let map = JointPainMap(region: .aboveTheWaist, subregion: .none, imageSize: SizeWrapper(CGSize(width: 1, height: 1))!, jointCircleCount: 1, jointSize: SizeWrapper(CGSize(width: 3, height: 3))!, joints: joints)
         let step = JointPainStepObject(identifier: "foo", type: .jointPain, jointPainMap: map)
         
         step.title = "title"
