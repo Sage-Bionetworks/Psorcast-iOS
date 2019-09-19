@@ -43,3 +43,6 @@
 "ENTER_PARTICIPANT_ID" = "Enter Participant ID";
 "RE_ENTER_PARTICIPANT_ID" = "Please confirm your participant ID";
 "PARTICPANT_IDS_DID_NOT_MATCH" = "Participant IDs did not match, please enter your participant ID again";
+
+"VIEW_MY_FRONT_BUTTON" = "View my front";
+"VIEW_MY_BACK_BUTTON" = "View my back";

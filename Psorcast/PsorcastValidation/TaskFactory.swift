@@ -38,6 +38,7 @@ extension RSDStepType {
     public static let jointSelection: RSDStepType = "jointSelection"
     public static let jointPain: RSDStepType = "jointPain"
     public static let completionJointPain: RSDStepType = "completionJointPain"
+    public static let bellwether: RSDStepType = "bellwether"
 }
 
 open class TaskFactory: SBAFactory {
@@ -52,6 +53,8 @@ open class TaskFactory: SBAFactory {
             return try JointPainStepObject(from: decoder)
         case .completionJointPain:
             return try JointPainCompletionStepObject(from: decoder)
+        case .bellwether:
+            return try BellwetherStepObject(from: decoder)
         default:
             return try super.decodeStep(from: decoder, with: type)
         }
