@@ -57,7 +57,7 @@ class TaskListScheduleManagerTests: XCTestCase {
     
     func testSortOrderSchedules() {
         // Unknown tasks should be sorted at the end
-        let expectedResult = ["Walk30Seconds", "MDJointSwelling", "JointCounting", "MDJointCounting", "HandImaging", "FootImaging", "Unknown Task"]
+        let expectedResult = ["Walk30Seconds", "JointCounting", "HandImaging", "FootImaging", "MDJointCounting", "MDJointSwelling", "Unknown Task"]
         
         var actualResult = manager.sortActivities(activities)
         XCTAssertNotNil(actualResult)
@@ -106,7 +106,7 @@ class TaskListScheduleManagerTests: XCTestCase {
     }
     
     func testSortedScheduledActivity() {
-        let expectedResultIdentifiers = ["Walk30Seconds", "MDJointSwelling", "JointCounting", "MDJointCounting", "HandImaging", "FootImaging", "Unknown Task", "Unknown Task"]
+        let expectedResultIdentifiers = ["Walk30Seconds", "JointCounting", "HandImaging", "FootImaging", "MDJointCounting", "MDJointSwelling", "Unknown Task"]
         
         for (index) in 0..<rowCount {
             if (index < taskRowEndIndex) { // Task Rows
@@ -118,7 +118,7 @@ class TaskListScheduleManagerTests: XCTestCase {
     }
     
     func testTableRowTitles() {
-        let expectedTitles = ["30 second walk", "MD Joint Swelling", "Joint Counting", "MD Joint Counting", "Finger photo", "Toe photo", "Unknown Task Title"]
+        let expectedTitles = ["30 second walk", "Joint Counting", "Finger photo", "Toe photo", "MD Joint Counting", "MD Joint Swelling", "Unknown Task Title"]
 
         XCTAssertEqual(expectedTitles.count, rowCount)
         for (index) in 0..<rowCount {
@@ -128,7 +128,7 @@ class TaskListScheduleManagerTests: XCTestCase {
     }
     
     func testTableRowDetails() {
-        let expectedDetail = ["Version 0.1", "Version 0.1", "Version 1.0", "Version 1.1", "Version 0.2", "Version 0.3", "Version 0.4"]
+        let expectedDetail = ["Version 0.1", "Version 1.0", "Version 0.2", "Version 0.3", "Version 1.1", "Version 0.1", "Version 0.4"]
         
         XCTAssertEqual(expectedDetail.count, rowCount)
         for (index) in 0..<rowCount {

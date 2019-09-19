@@ -177,6 +177,10 @@ class ParticipantIDRegistrationViewController: RSDStepViewController, UITextFiel
                                                                attributes: [NSAttributedString.Key.foregroundColor: UIColor.white])
     }
     
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        return textField.endEditing(false)
+    }
+    
     func setRentryTitle() {
         self.setTextFieldPlaceholder(text: Localization.localizedString("RE_ENTER_PARTICIPANT_ID"))
     }
@@ -206,10 +210,6 @@ class ParticipantIDRegistrationViewController: RSDStepViewController, UITextFiel
             self.submitButton.isEnabled = !updatedText.isEmpty
         }
         return true
-    }
-    
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        return self.textField.endEditing(false)
     }
     
     @IBAction func submitTapped() {
