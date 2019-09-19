@@ -40,8 +40,8 @@ import BridgeAppUI
 /// The user selects a single zone that is best representative of their psoriasis
 open class BellwetherStepViewController: RSDStepViewController, BellwetherImageViewDelegate {
     
-    let selectedZoneIdentifierResultIdentifier = "selectedZoneIdentifier"
-    let selectedZoneLabelResultIdentifier = "selectedZoneLabel"
+    static let selectedZoneIdentifierResultIdentifier = "selectedZoneIdentifier"
+    static let selectedZoneLabelResultIdentifier = "selectedZoneLabel"
     
     /// The step for this view controller
     open var bellwetherStep: BellwetherStepObject? {
@@ -207,10 +207,10 @@ open class BellwetherStepViewController: RSDStepViewController, BellwetherImageV
         
         // Append simple zone selection used on results screen
         if let selectedUnwrapped = selectedZone {
-            let identifierResult = RSDAnswerResultObject(identifier: selectedZoneIdentifierResultIdentifier, answerType: .string, value: selectedUnwrapped.identifier)
+            let identifierResult = RSDAnswerResultObject(identifier: BellwetherStepViewController.selectedZoneIdentifierResultIdentifier, answerType: .string, value: selectedUnwrapped.identifier)
             _ = self.stepViewModel.parent?.taskResult.appendStepHistory(with: identifierResult)
             
-            let labelResult = RSDAnswerResultObject(identifier: selectedZoneLabelResultIdentifier, answerType: .string, value: selectedUnwrapped.label)
+            let labelResult = RSDAnswerResultObject(identifier: BellwetherStepViewController.selectedZoneLabelResultIdentifier, answerType: .string, value: selectedUnwrapped.label)
             _ = self.stepViewModel.parent?.taskResult.appendStepHistory(with: labelResult)
         }
         

@@ -847,5 +847,17 @@
             "type"          : "imageCapture",
             "title"         : "Capture Image"
         },
+        {
+            "identifier":"completion",
+            "type":"bellwetherCompletion",
+            "text": "You have selected %@ as your most representative area.",
+            "actions": {
+                "goForward":{
+                    "type":"default",
+                    "buttonTitle":"Done"
+                }
+            },
+            "shouldHideActions": ["goBackward", "cancel"]
+        }
     ]
 }
