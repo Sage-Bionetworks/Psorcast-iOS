@@ -78,7 +78,8 @@ open class BellwetherCompletionStepViewController: RSDInstructionStepViewControl
         super.setupHeader(header)
         
         self.navigationHeader?.backgroundColor = self.designSystem.colorRules.backgroundLight.color
-        self.navigationHeader?.imageView?.image = self.selectedZoneImage
+        self.navigationHeader?.imageView?.contentMode = .scaleAspectFit
+        self.loadImageAndDelayIfNecessary()
         
         if let zoneLabel = self.selectZoneLabel {
             
@@ -89,6 +90,22 @@ open class BellwetherCompletionStepViewController: RSDInstructionStepViewControl
             if let text = self.navigationBody?.textLabel?.text,
                 text.contains("%@") {
                 self.navigationBody?.textLabel?.text = String(format: text, zoneLabel)
+            }
+        }
+    }
+    
+    func loadImageAndDelayIfNecessary() {
+        if let image = self.selectedZoneImage {
+            debugPrint("Image loaded")
+            self.navigationHeader?.imageView?.image = image
+        } else {
+            debugPrint("Image not available immediately, trying again in 0.25 sec")
+            // Because the user has taken the picture only moments before this
+            // step view controller is loaded, it may not be immediately
+            // available.  If the image is nil, keep trying to load it
+            // until we have a successful image
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) { [weak self] in
+                self?.loadImageAndDelayIfNecessary()
             }
         }
     }
