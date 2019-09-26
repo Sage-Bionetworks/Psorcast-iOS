@@ -222,7 +222,7 @@ open class JointPainImageView: UIView, RSDViewDesignable {
     
     /// Creates a joint button and initializes it to the default state
     open func createJointPaintButton(size: CGSize, buttonIdx: Int) -> UIButton {
-        let button = UIButton(type: .system)
+        let button = UIButton(type: .custom)
         button.tag = buttonIdx
         button.addTarget(self, action: #selector(self.jointTapped(sender:)), for: .touchUpInside)
         button.isUserInteractionEnabled = self.isEditable
@@ -236,16 +236,29 @@ open class JointPainImageView: UIView, RSDViewDesignable {
     open func styleJointButton(button: UIButton) {
         // Set the selected state colors
         // Use design system if overrides are nil
+        var selectedColor: RSDColor?
         if let selectedOverride = self.overrideSelectedButtonColor {
-            self.setBackgroundButtonImage(button: button, color: selectedOverride, forState: .selected)
+            selectedColor = selectedOverride
         } else if let design = self.designSystem {
-            self.setBackgroundButtonImage(button: button, color: design.colorRules.palette.accent.normal.color, forState: .selected)
+            selectedColor = design.colorRules.palette.accent.normal.color
+        }
+        if let color = selectedColor {
+            let highlightedAlpha = color.cgColor.alpha * 0.5
+            self.setBackgroundButtonImage(button: button, color: color.withAlphaComponent(highlightedAlpha), forState: [.selected, .highlighted])
+            self.setBackgroundButtonImage(button: button, color: color, forState: .selected)
         }
         
+        var normalColor: RSDColor?
         if let unselectedOverride = self.overrideUnselectedButtonColor {
-            self.setBackgroundButtonImage(button: button, color: unselectedOverride, forState: .normal)
+            normalColor = unselectedOverride
+            
         } else if let design = self.designSystem {
-            self.setBackgroundButtonImage(button: button, color: design.colorRules.palette.secondary.normal.color, forState: .normal)
+            normalColor = design.colorRules.palette.secondary.normal.color
+        }
+        if let color = normalColor {
+            let highlightedAlpha = color.cgColor.alpha * 0.5
+            self.setBackgroundButtonImage(button: button, color: color.withAlphaComponent(highlightedAlpha), forState: [.highlighted])
+            self.setBackgroundButtonImage(button: button, color: color, forState: .normal)
         }
     }
     
@@ -263,7 +276,7 @@ open class JointPainImageView: UIView, RSDViewDesignable {
         if let context = UIGraphicsGetCurrentContext() {
             
             for i in 0..<circleCount {
-                let background = self.buttonBackgroundRect(circleIdx: i, circleCount: circleCount, width: width, height: height)
+                let background = self.buttonBackgroundRect(circleIdx: i, circleCount: circleCount, width: width, height: height, alpha: color.cgColor.alpha)
                 // If the color was transparent already, keep it as so,
                 // otherwise, let the circles be dynamically calculated
                 if color.cgColor.alpha > 0 {
@@ -288,14 +301,17 @@ open class JointPainImageView: UIView, RSDViewDesignable {
     ///
     /// - returns: true if this index is for a task row, false otherwise
     ///
-    func buttonBackgroundRect(circleIdx: Int, circleCount: Int, width: CGFloat, height: CGFloat) -> (alpha: CGFloat, rect: CGRect) {
+    func buttonBackgroundRect(circleIdx: Int, circleCount: Int, width: CGFloat, height: CGFloat, alpha: CGFloat) -> (alpha: CGFloat, rect: CGRect) {
         let circleSizeFactor = (CGFloat(1) / CGFloat(circleCount))
         let iFloat = CGFloat(circleIdx)
         let x = width * (iFloat * circleSizeFactor * CGFloat(0.5))
         let y = height * (iFloat * circleSizeFactor * CGFloat(0.5))
         let circleWidth = width - (width * iFloat * circleSizeFactor)
         let circleHeight = height - (height * iFloat * circleSizeFactor)
-        let colorAlpha = (iFloat + 1) * circleSizeFactor
+        var colorAlpha = (iFloat + 1) * circleSizeFactor
+        if (alpha > 0) {
+            colorAlpha *= alpha
+        }
         return (colorAlpha, CGRect(x: x, y: y, width: circleWidth, height: circleHeight))
     }
     
