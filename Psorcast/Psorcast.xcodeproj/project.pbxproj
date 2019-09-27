@@ -45,6 +45,7 @@
 		CB9F5E5222E0C2BA003FBCEF /* PsorcastTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB9F5E5122E0C2BA003FBCEF /* PsorcastTests.swift */; };
 		CB9F5E5B22E0C531003FBCEF /* CopyStepTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB9F5E5922E0C530003FBCEF /* CopyStepTests.swift */; };
 		CB9F5E5C22E0C531003FBCEF /* CodableStepObjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB9F5E5A22E0C531003FBCEF /* CodableStepObjectTests.swift */; };
+		CBD62BAC23342CBA00C78F22 /* BellwetherCompletionStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBD62BAA23342CBA00C78F22 /* BellwetherCompletionStepViewController.swift */; };
 		CBD67D8122DFB8DE00998516 /* Psorcast.strings in Resources */ = {isa = PBXBuildFile; fileRef = CBD67D8022DFB8DE00998516 /* Psorcast.strings */; };
 		CBD67D8422DFB90C00998516 /* ExternalIDRegistrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBD67D8322DFB90C00998516 /* ExternalIDRegistrationViewController.swift */; };
 		CBD67D8822DFC59B00998516 /* TaskListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBD67D8722DFC59B00998516 /* TaskListTableViewController.swift */; };
@@ -56,6 +57,12 @@
 		CBD67D9922DFDC4E00998516 /* ImageCaptureStepViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CBD67D9722DFDC4E00998516 /* ImageCaptureStepViewController.xib */; };
 		CBD67D9A22DFDC4E00998516 /* ImageCaptureStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBD67D9822DFDC4E00998516 /* ImageCaptureStepViewController.swift */; };
 		CBD67D9C22DFE11B00998516 /* FootImaging.json in Resources */ = {isa = PBXBuildFile; fileRef = CBD67D9B22DFE11A00998516 /* FootImaging.json */; };
+		CBE908952332ED9E00F88A9A /* Bellwether.json in Resources */ = {isa = PBXBuildFile; fileRef = CBE908942332ED9E00F88A9A /* Bellwether.json */; };
+		CBE908A42333BADA00F88A9A /* BellwetherStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE908A22333BADA00F88A9A /* BellwetherStepViewController.swift */; };
+		CBE908A52333BADA00F88A9A /* BellwetherStepViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CBE908A32333BADA00F88A9A /* BellwetherStepViewController.xib */; };
+		CBE908A82333BB2A00F88A9A /* BellwetherStepObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE908A62333BB2A00F88A9A /* BellwetherStepObject.swift */; };
+		CBE908A92333BB2A00F88A9A /* BellwetherResultObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE908A72333BB2A00F88A9A /* BellwetherResultObject.swift */; };
+		CBE908AB2333BD3C00F88A9A /* BellwetherImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE908AA2333BD3C00F88A9A /* BellwetherImageView.swift */; };
 		FF50109F22DD21420035E83C /* BridgeInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = FF50109E22DD21420035E83C /* BridgeInfo.plist */; };
 		FF5010A122DD214A0035E83C /* BridgeInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = FF5010A022DD214A0035E83C /* BridgeInfo.plist */; };
 		FF5010A822DD22A50035E83C /* psorcast-validation.pem in Resources */ = {isa = PBXBuildFile; fileRef = FF5010A622DD22A50035E83C /* psorcast-validation.pem */; };
@@ -155,6 +162,7 @@
 		CB9F5E5322E0C2BA003FBCEF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CB9F5E5922E0C530003FBCEF /* CopyStepTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CopyStepTests.swift; sourceTree = "<group>"; };
 		CB9F5E5A22E0C531003FBCEF /* CodableStepObjectTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodableStepObjectTests.swift; sourceTree = "<group>"; };
+		CBD62BAA23342CBA00C78F22 /* BellwetherCompletionStepViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BellwetherCompletionStepViewController.swift; sourceTree = "<group>"; };
 		CBD67D8022DFB8DE00998516 /* Psorcast.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = Psorcast.strings; sourceTree = "<group>"; };
 		CBD67D8322DFB90C00998516 /* ExternalIDRegistrationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExternalIDRegistrationViewController.swift; sourceTree = "<group>"; };
 		CBD67D8622DFC45200998516 /* PsorcastValidation.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PsorcastValidation.entitlements; sourceTree = "<group>"; };
@@ -168,6 +176,12 @@
 		CBD67D9722DFDC4E00998516 /* ImageCaptureStepViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ImageCaptureStepViewController.xib; sourceTree = "<group>"; };
 		CBD67D9822DFDC4E00998516 /* ImageCaptureStepViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCaptureStepViewController.swift; sourceTree = "<group>"; };
 		CBD67D9B22DFE11A00998516 /* FootImaging.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = FootImaging.json; sourceTree = "<group>"; };
+		CBE908942332ED9E00F88A9A /* Bellwether.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Bellwether.json; sourceTree = "<group>"; };
+		CBE908A22333BADA00F88A9A /* BellwetherStepViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BellwetherStepViewController.swift; sourceTree = "<group>"; };
+		CBE908A32333BADA00F88A9A /* BellwetherStepViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BellwetherStepViewController.xib; sourceTree = "<group>"; };
+		CBE908A62333BB2A00F88A9A /* BellwetherStepObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BellwetherStepObject.swift; sourceTree = "<group>"; };
+		CBE908A72333BB2A00F88A9A /* BellwetherResultObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BellwetherResultObject.swift; sourceTree = "<group>"; };
+		CBE908AA2333BD3C00F88A9A /* BellwetherImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BellwetherImageView.swift; sourceTree = "<group>"; };
 		FF50109E22DD21420035E83C /* BridgeInfo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = BridgeInfo.plist; sourceTree = "<group>"; };
 		FF5010A022DD214A0035E83C /* BridgeInfo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = BridgeInfo.plist; sourceTree = "<group>"; };
 		FF5010A622DD22A50035E83C /* psorcast-validation.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "psorcast-validation.pem"; path = "../../../iOSPrivateProjectInfo/PsorcastValidation/psorcast-validation.pem"; sourceTree = "<group>"; };
@@ -301,6 +315,12 @@
 				CB55C72C2317859700EA0C19 /* JointPainStepViewController.xib */,
 				CB55C73D23198C1000EA0C19 /* JointPainCompletionStepViewController.swift */,
 				CB55C73F2319A18300EA0C19 /* JointPainCompletionStepViewController.xib */,
+				CBE908A22333BADA00F88A9A /* BellwetherStepViewController.swift */,
+				CBE908A32333BADA00F88A9A /* BellwetherStepViewController.xib */,
+				CBE908A72333BB2A00F88A9A /* BellwetherResultObject.swift */,
+				CBE908A62333BB2A00F88A9A /* BellwetherStepObject.swift */,
+				CBE908AA2333BD3C00F88A9A /* BellwetherImageView.swift */,
+				CBD62BAA23342CBA00C78F22 /* BellwetherCompletionStepViewController.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -332,6 +352,7 @@
 				CB55C7142317391600EA0C19 /* JointCounting.json */,
 				CB737FEB231B100600FA1D3A /* MDJointSwelling.json */,
 				CB422D2D23316EB700787FEE /* MDJointCounting.json */,
+				CBE908942332ED9E00F88A9A /* Bellwether.json */,
 			);
 			name = JSON;
 			sourceTree = "<group>";
@@ -603,6 +624,7 @@
 			files = (
 				CB5E95FB22EE7A390001AAFE /* ParticipantIDRegistrationViewController.xib in Resources */,
 				CB55C7402319A18300EA0C19 /* JointPainCompletionStepViewController.xib in Resources */,
+				CBE908A52333BADA00F88A9A /* BellwetherStepViewController.xib in Resources */,
 				CB9F5E2922E0BED4003FBCEF /* lato_italic.ttf in Resources */,
 				CB9F5E2622E0BED4003FBCEF /* lato_black.ttf in Resources */,
 				CBD67D8122DFB8DE00998516 /* Psorcast.strings in Resources */,
@@ -622,6 +644,7 @@
 				CB9F5E2C22E0BED4003FBCEF /* lato_regular.ttf in Resources */,
 				CBD67D9C22DFE11B00998516 /* FootImaging.json in Resources */,
 				FF50109F22DD21420035E83C /* BridgeInfo.plist in Resources */,
+				CBE908952332ED9E00F88A9A /* Bellwether.json in Resources */,
 				CB9F5E2B22E0BED4003FBCEF /* lato_lightitalic.ttf in Resources */,
 				FF5010A922DD22A50035E83C /* BridgeInfo-private.plist in Resources */,
 				CBD67D9622DFDABE00998516 /* HandImaging.json in Resources */,
@@ -667,17 +690,22 @@
 			files = (
 				CBD67D9122DFC6B400998516 /* BuildDateUtil.m in Sources */,
 				CB55C7382319718D00EA0C19 /* JointPainStepObject.swift in Sources */,
+				CBE908A82333BB2A00F88A9A /* BellwetherStepObject.swift in Sources */,
 				CBD67D9A22DFDC4E00998516 /* ImageCaptureStepViewController.swift in Sources */,
 				FFABCBEA22DD1F2800D11109 /* ViewController.swift in Sources */,
 				CBD67D9322DFC71E00998516 /* TaskFactory.swift in Sources */,
 				FFABCBE822DD1F2800D11109 /* AppDelegate.swift in Sources */,
 				CB55C725231773FF00EA0C19 /* JointPainStepViewController.swift in Sources */,
 				CB55C73E23198C1000EA0C19 /* JointPainCompletionStepViewController.swift in Sources */,
+				CBE908A42333BADA00F88A9A /* BellwetherStepViewController.swift in Sources */,
 				CBD67D8822DFC59B00998516 /* TaskListTableViewController.swift in Sources */,
+				CBD62BAC23342CBA00C78F22 /* BellwetherCompletionStepViewController.swift in Sources */,
 				CB55C71723173D6A00EA0C19 /* JointSelectionStepViewController.swift in Sources */,
 				CBD67D8422DFB90C00998516 /* ExternalIDRegistrationViewController.swift in Sources */,
+				CBE908A92333BB2A00F88A9A /* BellwetherResultObject.swift in Sources */,
 				CB55C72F231848CD00EA0C19 /* JointPainResultObject.swift in Sources */,
 				CBD67D8D22DFC5EE00998516 /* MotorControl+Bridge.swift in Sources */,
+				CBE908AB2333BD3C00F88A9A /* BellwetherImageView.swift in Sources */,
 				CB55C73A231972BE00EA0C19 /* JointPainImageView.swift in Sources */,
 				CB6F54F022E25C5B0073BFE9 /* ParticipantIDRegistrationViewController.swift in Sources */,
 				CBD67D8B22DFC5CA00998516 /* TaskListScheduleManager.swift in Sources */,
