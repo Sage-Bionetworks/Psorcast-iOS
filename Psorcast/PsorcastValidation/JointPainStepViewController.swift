@@ -78,25 +78,46 @@ open class JointPainStepViewController: RSDStepViewController, JointPainImageVie
     public override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
-    
-    /// Inject our imageview as the header's imageview
-    /// because we can't set it in the xib because
-    /// the imageview is generated dynamically within the joint pain view
+
     override open func setupHeader(_ header: RSDStepNavigationView) {
-        self.navigationHeader?.imageView = self.jointImageView.imageView
-        let image = self.jointImageView.image
         super.setupHeader(header)
-        // TODO: mdephillips 9/1/19 figure out root cause,
-        // but quick fix in here for now
-        // Back story: an update to the research framework
-        // is causing the setupHeader function to re-create the imageview
-        // so it back to ours afterwards.
-        self.navigationHeader?.imageView = self.jointImageView.imageView
-        self.jointImageView?.imageView?.image = image
-        // Setup the joint paint imageview
         self.jointImageView.setDesignSystem(self.designSystem, with: self.background)
-        self.jointImageView.delegate = self
+    }
+    
+    override open func viewDidLoad() {
+        super.viewDidLoad()
+        self.initializeImages()
+    }
+    
+    func initializeImages() {
+        guard let theme = self.jointPainStep?.imageTheme else {
+            debugPrint("Could not find image theme")
+            return
+        }
         
+        guard let size = self.jointPainStep?.jointPainMap?.imageSize.size else {
+            debugPrint("We need proper image sizes to initialize images")
+            return
+        }
+        
+        guard !(imageTheme is RSDAnimatedImageThemeElement) else {
+            debugPrint("We do not support animated images for plaque image view")
+            return
+        }
+        
+        if let assetLoader = theme as? RSDAssetImageThemeElement {
+            self.jointImageView.image = assetLoader.embeddedImage()
+        } else if let fetchLoader = theme as? RSDFetchableImageThemeElement {
+            fetchLoader.fetchImage(for: size, callback: { [weak jointImageView] (_, img) in
+                jointImageView?.image = img
+            })
+        }
+        
+        self.initJointPainImageView()
+    }
+    
+    func initJointPainImageView() {
+        self.jointImageView.delegate = self
         var map = self.jointPainMap
         // If there is an initial result, apply the selected state to the joints
         if let result = self.initialResult {

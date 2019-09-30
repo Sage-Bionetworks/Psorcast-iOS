@@ -283,7 +283,7 @@ open class JointPainCompletionStepViewController: RSDStepViewController, JointPa
     
     private func saveImageResult() {
         // Add the image result of the header
-        let image = self.jointImageView.convertToImage()
+        let image = PSRImageHelper.convertToImage(self.jointImageView)
         var url: URL?
         do {
             if let imageData = image.pngData(),

@@ -46,8 +46,7 @@ public class TaskListScheduleManager : SBAScheduleManager {
     ///         and the supplemental rows that go after them
     ///
     public var tableRowCount: Int {
-        return scheduledActivities.count +
-            TaskListSupplementalRow.RowCount.rawValue
+        return scheduledActivities.count
     }
     
     public var tableSectionCount: Int {
@@ -79,24 +78,6 @@ public class TaskListScheduleManager : SBAScheduleManager {
     ///
     /// - parameter indexPath: from the table view
     ///
-    /// - returns: true if this index is for a task row, false otherwise
-    ///
-    open func isTaskRow(for indexPath: IndexPath) -> Bool {
-        return indexPath.row < self.scheduledActivities.count
-    }
-    
-    ///
-    /// - parameter indexPath: from the table view
-    ///
-    /// - returns: true if this index is for a supplemental row, false otherwise
-    ///
-    open func isTaskSupplementalRow(for indexPath: IndexPath) -> Bool {
-        return indexPath.row >= self.scheduledActivities.count
-    }
-    
-    ///
-    /// - parameter indexPath: from the table view
-    ///
     /// - returns: the supplemental row if the index points at one, nil otherwise
     ///
     open func sortedScheduledActivity(for indexPath: IndexPath) -> SBBScheduledActivity? {
@@ -108,21 +89,11 @@ public class TaskListScheduleManager : SBAScheduleManager {
     ///
     /// - parameter indexPath: from the table view
     ///
-    /// - returns: the supplemental row if the index points at one, nil otherwise
+    /// - returns: the task id from sorted list row
     ///
-    open func supplementalRow(for indexPath: IndexPath) -> TaskListSupplementalRow? {
-        return TaskListSupplementalRow(rawValue: supplementalRowIndex(for: indexPath))
-    }
-    
-    ///
-    /// - parameter indexPath: from the table view
-    ///
-    /// - returns: the row index within the TaskListSupplementalRow enum space
-    ///         the first supplemental row index will be 0
-    ///
-    open func supplementalRowIndex(for indexPath: IndexPath) -> Int {
+    open func taskId(for indexPath: IndexPath) -> String? {
         let sorted = self.sortActivities(self.scheduledActivities) ?? []
-        return indexPath.row - sorted.count
+        return sorted[indexPath.item].activityIdentifier
     }
     
     ///
@@ -133,11 +104,7 @@ public class TaskListScheduleManager : SBAScheduleManager {
     ///
     open func title(for indexPath: IndexPath) -> String? {
         let sorted = self.sortActivities(self.scheduledActivities) ?? []
-        if (isTaskRow(for: indexPath)) {
-            return sorted[indexPath.item].activity.label
-        } else { // is supplemental row
-            return supplementalRow(for: indexPath)?.title()
-        }
+        return sorted[indexPath.item].activity.label
     }
     
     ///
@@ -148,11 +115,7 @@ public class TaskListScheduleManager : SBAScheduleManager {
     ///
     open func detail(for indexPath: IndexPath) -> String? {
         let sorted = self.sortActivities(self.scheduledActivities) ?? []
-        if (isTaskRow(for: indexPath)) {
-            return sorted[indexPath.item].activity.labelDetail
-        } else { // is supplemental row
-            return supplementalRow(for: indexPath)?.detail()
-        }
+        return sorted[indexPath.item].activity.labelDetail
     }
     
     /// Setup the step view model and preform step customization
@@ -197,32 +160,32 @@ public class TaskListScheduleManager : SBAScheduleManager {
         
         super.saveResults(from: taskViewModel)
     }
-}
-
-///
-/// Supplemental rows show after the sorted scheduled activities
-/// and even though they look the same as the task rows,
-/// they are not tasks, and go to different places in the app.
-///
-public enum TaskListSupplementalRow: Int {
     
-    // Uncomment to add fitbit back in
-//    case ConnectFitbit = 0
-//    case RowCount = 1
-    case ConnectFitbit = -1
-    case RowCount = 0
-    
-    func title() -> String {
-        switch self {
-        default:
-            return Localization.localizedString("CONNECT_FITBIT")
-        }
+    func isComplete(taskId: String) -> Bool {
+        return false
+//        let key = isCompleteKey(taskId: taskId)
+//        return UserDefaults.standard.bool(forKey: key)
     }
     
-    func detail() -> String {
-        switch self {
-        default:
-            return ""
+    func isAllComplete() -> Bool {
+        let taskIds = self.scheduledActivities.map({ $0.activityIdentifier })
+        for taskId in taskIds {
+            if let taskIdUnwrapped = taskId {
+                let key = isCompleteKey(taskId: taskIdUnwrapped)
+                if !UserDefaults.standard.bool(forKey: key) {
+                    return false
+                }
+            }
         }
+        return true
+    }
+    
+    func setIsComplete(taskId: String) {
+        let key = isCompleteKey(taskId: taskId)
+        return UserDefaults.standard.set(true, forKey: key)
+    }
+    
+    fileprivate func isCompleteKey(taskId: String) -> String {
+        return "\(taskId)IsComplete"
     }
 }

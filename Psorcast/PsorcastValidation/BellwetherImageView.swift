@@ -198,7 +198,7 @@ open class BellwetherImageView: UIView, RSDViewDesignable {
             // The aspect fit size of the image within the image view
             // will be used to translate the relative x,y
             // of the buttons so that they are visually correct
-            let aspectFitRect = self.calculateAspectFit(
+            let aspectFitRect = PSRImageHelper.calculateAspectFit(
                 imageWidth: imageSize.width, imageHeight: imageSize.height,
                 imageViewWidth: imageViewSize.width, imageViewHeight: imageViewSize.height)
             
@@ -227,13 +227,13 @@ open class BellwetherImageView: UIView, RSDViewDesignable {
                                           y: zone.origin.point.y + (zone.dimensions.height * 0.5))
                 
                 // Translate the zone position to aspect fit coordinates
-                let translated = self.translateCenterPointToAspectFitCoordinateSpace(imageSize: imageSize, aspectFitRect: aspectFitRect, center: centerPoint, zoneSize: zoneSize)
+                let translated = PSRImageHelper.translateCenterPointToAspectFitCoordinateSpace(imageSize: imageSize, aspectFitRect: aspectFitRect, centerToTranslate: centerPoint, sizeToTranslate: zoneSize)
                 
                 self.buttonContainer?.addSubview(button)
-                button.rsd_makeWidth(.equal, translated.zoneSize.width)
-                button.rsd_makeHeight(.equal, translated.zoneSize.height)
-                button.rsd_alignToSuperview([.leading], padding: translated.zoneLeadingTop.x)
-                button.rsd_alignToSuperview([.top], padding: translated.zoneLeadingTop.y)
+                button.rsd_makeWidth(.equal, translated.size.width)
+                button.rsd_makeHeight(.equal, translated.size.height)
+                button.rsd_alignToSuperview([.leading], padding: translated.leadingTop.x)
+                button.rsd_alignToSuperview([.top], padding: translated.leadingTop.y)
             }
             
             self.layoutIfNeeded()
@@ -407,45 +407,6 @@ open class BellwetherImageView: UIView, RSDViewDesignable {
         }
         
         self.delegate?.buttonTapped(button: sender as? UIButton)
-    }
-    
-    /// Calulate the bounding box of image within the image view
-    func calculateAspectFit(imageWidth: CGFloat, imageHeight: CGFloat,
-                            imageViewWidth: CGFloat, imageViewHeight: CGFloat) -> CGRect {
-        
-        let imageRatio = (imageWidth / imageHeight)
-        let viewRatio = imageViewWidth / imageViewHeight
-        if imageRatio < viewRatio {
-            let scale = imageViewHeight / imageHeight
-            let width = scale * imageWidth
-            let topLeftX = (imageViewWidth - width) * 0.5
-            return CGRect(x: topLeftX, y: 0, width: width, height: imageViewHeight)
-        } else {
-            let scale = imageViewWidth / imageWidth
-            let height = scale * imageHeight
-            let topLeftY = (imageViewHeight - height) * 0.5
-            return CGRect(x: 0.0, y: topLeftY, width: imageViewWidth, height: height)
-        }
-    }
-    
-    /// Scale the relative x,y of the joint center based on the aspect fit image resize
-    /// Then offset the scaled point by the aspect fit left and top bounds
-    func translateCenterPointToAspectFitCoordinateSpace(imageSize: CGSize, aspectFitRect: CGRect, center: CGPoint, zoneSize: CGSize) -> (zoneLeadingTop: CGPoint, zoneSize: CGSize) {
-        let scaleX = (aspectFitRect.width / imageSize.width)
-        let scaledCenterX = scaleX * center.x
-        let jointWidth = scaleX * zoneSize.width
-        let leading = (scaledCenterX + aspectFitRect.origin.x) - (jointWidth / 2)
-        
-        let scaleY = (aspectFitRect.height / imageSize.height)
-        let scaledCenterY = scaleY * center.y
-        let jointHeight = scaleY * zoneSize.height
-        let top = (scaledCenterY + aspectFitRect.origin.y) - (jointHeight / 2)
-        
-        return (CGPoint(x: leading, y: top), CGSize(width: jointWidth, height: jointHeight))
-    }
-    
-    func convertToImage() -> UIImage {
-        return self.asImage()
     }
 }
 

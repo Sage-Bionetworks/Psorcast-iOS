@@ -1,0 +1,175 @@
+{
+    "taskIdentifier"            : "PlaqueSurfaceArea",
+    "schemaIdentifier"          : "PlaqueSurfaceArea",
+    "progressMarkers":[],
+    "steps":
+    [
+        {
+            "identifier":"plaqueInstruction",
+            "type":"instruction",
+            "title":"Body plaque coverage",
+            "text":"Select all areas on your body that currently have plaques.",
+            "image":{
+                "type": "animated",
+                "imageNames": ["PlaqueCoverage1", "PlaqueCoverage2", "PlaqueCoverage3", "PlaqueCoverage4"],
+                "placementType": "topMarginBackground",
+                "animationDuration": 4.0
+            },
+            "actions":{
+                "goForward":{
+                    "type":"default",
+                    "buttonTitle":"Begin"
+                }
+            }
+        },
+        {
+            "identifier": "plaqueSelection",
+            "type": "form",
+            "title": "Which areas have psoriasis?",
+            "text": "Select all areas of your body that currently have psoriasis.",
+            "actions":{
+                "goForward":{
+                    "type":"default",
+                    "buttonTitle":"Continue"
+                }
+            },
+            "inputFields": [
+                {
+                    "uiHint": "list",
+                    "type": "multipleChoice.string",
+                    "choices": [
+                        {
+                            "text": "Front: Above the waist",
+                            "value": "aboveTheWaistFront"
+                        },
+                        {
+                            "text": "Front: Below the waist",
+                            "value": "belowTheWaistFront"
+                        },
+                        {
+                            "text": "Back: Above the waist",
+                            "value": "aboveTheWaistBack"
+                        },
+                        {
+                            "text": "Back: Below the waist",
+                            "value": "belowTheWaistBack"
+                        },
+                        {
+                            "text": "No areas are affected",
+                            "isExclusive": true
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "identifier":"aboveTheWaistFront",
+            "type":"plaqueSurfaceArea",
+            "title":"Draw areas that have plaques",
+            "image":{
+                "type":"fetchable",
+                "imageName": "PlaqueAboveTheWaistFront",
+                "placementType":"topBackground"
+            },
+            "background":{
+                "type":"fetchable",
+                "imageName": "PlaqueAboveTheWaistFrontBackground",
+                "placementType":"topBackground"
+            },
+            "regionMap": {
+                "identifier": "id",
+                "imageSize": {
+                    "width": 375,
+                    "height": 423
+                },
+                "zones": [
+                ]
+            }
+        },
+        {
+            "identifier":"belowTheWaistFront",
+            "type":"plaqueSurfaceArea",
+            "title":"Draw areas that have plaques",
+            "image":{
+                "type":"fetchable",
+                "imageName": "PlaqueBelowTheWaistFront",
+                "placementType":"topBackground"
+            },
+            "background":{
+                "type":"fetchable",
+                "imageName": "PlaqueBelowTheWaistFrontBackground",
+                "placementType":"topBackground"
+            },
+            "regionMap": {
+                "identifier": "id",
+                "imageSize": {
+                    "width": 375,
+                    "height": 423
+                },
+                "zones": [
+                ]
+            }
+        },
+        {
+            "identifier":"aboveTheWaistBack",
+            "type":"plaqueSurfaceArea",
+            "title":"Draw areas that have plaques",
+            "image":{
+                "type":"fetchable",
+                "imageName": "PlaqueAboveTheWaistBack",
+                "placementType":"topBackground"
+            },
+            "background":{
+                "type":"fetchable",
+                "imageName": "PlaqueAboveTheWaistBackBackground",
+                "placementType":"topBackground"
+            },
+            "regionMap": {
+                "identifier": "id",
+                "imageSize": {
+                    "width": 375,
+                    "height": 423
+                },
+                "zones": [
+                ]
+            }
+        },
+        {
+            "identifier":"belowTheWaistBack",
+            "type":"plaqueSurfaceArea",
+            "title":"Draw areas that have plaques",
+            "image":{
+                "type":"fetchable",
+                "imageName": "PlaqueBelowTheWaistBack",
+                "placementType":"topBackground"
+            },
+            "background":{
+                "type":"fetchable",
+                "imageName": "PlaqueBelowTheWaistBackBackground",
+                "placementType":"topBackground"
+            },
+            "regionMap": {
+                "identifier": "id",
+                "imageSize": {
+                    "width": 375,
+                    "height": 423
+                },
+                "zones": [
+                ]
+            }
+        },
+        {
+            "identifier":"completion",
+            "type":"plaqueSurfaceAreaCompletion",
+            "title": "%@%% Coverage",
+            "text": "You have noted that %@%% of your skin is affected by Psoriasis.",
+            "actions": {
+                "goForward":{
+                    "type":"default",
+                    "buttonTitle":"Done"
+                }
+            },
+            "shouldHideActions": ["goBackward", "cancel"]
+        }
+    ]
+}
