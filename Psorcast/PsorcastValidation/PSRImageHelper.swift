@@ -177,7 +177,7 @@ extension UIImage {
         return total
     }
     
-    func plaqueCoverage(plaqueColor: UIColor) -> Float {
+    func psoriasisCoverage(psoriasisColor: UIColor) -> Float {
         let colors = self.colors()
         
         // The variance threshold
@@ -187,7 +187,7 @@ extension UIImage {
         var selectedGreen : CGFloat = 0
         var selectedBlue : CGFloat = 0
         var selectedAlpha: CGFloat = 0
-        plaqueColor.getRed(&selectedRed, green: &selectedGreen, blue: &selectedBlue, alpha: &selectedAlpha)
+        psoriasisColor.getRed(&selectedRed, green: &selectedGreen, blue: &selectedBlue, alpha: &selectedAlpha)
         
         // Allocate the re-used rgb fields for getting each per pixel
         var red : CGFloat = 0
@@ -204,7 +204,7 @@ extension UIImage {
                 total += 1
                 
                 // Check for selected pixel
-                if pixel == plaqueColor {
+                if pixel == psoriasisColor {
                     selectedCount += 1
                 } else if pixel.getRed(&red, green: &green, blue: &blue, alpha: &alpha) {
                     red = selectedRed - red

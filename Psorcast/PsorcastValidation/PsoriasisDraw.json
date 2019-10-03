@@ -1,17 +1,17 @@
 {
-    "taskIdentifier"            : "PlaqueSurfaceArea",
-    "schemaIdentifier"          : "PlaqueSurfaceArea",
+    "taskIdentifier"            : "PsoriasisDraw",
+    "schemaIdentifier"          : "PsoriasisDraw",
     "progressMarkers":[],
     "steps":
     [
         {
-            "identifier":"plaqueInstruction",
+            "identifier":"psoriasisDrawInstruction",
             "type":"instruction",
-            "title":"Body plaque coverage",
-            "text":"Select all areas on your body that currently have plaques.",
+            "title":"Select areas, then draw",
+            "text":"First select the areas of your body that currently have Psoriasis, then 'draw' the approximate size and location in each area.",
             "image":{
                 "type": "animated",
-                "imageNames": ["PlaqueCoverage1", "PlaqueCoverage2", "PlaqueCoverage3", "PlaqueCoverage4"],
+                "imageNames": ["PsoriasisDraw1", "PsoriasisDraw2", "PsoriasisDraw3", "PsoriasisDraw4"],
                 "placementType": "topMarginBackground",
                 "animationDuration": 4.0
             },
@@ -23,7 +23,7 @@
             }
         },
         {
-            "identifier": "plaqueSelection",
+            "identifier": "psoriasisDrawSelection",
             "type": "form",
             "title": "Which areas have psoriasis?",
             "text": "Select all areas of your body that currently have psoriasis.",
@@ -64,16 +64,16 @@
         },
         {
             "identifier":"aboveTheWaistFront",
-            "type":"plaqueSurfaceArea",
-            "title":"Draw areas that have plaques",
+            "type":"psoriasisDraw",
+            "title":"Draw on areas with psoriasis",
             "image":{
                 "type":"fetchable",
-                "imageName": "PlaqueAboveTheWaistFront",
+                "imageName": "PsoriasisDrawAboveTheWaistFront",
                 "placementType":"topBackground"
             },
             "background":{
                 "type":"fetchable",
-                "imageName": "PlaqueAboveTheWaistFrontBackground",
+                "imageName": "PsoriasisDrawAboveTheWaistFrontBackground",
                 "placementType":"topBackground"
             },
             "regionMap": {
@@ -88,16 +88,16 @@
         },
         {
             "identifier":"belowTheWaistFront",
-            "type":"plaqueSurfaceArea",
-            "title":"Draw areas that have plaques",
+            "type":"psoriasisDraw",
+            "title":"Draw on areas with psoriasis",
             "image":{
                 "type":"fetchable",
-                "imageName": "PlaqueBelowTheWaistFront",
+                "imageName": "PsoriasisDrawBelowTheWaistFront",
                 "placementType":"topBackground"
             },
             "background":{
                 "type":"fetchable",
-                "imageName": "PlaqueBelowTheWaistFrontBackground",
+                "imageName": "PsoriasisDrawBelowTheWaistFrontBackground",
                 "placementType":"topBackground"
             },
             "regionMap": {
@@ -112,16 +112,16 @@
         },
         {
             "identifier":"aboveTheWaistBack",
-            "type":"plaqueSurfaceArea",
-            "title":"Draw areas that have plaques",
+            "type":"psoriasisDraw",
+            "title":"Draw on areas with psoriasis",
             "image":{
                 "type":"fetchable",
-                "imageName": "PlaqueAboveTheWaistBack",
+                "imageName": "PsoriasisDrawAboveTheWaistBack",
                 "placementType":"topBackground"
             },
             "background":{
                 "type":"fetchable",
-                "imageName": "PlaqueAboveTheWaistBackBackground",
+                "imageName": "PsoriasisDrawAboveTheWaistBackBackground",
                 "placementType":"topBackground"
             },
             "regionMap": {
@@ -136,16 +136,16 @@
         },
         {
             "identifier":"belowTheWaistBack",
-            "type":"plaqueSurfaceArea",
-            "title":"Draw areas that have plaques",
+            "type":"psoriasisDraw",
+            "title":"Draw on areas with psoriasis",
             "image":{
                 "type":"fetchable",
-                "imageName": "PlaqueBelowTheWaistBack",
+                "imageName": "PsoriasisDrawBelowTheWaistBack",
                 "placementType":"topBackground"
             },
             "background":{
                 "type":"fetchable",
-                "imageName": "PlaqueBelowTheWaistBackBackground",
+                "imageName": "PsoriasisDrawBelowTheWaistBackBackground",
                 "placementType":"topBackground"
             },
             "regionMap": {
@@ -160,9 +160,9 @@
         },
         {
             "identifier":"completion",
-            "type":"plaqueSurfaceAreaCompletion",
+            "type":"psoriasisDrawCompletion",
             "title": "%@%% Coverage",
-            "text": "You have noted that %@%% of your skin is affected by Psoriasis.",
+            "text": "You have noted that %@%% of your skin is affected by psoriasis.",
             "actions": {
                 "goForward":{
                     "type":"default",

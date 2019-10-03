@@ -101,7 +101,7 @@ open class JointPainStepViewController: RSDStepViewController, JointPainImageVie
         }
         
         guard !(imageTheme is RSDAnimatedImageThemeElement) else {
-            debugPrint("We do not support animated images for plaque image view")
+            debugPrint("We do not support animated images for psoriasis image view")
             return
         }
         

@@ -1,5 +1,5 @@
 //
-//  PlaqueSurfaceAreaCompletionStepViewController.swift
+//  PsoriasisDrawCompletionStepViewController.swift
 //  PsorcastValidation
 //
 //  Copyright © 2019 Sage Bionetworks. All rights reserved.
@@ -35,26 +35,29 @@ import Foundation
 import BridgeApp
 import BridgeAppUI
 
-open class PlaqueSurfaceAreaCompletionStepObject: RSDUIStepObject, RSDStepViewControllerVendor {
+open class PsoriasisDrawCompletionStepObject: RSDUIStepObject, RSDStepViewControllerVendor {
     
     open func instantiateViewController(with parent: RSDPathComponent?) -> (UIViewController & RSDStepController)? {
-        return PlaqueSurfaceAreaCompletionStepViewController(step: self, parent: parent)
+        return PsoriasisDrawCompletionStepViewController(step: self, parent: parent)
     }
 }
 
-/// The 'PlaqueSurfaceAreaCompletionStepViewController' displays the images the user drew on
-/// to indicate their plaque coverage, along with their average plaque coverage percent.
-open class PlaqueSurfaceAreaCompletionStepViewController: RSDStepViewController {
+/// The 'PsoriasisDrawCompletionStepViewController' displays the images the user drew on
+/// to indicate their psoriasis coverage, along with their average psoriasis coverage percent.
+open class PsoriasisDrawCompletionStepViewController: RSDStepViewController {
     
     let aboveTheWaistFrontImageIdentifier = "aboveTheWaistFront"
     let belowTheWaistFrontImageIdentifier = "belowTheWaistFront"
     let aboveTheWaistBackImageIdentifier = "aboveTheWaistBack"
     let belowTheWaistBackImageIdentifier = "belowTheWaistBack"
     
-    let coverageResult = PlaqueSurfaceAreaStepViewController.percentCoverageResultId
+    let coverageResult = PsoriasisDrawStepViewController.percentCoverageResultId
     
     var imageLoadAttempt = 0
     let maxImageLoadAttempt = 4
+    
+    /// The container for the body images
+    @IBOutlet public var bodyImageContainer: UIView!
     
     /// This controls the space between above and below images
     /// It may need adjusted for different screen sizes
@@ -81,26 +84,18 @@ open class PlaqueSurfaceAreaCompletionStepViewController: RSDStepViewController 
     @IBOutlet public var belowTheWaistBackImageView: UIImageView!
     
     /// The step for this view controller
-    open var plaqueSurfaceAreaCompletionStep: PlaqueSurfaceAreaCompletionStepObject? {
-        return self.step as? PlaqueSurfaceAreaCompletionStepObject
-    }
-    
-    /// The background of the header, body, and footer
-    open var headerBackground: RSDColorTile {
-        return self.designSystem.colorRules.palette.successGreen.normal
-    }
-    
-    /// Override the default background for all the placements
-    open override func defaultBackgroundColorTile(for placement: RSDColorPlacement) -> RSDColorTile {
-        if placement == .header {
-            return headerBackground
-        } else {
-            return self.designSystem.colorRules.backgroundLight
-        }
+    open var completionStep: PsoriasisDrawCompletionStepObject? {
+        return self.step as? PsoriasisDrawCompletionStepObject
     }
 
     override open func setupHeader(_ header: RSDStepNavigationView) {
         super.setupHeader(header)
+        
+        // The header is used to style title, text, and cancel button
+        header.backgroundColor = UIColor.clear
+        
+        let headerColor = self.designSystem.colorRules.palette.successGreen.normal
+        self.bodyImageContainer.backgroundColor = headerColor.color
         
         self.aboveTheWaistFrontImageView?.contentMode = .scaleAspectFit
         self.belowTheWaistFrontImageView?.contentMode = .scaleAspectFit
@@ -109,10 +104,10 @@ open class PlaqueSurfaceAreaCompletionStepViewController: RSDStepViewController 
         self.navigationHeader?.titleLabel?.textAlignment = .center
         self.navigationHeader?.textLabel?.textAlignment = .center
         
-        let plaqueCoverageIdentifiers = [
+        let psoriasisDrawIdentifiers = [
             "\(aboveTheWaistFrontImageIdentifier)\(coverageResult)",
             "\(belowTheWaistFrontImageIdentifier)\(coverageResult)"]
-        let coverage = self.averagePlaqueCoverage(from: plaqueCoverageIdentifiers)
+        let coverage = self.psoriasisDrawCoverage(from: psoriasisDrawIdentifiers)
         let coverageString = String(format: "%.1f", coverage)
         
         if let title = self.navigationHeader?.titleLabel?.text,
@@ -135,7 +130,7 @@ open class PlaqueSurfaceAreaCompletionStepViewController: RSDStepViewController 
         self.backImageVerticalSpace.constant = -(self.aboveTheWaistBackImageView.frame.size.width * self.backVerticalSpaceConstant)
     }
     
-    open func averagePlaqueCoverage(from identifiers: [String]) -> Float {
+    open func psoriasisDrawCoverage(from identifiers: [String]) -> Float {
         var sum = Float(0)
         for result in self.taskController?.taskViewModel.taskResult.stepHistory ?? [] {
             if identifiers.contains(result.identifier),

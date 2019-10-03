@@ -1,5 +1,5 @@
 //
-//  PlaqueSurfaceAreaImageView.swift
+//  PsoriasisDrawImageView.swift
 //  PsorcastValidation
 //
 //  Copyright © 2019 Sage Bionetworks. All rights reserved.
@@ -36,7 +36,7 @@ import BridgeApp
 import BridgeAppUI
 
 @IBDesignable
-open class PlaqueSurfaceAreaImageView: UIView, RSDViewDesignable {
+open class PsoriasisDrawImageView: UIView, RSDViewDesignable {
     
     /// The background tile this view is shown over top of
     public var backgroundColorTile: RSDColorTile? {

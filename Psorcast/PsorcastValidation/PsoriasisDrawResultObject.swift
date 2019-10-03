@@ -1,5 +1,5 @@
 //
-//  PlaqueSurfaceAreaResultObject.swift
+//  PsoriasisDrawResultObject.swift
 //  PsorcastValidation
 //
 //  Copyright © 2019 Sage Bionetworks. All rights reserved.
@@ -35,12 +35,12 @@ import Foundation
 import Research
 
 extension RSDResultType {
-    /// The type identifier for a plaque surface area result.
-    public static let plaqueSurfaceArea: RSDResultType = "plaqueSurfaceArea"
+    /// The type identifier for a psoriasis draw result.
+    public static let psoriasisDraw: RSDResultType = "psoriasisDraw"
 }
 
-/// The `PlaqueSurfaceAreaResultObject` records the results of a joint paint step test.
-public struct PlaqueSurfaceAreaResultObject : RSDResult, Codable, RSDArchivable, RSDScoringResult {
+/// The `PsoriasisDrawResultObject` records the results of a joint paint step test.
+public struct PsoriasisDrawResultObject : RSDResult, Codable, RSDArchivable, RSDScoringResult {
 
     private enum CodingKeys : String, CodingKey {
         case identifier, type, startDate, endDate, regionMap
@@ -49,8 +49,8 @@ public struct PlaqueSurfaceAreaResultObject : RSDResult, Codable, RSDArchivable,
     /// The identifier for the associated step.
     public var identifier: String
 
-    /// Default = `.tapping`.
-    public private(set) var type: RSDResultType = .plaqueSurfaceArea
+    /// Default = `.psoriasisDraw`.
+    public private(set) var type: RSDResultType = .psoriasisDraw
 
     /// Timestamp date for when the step was started.
     public var startDate: Date = Date()

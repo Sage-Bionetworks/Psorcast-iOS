@@ -1,5 +1,5 @@
 //
-//  PlaqueSurfaceAreaStepObject.swift
+//  PsoriasisDrawStepObject.swift
 //  PsorcastValidation
 //
 //  Copyright © 2019 Sage Bionetworks. All rights reserved.
@@ -36,7 +36,7 @@ import Foundation
 import BridgeApp
 import BridgeAppUI
 
-open class PlaqueSurfaceAreaStepObject: RSDUIStepObject, RSDStepViewControllerVendor, RSDNavigationSkipRule {
+open class PsoriasisDrawStepObject: RSDUIStepObject, RSDStepViewControllerVendor, RSDNavigationSkipRule {
     
     private enum CodingKeys: String, CodingKey, CaseIterable {
         case regionMap, background
@@ -48,9 +48,9 @@ open class PlaqueSurfaceAreaStepObject: RSDUIStepObject, RSDStepViewControllerVe
     /// The background image for the imageview that will not be drawn on
     open var background: RSDImageThemeElement?
 
-    /// Default type is `.plaqueSurfaceArea`.
+    /// Default type is `.psoriasisDraw`.
     open override class func defaultType() -> RSDStepType {
-        return .plaqueSurfaceArea
+        return .psoriasisDraw
     }
     
     public required init(from decoder: Decoder) throws {
@@ -76,7 +76,7 @@ open class PlaqueSurfaceAreaStepObject: RSDUIStepObject, RSDStepViewControllerVe
     /// Override to set the properties of the subclass.
     override open func copyInto(_ copy: RSDUIStepObject) {
         super.copyInto(copy)
-        guard let subclassCopy = copy as? PlaqueSurfaceAreaStepObject else {
+        guard let subclassCopy = copy as? PsoriasisDrawStepObject else {
             assertionFailure("Superclass implementation of the `copy(with:)` protocol should return an instance of this class.")
             return
         }
@@ -84,13 +84,13 @@ open class PlaqueSurfaceAreaStepObject: RSDUIStepObject, RSDStepViewControllerVe
     }
     
     open func instantiateViewController(with parent: RSDPathComponent?) -> (UIViewController & RSDStepController)? {
-        return PlaqueSurfaceAreaStepViewController(step: self, parent: parent)
+        return PsoriasisDrawStepViewController(step: self, parent: parent)
     }
     
     public func shouldSkipStep(with result: RSDTaskResult?, isPeeking: Bool) -> Bool {
         // Only include this step if the user previously chose
-        // its region in the plaque area selection step
-        if let collectionResult = (result?.findResult(with: "plaqueSelection") as? RSDCollectionResultObject),
+        // its region in the psoriasis draw selection step
+        if let collectionResult = (result?.findResult(with: "psoriasisDrawSelection") as? RSDCollectionResultObject),
             let answerResult = collectionResult.inputResults.first as? RSDAnswerResultObject,
             let answers = answerResult.value as? [String] {
             

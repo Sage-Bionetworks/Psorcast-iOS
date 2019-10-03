@@ -1,5 +1,5 @@
 //
-//  PlaqueSurfaceAreaStepViewController.swift
+//  PsoriasisDrawStepViewController.swift
 //  PsorcastValidation
 //
 //  Copyright © 2019 Sage Bionetworks. All rights reserved.
@@ -38,18 +38,18 @@ import BridgeAppUI
 /// The 'JointPainStepViewController' displays a joint pain image that has
 /// buttons overlayed at specific parts of the images to represent joints
 /// The user selects the joints that are causing them pain
-open class PlaqueSurfaceAreaStepViewController: RSDStepViewController {
+open class PsoriasisDrawStepViewController: RSDStepViewController {
     
     static let percentCoverageResultId = "Coverage"
     
     /// The step for this view controller
-    open var plaqueSurfaceAreaStep: PlaqueSurfaceAreaStepObject? {
-        return self.step as? PlaqueSurfaceAreaStepObject
+    open var drawStep: PsoriasisDrawStepObject? {
+        return self.step as? PsoriasisDrawStepObject
     }
     
-    /// The data model for the plaque surface area zones
+    /// The data model for the psoriasis surface area zones
     open var regionMap: RegionMap? {
-        return self.plaqueSurfaceAreaStep?.regionMap
+        return self.drawStep?.regionMap
     }
     
     /// The background of the header, body, and footer
@@ -58,10 +58,10 @@ open class PlaqueSurfaceAreaStepViewController: RSDStepViewController {
     }
     
     /// The initial result of the step if the user navigated back to this step
-    open var initialResult: PlaqueSurfaceAreaResultObject?
+    open var initialResult: PsoriasisDrawResultObject?
     
     /// The image view container that adds the users drawing and masks it
-    @IBOutlet public var plaqueSurfaceAreaImageView: PlaqueSurfaceAreaImageView!
+    @IBOutlet public var imageView: PsoriasisDrawImageView!
     /// The background image view container that shows supplemental images that can't be drawn on
     @IBOutlet public var backgroundImageView: UIImageView!
     
@@ -75,7 +75,7 @@ open class PlaqueSurfaceAreaStepViewController: RSDStepViewController {
         
         // Set the initial result if available.
         self.initialResult = (parent as? RSDHistoryPathComponent)?
-            .previousResult(for: step) as? PlaqueSurfaceAreaResultObject
+            .previousResult(for: step) as? PsoriasisDrawResultObject
     }
     
     required public init?(coder aDecoder: NSCoder) {
@@ -93,36 +93,36 @@ open class PlaqueSurfaceAreaStepViewController: RSDStepViewController {
     }
     
     func initializeImages() {
-        guard let theme = self.plaqueSurfaceAreaStep?.imageTheme else {
+        guard let theme = self.drawStep?.imageTheme else {
             debugPrint("Could not find image theme")
             return
         }
         
-        guard let size = self.plaqueSurfaceAreaStep?.regionMap?.imageSize.size else {
+        guard let size = self.drawStep?.regionMap?.imageSize.size else {
             debugPrint("We need proper image sizes to initialize images")
             return
         }
         
         guard !(imageTheme is RSDAnimatedImageThemeElement) else {
-            debugPrint("We do not support animated images for plaque image view")
+            debugPrint("We do not support animated images for psoriasis image view")
             return
         }
         
         if let assetLoader = theme as? RSDAssetImageThemeElement {
-            self.plaqueSurfaceAreaImageView.image = assetLoader.embeddedImage()
+            self.imageView.image = assetLoader.embeddedImage()
         } else if let fetchLoader = theme as? RSDFetchableImageThemeElement {
-            fetchLoader.fetchImage(for: size, callback: { [weak plaqueSurfaceAreaImageView] (_, img) in
-                plaqueSurfaceAreaImageView?.image = img
+            fetchLoader.fetchImage(for: size, callback: { [weak imageView] (_, img) in
+                imageView?.image = img
             })
         }
         
-        guard let backgroundTheme = self.plaqueSurfaceAreaStep?.background else {
+        guard let backgroundTheme = self.drawStep?.background else {
             debugPrint("Could not find background image theme")
             return
         }
         
         guard !(backgroundTheme is RSDAnimatedImageThemeElement) else {
-            debugPrint("We do not support animated images for plaque background")
+            debugPrint("We do not support animated images for psoriasis background")
             return
         }
         
@@ -137,7 +137,8 @@ open class PlaqueSurfaceAreaStepViewController: RSDStepViewController {
     
     override open func setupHeader(_ header: RSDStepNavigationView) {
         super.setupHeader(header)
-        self.plaqueSurfaceAreaImageView.setDesignSystem(self.designSystem, with: self.background)
+        self.imageView.setDesignSystem(self.designSystem, with: self.background)
+        self.imageView.touchDrawableView?.lineWidth = 10
     }
     
     override open func setupFooter(_ footer: RSDNavigationFooterView) {
@@ -152,15 +153,15 @@ open class PlaqueSurfaceAreaStepViewController: RSDStepViewController {
     
     override open func goForward() {
         
-        guard let imageView = self.plaqueSurfaceAreaImageView,
+        guard let imageView = self.imageView,
             let lineColor = imageView.touchDrawableView?.lineColor else {
             return
         }
                 
         let image = imageView.convertToImage()
-        let percentCoverage = image.plaqueCoverage(plaqueColor: lineColor)
+        let percentCoverage = image.psoriasisCoverage(psoriasisColor: lineColor)
         
-        let percentResult = RSDAnswerResultObject(identifier: "\(self.step.identifier)\(PlaqueSurfaceAreaStepViewController.percentCoverageResultId)", answerType: .decimal, value: percentCoverage)
+        let percentResult = RSDAnswerResultObject(identifier: "\(self.step.identifier)\(PsoriasisDrawStepViewController.percentCoverageResultId)", answerType: .decimal, value: percentCoverage)
         _ = self.stepViewModel.parent?.taskResult.appendStepHistory(with: percentResult)
         
         var url: URL?
