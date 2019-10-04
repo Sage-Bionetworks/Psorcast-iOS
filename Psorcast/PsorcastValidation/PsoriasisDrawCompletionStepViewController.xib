@@ -30,77 +30,77 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nCy-4g-nIJ" userLabel="Content View">
                     <rect key="frame" x="0.0" y="0.0" width="375" height="700"/>
                     <subviews>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kjp-vl-acf" userLabel="Body Image Container">
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wPa-GT-djk" customClass="RSDNavigationHeaderView" customModule="ResearchUI">
                             <rect key="frame" x="0.0" y="0.0" width="375" height="385"/>
                             <subviews>
-                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pJq-qM-oZH" userLabel="Left Container">
-                                    <rect key="frame" x="0.0" y="0.0" width="187.66666666666666" height="385"/>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kjp-vl-acf" userLabel="Body Image Container">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="385"/>
                                     <subviews>
-                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="PsoriasisDrawBelowTheWaistFront" translatesAutoresizingMaskIntoConstraints="NO" id="WID-do-U5a" userLabel="BelowWaistFront">
-                                            <rect key="frame" x="8" y="206.33333333333337" width="171.66666666666666" height="171.66666666666663"/>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pJq-qM-oZH" userLabel="Left Container">
+                                            <rect key="frame" x="0.0" y="0.0" width="187.66666666666666" height="385"/>
+                                            <subviews>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="PsoriasisDrawBelowTheWaistFront" translatesAutoresizingMaskIntoConstraints="NO" id="WID-do-U5a" userLabel="BelowWaistFront">
+                                                    <rect key="frame" x="8" y="206.33333333333337" width="171.66666666666666" height="171.66666666666663"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" secondItem="WID-do-U5a" secondAttribute="height" multiplier="1:1" id="77R-hc-rYQ"/>
+                                                    </constraints>
+                                                </imageView>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="PsoriasisDrawAboveTheWaistFront" translatesAutoresizingMaskIntoConstraints="NO" id="kAu-5r-mhj" userLabel="AboveWaistFront">
+                                                    <rect key="frame" x="8" y="87.000000000000014" width="171.66666666666666" height="192.33333333333337"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" secondItem="kAu-5r-mhj" secondAttribute="height" multiplier="181:203" id="tTY-Pd-cWL"/>
+                                                    </constraints>
+                                                </imageView>
+                                            </subviews>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
-                                                <constraint firstAttribute="width" secondItem="WID-do-U5a" secondAttribute="height" multiplier="1:1" id="77R-hc-rYQ"/>
+                                                <constraint firstItem="kAu-5r-mhj" firstAttribute="leading" secondItem="WID-do-U5a" secondAttribute="leading" id="FbE-Ff-Abo"/>
+                                                <constraint firstItem="kAu-5r-mhj" firstAttribute="trailing" secondItem="WID-do-U5a" secondAttribute="trailing" id="Zox-Ms-MCS"/>
+                                                <constraint firstItem="WID-do-U5a" firstAttribute="leading" secondItem="pJq-qM-oZH" secondAttribute="leading" constant="8" id="gqR-k4-AOC"/>
+                                                <constraint firstAttribute="trailing" secondItem="WID-do-U5a" secondAttribute="trailing" constant="8" id="kFc-6B-dhr"/>
+                                                <constraint firstItem="kAu-5r-mhj" firstAttribute="top" secondItem="pJq-qM-oZH" secondAttribute="top" constant="86.999999999999986" id="oVr-xp-hJ3"/>
+                                                <constraint firstItem="WID-do-U5a" firstAttribute="top" secondItem="kAu-5r-mhj" secondAttribute="bottom" constant="-73" id="z21-yb-9v0"/>
                                             </constraints>
-                                        </imageView>
-                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="PsoriasisDrawAboveTheWaistFront" translatesAutoresizingMaskIntoConstraints="NO" id="kAu-5r-mhj" userLabel="AboveWaistFront">
-                                            <rect key="frame" x="8" y="87.000000000000014" width="171.66666666666666" height="192.33333333333337"/>
+                                        </view>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vVg-WY-AU1" userLabel="Right Container">
+                                            <rect key="frame" x="187.66666666666663" y="0.0" width="187.33333333333337" height="385"/>
+                                            <subviews>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="PsoriasisDrawBelowTheWaistBack" translatesAutoresizingMaskIntoConstraints="NO" id="1h7-Y9-nrR" userLabel="BelowWaistFront">
+                                                    <rect key="frame" x="8" y="208" width="171.33333333333334" height="171.33333333333337"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" secondItem="1h7-Y9-nrR" secondAttribute="height" multiplier="1:1" id="Ycp-gW-WE0"/>
+                                                    </constraints>
+                                                </imageView>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="PsoriasisDrawAboveTheWaistBack" translatesAutoresizingMaskIntoConstraints="NO" id="nXo-CK-Dfd" userLabel="AboveWaistFront">
+                                                    <rect key="frame" x="8" y="87" width="171.33333333333334" height="218"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" secondItem="nXo-CK-Dfd" secondAttribute="height" multiplier="181:230" id="Ouk-z5-oyP"/>
+                                                    </constraints>
+                                                </imageView>
+                                            </subviews>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
-                                                <constraint firstAttribute="width" secondItem="kAu-5r-mhj" secondAttribute="height" multiplier="181:203" id="tTY-Pd-cWL"/>
+                                                <constraint firstAttribute="trailing" secondItem="nXo-CK-Dfd" secondAttribute="trailing" constant="8" id="3oM-ue-376"/>
+                                                <constraint firstItem="nXo-CK-Dfd" firstAttribute="top" secondItem="vVg-WY-AU1" secondAttribute="top" constant="87" id="6kM-3F-ofh"/>
+                                                <constraint firstItem="1h7-Y9-nrR" firstAttribute="leading" secondItem="vVg-WY-AU1" secondAttribute="leading" constant="8" id="L4C-Fe-qv8"/>
+                                                <constraint firstItem="nXo-CK-Dfd" firstAttribute="leading" secondItem="vVg-WY-AU1" secondAttribute="leading" constant="8" id="NfW-4o-dV9"/>
+                                                <constraint firstItem="1h7-Y9-nrR" firstAttribute="top" secondItem="nXo-CK-Dfd" secondAttribute="bottom" constant="-97" id="Siv-9f-qyd"/>
+                                                <constraint firstAttribute="trailing" secondItem="1h7-Y9-nrR" secondAttribute="trailing" constant="8" id="kvb-8G-7ec"/>
                                             </constraints>
-                                        </imageView>
+                                        </view>
                                     </subviews>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
-                                        <constraint firstItem="kAu-5r-mhj" firstAttribute="leading" secondItem="WID-do-U5a" secondAttribute="leading" id="FbE-Ff-Abo"/>
-                                        <constraint firstItem="kAu-5r-mhj" firstAttribute="trailing" secondItem="WID-do-U5a" secondAttribute="trailing" id="Zox-Ms-MCS"/>
-                                        <constraint firstItem="WID-do-U5a" firstAttribute="leading" secondItem="pJq-qM-oZH" secondAttribute="leading" constant="8" id="gqR-k4-AOC"/>
-                                        <constraint firstAttribute="trailing" secondItem="WID-do-U5a" secondAttribute="trailing" constant="8" id="kFc-6B-dhr"/>
-                                        <constraint firstItem="kAu-5r-mhj" firstAttribute="top" secondItem="pJq-qM-oZH" secondAttribute="top" constant="86.999999999999986" id="oVr-xp-hJ3"/>
-                                        <constraint firstItem="WID-do-U5a" firstAttribute="top" secondItem="kAu-5r-mhj" secondAttribute="bottom" constant="-73" id="z21-yb-9v0"/>
+                                        <constraint firstAttribute="bottom" secondItem="pJq-qM-oZH" secondAttribute="bottom" id="2af-2h-0Fn"/>
+                                        <constraint firstItem="pJq-qM-oZH" firstAttribute="width" secondItem="vVg-WY-AU1" secondAttribute="width" id="4lq-SR-6Ke"/>
+                                        <constraint firstItem="pJq-qM-oZH" firstAttribute="leading" secondItem="kjp-vl-acf" secondAttribute="leading" id="AQj-fo-D5w"/>
+                                        <constraint firstAttribute="trailing" secondItem="vVg-WY-AU1" secondAttribute="trailing" id="J7k-vW-hup"/>
+                                        <constraint firstAttribute="bottom" secondItem="vVg-WY-AU1" secondAttribute="bottom" id="JEI-zA-R1k"/>
+                                        <constraint firstItem="vVg-WY-AU1" firstAttribute="top" secondItem="kjp-vl-acf" secondAttribute="top" id="TkL-w3-Pry"/>
+                                        <constraint firstItem="pJq-qM-oZH" firstAttribute="top" secondItem="kjp-vl-acf" secondAttribute="top" id="WYn-0f-IU9"/>
+                                        <constraint firstItem="vVg-WY-AU1" firstAttribute="leading" secondItem="pJq-qM-oZH" secondAttribute="trailing" id="zht-ZJ-fwq"/>
                                     </constraints>
                                 </view>
-                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vVg-WY-AU1" userLabel="Right Container">
-                                    <rect key="frame" x="187.66666666666663" y="0.0" width="187.33333333333337" height="385"/>
-                                    <subviews>
-                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="PsoriasisDrawBelowTheWaistBack" translatesAutoresizingMaskIntoConstraints="NO" id="1h7-Y9-nrR" userLabel="BelowWaistFront">
-                                            <rect key="frame" x="8" y="208" width="171.33333333333334" height="171.33333333333337"/>
-                                            <constraints>
-                                                <constraint firstAttribute="width" secondItem="1h7-Y9-nrR" secondAttribute="height" multiplier="1:1" id="Ycp-gW-WE0"/>
-                                            </constraints>
-                                        </imageView>
-                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="PsoriasisDrawAboveTheWaistBack" translatesAutoresizingMaskIntoConstraints="NO" id="nXo-CK-Dfd" userLabel="AboveWaistFront">
-                                            <rect key="frame" x="8" y="87" width="171.33333333333334" height="218"/>
-                                            <constraints>
-                                                <constraint firstAttribute="width" secondItem="nXo-CK-Dfd" secondAttribute="height" multiplier="181:230" id="Ouk-z5-oyP"/>
-                                            </constraints>
-                                        </imageView>
-                                    </subviews>
-                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                    <constraints>
-                                        <constraint firstAttribute="trailing" secondItem="nXo-CK-Dfd" secondAttribute="trailing" constant="8" id="3oM-ue-376"/>
-                                        <constraint firstItem="nXo-CK-Dfd" firstAttribute="top" secondItem="vVg-WY-AU1" secondAttribute="top" constant="87" id="6kM-3F-ofh"/>
-                                        <constraint firstItem="1h7-Y9-nrR" firstAttribute="leading" secondItem="vVg-WY-AU1" secondAttribute="leading" constant="8" id="L4C-Fe-qv8"/>
-                                        <constraint firstItem="nXo-CK-Dfd" firstAttribute="leading" secondItem="vVg-WY-AU1" secondAttribute="leading" constant="8" id="NfW-4o-dV9"/>
-                                        <constraint firstItem="1h7-Y9-nrR" firstAttribute="top" secondItem="nXo-CK-Dfd" secondAttribute="bottom" constant="-97" id="Siv-9f-qyd"/>
-                                        <constraint firstAttribute="trailing" secondItem="1h7-Y9-nrR" secondAttribute="trailing" constant="8" id="kvb-8G-7ec"/>
-                                    </constraints>
-                                </view>
-                            </subviews>
-                            <color key="backgroundColor" systemColor="systemGreenColor" red="0.20392156862745098" green="0.7803921568627451" blue="0.34901960784313724" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            <constraints>
-                                <constraint firstAttribute="bottom" secondItem="pJq-qM-oZH" secondAttribute="bottom" id="2af-2h-0Fn"/>
-                                <constraint firstItem="pJq-qM-oZH" firstAttribute="width" secondItem="vVg-WY-AU1" secondAttribute="width" id="4lq-SR-6Ke"/>
-                                <constraint firstItem="pJq-qM-oZH" firstAttribute="leading" secondItem="kjp-vl-acf" secondAttribute="leading" id="AQj-fo-D5w"/>
-                                <constraint firstAttribute="trailing" secondItem="vVg-WY-AU1" secondAttribute="trailing" id="J7k-vW-hup"/>
-                                <constraint firstAttribute="bottom" secondItem="vVg-WY-AU1" secondAttribute="bottom" id="JEI-zA-R1k"/>
-                                <constraint firstItem="vVg-WY-AU1" firstAttribute="top" secondItem="kjp-vl-acf" secondAttribute="top" id="TkL-w3-Pry"/>
-                                <constraint firstItem="pJq-qM-oZH" firstAttribute="top" secondItem="kjp-vl-acf" secondAttribute="top" id="WYn-0f-IU9"/>
-                                <constraint firstItem="vVg-WY-AU1" firstAttribute="leading" secondItem="pJq-qM-oZH" secondAttribute="trailing" id="zht-ZJ-fwq"/>
-                            </constraints>
-                        </view>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wPa-GT-djk" customClass="RSDNavigationHeaderView" customModule="ResearchUI">
-                            <rect key="frame" x="0.0" y="0.0" width="375" height="80"/>
-                            <subviews>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gYt-76-z57" userLabel="Cancel Button">
                                     <rect key="frame" x="8" y="24" width="50" height="50"/>
                                     <constraints>
@@ -111,11 +111,14 @@
                                     <state key="normal" image="button:gYt-76-z57:image"/>
                                 </button>
                             </subviews>
-                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <color key="backgroundColor" systemColor="systemGreenColor" red="0.20392156862745098" green="0.7803921568627451" blue="0.34901960784313724" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <constraints>
-                                <constraint firstItem="gYt-76-z57" firstAttribute="top" secondItem="wPa-GT-djk" secondAttribute="top" constant="24" id="2i1-NH-SlT"/>
-                                <constraint firstItem="gYt-76-z57" firstAttribute="leading" secondItem="wPa-GT-djk" secondAttribute="leading" constant="8" id="RWB-al-gGW"/>
-                                <constraint firstAttribute="height" constant="80" id="VEX-RM-WvD"/>
+                                <constraint firstItem="gYt-76-z57" firstAttribute="leading" secondItem="wPa-GT-djk" secondAttribute="leading" constant="8" id="6ph-87-DMM"/>
+                                <constraint firstItem="gYt-76-z57" firstAttribute="top" secondItem="wPa-GT-djk" secondAttribute="top" constant="24" id="Vjm-0w-NNq"/>
+                                <constraint firstAttribute="trailing" secondItem="kjp-vl-acf" secondAttribute="trailing" id="Z49-tJ-PYG"/>
+                                <constraint firstItem="kjp-vl-acf" firstAttribute="leading" secondItem="wPa-GT-djk" secondAttribute="leading" id="fXw-kJ-U7X"/>
+                                <constraint firstAttribute="bottom" secondItem="kjp-vl-acf" secondAttribute="bottom" id="suN-5J-d5a"/>
+                                <constraint firstItem="kjp-vl-acf" firstAttribute="top" secondItem="wPa-GT-djk" secondAttribute="top" id="xgM-Yo-dJi"/>
                             </constraints>
                             <connections>
                                 <outlet property="cancelButton" destination="gYt-76-z57" id="KMQ-gq-XfL"/>
@@ -145,20 +148,17 @@
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
+                        <constraint firstItem="wPa-GT-djk" firstAttribute="top" secondItem="nCy-4g-nIJ" secondAttribute="top" id="41w-QC-KR6"/>
                         <constraint firstAttribute="bottom" secondItem="Ncg-SY-6dE" secondAttribute="bottom" id="7IX-X3-3Ii"/>
-                        <constraint firstAttribute="trailing" secondItem="wPa-GT-djk" secondAttribute="trailing" id="AvH-0I-cOH"/>
+                        <constraint firstItem="eMZ-8x-koe" firstAttribute="top" secondItem="wPa-GT-djk" secondAttribute="bottom" constant="24" id="APC-ws-4ro"/>
                         <constraint firstItem="Ncg-SY-6dE" firstAttribute="leading" secondItem="nCy-4g-nIJ" secondAttribute="leading" id="Bzq-ex-byO"/>
-                        <constraint firstItem="wPa-GT-djk" firstAttribute="leading" secondItem="nCy-4g-nIJ" secondAttribute="leading" id="Diz-ns-8W8"/>
-                        <constraint firstAttribute="trailing" secondItem="kjp-vl-acf" secondAttribute="trailing" id="Oum-Vk-NiV"/>
+                        <constraint firstItem="wPa-GT-djk" firstAttribute="leading" secondItem="nCy-4g-nIJ" secondAttribute="leading" id="Qz8-td-oZj"/>
                         <constraint firstAttribute="trailing" secondItem="Ncg-SY-6dE" secondAttribute="trailing" id="XDw-dP-K6d"/>
-                        <constraint firstItem="kjp-vl-acf" firstAttribute="top" secondItem="nCy-4g-nIJ" secondAttribute="top" id="aP1-H6-AJI"/>
                         <constraint firstItem="Ncg-SY-6dE" firstAttribute="top" secondItem="mct-jM-Lzp" secondAttribute="bottom" constant="16" id="asX-5K-bnr"/>
                         <constraint firstItem="mct-jM-Lzp" firstAttribute="top" secondItem="eMZ-8x-koe" secondAttribute="bottom" constant="16" id="ej1-U3-DPc"/>
-                        <constraint firstItem="wPa-GT-djk" firstAttribute="top" secondItem="nCy-4g-nIJ" secondAttribute="top" id="f8J-0B-paP"/>
-                        <constraint firstItem="eMZ-8x-koe" firstAttribute="top" secondItem="kjp-vl-acf" secondAttribute="bottom" constant="24" id="ko5-yi-bdu"/>
-                        <constraint firstItem="kjp-vl-acf" firstAttribute="leading" secondItem="nCy-4g-nIJ" secondAttribute="leading" id="nrX-k7-h40"/>
                         <constraint firstAttribute="trailing" secondItem="mct-jM-Lzp" secondAttribute="trailing" constant="24" id="qfT-iK-RSb"/>
                         <constraint firstItem="mct-jM-Lzp" firstAttribute="leading" secondItem="nCy-4g-nIJ" secondAttribute="leading" constant="24" id="rla-bF-CTQ"/>
+                        <constraint firstAttribute="trailing" secondItem="wPa-GT-djk" secondAttribute="trailing" id="ryt-cc-qWW"/>
                         <constraint firstItem="eMZ-8x-koe" firstAttribute="leading" secondItem="nCy-4g-nIJ" secondAttribute="leading" constant="12" id="vmA-TY-DaP"/>
                         <constraint firstAttribute="trailing" secondItem="eMZ-8x-koe" secondAttribute="trailing" constant="12" id="zdX-DA-Ojf"/>
                     </constraints>

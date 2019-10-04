@@ -83,19 +83,35 @@ open class PsoriasisDrawCompletionStepViewController: RSDStepViewController {
     /// The image view container for below the waist back results
     @IBOutlet public var belowTheWaistBackImageView: UIImageView!
     
+    /// The result identifier for the summary data
+    public let summaryResultIdentifier = "summary"
+    /// The result identifier for the summary image
+    public let summaryImageResultIdentifier = "summaryImage"
+    
+    /// Processing queue for saving camera
+    private let processingQueue = DispatchQueue(label: "org.sagebase.ResearchSuite.camera.processing")
+    
     /// The step for this view controller
     open var completionStep: PsoriasisDrawCompletionStepObject? {
         return self.step as? PsoriasisDrawCompletionStepObject
     }
+    
+    /// The background of the header, body, and footer
+    open var headerBackground: RSDColorTile {
+        return self.designSystem.colorRules.palette.successGreen.normal
+    }
+    
+    /// Override the default background for all the placements
+    open override func defaultBackgroundColorTile(for placement: RSDColorPlacement) -> RSDColorTile {
+        if placement == .header {
+            return headerBackground
+        } else {
+            return self.designSystem.colorRules.backgroundLight
+        }
+    }
 
     override open func setupHeader(_ header: RSDStepNavigationView) {
         super.setupHeader(header)
-        
-        // The header is used to style title, text, and cancel button
-        header.backgroundColor = UIColor.clear
-        
-        let headerColor = self.designSystem.colorRules.palette.successGreen.normal
-        self.bodyImageContainer.backgroundColor = headerColor.color
         
         self.aboveTheWaistFrontImageView?.contentMode = .scaleAspectFit
         self.belowTheWaistFrontImageView?.contentMode = .scaleAspectFit
@@ -106,7 +122,9 @@ open class PsoriasisDrawCompletionStepViewController: RSDStepViewController {
         
         let psoriasisDrawIdentifiers = [
             "\(aboveTheWaistFrontImageIdentifier)\(coverageResult)",
-            "\(belowTheWaistFrontImageIdentifier)\(coverageResult)"]
+            "\(belowTheWaistFrontImageIdentifier)\(coverageResult)",
+            "\(aboveTheWaistBackImageIdentifier)\(coverageResult)",
+            "\(belowTheWaistBackImageIdentifier)\(coverageResult)"]
         let coverage = self.psoriasisDrawCoverage(from: psoriasisDrawIdentifiers)
         let coverageString = String(format: "%.1f", coverage)
         
@@ -189,6 +207,37 @@ open class PsoriasisDrawCompletionStepViewController: RSDStepViewController {
             }
         }
         return false
+    }
+    
+    override open func goForward() {
+        let image = self.bodyImageContainer.asImage()
+        var url: URL?
+        do {
+            if let imageData = image.pngData(),
+                let outputDir = self.stepViewModel.parentTaskPath?.outputDirectory {
+                url = try RSDFileResultUtility.createFileURL(identifier: summaryImageResultIdentifier, ext: "png", outputDirectory: outputDir)
+                save(imageData, to: url!)
+            }
+        } catch let error {
+            debugPrint("Failed to save the image: \(error)")
+        }
+
+        // Create the result and set it as the result for this step
+        var result = RSDFileResultObject(identifier: summaryImageResultIdentifier)
+        result.url = url
+        _ = self.stepViewModel.parent?.taskResult.appendStepHistory(with: result)
+        
+        super.goForward()
+    }
+    
+    private func save(_ imageData: Data, to url: URL) {
+        processingQueue.async {
+            do {
+                try imageData.write(to: url)
+            } catch let error {
+                debugPrint("Failed to save the camera image: \(error)")
+            }
+        }
     }
 }
 

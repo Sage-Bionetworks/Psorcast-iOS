@@ -159,7 +159,7 @@
             }
         },
         {
-            "identifier":"completion",
+            "identifier":"summary",
             "type":"psoriasisDrawCompletion",
             "title": "%@%% Coverage",
             "text": "You have noted that %@%% of your skin is affected by psoriasis.",
