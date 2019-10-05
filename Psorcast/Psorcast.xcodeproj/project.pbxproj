@@ -15,7 +15,7 @@
 		CB47E565233FC2EC00AE8501 /* PsoriasisDrawResultObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB47E564233FC2EC00AE8501 /* PsoriasisDrawResultObject.swift */; };
 		CB47E567233FC61400AE8501 /* PsoriasisDrawStepViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB47E566233FC61400AE8501 /* PsoriasisDrawStepViewController.xib */; };
 		CB55C7152317391600EA0C19 /* JointCounting.json in Resources */ = {isa = PBXBuildFile; fileRef = CB55C7142317391600EA0C19 /* JointCounting.json */; };
-		CB55C71723173D6A00EA0C19 /* JointSelectionStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB55C71623173D6A00EA0C19 /* JointSelectionStepViewController.swift */; };
+		CB55C71723173D6A00EA0C19 /* SelectionCheckmarkStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB55C71623173D6A00EA0C19 /* SelectionCheckmarkStepViewController.swift */; };
 		CB55C725231773FF00EA0C19 /* JointPainStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB55C724231773FF00EA0C19 /* JointPainStepViewController.swift */; };
 		CB55C72D2317859700EA0C19 /* JointPainStepViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB55C72C2317859700EA0C19 /* JointPainStepViewController.xib */; };
 		CB55C72F231848CD00EA0C19 /* JointPainResultObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB55C72E231848CD00EA0C19 /* JointPainResultObject.swift */; };
@@ -146,7 +146,7 @@
 		CB47E564233FC2EC00AE8501 /* PsoriasisDrawResultObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PsoriasisDrawResultObject.swift; sourceTree = "<group>"; };
 		CB47E566233FC61400AE8501 /* PsoriasisDrawStepViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PsoriasisDrawStepViewController.xib; sourceTree = "<group>"; };
 		CB55C7142317391600EA0C19 /* JointCounting.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = JointCounting.json; sourceTree = "<group>"; };
-		CB55C71623173D6A00EA0C19 /* JointSelectionStepViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JointSelectionStepViewController.swift; sourceTree = "<group>"; };
+		CB55C71623173D6A00EA0C19 /* SelectionCheckmarkStepViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionCheckmarkStepViewController.swift; sourceTree = "<group>"; };
 		CB55C724231773FF00EA0C19 /* JointPainStepViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JointPainStepViewController.swift; sourceTree = "<group>"; };
 		CB55C72C2317859700EA0C19 /* JointPainStepViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JointPainStepViewController.xib; sourceTree = "<group>"; };
 		CB55C72E231848CD00EA0C19 /* JointPainResultObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JointPainResultObject.swift; sourceTree = "<group>"; };
@@ -332,13 +332,13 @@
 			isa = PBXGroup;
 			children = (
 				CBD67D8722DFC59B00998516 /* TaskListTableViewController.swift */,
+				CB55C71623173D6A00EA0C19 /* SelectionCheckmarkStepViewController.swift */,
 				CBD67D8322DFB90C00998516 /* ExternalIDRegistrationViewController.swift */,
 				CB5E960922EE920D0001AAFE /* ExternalIDRegistrationViewController.xib */,
 				CB6F54EF22E25C5B0073BFE9 /* ParticipantIDRegistrationViewController.swift */,
 				CB5E95FA22EE7A390001AAFE /* ParticipantIDRegistrationViewController.xib */,
 				CBD67D9822DFDC4E00998516 /* ImageCaptureStepViewController.swift */,
 				CBD67D9722DFDC4E00998516 /* ImageCaptureStepViewController.xib */,
-				CB55C71623173D6A00EA0C19 /* JointSelectionStepViewController.swift */,
 				CB55C7372319718D00EA0C19 /* JointPainStepObject.swift */,
 				CB55C72E231848CD00EA0C19 /* JointPainResultObject.swift */,
 				CB55C739231972BE00EA0C19 /* JointPainImageView.swift */,
@@ -748,7 +748,7 @@
 				CB47E565233FC2EC00AE8501 /* PsoriasisDrawResultObject.swift in Sources */,
 				CBB93CB5234252BC00321A4D /* PsoriasisDrawCompletionStepViewController.swift in Sources */,
 				CBD62BAC23342CBA00C78F22 /* BellwetherCompletionStepViewController.swift in Sources */,
-				CB55C71723173D6A00EA0C19 /* JointSelectionStepViewController.swift in Sources */,
+				CB55C71723173D6A00EA0C19 /* SelectionCheckmarkStepViewController.swift in Sources */,
 				CBD67D8422DFB90C00998516 /* ExternalIDRegistrationViewController.swift in Sources */,
 				CB47E563233FC1BD00AE8501 /* PsoriasisDrawStepObject.swift in Sources */,
 				CBE908A92333BB2A00F88A9A /* BellwetherResultObject.swift in Sources */,

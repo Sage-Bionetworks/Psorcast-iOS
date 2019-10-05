@@ -2,17 +2,17 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "back Above the waist background.png",
+      "filename" : "Above Waist Back Background.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "back Above the waist background@2x.png",
+      "filename" : "Above Waist Back Background@2x.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "filename" : "back Above the waist background@3x.png",
+      "filename" : "Above Waist Back Background@3x.png",
       "scale" : "3x"
     }
   ],

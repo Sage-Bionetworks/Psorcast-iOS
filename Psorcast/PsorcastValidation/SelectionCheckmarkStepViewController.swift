@@ -1,5 +1,5 @@
 //
-//  JointSelectionStepViewController.swift
+//  SelectionCheckmarkStepViewController.swift
 //  PsorcastValidation
 //
 //  Copyright © 2019 Sage Bionetworks. All rights reserved.
@@ -36,39 +36,39 @@ import UserNotifications
 import BridgeApp
 import BridgeAppUI
 
-open class JointSelectionStepObject: RSDFormUIStepObject, RSDStepViewControllerVendor {
+open class SelectionCheckmarkStepObject: RSDFormUIStepObject, RSDStepViewControllerVendor {
     
-    /// Default type is `.jointSelection`.
+    /// Default type is `.selectionCheckmark`.
     open override class func defaultType() -> RSDStepType {
-        return .jointSelection
+        return .selectionCheckmark
     }
     
     public func instantiateViewController(with parent: RSDPathComponent?) -> (UIViewController & RSDStepController)? {
-        return JointSelectionStepViewController(step: self, parent: parent)
+        return SelectionCheckmarkStepViewController(step: self, parent: parent)
     }
 }
 
-open class JointSelectionStepViewController: RSDTableStepViewController {
+open class SelectionCheckmarkStepViewController: RSDTableStepViewController {
     
-    open var jointSelectionStep: JointSelectionStepObject? {
-        return self.step as? JointSelectionStepObject
+    open var selectionCheckmarkStep: SelectionCheckmarkStepObject? {
+        return self.step as? SelectionCheckmarkStepObject
     }
     
     override open func registerReuseIdentifierIfNeeded(_ reuseIdentifier: String) {
         let reuseId = RSDFormUIHint(rawValue: reuseIdentifier)
         if reuseId == .list {
             // Register our custom emoji cell type
-            tableView.register(JointSelectionTableViewCell.self, forCellReuseIdentifier: reuseIdentifier)
+            tableView.register(SelectionCheckmarkTableViewCell.self, forCellReuseIdentifier: reuseIdentifier)
             return
         }
         super.registerReuseIdentifierIfNeeded(reuseIdentifier)
     }
 }
 
-public class JointSelectionTableViewCell: RSDSelectionTableViewCell {
+public class SelectionCheckmarkTableViewCell: RSDSelectionTableViewCell {
     
     internal let kImageTrailingMargin: CGFloat = 20.0
-    internal let kImageTopMargin: CGFloat = 24.0
+    internal let kImageTopMargin: CGFloat = 20.0
     internal let kImageBottomMargin: CGFloat = 12.0
     internal let kImageSize: CGFloat = 44.0
     

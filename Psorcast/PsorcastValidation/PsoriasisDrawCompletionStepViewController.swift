@@ -64,14 +64,14 @@ open class PsoriasisDrawCompletionStepViewController: RSDStepViewController {
     @IBOutlet public var frontImageVerticalSpace: NSLayoutConstraint!
     /// This value was taken from the xib to make the images line up to look like one image of a body
     /// It is the vertical space between the body images divided by width of them
-    let frontVerticalSpaceConstant = CGFloat(73.0 / 171.67)
+    let frontVerticalSpaceConstant = CGFloat(82.0 / 171.67)
     
     /// This controls the space between above and below images
     /// It may need adjusted for different screen sizes
     @IBOutlet public var backImageVerticalSpace: NSLayoutConstraint!
     /// This value was taken from the xib to make the images line up to look like one image of a body
     /// It is the vertical space between the body images divided by width of them
-    let backVerticalSpaceConstant = CGFloat(97.0 / 171.67)
+    let backVerticalSpaceConstant = CGFloat(84.0 / 171.67)
     
     /// The image view container for above the waist front results
     @IBOutlet public var aboveTheWaistFrontImageView: UIImageView!

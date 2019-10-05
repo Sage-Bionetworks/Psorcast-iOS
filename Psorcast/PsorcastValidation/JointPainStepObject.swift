@@ -91,7 +91,7 @@ open class JointPainStepObject: RSDUIStepObject, RSDStepViewControllerVendor, RS
     open func shouldSkipStep(with result: RSDTaskResult?, isPeeking: Bool) -> Bool {
         // Only include this step if the user previously chose
         // its region in the joint selection step
-        if let collectionResult = (result?.findResult(with: RSDStepType.jointSelection.rawValue) as? RSDCollectionResultObject),
+        if let collectionResult = (result?.findResult(with: RSDStepType.selectionCheckmark.rawValue) as? RSDCollectionResultObject),
             let answerResult = collectionResult.inputResults.first as? RSDAnswerResultObject,
             let answers = answerResult.value as? [String],
             let region = jointPainMap?.region.rawValue {

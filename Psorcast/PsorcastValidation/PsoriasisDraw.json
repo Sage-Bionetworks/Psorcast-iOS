@@ -23,8 +23,8 @@
             }
         },
         {
-            "identifier": "psoriasisDrawSelection",
-            "type": "form",
+            "identifier": "selectionCheckmark",
+            "type": "selectionCheckmark",
             "title": "Which areas have psoriasis?",
             "text": "Select all areas of your body that currently have psoriasis.",
             "actions":{
@@ -40,22 +40,27 @@
                     "choices": [
                         {
                             "text": "Front: Above the waist",
+                            "detail": " ",
                             "value": "aboveTheWaistFront"
                         },
                         {
                             "text": "Front: Below the waist",
+                            "detail": " ",
                             "value": "belowTheWaistFront"
                         },
                         {
                             "text": "Back: Above the waist",
+                            "detail": " ",
                             "value": "aboveTheWaistBack"
                         },
                         {
                             "text": "Back: Below the waist",
+                            "detail": " ",
                             "value": "belowTheWaistBack"
                         },
                         {
                             "text": "No areas are affected",
+                            "detail": " ",
                             "isExclusive": true
                         }
                     ]
