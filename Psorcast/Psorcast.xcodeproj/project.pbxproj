@@ -45,6 +45,7 @@
 		CB9F5E5222E0C2BA003FBCEF /* PsorcastTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB9F5E5122E0C2BA003FBCEF /* PsorcastTests.swift */; };
 		CB9F5E5B22E0C531003FBCEF /* CopyStepTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB9F5E5922E0C530003FBCEF /* CopyStepTests.swift */; };
 		CB9F5E5C22E0C531003FBCEF /* CodableStepObjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB9F5E5A22E0C531003FBCEF /* CodableStepObjectTests.swift */; };
+		CBA8390B234A6A2100408D81 /* PsoriasisDraw.json in Resources */ = {isa = PBXBuildFile; fileRef = CBA8390A234A6A2100408D81 /* PsoriasisDraw.json */; };
 		CBD62BAC23342CBA00C78F22 /* BellwetherCompletionStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBD62BAA23342CBA00C78F22 /* BellwetherCompletionStepViewController.swift */; };
 		CBD67D8122DFB8DE00998516 /* Psorcast.strings in Resources */ = {isa = PBXBuildFile; fileRef = CBD67D8022DFB8DE00998516 /* Psorcast.strings */; };
 		CBD67D8422DFB90C00998516 /* ExternalIDRegistrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBD67D8322DFB90C00998516 /* ExternalIDRegistrationViewController.swift */; };
@@ -162,6 +163,7 @@
 		CB9F5E5322E0C2BA003FBCEF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CB9F5E5922E0C530003FBCEF /* CopyStepTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CopyStepTests.swift; sourceTree = "<group>"; };
 		CB9F5E5A22E0C531003FBCEF /* CodableStepObjectTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodableStepObjectTests.swift; sourceTree = "<group>"; };
+		CBA8390A234A6A2100408D81 /* PsoriasisDraw.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = PsoriasisDraw.json; sourceTree = "<group>"; };
 		CBD62BAA23342CBA00C78F22 /* BellwetherCompletionStepViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BellwetherCompletionStepViewController.swift; sourceTree = "<group>"; };
 		CBD67D8022DFB8DE00998516 /* Psorcast.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = Psorcast.strings; sourceTree = "<group>"; };
 		CBD67D8322DFB90C00998516 /* ExternalIDRegistrationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExternalIDRegistrationViewController.swift; sourceTree = "<group>"; };
@@ -353,6 +355,7 @@
 				CB737FEB231B100600FA1D3A /* MDJointSwelling.json */,
 				CB422D2D23316EB700787FEE /* MDJointCounting.json */,
 				CBE908942332ED9E00F88A9A /* Bellwether.json */,
+				CBA8390A234A6A2100408D81 /* PsoriasisDraw.json */,
 			);
 			name = JSON;
 			sourceTree = "<group>";
@@ -631,6 +634,7 @@
 				FFABCBF222DD1F2800D11109 /* LaunchScreen.storyboard in Resources */,
 				FFABCBEF22DD1F2800D11109 /* Assets.xcassets in Resources */,
 				FFABCBED22DD1F2800D11109 /* Main.storyboard in Resources */,
+				CBA8390B234A6A2100408D81 /* PsoriasisDraw.json in Resources */,
 				CB422D2E23316EB700787FEE /* MDJointCounting.json in Resources */,
 				CB9F5E2722E0BED4003FBCEF /* lato_bold.ttf in Resources */,
 				CB55C72D2317859700EA0C19 /* JointPainStepViewController.xib in Resources */,
@@ -1007,6 +1011,7 @@
 				CODE_SIGN_ENTITLEMENTS = PsorcastValidation/PsorcastValidation.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 11;
 				DEVELOPMENT_TEAM = KA9Z8R6M6K;
 				INFOPLIST_FILE = PsorcastValidation/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1031,6 +1036,7 @@
 				CODE_SIGN_ENTITLEMENTS = PsorcastValidation/PsorcastValidation.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 11;
 				DEVELOPMENT_TEAM = KA9Z8R6M6K;
 				INFOPLIST_FILE = PsorcastValidation/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
