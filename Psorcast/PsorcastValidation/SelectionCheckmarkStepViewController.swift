@@ -68,7 +68,7 @@ open class SelectionCheckmarkStepViewController: RSDTableStepViewController {
 public class SelectionCheckmarkTableViewCell: RSDSelectionTableViewCell {
     
     internal let kImageTrailingMargin: CGFloat = 20.0
-    internal let kImageTopMargin: CGFloat = 20.0
+    internal let kImageTopMargin: CGFloat = 12.0
     internal let kImageBottomMargin: CGFloat = 12.0
     internal let kImageSize: CGFloat = 44.0
     
