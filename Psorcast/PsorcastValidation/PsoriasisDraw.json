@@ -1,0 +1,71 @@
+{
+    "taskIdentifier"            : "PsoriasisDraw",
+    "schemaIdentifier"          : "PsoriasisDraw",
+    "progressMarkers":[],
+    "steps":
+    [
+        {
+            "identifier":"psoriasisDrawInstruction",
+            "type":"instruction",
+            "title":"Select areas, then draw",
+            "text":"First select the areas of your body that currently have Psoriasis, then 'draw' the approximate size and location in each area.",
+            "image":{
+                "type": "animated",
+                "imageNames": ["PsoriasisDraw1", "PsoriasisDraw2", "PsoriasisDraw3", "PsoriasisDraw4"],
+                "placementType": "topMarginBackground",
+                "animationDuration": 4.0
+            },
+            "actions":{
+                "goForward":{
+                    "type":"default",
+                    "buttonTitle":"Begin"
+                }
+            }
+        },
+        {
+            "identifier": "selectionCheckmark",
+            "type": "selectionCheckmark",
+            "title": "Which areas have psoriasis?",
+            "text": "Select all areas of your body that currently have psoriasis.",
+            "actions":{
+                "goForward":{
+                    "type":"default",
+                    "buttonTitle":"Continue"
+                }
+            },
+            "inputFields": [
+                {
+                    "uiHint": "list",
+                    "type": "multipleChoice.string",
+                    "choices": [
+                        {
+                            "text": "Front: Above the waist",
+                            "detail": " ",
+                            "value": "aboveTheWaistFront"
+                        },
+                        {
+                            "text": "Front: Below the waist",
+                            "detail": " ",
+                            "value": "belowTheWaistFront"
+                        },
+                        {
+                            "text": "Back: Above the waist",
+                            "detail": " ",
+                            "value": "aboveTheWaistBack"
+                        },
+                        {
+                            "text": "Back: Below the waist",
+                            "detail": " ",
+                            "value": "belowTheWaistBack"
+                        },
+                        {
+                            "text": "No areas are affected",
+                            "detail": " ",
+                            "isExclusive": true
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

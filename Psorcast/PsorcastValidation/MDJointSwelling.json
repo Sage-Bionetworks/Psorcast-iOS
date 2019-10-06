@@ -23,8 +23,8 @@
             }
         },
         {
-            "identifier": "jointSelection",
-            "type": "jointSelection",
+            "identifier": "selectionCheckmark",
+            "type": "selectionCheckmark",
             "title": "Which areas of your body have painful joints?",
             "text": "Select all areas with joints that bother you.",
             "inputFields": [
