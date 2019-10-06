@@ -170,8 +170,7 @@ public class TaskListScheduleManager : SBAScheduleManager {
         let taskIds = self.scheduledActivities.map({ $0.activityIdentifier })
         for taskId in taskIds {
             if let taskIdUnwrapped = taskId {
-                let key = isCompleteKey(taskId: taskIdUnwrapped)
-                if !UserDefaults.standard.bool(forKey: key) {
+                if !isComplete(taskId: taskIdUnwrapped) {
                     return false
                 }
             }
