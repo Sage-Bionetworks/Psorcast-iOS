@@ -162,15 +162,11 @@ public class TaskListScheduleManager : SBAScheduleManager {
     }
     
     func isComplete(taskId: String) -> Bool {
-        return false
-//        let key = isCompleteKey(taskId: taskId)
-//        return UserDefaults.standard.bool(forKey: key)
+        let key = isCompleteKey(taskId: taskId)
+        return UserDefaults.standard.bool(forKey: key)
     }
     
     func isAllComplete() -> Bool {
-        if (true) {
-            return true
-        }
         let taskIds = self.scheduledActivities.map({ $0.activityIdentifier })
         for taskId in taskIds {
             if let taskIdUnwrapped = taskId {
