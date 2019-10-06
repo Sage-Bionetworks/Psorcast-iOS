@@ -130,13 +130,10 @@ class TaskListTableViewController: UITableViewController, RSDTaskViewControllerD
     }
     
     @IBAction func doneTapped() {
-        guard let appDelegate = AppDelegate.shared as? AppDelegate else { return }
-        
         UserDefaults.standard.removeObject(forKey: "participantID")
         
-        
         RSDFactory.shared = TaskFactory()
-        let endStep = EndOfValidationStep(identifier: "endOfValidation", type: .instruction)
+        let endStep = EndOfValidationStepObject(identifier: self.endOfValidationTaskId, type: .endOfValidation)
         var navigator = RSDConditionalStepNavigatorObject(with: [endStep])
         navigator.progressMarkers = []
         let task = RSDTaskObject(identifier: endOfValidationTaskId, stepNavigator: navigator)
@@ -150,6 +147,8 @@ class TaskListTableViewController: UITableViewController, RSDTaskViewControllerD
         
         // dismiss the view controller
         (taskController as? UIViewController)?.dismiss(animated: true, completion: nil)
+        
+        let taskId = taskController.taskViewModel.taskResult.identifier
         
         // End of validation task complete, go to participant ID screen
         if taskId == self.endOfValidationTaskId {

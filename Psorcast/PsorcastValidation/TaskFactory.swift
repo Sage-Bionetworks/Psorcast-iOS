@@ -40,6 +40,7 @@ extension RSDStepType {
     public static let completionJointPain: RSDStepType = "completionJointPain"
     public static let bellwether: RSDStepType = "bellwether"
     public static let bellwetherCompletion: RSDStepType = "bellwetherCompletion"
+    public static let endOfValidation: RSDStepType = "endOfValidation"
 }
 
 open class TaskFactory: SBAFactory {
@@ -58,6 +59,8 @@ open class TaskFactory: SBAFactory {
             return try BellwetherStepObject(from: decoder)
         case .bellwetherCompletion:
             return try BellwetherCompletionStepObject(from: decoder)
+        case .endOfValidation:
+            return try EndOfValidationStepObject(from: decoder)
         default:
             return try super.decodeStep(from: decoder, with: type)
         }

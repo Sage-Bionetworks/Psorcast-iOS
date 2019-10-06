@@ -1,5 +1,5 @@
 //
-//  EndOfValidationViewController.swift
+//  EndOfValidationStepViewController.swift
 //  PsorcastValidation
 //
 //  Copyright © 2018-2019 Sage Bionetworks. All rights reserved.
@@ -37,10 +37,15 @@ import Research
 import BridgeSDK
 import BridgeApp
 
-class EndOfValidationStep : RSDUIStepObject, RSDStepViewControllerVendor {
+class EndOfValidationStepObject : RSDUIStepObject, RSDStepViewControllerVendor {
+    
+    /// Default type is `.endOfValidation`.
+    open override class func defaultType() -> RSDStepType {
+        return .endOfValidation
+    }
     
     open func instantiateViewController(with parent: RSDPathComponent?) -> (UIViewController & RSDStepController)? {
-        return EndOfValidationViewController(step: self, parent: parent)
+        return EndOfValidationStepViewController(step: self, parent: parent)
     }
     
     required init(identifier: String, type: RSDStepType?) {
@@ -54,19 +59,34 @@ class EndOfValidationStep : RSDUIStepObject, RSDStepViewControllerVendor {
     }
     
     private func commonInit() {
-        self.text = Localization.localizedString("END_OF_VALIDATION_TITLE")
-        self.detail = Localization.localizedString("END_OF_VALIDATION_DETAIL")
-        self.actions?[.navigation(.goForward)] = RSDUIActionObject(buttonTitle: Localization.localizedString("END_OF_VALIDATION_BUTTON_TITLE"))
+        self.shouldHideActions = [.navigation(.goBackward), .navigation(.cancel)]
+        self.title = Localization.localizedString("END_OF_VALIDATION_TITLE")
+        self.text = Localization.localizedString("END_OF_VALIDATION_DETAIL")
+        self.actions = [.navigation(.goForward): RSDUIActionObject(buttonTitle: Localization.localizedString("END_OF_VALIDATION_BUTTON_TITLE"))]
     }
 }
 
-class EndOfValidationViewController: RSDStepViewController, UITextFieldDelegate {
+open class EndOfValidationStepViewController: RSDStepViewController {
     
     /// The logout button
     @IBOutlet public var logoutButton: UIButton!
     
     /// The loading spinner when logout is tapped
     @IBOutlet public var loadingSpinner: UIActivityIndicatorView!
+    
+    /// The background of the header, body, and footer
+    open var headerBackground: RSDColorTile {
+        return self.designSystem.colorRules.palette.successGreen.normal
+    }
+    
+    /// Override the default background for all the placements
+    open override func defaultBackgroundColorTile(for placement: RSDColorPlacement) -> RSDColorTile {
+        if placement == .header {
+            return headerBackground
+        } else {
+            return self.designSystem.colorRules.backgroundLight
+        }
+    }
     
     @IBAction func logoutTapped() {
         DispatchQueue.main.async {
@@ -79,7 +99,7 @@ class EndOfValidationViewController: RSDStepViewController, UITextFieldDelegate 
                 self.loadingSpinner.isHidden = true
                 self.logoutButton.isEnabled = true
                 self.logoutButton.alpha = CGFloat(1.0)
-                self.goBack()
+                self.goForward()
             }
         })
     }
@@ -88,10 +108,6 @@ class EndOfValidationViewController: RSDStepViewController, UITextFieldDelegate 
         super.viewDidLoad()
         
         self.designSystem = AppDelegate.designSystem
-        let background = self.designSystem.colorRules.backgroundPrimary
-        self.view.backgroundColor = background.color
-        self.view.subviews[0].backgroundColor = background.color
-
         self.loadingSpinner.isHidden = true
     }
 }
