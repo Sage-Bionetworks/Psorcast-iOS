@@ -40,6 +40,8 @@ class TaskListTableViewController: UITableViewController, RSDTaskViewControllerD
     
     let scheduleManager = TaskListScheduleManager()
     
+    let endOfValidationTaskId = "endOfValidation"
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -129,7 +131,16 @@ class TaskListTableViewController: UITableViewController, RSDTaskViewControllerD
     
     @IBAction func doneTapped() {
         UserDefaults.standard.removeObject(forKey: "participantID")
-         (AppDelegate.shared as? AppDelegate)?.showAppropriateViewController(animated: true)
+        
+        RSDFactory.shared = TaskFactory()
+        let endStep = EndOfValidationStepObject(identifier: self.endOfValidationTaskId, type: .endOfValidation)
+        var navigator = RSDConditionalStepNavigatorObject(with: [endStep])
+        navigator.progressMarkers = []
+        let task = RSDTaskObject(identifier: endOfValidationTaskId, stepNavigator: navigator)
+        let taskViewController = RSDTaskViewController(task: task)
+        taskViewController.modalPresentationStyle = .fullScreen
+        taskViewController.delegate = self
+        self.present(taskViewController, animated: true, completion: nil)
     }
 
     func taskController(_ taskController: RSDTaskController, didFinishWith reason: RSDTaskFinishReason, error: Error?) {
@@ -137,11 +148,18 @@ class TaskListTableViewController: UITableViewController, RSDTaskViewControllerD
         // dismiss the view controller
         (taskController as? UIViewController)?.dismiss(animated: true, completion: nil)
         
+        let taskId = taskController.taskViewModel.taskResult.identifier
+        
+        // End of validation task complete, go to participant ID screen
+        if taskId == self.endOfValidationTaskId {
+            (AppDelegate.shared as? AppDelegate)?.showAppropriateViewController(animated: true)
+            return
+        }
+        
         // Let the schedule manager handle the cleanup.
         scheduleManager.taskController(taskController, didFinishWith: reason, error: error)
         
         if error == nil && reason == .completed {
-            let taskId = taskController.taskViewModel.taskResult.identifier
             self.scheduleManager.setIsComplete(taskId: taskId)
             self.updateHeaderFooterText()
         }

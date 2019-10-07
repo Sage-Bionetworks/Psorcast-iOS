@@ -42,6 +42,7 @@ extension RSDStepType {
     public static let bellwetherCompletion: RSDStepType = "bellwetherCompletion"
     public static let psoriasisDraw: RSDStepType = "psoriasisDraw"
     public static let psoriasisDrawCompletion: RSDStepType = "psoriasisDrawCompletion"
+    public static let endOfValidation: RSDStepType = "endOfValidation"
 }
 
 open class TaskFactory: SBAFactory {
@@ -64,6 +65,8 @@ open class TaskFactory: SBAFactory {
             return try PsoriasisDrawStepObject(from: decoder)
         case .psoriasisDrawCompletion:
             return try PsoriasisDrawCompletionStepObject(from: decoder)
+        case .endOfValidation:
+            return try EndOfValidationStepObject(from: decoder)
         default:
             return try super.decodeStep(from: decoder, with: type)
         }
