@@ -58,7 +58,7 @@ open class PsoriasisDrawStepViewController: RSDStepViewController {
     }
     
     /// The initial result of the step if the user navigated back to this step
-    open var initialResult: PsoriasisDrawResultObject?
+    open var hasInitialResult = false
     
     /// The image view container that adds the users drawing and masks it
     @IBOutlet public var imageView: PsoriasisDrawImageView!
@@ -74,8 +74,8 @@ open class PsoriasisDrawStepViewController: RSDStepViewController {
         super.init(nibName: nil, bundle: nil)
         
         // Set the initial result if available.
-        self.initialResult = (parent as? RSDHistoryPathComponent)?
-            .previousResult(for: step) as? PsoriasisDrawResultObject
+        self.hasInitialResult = ((parent as? RSDHistoryPathComponent)?
+            .previousResult(for: step) as? RSDFileResultObject) != nil
     }
     
     required public init?(coder aDecoder: NSCoder) {
@@ -139,6 +139,7 @@ open class PsoriasisDrawStepViewController: RSDStepViewController {
         super.setupHeader(header)
         self.imageView.setDesignSystem(self.designSystem, with: self.background)
         self.imageView.touchDrawableView?.lineWidth = 10
+        self.initialBezierPaths()
     }
     
     override open func setupFooter(_ footer: RSDNavigationFooterView) {
@@ -160,7 +161,7 @@ open class PsoriasisDrawStepViewController: RSDStepViewController {
                 
         let image = imageView.convertToImage()
         let percentCoverage = image.psoriasisCoverage(psoriasisColor: lineColor)
-        
+                        
         let percentResult = RSDAnswerResultObject(identifier: "\(self.step.identifier)\(PsoriasisDrawStepViewController.percentCoverageResultId)", answerType: .decimal, value: percentCoverage)
         _ = self.stepViewModel.parent?.taskResult.appendStepHistory(with: percentResult)
         
@@ -168,7 +169,7 @@ open class PsoriasisDrawStepViewController: RSDStepViewController {
         do {
             if let imageData = image.pngData(),
                 let outputDir = self.stepViewModel.parentTaskPath?.outputDirectory {
-                url = try RSDFileResultUtility.createFileURL(identifier: self.step.identifier, ext: "png", outputDirectory: outputDir)
+                url = try RSDFileResultUtility.createFileURL(identifier: self.step.identifier, ext: "png", outputDirectory: outputDir, shouldDeletePrevious: true)
                 save(imageData, to: url!)
             }
         } catch let error {
@@ -180,6 +181,15 @@ open class PsoriasisDrawStepViewController: RSDStepViewController {
         result.url = url
         _ = self.stepViewModel.parent?.taskResult.appendStepHistory(with: result)
         
+        do {
+            if let bezierPaths = self.imageView.touchDrawableView?.bezierPaths {
+                let bezierData = try NSKeyedArchiver.archivedData(withRootObject: bezierPaths, requiringSecureCoding: false)
+                UserDefaults.standard.set(bezierData, forKey: self.step.identifier)
+            }
+        } catch {
+            debugPrint("Error reading old drawing \(error)")
+        }
+        
         super.goForward()
     }
     
@@ -190,6 +200,18 @@ open class PsoriasisDrawStepViewController: RSDStepViewController {
             } catch let error {
                 debugPrint("Failed to save the camera image: \(error)")
             }
+        }
+    }
+    
+    func initialBezierPaths() {
+        guard self.hasInitialResult else { return }
+        do {
+            if let bezierData = UserDefaults.standard.data(forKey: self.step.identifier),
+                let bezierPaths = try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(bezierData) as? [UIBezierPath] {
+                self.imageView.touchDrawableView?.setBezierPaths(paths: bezierPaths)
+            }
+        } catch {
+            debugPrint("Error reading old drawing \(error)")
         }
     }
 }

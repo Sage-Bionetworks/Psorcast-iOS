@@ -85,6 +85,15 @@ open class TouchDrawableView: UIView, RSDViewDesignable {
         self.setNeedsDisplay()
     }
     
+    public func setBezierPaths(paths: [UIBezierPath]) {
+        self.clear()
+        for path in paths {
+            let shapeLayer = self.createBezierShapeLayer(path: path)
+            self.layer.addSublayer(shapeLayer)
+        }
+        self.setNeedsDisplay()
+    }
+    
     override open func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesMoved(touches, with: event)
         
