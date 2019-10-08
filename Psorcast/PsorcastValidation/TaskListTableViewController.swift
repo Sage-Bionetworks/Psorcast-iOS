@@ -40,6 +40,8 @@ class TaskListTableViewController: UITableViewController, RSDTaskViewControllerD
     
     let scheduleManager = TaskListScheduleManager()
     
+    let endOfValidationTaskId = "endOfValidation"
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -50,6 +52,7 @@ class TaskListTableViewController: UITableViewController, RSDTaskViewControllerD
         scheduleManager.reloadData()
         NotificationCenter.default.addObserver(forName: .SBAUpdatedScheduledActivities, object: scheduleManager, queue: OperationQueue.main) { (notification) in
             self.tableView.reloadData()
+            self.updateHeaderFooterText()
         }
         
         updateDesignSystem()
@@ -79,6 +82,8 @@ class TaskListTableViewController: UITableViewController, RSDTaskViewControllerD
         let releaseDate = compileDate() ?? ""
         let releaseDateStr = Localization.localizedStringWithFormatKey("RELEASE_DATE_%@", releaseDate)
         
+        // Done button is only enabled after user does all their activities
+        tableFooter?.doneButton?.isEnabled = self.scheduleManager.isAllComplete()
         // For the trial app, show the user their external id
         if let participantID = UserDefaults.standard.string(forKey: "participantID") {
             tableFooter?.titleLabel?.text = String(format: "%@\n%@\n%@", participantID, versionStr, releaseDateStr)
@@ -107,40 +112,57 @@ class TaskListTableViewController: UITableViewController, RSDTaskViewControllerD
         cell.indexPath = indexPath
         cell.delegate = self
         cell.setDesignSystem(AppDelegate.designSystem, with: AppDelegate.designSystem.colorRules.backgroundLight)
+        let taskId = self.scheduleManager.taskId(for: indexPath) ?? ""
+        cell.setIsComplete(isComplete: self.scheduleManager.isComplete(taskId: taskId))
         
         return cell
     }
     
     func didTapButton(on cell: RSDButtonCell) {
-        if (self.scheduleManager.isTaskRow(for: cell.indexPath)) {
-            RSDFactory.shared = TaskFactory()
-            // This is an activity
-            guard let activity = self.scheduleManager.sortedScheduledActivity(for: cell.indexPath) else { return }
-            let taskViewModel = scheduleManager.instantiateTaskViewModel(for: activity)
-            let taskVc = RSDTaskViewController(taskViewModel: taskViewModel)
-            taskVc.delegate = self            
-            self.present(taskVc, animated: true, completion: nil)
-        } else {
-            // TODO: mdephillips 5/18/19 transition to appropriate screen
-//            guard let supplementalRow = self.scheduleManager.supplementalRow(for: cell.indexPath) else { return }
-//            if (supplementalRow == .ConnectFitbit) {
-//                (AppDelegate.shared as? AppDelegate)?.connectToFitbit()
-//            }
-        }
+        RSDFactory.shared = TaskFactory()
+        // This is an activity
+        guard let activity = self.scheduleManager.sortedScheduledActivity(for: cell.indexPath) else { return }
+        let taskViewModel = scheduleManager.instantiateTaskViewModel(for: activity)
+        let taskVc = RSDTaskViewController(taskViewModel: taskViewModel)
+        taskVc.modalPresentationStyle = .fullScreen
+        taskVc.delegate = self
+        self.present(taskVc, animated: true, completion: nil)
     }
     
     @IBAction func doneTapped() {
         UserDefaults.standard.removeObject(forKey: "participantID")
-         (AppDelegate.shared as? AppDelegate)?.showAppropriateViewController(animated: true)
+        
+        RSDFactory.shared = TaskFactory()
+        let endStep = EndOfValidationStepObject(identifier: self.endOfValidationTaskId, type: .endOfValidation)
+        var navigator = RSDConditionalStepNavigatorObject(with: [endStep])
+        navigator.progressMarkers = []
+        let task = RSDTaskObject(identifier: endOfValidationTaskId, stepNavigator: navigator)
+        let taskViewController = RSDTaskViewController(task: task)
+        taskViewController.modalPresentationStyle = .fullScreen
+        taskViewController.delegate = self
+        self.present(taskViewController, animated: true, completion: nil)
     }
 
     func taskController(_ taskController: RSDTaskController, didFinishWith reason: RSDTaskFinishReason, error: Error?) {
-
+        
         // dismiss the view controller
         (taskController as? UIViewController)?.dismiss(animated: true, completion: nil)
         
+        let taskId = taskController.taskViewModel.taskResult.identifier
+        
+        // End of validation task complete, go to participant ID screen
+        if taskId == self.endOfValidationTaskId {
+            (AppDelegate.shared as? AppDelegate)?.showAppropriateViewController(animated: true)
+            return
+        }
+        
         // Let the schedule manager handle the cleanup.
         scheduleManager.taskController(taskController, didFinishWith: reason, error: error)
+        
+        if error == nil && reason == .completed {
+            self.scheduleManager.setIsComplete(taskId: taskId)
+            self.updateHeaderFooterText()
+        }
         
         // Reload the table view
         self.tableView.reloadData()
@@ -172,6 +194,17 @@ open class TaskTableviewCell: RSDButtonCell {
     /// Divider view that is associated with this cell.
     @IBOutlet open var dividerView: UIView?
     
+    /// Done label
+    @IBOutlet open var doneLabel: UILabel?
+    
+    /// Container view that holds the done info
+    @IBOutlet open var doneContainer: UIView?
+    
+    func setIsComplete(isComplete: Bool) {
+        doneContainer?.isHidden = !isComplete
+        actionButton.isHidden = isComplete
+    }
+    
     override open func setDesignSystem(_ designSystem: RSDDesignSystem, with background: RSDColorTile) {
         super.setDesignSystem(designSystem, with: background)
         let cellBackground = self.backgroundColorTile ?? designSystem.colorRules.backgroundLight
@@ -190,6 +223,9 @@ open class TaskTableviewCell: RSDButtonCell {
         dividerView?.backgroundColor = designSystem.colorRules.backgroundPrimary.color
         
         (self.actionButton as? RSDRoundedButton)?.setDesignSystem(designSystem, with: background)
+        
+        self.doneLabel?.font = designSystem.fontRules.font(for: .body)
+        self.doneLabel?.textColor = designSystem.colorRules.palette.successGreen.colorTiles[3].color
     }
 }
 

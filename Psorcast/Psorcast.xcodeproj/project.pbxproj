@@ -45,6 +45,8 @@
 		CB9F5E5222E0C2BA003FBCEF /* PsorcastTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB9F5E5122E0C2BA003FBCEF /* PsorcastTests.swift */; };
 		CB9F5E5B22E0C531003FBCEF /* CopyStepTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB9F5E5922E0C530003FBCEF /* CopyStepTests.swift */; };
 		CB9F5E5C22E0C531003FBCEF /* CodableStepObjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB9F5E5A22E0C531003FBCEF /* CodableStepObjectTests.swift */; };
+		CBA8390E234A6B3F00408D81 /* EndOfValidationStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA8390C234A6B3F00408D81 /* EndOfValidationStepViewController.swift */; };
+		CBA8390F234A6B3F00408D81 /* EndOfValidationStepViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CBA8390D234A6B3F00408D81 /* EndOfValidationStepViewController.xib */; };
 		CBD62BAC23342CBA00C78F22 /* BellwetherCompletionStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBD62BAA23342CBA00C78F22 /* BellwetherCompletionStepViewController.swift */; };
 		CBD67D8122DFB8DE00998516 /* Psorcast.strings in Resources */ = {isa = PBXBuildFile; fileRef = CBD67D8022DFB8DE00998516 /* Psorcast.strings */; };
 		CBD67D8422DFB90C00998516 /* ExternalIDRegistrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBD67D8322DFB90C00998516 /* ExternalIDRegistrationViewController.swift */; };
@@ -162,6 +164,8 @@
 		CB9F5E5322E0C2BA003FBCEF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CB9F5E5922E0C530003FBCEF /* CopyStepTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CopyStepTests.swift; sourceTree = "<group>"; };
 		CB9F5E5A22E0C531003FBCEF /* CodableStepObjectTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodableStepObjectTests.swift; sourceTree = "<group>"; };
+		CBA8390C234A6B3F00408D81 /* EndOfValidationStepViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EndOfValidationStepViewController.swift; sourceTree = "<group>"; };
+		CBA8390D234A6B3F00408D81 /* EndOfValidationStepViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EndOfValidationStepViewController.xib; sourceTree = "<group>"; };
 		CBD62BAA23342CBA00C78F22 /* BellwetherCompletionStepViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BellwetherCompletionStepViewController.swift; sourceTree = "<group>"; };
 		CBD67D8022DFB8DE00998516 /* Psorcast.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = Psorcast.strings; sourceTree = "<group>"; };
 		CBD67D8322DFB90C00998516 /* ExternalIDRegistrationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExternalIDRegistrationViewController.swift; sourceTree = "<group>"; };
@@ -303,6 +307,8 @@
 				CBD67D8722DFC59B00998516 /* TaskListTableViewController.swift */,
 				CBD67D8322DFB90C00998516 /* ExternalIDRegistrationViewController.swift */,
 				CB5E960922EE920D0001AAFE /* ExternalIDRegistrationViewController.xib */,
+				CBA8390C234A6B3F00408D81 /* EndOfValidationStepViewController.swift */,
+				CBA8390D234A6B3F00408D81 /* EndOfValidationStepViewController.xib */,
 				CB6F54EF22E25C5B0073BFE9 /* ParticipantIDRegistrationViewController.swift */,
 				CB5E95FA22EE7A390001AAFE /* ParticipantIDRegistrationViewController.xib */,
 				CBD67D9822DFDC4E00998516 /* ImageCaptureStepViewController.swift */,
@@ -632,6 +638,7 @@
 				FFABCBEF22DD1F2800D11109 /* Assets.xcassets in Resources */,
 				FFABCBED22DD1F2800D11109 /* Main.storyboard in Resources */,
 				CB422D2E23316EB700787FEE /* MDJointCounting.json in Resources */,
+				CBA8390F234A6B3F00408D81 /* EndOfValidationStepViewController.xib in Resources */,
 				CB9F5E2722E0BED4003FBCEF /* lato_bold.ttf in Resources */,
 				CB55C72D2317859700EA0C19 /* JointPainStepViewController.xib in Resources */,
 				CBD67D9922DFDC4E00998516 /* ImageCaptureStepViewController.xib in Resources */,
@@ -692,6 +699,7 @@
 				CB55C7382319718D00EA0C19 /* JointPainStepObject.swift in Sources */,
 				CBE908A82333BB2A00F88A9A /* BellwetherStepObject.swift in Sources */,
 				CBD67D9A22DFDC4E00998516 /* ImageCaptureStepViewController.swift in Sources */,
+				CBA8390E234A6B3F00408D81 /* EndOfValidationStepViewController.swift in Sources */,
 				FFABCBEA22DD1F2800D11109 /* ViewController.swift in Sources */,
 				CBD67D9322DFC71E00998516 /* TaskFactory.swift in Sources */,
 				FFABCBE822DD1F2800D11109 /* AppDelegate.swift in Sources */,
