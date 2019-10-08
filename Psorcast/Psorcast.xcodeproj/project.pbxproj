@@ -12,7 +12,7 @@
 		CB422D2C23316EB700787FEE /* BridgeAppUI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CB422D2923316EB700787FEE /* BridgeAppUI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		CB422D2E23316EB700787FEE /* MDJointCounting.json in Resources */ = {isa = PBXBuildFile; fileRef = CB422D2D23316EB700787FEE /* MDJointCounting.json */; };
 		CB55C7152317391600EA0C19 /* JointCounting.json in Resources */ = {isa = PBXBuildFile; fileRef = CB55C7142317391600EA0C19 /* JointCounting.json */; };
-		CB55C71723173D6A00EA0C19 /* JointSelectionStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB55C71623173D6A00EA0C19 /* JointSelectionStepViewController.swift */; };
+		CB55C71723173D6A00EA0C19 /* SelectionCheckmarkStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB55C71623173D6A00EA0C19 /* SelectionCheckmarkStepViewController.swift */; };
 		CB55C725231773FF00EA0C19 /* JointPainStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB55C724231773FF00EA0C19 /* JointPainStepViewController.swift */; };
 		CB55C72D2317859700EA0C19 /* JointPainStepViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB55C72C2317859700EA0C19 /* JointPainStepViewController.xib */; };
 		CB55C72F231848CD00EA0C19 /* JointPainResultObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB55C72E231848CD00EA0C19 /* JointPainResultObject.swift */; };
@@ -45,6 +45,7 @@
 		CB9F5E5222E0C2BA003FBCEF /* PsorcastTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB9F5E5122E0C2BA003FBCEF /* PsorcastTests.swift */; };
 		CB9F5E5B22E0C531003FBCEF /* CopyStepTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB9F5E5922E0C530003FBCEF /* CopyStepTests.swift */; };
 		CB9F5E5C22E0C531003FBCEF /* CodableStepObjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB9F5E5A22E0C531003FBCEF /* CodableStepObjectTests.swift */; };
+		CBA8390B234A6A2100408D81 /* PsoriasisDraw.json in Resources */ = {isa = PBXBuildFile; fileRef = CBA8390A234A6A2100408D81 /* PsoriasisDraw.json */; };
 		CBA8390E234A6B3F00408D81 /* EndOfValidationStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA8390C234A6B3F00408D81 /* EndOfValidationStepViewController.swift */; };
 		CBA8390F234A6B3F00408D81 /* EndOfValidationStepViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CBA8390D234A6B3F00408D81 /* EndOfValidationStepViewController.xib */; };
 		CBD62BAC23342CBA00C78F22 /* BellwetherCompletionStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBD62BAA23342CBA00C78F22 /* BellwetherCompletionStepViewController.swift */; };
@@ -134,7 +135,7 @@
 		CB422D2923316EB700787FEE /* BridgeAppUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BridgeAppUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB422D2D23316EB700787FEE /* MDJointCounting.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = MDJointCounting.json; sourceTree = "<group>"; };
 		CB55C7142317391600EA0C19 /* JointCounting.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = JointCounting.json; sourceTree = "<group>"; };
-		CB55C71623173D6A00EA0C19 /* JointSelectionStepViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JointSelectionStepViewController.swift; sourceTree = "<group>"; };
+		CB55C71623173D6A00EA0C19 /* SelectionCheckmarkStepViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionCheckmarkStepViewController.swift; sourceTree = "<group>"; };
 		CB55C724231773FF00EA0C19 /* JointPainStepViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JointPainStepViewController.swift; sourceTree = "<group>"; };
 		CB55C72C2317859700EA0C19 /* JointPainStepViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JointPainStepViewController.xib; sourceTree = "<group>"; };
 		CB55C72E231848CD00EA0C19 /* JointPainResultObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JointPainResultObject.swift; sourceTree = "<group>"; };
@@ -164,6 +165,7 @@
 		CB9F5E5322E0C2BA003FBCEF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CB9F5E5922E0C530003FBCEF /* CopyStepTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CopyStepTests.swift; sourceTree = "<group>"; };
 		CB9F5E5A22E0C531003FBCEF /* CodableStepObjectTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodableStepObjectTests.swift; sourceTree = "<group>"; };
+		CBA8390A234A6A2100408D81 /* PsoriasisDraw.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = PsoriasisDraw.json; sourceTree = "<group>"; };
 		CBA8390C234A6B3F00408D81 /* EndOfValidationStepViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EndOfValidationStepViewController.swift; sourceTree = "<group>"; };
 		CBA8390D234A6B3F00408D81 /* EndOfValidationStepViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EndOfValidationStepViewController.xib; sourceTree = "<group>"; };
 		CBD62BAA23342CBA00C78F22 /* BellwetherCompletionStepViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BellwetherCompletionStepViewController.swift; sourceTree = "<group>"; };
@@ -305,6 +307,7 @@
 			isa = PBXGroup;
 			children = (
 				CBD67D8722DFC59B00998516 /* TaskListTableViewController.swift */,
+				CB55C71623173D6A00EA0C19 /* SelectionCheckmarkStepViewController.swift */,
 				CBD67D8322DFB90C00998516 /* ExternalIDRegistrationViewController.swift */,
 				CB5E960922EE920D0001AAFE /* ExternalIDRegistrationViewController.xib */,
 				CBA8390C234A6B3F00408D81 /* EndOfValidationStepViewController.swift */,
@@ -313,7 +316,6 @@
 				CB5E95FA22EE7A390001AAFE /* ParticipantIDRegistrationViewController.xib */,
 				CBD67D9822DFDC4E00998516 /* ImageCaptureStepViewController.swift */,
 				CBD67D9722DFDC4E00998516 /* ImageCaptureStepViewController.xib */,
-				CB55C71623173D6A00EA0C19 /* JointSelectionStepViewController.swift */,
 				CB55C7372319718D00EA0C19 /* JointPainStepObject.swift */,
 				CB55C72E231848CD00EA0C19 /* JointPainResultObject.swift */,
 				CB55C739231972BE00EA0C19 /* JointPainImageView.swift */,
@@ -359,6 +361,7 @@
 				CB737FEB231B100600FA1D3A /* MDJointSwelling.json */,
 				CB422D2D23316EB700787FEE /* MDJointCounting.json */,
 				CBE908942332ED9E00F88A9A /* Bellwether.json */,
+				CBA8390A234A6A2100408D81 /* PsoriasisDraw.json */,
 			);
 			name = JSON;
 			sourceTree = "<group>";
@@ -637,6 +640,7 @@
 				FFABCBF222DD1F2800D11109 /* LaunchScreen.storyboard in Resources */,
 				FFABCBEF22DD1F2800D11109 /* Assets.xcassets in Resources */,
 				FFABCBED22DD1F2800D11109 /* Main.storyboard in Resources */,
+				CBA8390B234A6A2100408D81 /* PsoriasisDraw.json in Resources */,
 				CB422D2E23316EB700787FEE /* MDJointCounting.json in Resources */,
 				CBA8390F234A6B3F00408D81 /* EndOfValidationStepViewController.xib in Resources */,
 				CB9F5E2722E0BED4003FBCEF /* lato_bold.ttf in Resources */,
@@ -708,7 +712,7 @@
 				CBE908A42333BADA00F88A9A /* BellwetherStepViewController.swift in Sources */,
 				CBD67D8822DFC59B00998516 /* TaskListTableViewController.swift in Sources */,
 				CBD62BAC23342CBA00C78F22 /* BellwetherCompletionStepViewController.swift in Sources */,
-				CB55C71723173D6A00EA0C19 /* JointSelectionStepViewController.swift in Sources */,
+				CB55C71723173D6A00EA0C19 /* SelectionCheckmarkStepViewController.swift in Sources */,
 				CBD67D8422DFB90C00998516 /* ExternalIDRegistrationViewController.swift in Sources */,
 				CBE908A92333BB2A00F88A9A /* BellwetherResultObject.swift in Sources */,
 				CB55C72F231848CD00EA0C19 /* JointPainResultObject.swift in Sources */,
@@ -1015,6 +1019,7 @@
 				CODE_SIGN_ENTITLEMENTS = PsorcastValidation/PsorcastValidation.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 11;
 				DEVELOPMENT_TEAM = KA9Z8R6M6K;
 				INFOPLIST_FILE = PsorcastValidation/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1039,6 +1044,7 @@
 				CODE_SIGN_ENTITLEMENTS = PsorcastValidation/PsorcastValidation.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 11;
 				DEVELOPMENT_TEAM = KA9Z8R6M6K;
 				INFOPLIST_FILE = PsorcastValidation/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
