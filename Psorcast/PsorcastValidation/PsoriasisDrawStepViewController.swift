@@ -65,6 +65,11 @@ open class PsoriasisDrawStepViewController: RSDStepViewController {
     /// The background image view container that shows supplemental images that can't be drawn on
     @IBOutlet public var backgroundImageView: UIImageView!
     
+    /// The line width is proportional to the screen width
+    open var lineWidth: CGFloat {
+        return (CGFloat(10) / CGFloat(375)) * self.view.frame.width
+    }
+    
     /// Processing queue for saving camera
     private let processingQueue = DispatchQueue(label: "org.sagebase.ResearchSuite.camera.processing")
     
@@ -138,7 +143,7 @@ open class PsoriasisDrawStepViewController: RSDStepViewController {
     override open func setupHeader(_ header: RSDStepNavigationView) {
         super.setupHeader(header)
         self.imageView.setDesignSystem(self.designSystem, with: self.background)
-        self.imageView.touchDrawableView?.lineWidth = 10
+        self.imageView.touchDrawableView?.lineWidth = self.lineWidth
         self.initialBezierPaths()
     }
     
