@@ -59,7 +59,7 @@ class TaskListScheduleManagerTests: XCTestCase {
         // Unknown tasks should be sorted at the end
         let expectedResult = ["Walk30Seconds", "JointCounting", "HandImaging", "FootImaging", "MDJointCounting", "MDJointSwelling", "Unknown Task"]
         
-        var actualResult = manager.sortActivities(activities)
+        let actualResult = manager.sortActivities(activities)
         XCTAssertNotNil(actualResult)
         
         XCTAssertEqual(actualResult?.count, expectedResult.count)
@@ -75,34 +75,6 @@ class TaskListScheduleManagerTests: XCTestCase {
     
     func testTableSectionCount() {
         XCTAssertEqual(manager.tableSectionCount, sectionCount)
-    }
-    
-    func testIsTaskRow() {
-        for (index) in 0..<rowCount {
-            if (index < taskRowEndIndex) { // Task Rows
-                XCTAssertTrue(manager.isTaskRow(for: IndexPath(row: index, section: 0)))
-            } else { // Supplemental rows
-                XCTAssertFalse(manager.isTaskRow(for: IndexPath(row: index, section: 0)))
-            }
-        }
-    }
-    
-    func testIsSupplementalRow() {
-        for (index) in 0..<rowCount {
-            if (index < taskRowEndIndex) { // Task Rows
-                XCTAssertFalse(manager.isTaskSupplementalRow(for: IndexPath(row: index, section: 0)))
-            } else { // Supplemental rows
-                XCTAssertTrue(manager.isTaskSupplementalRow(for: IndexPath(row: index, section: 0)))
-            }
-        }
-    }
-    
-    func testIsSupplementalRowIndex() {
-        // Supplemental rows
-        // Re-enable this test if fitbit is re-added
-//        let fitbitRow = manager.supplementalRow(for: IndexPath(row: taskRowEndIndex, section: 0))
-//        XCTAssertNotNil(fitbitRow)
-//        XCTAssertEqual(TaskListSupplementalRow.ConnectFitbit, fitbitRow)
     }
     
     func testSortedScheduledActivity() {
