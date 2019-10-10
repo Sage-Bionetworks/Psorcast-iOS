@@ -56,6 +56,7 @@
 		CBB93CB3233FFD6900321A4D /* PSRImageHelperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBB93CB2233FFD6900321A4D /* PSRImageHelperTests.swift */; };
 		CBB93CB5234252BC00321A4D /* PsoriasisDrawCompletionStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBB93CB4234252BC00321A4D /* PsoriasisDrawCompletionStepViewController.swift */; };
 		CBB93CB7234252D000321A4D /* PsoriasisDrawCompletionStepViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CBB93CB6234252D000321A4D /* PsoriasisDrawCompletionStepViewController.xib */; };
+		CBA8390B234A6A2100408D81 /* PsoriasisDraw.json in Resources */ = {isa = PBXBuildFile; fileRef = CBA8390A234A6A2100408D81 /* PsoriasisDraw.json */; };
 		CBA8390E234A6B3F00408D81 /* EndOfValidationStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA8390C234A6B3F00408D81 /* EndOfValidationStepViewController.swift */; };
 		CBA8390F234A6B3F00408D81 /* EndOfValidationStepViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CBA8390D234A6B3F00408D81 /* EndOfValidationStepViewController.xib */; };
 		CBD62BAC23342CBA00C78F22 /* BellwetherCompletionStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBD62BAA23342CBA00C78F22 /* BellwetherCompletionStepViewController.swift */; };
@@ -186,6 +187,7 @@
 		CBB93CB2233FFD6900321A4D /* PSRImageHelperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PSRImageHelperTests.swift; sourceTree = "<group>"; };
 		CBB93CB4234252BC00321A4D /* PsoriasisDrawCompletionStepViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PsoriasisDrawCompletionStepViewController.swift; sourceTree = "<group>"; };
 		CBB93CB6234252D000321A4D /* PsoriasisDrawCompletionStepViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PsoriasisDrawCompletionStepViewController.xib; sourceTree = "<group>"; };
+		CBA8390A234A6A2100408D81 /* PsoriasisDraw.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = PsoriasisDraw.json; sourceTree = "<group>"; };
 		CBA8390C234A6B3F00408D81 /* EndOfValidationStepViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EndOfValidationStepViewController.swift; sourceTree = "<group>"; };
 		CBA8390D234A6B3F00408D81 /* EndOfValidationStepViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EndOfValidationStepViewController.xib; sourceTree = "<group>"; };
 		CBD62BAA23342CBA00C78F22 /* BellwetherCompletionStepViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BellwetherCompletionStepViewController.swift; sourceTree = "<group>"; };
