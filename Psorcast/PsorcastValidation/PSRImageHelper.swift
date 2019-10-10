@@ -67,7 +67,7 @@ public class PSRImageHelper {
         let scaleY = (aspectFitRect.height / imageSize.height)
         let scaledCenterY = scaleY * centerToTranslate.y
         let newHeight = scaleY * sizeToTranslate.height
-        let top = (scaledCenterY + aspectFitRect.origin.y) - (newWidth / 2)
+        let top = (scaledCenterY + aspectFitRect.origin.y) - (newHeight / 2)
         
         return (CGPoint(x: leading, y: top), CGSize(width: newWidth, height: newHeight))
     }
