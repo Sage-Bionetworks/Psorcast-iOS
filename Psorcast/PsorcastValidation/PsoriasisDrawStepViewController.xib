@@ -12,6 +12,7 @@
             <connections>
                 <outlet property="backgroundImageView" destination="bTC-bV-oCh" id="6XX-TT-69A"/>
                 <outlet property="imageView" destination="qi0-an-zlg" id="rUE-uX-cSs"/>
+                <outlet property="loadingView" destination="z66-Jr-KeT" id="Yn5-NY-nhb"/>
                 <outlet property="navigationFooter" destination="Ncg-SY-6dE" id="SLP-DO-Xlo"/>
                 <outlet property="navigationHeader" destination="kjp-vl-acf" id="7ON-iy-iGV"/>
                 <outlet property="view" destination="Be1-UX-e65" id="BEo-OJ-8Gt"/>
@@ -72,10 +73,14 @@
                             <rect key="frame" x="0.0" y="599" width="375" height="101"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </view>
+                        <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="z66-Jr-KeT">
+                            <rect key="frame" x="315" y="638.66666666666663" width="20" height="20"/>
+                        </activityIndicatorView>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstItem="bTC-bV-oCh" firstAttribute="bottom" secondItem="qi0-an-zlg" secondAttribute="bottom" id="2oS-r6-bXS"/>
+                        <constraint firstItem="z66-Jr-KeT" firstAttribute="centerY" secondItem="Ncg-SY-6dE" secondAttribute="centerY" constant="-1" id="4PW-2h-L2Y"/>
                         <constraint firstAttribute="trailing" secondItem="qi0-an-zlg" secondAttribute="trailing" id="6lC-33-Pn7"/>
                         <constraint firstAttribute="bottom" secondItem="Ncg-SY-6dE" secondAttribute="bottom" id="7IX-X3-3Ii"/>
                         <constraint firstItem="Ncg-SY-6dE" firstAttribute="top" secondItem="qi0-an-zlg" secondAttribute="bottom" id="8HE-V3-Laz"/>
@@ -87,6 +92,7 @@
                         <constraint firstAttribute="trailing" secondItem="kjp-vl-acf" secondAttribute="trailing" id="Oum-Vk-NiV"/>
                         <constraint firstAttribute="trailing" secondItem="Ncg-SY-6dE" secondAttribute="trailing" id="XDw-dP-K6d"/>
                         <constraint firstItem="kjp-vl-acf" firstAttribute="top" secondItem="nCy-4g-nIJ" secondAttribute="top" id="aP1-H6-AJI"/>
+                        <constraint firstAttribute="trailing" secondItem="z66-Jr-KeT" secondAttribute="trailing" constant="40" id="j5C-4e-x5Z"/>
                         <constraint firstItem="kjp-vl-acf" firstAttribute="leading" secondItem="nCy-4g-nIJ" secondAttribute="leading" id="nrX-k7-h40"/>
                         <constraint firstItem="bTC-bV-oCh" firstAttribute="leading" secondItem="qi0-an-zlg" secondAttribute="leading" id="x83-UO-Dni"/>
                     </constraints>

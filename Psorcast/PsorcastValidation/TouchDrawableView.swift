@@ -78,9 +78,11 @@ open class TouchDrawableView: UIView, RSDViewDesignable {
     
     /// The paths that the user has drawn
     var bezierPaths = [UIBezierPath]()
+    var drawPoints = [CGPoint]()
     
     public func clear() {
         bezierPaths = [UIBezierPath]()
+        drawPoints = [CGPoint]()
         self.layer.sublayers?.removeAll()
         self.setNeedsDisplay()
     }
@@ -103,8 +105,11 @@ open class TouchDrawableView: UIView, RSDViewDesignable {
             return
         }
         
-        mostRecentPath.addLine(to: CGPoint(x: xy.x, y: xy.y))
+        let point = CGPoint(x: xy.x, y: xy.y)
+        mostRecentPath.addLine(to: point)
         mostRecentShapeLayer.path = mostRecentPath.cgPath
+        
+        drawPoints.append(point)
         
         self.setNeedsDisplay()
     }
@@ -118,8 +123,14 @@ open class TouchDrawableView: UIView, RSDViewDesignable {
         
         let newPath = UIBezierPath()
         
-        newPath.move(to: CGPoint(x: xy.x, y: xy.y))
+        let point = CGPoint(x: xy.x, y: xy.y)
+        
+        // Move to new spot in bezierpath
+        newPath.move(to: point)
         bezierPaths.append(newPath)
+        
+        // Add to total list of point
+        drawPoints.append(point)
         
         let shapeLayer = self.createBezierShapeLayer(path: newPath)
         self.layer.addSublayer(shapeLayer)

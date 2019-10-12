@@ -56,7 +56,7 @@ open class JointPainImageView: UIView, RSDViewDesignable {
     
     /// The last calcualted aspect fit size of the image within the image view
     /// Need so we can detect screen size changes and refresh buttons
-    fileprivate var lastAspectFitRect: CGRect?
+    public var lastAspectFitRect: CGRect?
     
     /// The joint pain map the will represent where the joint buttons will go
     public var jointPainMap: JointPainMap? {

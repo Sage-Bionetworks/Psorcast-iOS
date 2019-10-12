@@ -54,7 +54,7 @@ open class PsoriasisDrawImageView: UIView, RSDViewDesignable {
     
     /// The last calcualted aspect fit size of the image within the image view
     /// Need so we can detect screen size changes and refresh buttons
-    fileprivate var lastAspectFitRect: CGRect?
+    var lastAspectFitRect: CGRect?
     
     /// This can be set from interface builder like this was an image view
     @IBInspectable var image: UIImage? {
@@ -77,6 +77,9 @@ open class PsoriasisDrawImageView: UIView, RSDViewDesignable {
     /// Unfortunately you cannot add subviews to a UIImageView
     /// and have them show up over the image, so we must have a container
     public weak var touchDrawableView: TouchDrawableView?
+    
+    public weak var buttonContainer: UIView?
+    public var zones = [RegionZone]()
     
     // InitWithFrame to init view from code
     override init(frame: CGRect) {
@@ -101,6 +104,12 @@ open class PsoriasisDrawImageView: UIView, RSDViewDesignable {
         imageViewStrong.rsd_alignAllToSuperview(padding: 0)
         imageViewStrong.translatesAutoresizingMaskIntoConstraints = false
         self.imageView = imageViewStrong
+        
+        let buttonContainerStrong = UIView()
+        self.addSubview(buttonContainerStrong)
+        buttonContainerStrong.rsd_alignAllToSuperview(padding: 0)
+        buttonContainerStrong.translatesAutoresizingMaskIntoConstraints = false
+        self.buttonContainer = buttonContainerStrong
         
         let touchDrawableStrong = TouchDrawableView()
         self.addSubview(touchDrawableStrong)
@@ -139,6 +148,30 @@ open class PsoriasisDrawImageView: UIView, RSDViewDesignable {
             
             // Re-calculate the mask size and re-apply it to the touch drawable view
             self.touchDrawableView?.setMaskImage(mask: maskImage, frame: aspectFitRect)
+            
+            self.buttonContainer?.subviews.forEach { $0.removeFromSuperview() }
+            
+            for (idx, zone) in zones.enumerated() {
+                let jointSize = zone.dimensions.size
+                
+                let button = UIView()
+                button.layer.borderColor = UIColor.red.cgColor
+                button.layer.borderWidth = 2
+                button.translatesAutoresizingMaskIntoConstraints = false
+                
+                let zoneSize = zone.dimensions.size
+                let centerPoint = CGPoint(x: zone.origin.point.x + (zone.dimensions.width * 0.5),
+                                          y: zone.origin.point.y + (zone.dimensions.height * 0.5))
+                
+                // Translate the zone position to aspect fit coordinates
+                let translated = PSRImageHelper.translateCenterPointToAspectFitCoordinateSpace(imageSize: imageSize, aspectFitRect: aspectFitRect, centerToTranslate: centerPoint, sizeToTranslate: zoneSize)
+                
+                self.buttonContainer?.addSubview(button)
+                button.rsd_makeWidth(.equal, translated.size.width)
+                button.rsd_makeHeight(.equal, translated.size.height)
+                button.rsd_alignToSuperview([.leading], padding: translated.leadingTop.x)
+                button.rsd_alignToSuperview([.top], padding: translated.leadingTop.y)
+            }
         }
     }
     
