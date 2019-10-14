@@ -77,9 +77,14 @@ open class PsoriasisDrawImageView: UIView, RSDViewDesignable {
     /// Unfortunately you cannot add subviews to a UIImageView
     /// and have them show up over the image, so we must have a container
     public weak var touchDrawableView: TouchDrawableView?
+        
+    /// The zones will be drawn on the image for debuggin purposes to ease in QA
+    public var regionZonesForDebugging = [RegionZone]()
     
-    public weak var buttonContainer: UIView?
-    public var zones = [RegionZone]()
+    /// This should be turned off when deploying the app, but is useful
+    /// for QA to know if the zones and coverage algorithms are working correctly
+    let debuggingZones = true
+    public weak var debuggingButtonContainer: UIView?
     
     // InitWithFrame to init view from code
     override init(frame: CGRect) {
@@ -105,11 +110,13 @@ open class PsoriasisDrawImageView: UIView, RSDViewDesignable {
         imageViewStrong.translatesAutoresizingMaskIntoConstraints = false
         self.imageView = imageViewStrong
         
-        let buttonContainerStrong = UIView()
-        self.addSubview(buttonContainerStrong)
-        buttonContainerStrong.rsd_alignAllToSuperview(padding: 0)
-        buttonContainerStrong.translatesAutoresizingMaskIntoConstraints = false
-        self.buttonContainer = buttonContainerStrong
+        if self.debuggingZones {
+            let buttonContainerStrong = UIView()
+            self.addSubview(buttonContainerStrong)
+            buttonContainerStrong.rsd_alignAllToSuperview(padding: 0)
+            buttonContainerStrong.translatesAutoresizingMaskIntoConstraints = false
+            self.debuggingButtonContainer = buttonContainerStrong
+        }
         
         let touchDrawableStrong = TouchDrawableView()
         self.addSubview(touchDrawableStrong)
@@ -149,28 +156,29 @@ open class PsoriasisDrawImageView: UIView, RSDViewDesignable {
             // Re-calculate the mask size and re-apply it to the touch drawable view
             self.touchDrawableView?.setMaskImage(mask: maskImage, frame: aspectFitRect)
             
-            self.buttonContainer?.subviews.forEach { $0.removeFromSuperview() }
-            
-            for (idx, zone) in zones.enumerated() {
-                let jointSize = zone.dimensions.size
+            // Draw the zones if debuggin is enabled
+            if self.debuggingZones {
+                self.debuggingButtonContainer?.subviews.forEach { $0.removeFromSuperview() }
                 
-                let button = UIView()
-                button.layer.borderColor = UIColor.red.cgColor
-                button.layer.borderWidth = 2
-                button.translatesAutoresizingMaskIntoConstraints = false
-                
-                let zoneSize = zone.dimensions.size
-                let centerPoint = CGPoint(x: zone.origin.point.x + (zone.dimensions.width * 0.5),
-                                          y: zone.origin.point.y + (zone.dimensions.height * 0.5))
-                
-                // Translate the zone position to aspect fit coordinates
-                let translated = PSRImageHelper.translateCenterPointToAspectFitCoordinateSpace(imageSize: imageSize, aspectFitRect: aspectFitRect, centerToTranslate: centerPoint, sizeToTranslate: zoneSize)
-                
-                self.buttonContainer?.addSubview(button)
-                button.rsd_makeWidth(.equal, translated.size.width)
-                button.rsd_makeHeight(.equal, translated.size.height)
-                button.rsd_alignToSuperview([.leading], padding: translated.leadingTop.x)
-                button.rsd_alignToSuperview([.top], padding: translated.leadingTop.y)
+                for zone in regionZonesForDebugging {
+                    let button = UIView()
+                    button.layer.borderColor = UIColor.red.cgColor
+                    button.layer.borderWidth = 2
+                    button.translatesAutoresizingMaskIntoConstraints = false
+                    
+                    let zoneSize = zone.dimensions.size
+                    let centerPoint = CGPoint(x: zone.origin.point.x + (zone.dimensions.width * 0.5),
+                                              y: zone.origin.point.y + (zone.dimensions.height * 0.5))
+                    
+                    // Translate the zone position to aspect fit coordinates
+                    let translated = PSRImageHelper.translateCenterPointToAspectFitCoordinateSpace(imageSize: imageSize, aspectFitRect: aspectFitRect, centerToTranslate: centerPoint, sizeToTranslate: zoneSize)
+                    
+                    self.debuggingButtonContainer?.addSubview(button)
+                    button.rsd_makeWidth(.equal, translated.size.width)
+                    button.rsd_makeHeight(.equal, translated.size.height)
+                    button.rsd_alignToSuperview([.leading], padding: translated.leadingTop.x)
+                    button.rsd_alignToSuperview([.top], padding: translated.leadingTop.y)
+                }
             }
         }
     }

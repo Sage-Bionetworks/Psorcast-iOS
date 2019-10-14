@@ -43,6 +43,10 @@ open class PsoriasisDrawStepViewController: RSDStepViewController {
     static let percentCoverageResultId = "Coverage"
     static let selectedZonesResultId = "SelectedZones"
     
+    /// This should be turned off when deploying the app, but is useful
+    /// for QA to know if the zones and coverage algorithms are working correctly
+    let debuggingZones = true
+    
     /// The step for this view controller
     open var drawStep: PsoriasisDrawStepObject? {
         return self.step as? PsoriasisDrawStepObject
@@ -105,7 +109,7 @@ open class PsoriasisDrawStepViewController: RSDStepViewController {
         super.viewDidLoad()
         
         self.initializeImages()
-        self.imageView?.zones = self.drawStep?.regionMap?.zones ?? []
+        self.imageView?.regionZonesForDebugging = self.drawStep?.regionMap?.zones ?? []
     }
     
     func initializeImages() {
@@ -170,54 +174,42 @@ open class PsoriasisDrawStepViewController: RSDStepViewController {
     
     override open func goForward() {
         
-        if self.readyToGoNext {
-            super.goForward()
-            return
-        }
-        
-        if self.isProcessing {
-            debugPrint("Cannot move forward while processing")
-            return
-        }
-        
-        self.isProcessing = true
-        
         DispatchQueue.main.async {
+            if self.readyToGoNext {
+                super.goForward()
+                return
+            }
+            
+            if self.isProcessing {
+                debugPrint("Cannot move forward while processing")
+                return
+            }
+            
+            self.isProcessing = true
+            
+            self.navigationFooter?.nextButton?.isEnabled = false
             self.imageView.isUserInteractionEnabled = false
             self.loadingView.isHidden = false
-        }
         
-        guard let imageView = self.imageView else {
-            return
-        }
-                
-        let image = imageView.convertToImage()
-        var url: URL?
-        do {
-            if let imageData = image.pngData(),
-                let outputDir = self.stepViewModel.parentTaskPath?.outputDirectory {
-                url = try RSDFileResultUtility.createFileURL(identifier: self.step.identifier, ext: "png", outputDirectory: outputDir, shouldDeletePrevious: true)
-                save(imageData, to: url!)
+            guard let imageView = self.imageView else {
+                return
             }
-        } catch let error {
-            debugPrint("Failed to save the image: \(error)")
-        }
-
-        // Create the result and set it as the result for this step
-        var result = RSDFileResultObject(identifier: self.step.identifier)
-        result.url = url
-        _ = self.stepViewModel.parent?.taskResult.appendStepHistory(with: result)
-        
-        do {
-            if let bezierPaths = self.imageView.touchDrawableView?.bezierPaths {
-                let bezierData = try NSKeyedArchiver.archivedData(withRootObject: bezierPaths, requiringSecureCoding: false)
-                UserDefaults.standard.set(bezierData, forKey: self.step.identifier)
+                    
+            // Hide our debugging features first before creating the image
+            imageView.debuggingButtonContainer?.isHidden = true
+            let image = imageView.convertToImage()
+            
+            do {
+                if let bezierPaths = self.imageView.touchDrawableView?.bezierPaths {
+                    let bezierData = try NSKeyedArchiver.archivedData(withRootObject: bezierPaths, requiringSecureCoding: false)
+                    UserDefaults.standard.set(bezierData, forKey: self.step.identifier)
+                }
+            } catch {
+                debugPrint("Error reading old drawing \(error)")
             }
-        } catch {
-            debugPrint("Error reading old drawing \(error)")
+            
+            self.performBackgroundTasksAndGoForward(image: image)
         }
-        
-        self.performBackgroundTasksAndGoForward(image: image)
     }
     
     func performBackgroundTasksAndGoForward(image: UIImage) {
@@ -272,19 +264,43 @@ open class PsoriasisDrawStepViewController: RSDStepViewController {
                     let result = PsoriasisDrawResultObject(identifier: "\(self.step.identifier)\(PsoriasisDrawStepViewController.selectedZonesResultId)", regionMap: newMapUnwrapped)
                     _ = self.stepViewModel.parent?.taskResult.appendStepHistory(with: result)
                 }
+                
+                var url: URL?
+                do {
+                    if let imageData = image.pngData(),
+                        let outputDir = self.stepViewModel.parentTaskPath?.outputDirectory {
+                        url = try RSDFileResultUtility.createFileURL(identifier: self.step.identifier, ext: "png", outputDirectory: outputDir, shouldDeletePrevious: true)
+                        self.save(imageData, to: url!)
+                    }
+                } catch let error {
+                    debugPrint("Failed to save the image: \(error)")
+                }
+
+                // The step identifier result needs to go last so it is not overwritten
+                // Create the result and set it as the result for this step
+                var result = RSDFileResultObject(identifier: self.step.identifier)
+                result.url = url
+                _ = self.stepViewModel.parent?.taskResult.appendStepHistory(with: result)                
                                 
                 self.loadingView.isHidden = true
                 self.isProcessing = false
                 self.imageView.isUserInteractionEnabled = true
+                self.navigationFooter?.nextButton?.isEnabled = true
                 
-                self.imageView.zones = selectedZones
-                self.imageView.recreateMask(force: true)
+                if self.debuggingZones {
+                    self.navigationHeader?.titleLabel?.text = String(format: "%.2f%% Coverage", (100*percentCoverage))
+                    self.imageView.regionZonesForDebugging = selectedZones
+                    self.imageView.recreateMask(force: true)
+                } else {
+                    super.goForward()
+                }
                 
                 self.readyToGoNext = true
             }
         }
     }
     
+    // TODO: mdephillips 10/14/19 unit test this function
     static func selectedZones(in zones: [RegionZone], lastAspectFitRect: CGRect, imageSize: CGSize, drawPoints: [CGPoint], lineWidth: CGFloat) -> [RegionZone] {
         
         var selectedZoneIdentifiers = [String]()
