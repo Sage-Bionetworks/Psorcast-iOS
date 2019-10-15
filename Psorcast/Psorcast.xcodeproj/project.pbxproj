@@ -11,6 +11,9 @@
 		CB422D2B23316EB700787FEE /* BridgeAppUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB422D2923316EB700787FEE /* BridgeAppUI.framework */; };
 		CB422D2C23316EB700787FEE /* BridgeAppUI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CB422D2923316EB700787FEE /* BridgeAppUI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		CB422D2E23316EB700787FEE /* MDJointCounting.json in Resources */ = {isa = PBXBuildFile; fileRef = CB422D2D23316EB700787FEE /* MDJointCounting.json */; };
+		CB47E563233FC1BD00AE8501 /* PsoriasisDrawStepObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB47E562233FC1BD00AE8501 /* PsoriasisDrawStepObject.swift */; };
+		CB47E565233FC2EC00AE8501 /* PsoriasisDrawResultObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB47E564233FC2EC00AE8501 /* PsoriasisDrawResultObject.swift */; };
+		CB47E567233FC61400AE8501 /* PsoriasisDrawStepViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB47E566233FC61400AE8501 /* PsoriasisDrawStepViewController.xib */; };
 		CB55C7152317391600EA0C19 /* JointCounting.json in Resources */ = {isa = PBXBuildFile; fileRef = CB55C7142317391600EA0C19 /* JointCounting.json */; };
 		CB55C71723173D6A00EA0C19 /* SelectionCheckmarkStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB55C71623173D6A00EA0C19 /* SelectionCheckmarkStepViewController.swift */; };
 		CB55C725231773FF00EA0C19 /* JointPainStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB55C724231773FF00EA0C19 /* JointPainStepViewController.swift */; };
@@ -27,6 +30,10 @@
 		CB5E960A22EE920D0001AAFE /* ExternalIDRegistrationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB5E960922EE920D0001AAFE /* ExternalIDRegistrationViewController.xib */; };
 		CB6F54F022E25C5B0073BFE9 /* ParticipantIDRegistrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6F54EF22E25C5B0073BFE9 /* ParticipantIDRegistrationViewController.swift */; };
 		CB737FEC231B100600FA1D3A /* MDJointSwelling.json in Resources */ = {isa = PBXBuildFile; fileRef = CB737FEB231B100600FA1D3A /* MDJointSwelling.json */; };
+		CB8AE6FD233FB53400F5F8AC /* PsoriasisDraw.json in Resources */ = {isa = PBXBuildFile; fileRef = CB8AE6FC233FB53400F5F8AC /* PsoriasisDraw.json */; };
+		CB8AE6FF233FBA1800F5F8AC /* PsoriasisDrawImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB8AE6FE233FBA1800F5F8AC /* PsoriasisDrawImageView.swift */; };
+		CB8AE701233FBA5E00F5F8AC /* PsoriasisDrawStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB8AE700233FBA5E00F5F8AC /* PsoriasisDrawStepViewController.swift */; };
+		CB8AE703233FBB9800F5F8AC /* TouchDrawableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB8AE702233FBB9800F5F8AC /* TouchDrawableView.swift */; };
 		CB9F5E1F22E0BED3003FBCEF /* lato_black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CB9F5E1422E0BEA3003FBCEF /* lato_black.ttf */; };
 		CB9F5E2022E0BED3003FBCEF /* lato_bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CB9F5E1222E0BEA3003FBCEF /* lato_bold.ttf */; };
 		CB9F5E2122E0BED3003FBCEF /* lato_bolditalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CB9F5E1522E0BEA3003FBCEF /* lato_bolditalic.ttf */; };
@@ -45,6 +52,10 @@
 		CB9F5E5222E0C2BA003FBCEF /* PsorcastTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB9F5E5122E0C2BA003FBCEF /* PsorcastTests.swift */; };
 		CB9F5E5B22E0C531003FBCEF /* CopyStepTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB9F5E5922E0C530003FBCEF /* CopyStepTests.swift */; };
 		CB9F5E5C22E0C531003FBCEF /* CodableStepObjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB9F5E5A22E0C531003FBCEF /* CodableStepObjectTests.swift */; };
+		CBB93CB1233FFA7500321A4D /* PSRImageHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBB93CB0233FFA7500321A4D /* PSRImageHelper.swift */; };
+		CBB93CB3233FFD6900321A4D /* PSRImageHelperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBB93CB2233FFD6900321A4D /* PSRImageHelperTests.swift */; };
+		CBB93CB5234252BC00321A4D /* PsoriasisDrawCompletionStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBB93CB4234252BC00321A4D /* PsoriasisDrawCompletionStepViewController.swift */; };
+		CBB93CB7234252D000321A4D /* PsoriasisDrawCompletionStepViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CBB93CB6234252D000321A4D /* PsoriasisDrawCompletionStepViewController.xib */; };
 		CBA8390B234A6A2100408D81 /* PsoriasisDraw.json in Resources */ = {isa = PBXBuildFile; fileRef = CBA8390A234A6A2100408D81 /* PsoriasisDraw.json */; };
 		CBA8390E234A6B3F00408D81 /* EndOfValidationStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA8390C234A6B3F00408D81 /* EndOfValidationStepViewController.swift */; };
 		CBA8390F234A6B3F00408D81 /* EndOfValidationStepViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CBA8390D234A6B3F00408D81 /* EndOfValidationStepViewController.xib */; };
@@ -134,6 +145,9 @@
 /* Begin PBXFileReference section */
 		CB422D2923316EB700787FEE /* BridgeAppUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BridgeAppUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB422D2D23316EB700787FEE /* MDJointCounting.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = MDJointCounting.json; sourceTree = "<group>"; };
+		CB47E562233FC1BD00AE8501 /* PsoriasisDrawStepObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PsoriasisDrawStepObject.swift; sourceTree = "<group>"; };
+		CB47E564233FC2EC00AE8501 /* PsoriasisDrawResultObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PsoriasisDrawResultObject.swift; sourceTree = "<group>"; };
+		CB47E566233FC61400AE8501 /* PsoriasisDrawStepViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PsoriasisDrawStepViewController.xib; sourceTree = "<group>"; };
 		CB55C7142317391600EA0C19 /* JointCounting.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = JointCounting.json; sourceTree = "<group>"; };
 		CB55C71623173D6A00EA0C19 /* SelectionCheckmarkStepViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionCheckmarkStepViewController.swift; sourceTree = "<group>"; };
 		CB55C724231773FF00EA0C19 /* JointPainStepViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JointPainStepViewController.swift; sourceTree = "<group>"; };
@@ -150,6 +164,10 @@
 		CB5E960922EE920D0001AAFE /* ExternalIDRegistrationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExternalIDRegistrationViewController.xib; sourceTree = "<group>"; };
 		CB6F54EF22E25C5B0073BFE9 /* ParticipantIDRegistrationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParticipantIDRegistrationViewController.swift; sourceTree = "<group>"; };
 		CB737FEB231B100600FA1D3A /* MDJointSwelling.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = MDJointSwelling.json; sourceTree = "<group>"; };
+		CB8AE6FC233FB53400F5F8AC /* PsoriasisDraw.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = PsoriasisDraw.json; sourceTree = "<group>"; };
+		CB8AE6FE233FBA1800F5F8AC /* PsoriasisDrawImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PsoriasisDrawImageView.swift; sourceTree = "<group>"; };
+		CB8AE700233FBA5E00F5F8AC /* PsoriasisDrawStepViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PsoriasisDrawStepViewController.swift; sourceTree = "<group>"; };
+		CB8AE702233FBB9800F5F8AC /* TouchDrawableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchDrawableView.swift; sourceTree = "<group>"; };
 		CB9F5E1222E0BEA3003FBCEF /* lato_bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = lato_bold.ttf; path = Fonts/lato_bold.ttf; sourceTree = "<group>"; };
 		CB9F5E1322E0BEA3003FBCEF /* lato_light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = lato_light.ttf; path = Fonts/lato_light.ttf; sourceTree = "<group>"; };
 		CB9F5E1422E0BEA3003FBCEF /* lato_black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = lato_black.ttf; path = Fonts/lato_black.ttf; sourceTree = "<group>"; };
@@ -165,6 +183,10 @@
 		CB9F5E5322E0C2BA003FBCEF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CB9F5E5922E0C530003FBCEF /* CopyStepTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CopyStepTests.swift; sourceTree = "<group>"; };
 		CB9F5E5A22E0C531003FBCEF /* CodableStepObjectTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodableStepObjectTests.swift; sourceTree = "<group>"; };
+		CBB93CB0233FFA7500321A4D /* PSRImageHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PSRImageHelper.swift; sourceTree = "<group>"; };
+		CBB93CB2233FFD6900321A4D /* PSRImageHelperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PSRImageHelperTests.swift; sourceTree = "<group>"; };
+		CBB93CB4234252BC00321A4D /* PsoriasisDrawCompletionStepViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PsoriasisDrawCompletionStepViewController.swift; sourceTree = "<group>"; };
+		CBB93CB6234252D000321A4D /* PsoriasisDrawCompletionStepViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PsoriasisDrawCompletionStepViewController.xib; sourceTree = "<group>"; };
 		CBA8390A234A6A2100408D81 /* PsoriasisDraw.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = PsoriasisDraw.json; sourceTree = "<group>"; };
 		CBA8390C234A6B3F00408D81 /* EndOfValidationStepViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EndOfValidationStepViewController.swift; sourceTree = "<group>"; };
 		CBA8390D234A6B3F00408D81 /* EndOfValidationStepViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EndOfValidationStepViewController.xib; sourceTree = "<group>"; };
@@ -274,6 +296,7 @@
 			isa = PBXGroup;
 			children = (
 				CB55C73B23198A1F00EA0C19 /* JointPainStepViewControllerTests.swift */,
+				CBB93CB2233FFD6900321A4D /* PSRImageHelperTests.swift */,
 				CB55C7322318832400EA0C19 /* JointPainImageViewTests.swift */,
 				CB55C73023187BB300EA0C19 /* CodableResultObjectTests.swift */,
 				CB9F5E5A22E0C531003FBCEF /* CodableStepObjectTests.swift */,
@@ -291,6 +314,14 @@
 				CB9F5E5322E0C2BA003FBCEF /* Info.plist */,
 			);
 			path = PsorcastTests;
+			sourceTree = "<group>";
+		};
+		CBB93CAF233FFA3600321A4D /* Helper */ = {
+			isa = PBXGroup;
+			children = (
+				CBB93CB0233FFA7500321A4D /* PSRImageHelper.swift */,
+			);
+			name = Helper;
 			sourceTree = "<group>";
 		};
 		CBD67D7F22DFB8C400998516 /* Resources */ = {
@@ -329,6 +360,14 @@
 				CBE908A62333BB2A00F88A9A /* BellwetherStepObject.swift */,
 				CBE908AA2333BD3C00F88A9A /* BellwetherImageView.swift */,
 				CBD62BAA23342CBA00C78F22 /* BellwetherCompletionStepViewController.swift */,
+				CB8AE700233FBA5E00F5F8AC /* PsoriasisDrawStepViewController.swift */,
+				CB47E566233FC61400AE8501 /* PsoriasisDrawStepViewController.xib */,
+				CB8AE6FE233FBA1800F5F8AC /* PsoriasisDrawImageView.swift */,
+				CB47E562233FC1BD00AE8501 /* PsoriasisDrawStepObject.swift */,
+				CB47E564233FC2EC00AE8501 /* PsoriasisDrawResultObject.swift */,
+				CB8AE702233FBB9800F5F8AC /* TouchDrawableView.swift */,
+				CBB93CB4234252BC00321A4D /* PsoriasisDrawCompletionStepViewController.swift */,
+				CBB93CB6234252D000321A4D /* PsoriasisDrawCompletionStepViewController.xib */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -361,7 +400,7 @@
 				CB737FEB231B100600FA1D3A /* MDJointSwelling.json */,
 				CB422D2D23316EB700787FEE /* MDJointCounting.json */,
 				CBE908942332ED9E00F88A9A /* Bellwether.json */,
-				CBA8390A234A6A2100408D81 /* PsoriasisDraw.json */,
+				CB8AE6FC233FB53400F5F8AC /* PsoriasisDraw.json */,
 			);
 			name = JSON;
 			sourceTree = "<group>";
@@ -441,6 +480,7 @@
 				FFABCBEB22DD1F2800D11109 /* Main.storyboard */,
 				FFABCBEE22DD1F2800D11109 /* Assets.xcassets */,
 				FFABCBF022DD1F2800D11109 /* LaunchScreen.storyboard */,
+				CBB93CAF233FFA3600321A4D /* Helper */,
 				CBD67D8922DFC5B500998516 /* Model */,
 				CBD67D8222DFB8F600998516 /* ViewControllers */,
 				CBD67D8E22DFC69700998516 /* ObjC */,
@@ -640,12 +680,12 @@
 				FFABCBF222DD1F2800D11109 /* LaunchScreen.storyboard in Resources */,
 				FFABCBEF22DD1F2800D11109 /* Assets.xcassets in Resources */,
 				FFABCBED22DD1F2800D11109 /* Main.storyboard in Resources */,
-				CBA8390B234A6A2100408D81 /* PsoriasisDraw.json in Resources */,
 				CB422D2E23316EB700787FEE /* MDJointCounting.json in Resources */,
 				CBA8390F234A6B3F00408D81 /* EndOfValidationStepViewController.xib in Resources */,
 				CB9F5E2722E0BED4003FBCEF /* lato_bold.ttf in Resources */,
 				CB55C72D2317859700EA0C19 /* JointPainStepViewController.xib in Resources */,
 				CBD67D9922DFDC4E00998516 /* ImageCaptureStepViewController.xib in Resources */,
+				CB8AE6FD233FB53400F5F8AC /* PsoriasisDraw.json in Resources */,
 				CB55C7152317391600EA0C19 /* JointCounting.json in Resources */,
 				CB9F5E2822E0BED4003FBCEF /* lato_bolditalic.ttf in Resources */,
 				CB9F5E2A22E0BED4003FBCEF /* lato_light.ttf in Resources */,
@@ -653,12 +693,14 @@
 				CB737FEC231B100600FA1D3A /* MDJointSwelling.json in Resources */,
 				CB5E960A22EE920D0001AAFE /* ExternalIDRegistrationViewController.xib in Resources */,
 				CB9F5E2C22E0BED4003FBCEF /* lato_regular.ttf in Resources */,
+				CB47E567233FC61400AE8501 /* PsoriasisDrawStepViewController.xib in Resources */,
 				CBD67D9C22DFE11B00998516 /* FootImaging.json in Resources */,
 				FF50109F22DD21420035E83C /* BridgeInfo.plist in Resources */,
 				CBE908952332ED9E00F88A9A /* Bellwether.json in Resources */,
 				CB9F5E2B22E0BED4003FBCEF /* lato_lightitalic.ttf in Resources */,
 				FF5010A922DD22A50035E83C /* BridgeInfo-private.plist in Resources */,
 				CBD67D9622DFDABE00998516 /* HandImaging.json in Resources */,
+				CBB93CB7234252D000321A4D /* PsoriasisDrawCompletionStepViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -674,6 +716,7 @@
 				CB9F5E5B22E0C531003FBCEF /* CopyStepTests.swift in Sources */,
 				CB55C73C23198A1F00EA0C19 /* JointPainStepViewControllerTests.swift in Sources */,
 				CB9F5E5C22E0C531003FBCEF /* CodableStepObjectTests.swift in Sources */,
+				CBB93CB3233FFD6900321A4D /* PSRImageHelperTests.swift in Sources */,
 				CB9F5E4A22E0C2AA003FBCEF /* TaskListScheduleManagerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -700,6 +743,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CBD67D9122DFC6B400998516 /* BuildDateUtil.m in Sources */,
+				CB8AE701233FBA5E00F5F8AC /* PsoriasisDrawStepViewController.swift in Sources */,
 				CB55C7382319718D00EA0C19 /* JointPainStepObject.swift in Sources */,
 				CBE908A82333BB2A00F88A9A /* BellwetherStepObject.swift in Sources */,
 				CBD67D9A22DFDC4E00998516 /* ImageCaptureStepViewController.swift in Sources */,
@@ -711,13 +755,19 @@
 				CB55C73E23198C1000EA0C19 /* JointPainCompletionStepViewController.swift in Sources */,
 				CBE908A42333BADA00F88A9A /* BellwetherStepViewController.swift in Sources */,
 				CBD67D8822DFC59B00998516 /* TaskListTableViewController.swift in Sources */,
+				CB47E565233FC2EC00AE8501 /* PsoriasisDrawResultObject.swift in Sources */,
+				CBB93CB5234252BC00321A4D /* PsoriasisDrawCompletionStepViewController.swift in Sources */,
 				CBD62BAC23342CBA00C78F22 /* BellwetherCompletionStepViewController.swift in Sources */,
 				CB55C71723173D6A00EA0C19 /* SelectionCheckmarkStepViewController.swift in Sources */,
 				CBD67D8422DFB90C00998516 /* ExternalIDRegistrationViewController.swift in Sources */,
+				CB47E563233FC1BD00AE8501 /* PsoriasisDrawStepObject.swift in Sources */,
 				CBE908A92333BB2A00F88A9A /* BellwetherResultObject.swift in Sources */,
 				CB55C72F231848CD00EA0C19 /* JointPainResultObject.swift in Sources */,
 				CBD67D8D22DFC5EE00998516 /* MotorControl+Bridge.swift in Sources */,
+				CBB93CB1233FFA7500321A4D /* PSRImageHelper.swift in Sources */,
 				CBE908AB2333BD3C00F88A9A /* BellwetherImageView.swift in Sources */,
+				CB8AE703233FBB9800F5F8AC /* TouchDrawableView.swift in Sources */,
+				CB8AE6FF233FBA1800F5F8AC /* PsoriasisDrawImageView.swift in Sources */,
 				CB55C73A231972BE00EA0C19 /* JointPainImageView.swift in Sources */,
 				CB6F54F022E25C5B0073BFE9 /* ParticipantIDRegistrationViewController.swift in Sources */,
 				CBD67D8B22DFC5CA00998516 /* TaskListScheduleManager.swift in Sources */,

@@ -56,7 +56,7 @@ open class JointPainImageView: UIView, RSDViewDesignable {
     
     /// The last calcualted aspect fit size of the image within the image view
     /// Need so we can detect screen size changes and refresh buttons
-    fileprivate var lastAspectFitRect: CGRect?
+    public var lastAspectFitRect: CGRect?
     
     /// The joint pain map the will represent where the joint buttons will go
     public var jointPainMap: JointPainMap? {
@@ -181,7 +181,7 @@ open class JointPainImageView: UIView, RSDViewDesignable {
             // The aspect fit size of the image within the image view
             // will be used to translate the relative x,y
             // of the buttons so that they are visually correct
-            let aspectFitRect = self.calculateAspectFit(
+            let aspectFitRect = PSRImageHelper.calculateAspectFit(
                 imageWidth: imageSize.width, imageHeight: imageSize.height,
                 imageViewWidth: imageViewSize.width, imageViewHeight: imageViewSize.height)
             
@@ -202,16 +202,16 @@ open class JointPainImageView: UIView, RSDViewDesignable {
                 button.isSelected = joint.isSelected ?? false
                 
                 // Translate the joint center to aspect fit coordinates
-                let translated = self.translateCenterPointToAspectFitCoordinateSpace(imageSize: imageSize, aspectFitRect: aspectFitRect, center: joint.center.point, jointSize: jointSize)
+                let translated = PSRImageHelper.translateCenterPointToAspectFitCoordinateSpace(imageSize: imageSize, aspectFitRect: aspectFitRect, centerToTranslate: joint.center.point, sizeToTranslate: jointSize)
                 
                 // Set the buttonss location and size base on the translation
-                button.layer.cornerRadius = translated.jointSize.height / 2
+                button.layer.cornerRadius = translated.size.height / 2
                 
                 self.buttonContainer?.addSubview(button)
-                button.rsd_makeWidth(.equal, translated.jointSize.width)
-                button.rsd_makeHeight(.equal, translated.jointSize.height)
-                button.rsd_alignToSuperview([.leading], padding: translated.jointLeadingTop.x)
-                button.rsd_alignToSuperview([.top], padding: translated.jointLeadingTop.y)
+                button.rsd_makeWidth(.equal, translated.size.width)
+                button.rsd_makeHeight(.equal, translated.size.height)
+                button.rsd_alignToSuperview([.leading], padding: translated.leadingTop.x)
+                button.rsd_alignToSuperview([.top], padding: translated.leadingTop.y)
             }
             
             self.layoutIfNeeded()
@@ -317,7 +317,7 @@ open class JointPainImageView: UIView, RSDViewDesignable {
     
     public func styleExistingJointButtons() {
         // If any buttons are created already, change their style
-        for subview in self.subviews {
+        for subview in self.buttonContainer?.subviews ?? [] {
             if let button = subview as? UIButton {
                 self.styleJointButton(button: button)
             }
@@ -337,59 +337,9 @@ open class JointPainImageView: UIView, RSDViewDesignable {
         button.isSelected = !button.isSelected
         self.delegate?.buttonTapped(button: sender as? UIButton)
     }
-    
-    /// Calulate the bounding box of image within the image view
-    func calculateAspectFit(imageWidth: CGFloat, imageHeight: CGFloat,
-                            imageViewWidth: CGFloat, imageViewHeight: CGFloat) -> CGRect {
-        
-        let imageRatio = (imageWidth / imageHeight)
-        let viewRatio = imageViewWidth / imageViewHeight
-        if imageRatio < viewRatio {
-            let scale = imageViewHeight / imageHeight
-            let width = scale * imageWidth
-            let topLeftX = (imageViewWidth - width) * 0.5
-            return CGRect(x: topLeftX, y: 0, width: width, height: imageViewHeight)
-        } else {
-            let scale = imageViewWidth / imageWidth
-            let height = scale * imageHeight
-            let topLeftY = (imageViewHeight - height) * 0.5
-            return CGRect(x: 0.0, y: topLeftY, width: imageViewWidth, height: height)
-        }
-    }
-    
-    /// Scale the relative x,y of the joint center based on the aspect fit image resize
-    /// Then offset the scaled point by the aspect fit left and top bounds
-    func translateCenterPointToAspectFitCoordinateSpace(imageSize: CGSize, aspectFitRect: CGRect, center: CGPoint, jointSize: CGSize) -> (jointLeadingTop: CGPoint, jointSize: CGSize) {
-        let scaleX = (aspectFitRect.width / imageSize.width)
-        let scaledCenterX = scaleX * center.x
-        let jointWidth = scaleX * jointSize.width
-        let leading = (scaledCenterX + aspectFitRect.origin.x) - (jointWidth / 2)
-        
-        let scaleY = (aspectFitRect.height / imageSize.height)
-        let scaledCenterY = scaleY * center.y
-        let jointHeight = scaleY * jointSize.height
-        let top = (scaledCenterY + aspectFitRect.origin.y) - (jointHeight / 2)
-        
-        return (CGPoint(x: leading, y: top), CGSize(width: jointWidth, height: jointHeight))
-    }
-    
-    func convertToImage() -> UIImage {
-        return self.asImage()
-    }
 }
 
 public protocol JointPainImageViewDelegate {
     func buttonTapped(button: UIButton?)
     func didLayoutButtons()
-}
-
-extension UIView {
-    // Using a function since `var image` might conflict with an existing variable
-    // (like on `UIImageView`)
-    func asImage() -> UIImage {
-        let renderer = UIGraphicsImageRenderer(bounds: bounds)
-        return renderer.image { rendererContext in
-            layer.render(in: rendererContext.cgContext)
-        }
-    }
 }

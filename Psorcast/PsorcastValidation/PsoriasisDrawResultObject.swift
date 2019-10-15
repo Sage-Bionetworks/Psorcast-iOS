@@ -1,5 +1,5 @@
 //
-//  BellwetherResultObject.swift
+//  PsoriasisDrawResultObject.swift
 //  PsorcastValidation
 //
 //  Copyright © 2019 Sage Bionetworks. All rights reserved.
@@ -30,26 +30,27 @@
 // OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
+
 import Foundation
 import Research
 
 extension RSDResultType {
-    /// The type identifier for a joint pain result.
-    public static let bellwether: RSDResultType = "bellwether"
+    /// The type identifier for a psoriasis draw result.
+    public static let psoriasisDraw: RSDResultType = "psoriasisDraw"
 }
 
-/// The `BellwetherResultObject` records the results of a joint paint step test.
-public struct BellwetherResultObject : RSDResult, Codable, RSDArchivable, RSDScoringResult {
+/// The `PsoriasisDrawResultObject` records the results of a joint paint step test.
+public struct PsoriasisDrawResultObject : RSDResult, Codable, RSDArchivable, RSDScoringResult {
 
     private enum CodingKeys : String, CodingKey {
-        case identifier, type, startDate, endDate, bellwetherMap
+        case identifier, type, startDate, endDate, regionMap
     }
 
     /// The identifier for the associated step.
     public var identifier: String
 
-    /// Default = `.tapping`.
-    public private(set) var type: RSDResultType = .jointPain
+    /// Default = `.psoriasisDraw`.
+    public private(set) var type: RSDResultType = .psoriasisDraw
 
     /// Timestamp date for when the step was started.
     public var startDate: Date = Date()
@@ -58,11 +59,11 @@ public struct BellwetherResultObject : RSDResult, Codable, RSDArchivable, RSDSco
     public var endDate: Date = Date()
 
     /// The joint paint map containing the selection state of all the joints
-    public internal(set) var bellwetherMap: BellwetherMap
+    public internal(set) var regionMap: RegionMap
 
-    init(identifier: String, bellwetherMap: BellwetherMap) {
+    init(identifier: String, regionMap: RegionMap) {
         self.identifier = identifier
-        self.bellwetherMap = bellwetherMap
+        self.regionMap = regionMap
     }
 
     /// Build the archiveable or uploadable data for this result.
@@ -79,14 +80,14 @@ public struct BellwetherResultObject : RSDResult, Codable, RSDArchivable, RSDSco
         try container.encode(self.type, forKey: .type)
         try container.encode(self.startDate, forKey: .startDate)
         try container.encode(self.endDate, forKey: .endDate)
-        try container.encode(self.bellwetherMap, forKey: .bellwetherMap)
+        try container.encode(self.regionMap, forKey: .regionMap)
     }
 
     public func dataScore() throws -> RSDJSONSerializable? {
         // First selected identifier
-        return ((self.bellwetherMap.front.zones ) +
-            (self.bellwetherMap.back.zones))
-            .first(where: { $0.isSelected ?? false })?.identifier
+        return self.regionMap.zones
+            .filter({ $0.isSelected ?? false })
+            .map({ $0.identifier })
     }
 }
 

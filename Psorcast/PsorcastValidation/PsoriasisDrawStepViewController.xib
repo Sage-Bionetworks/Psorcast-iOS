@@ -8,9 +8,11 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="JointPainStepViewController" customModule="PsorcastValidation" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PsoriasisDrawStepViewController" customModule="PsorcastValidation" customModuleProvider="target">
             <connections>
-                <outlet property="jointImageView" destination="qi0-an-zlg" id="Go4-Np-h7V"/>
+                <outlet property="backgroundImageView" destination="bTC-bV-oCh" id="6XX-TT-69A"/>
+                <outlet property="imageView" destination="qi0-an-zlg" id="rUE-uX-cSs"/>
+                <outlet property="loadingView" destination="z66-Jr-KeT" id="Yn5-NY-nhb"/>
                 <outlet property="navigationFooter" destination="Ncg-SY-6dE" id="SLP-DO-Xlo"/>
                 <outlet property="navigationHeader" destination="kjp-vl-acf" id="7ON-iy-iGV"/>
                 <outlet property="view" destination="Be1-UX-e65" id="BEo-OJ-8Gt"/>
@@ -37,38 +39,32 @@
                                     <state key="normal" image="closeActivity"/>
                                 </button>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Select your joint pain" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="eMZ-8x-koe" userLabel="Title Label">
-                                    <rect key="frame" x="12" y="32" width="351" height="36"/>
+                                    <rect key="frame" x="12" y="68" width="351" height="36"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="30"/>
-                                    <nil key="highlightedColor"/>
-                                </label>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Select all that apply" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="mct-jM-Lzp" userLabel="Text Label">
-                                    <rect key="frame" x="12" y="80" width="351" height="20.333333333333329"/>
-                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                    <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                             </subviews>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstItem="gYt-76-z57" firstAttribute="top" secondItem="kjp-vl-acf" secondAttribute="top" constant="24" id="8YB-N8-KmZ"/>
-                                <constraint firstAttribute="trailing" secondItem="mct-jM-Lzp" secondAttribute="trailing" constant="12" id="9bR-hP-VpR"/>
-                                <constraint firstItem="mct-jM-Lzp" firstAttribute="leading" secondItem="kjp-vl-acf" secondAttribute="leading" constant="12" id="9cE-qi-2pU"/>
                                 <constraint firstItem="gYt-76-z57" firstAttribute="leading" secondItem="kjp-vl-acf" secondAttribute="leading" constant="8" id="9q4-Ke-8ah"/>
-                                <constraint firstItem="mct-jM-Lzp" firstAttribute="top" secondItem="eMZ-8x-koe" secondAttribute="bottom" constant="12" id="IxJ-Mj-Kov"/>
                                 <constraint firstAttribute="trailing" secondItem="eMZ-8x-koe" secondAttribute="trailing" constant="12" id="czX-Vj-TkN"/>
                                 <constraint firstItem="eMZ-8x-koe" firstAttribute="leading" secondItem="kjp-vl-acf" secondAttribute="leading" constant="12" id="eBj-G6-Zdd"/>
-                                <constraint firstItem="eMZ-8x-koe" firstAttribute="top" secondItem="kjp-vl-acf" secondAttribute="top" constant="32" id="iCD-Xi-zTN"/>
+                                <constraint firstItem="eMZ-8x-koe" firstAttribute="top" secondItem="kjp-vl-acf" secondAttribute="top" constant="68" id="iCD-Xi-zTN"/>
                                 <constraint firstAttribute="height" constant="111" id="tjs-nc-zcO"/>
                             </constraints>
                             <connections>
                                 <outlet property="cancelButton" destination="gYt-76-z57" id="ErZ-Hc-PSH"/>
-                                <outlet property="textLabel" destination="mct-jM-Lzp" id="vyG-lP-bbs"/>
                                 <outlet property="titleLabel" destination="eMZ-8x-koe" id="oVn-Ub-ERi"/>
                             </connections>
                         </view>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qi0-an-zlg" customClass="JointPainImageView" customModule="PsorcastValidation" customModuleProvider="target">
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="bTC-bV-oCh" userLabel="Background">
                             <rect key="frame" x="0.0" y="111" width="375" height="488"/>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </imageView>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qi0-an-zlg" customClass="PsoriasisDrawImageView" customModule="PsorcastValidation" customModuleProvider="target">
+                            <rect key="frame" x="0.0" y="111" width="375" height="488"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <userDefinedRuntimeAttributes>
                                 <userDefinedRuntimeAttribute type="image" keyPath="image" value="AboveTheWaist"/>
                             </userDefinedRuntimeAttributes>
@@ -77,19 +73,28 @@
                             <rect key="frame" x="0.0" y="599" width="375" height="101"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </view>
+                        <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="z66-Jr-KeT">
+                            <rect key="frame" x="315" y="638.66666666666663" width="20" height="20"/>
+                        </activityIndicatorView>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
+                        <constraint firstItem="bTC-bV-oCh" firstAttribute="bottom" secondItem="qi0-an-zlg" secondAttribute="bottom" id="2oS-r6-bXS"/>
+                        <constraint firstItem="z66-Jr-KeT" firstAttribute="centerY" secondItem="Ncg-SY-6dE" secondAttribute="centerY" constant="-1" id="4PW-2h-L2Y"/>
                         <constraint firstAttribute="trailing" secondItem="qi0-an-zlg" secondAttribute="trailing" id="6lC-33-Pn7"/>
                         <constraint firstAttribute="bottom" secondItem="Ncg-SY-6dE" secondAttribute="bottom" id="7IX-X3-3Ii"/>
                         <constraint firstItem="Ncg-SY-6dE" firstAttribute="top" secondItem="qi0-an-zlg" secondAttribute="bottom" id="8HE-V3-Laz"/>
                         <constraint firstItem="Ncg-SY-6dE" firstAttribute="leading" secondItem="nCy-4g-nIJ" secondAttribute="leading" id="Bzq-ex-byO"/>
+                        <constraint firstItem="bTC-bV-oCh" firstAttribute="top" secondItem="qi0-an-zlg" secondAttribute="top" id="IWo-Ep-odp"/>
                         <constraint firstItem="qi0-an-zlg" firstAttribute="leading" secondItem="nCy-4g-nIJ" secondAttribute="leading" id="J3s-Ae-nQ5"/>
                         <constraint firstItem="qi0-an-zlg" firstAttribute="top" secondItem="kjp-vl-acf" secondAttribute="bottom" id="JtI-6P-yK2"/>
+                        <constraint firstItem="bTC-bV-oCh" firstAttribute="trailing" secondItem="qi0-an-zlg" secondAttribute="trailing" id="Nv1-RM-gRy"/>
                         <constraint firstAttribute="trailing" secondItem="kjp-vl-acf" secondAttribute="trailing" id="Oum-Vk-NiV"/>
                         <constraint firstAttribute="trailing" secondItem="Ncg-SY-6dE" secondAttribute="trailing" id="XDw-dP-K6d"/>
                         <constraint firstItem="kjp-vl-acf" firstAttribute="top" secondItem="nCy-4g-nIJ" secondAttribute="top" id="aP1-H6-AJI"/>
+                        <constraint firstAttribute="trailing" secondItem="z66-Jr-KeT" secondAttribute="trailing" constant="40" id="j5C-4e-x5Z"/>
                         <constraint firstItem="kjp-vl-acf" firstAttribute="leading" secondItem="nCy-4g-nIJ" secondAttribute="leading" id="nrX-k7-h40"/>
+                        <constraint firstItem="bTC-bV-oCh" firstAttribute="leading" secondItem="qi0-an-zlg" secondAttribute="leading" id="x83-UO-Dni"/>
                     </constraints>
                 </view>
             </subviews>
