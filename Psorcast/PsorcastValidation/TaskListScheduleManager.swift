@@ -186,4 +186,14 @@ public class TaskListScheduleManager : SBAScheduleManager {
     fileprivate func isCompleteKey(taskId: String) -> String {
         return "\(taskId)IsComplete"
     }
+    
+    func clearIsCompleteStatus() {
+        let taskIds = self.scheduledActivities.map({ $0.activityIdentifier })
+        for taskId in taskIds {
+            if let taskIdUnwrapped = taskId {
+                let key = isCompleteKey(taskId: taskIdUnwrapped)
+                UserDefaults.standard.removeObject(forKey: key)
+            }
+        }
+    }
 }

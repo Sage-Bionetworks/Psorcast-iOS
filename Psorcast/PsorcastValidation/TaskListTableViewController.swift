@@ -131,6 +131,7 @@ class TaskListTableViewController: UITableViewController, RSDTaskViewControllerD
     
     @IBAction func doneTapped() {
         UserDefaults.standard.removeObject(forKey: "participantID")
+        self.scheduleManager.clearIsCompleteStatus()
         
         RSDFactory.shared = TaskFactory()
         let endStep = EndOfValidationStepObject(identifier: self.endOfValidationTaskId, type: .endOfValidation)
