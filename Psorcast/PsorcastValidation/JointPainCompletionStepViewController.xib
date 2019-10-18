@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina5_9" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14868" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina5_9" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14824"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -30,7 +28,7 @@
                             <rect key="frame" x="0.0" y="0.0" width="375" height="300"/>
                             <subviews>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qi0-an-zlg" customClass="JointPainImageView" customModule="PsorcastValidation" customModuleProvider="target">
-                                    <rect key="frame" x="24" y="24" width="327" height="252"/>
+                                    <rect key="frame" x="24" y="64" width="327" height="212"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <userDefinedRuntimeAttributes>
                                         <userDefinedRuntimeAttribute type="image" keyPath="image" value="JointCompleteHeader"/>
@@ -50,7 +48,7 @@
                             <constraints>
                                 <constraint firstItem="gYt-76-z57" firstAttribute="top" secondItem="kjp-vl-acf" secondAttribute="top" constant="24" id="8YB-N8-KmZ"/>
                                 <constraint firstItem="gYt-76-z57" firstAttribute="leading" secondItem="kjp-vl-acf" secondAttribute="leading" constant="8" id="9q4-Ke-8ah"/>
-                                <constraint firstItem="qi0-an-zlg" firstAttribute="top" secondItem="kjp-vl-acf" secondAttribute="top" constant="24" id="PQx-up-x1A"/>
+                                <constraint firstItem="qi0-an-zlg" firstAttribute="top" secondItem="kjp-vl-acf" secondAttribute="top" constant="64" id="PQx-up-x1A"/>
                                 <constraint firstAttribute="width" secondItem="kjp-vl-acf" secondAttribute="height" multiplier="375:300" id="Wwe-9q-qaJ"/>
                                 <constraint firstAttribute="bottom" secondItem="qi0-an-zlg" secondAttribute="bottom" constant="24" id="h9d-2t-a2O"/>
                                 <constraint firstItem="qi0-an-zlg" firstAttribute="leading" secondItem="kjp-vl-acf" secondAttribute="leading" constant="24" id="lee-PG-XCQ"/>
@@ -82,7 +80,7 @@
                             <fontDescription key="fontDescription" type="system" pointSize="30"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ncg-SY-6dE" userLabel="Footer" customClass="RSDGenericNavigationFooterView" customModule="ResearchUI">
+                        <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ncg-SY-6dE" userLabel="Footer" customClass="RSDGenericNavigationFooterView" customModule="ResearchUI">
                             <rect key="frame" x="0.0" y="565" width="375" height="135"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </view>
