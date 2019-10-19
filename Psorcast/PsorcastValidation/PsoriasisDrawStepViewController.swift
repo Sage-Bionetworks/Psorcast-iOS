@@ -196,7 +196,10 @@ open class PsoriasisDrawStepViewController: RSDStepViewController {
             }
                     
             // Hide our debugging features first before creating the image
-            imageView.debuggingButtonContainer?.isHidden = true
+            if self.debuggingZones {
+                self.imageView.debuggingButtonContainer?.isHidden = false
+            }
+            
             let image = imageView.convertToImage()
             
             do {
@@ -286,9 +289,9 @@ open class PsoriasisDrawStepViewController: RSDStepViewController {
                 self.isProcessing = false
                 self.imageView.isUserInteractionEnabled = true
                 self.navigationFooter?.nextButton?.isEnabled = true
-                self.imageView.debuggingButtonContainer?.isHidden = false
                 
                 if self.debuggingZones {
+                    self.imageView.debuggingButtonContainer?.isHidden = false
                     self.navigationHeader?.titleLabel?.text = String(format: "%.2f%% Coverage", (100*percentCoverage))
                     self.imageView.regionZonesForDebugging = selectedZones
                     self.imageView.recreateMask(force: true)
