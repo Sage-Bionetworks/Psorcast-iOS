@@ -286,6 +286,7 @@ open class PsoriasisDrawStepViewController: RSDStepViewController {
                 self.isProcessing = false
                 self.imageView.isUserInteractionEnabled = true
                 self.navigationFooter?.nextButton?.isEnabled = true
+                self.imageView.debuggingButtonContainer?.isHidden = false
                 
                 if self.debuggingZones {
                     self.navigationHeader?.titleLabel?.text = String(format: "%.2f%% Coverage", (100*percentCoverage))
