@@ -103,7 +103,7 @@ class TaskListTableViewController: UITableViewController, RSDTaskViewControllerD
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "PKUTaskCell", for: indexPath) as! TaskTableviewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "PsorcastTaskCell", for: indexPath) as! TaskTableviewCell
         
         cell.titleLabel?.text = self.scheduleManager.title(for: indexPath)
         cell.detailLabel?.text = self.scheduleManager.detail(for: indexPath)

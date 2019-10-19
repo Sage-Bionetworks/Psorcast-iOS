@@ -1,5 +1,5 @@
 //
-//  PKUCopyStepTests.swift
+//  CopyStepTests.swift
 //  PsorcastValidationTests
 //
 //  Copyright © 2019 Sage Bionetworks. All rights reserved.

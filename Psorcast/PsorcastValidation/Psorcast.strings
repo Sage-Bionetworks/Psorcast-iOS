@@ -33,7 +33,7 @@
  //
 
 // Task Table View Controller
-"RELEASE_VERSION_%@" = "PKU App Version %@";
+"RELEASE_VERSION_%@" = "Psorcast Version %@";
 "RELEASE_DATE_%@" = "Released on %@";
 "STUDY_TITLE" = "A Psoriasis Research Study";
 "BUTTON_TITLE_BEGIN" = "Begin";
