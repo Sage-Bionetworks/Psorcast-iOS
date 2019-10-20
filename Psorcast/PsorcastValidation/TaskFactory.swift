@@ -46,7 +46,7 @@ extension RSDStepType {
 }
 
 open class TaskFactory: SBAFactory {
-    /// Override the base factory to vend PKU specific step objects.
+    /// Override the base factory to vend Psorcast specific step objects.
     override open func decodeStep(from decoder: Decoder, with type: RSDStepType) throws -> RSDStep? {
         switch type {
         case .imageCapture:

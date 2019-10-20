@@ -124,7 +124,7 @@ public class TaskListScheduleManager : SBAScheduleManager {
             if let overviewLearnMoreAction = mctOverviewLearnMoreAction(for: stepModel.parent?.identifier ?? "") {
                 // Overview steps can have a learn more link to a video
                 // This is not included in the MCT framework because
-                // they are specific to the PKU project, so we must add it here
+                // they are specific to the Psorcast project, so we must add it here
                 overviewStep.actions?[.navigation(.learnMore)] = overviewLearnMoreAction
             }
         }
