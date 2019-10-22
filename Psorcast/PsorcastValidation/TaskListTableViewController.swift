@@ -111,6 +111,8 @@ class TaskListTableViewController: UITableViewController, RSDTaskViewControllerD
             .localizedString("BUTTON_TITLE_BEGIN"), for: .normal)
         cell.indexPath = indexPath
         cell.delegate = self
+        cell.doneContainer?.tag = cell.indexPath.row
+        cell.doneContainer?.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.didTapDoneCell(sender:))))
         cell.setDesignSystem(AppDelegate.designSystem, with: AppDelegate.designSystem.colorRules.backgroundLight)
         let taskId = self.scheduleManager.taskId(for: indexPath) ?? ""
         cell.setIsComplete(isComplete: self.scheduleManager.isComplete(taskId: taskId))
@@ -118,10 +120,22 @@ class TaskListTableViewController: UITableViewController, RSDTaskViewControllerD
         return cell
     }
     
+    /// Called when user taps "Begin" button in table view cell
     func didTapButton(on cell: RSDButtonCell) {
+        self.runTask(at: cell.indexPath)
+    }
+    
+    /// Called when user taps done text on task they have already completed
+    @objc func didTapDoneCell(sender: UITapGestureRecognizer) {
+        if let doneContainer = sender.view {
+            self.runTask(at: IndexPath(row: doneContainer.tag, section: 0))
+        }
+    }
+    
+    func runTask(at indexPath: IndexPath) {
         RSDFactory.shared = TaskFactory()
         // This is an activity
-        guard let activity = self.scheduleManager.sortedScheduledActivity(for: cell.indexPath) else { return }
+        guard let activity = self.scheduleManager.sortedScheduledActivity(for: indexPath) else { return }
         let taskViewModel = scheduleManager.instantiateTaskViewModel(for: activity)
         let taskVc = RSDTaskViewController(taskViewModel: taskViewModel)
         taskVc.modalPresentationStyle = .fullScreen

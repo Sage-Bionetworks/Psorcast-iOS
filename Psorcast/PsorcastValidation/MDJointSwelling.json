@@ -5,10 +5,10 @@
     "steps":
     [
         {
-            "identifier":"jointCountInstruction",
+            "identifier":"jointSwellingInstruction",
             "type":"instruction",
             "title":"Select joint pain",
-            "text":"First select the areas of your body with painful joints, then tap the individual joints within those areas on the next screens. You can touch the joints you have selected to undo the selection.",
+            "text":"First select the areas of your body with swollen joints, then tap the individual joints within those areas on the next screens. You can touch the joints you have selected to undo the selection.",
             "image":{
                 "type": "animated",
                 "imageNames": ["JointCount1", "JointCount2", "JointCount3", "JointCount4", "JointCount5", "JointCount6"],
@@ -25,7 +25,7 @@
         {
             "identifier": "selectionCheckmark",
             "type": "selectionCheckmark",
-            "title": "Which areas of your body have painful joints?",
+            "title": "Which areas of your body have swollen joints?",
             "text": "Select all areas with joints that bother you.",
             "inputFields": [
                 {
@@ -64,7 +64,7 @@
         {
             "identifier": "aboveTheWaist",
             "type": "jointPain",
-            "title": "Select your joint pain",
+            "title": "Select your swollen joint",
             "text": "Select all that apply",
             "textSelectionFormat": "%@ joint selected",
             "textMultipleSelectionFormat": "%@ joints selected",
@@ -190,7 +190,7 @@
         {
             "identifier": "leftHand",
             "type": "jointPain",
-            "title": "Left hand joint pain",
+            "title": "Left hand joint swelling",
             "text": "Select all that apply",
             "textSelectionFormat": "%@ joint selected",
             "textMultipleSelectionFormat": "%@ joints selected",
@@ -323,7 +323,7 @@
         {
             "identifier": "rightHand",
             "type": "jointPain",
-            "title": "Right hand joint pain",
+            "title": "Right hand joint swelling",
             "text": "Select all that apply",
             "textSelectionFormat": "%@ joint selected",
             "textMultipleSelectionFormat": "%@ joints selected",
@@ -456,7 +456,7 @@
         {
             "identifier": "leftFoot",
             "type": "jointPain",
-            "title": "Left foot joint pain",
+            "title": "Left foot joint swelling",
             "text": "Select all that apply",
             "textSelectionFormat": "%@ joint selected",
             "textMultipleSelectionFormat": "%@ joints selected",
@@ -554,7 +554,7 @@
         {
             "identifier": "rightFoot",
             "type": "jointPain",
-            "title": "Right foot joint pain",
+            "title": "Right foot joint swelling",
             "text": "Select all that apply",
             "textSelectionFormat": "%@ joint selected",
             "textMultipleSelectionFormat": "%@ joints selected",
@@ -654,9 +654,9 @@
             "type":"completionJointPain",
             "title":"Activity complete",
             "detail":"Today you identified",
-            "text": "0 Painful joints",
-            "textSelectionFormat": "%@ Painful joint",
-            "textMultipleSelectionFormat": "%@ Painful joints",
+            "text": "0 swollen joints",
+            "textSelectionFormat": "%@ swollen joint",
+            "textMultipleSelectionFormat": "%@ swollen joints",
             "actions": {
                 "goForward":{
                     "type":"default",

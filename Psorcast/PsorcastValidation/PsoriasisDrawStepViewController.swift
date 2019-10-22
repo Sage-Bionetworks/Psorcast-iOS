@@ -209,7 +209,7 @@ open class PsoriasisDrawStepViewController: RSDStepViewController, ProcessorFini
             guard let imageView = self.imageView else {
                 return
             }
-                                
+       
             let image = imageView.convertToImage()
             
             do {
