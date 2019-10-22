@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14868" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15400" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina5_9" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14824"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15404"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -17,6 +17,7 @@
                 <outlet property="belowTheWaistFrontImageView" destination="WID-do-U5a" id="Mij-5a-wVn"/>
                 <outlet property="bodyImageContainer" destination="kjp-vl-acf" id="zOU-tT-PhL"/>
                 <outlet property="frontImageVerticalSpace" destination="z21-yb-9v0" id="dqo-qi-Tub"/>
+                <outlet property="loadingSpinner" destination="kcr-GR-GUa" id="jC7-BP-IVB"/>
                 <outlet property="navigationFooter" destination="Ncg-SY-6dE" id="SLP-DO-Xlo"/>
                 <outlet property="navigationHeader" destination="wPa-GT-djk" id="HNH-av-5ht"/>
                 <outlet property="view" destination="Be1-UX-e65" id="BEo-OJ-8Gt"/>
@@ -145,6 +146,9 @@
                             <fontDescription key="fontDescription" type="system" pointSize="30"/>
                             <nil key="highlightedColor"/>
                         </label>
+                        <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="kcr-GR-GUa">
+                            <rect key="frame" x="331" y="417" width="20" height="20"/>
+                        </activityIndicatorView>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
@@ -152,6 +156,7 @@
                         <constraint firstAttribute="bottom" secondItem="Ncg-SY-6dE" secondAttribute="bottom" id="7IX-X3-3Ii"/>
                         <constraint firstItem="eMZ-8x-koe" firstAttribute="top" secondItem="wPa-GT-djk" secondAttribute="bottom" constant="24" id="APC-ws-4ro"/>
                         <constraint firstItem="Ncg-SY-6dE" firstAttribute="leading" secondItem="nCy-4g-nIJ" secondAttribute="leading" id="Bzq-ex-byO"/>
+                        <constraint firstItem="kcr-GR-GUa" firstAttribute="centerY" secondItem="eMZ-8x-koe" secondAttribute="centerY" id="Osf-uM-4Od"/>
                         <constraint firstItem="wPa-GT-djk" firstAttribute="leading" secondItem="nCy-4g-nIJ" secondAttribute="leading" id="Qz8-td-oZj"/>
                         <constraint firstAttribute="trailing" secondItem="Ncg-SY-6dE" secondAttribute="trailing" id="XDw-dP-K6d"/>
                         <constraint firstItem="Ncg-SY-6dE" firstAttribute="top" secondItem="mct-jM-Lzp" secondAttribute="bottom" constant="16" id="asX-5K-bnr"/>
@@ -159,6 +164,7 @@
                         <constraint firstAttribute="trailing" secondItem="mct-jM-Lzp" secondAttribute="trailing" constant="24" id="qfT-iK-RSb"/>
                         <constraint firstItem="mct-jM-Lzp" firstAttribute="leading" secondItem="nCy-4g-nIJ" secondAttribute="leading" constant="24" id="rla-bF-CTQ"/>
                         <constraint firstAttribute="trailing" secondItem="wPa-GT-djk" secondAttribute="trailing" id="ryt-cc-qWW"/>
+                        <constraint firstAttribute="trailing" secondItem="kcr-GR-GUa" secondAttribute="trailing" constant="24" id="vCt-4i-ndt"/>
                         <constraint firstItem="eMZ-8x-koe" firstAttribute="leading" secondItem="nCy-4g-nIJ" secondAttribute="leading" constant="12" id="vmA-TY-DaP"/>
                         <constraint firstAttribute="trailing" secondItem="eMZ-8x-koe" secondAttribute="trailing" constant="12" id="zdX-DA-Ojf"/>
                     </constraints>

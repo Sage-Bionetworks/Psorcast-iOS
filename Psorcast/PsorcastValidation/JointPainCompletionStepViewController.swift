@@ -262,7 +262,11 @@ open class JointPainCompletionStepViewController: RSDStepViewController, JointPa
         
         /// Save a final simple JSON list of selected joints
         let startDate = self.taskController?.taskViewModel.taskResult.startDate ?? Date()
-        let result = JointPainSummaryResultObject(identifier: self.summaryResultIdentifier, joints: self.allJointResults, startDate: startDate)
+        let selected = self.allJointResults.map({ (joint) -> SelectedIdentifier in
+            return SelectedIdentifier(identifier: joint.identifier,
+                                      isSelected: joint.isSelected ?? false)
+        })
+        let result = SelectedIdentifiersResultObject(identifier: self.summaryResultIdentifier, selected: selected, startDate: startDate)
         _ = self.stepViewModel.parent?.taskResult.appendStepHistory(with: result)
         
         super.goForward()
@@ -309,67 +313,6 @@ open class JointPainCompletionStepViewController: RSDStepViewController, JointPa
                 debugPrint("Failed to save the camera image: \(error)")
             }
         }
-    }
-}
-
-extension RSDResultType {
-    /// The type identifier for a joint pain completion result.
-    public static let jointPainSummary: RSDResultType = "jointPainSummary"
-}
-
-/// A 'SimpleJoint' is a minimal reflection of the 'Joint' class
-public struct SimpleJoint: Codable {
-    /// The identifier for the joint
-    public var identifier: String
-    /// If the joint is selected or not
-    public var isSelected: Bool
-}
-
-/// The `JointPainCompletionResultObject` records the results of all the joint paint step tests.
-public struct JointPainSummaryResultObject : RSDResult, Codable, RSDArchivable {
-    
-    private enum CodingKeys : String, CodingKey {
-        case identifier, type, startDate, endDate, simpleJoints
-    }
-    
-    /// The identifier for the associated step.
-    public var identifier: String
-    
-    /// Default = `.jointPainCompletion`.
-    public private(set) var type: RSDResultType = .jointPainSummary
-    
-    /// Timestamp date for when the step was started.
-    public var startDate: Date = Date()
-    
-    /// Timestamp date for when the step was ended.
-    public var endDate: Date = Date()
-    
-    /// An array containing the selection state of all the joints
-    public internal(set) var simpleJoints: [SimpleJoint]
-    
-    init(identifier: String, joints: [Joint], startDate: Date = Date(), endDate: Date = Date()) {
-        self.identifier = identifier
-        self.simpleJoints = joints.map({ (joint) -> SimpleJoint in
-            return SimpleJoint(identifier: joint.identifier,
-                               isSelected: joint.isSelected ?? false)
-        })
-    }
-    
-    /// Build the archiveable or uploadable data for this result.
-    public func buildArchiveData(at stepPath: String?) throws -> (manifest: RSDFileManifest, data: Data)? {
-        // Create the manifest and encode the result.
-        let manifest = RSDFileManifest(filename: "\(self.identifier).json", timestamp: self.startDate, contentType: "application/json", identifier: self.identifier, stepPath: stepPath)
-        let data = try self.rsd_jsonEncodedData()
-        return (manifest, data)
-    }
-    
-    public func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(self.identifier, forKey: .identifier)
-        try container.encode(self.type, forKey: .type)
-        try container.encode(self.startDate, forKey: .startDate)
-        try container.encode(self.endDate, forKey: .endDate)
-        try container.encode(self.simpleJoints, forKey: .simpleJoints)
     }
 }
 
