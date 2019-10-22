@@ -38,14 +38,14 @@ import BridgeAppUI
 /// The 'JointPainStepViewController' displays a joint pain image that has
 /// buttons overlayed at specific parts of the images to represent joints
 /// The user selects the joints that are causing them pain
-open class PsoriasisDrawStepViewController: RSDStepViewController {
+open class PsoriasisDrawStepViewController: RSDStepViewController, ProcessorFinishedDelegate {
     
     static let percentCoverageResultId = "Coverage"
     static let selectedZonesResultId = "SelectedZones"
     
     /// This should be turned off when deploying the app, but is useful
     /// for QA to know if the zones and coverage algorithms are working correctly
-    let debuggingZones = true
+    let debuggingZones = false
     
     /// The step for this view controller
     open var drawStep: PsoriasisDrawStepObject? {
@@ -87,6 +87,14 @@ open class PsoriasisDrawStepViewController: RSDStepViewController {
     /// Processing queue for saving camera
     private let processingQueue = DispatchQueue(label: "org.sagebase.ResearchSuite.camera.processing")
     
+    var coverageResultId: String {
+        return "\(self.step.identifier)\(PsoriasisDrawStepViewController.percentCoverageResultId)"
+    }
+    
+    var selectedZonesResultId: String {
+        return "\(self.step.identifier)\(PsoriasisDrawStepViewController.selectedZonesResultId)"
+    }
+    
     /// Returns a new step view controller for the specified step.
     /// - parameter step: The step to be presented.
     public override init(step: RSDStep, parent: RSDPathComponent?) {
@@ -109,6 +117,7 @@ open class PsoriasisDrawStepViewController: RSDStepViewController {
         super.viewDidLoad()
         
         self.initializeImages()
+        self.imageView.debuggingZones = self.debuggingZones
         self.imageView?.regionZonesForDebugging = self.drawStep?.regionMap?.zones ?? []
     }
     
@@ -189,17 +198,18 @@ open class PsoriasisDrawStepViewController: RSDStepViewController {
             
             self.navigationFooter?.nextButton?.isEnabled = false
             self.imageView.isUserInteractionEnabled = false
-            self.loadingView.isHidden = false
+            
+            // Hide our debugging features first before creating the image
+            if self.debuggingZones {
+                self.imageView.debuggingButtonContainer?.isHidden = true
+                PsoriasisDrawTaskResultProcessor.shared.processingFinishedDelegate = self
+                self.loadingView.isHidden = false
+            }
         
             guard let imageView = self.imageView else {
                 return
             }
-                    
-            // Hide our debugging features first before creating the image
-            if self.debuggingZones {
-                self.imageView.debuggingButtonContainer?.isHidden = false
-            }
-            
+       
             let image = imageView.convertToImage()
             
             do {
@@ -222,116 +232,73 @@ open class PsoriasisDrawStepViewController: RSDStepViewController {
             lineColor = lineColorUnwrapped
         }
         
-        var aspectFitRect: CGRect? = nil
-        var imageSize: CGSize? = nil
-        if let rect = self.imageView?.lastAspectFitRect {
-            aspectFitRect = CGRect(x: rect.origin.x, y: rect.origin.y, width: rect.width, height: rect.height)
-        }
-        if let imageSizeUnwrapped = self.imageView?.image?.size {
-            imageSize = CGSize(width: imageSizeUnwrapped.width, height: imageSizeUnwrapped.height)
-        }
-        
-        var zones = [RegionZone]()
-        if let zonesUnwrapped = self.drawStep?.regionMap?.zones {
-            zones = zonesUnwrapped
-        }
-        
         let lineWidth = self.lineWidth
         let drawPoints = self.imageView.touchDrawableView?.drawPoints ?? []
         
-        DispatchQueue.global(qos: .background).async {
-            // Perform heavy lifting on background thread
-            let percentCoverage = image.psoriasisCoverage(psoriasisColor: lineColor)
+        DispatchQueue.main.async {
+            let processor = PsoriasisDrawTaskResultProcessor.shared
             
-            var selectedZones = [RegionZone]()
-            if let aspectFitRectUnwrapped = aspectFitRect,
-                let imageSizeUnwrapped = imageSize {
-                selectedZones = PsoriasisDrawStepViewController.selectedZones(in: zones, lastAspectFitRect: aspectFitRectUnwrapped, imageSize: imageSizeUnwrapped, drawPoints: drawPoints, lineWidth: lineWidth)
+            // Add the percent coverage result, it will be processed in the background
+            processor.addBackgroundProcessCoverage(stepViewModel: self.stepViewModel, identifier: self.coverageResultId, image: image, selectedColor: lineColor)
+                        
+            // Add the selected identifiers result, it will be process in the background
+            if let regionMap = self.drawStep?.regionMap,
+                let aspectRect = self.imageView.lastAspectFitRect,
+                let imageSizeUnwrapped = self.imageView?.image?.size {
+                
+                processor.addBackgroundProcessSelectedZones(stepViewModel: self.stepViewModel, identifier: self.selectedZonesResultId, regionMap: regionMap, lastAspectFitRect: aspectRect, imageSize: imageSizeUnwrapped, drawPoints: drawPoints, lineWidth: lineWidth)
             }
-            let selectedZoneIdentifiers = selectedZones.map({ $0.identifier })
-            
-            DispatchQueue.main.async {
-                
-                // Add the percent coverage result
-                let percentResult = RSDAnswerResultObject(identifier: "\(self.step.identifier)\(PsoriasisDrawStepViewController.percentCoverageResultId)", answerType: .decimal, value: percentCoverage)
-                _ = self.stepViewModel.parent?.taskResult.appendStepHistory(with: percentResult)
-                
-                var newMap = self.drawStep?.regionMap
-                let newZones = newMap?.zones.map({ (zone) -> RegionZone in
-                    return RegionZone(identifier: zone.identifier, label: zone.label, origin: zone.origin, dimensions: zone.dimensions, isSelected: selectedZoneIdentifiers.contains(zone.identifier))
-                }) ?? []
-                newMap?.zones = newZones
-                
-                // Add the selected zones result
-                if let newMapUnwrapped = newMap {
-                    let result = PsoriasisDrawResultObject(identifier: "\(self.step.identifier)\(PsoriasisDrawStepViewController.selectedZonesResultId)", regionMap: newMapUnwrapped)
-                    _ = self.stepViewModel.parent?.taskResult.appendStepHistory(with: result)
-                }
-                
-                var url: URL?
-                do {
-                    if let imageData = image.pngData(),
-                        let outputDir = self.stepViewModel.parentTaskPath?.outputDirectory {
-                        url = try RSDFileResultUtility.createFileURL(identifier: self.step.identifier, ext: "png", outputDirectory: outputDir, shouldDeletePrevious: true)
-                        self.save(imageData, to: url!)
-                    }
-                } catch let error {
-                    debugPrint("Failed to save the image: \(error)")
-                }
 
-                // The step identifier result needs to go last so it is not overwritten
-                // Create the result and set it as the result for this step
-                var result = RSDFileResultObject(identifier: self.step.identifier)
-                result.url = url
-                _ = self.stepViewModel.parent?.taskResult.appendStepHistory(with: result)                
-                                
-                self.loadingView.isHidden = true
-                self.isProcessing = false
-                self.imageView.isUserInteractionEnabled = true
-                self.navigationFooter?.nextButton?.isEnabled = true
-                
-                if self.debuggingZones {
-                    self.imageView.debuggingButtonContainer?.isHidden = false
-                    self.navigationHeader?.titleLabel?.text = String(format: "%.2f%% Coverage", (100*percentCoverage))
-                    self.imageView.regionZonesForDebugging = selectedZones
-                    self.imageView.recreateMask(force: true)
-                } else {
-                    super.goForward()
-                }
-                
-                self.readyToGoNext = true
+            var url: URL?
+            do {
+               if let imageData = image.pngData(),
+                   let outputDir = self.stepViewModel.parentTaskPath?.outputDirectory {
+                   url = try RSDFileResultUtility.createFileURL(identifier: self.step.identifier, ext: "png", outputDirectory: outputDir, shouldDeletePrevious: true)
+                   self.save(imageData, to: url!)
+               }
+            } catch let error {
+               debugPrint("Failed to save the image: \(error)")
             }
+
+            // The step identifier result needs to go last so it is not overwritten
+            // Create the result and set it as the result for this step
+            var result = RSDFileResultObject(identifier: self.step.identifier)
+            result.url = url
+            _ = self.stepViewModel.parent?.taskResult.appendStepHistory(with: result)
+            
+            if !self.debuggingZones {
+               super.goForward()
+            }
+            
+            self.navigationFooter?.nextButton?.isEnabled = true
+            self.imageView.isUserInteractionEnabled = true
         }
     }
     
-    // TODO: mdephillips 10/14/19 unit test this function
-    static func selectedZones(in zones: [RegionZone], lastAspectFitRect: CGRect, imageSize: CGSize, drawPoints: [CGPoint], lineWidth: CGFloat) -> [RegionZone] {
-        
-        var selectedZoneIdentifiers = [String]()
-                
-        // Convert the zone rects to aspect rect space
-        var aspectRects = [String: CGRect]()
-        for zone in zones {
-            let zoneSize = zone.dimensions.size
-            let centerPoint = CGPoint(x: zone.origin.point.x + (zone.dimensions.width * 0.5),
-                                      y: zone.origin.point.y + (zone.dimensions.height * 0.5))
-            let rectInput = PSRImageHelper.translateCenterPointToAspectFitCoordinateSpace(imageSize: imageSize, aspectFitRect: lastAspectFitRect, centerToTranslate: centerPoint, sizeToTranslate: zoneSize)
-            aspectRects[zone.identifier] = CGRect(x: rectInput.leadingTop.x, y: rectInput.leadingTop.y, width: rectInput.size.width, height: rectInput.size.height)
-        }
-        
-        let halfLineWidth = CGFloat(lineWidth * 0.5)
-        for drawPoint in drawPoints {
-            let drawRect = CGRect(x: drawPoint.x - halfLineWidth, y: drawPoint.y - halfLineWidth, width: lineWidth, height: lineWidth)
-            for zoneIdentifier in aspectRects.keys {
-                if !selectedZoneIdentifiers.contains(zoneIdentifier) &&
-                    (aspectRects[zoneIdentifier]?.contains(drawRect) ?? false ||
-                        aspectRects[zoneIdentifier]?.intersects(drawRect) ?? false) {
-                    selectedZoneIdentifiers.append(zoneIdentifier)
-                }
+    public func finishedProcessing() {
+        if self.debuggingZones {
+            self.loadingView.isHidden = true
+            self.isProcessing = false
+  
+            if let coverageResult = self.stepViewModel.parent?.taskResult.findResult(with: self.coverageResultId) as? RSDAnswerResultObject,
+                let percentCoverage = coverageResult.value as? Float {
+                self.navigationHeader?.titleLabel?.text = String(format: "%.2f%% Coverage", Float(truncating: (100*percentCoverage) as NSNumber))
             }
+            
+            if let zoneResult = self.stepViewModel.parent?.taskResult.findResult(with: self.selectedZonesResultId) as? SelectedIdentifiersResultObject {
+                
+                let zones = zoneResult.selectedIdentifiers.filter({$0.isSelected})
+                    .map { (selected) -> RegionZone in
+                    let existing = self.drawStep?.regionMap?.zones.first(where: {$0.identifier == selected.identifier})
+                    return RegionZone(identifier: selected.identifier, label: existing!.label, origin: existing!.origin, dimensions: existing!.dimensions)
+                }
+                self.imageView.regionZonesForDebugging = zones
+            }
+            
+            self.imageView.debuggingButtonContainer?.isHidden = false
+            self.imageView.recreateMask(force: true)
+            self.readyToGoNext = true
         }
-        
-        return zones.filter({ selectedZoneIdentifiers.contains($0.identifier) })
     }
     
     private func save(_ imageData: Data, to url: URL) {

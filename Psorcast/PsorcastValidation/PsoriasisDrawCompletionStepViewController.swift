@@ -44,7 +44,7 @@ open class PsoriasisDrawCompletionStepObject: RSDUIStepObject, RSDStepViewContro
 
 /// The 'PsoriasisDrawCompletionStepViewController' displays the images the user drew on
 /// to indicate their psoriasis coverage, along with their average psoriasis coverage percent.
-open class PsoriasisDrawCompletionStepViewController: RSDStepViewController {
+open class PsoriasisDrawCompletionStepViewController: RSDStepViewController, ProcessorFinishedDelegate {
     
     let aboveTheWaistFrontImageIdentifier = "aboveTheWaistFront"
     let belowTheWaistFrontImageIdentifier = "belowTheWaistFront"
@@ -83,6 +83,9 @@ open class PsoriasisDrawCompletionStepViewController: RSDStepViewController {
     /// The image view container for below the waist back results
     @IBOutlet public var belowTheWaistBackImageView: UIImageView!
     
+    /// The loading spinner while processing coverage
+    @IBOutlet public var loadingSpinner: UIActivityIndicatorView!
+    
     /// The result identifier for the summary data
     public let summaryResultIdentifier = "summary"
     /// The result identifier for the summary image
@@ -120,6 +123,28 @@ open class PsoriasisDrawCompletionStepViewController: RSDStepViewController {
         self.navigationHeader?.titleLabel?.textAlignment = .center
         self.navigationHeader?.textLabel?.textAlignment = .center
         
+        // If we have finished processing then show coverage, otherwise wait until delegate fires
+        if PsoriasisDrawTaskResultProcessor.shared.processingIdentifiers.count == 0 {
+            self.refreshPsoriasisDrawCoverage()
+        } else {
+            PsoriasisDrawTaskResultProcessor.shared.processingFinishedDelegate = self
+            self.navigationHeader?.titleLabel?.text = Localization.localizedString("CALCULATING_COVERAGE")
+            self.navigationHeader?.textLabel?.text = ""
+        }
+    }
+    
+    override open func setupFooter(_ footer: RSDNavigationFooterView) {
+        super.setupFooter(footer)
+        
+        // Wait until result processing finishes before allowing user to finish the task
+        if PsoriasisDrawTaskResultProcessor.shared.processingIdentifiers.count == 0 {
+            self.navigationFooter?.nextButton?.isEnabled = true
+        } else {
+            self.navigationFooter?.nextButton?.isEnabled = false
+        }
+    }
+    
+    func refreshPsoriasisDrawCoverage() {
         let psoriasisDrawIdentifiers = [
             "\(aboveTheWaistFrontImageIdentifier)\(coverageResult)",
             "\(belowTheWaistFrontImageIdentifier)\(coverageResult)",
@@ -128,12 +153,12 @@ open class PsoriasisDrawCompletionStepViewController: RSDStepViewController {
         let coverage = self.psoriasisDrawCoverage(from: psoriasisDrawIdentifiers)
         let coverageString = String(format: "%.1f", coverage)
         
-        if let title = self.navigationHeader?.titleLabel?.text,
+        if let title = self.completionStep?.title,
             title.contains("%@") {
             self.navigationHeader?.titleLabel?.text = String(format: title, coverageString)
         }
         
-        if let text = self.navigationHeader?.textLabel?.text,
+        if let text = self.completionStep?.text,
             text.contains("%@") {
             self.navigationHeader?.textLabel?.text = String(format: text, coverageString)
         }
@@ -238,6 +263,12 @@ open class PsoriasisDrawCompletionStepViewController: RSDStepViewController {
                 debugPrint("Failed to save the camera image: \(error)")
             }
         }
+    }
+    
+    public func finishedProcessing() {
+        self.loadingSpinner.isHidden = true
+        self.navigationFooter?.nextButton?.isEnabled = true
+        self.refreshPsoriasisDrawCoverage()
     }
 }
 
