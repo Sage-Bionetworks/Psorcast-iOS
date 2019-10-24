@@ -73,15 +73,8 @@ open class PsoriasisDrawCompletionStepViewController: RSDStepViewController, Pro
     /// It is the vertical space between the body images divided by width of them
     let backVerticalSpaceConstant = CGFloat(84.0 / 171.67)
     
-    /// The image view container for above the waist front results
-    @IBOutlet public var aboveTheWaistFrontImageView: UIImageView!
-    /// The image view container for below the waist front results
-    @IBOutlet public var belowTheWaistFrontImageView: UIImageView!
-    
-    /// The image view container for above the waist back results
-    @IBOutlet public var aboveTheWaistBackImageView: UIImageView!
-    /// The image view container for below the waist back results
-    @IBOutlet public var belowTheWaistBackImageView: UIImageView!
+    /// The image view container for body summary
+    @IBOutlet public var bodySummaryImageView: UIImageView!
     
     /// The loading spinner while processing coverage
     @IBOutlet public var loadingSpinner: UIActivityIndicatorView!
@@ -116,8 +109,7 @@ open class PsoriasisDrawCompletionStepViewController: RSDStepViewController, Pro
     override open func setupHeader(_ header: RSDStepNavigationView) {
         super.setupHeader(header)
         
-        self.aboveTheWaistFrontImageView?.contentMode = .scaleAspectFit
-        self.belowTheWaistFrontImageView?.contentMode = .scaleAspectFit
+        self.bodySummaryImageView?.contentMode = .scaleAspectFit
         self.loadImageAndDelayIfNecessary()
         
         self.navigationHeader?.titleLabel?.textAlignment = .center
@@ -164,15 +156,6 @@ open class PsoriasisDrawCompletionStepViewController: RSDStepViewController, Pro
         }
     }
     
-    open override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        
-        // Re-compute the body image vertical constraint
-        self.frontImageVerticalSpace.constant = -(self.aboveTheWaistFrontImageView.frame.size.width * self.frontVerticalSpaceConstant)
-        
-        self.backImageVerticalSpace.constant = -(self.aboveTheWaistBackImageView.frame.size.width * self.backVerticalSpaceConstant)
-    }
-    
     open func psoriasisDrawCoverage(from identifiers: [String]) -> Float {
         var sum = Float(0)
         for result in self.taskController?.taskViewModel.taskResult.stepHistory ?? [] {
@@ -187,17 +170,19 @@ open class PsoriasisDrawCompletionStepViewController: RSDStepViewController, Pro
     }
     
     func loadImageAndDelayIfNecessary() {
-        var allSuccessful = self.image(from: aboveTheWaistFrontImageIdentifier,
-                                   assignTo: aboveTheWaistFrontImageView)
+        var allSuccessful = true
         
-        allSuccessful = self.image(from: belowTheWaistFrontImageIdentifier,
-                               assignTo: belowTheWaistFrontImageView) && allSuccessful
+        let aboveTheWaistFrontImageRet = self.image(from: aboveTheWaistFrontImageIdentifier)
+        allSuccessful = allSuccessful && aboveTheWaistFrontImageRet.success
         
-        allSuccessful = self.image(from: aboveTheWaistBackImageIdentifier,
-                               assignTo: aboveTheWaistBackImageView) && allSuccessful
+        let belowTheWaistFrontImageRet = self.image(from: belowTheWaistFrontImageIdentifier)
+        allSuccessful = allSuccessful && belowTheWaistFrontImageRet.success
         
-        allSuccessful = self.image(from: belowTheWaistBackImageIdentifier,
-                               assignTo: belowTheWaistBackImageView) && allSuccessful
+        let aboveTheWaistBackImageRet = self.image(from: aboveTheWaistBackImageIdentifier)
+        allSuccessful = allSuccessful && aboveTheWaistBackImageRet.success
+        
+        let belowTheWaistBackImageRet = self.image(from: belowTheWaistBackImageIdentifier)
+        allSuccessful = allSuccessful && belowTheWaistBackImageRet.success
         
         self.imageLoadAttempt += 1
         
@@ -212,10 +197,22 @@ open class PsoriasisDrawCompletionStepViewController: RSDStepViewController, Pro
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) { [weak self] in
                 self?.loadImageAndDelayIfNecessary()
             }
+        } else {
+            if let aboveFrontImage = (aboveTheWaistFrontImageRet.image ?? UIImage(named: "PsoriasisDrawAboveTheWaistFront")),
+                let belowFrontImage = (belowTheWaistFrontImageRet.image ??
+                UIImage(named: "PsoriasisDrawBelowTheWaistFront")),
+                let aboveBackImage = (aboveTheWaistBackImageRet.image ??
+                UIImage(named: "PsoriasisDrawAboveTheWaistBack")),
+                let belowBackImage = (belowTheWaistBackImageRet.image ??
+                    UIImage(named: "PsoriasisDrawBelowTheWaistBack")) {
+                
+                let bodySummaryImage = PSRImageHelper.createPsoriasisDrawSummaryImage(aboveFront: aboveFrontImage, belowFront: belowFrontImage, aboveBack: aboveBackImage, belowBack: belowBackImage)
+                self.bodySummaryImageView.image = bodySummaryImage
+            }
         }
     }
     
-    open func image(from identifier: String, assignTo: UIImageView) -> Bool {
+    open func image(from identifier: String) -> (success: Bool, image: UIImage?) {
         for result in self.taskController?.taskViewModel.taskResult.stepHistory ?? [] {
             if let fileResult = result as? RSDFileResultObject,
                 let fileUrl = fileResult.url,
@@ -223,15 +220,15 @@ open class PsoriasisDrawCompletionStepViewController: RSDStepViewController, Pro
                 do {
                     let image = try UIImage(data: Data(contentsOf: fileUrl))
                     debugPrint("Successfully created image for \(fileResult.identifier)")
-                    assignTo.image = image
-                    return true
+                    return (true, image)
                 } catch let error {
                     debugPrint("Error creating image from url \(error)")
                     // Continue looking
+                    return (false, nil)
                 }
             }
         }
-        return false
+        return (true, nil)
     }
     
     override open func goForward() {
