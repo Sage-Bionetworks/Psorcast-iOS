@@ -70,9 +70,9 @@ public class PSRImageHelper {
         let verticalPadding = CGFloat(48)
         
         // The scale between the aboveFront image and the belowFront image sizes
-        let frontAboveToBelowScale = CGFloat(181) / CGFloat(181)
+        let frontAboveToBelowScale = CGFloat(179) / CGFloat(181)
         // The scale between the aboveBack image and the belowBack image sizes
-        let backAboveToBelowScale = CGFloat(181) / CGFloat(181)
+        let backAboveToBelowScale = CGFloat(179) / CGFloat(181)
         
         /// It is the vertical space between the front body images divided by width of them
         let frontAboveToBelowVerticalSpacing = CGFloat(209.0 / 375.0)
