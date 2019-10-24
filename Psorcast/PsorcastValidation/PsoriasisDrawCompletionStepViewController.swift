@@ -232,24 +232,27 @@ open class PsoriasisDrawCompletionStepViewController: RSDStepViewController, Pro
     }
     
     override open func goForward() {
-        let image = self.bodyImageContainer.asImage()
-        var url: URL?
-        do {
-            if let imageData = image.pngData(),
-                let outputDir = self.stepViewModel.parentTaskPath?.outputDirectory {
-                url = try RSDFileResultUtility.createFileURL(identifier: summaryImageResultIdentifier, ext: "png", outputDirectory: outputDir)
-                save(imageData, to: url!)
+        if let image = self.bodySummaryImageView.image {
+            var url: URL?
+            do {
+                if let imageData = image.pngData(),
+                    let outputDir = self.stepViewModel.parentTaskPath?.outputDirectory {
+                    url = try RSDFileResultUtility.createFileURL(identifier: summaryImageResultIdentifier, ext: "png", outputDirectory: outputDir)
+                    save(imageData, to: url!)
+                }
+            } catch let error {
+                debugPrint("Failed to save the image: \(error)")
             }
-        } catch let error {
-            debugPrint("Failed to save the image: \(error)")
-        }
 
-        // Create the result and set it as the result for this step
-        var result = RSDFileResultObject(identifier: summaryImageResultIdentifier)
-        result.url = url
-        _ = self.stepViewModel.parent?.taskResult.appendStepHistory(with: result)
-        
-        super.goForward()
+            // Create the result and set it as the result for this step
+            var result = RSDFileResultObject(identifier: summaryImageResultIdentifier)
+            result.url = url
+            _ = self.stepViewModel.parent?.taskResult.appendStepHistory(with: result)
+            
+            super.goForward()
+        } else {
+            debugPrint("Not ready to move forward yet, still reading body summary images")
+        }
     }
     
     private func save(_ imageData: Data, to url: URL) {
