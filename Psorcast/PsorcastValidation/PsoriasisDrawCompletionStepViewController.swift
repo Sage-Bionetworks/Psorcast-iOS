@@ -46,6 +46,9 @@ open class PsoriasisDrawCompletionStepObject: RSDUIStepObject, RSDStepViewContro
 /// to indicate their psoriasis coverage, along with their average psoriasis coverage percent.
 open class PsoriasisDrawCompletionStepViewController: RSDStepViewController, ProcessorFinishedDelegate {
     
+    /// The result identifier for the summary data
+    public let summarySelectedZonesResultIdentifier = "selectedZones"
+    
     let aboveTheWaistFrontImageIdentifier = "aboveTheWaistFront"
     let belowTheWaistFrontImageIdentifier = "belowTheWaistFront"
     let aboveTheWaistBackImageIdentifier = "aboveTheWaistBack"
@@ -249,10 +252,27 @@ open class PsoriasisDrawCompletionStepViewController: RSDStepViewController, Pro
             result.url = url
             _ = self.stepViewModel.parent?.taskResult.appendStepHistory(with: result)
             
+            // Create the selected zones result for the summary
+            let selectedZonesResult = self.selectedZonesResult()
+            _ = self.stepViewModel.parent?.taskResult.appendStepHistory(with: selectedZonesResult)
+            
             super.goForward()
         } else {
             debugPrint("Not ready to move forward yet, still reading body summary images")
         }
+    }
+    
+    /// Consolidate the selected zones from previous answers
+    private func selectedZonesResult() -> SelectedIdentifiersResultObject {
+        var selectedZones = [SelectedIdentifier]()
+        
+        for result in self.taskController?.taskViewModel.taskResult.stepHistory ?? [] {
+            if let selectedIdentifierResult = result as? SelectedIdentifiersResultObject {
+                selectedZones.append(contentsOf: selectedIdentifierResult.selectedIdentifiers)
+            }
+        }
+        
+        return SelectedIdentifiersResultObject(identifier: summarySelectedZonesResultIdentifier, selected: selectedZones)
     }
     
     private func save(_ imageData: Data, to url: URL) {
