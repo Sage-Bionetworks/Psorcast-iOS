@@ -153,11 +153,11 @@ class ParticipantIDRegistrationViewController: RSDStepViewController, UITextFiel
     }
     
     @objc func keyboardWillShow(notification: NSNotification) {
-        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
             if (self.originalSubmitY == nil) {
                 self.originalSubmitY = self.submitButton.frame.origin.y
             }
-            self.submitButton.frame.origin.y -= keyboardSize.height
+            self.submitButton.frame.origin.y = self.getOriginalSubmitButtonY() - keyboardSize.height
         }
     }
     
