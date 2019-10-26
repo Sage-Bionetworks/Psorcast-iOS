@@ -78,7 +78,8 @@ open class BellwetherCompletionStepViewController: RSDInstructionStepViewControl
         super.setupHeader(header)
         
         self.navigationHeader?.backgroundColor = self.designSystem.colorRules.backgroundLight.color
-        self.navigationHeader?.imageView?.contentMode = .scaleAspectFit
+        self.navigationHeader?.imageView?.contentMode = .scaleAspectFill
+        self.navigationHeader?.imageView?.image = nil
         self.loadImageAndDelayIfNecessary()
         
         if let zoneLabel = self.selectZoneLabel {
