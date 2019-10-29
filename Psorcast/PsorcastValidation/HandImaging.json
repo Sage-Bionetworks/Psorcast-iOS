@@ -5,13 +5,13 @@
     "steps":
     [
         {
-            "identifier":"handInstruction1",
+            "identifier":"handInstructionLeft1",
             "type":"instruction",
             "title":"Find a flat, solid surface",
             "text":"Find a flat surface which you can place your hands on. Capture your image on a solid colored surface which is different from your skin color if possible.",
             "image":{
                 "type":"fetchable",
-                "imageName": "Hand1",
+                "imageName": "HeaderHandLeft1",
                 "placementType":"topBackground"
             },
             "actions":{
@@ -22,13 +22,13 @@
             }
         },
         {
-            "identifier":"handInstruction2",
+            "identifier":"handInstructionLeft2",
             "type":"instruction",
             "title":"Capture from directly above",
-            "text":"Using the grid, capture from directly above. Your fingernails should be in focus.",
+            "text":"Capture from directly above. Your fingernails should be in focus.",
             "image":{
                 "type":"fetchable",
-                "imageName": "Hand2",
+                "imageName": "HeaderHandLeft2",
                 "placementType":"topBackground"
             },
             "actions":{
@@ -43,6 +43,41 @@
             "identifier"    : "leftHand",
             "type"          : "imageCapture",
             "title"         : "Left Hand"
+        },
+        {
+            "identifier":"handInstructionRight1",
+            "type":"instruction",
+            "title":"Find a flat, solid surface",
+            "text":"Find a flat surface which you can place your hands on. Capture your image on a solid colored surface which is different from your skin color if possible.",
+            "image":{
+                "type":"fetchable",
+                "imageName": "HeaderHandRight1",
+                "placementType":"topBackground"
+            },
+            "actions":{
+                "goForward":{
+                    "type":"default",
+                    "buttonTitle":"I found a flat surface"
+                }
+            }
+        },
+        {
+            "identifier":"handInstructionRight2",
+            "type":"instruction",
+            "title":"Capture from directly above",
+            "text":"Capture from directly above. Your fingernails should be in focus.",
+            "image":{
+                "type":"fetchable",
+                "imageName": "HeaderHandRight2",
+                "placementType":"topBackground"
+            },
+            "actions":{
+                "goForward":{
+                    "type":"default",
+                    "buttonTitle":"Capture right hand"
+                }
+            },
+            "shouldHideActions": ["goBackward"]
         },
         {
             "identifier"    : "rightHand",
