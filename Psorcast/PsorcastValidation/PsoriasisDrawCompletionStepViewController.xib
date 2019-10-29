@@ -10,13 +10,8 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PsoriasisDrawCompletionStepViewController" customModule="PsorcastValidation" customModuleProvider="target">
             <connections>
-                <outlet property="aboveTheWaistBackImageView" destination="nXo-CK-Dfd" id="C0u-9b-iBZ"/>
-                <outlet property="aboveTheWaistFrontImageView" destination="kAu-5r-mhj" id="6gM-dW-ykY"/>
-                <outlet property="backImageVerticalSpace" destination="Siv-9f-qyd" id="0Oi-te-Mdg"/>
-                <outlet property="belowTheWaistBackImageView" destination="1h7-Y9-nrR" id="Qdo-Z2-kGv"/>
-                <outlet property="belowTheWaistFrontImageView" destination="WID-do-U5a" id="Mij-5a-wVn"/>
                 <outlet property="bodyImageContainer" destination="kjp-vl-acf" id="zOU-tT-PhL"/>
-                <outlet property="frontImageVerticalSpace" destination="z21-yb-9v0" id="dqo-qi-Tub"/>
+                <outlet property="bodySummaryImageView" destination="RQc-l5-SeU" id="Rf9-6h-jq5"/>
                 <outlet property="loadingSpinner" destination="kcr-GR-GUa" id="jC7-BP-IVB"/>
                 <outlet property="navigationFooter" destination="Ncg-SY-6dE" id="SLP-DO-Xlo"/>
                 <outlet property="navigationHeader" destination="wPa-GT-djk" id="HNH-av-5ht"/>
@@ -32,74 +27,21 @@
                     <rect key="frame" x="0.0" y="0.0" width="375" height="700"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wPa-GT-djk" customClass="RSDNavigationHeaderView" customModule="ResearchUI">
-                            <rect key="frame" x="0.0" y="0.0" width="375" height="385"/>
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="427"/>
                             <subviews>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kjp-vl-acf" userLabel="Body Image Container">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="385"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="427"/>
                                     <subviews>
-                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pJq-qM-oZH" userLabel="Left Container">
-                                            <rect key="frame" x="0.0" y="0.0" width="187.66666666666666" height="385"/>
-                                            <subviews>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="PsoriasisDrawBelowTheWaistFront" translatesAutoresizingMaskIntoConstraints="NO" id="WID-do-U5a" userLabel="BelowWaistFront">
-                                                    <rect key="frame" x="8" y="180.33333333333331" width="171.66666666666666" height="171.33333333333331"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" secondItem="WID-do-U5a" secondAttribute="height" multiplier="1:1" id="77R-hc-rYQ"/>
-                                                    </constraints>
-                                                </imageView>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="PsoriasisDrawAboveTheWaistFront" translatesAutoresizingMaskIntoConstraints="NO" id="kAu-5r-mhj" userLabel="AboveWaistFront">
-                                                    <rect key="frame" x="8" y="87.000000000000014" width="171.66666666666666" height="175.33333333333337"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" secondItem="kAu-5r-mhj" secondAttribute="height" multiplier="181:185" id="tTY-Pd-cWL"/>
-                                                    </constraints>
-                                                </imageView>
-                                            </subviews>
-                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                            <constraints>
-                                                <constraint firstItem="kAu-5r-mhj" firstAttribute="leading" secondItem="WID-do-U5a" secondAttribute="leading" id="FbE-Ff-Abo"/>
-                                                <constraint firstItem="kAu-5r-mhj" firstAttribute="trailing" secondItem="WID-do-U5a" secondAttribute="trailing" id="Zox-Ms-MCS"/>
-                                                <constraint firstItem="WID-do-U5a" firstAttribute="leading" secondItem="pJq-qM-oZH" secondAttribute="leading" constant="8" id="gqR-k4-AOC"/>
-                                                <constraint firstAttribute="trailing" secondItem="WID-do-U5a" secondAttribute="trailing" constant="8" id="kFc-6B-dhr"/>
-                                                <constraint firstItem="kAu-5r-mhj" firstAttribute="top" secondItem="pJq-qM-oZH" secondAttribute="top" constant="86.999999999999986" id="oVr-xp-hJ3"/>
-                                                <constraint firstItem="WID-do-U5a" firstAttribute="top" secondItem="kAu-5r-mhj" secondAttribute="bottom" constant="-82" id="z21-yb-9v0"/>
-                                            </constraints>
-                                        </view>
-                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vVg-WY-AU1" userLabel="Right Container">
-                                            <rect key="frame" x="187.66666666666663" y="0.0" width="187.33333333333337" height="385"/>
-                                            <subviews>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="PsoriasisDrawBelowTheWaistBack" translatesAutoresizingMaskIntoConstraints="NO" id="1h7-Y9-nrR" userLabel="BelowWaistFront">
-                                                    <rect key="frame" x="8" y="178.33333333333331" width="171.33333333333334" height="171.33333333333331"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" secondItem="1h7-Y9-nrR" secondAttribute="height" multiplier="1:1" id="Ycp-gW-WE0"/>
-                                                    </constraints>
-                                                </imageView>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="PsoriasisDrawAboveTheWaistBack" translatesAutoresizingMaskIntoConstraints="NO" id="nXo-CK-Dfd" userLabel="AboveWaistFront">
-                                                    <rect key="frame" x="9" y="87.000000000000014" width="170.33333333333334" height="175.33333333333337"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" secondItem="nXo-CK-Dfd" secondAttribute="height" multiplier="181:186" id="Ouk-z5-oyP"/>
-                                                    </constraints>
-                                                </imageView>
-                                            </subviews>
-                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                            <constraints>
-                                                <constraint firstAttribute="trailing" secondItem="nXo-CK-Dfd" secondAttribute="trailing" constant="8" id="3oM-ue-376"/>
-                                                <constraint firstItem="nXo-CK-Dfd" firstAttribute="top" secondItem="vVg-WY-AU1" secondAttribute="top" constant="87" id="6kM-3F-ofh"/>
-                                                <constraint firstItem="1h7-Y9-nrR" firstAttribute="leading" secondItem="vVg-WY-AU1" secondAttribute="leading" constant="8" id="L4C-Fe-qv8"/>
-                                                <constraint firstItem="nXo-CK-Dfd" firstAttribute="leading" secondItem="vVg-WY-AU1" secondAttribute="leading" constant="9" id="NfW-4o-dV9"/>
-                                                <constraint firstItem="1h7-Y9-nrR" firstAttribute="top" secondItem="nXo-CK-Dfd" secondAttribute="bottom" constant="-84" id="Siv-9f-qyd"/>
-                                                <constraint firstAttribute="trailing" secondItem="1h7-Y9-nrR" secondAttribute="trailing" constant="8" id="kvb-8G-7ec"/>
-                                            </constraints>
-                                        </view>
+                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="RQc-l5-SeU">
+                                            <rect key="frame" x="0.0" y="48" width="375" height="379"/>
+                                        </imageView>
                                     </subviews>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
-                                        <constraint firstAttribute="bottom" secondItem="pJq-qM-oZH" secondAttribute="bottom" id="2af-2h-0Fn"/>
-                                        <constraint firstItem="pJq-qM-oZH" firstAttribute="width" secondItem="vVg-WY-AU1" secondAttribute="width" id="4lq-SR-6Ke"/>
-                                        <constraint firstItem="pJq-qM-oZH" firstAttribute="leading" secondItem="kjp-vl-acf" secondAttribute="leading" id="AQj-fo-D5w"/>
-                                        <constraint firstAttribute="trailing" secondItem="vVg-WY-AU1" secondAttribute="trailing" id="J7k-vW-hup"/>
-                                        <constraint firstAttribute="bottom" secondItem="vVg-WY-AU1" secondAttribute="bottom" id="JEI-zA-R1k"/>
-                                        <constraint firstItem="vVg-WY-AU1" firstAttribute="top" secondItem="kjp-vl-acf" secondAttribute="top" id="TkL-w3-Pry"/>
-                                        <constraint firstItem="pJq-qM-oZH" firstAttribute="top" secondItem="kjp-vl-acf" secondAttribute="top" id="WYn-0f-IU9"/>
-                                        <constraint firstItem="vVg-WY-AU1" firstAttribute="leading" secondItem="pJq-qM-oZH" secondAttribute="trailing" id="zht-ZJ-fwq"/>
+                                        <constraint firstItem="RQc-l5-SeU" firstAttribute="leading" secondItem="kjp-vl-acf" secondAttribute="leading" id="Fgn-1P-Y45"/>
+                                        <constraint firstItem="RQc-l5-SeU" firstAttribute="top" secondItem="kjp-vl-acf" secondAttribute="top" constant="48" id="J5g-NP-Nxm"/>
+                                        <constraint firstAttribute="trailing" secondItem="RQc-l5-SeU" secondAttribute="trailing" id="WUj-hW-cJb"/>
+                                        <constraint firstAttribute="bottom" secondItem="RQc-l5-SeU" secondAttribute="bottom" id="Xo1-Nm-ePj"/>
                                     </constraints>
                                 </view>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gYt-76-z57" userLabel="Cancel Button">
@@ -123,31 +65,33 @@
                             </constraints>
                             <connections>
                                 <outlet property="cancelButton" destination="gYt-76-z57" id="KMQ-gq-XfL"/>
-                                <outlet property="textLabel" destination="mct-jM-Lzp" id="teC-2N-Ggr"/>
+                                <outlet property="textLabel" destination="mct-jM-Lzp" id="iOZ-Ap-rOH"/>
                                 <outlet property="titleLabel" destination="eMZ-8x-koe" id="f1v-vQ-Scw"/>
                             </connections>
                         </view>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mct-jM-Lzp" userLabel="Detail Label">
-                            <rect key="frame" x="24" y="461" width="327" height="122"/>
-                            <string key="text">You have noted 1.0% of your skin is affected by psoriasis. This is down from last week.You have noted 1.0% of your skin is affected by psoriasis. This is down from last week.You have noted 1.0% of your skin is affected by psoriasis.</string>
-                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                            <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            <nil key="highlightedColor"/>
-                        </label>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ncg-SY-6dE" userLabel="Footer" customClass="RSDGenericNavigationFooterView" customModule="ResearchUI">
                             <rect key="frame" x="0.0" y="599" width="375" height="101"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </view>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="1.0% Coverage" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="eMZ-8x-koe" userLabel="Title Label">
-                            <rect key="frame" x="12" y="409" width="351" height="36"/>
+                            <rect key="frame" x="12" y="451" width="351" height="36"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="36" id="ZvV-UK-Mxt"/>
                             </constraints>
                             <fontDescription key="fontDescription" type="system" pointSize="30"/>
                             <nil key="highlightedColor"/>
                         </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="You have noted 1.0% of your skin is affected by psoriasis. This is down from last week." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mct-jM-Lzp" userLabel="Text Label">
+                            <rect key="frame" x="24" y="503" width="327" height="80"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="80" id="eyC-y3-CUg"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <nil key="highlightedColor"/>
+                        </label>
                         <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="kcr-GR-GUa">
-                            <rect key="frame" x="331" y="417" width="20" height="20"/>
+                            <rect key="frame" x="331" y="459" width="20" height="20"/>
                         </activityIndicatorView>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -184,10 +128,6 @@
         </view>
     </objects>
     <resources>
-        <image name="PsoriasisDrawAboveTheWaistBack" width="375" height="444"/>
-        <image name="PsoriasisDrawAboveTheWaistFront" width="375" height="444"/>
-        <image name="PsoriasisDrawBelowTheWaistBack" width="375" height="438"/>
-        <image name="PsoriasisDrawBelowTheWaistFront" width="375" height="438"/>
         <image name="button:gYt-76-z57:image" width="50" height="50">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGa2xYJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK8QGAcI

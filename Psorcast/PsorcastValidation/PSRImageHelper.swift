@@ -36,6 +36,85 @@ import UIKit
 
 public class PSRImageHelper {
     
+    public static func createPsoriasisDrawSummaryImage(
+        aboveFront: UIImage, belowFront: UIImage,
+        aboveBack: UIImage, belowBack: UIImage) -> UIImage? {
+        
+        let imageRects = self.psoriasisDrawBodySummaryRects(
+            aboveFront: aboveFront.size, belowFront: belowFront.size,
+            aboveBack: aboveBack.size, belowBack: belowBack.size)
+        
+        UIGraphicsBeginImageContextWithOptions(CGSize(width: imageRects.canvas.width, height: imageRects.canvas.height), false, 1.0)
+                        
+        aboveFront.draw(in: imageRects.aboveFront)
+        belowFront.draw(in: imageRects.belowFront)
+        aboveBack.draw(in: imageRects.aboveBack)
+        belowBack.draw(in: imageRects.belowBack)
+        
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        return newImage
+    }
+    
+    public static func psoriasisDrawBodySummaryRects(
+        aboveFront: CGSize, belowFront: CGSize, aboveBack: CGSize, belowBack: CGSize) ->
+        (canvas: CGSize, aboveFront: CGRect, belowFront: CGRect, aboveBack: CGRect, belowBack: CGRect) {
+        
+        let minWidth = min(min(min(aboveFront.width, belowFront.width), aboveBack.width), belowBack.width)
+        let aboveFrontScale = minWidth / aboveFront.width
+        let aboveBackScale = minWidth / aboveBack.width
+        
+        // Border padding
+        let horizontalPadding = CGFloat(12)
+        let verticalPadding = CGFloat(48)
+        
+        // The scale between the aboveFront image and the belowFront image sizes
+        let frontAboveToBelowScale = CGFloat(179) / CGFloat(181)
+        // The scale between the aboveBack image and the belowBack image sizes
+        let backAboveToBelowScale = CGFloat(179) / CGFloat(181)
+        
+        /// It is the vertical space between the front body images divided by width of them
+        let frontAboveToBelowVerticalSpacing = CGFloat(209.0 / 375.0)
+        /// It is the vertical space between the back body images divided by width of them
+        let backAboveToBelowVerticalSpacing = CGFloat(212.0 / 375.0)
+        
+        let aboveFrontWidth = aboveFront.width * aboveFrontScale
+        let aboveFrontHeight = aboveFront.height * aboveFrontScale
+        
+        let aboveBackWidth = aboveBack.width * aboveBackScale
+        let aboveBackHeight = aboveBack.height * aboveBackScale
+        
+        // To calculate the canvas height, we need to take into consideration
+        // the scaled heights of individual images and their veritcal spacing
+        let frontVerticalSpacing = aboveFrontWidth * frontAboveToBelowVerticalSpacing
+        let belowFrontWidth = aboveFrontWidth * frontAboveToBelowScale
+        let belowFrontHeight = belowFrontWidth * (belowFront.height / belowFront.width)
+            
+        let backVerticalSpacing = aboveBackWidth * backAboveToBelowVerticalSpacing
+        let belowBackWidth = aboveBackWidth * backAboveToBelowScale
+        let belowBackHeight = belowBackWidth * (belowBack.height / belowBack.width)
+        
+        // imageHeights is the bigger value of the full body height image of front and back
+        let imageHeights = max((aboveFrontHeight + belowFrontHeight) - frontVerticalSpacing, (aboveBackHeight + belowBackHeight) - backVerticalSpacing)
+                
+        let canvasWidth = (horizontalPadding * 2) + aboveFrontWidth + aboveBackWidth
+        let canvasHeight = (verticalPadding * 2) + imageHeights
+        let canvasSize = CGSize(width: canvasWidth, height: canvasHeight)
+        
+        let aboveFrontRect = CGRect(x: horizontalPadding, y: verticalPadding, width: aboveFrontWidth, height: aboveFrontHeight)
+        
+        let frontCenterAdjustment = (aboveFrontWidth - belowFrontWidth) * CGFloat(0.5)
+        let belowFrontRect = CGRect(x: horizontalPadding + frontCenterAdjustment, y: verticalPadding + aboveFrontHeight - frontVerticalSpacing, width: belowFrontWidth, height: belowFrontHeight)
+        
+        let aboveBackRect = CGRect(x: aboveFrontWidth, y: verticalPadding, width: aboveBackWidth, height: aboveBackHeight)
+        
+        let backCenterAdjustment = (aboveBackWidth - belowBackWidth) * CGFloat(0.5)
+        let belowBackRect = CGRect(x: aboveFrontWidth + backCenterAdjustment, y: verticalPadding + aboveBackHeight - backVerticalSpacing, width: belowBackWidth, height: belowBackHeight)
+            
+        return (canvasSize, aboveFrontRect, belowFrontRect, aboveBackRect, belowBackRect)
+    }
+    
     /// Calulate the bounding box of image within the image view
     public static func calculateAspectFit(imageWidth: CGFloat, imageHeight: CGFloat,
                             imageViewWidth: CGFloat, imageViewHeight: CGFloat) -> CGRect {
