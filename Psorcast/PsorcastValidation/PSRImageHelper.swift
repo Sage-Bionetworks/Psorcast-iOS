@@ -168,6 +168,21 @@ extension UIView {
 }
 
 extension UIImage {
+    /// Fix orientation fromt a PNG image taken from the camera
+    func fixOrientationForPNG() -> UIImage {
+        if self.imageOrientation == UIImage.Orientation.up {
+            return self
+        }
+        UIGraphicsBeginImageContextWithOptions(self.size, false, self.scale)
+        self.draw(in: CGRect(x: 0, y: 0, width: self.size.width, height: self.size.height))
+        if let normalizedImage: UIImage = UIGraphicsGetImageFromCurrentImageContext() {
+            UIGraphicsEndImageContext()
+            return normalizedImage
+        } else {
+            return self
+        }
+    }
+    
     /// Resizes a UIImage to a a different size
     func resizeImage(targetSize: CGSize) -> UIImage {
         let size = self.size
