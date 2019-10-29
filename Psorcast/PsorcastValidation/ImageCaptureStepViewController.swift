@@ -108,7 +108,7 @@ open class ImageCaptureStepViewController: RSDStepViewController, UIImagePickerC
         
         var url: URL?
         do {
-            if let imageData = chosenImage.pngData(),
+            if let imageData = chosenImage.fixOrientationForPNG().pngData(),
                 let outputDir = self.stepViewModel.parentTaskPath?.outputDirectory {
                 url = try RSDFileResultUtility.createFileURL(identifier: self.step.identifier, ext: "png", outputDirectory: outputDir, shouldDeletePrevious: true)
                 save(imageData, to: url!)
