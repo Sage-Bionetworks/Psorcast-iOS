@@ -39,7 +39,7 @@ import BridgeAppUI
 open class JointPainStepObject: RSDUIStepObject, RSDStepViewControllerVendor, RSDNavigationSkipRule {
     
     private enum CodingKeys: String, CodingKey, CaseIterable {
-        case textSelectionFormat, textMultipleSelectionFormat, jointPainMap
+        case textSelectionFormat, textMultipleSelectionFormat, jointPainMap, background
     }
     
     /// The text format for when a user has one joint selected
@@ -49,6 +49,9 @@ open class JointPainStepObject: RSDUIStepObject, RSDStepViewControllerVendor, RS
     /// The joint pain map for displaying and cataloging the joints to show
     var jointPainMap: JointPainMap?
     
+    /// The background image for the imageview that will not be drawn on
+    open var background: RSDImageThemeElement?
+    
     /// Default type is `.jointPain`.
     open override class func defaultType() -> RSDStepType {
         return .jointPain
@@ -56,9 +59,15 @@ open class JointPainStepObject: RSDUIStepObject, RSDStepViewControllerVendor, RS
     
     public required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
+        
         self.textSelectionFormat = try container.decode(String.self, forKey: .textSelectionFormat)
         self.textMultipleSelectionFormat = try container.decode(String.self, forKey: .textMultipleSelectionFormat)
         self.jointPainMap = try container.decode(JointPainMap.self, forKey: .jointPainMap)
+        
+        if container.contains(.background) {
+            let nestedDecoder = try container.superDecoder(forKey: .background)
+            self.background = try decoder.factory.decodeImageThemeElement(from: nestedDecoder)
+        }
         
         try super.init(from: decoder)
     }
@@ -82,6 +91,7 @@ open class JointPainStepObject: RSDUIStepObject, RSDStepViewControllerVendor, RS
         subclassCopy.textSelectionFormat = self.textSelectionFormat
         subclassCopy.textMultipleSelectionFormat = self.textMultipleSelectionFormat
         subclassCopy.jointPainMap = self.jointPainMap
+        subclassCopy.background = self.background
     }
     
     open func instantiateViewController(with parent: RSDPathComponent?) -> (UIViewController & RSDStepController)? {

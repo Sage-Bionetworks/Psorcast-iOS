@@ -60,9 +60,14 @@ open class BellwetherStepViewController: RSDStepViewController, BellwetherImageV
     
     /// The initial result of the step if the user navigated back to this step
     open var initialResult: BellwetherResultObject?
+    open var initialResultFront = true
     
     /// The image view container that adds the bellwether zones
     @IBOutlet public var bellwetherImageView: BellwetherImageView!
+    /// The background image view container that shows supplemental images that can't be drawn on
+    @IBOutlet public var backgroundImageView: UIImageView!
+    var backgroundImageFront: UIImage?
+    var backgroundImageBack: UIImage?
     
     /// Returns a new step view controller for the specified step.
     /// - parameter step: The step to be presented.
@@ -91,13 +96,20 @@ open class BellwetherStepViewController: RSDStepViewController, BellwetherImageV
         self.initializeImages()
         
         // If there is an initial result, apply the selected zone and show the correct view
+        self.initializeImageViewsBasedOnResult()
+    }
+    
+    func initializeImageViewsBasedOnResult() {
         if let result = self.initialResult,
             let selectedZone = (result.bellwetherMap.front.zones + result.bellwetherMap.back.zones).first(where: { $0.isSelected ?? false }) {
              self.bellwetherImageView.selectedZone = selectedZone
             if result.bellwetherMap.front.zones.contains(where: { $0.identifier == selectedZone.identifier }) {
                 self.bellwetherImageView.currentRegion = .front
+                self.backgroundImageView?.image = self.backgroundImageFront
             } else {
+                self.initialResultFront = false
                 self.bellwetherImageView.currentRegion = .back
+                self.backgroundImageView?.image = self.backgroundImageBack
             }
         }
         self.bellwetherImageView.bellwetherMap = self.bellwetherMap
@@ -153,15 +165,53 @@ open class BellwetherStepViewController: RSDStepViewController, BellwetherImageV
                 bellwetherImageView?.backImage = img
             })
         }
+        
+        if let backgroundTheme = self.bellwetherStep?.backgroundFront,
+            !(backgroundTheme is RSDAnimatedImageThemeElement) {
+            
+            if let assetLoader = backgroundTheme as? RSDAssetImageThemeElement {
+                self.backgroundImageFront = assetLoader.embeddedImage()
+                if self.initialResultFront {
+                    self.backgroundImageView?.image = assetLoader.embeddedImage()
+                }
+            } else if let fetchLoader = backgroundTheme as? RSDFetchableImageThemeElement {
+                fetchLoader.fetchImage(for: frontSize, callback: { (_, img) in
+                    self.backgroundImageFront = img
+                    if self.initialResultFront {
+                        self.backgroundImageView?.image = img
+                    }
+                })
+            }
+        }
+        
+        if let backgroundTheme = self.bellwetherStep?.backgroundBack,
+            !(backgroundTheme is RSDAnimatedImageThemeElement) {
+            
+            if let assetLoader = backgroundTheme as? RSDAssetImageThemeElement {
+                self.backgroundImageBack = assetLoader.embeddedImage()
+                if !self.initialResultFront {
+                    self.backgroundImageView?.image = assetLoader.embeddedImage()
+                }
+            } else if let fetchLoader = backgroundTheme as? RSDFetchableImageThemeElement {
+                fetchLoader.fetchImage(for: frontSize, callback: { (_, img) in
+                    self.backgroundImageBack = img
+                    if !self.initialResultFront {
+                        self.backgroundImageView?.image = img
+                    }
+                })
+            }
+        }
     }
     
     override open func showLearnMore() {
         if self.bellwetherImageView.currentRegion == .front {
             self.learnMoreButton?.setTitle(Localization.localizedString("VIEW_MY_FRONT_BUTTON"), for: .normal)
             self.bellwetherImageView.currentRegion = .back
+            self.backgroundImageView?.image = self.backgroundImageBack
         } else if self.bellwetherImageView.currentRegion == .back {
             self.learnMoreButton?.setTitle(Localization.localizedString("VIEW_MY_BACK_BUTTON"), for: .normal)
             self.bellwetherImageView.currentRegion = .front
+            self.backgroundImageView?.image = self.backgroundImageFront
         }
     }
     
