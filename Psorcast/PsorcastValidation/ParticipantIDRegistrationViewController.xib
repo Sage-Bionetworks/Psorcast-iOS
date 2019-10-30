@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina5_9" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15400" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina5_9" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15404"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -17,6 +15,7 @@
                 <outlet property="logoutButton" destination="Bb0-9N-wht" id="b6u-qo-gEi"/>
                 <outlet property="ruleView" destination="OUa-ZL-tEd" id="G8Y-d8-2uU"/>
                 <outlet property="submitButton" destination="tP3-Sz-Seq" id="ZHo-3t-HfR"/>
+                <outlet property="submitButtonBottom" destination="3M4-yI-XpO" id="zB6-1J-Bvk"/>
                 <outlet property="textField" destination="c4V-1s-iHv" id="7Vg-t5-TXc"/>
                 <outlet property="view" destination="Be1-UX-e65" id="BEo-OJ-8Gt"/>
             </connections>
@@ -30,7 +29,7 @@
                     <rect key="frame" x="0.0" y="0.0" width="375" height="700"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FUY-ES-cUr" userLabel="UpperContent">
-                            <rect key="frame" x="0.0" y="0.0" width="375" height="624"/>
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="646"/>
                             <subviews>
                                 <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="HlO-2M-aPs">
                                     <rect key="frame" x="268" y="49" width="20" height="20"/>
@@ -49,20 +48,20 @@
                                     </connections>
                                 </button>
                                 <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Enter Participant ID" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="c4V-1s-iHv">
-                                    <rect key="frame" x="32" y="303.66666666666669" width="311" height="17"/>
+                                    <rect key="frame" x="32" y="314.66666666666669" width="311" height="17"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                     <textInputTraits key="textInputTraits" autocorrectionType="no"/>
                                 </textField>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OUa-ZL-tEd" userLabel="Rule View">
-                                    <rect key="frame" x="32" y="328.66666666666669" width="311" height="1"/>
+                                    <rect key="frame" x="32" y="339.66666666666669" width="311" height="1"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="1" id="1On-gv-R8T"/>
                                     </constraints>
                                 </view>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Error Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ztf-Jf-7Ws">
-                                    <rect key="frame" x="32" y="213.66666666666666" width="311" height="20.333333333333343"/>
+                                    <rect key="frame" x="32" y="224.66666666666666" width="311" height="20.333333333333343"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                     <color key="textColor" red="0.93333333330000001" green="0.37647058820000001" blue="0.43921568630000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <nil key="highlightedColor"/>
@@ -87,7 +86,7 @@
                             </constraints>
                         </view>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tP3-Sz-Seq" userLabel="Submit Button" customClass="RSDRoundedButton" customModule="ResearchUI">
-                            <rect key="frame" x="32" y="624" width="311" height="52"/>
+                            <rect key="frame" x="32" y="646" width="311" height="30"/>
                             <state key="normal" title="Button"/>
                             <connections>
                                 <action selector="submitTapped" destination="-1" eventType="touchUpInside" id="8gY-cp-kEa"/>
