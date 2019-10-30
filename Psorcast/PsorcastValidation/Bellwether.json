@@ -850,7 +850,8 @@
         {
             "identifier"    : "image",
             "type"          : "imageCapture",
-            "title"         : "Capture Image"
+            "title"         : "Capture Image",
+            "cameraDevice"  : "front"
         },
         {
             "identifier":"completion",

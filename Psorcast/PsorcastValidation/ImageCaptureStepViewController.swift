@@ -50,6 +50,10 @@ open class ImageCaptureStepViewController: RSDStepViewController, UIImagePickerC
     private let picker = UIImagePickerController()
     private let processingQueue = DispatchQueue(label: "org.sagebase.ResearchSuite.camera.processing")
     
+    var captureStep: ImageCaptureStepObject? {
+        return self.step as? ImageCaptureStepObject
+    }
+    
     open override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -79,6 +83,7 @@ open class ImageCaptureStepViewController: RSDStepViewController, UIImagePickerC
                 picker.cameraCaptureMode = .photo
                 picker.cameraFlashMode = .on
                 picker.modalPresentationStyle = .overCurrentContext
+                picker.cameraDevice = self.captureStep?.cameraDevice?.cameraDevice() ?? .rear
             #endif
             
             // Embed the picker in this view.
@@ -159,6 +164,13 @@ open class ImageCaptureStepViewController: RSDStepViewController, UIImagePickerC
 
 open class ImageCaptureStepObject: RSDUIStepObject, RSDStepViewControllerVendor {
     
+    private enum CodingKeys: String, CodingKey, CaseIterable {
+        case cameraDevice
+    }
+    
+    /// front or back camera
+    var cameraDevice: CameraDeviceWrapper?
+    
     /// Default type is `.imageCapture`.
     open override class func defaultType() -> RSDStepType {
         return .imageCapture
@@ -167,10 +179,21 @@ open class ImageCaptureStepObject: RSDUIStepObject, RSDStepViewControllerVendor 
     /// Override to set the properties of the subclass.
     override open func copyInto(_ copy: RSDUIStepObject) {
         super.copyInto(copy)
+        guard let subclassCopy = copy as? ImageCaptureStepObject else {
+            assertionFailure("Superclass implementation of the `copy(with:)` protocol should return an instance of this class.")
+            return
+        }
+        subclassCopy.cameraDevice = self.cameraDevice
     }
     
     /// Override the decoder per device type b/c the task may require a different set of permissions depending upon the device.
     open override func decode(from decoder: Decoder, for deviceType: RSDDeviceType?) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        
+        if container.contains(.cameraDevice) {
+            self.cameraDevice = try container.decode(CameraDeviceWrapper.self, forKey: .cameraDevice)
+        }
+        
         try super.decode(from: decoder, for: deviceType)
     }
     
@@ -186,5 +209,17 @@ open class ImageCaptureStepObject: RSDUIStepObject, RSDStepViewControllerVendor 
     
     public func instantiateViewController(with parent: RSDPathComponent?) -> (UIViewController & RSDStepController)? {
         return ImageCaptureStepViewController(step: self, parent: parent)
+    }
+}
+
+public enum CameraDeviceWrapper: String, Codable, CaseIterable  {
+    case front, rear
+    
+    func cameraDevice() -> UIImagePickerController.CameraDevice {
+        if self == .front {
+            return UIImagePickerController.CameraDevice.front
+        } else {
+            return UIImagePickerController.CameraDevice.rear
+        }
     }
 }
