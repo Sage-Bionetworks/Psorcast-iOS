@@ -43,6 +43,7 @@ public extension RSDIdentifier {
     static let mdJointCountingTask: RSDIdentifier = "MDJointCounting"
     static let mdJointSwellingTask: RSDIdentifier = "MDJointSwelling"
     static let bellwetherTask: RSDIdentifier = "Bellwether"
+    static let psoriasisDrawTask: RSDIdentifier = "PsoriasisDraw"
 }
 
 extension MCTTaskInfo : SBAActivityInfo {
