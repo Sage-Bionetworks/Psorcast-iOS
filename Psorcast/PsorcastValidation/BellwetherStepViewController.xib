@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina5_9" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15400" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina5_9" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15404"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="BellwetherStepViewController" customModule="PsorcastValidation" customModuleProvider="target">
             <connections>
-                <outlet property="bellwetherImageView" destination="qi0-an-zlg" id="EgX-tE-5SX"/>
+                <outlet property="backImageView" destination="oi8-j5-QaV" id="FtC-6V-IbM"/>
+                <outlet property="frontImageView" destination="qi0-an-zlg" id="aAu-P2-qCW"/>
+                <outlet property="imageViewContainer" destination="0AJ-A1-rc2" id="nza-9B-hmS"/>
                 <outlet property="navigationFooter" destination="Ncg-SY-6dE" id="6pu-E0-pwN"/>
                 <outlet property="navigationHeader" destination="kjp-vl-acf" id="zyb-te-a8L"/>
                 <outlet property="view" destination="Be1-UX-e65" id="BEo-OJ-8Gt"/>
@@ -29,10 +29,14 @@
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kjp-vl-acf" userLabel="Header" customClass="RSDNavigationHeaderView" customModule="ResearchUI">
                             <rect key="frame" x="0.0" y="0.0" width="375" height="111"/>
                             <subviews>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1YI-gH-DGT" userLabel="Toggle Region Button" customClass="RSDUnderlinedButton" customModule="ResearchUI">
-                                    <rect key="frame" x="239" y="24.000000000000004" width="112" height="33.333333333333343"/>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1YI-gH-DGT" userLabel="Toggle Region Button" customClass="RSDUnderlinedButton" customModule="ResearchUI">
+                                    <rect key="frame" x="207" y="24" width="144" height="64"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="64" id="1A9-3R-swg"/>
+                                        <constraint firstAttribute="width" constant="144" id="nIe-7L-CkN"/>
+                                    </constraints>
                                     <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                    <state key="normal" title="View my back"/>
+                                    <state key="normal" title="View my front"/>
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gYt-76-z57" userLabel="Cancel Button">
                                     <rect key="frame" x="8" y="24" width="50" height="50"/>
@@ -66,26 +70,46 @@
                                 <outlet property="titleLabel" destination="eMZ-8x-koe" id="oVn-Ub-ERi"/>
                             </connections>
                         </view>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qi0-an-zlg" userLabel="Bellwether Image View" customClass="BellwetherImageView" customModule="PsorcastValidation" customModuleProvider="target">
-                            <rect key="frame" x="0.0" y="111" width="375" height="454"/>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0AJ-A1-rc2">
+                            <rect key="frame" x="0.0" y="111" width="375" height="488"/>
+                            <subviews>
+                                <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qi0-an-zlg" userLabel="Front Image View" customClass="BellwetherImageView" customModule="PsorcastValidation" customModuleProvider="target">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="488"/>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </view>
+                                <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="oi8-j5-QaV" userLabel="Back Image View" customClass="BellwetherImageView" customModule="PsorcastValidation" customModuleProvider="target">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="488"/>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </view>
+                            </subviews>
+                            <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                            <constraints>
+                                <constraint firstItem="qi0-an-zlg" firstAttribute="top" secondItem="0AJ-A1-rc2" secondAttribute="top" id="6ca-wk-Dy6"/>
+                                <constraint firstAttribute="bottom" secondItem="qi0-an-zlg" secondAttribute="bottom" id="7cL-2Q-3FP"/>
+                                <constraint firstAttribute="trailing" secondItem="oi8-j5-QaV" secondAttribute="trailing" id="AW6-UG-mW4"/>
+                                <constraint firstItem="oi8-j5-QaV" firstAttribute="top" secondItem="0AJ-A1-rc2" secondAttribute="top" id="Vdo-Ke-Shm"/>
+                                <constraint firstAttribute="trailing" secondItem="qi0-an-zlg" secondAttribute="trailing" id="e1E-Q2-4an"/>
+                                <constraint firstItem="oi8-j5-QaV" firstAttribute="leading" secondItem="0AJ-A1-rc2" secondAttribute="leading" id="h4B-04-AQM"/>
+                                <constraint firstItem="qi0-an-zlg" firstAttribute="leading" secondItem="0AJ-A1-rc2" secondAttribute="leading" id="tA7-j2-Akc"/>
+                                <constraint firstAttribute="bottom" secondItem="oi8-j5-QaV" secondAttribute="bottom" id="vJ1-pb-Acq"/>
+                            </constraints>
                         </view>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ncg-SY-6dE" userLabel="Footer" customClass="RSDGenericNavigationFooterView" customModule="ResearchUI">
-                            <rect key="frame" x="0.0" y="565" width="375" height="135"/>
+                        <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ncg-SY-6dE" userLabel="Footer" customClass="RSDGenericNavigationFooterView" customModule="ResearchUI">
+                            <rect key="frame" x="0.0" y="599" width="375" height="101"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </view>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
-                        <constraint firstItem="qi0-an-zlg" firstAttribute="top" secondItem="kjp-vl-acf" secondAttribute="bottom" id="08Q-jT-GrV"/>
+                        <constraint firstItem="0AJ-A1-rc2" firstAttribute="top" secondItem="kjp-vl-acf" secondAttribute="bottom" id="6hu-Vx-grU"/>
                         <constraint firstAttribute="bottom" secondItem="Ncg-SY-6dE" secondAttribute="bottom" id="7IX-X3-3Ii"/>
-                        <constraint firstItem="qi0-an-zlg" firstAttribute="leading" secondItem="nCy-4g-nIJ" secondAttribute="leading" id="Awx-Sd-Jrd"/>
                         <constraint firstItem="Ncg-SY-6dE" firstAttribute="leading" secondItem="nCy-4g-nIJ" secondAttribute="leading" id="Bzq-ex-byO"/>
-                        <constraint firstItem="Ncg-SY-6dE" firstAttribute="top" secondItem="qi0-an-zlg" secondAttribute="bottom" id="CVH-mM-4Ik"/>
-                        <constraint firstAttribute="trailing" secondItem="qi0-an-zlg" secondAttribute="trailing" id="Cy5-js-ieN"/>
+                        <constraint firstItem="0AJ-A1-rc2" firstAttribute="leading" secondItem="nCy-4g-nIJ" secondAttribute="leading" id="Mve-bY-kYc"/>
                         <constraint firstAttribute="trailing" secondItem="kjp-vl-acf" secondAttribute="trailing" id="Oum-Vk-NiV"/>
                         <constraint firstAttribute="trailing" secondItem="Ncg-SY-6dE" secondAttribute="trailing" id="XDw-dP-K6d"/>
                         <constraint firstItem="kjp-vl-acf" firstAttribute="top" secondItem="nCy-4g-nIJ" secondAttribute="top" id="aP1-H6-AJI"/>
+                        <constraint firstItem="Ncg-SY-6dE" firstAttribute="top" secondItem="0AJ-A1-rc2" secondAttribute="bottom" id="b7o-qL-Ibj"/>
+                        <constraint firstAttribute="trailing" secondItem="0AJ-A1-rc2" secondAttribute="trailing" id="cYk-Ez-KSy"/>
                         <constraint firstItem="kjp-vl-acf" firstAttribute="leading" secondItem="nCy-4g-nIJ" secondAttribute="leading" id="nrX-k7-h40"/>
                     </constraints>
                 </view>
