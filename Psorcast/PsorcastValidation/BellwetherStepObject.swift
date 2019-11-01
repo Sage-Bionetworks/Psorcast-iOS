@@ -39,13 +39,17 @@ import BridgeAppUI
 open class BellwetherStepObject: RSDUIStepObject, RSDStepViewControllerVendor {
     
     private enum CodingKeys: String, CodingKey, CaseIterable {
-        case frontImage, backImage, initialRegion, bellwetherMap
+        case frontImage, backImage, initialRegion, bellwetherMap, backgroundFront, backgroundBack
     }
     
     /// The image for the front region of the bellwether map
     open var frontImageTheme: RSDImageThemeElement?
     /// The image for the back region of the bellwether map
     open var backImageTheme: RSDImageThemeElement?
+    
+    /// The background image for the imageview that will not be drawn on
+    open var backgroundFront: RSDImageThemeElement?
+    open var backgroundBack: RSDImageThemeElement?
     
     /// The bellwether map for displaying and cataloging the joints to show
     open var bellwetherMap: BellwetherMap?
@@ -71,6 +75,16 @@ open class BellwetherStepObject: RSDUIStepObject, RSDStepViewControllerVendor {
         
         self.bellwetherMap = try container.decode(BellwetherMap.self, forKey: .bellwetherMap)
         
+        if container.contains(.backgroundFront) {
+            let backgroundNestedDecoder = try container.superDecoder(forKey: .backgroundFront)
+            self.backgroundFront = try decoder.factory.decodeImageThemeElement(from: backgroundNestedDecoder)
+        }
+        
+        if container.contains(.backgroundBack) {
+            let backgroundNestedDecoder = try container.superDecoder(forKey: .backgroundBack)
+            self.backgroundBack = try decoder.factory.decodeImageThemeElement(from: backgroundNestedDecoder)
+        }
+        
         try super.init(from: decoder)
     }
     
@@ -95,6 +109,8 @@ open class BellwetherStepObject: RSDUIStepObject, RSDStepViewControllerVendor {
         subclassCopy.initialRegion = self.initialRegion
         subclassCopy.frontImageTheme = self.frontImageTheme
         subclassCopy.backImageTheme = self.backImageTheme
+        subclassCopy.backgroundFront = self.backgroundFront
+        subclassCopy.backgroundBack = self.backgroundBack
     }
     
     open func instantiateViewController(with parent: RSDPathComponent?) -> (UIViewController & RSDStepController)? {

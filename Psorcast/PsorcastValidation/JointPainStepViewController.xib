@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14868" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15400" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina5_9" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14824"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15404"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="JointPainStepViewController" customModule="PsorcastValidation" customModuleProvider="target">
             <connections>
+                <outlet property="backgroundImageView" destination="Y2z-NK-vGy" id="dJz-R0-CYL"/>
                 <outlet property="jointImageView" destination="qi0-an-zlg" id="Go4-Np-h7V"/>
                 <outlet property="navigationFooter" destination="Ncg-SY-6dE" id="SLP-DO-Xlo"/>
                 <outlet property="navigationHeader" destination="kjp-vl-acf" id="7ON-iy-iGV"/>
@@ -66,9 +67,12 @@
                                 <outlet property="titleLabel" destination="eMZ-8x-koe" id="oVn-Ub-ERi"/>
                             </connections>
                         </view>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Y2z-NK-vGy" userLabel="Background Image View">
+                            <rect key="frame" x="0.0" y="111" width="375" height="488"/>
+                        </imageView>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qi0-an-zlg" customClass="JointPainImageView" customModule="PsorcastValidation" customModuleProvider="target">
                             <rect key="frame" x="0.0" y="111" width="375" height="488"/>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <userDefinedRuntimeAttributes>
                                 <userDefinedRuntimeAttribute type="image" keyPath="image" value="AboveTheWaist"/>
                             </userDefinedRuntimeAttributes>
@@ -80,6 +84,7 @@
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
+                        <constraint firstItem="Y2z-NK-vGy" firstAttribute="leading" secondItem="qi0-an-zlg" secondAttribute="leading" id="0Ga-nt-Stz"/>
                         <constraint firstAttribute="trailing" secondItem="qi0-an-zlg" secondAttribute="trailing" id="6lC-33-Pn7"/>
                         <constraint firstAttribute="bottom" secondItem="Ncg-SY-6dE" secondAttribute="bottom" id="7IX-X3-3Ii"/>
                         <constraint firstItem="Ncg-SY-6dE" firstAttribute="top" secondItem="qi0-an-zlg" secondAttribute="bottom" id="8HE-V3-Laz"/>
@@ -89,7 +94,10 @@
                         <constraint firstAttribute="trailing" secondItem="kjp-vl-acf" secondAttribute="trailing" id="Oum-Vk-NiV"/>
                         <constraint firstAttribute="trailing" secondItem="Ncg-SY-6dE" secondAttribute="trailing" id="XDw-dP-K6d"/>
                         <constraint firstItem="kjp-vl-acf" firstAttribute="top" secondItem="nCy-4g-nIJ" secondAttribute="top" id="aP1-H6-AJI"/>
+                        <constraint firstItem="Y2z-NK-vGy" firstAttribute="bottom" secondItem="qi0-an-zlg" secondAttribute="bottom" id="bsI-VF-0ZW"/>
                         <constraint firstItem="kjp-vl-acf" firstAttribute="leading" secondItem="nCy-4g-nIJ" secondAttribute="leading" id="nrX-k7-h40"/>
+                        <constraint firstItem="Y2z-NK-vGy" firstAttribute="trailing" secondItem="qi0-an-zlg" secondAttribute="trailing" id="oS7-uk-p06"/>
+                        <constraint firstItem="Y2z-NK-vGy" firstAttribute="top" secondItem="qi0-an-zlg" secondAttribute="top" id="qOZ-f5-1nG"/>
                     </constraints>
                 </view>
             </subviews>

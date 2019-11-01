@@ -73,6 +73,11 @@
                 "imageName": "AboveTheWaist",
                 "placementType":"topBackground"
             },
+            "background":{
+                "type":"fetchable",
+                "imageName": "JointCountingLeftRightTop",
+                "placementType":"topBackground"
+            },
             "jointPainMap": {
                 "region": "aboveTheWaist",
                 "subregion": "none",
@@ -140,6 +145,11 @@
             "image":{
                 "type":"fetchable",
                 "imageName": "BelowTheWaist",
+                "placementType":"topBackground"
+            },
+            "background":{
+                "type":"fetchable",
+                "imageName": "JointCountingLeftRightMiddle",
                 "placementType":"topBackground"
             },
             "jointPainMap": {

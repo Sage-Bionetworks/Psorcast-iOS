@@ -58,8 +58,10 @@ open class PsoriasisDrawStepObject: RSDUIStepObject, RSDStepViewControllerVendor
         
         self.regionMap = try container.decode(RegionMap.self, forKey: .regionMap)
         
-        let nestedDecoder = try container.superDecoder(forKey: .background)
-        self.background = try decoder.factory.decodeImageThemeElement(from: nestedDecoder)
+        if container.contains(.background) {
+            let nestedDecoder = try container.superDecoder(forKey: .background)
+            self.background = try decoder.factory.decodeImageThemeElement(from: nestedDecoder)
+        }
         
         try super.init(from: decoder)
     }
@@ -81,6 +83,7 @@ open class PsoriasisDrawStepObject: RSDUIStepObject, RSDStepViewControllerVendor
             return
         }
         subclassCopy.regionMap = self.regionMap
+        subclassCopy.background = self.background
     }
     
     open func instantiateViewController(with parent: RSDPathComponent?) -> (UIViewController & RSDStepController)? {
