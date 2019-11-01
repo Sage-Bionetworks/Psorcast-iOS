@@ -111,6 +111,7 @@ open class BellwetherStepViewController: RSDStepViewController, BellwetherImageV
             let selectedZone = (result.bellwetherMap.front.zones + result.bellwetherMap.back.zones).first(where: { $0.isSelected ?? false }) {
             self.frontImageView.selectedZone = selectedZone
             self.backImageView.selectedZone = selectedZone
+            self.navigationHeader?.titleLabel?.text = self.selectedZoneText()
             
             if result.bellwetherMap.front.zones.contains(where: { $0.identifier == selectedZone.identifier }) {
                 self.showFront(animate: false)
@@ -130,6 +131,7 @@ open class BellwetherStepViewController: RSDStepViewController, BellwetherImageV
         super.setupHeader(header)
         self.frontImageView.setDesignSystem(self.designSystem, with: self.background)
         self.backImageView.setDesignSystem(self.designSystem, with: self.background)
+        self.navigationHeader?.titleLabel?.text = self.selectedZoneText()
     }
     
     override open func setupFooter(_ footer: RSDNavigationFooterView) {
@@ -209,7 +211,7 @@ open class BellwetherStepViewController: RSDStepViewController, BellwetherImageV
     }
     
     override open func showLearnMore() {
-        if !self.frontImageView.isHidden {
+        if !self.backgroundContainerFront.isHidden {
             self.learnMoreButton?.setTitle(Localization.localizedString("VIEW_MY_FRONT_BUTTON"), for: .normal)
             self.showBack(animate: true)
         } else {
@@ -220,20 +222,12 @@ open class BellwetherStepViewController: RSDStepViewController, BellwetherImageV
     
     func showFront(animate: Bool) {
         let showFrontFunc: ((Bool) -> Void) = { (success) in
-//            self.frontImageView.isHidden = false
-//            self.frontImageView.isUserInteractionEnabled = true
-//
-//            self.backImageView.isHidden = true
-//            self.backImageView.isUserInteractionEnabled = false
-//
-//            self.backgroundImageCon.isHidden = false
-//            self.backgroundImageViewBack.isHidden = true
             self.backgroundContainerFront.isHidden = false
             self.backgroundContainerBack.isHidden = true
         }
         
         if animate {
-            UIView.transition(from: backImageView, to: frontImageView, duration: 1, options: [.transitionFlipFromRight, .showHideTransitionViews], completion: showFrontFunc)
+            UIView.transition(from: self.backgroundContainerBack, to: self.backgroundContainerFront, duration: 1, options: [.transitionFlipFromRight, .showHideTransitionViews], completion: showFrontFunc)
         } else {
             showFrontFunc(true)
         }
@@ -241,20 +235,12 @@ open class BellwetherStepViewController: RSDStepViewController, BellwetherImageV
     
     func showBack(animate: Bool) {
         let showBackFunc: ((Bool) -> Void) = { (success) in
-//            self.backImageView.isHidden = false
-//            self.backImageView.isUserInteractionEnabled = true
-//
-//            self.frontImageView.isHidden = true
-//            self.frontImageView.isUserInteractionEnabled = false
-//
-//            self.backgroundImageViewFront.isHidden = false
-//            self.backgroundImageViewBack.isHidden = true
             self.backgroundContainerFront.isHidden = true
             self.backgroundContainerBack.isHidden = false
         }
         
         if animate {
-            UIView.transition(from: frontImageView, to: backImageView, duration: 1, options: [.transitionFlipFromLeft, .showHideTransitionViews], completion: showBackFunc)
+            UIView.transition(from: self.backgroundContainerFront, to: self.backgroundContainerBack, duration: 1, options: [.transitionFlipFromLeft, .showHideTransitionViews], completion: showBackFunc)
         } else {
             showBackFunc(true)
         }
