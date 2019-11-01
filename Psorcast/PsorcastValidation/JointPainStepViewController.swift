@@ -60,6 +60,8 @@ open class JointPainStepViewController: RSDStepViewController, JointPainImageVie
     
     /// The image view container that adds the joint buttons
     @IBOutlet public var jointImageView: JointPainImageView!
+    /// The background image view container that shows supplemental images that can't be drawn on
+    @IBOutlet public var backgroundImageView: UIImageView!
     
     /// Returns a new step view controller for the specified step.
     /// - parameter step: The step to be presented.
@@ -91,12 +93,10 @@ open class JointPainStepViewController: RSDStepViewController, JointPainImageVie
     
     func initializeImages() {
         guard let theme = self.jointPainStep?.imageTheme else {
-            debugPrint("Could not find image theme")
             return
         }
         
         guard let size = self.jointPainStep?.jointPainMap?.imageSize.size else {
-            debugPrint("We need proper image sizes to initialize images")
             return
         }
         
@@ -114,6 +114,23 @@ open class JointPainStepViewController: RSDStepViewController, JointPainImageVie
         }
         
         self.initJointPainImageView()
+        
+        guard let backgroundTheme = self.jointPainStep?.background else {
+            return
+        }
+        
+        guard !(backgroundTheme is RSDAnimatedImageThemeElement) else {
+            debugPrint("We do not support animated images for psoriasis background")
+            return
+        }
+        
+        if let assetLoader = backgroundTheme as? RSDAssetImageThemeElement {
+            self.backgroundImageView?.image = assetLoader.embeddedImage()
+        } else if let fetchLoader = backgroundTheme as? RSDFetchableImageThemeElement {
+            fetchLoader.fetchImage(for: size, callback: { [weak backgroundImageView] (_, img) in
+                backgroundImageView?.image = img
+            })
+        }
     }
     
     func initJointPainImageView() {

@@ -68,6 +68,11 @@
             "text": "Select all that apply",
             "textSelectionFormat": "%@ joint selected",
             "textMultipleSelectionFormat": "%@ joints selected",
+            "background":{
+                "type":"fetchable",
+                "imageName": "JointCountingLeftRightTop",
+                "placementType":"topBackground"
+            },
             "image":{
                 "type":"fetchable",
                 "imageName": "AboveTheWaist",
@@ -136,7 +141,12 @@
             "title": "Select your joint pain",
             "text": "Select all that apply",
             "textSelectionFormat": "%@ joint selected",
-            "textMultipleSelectionFormat": "%@ joints selected",
+            "textMultipleSelectionFormat": "%@ joints selected",            
+            "background":{
+                "type":"fetchable",
+                "imageName": "JointCountingLeftRightMiddle",
+                "placementType":"topBackground"
+            },
             "image":{
                 "type":"fetchable",
                 "imageName": "BelowTheWaist",

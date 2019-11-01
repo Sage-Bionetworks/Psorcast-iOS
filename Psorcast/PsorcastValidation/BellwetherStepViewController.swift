@@ -64,7 +64,13 @@ open class BellwetherStepViewController: RSDStepViewController, BellwetherImageV
     /// The image view container that adds the bellwether zones
     @IBOutlet public var frontImageView: BellwetherImageView!
     @IBOutlet public var backImageView: BellwetherImageView!
-    @IBOutlet public var imageViewContainer: UIView!
+
+    @IBOutlet public var bellwetherImageView: BellwetherImageView!
+    /// The background image view container that shows supplemental images that can't be drawn on
+    @IBOutlet public var backgroundImageViewFront: UIImageView!
+    @IBOutlet public var backgroundImageViewBack: UIImageView!
+    @IBOutlet public var backgroundContainerFront: UIView!
+    @IBOutlet public var backgroundContainerBack: UIView!
     
     /// Returns a new step view controller for the specified step.
     /// - parameter step: The step to be presented.
@@ -93,10 +99,13 @@ open class BellwetherStepViewController: RSDStepViewController, BellwetherImageV
         
         self.initializeImages()
         
-        self.frontImageView.isHidden = false
-        self.backImageView.isHidden = true
+        self.showFront(animate: false)
         
         // If there is an initial result, apply the selected zone and show the correct view
+        self.initializeImageViewsBasedOnResult()
+    }
+    
+    func initializeImageViewsBasedOnResult() {
         if let result = self.initialResult,
             
             let selectedZone = (result.bellwetherMap.front.zones + result.bellwetherMap.back.zones).first(where: { $0.isSelected ?? false }) {
@@ -104,11 +113,9 @@ open class BellwetherStepViewController: RSDStepViewController, BellwetherImageV
             self.backImageView.selectedZone = selectedZone
             
             if result.bellwetherMap.front.zones.contains(where: { $0.identifier == selectedZone.identifier }) {
-                self.frontImageView.isHidden = false
-                self.backImageView.isHidden = true
+                self.showFront(animate: false)
             } else {
-                self.backImageView.isHidden = false
-                self.frontImageView.isHidden = true
+                self.showBack(animate: false)
             }
         }
         
@@ -175,37 +182,82 @@ open class BellwetherStepViewController: RSDStepViewController, BellwetherImageV
                 backImageView?.backImage = img
             })
         }
+        
+        if let backgroundTheme = self.bellwetherStep?.backgroundFront,
+            !(backgroundTheme is RSDAnimatedImageThemeElement) {
+            
+            if let assetLoader = backgroundTheme as? RSDAssetImageThemeElement {
+                self.backgroundImageViewFront.image = assetLoader.embeddedImage()
+            } else if let fetchLoader = backgroundTheme as? RSDFetchableImageThemeElement {
+                fetchLoader.fetchImage(for: frontSize, callback: { (_, img) in
+                    self.backgroundImageViewFront.image = img
+                })
+            }
+        }
+        
+        if let backgroundTheme = self.bellwetherStep?.backgroundBack,
+            !(backgroundTheme is RSDAnimatedImageThemeElement) {
+            
+            if let assetLoader = backgroundTheme as? RSDAssetImageThemeElement {
+                self.backgroundImageViewBack.image = assetLoader.embeddedImage()
+            } else if let fetchLoader = backgroundTheme as? RSDFetchableImageThemeElement {
+                fetchLoader.fetchImage(for: frontSize, callback: { (_, img) in
+                    self.backgroundImageViewBack.image = img
+                })
+            }
+        }
     }
     
     override open func showLearnMore() {
         if !self.frontImageView.isHidden {
             self.learnMoreButton?.setTitle(Localization.localizedString("VIEW_MY_FRONT_BUTTON"), for: .normal)
-            self.animateToBack()
+            self.showBack(animate: true)
         } else {
             self.learnMoreButton?.setTitle(Localization.localizedString("VIEW_MY_BACK_BUTTON"), for: .normal)
-            self.animateToFront()
+            self.showFront(animate: true)
         }
     }
     
-    func animateToFront() {
-        UIView.transition(from: backImageView, to: frontImageView, duration: 1, options: [.transitionFlipFromRight, .showHideTransitionViews], completion: { (success) in
-            
-            self.frontImageView.isHidden = false
-            self.frontImageView.isUserInteractionEnabled = true
-            self.backImageView.isHidden = true
-            self.backImageView.isUserInteractionEnabled = false
-        })
+    func showFront(animate: Bool) {
+        let showFrontFunc: ((Bool) -> Void) = { (success) in
+//            self.frontImageView.isHidden = false
+//            self.frontImageView.isUserInteractionEnabled = true
+//
+//            self.backImageView.isHidden = true
+//            self.backImageView.isUserInteractionEnabled = false
+//
+//            self.backgroundImageCon.isHidden = false
+//            self.backgroundImageViewBack.isHidden = true
+            self.backgroundContainerFront.isHidden = false
+            self.backgroundContainerBack.isHidden = true
+        }
+        
+        if animate {
+            UIView.transition(from: backImageView, to: frontImageView, duration: 1, options: [.transitionFlipFromRight, .showHideTransitionViews], completion: showFrontFunc)
+        } else {
+            showFrontFunc(true)
+        }
     }
     
-    func animateToBack() {
+    func showBack(animate: Bool) {
+        let showBackFunc: ((Bool) -> Void) = { (success) in
+//            self.backImageView.isHidden = false
+//            self.backImageView.isUserInteractionEnabled = true
+//
+//            self.frontImageView.isHidden = true
+//            self.frontImageView.isUserInteractionEnabled = false
+//
+//            self.backgroundImageViewFront.isHidden = false
+//            self.backgroundImageViewBack.isHidden = true
+            self.backgroundContainerFront.isHidden = true
+            self.backgroundContainerBack.isHidden = false
+        }
         
-        UIView.transition(from: frontImageView, to: backImageView, duration: 1, options: [.transitionFlipFromLeft, .showHideTransitionViews], completion: { (success) in
-            
-            self.backImageView.isHidden = false
-            self.backImageView.isUserInteractionEnabled = true
-            self.frontImageView.isHidden = true
-            self.frontImageView.isUserInteractionEnabled = false
-        })
+        if animate {
+            UIView.transition(from: frontImageView, to: backImageView, duration: 1, options: [.transitionFlipFromLeft, .showHideTransitionViews], completion: showBackFunc)
+        } else {
+            showBackFunc(true)
+        }
     }
     
     /// Override the default background for all the placements
