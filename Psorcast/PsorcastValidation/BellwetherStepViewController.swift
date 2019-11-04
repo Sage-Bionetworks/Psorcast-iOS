@@ -227,7 +227,7 @@ open class BellwetherStepViewController: RSDStepViewController, BellwetherImageV
         }
         
         if animate {
-            UIView.transition(from: self.backgroundContainerBack, to: self.backgroundContainerFront, duration: 1, options: [.transitionFlipFromRight, .showHideTransitionViews], completion: showFrontFunc)
+            UIView.transition(from: self.backgroundContainerBack, to: self.backgroundContainerFront, duration: 0.5, options: [.transitionFlipFromRight, .showHideTransitionViews], completion: showFrontFunc)
         } else {
             showFrontFunc(true)
         }
@@ -240,7 +240,7 @@ open class BellwetherStepViewController: RSDStepViewController, BellwetherImageV
         }
         
         if animate {
-            UIView.transition(from: self.backgroundContainerFront, to: self.backgroundContainerBack, duration: 1, options: [.transitionFlipFromLeft, .showHideTransitionViews], completion: showBackFunc)
+            UIView.transition(from: self.backgroundContainerFront, to: self.backgroundContainerBack, duration: 0.5, options: [.transitionFlipFromLeft, .showHideTransitionViews], completion: showBackFunc)
         } else {
             showBackFunc(true)
         }
