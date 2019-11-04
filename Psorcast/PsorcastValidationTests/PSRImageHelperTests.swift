@@ -73,7 +73,7 @@ class PSRImageHelperTests: XCTestCase {
         
         let translated = PSRImageHelper.translateCenterPointToAspectFitCoordinateSpace(imageSize: imageSize, aspectFitRect: aspectFitRect, centerToTranslate: center, sizeToTranslate: jointSize)
         XCTAssertEqual(translated.leadingTop.x, 34)
-        XCTAssertEqual(translated.leadingTop.y, 9)
+        XCTAssertEqual(translated.leadingTop.y, 8.5)
         XCTAssertEqual(translated.size.width, 2)
         XCTAssertEqual(translated.size.height, 3)
     }
@@ -103,7 +103,7 @@ class PSRImageHelperTests: XCTestCase {
         
         let translated = PSRImageHelper.translateCenterPointToAspectFitCoordinateSpace(imageSize: imageSize, aspectFitRect: aspectFitRect, centerToTranslate: center, sizeToTranslate: jointSize)
         XCTAssertEqual(translated.leadingTop.x, 8.5)
-        XCTAssertEqual(translated.leadingTop.y, 43.5)
+        XCTAssertEqual(translated.leadingTop.y, 44.0)
         XCTAssertEqual(translated.size.width, 3)
         XCTAssertEqual(translated.size.height, 2)
     }
