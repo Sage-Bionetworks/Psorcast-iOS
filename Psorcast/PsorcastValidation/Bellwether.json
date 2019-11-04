@@ -1,17 +1,44 @@
 {
-    "taskIdentifier": "Bellwether",
-    "schemaIdentifier": "Bellwether",
+    "taskIdentifier": "PsoriasisAreaPhoto",
+    "schemaIdentifier": "PsoriasisAreaPhoto",
     "progressMarkers":[],
     "steps":
     [
         {
-            "identifier": "introductionInstruction",
+            "identifier": "introduction",
+            "type":"overview",
+            "title":"Psoriasis Area Photo",
+            "text":"In this activity, we’d like you to select the area on your body which is currently the most representative of your psoraiasis, then take a photo of it to track over time.",
+            "image": {
+                "type":"fetchable",
+                "imageName":"PsoriasisAreaPhoto3",
+                "placementType":"topBackground"
+            },
+            "actions": {
+                "goForward":{
+                    "type":"default",
+                    "buttonTitle":"Get Started"
+                },
+                "skip":{
+                    "type":"reminder",
+                    "reminderIdentifier":"PsoriasisAreaPhoto"
+                },
+                "learnMore": {
+                    "type": "videoView",
+                    "buttonTitle" : "See this in action",
+                    "url": "video.mp4"
+                }
+            },
+            "shouldHideActions": ["goBackward"]
+        },
+        {
+            "identifier": "instruction1",
             "type": "instruction",
-            "title": "Bellwether area",
-            "text": "Select the area that is the most representative of your psoriasis. This will be an area that you will photograph to track your condition.",
+            "title": "Most representative area",
+            "text": "Select the area that is the most representative of your psoriasis. This will be an area that you will photograph to track your psoriasis over time.",
             "image": {
                 "type": "animated",
-                "imageNames": ["Bellwether1", "Bellwether2", "Bellwether3"],
+                "imageNames": ["PsoriasisAreaPhoto1", "PsoriasisAreaPhoto2", "PsoriasisAreaPhoto3"],
                 "placementType": "topMarginBackground",
                 "animationDuration": 3.0
             },
@@ -23,28 +50,28 @@
             }
         },
         {
-            "identifier": "bellwetherSelection",
-            "type": "bellwether",
-            "title": "Select your representative area",
+            "identifier": "psoriasisArea",
+            "type": "psoriasisAreaPhoto",
+            "title": "Tap an area that best represents your psoriasis",
             "initialRegion": "front",
             "frontImage": {
                 "type":"fetchable",
-                "imageName": "BellwetherFront",
+                "imageName": "PsoriasisAreaPhotoFront",
                 "placementType":"topBackground"
             },
             "backImage": {
                 "type":"fetchable",
-                "imageName": "BellwetherBack",
+                "imageName": "PsoriasisAreaPhotoBack",
                 "placementType":"topBackground"
             },
             "backgroundFront":{
                 "type":"fetchable",
-                "imageName": "BellwetherRightLeft",
+                "imageName": "PsoriasisAreaPhotoRightLeft",
                 "placementType":"topBackground"
             },
             "backgroundBack":{
                 "type":"fetchable",
-                "imageName": "BellwetherLeftRight",
+                "imageName": "PsoriasisAreaPhotoLeftRight",
                 "placementType":"topBackground"
             },
             "actions": {
@@ -62,7 +89,7 @@
                     "skipToIdentifier": "noPsoriasisCompletion"
                 }
             },
-            "bellwetherMap": {
+            "psoriasisAreaPhotoMap": {
                 "selectedZoneSize": {
                     "width": 40,
                     "height": 40
@@ -808,64 +835,25 @@
             }
         },
         {
-            "identifier": "bellwetherCameraInstruction1",
+            "identifier": "instruction2",
             "type": "instruction",
-            "title": "Neutral background",
-            "text": "It is easier to see photos which don’t have distracting backgrounds. Capture your image on a solid colored surface if possible.",
+            "title": "Affected and normal skin",
+            "text": "Try to capture the whole area and some surrounding healthy skin as closely as you can while still being in focus. Try not take the picture at an angle so you avoid any distortion.",
             "image":{
                 "type":"fetchable",
-                "imageName": "BellwetherCamera1",
+                "imageName": "PsoriasisAreaPhotoCamera2",
                 "placementType":"topBackground"
             }
         },
         {
-            "identifier": "bellwetherCameraInstruction2",
-            "type": "instruction",
-            "title": "Close up",
-            "text": "Try to capture the whole plaque as closely as you can while still being in focus.",
-            "image": {
-                "type":"fetchable",
-                "imageName": "BellwetherCamera2",
-                "placementType":"topBackground"
-            }
-        },
-        {
-            "identifier": "bellwetherCameraInstruction3",
-            "type": "instruction",
-            "title": "Capture front on",
-            "text": "Try to capture your skin front on instead of on an angle to avoid any distortion.",
-            "image": {
-                "type":"fetchable",
-                "imageName": "BellwetherCamera3",
-                "placementType":"topBackground"
-            }
-        },
-        {
-            "identifier": "bellwetherCameraInstruction4",
-            "type": "instruction",
-            "title": "Capture the plaque edge",
-            "text": "Try to capture the image so you get both healthy skin and your plaques for comparison.",
-            "image": {
-                "type":"fetchable",
-                "imageName": "BellwetherCamera4",
-                "placementType":"topBackground"
-            },
-            "actions": {
-                "goForward": {
-                    "type": "default",
-                    "buttonTitle": "Take Picture"
-                }
-            }
-        },
-        {
-            "identifier"    : "image",
+            "identifier"    : "psoriasisAreaPhoto",
             "type"          : "imageCapture",
             "title"         : "Capture Image",
             "cameraDevice"  : "front"
         },
         {
             "identifier":"completion",
-            "type":"bellwetherCompletion",
+            "type":"psoriasisAreaPhotoCompletion",
             "text": "You have selected %@ as your most representative area.",
             "actions": {
                 "goForward":{

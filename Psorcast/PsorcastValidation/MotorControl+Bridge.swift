@@ -42,7 +42,7 @@ public extension RSDIdentifier {
     static let jointCountingTask: RSDIdentifier = "JointCounting"
     static let mdJointCountingTask: RSDIdentifier = "MDJointCounting"
     static let mdJointSwellingTask: RSDIdentifier = "MDJointSwelling"
-    static let bellwetherTask: RSDIdentifier = "Bellwether"
+    static let psoriasisAreaPhotoTask: RSDIdentifier = "PsoriasisAreaPhoto"
     static let psoriasisDrawTask: RSDIdentifier = "PsoriasisDraw"
 }
 

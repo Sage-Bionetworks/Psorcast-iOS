@@ -38,8 +38,8 @@ extension RSDStepType {
     public static let selectionCheckmark: RSDStepType = "selectionCheckmark"
     public static let jointPain: RSDStepType = "jointPain"
     public static let completionJointPain: RSDStepType = "completionJointPain"
-    public static let bellwether: RSDStepType = "bellwether"
-    public static let bellwetherCompletion: RSDStepType = "bellwetherCompletion"
+    public static let psoriasisAreaPhoto: RSDStepType = "psoriasisAreaPhoto"
+    public static let psoriasisAreaPhotoCompletion: RSDStepType = "psoriasisAreaPhotoCompletion"
     public static let psoriasisDraw: RSDStepType = "psoriasisDraw"
     public static let psoriasisDrawCompletion: RSDStepType = "psoriasisDrawCompletion"
     public static let endOfValidation: RSDStepType = "endOfValidation"
@@ -57,10 +57,10 @@ open class TaskFactory: SBAFactory {
             return try JointPainStepObject(from: decoder)
         case .completionJointPain:
             return try JointPainCompletionStepObject(from: decoder)
-        case .bellwether:
-            return try BellwetherStepObject(from: decoder)
-        case .bellwetherCompletion:
-            return try BellwetherCompletionStepObject(from: decoder)
+        case .psoriasisAreaPhoto:
+            return try PsoriasisAreaPhotoStepObject(from: decoder)
+        case .psoriasisAreaPhotoCompletion:
+            return try PsoriasisAreaPhotoCompletionStepObject(from: decoder)
         case .psoriasisDraw:
             return try PsoriasisDrawStepObject(from: decoder)
         case .psoriasisDrawCompletion:
