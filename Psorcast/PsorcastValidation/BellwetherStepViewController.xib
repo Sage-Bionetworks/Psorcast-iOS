@@ -10,8 +10,12 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="BellwetherStepViewController" customModule="PsorcastValidation" customModuleProvider="target">
             <connections>
-                <outlet property="backgroundImageView" destination="uLT-n7-xdh" id="KjO-jm-OMu"/>
-                <outlet property="bellwetherImageView" destination="qi0-an-zlg" id="EgX-tE-5SX"/>
+                <outlet property="backImageView" destination="oi8-j5-QaV" id="FtC-6V-IbM"/>
+                <outlet property="backgroundContainerBack" destination="wqg-uH-bIm" id="E7U-gM-9C4"/>
+                <outlet property="backgroundContainerFront" destination="8Ey-6A-1PJ" id="f46-Dh-bRc"/>
+                <outlet property="backgroundImageViewBack" destination="Rfs-lj-K5O" id="5m7-yE-u9b"/>
+                <outlet property="backgroundImageViewFront" destination="dYb-vQ-sQX" id="nr8-2E-ZJG"/>
+                <outlet property="frontImageView" destination="qi0-an-zlg" id="aAu-P2-qCW"/>
                 <outlet property="navigationFooter" destination="Ncg-SY-6dE" id="6pu-E0-pwN"/>
                 <outlet property="navigationHeader" destination="kjp-vl-acf" id="zyb-te-a8L"/>
                 <outlet property="view" destination="Be1-UX-e65" id="BEo-OJ-8Gt"/>
@@ -28,10 +32,14 @@
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kjp-vl-acf" userLabel="Header" customClass="RSDNavigationHeaderView" customModule="ResearchUI">
                             <rect key="frame" x="0.0" y="0.0" width="375" height="111"/>
                             <subviews>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1YI-gH-DGT" userLabel="Toggle Region Button" customClass="RSDUnderlinedButton" customModule="ResearchUI">
-                                    <rect key="frame" x="239" y="24.000000000000004" width="112" height="33.333333333333343"/>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1YI-gH-DGT" userLabel="Toggle Region Button" customClass="RSDUnderlinedButton" customModule="ResearchUI">
+                                    <rect key="frame" x="207" y="24" width="144" height="64"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="64" id="1A9-3R-swg"/>
+                                        <constraint firstAttribute="width" constant="144" id="nIe-7L-CkN"/>
+                                    </constraints>
                                     <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                    <state key="normal" title="View my back"/>
+                                    <state key="normal" title="View my front"/>
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gYt-76-z57" userLabel="Cancel Button">
                                     <rect key="frame" x="8" y="24" width="50" height="50"/>
@@ -65,12 +73,67 @@
                                 <outlet property="titleLabel" destination="eMZ-8x-koe" id="oVn-Ub-ERi"/>
                             </connections>
                         </view>
-                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="uLT-n7-xdh" userLabel="Background Image View">
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0AJ-A1-rc2">
                             <rect key="frame" x="0.0" y="111" width="375" height="488"/>
-                        </imageView>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qi0-an-zlg" userLabel="Bellwether Image View" customClass="BellwetherImageView" customModule="PsorcastValidation" customModuleProvider="target">
-                            <rect key="frame" x="0.0" y="111" width="375" height="488"/>
-                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <subviews>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8Ey-6A-1PJ" userLabel="Front Image Container">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="488"/>
+                                    <subviews>
+                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="dYb-vQ-sQX" userLabel="Background">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="488"/>
+                                        </imageView>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qi0-an-zlg" userLabel="Front Image View" customClass="BellwetherImageView" customModule="PsorcastValidation" customModuleProvider="target">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="488"/>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </view>
+                                    </subviews>
+                                    <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                    <constraints>
+                                        <constraint firstAttribute="trailing" secondItem="dYb-vQ-sQX" secondAttribute="trailing" id="85W-Kh-6Qg"/>
+                                        <constraint firstItem="qi0-an-zlg" firstAttribute="top" secondItem="8Ey-6A-1PJ" secondAttribute="top" id="CZO-xd-SlN"/>
+                                        <constraint firstAttribute="bottom" secondItem="qi0-an-zlg" secondAttribute="bottom" id="Mfa-ek-4Qn"/>
+                                        <constraint firstItem="dYb-vQ-sQX" firstAttribute="top" secondItem="8Ey-6A-1PJ" secondAttribute="top" id="MiR-YM-qsB"/>
+                                        <constraint firstItem="qi0-an-zlg" firstAttribute="leading" secondItem="8Ey-6A-1PJ" secondAttribute="leading" id="XgV-bZ-52R"/>
+                                        <constraint firstAttribute="trailing" secondItem="qi0-an-zlg" secondAttribute="trailing" id="kZk-jI-ff2"/>
+                                        <constraint firstAttribute="bottom" secondItem="dYb-vQ-sQX" secondAttribute="bottom" id="vCK-4U-oWt"/>
+                                        <constraint firstItem="dYb-vQ-sQX" firstAttribute="leading" secondItem="8Ey-6A-1PJ" secondAttribute="leading" id="ysh-RV-qAN"/>
+                                    </constraints>
+                                </view>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wqg-uH-bIm" userLabel="Back Image Container">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="488"/>
+                                    <subviews>
+                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Rfs-lj-K5O" userLabel="Background">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="488"/>
+                                        </imageView>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oi8-j5-QaV" userLabel="Back Image View" customClass="BellwetherImageView" customModule="PsorcastValidation" customModuleProvider="target">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="488"/>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </view>
+                                    </subviews>
+                                    <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                    <constraints>
+                                        <constraint firstAttribute="bottom" secondItem="oi8-j5-QaV" secondAttribute="bottom" id="09z-P9-VJ8"/>
+                                        <constraint firstItem="oi8-j5-QaV" firstAttribute="top" secondItem="wqg-uH-bIm" secondAttribute="top" id="4L5-V9-CeH"/>
+                                        <constraint firstItem="oi8-j5-QaV" firstAttribute="leading" secondItem="wqg-uH-bIm" secondAttribute="leading" id="Khv-D4-Hmy"/>
+                                        <constraint firstAttribute="bottom" secondItem="Rfs-lj-K5O" secondAttribute="bottom" id="NWs-Sn-45K"/>
+                                        <constraint firstAttribute="trailing" secondItem="oi8-j5-QaV" secondAttribute="trailing" id="elF-ZE-6uq"/>
+                                        <constraint firstItem="Rfs-lj-K5O" firstAttribute="leading" secondItem="wqg-uH-bIm" secondAttribute="leading" id="ha8-l7-e94"/>
+                                        <constraint firstAttribute="trailing" secondItem="Rfs-lj-K5O" secondAttribute="trailing" id="mQY-SN-2qq"/>
+                                        <constraint firstItem="Rfs-lj-K5O" firstAttribute="top" secondItem="wqg-uH-bIm" secondAttribute="top" id="qBz-h4-pcS"/>
+                                    </constraints>
+                                </view>
+                            </subviews>
+                            <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                            <constraints>
+                                <constraint firstAttribute="bottom" secondItem="8Ey-6A-1PJ" secondAttribute="bottom" id="2mQ-Gd-sVu"/>
+                                <constraint firstItem="wqg-uH-bIm" firstAttribute="leading" secondItem="0AJ-A1-rc2" secondAttribute="leading" id="68l-jR-9e2"/>
+                                <constraint firstAttribute="trailing" secondItem="wqg-uH-bIm" secondAttribute="trailing" id="I6G-lk-JEj"/>
+                                <constraint firstAttribute="trailing" secondItem="8Ey-6A-1PJ" secondAttribute="trailing" id="bHb-Z4-ZtY"/>
+                                <constraint firstAttribute="bottom" secondItem="wqg-uH-bIm" secondAttribute="bottom" id="crZ-jN-R1m"/>
+                                <constraint firstItem="8Ey-6A-1PJ" firstAttribute="top" secondItem="0AJ-A1-rc2" secondAttribute="top" id="d1U-fJ-Njj"/>
+                                <constraint firstItem="wqg-uH-bIm" firstAttribute="top" secondItem="0AJ-A1-rc2" secondAttribute="top" id="uDH-AQ-P2q"/>
+                                <constraint firstItem="8Ey-6A-1PJ" firstAttribute="leading" secondItem="0AJ-A1-rc2" secondAttribute="leading" id="vc0-xa-7un"/>
+                            </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ncg-SY-6dE" userLabel="Footer" customClass="RSDGenericNavigationFooterView" customModule="ResearchUI">
                             <rect key="frame" x="0.0" y="599" width="375" height="101"/>
@@ -79,20 +142,16 @@
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
-                        <constraint firstItem="qi0-an-zlg" firstAttribute="top" secondItem="kjp-vl-acf" secondAttribute="bottom" id="08Q-jT-GrV"/>
+                        <constraint firstItem="0AJ-A1-rc2" firstAttribute="top" secondItem="kjp-vl-acf" secondAttribute="bottom" id="6hu-Vx-grU"/>
                         <constraint firstAttribute="bottom" secondItem="Ncg-SY-6dE" secondAttribute="bottom" id="7IX-X3-3Ii"/>
-                        <constraint firstItem="uLT-n7-xdh" firstAttribute="trailing" secondItem="qi0-an-zlg" secondAttribute="trailing" id="9LE-8w-YhY"/>
-                        <constraint firstItem="qi0-an-zlg" firstAttribute="leading" secondItem="nCy-4g-nIJ" secondAttribute="leading" id="Awx-Sd-Jrd"/>
                         <constraint firstItem="Ncg-SY-6dE" firstAttribute="leading" secondItem="nCy-4g-nIJ" secondAttribute="leading" id="Bzq-ex-byO"/>
-                        <constraint firstItem="Ncg-SY-6dE" firstAttribute="top" secondItem="qi0-an-zlg" secondAttribute="bottom" id="CVH-mM-4Ik"/>
-                        <constraint firstAttribute="trailing" secondItem="qi0-an-zlg" secondAttribute="trailing" id="Cy5-js-ieN"/>
-                        <constraint firstItem="uLT-n7-xdh" firstAttribute="top" secondItem="qi0-an-zlg" secondAttribute="top" id="LK7-Ya-QIK"/>
+                        <constraint firstItem="0AJ-A1-rc2" firstAttribute="leading" secondItem="nCy-4g-nIJ" secondAttribute="leading" id="Mve-bY-kYc"/>
                         <constraint firstAttribute="trailing" secondItem="kjp-vl-acf" secondAttribute="trailing" id="Oum-Vk-NiV"/>
                         <constraint firstAttribute="trailing" secondItem="Ncg-SY-6dE" secondAttribute="trailing" id="XDw-dP-K6d"/>
                         <constraint firstItem="kjp-vl-acf" firstAttribute="top" secondItem="nCy-4g-nIJ" secondAttribute="top" id="aP1-H6-AJI"/>
+                        <constraint firstItem="Ncg-SY-6dE" firstAttribute="top" secondItem="0AJ-A1-rc2" secondAttribute="bottom" id="b7o-qL-Ibj"/>
+                        <constraint firstAttribute="trailing" secondItem="0AJ-A1-rc2" secondAttribute="trailing" id="cYk-Ez-KSy"/>
                         <constraint firstItem="kjp-vl-acf" firstAttribute="leading" secondItem="nCy-4g-nIJ" secondAttribute="leading" id="nrX-k7-h40"/>
-                        <constraint firstItem="uLT-n7-xdh" firstAttribute="bottom" secondItem="qi0-an-zlg" secondAttribute="bottom" id="qx4-zG-1hu"/>
-                        <constraint firstItem="uLT-n7-xdh" firstAttribute="leading" secondItem="qi0-an-zlg" secondAttribute="leading" id="rwL-0g-qGC"/>
                     </constraints>
                 </view>
             </subviews>
