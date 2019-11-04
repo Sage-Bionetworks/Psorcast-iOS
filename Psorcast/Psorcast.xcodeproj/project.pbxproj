@@ -1075,7 +1075,7 @@
 				CODE_SIGN_ENTITLEMENTS = PsorcastValidation/PsorcastValidation.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 11;
+				CURRENT_PROJECT_VERSION = 13;
 				DEVELOPMENT_TEAM = KA9Z8R6M6K;
 				INFOPLIST_FILE = PsorcastValidation/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1100,7 +1100,7 @@
 				CODE_SIGN_ENTITLEMENTS = PsorcastValidation/PsorcastValidation.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 11;
+				CURRENT_PROJECT_VERSION = 13;
 				DEVELOPMENT_TEAM = KA9Z8R6M6K;
 				INFOPLIST_FILE = PsorcastValidation/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
