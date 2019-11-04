@@ -238,7 +238,7 @@ open class BellwetherImageView: UIView, RSDViewDesignable {
             
             self.layoutIfNeeded()
             self.setNeedsLayout()
-            delegate?.didLayoutButtons()
+            delegate?.didLayoutButtons(for: self)
         }
     }
     
@@ -406,11 +406,11 @@ open class BellwetherImageView: UIView, RSDViewDesignable {
             }
         }
         
-        self.delegate?.buttonTapped(button: sender as? UIButton)
+        self.delegate?.buttonTapped(for: self, button: sender as? UIButton)
     }
 }
 
 public protocol BellwetherImageViewDelegate {
-    func buttonTapped(button: UIButton?)
-    func didLayoutButtons()
+    func buttonTapped(for bellwetherView: BellwetherImageView, button: UIButton?)
+    func didLayoutButtons(for bellwetherView: BellwetherImageView)
 }

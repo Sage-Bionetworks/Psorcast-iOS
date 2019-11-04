@@ -62,7 +62,15 @@ open class BellwetherStepViewController: RSDStepViewController, BellwetherImageV
     open var initialResult: BellwetherResultObject?
     
     /// The image view container that adds the bellwether zones
+    @IBOutlet public var frontImageView: BellwetherImageView!
+    @IBOutlet public var backImageView: BellwetherImageView!
+
     @IBOutlet public var bellwetherImageView: BellwetherImageView!
+    /// The background image view container that shows supplemental images that can't be drawn on
+    @IBOutlet public var backgroundImageViewFront: UIImageView!
+    @IBOutlet public var backgroundImageViewBack: UIImageView!
+    @IBOutlet public var backgroundContainerFront: UIView!
+    @IBOutlet public var backgroundContainerBack: UIView!
     
     /// Returns a new step view controller for the specified step.
     /// - parameter step: The step to be presented.
@@ -86,36 +94,55 @@ open class BellwetherStepViewController: RSDStepViewController, BellwetherImageV
         super.viewDidLoad()
         
         // Setup the bellwether imageview
-        self.bellwetherImageView.delegate = self
+        self.frontImageView.delegate = self
+        self.backImageView.delegate = self
         
         self.initializeImages()
         
+        self.showFront(animate: false)
+        
         // If there is an initial result, apply the selected zone and show the correct view
+        self.initializeImageViewsBasedOnResult()
+    }
+    
+    func initializeImageViewsBasedOnResult() {
         if let result = self.initialResult,
+            
             let selectedZone = (result.bellwetherMap.front.zones + result.bellwetherMap.back.zones).first(where: { $0.isSelected ?? false }) {
-             self.bellwetherImageView.selectedZone = selectedZone
+            self.frontImageView.selectedZone = selectedZone
+            self.backImageView.selectedZone = selectedZone
+            self.navigationHeader?.titleLabel?.text = self.selectedZoneText()
+            
             if result.bellwetherMap.front.zones.contains(where: { $0.identifier == selectedZone.identifier }) {
-                self.bellwetherImageView.currentRegion = .front
+                self.showFront(animate: false)
             } else {
-                self.bellwetherImageView.currentRegion = .back
+                self.showBack(animate: false)
             }
         }
-        self.bellwetherImageView.bellwetherMap = self.bellwetherMap
+        
+        self.frontImageView.currentRegion = .front
+        self.backImageView.currentRegion = .back
+        
+        self.frontImageView.bellwetherMap = self.bellwetherMap
+        self.backImageView.bellwetherMap = self.bellwetherMap
     }
     
     override open func setupHeader(_ header: RSDStepNavigationView) {
         super.setupHeader(header)
-        self.bellwetherImageView.setDesignSystem(self.designSystem, with: self.background)
+        self.frontImageView.setDesignSystem(self.designSystem, with: self.background)
+        self.backImageView.setDesignSystem(self.designSystem, with: self.background)
+        self.navigationHeader?.titleLabel?.text = self.selectedZoneText()
     }
     
     override open func setupFooter(_ footer: RSDNavigationFooterView) {
         super.setupFooter(footer)
-        self.navigationFooter?.nextButton?.isEnabled = (self.bellwetherImageView.selectedZone != nil)
+        self.navigationFooter?.nextButton?.isEnabled = (
+            self.frontImageView.selectedZone != nil || self.backImageView.selectedZone != nil)
     }
     
     func initializeImages() {
-        guard self.bellwetherImageView.frontImage == nil,
-            self.bellwetherImageView.backImage == nil else {
+        guard self.frontImageView.frontImage == nil,
+            self.frontImageView.backImage == nil else {
                 // No need to intialize the images more than once
                 return
         }
@@ -139,29 +166,83 @@ open class BellwetherStepViewController: RSDStepViewController, BellwetherImageV
         }
         
         if let assetLoader = frontTheme as? RSDAssetImageThemeElement {
-            self.bellwetherImageView.frontImage = assetLoader.embeddedImage()
+            self.frontImageView.frontImage = assetLoader.embeddedImage()
+            self.backImageView.frontImage = assetLoader.embeddedImage()
         } else if let fetchLoader = frontTheme as? RSDFetchableImageThemeElement {
-            fetchLoader.fetchImage(for: frontSize, callback: { [weak bellwetherImageView] (_, img) in
-                bellwetherImageView?.frontImage = img
+            fetchLoader.fetchImage(for: frontSize, callback: { [weak frontImageView, backImageView] (_, img) in
+                frontImageView?.frontImage = img
+                backImageView?.frontImage = img
             })
         }
         
         if let assetLoader = backTheme as? RSDAssetImageThemeElement {
-            self.bellwetherImageView.backImage = assetLoader.embeddedImage()
+            self.frontImageView.backImage = assetLoader.embeddedImage()
+            self.backImageView.backImage = assetLoader.embeddedImage()
         } else if let fetchLoader = backTheme as? RSDFetchableImageThemeElement {
-            fetchLoader.fetchImage(for: backSize, callback: { [weak bellwetherImageView] (_, img) in
-                bellwetherImageView?.backImage = img
+            fetchLoader.fetchImage(for: backSize, callback: { [weak frontImageView, backImageView] (_, img) in
+                frontImageView?.backImage = img
+                backImageView?.backImage = img
             })
+        }
+        
+        if let backgroundTheme = self.bellwetherStep?.backgroundFront,
+            !(backgroundTheme is RSDAnimatedImageThemeElement) {
+            
+            if let assetLoader = backgroundTheme as? RSDAssetImageThemeElement {
+                self.backgroundImageViewFront.image = assetLoader.embeddedImage()
+            } else if let fetchLoader = backgroundTheme as? RSDFetchableImageThemeElement {
+                fetchLoader.fetchImage(for: frontSize, callback: { (_, img) in
+                    self.backgroundImageViewFront.image = img
+                })
+            }
+        }
+        
+        if let backgroundTheme = self.bellwetherStep?.backgroundBack,
+            !(backgroundTheme is RSDAnimatedImageThemeElement) {
+            
+            if let assetLoader = backgroundTheme as? RSDAssetImageThemeElement {
+                self.backgroundImageViewBack.image = assetLoader.embeddedImage()
+            } else if let fetchLoader = backgroundTheme as? RSDFetchableImageThemeElement {
+                fetchLoader.fetchImage(for: frontSize, callback: { (_, img) in
+                    self.backgroundImageViewBack.image = img
+                })
+            }
         }
     }
     
     override open func showLearnMore() {
-        if self.bellwetherImageView.currentRegion == .front {
+        if !self.backgroundContainerFront.isHidden {
             self.learnMoreButton?.setTitle(Localization.localizedString("VIEW_MY_FRONT_BUTTON"), for: .normal)
-            self.bellwetherImageView.currentRegion = .back
-        } else if self.bellwetherImageView.currentRegion == .back {
+            self.showBack(animate: true)
+        } else {
             self.learnMoreButton?.setTitle(Localization.localizedString("VIEW_MY_BACK_BUTTON"), for: .normal)
-            self.bellwetherImageView.currentRegion = .front
+            self.showFront(animate: true)
+        }
+    }
+    
+    func showFront(animate: Bool) {
+        let showFrontFunc: ((Bool) -> Void) = { (success) in
+            self.backgroundContainerFront.isHidden = false
+            self.backgroundContainerBack.isHidden = true
+        }
+        
+        if animate {
+            UIView.transition(from: self.backgroundContainerBack, to: self.backgroundContainerFront, duration: 0.5, options: [.transitionFlipFromRight, .showHideTransitionViews], completion: showFrontFunc)
+        } else {
+            showFrontFunc(true)
+        }
+    }
+    
+    func showBack(animate: Bool) {
+        let showBackFunc: ((Bool) -> Void) = { (success) in
+            self.backgroundContainerFront.isHidden = true
+            self.backgroundContainerBack.isHidden = false
+        }
+        
+        if animate {
+            UIView.transition(from: self.backgroundContainerFront, to: self.backgroundContainerBack, duration: 0.5, options: [.transitionFlipFromLeft, .showHideTransitionViews], completion: showBackFunc)
+        } else {
+            showBackFunc(true)
         }
     }
     
@@ -171,7 +252,11 @@ open class BellwetherStepViewController: RSDStepViewController, BellwetherImageV
     }
     
     func selectedZoneText() -> String? {
-        let selectedIdentifier = self.bellwetherImageView.selectedZone?.identifier
+        var selectedIdentifier = self.frontImageView.selectedZone?.identifier
+        if selectedIdentifier == nil {
+            selectedIdentifier = self.backImageView.selectedZone?.identifier
+        }
+        
         if selectedIdentifier == nil {
             return self.defaultSelectedTextValue()
         } else {
@@ -184,7 +269,10 @@ open class BellwetherStepViewController: RSDStepViewController, BellwetherImageV
     }
     
     func selectedTextValue() -> String? {
-        return self.bellwetherImageView.selectedZone?.label
+        if let label = self.frontImageView.selectedZone?.label {
+            return label
+        }
+        return self.backImageView.selectedZone?.label
     }
     
     override open func goForward() {
@@ -194,7 +282,13 @@ open class BellwetherStepViewController: RSDStepViewController, BellwetherImageV
         }
         
         var newMap = unwrappedBellwether
-        let selectedZone = self.bellwetherImageView.selectedZone
+        
+        var selectedZone = self.frontImageView.selectedZone
+        if selectedZone == nil {
+            selectedZone = self.backImageView.selectedZone
+        }
+        
+        // Both the zones are the same for the front and the back, so just use the front
         let newFrontZones = newMap.front.zones.map({ (zone) -> BellwetherZone in
             return BellwetherZone(identifier: zone.identifier, label: zone.label, origin: zone.origin, dimensions: zone.dimensions, isSelected: selectedZone?.identifier == zone.identifier)
         })
@@ -223,12 +317,20 @@ open class BellwetherStepViewController: RSDStepViewController, BellwetherImageV
     
     /// JointPainImageViewDelegate functions
     
-    public func buttonTapped(button: UIButton?) {
-        self.navigationFooter?.nextButton?.isEnabled = (self.bellwetherImageView.selectedZone != nil)
+    public func buttonTapped(for bellwetherView: BellwetherImageView, button: UIButton?) {
+        
+        if bellwetherView == self.frontImageView {
+            self.backImageView.selectedZone = nil
+        } else {
+            self.frontImageView.selectedZone = nil
+        }
+        
+        self.navigationFooter?.nextButton?.isEnabled = (
+            self.frontImageView.selectedZone != nil || self.backImageView.selectedZone != nil)
         self.navigationHeader?.titleLabel?.text = self.selectedZoneText()
     }
     
-    public func didLayoutButtons() {
+    public func didLayoutButtons(for bellwetherView: BellwetherImageView) {
         // No-op needed
     }
 }

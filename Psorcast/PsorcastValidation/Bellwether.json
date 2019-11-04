@@ -37,6 +37,16 @@
                 "imageName": "BellwetherBack",
                 "placementType":"topBackground"
             },
+            "backgroundFront":{
+                "type":"fetchable",
+                "imageName": "BellwetherRightLeft",
+                "placementType":"topBackground"
+            },
+            "backgroundBack":{
+                "type":"fetchable",
+                "imageName": "BellwetherLeftRight",
+                "placementType":"topBackground"
+            },
             "actions": {
                 "learnMore": {
                     "type": "default",

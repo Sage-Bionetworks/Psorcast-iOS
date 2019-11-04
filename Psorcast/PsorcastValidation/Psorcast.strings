@@ -47,8 +47,8 @@
 "VIEW_MY_FRONT_BUTTON" = "View my front";
 "VIEW_MY_BACK_BUTTON" = "View my back";
 
-"END_OF_VALIDATION_TITLE" = "Please hand the phone to the researcher";
-"END_OF_VALIDATION_DETAIL" = "You just completed the measurements for the validation part of the Psorcast Study. Thanks!";
+"END_OF_VALIDATION_TITLE" = "Please hand the phone to the doctor";
+"END_OF_VALIDATION_DETAIL" = "You just completed the measurements for the validation part of the Psorcast Study. Thank you for your time!";
 "END_OF_VALIDATION_BUTTON_TITLE" = "Enter new participant ID";
 
 "CALCULATING_COVERAGE" = "Calculating coverage...";
