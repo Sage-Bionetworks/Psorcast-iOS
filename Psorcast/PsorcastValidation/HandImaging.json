@@ -5,6 +5,38 @@
     "steps":
     [
         {
+            "identifier": "introduction",
+            "type":"overview",
+            "title":"Fingers Photo",
+            "text":"In this activity you will photograph your fingers with your nails in focus in order to measure any swelling in your fingers or nail involvement.",
+            "image": {
+                "type":"fetchable",
+                "imageName":"HeaderHandIntro",
+                "placementType":"topBackground"
+            },
+            "icons": [
+                {
+                    "icon":"FlatSurfaceIcon",
+                    "title": "A FLAT SURFACE"
+                }
+            ],
+            "actions": {
+                "goForward":{
+                    "type":"default",
+                    "buttonTitle":"Get Started"
+                },
+                "skip":{
+                    "type":"reminder",
+                    "reminderIdentifier":"HandImaging"
+                },
+                "learnMore": {
+                    "type": "videoView",
+                    "buttonTitle" : "See this in action",
+                    "url": "video.mp4"
+                }
+            }
+        },
+        {
             "identifier":"handInstructionLeft1",
             "type":"instruction",
             "title":"Find a flat, solid surface",
@@ -19,7 +51,8 @@
                     "type":"default",
                     "buttonTitle":"I found a flat surface"
                 }
-            }
+            },
+            "shouldHideActions": ["goBackward"]
         },
         {
             "identifier":"handInstructionLeft2",
