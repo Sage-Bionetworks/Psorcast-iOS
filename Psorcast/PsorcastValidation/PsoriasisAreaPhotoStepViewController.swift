@@ -1,5 +1,5 @@
 //
-//  BellwetherStepViewController.swift
+//  PsoriasisAreaPhotoStepViewController.swift
 //  PsorcastValidation
 //
 //  Copyright © 2019 Sage Bionetworks. All rights reserved.
@@ -35,22 +35,22 @@ import Foundation
 import BridgeApp
 import BridgeAppUI
 
-/// The 'BellwetherStepViewController' displays a bellwether image that has
+/// The 'PsoriasisAreaPhotoStepViewController' displays a psoriasis area image that has
 /// buttons overlayed at specific parts of the images to represent zones
 /// The user selects a single zone that is best representative of their psoriasis
-open class BellwetherStepViewController: RSDStepViewController, BellwetherImageViewDelegate {
+open class PsoriasisAreaPhotoStepViewController: RSDStepViewController, PsoriasisAreaPhotoImageViewDelegate {
     
     static let selectedZoneIdentifierResultIdentifier = "selectedZoneIdentifier"
     static let selectedZoneLabelResultIdentifier = "selectedZoneLabel"
     
     /// The step for this view controller
-    open var bellwetherStep: BellwetherStepObject? {
-        return self.step as? BellwetherStepObject
+    open var psoriasisAreaPhotoStep: PsoriasisAreaPhotoStepObject? {
+        return self.step as? PsoriasisAreaPhotoStepObject
     }
     
-    /// The bellwether map for the step
-    open var bellwetherMap: BellwetherMap? {
-        return self.bellwetherStep?.bellwetherMap
+    /// The psoriasisAreaPhoto map for the step
+    open var psoriasisAreaPhotoMap: PsoriasisAreaPhotoMap? {
+        return self.psoriasisAreaPhotoStep?.psoriasisAreaPhotoMap
     }
     
     /// The background of the header, body, and footer
@@ -59,13 +59,13 @@ open class BellwetherStepViewController: RSDStepViewController, BellwetherImageV
     }
     
     /// The initial result of the step if the user navigated back to this step
-    open var initialResult: BellwetherResultObject?
+    open var initialResult: PsoriasisAreaPhotoResultObject?
     
-    /// The image view container that adds the bellwether zones
-    @IBOutlet public var frontImageView: BellwetherImageView!
-    @IBOutlet public var backImageView: BellwetherImageView!
+    /// The image view container that adds the psoriasisAreaPhoto zones
+    @IBOutlet public var frontImageView: PsoriasisAreaPhotoImageView!
+    @IBOutlet public var backImageView: PsoriasisAreaPhotoImageView!
 
-    @IBOutlet public var bellwetherImageView: BellwetherImageView!
+    @IBOutlet public var psoriasisAreaPhotoImageView: PsoriasisAreaPhotoImageView!
     /// The background image view container that shows supplemental images that can't be drawn on
     @IBOutlet public var backgroundImageViewFront: UIImageView!
     @IBOutlet public var backgroundImageViewBack: UIImageView!
@@ -79,7 +79,7 @@ open class BellwetherStepViewController: RSDStepViewController, BellwetherImageV
         
         // Set the initial result if available.
         self.initialResult = (parent as? RSDHistoryPathComponent)?
-            .previousResult(for: step) as? BellwetherResultObject
+            .previousResult(for: step) as? PsoriasisAreaPhotoResultObject
     }
     
     required public init?(coder aDecoder: NSCoder) {
@@ -93,7 +93,7 @@ open class BellwetherStepViewController: RSDStepViewController, BellwetherImageV
     override open func viewDidLoad() {
         super.viewDidLoad()
         
-        // Setup the bellwether imageview
+        // Setup the psoriasisAreaPhoto imageview
         self.frontImageView.delegate = self
         self.backImageView.delegate = self
         
@@ -108,12 +108,12 @@ open class BellwetherStepViewController: RSDStepViewController, BellwetherImageV
     func initializeImageViewsBasedOnResult() {
         if let result = self.initialResult,
             
-            let selectedZone = (result.bellwetherMap.front.zones + result.bellwetherMap.back.zones).first(where: { $0.isSelected ?? false }) {
+            let selectedZone = (result.psoriasisAreaPhotoMap.front.zones + result.psoriasisAreaPhotoMap.back.zones).first(where: { $0.isSelected ?? false }) {
             self.frontImageView.selectedZone = selectedZone
             self.backImageView.selectedZone = selectedZone
             self.navigationHeader?.titleLabel?.text = self.selectedZoneText()
             
-            if result.bellwetherMap.front.zones.contains(where: { $0.identifier == selectedZone.identifier }) {
+            if result.psoriasisAreaPhotoMap.front.zones.contains(where: { $0.identifier == selectedZone.identifier }) {
                 self.showFront(animate: false)
             } else {
                 self.showBack(animate: false)
@@ -123,8 +123,8 @@ open class BellwetherStepViewController: RSDStepViewController, BellwetherImageV
         self.frontImageView.currentRegion = .front
         self.backImageView.currentRegion = .back
         
-        self.frontImageView.bellwetherMap = self.bellwetherMap
-        self.backImageView.bellwetherMap = self.bellwetherMap
+        self.frontImageView.psoriasisAreaPhotoMap = self.psoriasisAreaPhotoMap
+        self.backImageView.psoriasisAreaPhotoMap = self.psoriasisAreaPhotoMap
     }
     
     override open func setupHeader(_ header: RSDStepNavigationView) {
@@ -147,21 +147,21 @@ open class BellwetherStepViewController: RSDStepViewController, BellwetherImageV
                 return
         }
         
-        guard let frontTheme = self.bellwetherStep?.frontImageTheme,
-            let backTheme = self.bellwetherStep?.backImageTheme else {
-            debugPrint("Could not find front/back bellwether images")
+        guard let frontTheme = self.psoriasisAreaPhotoStep?.frontImageTheme,
+            let backTheme = self.psoriasisAreaPhotoStep?.backImageTheme else {
+            debugPrint("Could not find front/back psoriasisAreaPhoto images")
             return
         }
         
-        guard let frontSize = self.bellwetherMap?.front.imageSize.size,
-            let backSize = self.bellwetherMap?.back.imageSize.size else {
+        guard let frontSize = self.psoriasisAreaPhotoMap?.front.imageSize.size,
+            let backSize = self.psoriasisAreaPhotoMap?.back.imageSize.size else {
                 debugPrint("We need proper front/back sizes to initialize images")
                 return
         }
         
         guard !(frontTheme is RSDAnimatedImageThemeElement),
             !(backTheme is RSDAnimatedImageThemeElement) else {
-            debugPrint("We do not support animated images for bellwether view")
+            debugPrint("We do not support animated images for psoriasisAreaPhoto view")
             return
         }
         
@@ -185,7 +185,7 @@ open class BellwetherStepViewController: RSDStepViewController, BellwetherImageV
             })
         }
         
-        if let backgroundTheme = self.bellwetherStep?.backgroundFront,
+        if let backgroundTheme = self.psoriasisAreaPhotoStep?.backgroundFront,
             !(backgroundTheme is RSDAnimatedImageThemeElement) {
             
             if let assetLoader = backgroundTheme as? RSDAssetImageThemeElement {
@@ -197,7 +197,7 @@ open class BellwetherStepViewController: RSDStepViewController, BellwetherImageV
             }
         }
         
-        if let backgroundTheme = self.bellwetherStep?.backgroundBack,
+        if let backgroundTheme = self.psoriasisAreaPhotoStep?.backgroundBack,
             !(backgroundTheme is RSDAnimatedImageThemeElement) {
             
             if let assetLoader = backgroundTheme as? RSDAssetImageThemeElement {
@@ -265,7 +265,7 @@ open class BellwetherStepViewController: RSDStepViewController, BellwetherImageV
     }
     
     func defaultSelectedTextValue() -> String? {
-         return self.bellwetherStep?.title
+         return self.psoriasisAreaPhotoStep?.title
     }
     
     func selectedTextValue() -> String? {
@@ -276,12 +276,12 @@ open class BellwetherStepViewController: RSDStepViewController, BellwetherImageV
     }
     
     override open func goForward() {
-        guard let unwrappedBellwether = self.bellwetherMap else {
-            debugPrint("Invalid state, nil bellwether map, cannot goForward")
+        guard let unwrappedPsoriasisAreaPhoto = self.psoriasisAreaPhotoMap else {
+            debugPrint("Invalid state, nil psoriasisAreaPhoto map, cannot goForward")
             return
         }
         
-        var newMap = unwrappedBellwether
+        var newMap = unwrappedPsoriasisAreaPhoto
         
         var selectedZone = self.frontImageView.selectedZone
         if selectedZone == nil {
@@ -289,27 +289,27 @@ open class BellwetherStepViewController: RSDStepViewController, BellwetherImageV
         }
         
         // Both the zones are the same for the front and the back, so just use the front
-        let newFrontZones = newMap.front.zones.map({ (zone) -> BellwetherZone in
-            return BellwetherZone(identifier: zone.identifier, label: zone.label, origin: zone.origin, dimensions: zone.dimensions, isSelected: selectedZone?.identifier == zone.identifier)
+        let newFrontZones = newMap.front.zones.map({ (zone) -> PsoriasisAreaPhotoZone in
+            return PsoriasisAreaPhotoZone(identifier: zone.identifier, label: zone.label, origin: zone.origin, dimensions: zone.dimensions, isSelected: selectedZone?.identifier == zone.identifier)
         })
-        let newBackZones = newMap.back.zones.map({ (zone) -> BellwetherZone in
-            return BellwetherZone(identifier: zone.identifier, label: zone.label, origin: zone.origin, dimensions: zone.dimensions, isSelected: selectedZone?.identifier == zone.identifier)
+        let newBackZones = newMap.back.zones.map({ (zone) -> PsoriasisAreaPhotoZone in
+            return PsoriasisAreaPhotoZone(identifier: zone.identifier, label: zone.label, origin: zone.origin, dimensions: zone.dimensions, isSelected: selectedZone?.identifier == zone.identifier)
         })
 
-        newMap.front = BellwetherZoneMap(region: .front, imageSize: self.bellwetherMap!.front.imageSize, zones: newFrontZones)
-        newMap.back = BellwetherZoneMap(region: .back, imageSize: self.bellwetherMap!.back.imageSize, zones: newBackZones)
+        newMap.front = PsoriasisAreaPhotoZoneMap(region: .front, imageSize: self.psoriasisAreaPhotoMap!.front.imageSize, zones: newFrontZones)
+        newMap.back = PsoriasisAreaPhotoZoneMap(region: .back, imageSize: self.psoriasisAreaPhotoMap!.back.imageSize, zones: newBackZones)
         
         // Append simple zone selection used on results screen
         if let selectedUnwrapped = selectedZone {
-            let identifierResult = RSDAnswerResultObject(identifier: BellwetherStepViewController.selectedZoneIdentifierResultIdentifier, answerType: .string, value: selectedUnwrapped.identifier)
+            let identifierResult = RSDAnswerResultObject(identifier: PsoriasisAreaPhotoStepViewController.selectedZoneIdentifierResultIdentifier, answerType: .string, value: selectedUnwrapped.identifier)
             _ = self.stepViewModel.parent?.taskResult.appendStepHistory(with: identifierResult)
             
-            let labelResult = RSDAnswerResultObject(identifier: BellwetherStepViewController.selectedZoneLabelResultIdentifier, answerType: .string, value: selectedUnwrapped.label)
+            let labelResult = RSDAnswerResultObject(identifier: PsoriasisAreaPhotoStepViewController.selectedZoneLabelResultIdentifier, answerType: .string, value: selectedUnwrapped.label)
             _ = self.stepViewModel.parent?.taskResult.appendStepHistory(with: labelResult)
         }
         
         // Append the detailed zone selection
-        let result = BellwetherResultObject(identifier: self.step.identifier, bellwetherMap: newMap)
+        let result = PsoriasisAreaPhotoResultObject(identifier: self.step.identifier, psoriasisAreaPhotoMap: newMap)
         _ = self.stepViewModel.parent?.taskResult.appendStepHistory(with: result)
         
         super.goForward()
@@ -317,9 +317,9 @@ open class BellwetherStepViewController: RSDStepViewController, BellwetherImageV
     
     /// JointPainImageViewDelegate functions
     
-    public func buttonTapped(for bellwetherView: BellwetherImageView, button: UIButton?) {
+    public func buttonTapped(for psoriasisAreaPhotoView: PsoriasisAreaPhotoImageView, button: UIButton?) {
         
-        if bellwetherView == self.frontImageView {
+        if psoriasisAreaPhotoView == self.frontImageView {
             self.backImageView.selectedZone = nil
         } else {
             self.frontImageView.selectedZone = nil
@@ -330,7 +330,7 @@ open class BellwetherStepViewController: RSDStepViewController, BellwetherImageV
         self.navigationHeader?.titleLabel?.text = self.selectedZoneText()
     }
     
-    public func didLayoutButtons(for bellwetherView: BellwetherImageView) {
+    public func didLayoutButtons(for psoriasisAreaPhotoView: PsoriasisAreaPhotoImageView) {
         // No-op needed
     }
 }

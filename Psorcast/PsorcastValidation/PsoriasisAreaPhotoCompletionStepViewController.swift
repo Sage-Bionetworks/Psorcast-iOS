@@ -1,5 +1,5 @@
 //
-//  BellwetherCompletionStepViewController.swift
+//  PsoriasisAreaPhotoCompletionStepViewController.swift
 //  PsorcastValidation
 //
 //  Copyright © 2019 Sage Bionetworks. All rights reserved.
@@ -35,34 +35,34 @@ import Foundation
 import BridgeApp
 import BridgeAppUI
 
-open class BellwetherCompletionStepObject: RSDUIStepObject, RSDStepViewControllerVendor {
+open class PsoriasisAreaPhotoCompletionStepObject: RSDUIStepObject, RSDStepViewControllerVendor {
     
     open func instantiateViewController(with parent: RSDPathComponent?) -> (UIViewController & RSDStepController)? {
-        return BellwetherCompletionStepViewController(step: self, parent: parent)
+        return PsoriasisAreaPhotoCompletionStepViewController(step: self, parent: parent)
     }
 }
 
-/// The 'BellwetherCompletionStepViewController' displays the photo the user took
+/// The 'PsoriasisAreaPhotoCompletionStepViewController' displays the photo the user took
 /// along with the label of the zone
-open class BellwetherCompletionStepViewController: RSDInstructionStepViewController {
+open class PsoriasisAreaPhotoCompletionStepViewController: RSDInstructionStepViewController {
     
-    let bellwetherImageIdentifier = "image"
+    let psoriasisAreaPhotoImageIdentifier = "psoriasisAreaPhoto"
     
     /// The step for this view controller
-    open var bellwetherCompletionStep: BellwetherCompletionStepObject? {
-        return self.step as? BellwetherCompletionStepObject
+    open var psoriasisAreaPhotoCompletionStep: PsoriasisAreaPhotoCompletionStepObject? {
+        return self.step as? PsoriasisAreaPhotoCompletionStepObject
     }
     
     /// The label of the zone selected by the user
     open var selectZoneLabel: String? {
-        return (self.taskController?.taskViewModel.taskResult.findResult(with: BellwetherStepViewController.selectedZoneLabelResultIdentifier) as? RSDAnswerResultObject)?.value as? String
+        return (self.taskController?.taskViewModel.taskResult.findResult(with: PsoriasisAreaPhotoStepViewController.selectedZoneLabelResultIdentifier) as? RSDAnswerResultObject)?.value as? String
     }
     
     open var selectedZoneImage: UIImage? {
         for result in self.taskController?.taskViewModel.taskResult.stepHistory ?? [] {
             if let fileResult = result as? RSDFileResultObject,
                 let fileUrl = fileResult.url,
-                fileResult.identifier == bellwetherImageIdentifier {
+                fileResult.identifier == psoriasisAreaPhotoImageIdentifier {
                 do {
                     return try UIImage(data: Data(contentsOf: fileUrl))
                 } catch let error {

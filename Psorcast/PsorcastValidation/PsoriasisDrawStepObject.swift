@@ -42,7 +42,7 @@ open class PsoriasisDrawStepObject: RSDUIStepObject, RSDStepViewControllerVendor
         case regionMap, background
     }
 
-    /// The bellwether map for displaying and cataloging the joints to show
+    /// The psoriasisAreaPhoto map for displaying and cataloging the joints to show
     open var regionMap: RegionMap?
     
     /// The background image for the imageview that will not be drawn on
@@ -103,7 +103,7 @@ open class PsoriasisDrawStepObject: RSDUIStepObject, RSDStepViewControllerVendor
     }
 }
 
-/// The 'BellwetherZoneMap' contains the position and sizes of a region's zones
+/// The 'PsoriasisAreaPhotoZoneMap' contains the position and sizes of a region's zones
 public struct RegionMap: Codable {
     /// The region identifier on the body that the zone map refers to
     public var identifier: String
@@ -119,7 +119,7 @@ public struct RegionZone: Codable {
     public var identifier: String
     /// The display label of the zone
     public var label: String
-    /// The relative top left position of the zone within the relative imageSize of the BellwetherMap
+    /// The relative top left position of the zone within the relative imageSize of the PsoriasisAreaPhotoMap
     public var origin: PointWrapper
     /// The relative size of the zone
     public var dimensions: SizeWrapper

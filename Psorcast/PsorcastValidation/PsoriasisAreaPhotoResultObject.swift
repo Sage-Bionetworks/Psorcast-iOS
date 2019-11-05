@@ -1,5 +1,5 @@
 //
-//  BellwetherResultObject.swift
+//  PsoriasisAreaPhotoResultObject.swift
 //  PsorcastValidation
 //
 //  Copyright © 2019 Sage Bionetworks. All rights reserved.
@@ -35,14 +35,14 @@ import Research
 
 extension RSDResultType {
     /// The type identifier for a joint pain result.
-    public static let bellwether: RSDResultType = "bellwether"
+    public static let psoriasisAreaPhoto: RSDResultType = "psoriasisAreaPhoto"
 }
 
-/// The `BellwetherResultObject` records the results of a joint paint step test.
-public struct BellwetherResultObject : RSDResult, Codable, RSDArchivable, RSDScoringResult {
+/// The `PsoriasisAreaPhotoResultObject` records the results of a joint paint step test.
+public struct PsoriasisAreaPhotoResultObject : RSDResult, Codable, RSDArchivable, RSDScoringResult {
 
     private enum CodingKeys : String, CodingKey {
-        case identifier, type, startDate, endDate, bellwetherMap
+        case identifier, type, startDate, endDate, psoriasisAreaPhotoMap
     }
 
     /// The identifier for the associated step.
@@ -58,11 +58,11 @@ public struct BellwetherResultObject : RSDResult, Codable, RSDArchivable, RSDSco
     public var endDate: Date = Date()
 
     /// The joint paint map containing the selection state of all the joints
-    public internal(set) var bellwetherMap: BellwetherMap
+    public internal(set) var psoriasisAreaPhotoMap: PsoriasisAreaPhotoMap
 
-    init(identifier: String, bellwetherMap: BellwetherMap) {
+    init(identifier: String, psoriasisAreaPhotoMap: PsoriasisAreaPhotoMap) {
         self.identifier = identifier
-        self.bellwetherMap = bellwetherMap
+        self.psoriasisAreaPhotoMap = psoriasisAreaPhotoMap
     }
 
     /// Build the archiveable or uploadable data for this result.
@@ -79,13 +79,13 @@ public struct BellwetherResultObject : RSDResult, Codable, RSDArchivable, RSDSco
         try container.encode(self.type, forKey: .type)
         try container.encode(self.startDate, forKey: .startDate)
         try container.encode(self.endDate, forKey: .endDate)
-        try container.encode(self.bellwetherMap, forKey: .bellwetherMap)
+        try container.encode(self.psoriasisAreaPhotoMap, forKey: .psoriasisAreaPhotoMap)
     }
 
     public func dataScore() throws -> RSDJSONSerializable? {
         // First selected identifier
-        return ((self.bellwetherMap.front.zones ) +
-            (self.bellwetherMap.back.zones))
+        return ((self.psoriasisAreaPhotoMap.front.zones ) +
+            (self.psoriasisAreaPhotoMap.back.zones))
             .first(where: { $0.isSelected ?? false })?.identifier
     }
 }

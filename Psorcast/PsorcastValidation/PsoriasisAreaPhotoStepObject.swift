@@ -1,5 +1,5 @@
 //
-//  BellwetherStepObject.swift
+//  PsoriasisAreaPhotoStepObject.swift
 //  PsorcastValidation
 //
 //  Copyright © 2019 Sage Bionetworks. All rights reserved.
@@ -36,30 +36,30 @@ import Foundation
 import BridgeApp
 import BridgeAppUI
 
-open class BellwetherStepObject: RSDUIStepObject, RSDStepViewControllerVendor {
+open class PsoriasisAreaPhotoStepObject: RSDUIStepObject, RSDStepViewControllerVendor {
     
     private enum CodingKeys: String, CodingKey, CaseIterable {
-        case frontImage, backImage, initialRegion, bellwetherMap, backgroundFront, backgroundBack
+        case frontImage, backImage, initialRegion, psoriasisAreaPhotoMap, backgroundFront, backgroundBack
     }
     
-    /// The image for the front region of the bellwether map
+    /// The image for the front region of the psoriasisAreaPhoto map
     open var frontImageTheme: RSDImageThemeElement?
-    /// The image for the back region of the bellwether map
+    /// The image for the back region of the psoriasisAreaPhoto map
     open var backImageTheme: RSDImageThemeElement?
     
     /// The background image for the imageview that will not be drawn on
     open var backgroundFront: RSDImageThemeElement?
     open var backgroundBack: RSDImageThemeElement?
     
-    /// The bellwether map for displaying and cataloging the joints to show
-    open var bellwetherMap: BellwetherMap?
+    /// The psoriasisAreaPhoto map for displaying and cataloging the joints to show
+    open var psoriasisAreaPhotoMap: PsoriasisAreaPhotoMap?
     
     /// The initial region to show in the image view
-    open var initialRegion: BellwetherRegion?
+    open var initialRegion: PsoriasisAreaPhotoRegion?
     
-    /// Default type is `.bellwether`.
+    /// Default type is `.psoriasisAreaPhoto`.
     open override class func defaultType() -> RSDStepType {
-        return .bellwether
+        return .psoriasisAreaPhoto
     }
     
     public required init(from decoder: Decoder) throws {
@@ -71,9 +71,9 @@ open class BellwetherStepObject: RSDUIStepObject, RSDStepViewControllerVendor {
         let backNestedDecoder = try container.superDecoder(forKey: .backImage)
         self.backImageTheme = try decoder.factory.decodeImageThemeElement(from: backNestedDecoder)
         
-        self.initialRegion = try container.decode(BellwetherRegion.self, forKey: .initialRegion)
+        self.initialRegion = try container.decode(PsoriasisAreaPhotoRegion.self, forKey: .initialRegion)
         
-        self.bellwetherMap = try container.decode(BellwetherMap.self, forKey: .bellwetherMap)
+        self.psoriasisAreaPhotoMap = try container.decode(PsoriasisAreaPhotoMap.self, forKey: .psoriasisAreaPhotoMap)
         
         if container.contains(.backgroundFront) {
             let backgroundNestedDecoder = try container.superDecoder(forKey: .backgroundFront)
@@ -88,8 +88,8 @@ open class BellwetherStepObject: RSDUIStepObject, RSDStepViewControllerVendor {
         try super.init(from: decoder)
     }
     
-    required public init(identifier: String, type: RSDStepType?, bellwetherMap: BellwetherMap) {
-        self.bellwetherMap = bellwetherMap
+    required public init(identifier: String, type: RSDStepType?, psoriasisAreaPhotoMap: PsoriasisAreaPhotoMap) {
+        self.psoriasisAreaPhotoMap = psoriasisAreaPhotoMap
         self.initialRegion = .front
         super.init(identifier: identifier, type: type)
     }
@@ -101,11 +101,11 @@ open class BellwetherStepObject: RSDUIStepObject, RSDStepViewControllerVendor {
     /// Override to set the properties of the subclass.
     override open func copyInto(_ copy: RSDUIStepObject) {
         super.copyInto(copy)
-        guard let subclassCopy = copy as? BellwetherStepObject else {
+        guard let subclassCopy = copy as? PsoriasisAreaPhotoStepObject else {
             assertionFailure("Superclass implementation of the `copy(with:)` protocol should return an instance of this class.")
             return
         }
-        subclassCopy.bellwetherMap = self.bellwetherMap
+        subclassCopy.psoriasisAreaPhotoMap = self.psoriasisAreaPhotoMap
         subclassCopy.initialRegion = self.initialRegion
         subclassCopy.frontImageTheme = self.frontImageTheme
         subclassCopy.backImageTheme = self.backImageTheme
@@ -114,17 +114,17 @@ open class BellwetherStepObject: RSDUIStepObject, RSDStepViewControllerVendor {
     }
     
     open func instantiateViewController(with parent: RSDPathComponent?) -> (UIViewController & RSDStepController)? {
-        return BellwetherStepViewController(step: self, parent: parent)
+        return PsoriasisAreaPhotoStepViewController(step: self, parent: parent)
     }
 }
 
-/// A Bellwether zone is a rectangular tappable zone that can show selection state
-public struct BellwetherZone: Codable {
+/// A PsoriasisAreaPhoto zone is a rectangular tappable zone that can show selection state
+public struct PsoriasisAreaPhotoZone: Codable {
     /// The identifier of the zone
     public var identifier: String
     /// The display label of the zone
     public var label: String
-    /// The relative top left position of the zone within the relative imageSize of the BellwetherMap
+    /// The relative top left position of the zone within the relative imageSize of the PsoriasisAreaPhotoMap
     public var origin: PointWrapper
     /// The relative size of the zone
     public var dimensions: SizeWrapper
@@ -132,29 +132,29 @@ public struct BellwetherZone: Codable {
     public var isSelected: Bool? = false
 }
 
-/// The 'BellwetherMap' contains the front and back regions zones and sizes
-public struct BellwetherMap: Codable {
+/// The 'PsoriasisAreaPhotoMap' contains the front and back regions zones and sizes
+public struct PsoriasisAreaPhotoMap: Codable {
     /// The size of each selected indicator
     /// For best visual results, width and height should be equal
     public var selectedZoneSize: SizeWrapper
     /// The front image zones
-    public var front: BellwetherZoneMap
+    public var front: PsoriasisAreaPhotoZoneMap
     /// The back image zones
-    public var back: BellwetherZoneMap
+    public var back: PsoriasisAreaPhotoZoneMap
 }
 
-/// The 'BellwetherZoneMap' contains the position and sizes of a region's zones
-public struct BellwetherZoneMap: Codable {
+/// The 'PsoriasisAreaPhotoZoneMap' contains the position and sizes of a region's zones
+public struct PsoriasisAreaPhotoZoneMap: Codable {
     /// The region on the body that the zone map refers to
-    public var region: BellwetherRegion
+    public var region: PsoriasisAreaPhotoRegion
     /// The size of the image the map will be displayed over
     public var imageSize: SizeWrapper
     /// The zones contained within the image
-    public var zones: [BellwetherZone]
+    public var zones: [PsoriasisAreaPhotoZone]
 }
 
-/// The 'BellwetherRegion' is the region on the body the image represents
-public enum BellwetherRegion: String, Codable, CaseIterable {
+/// The 'PsoriasisAreaPhotoRegion' is the region on the body the image represents
+public enum PsoriasisAreaPhotoRegion: String, Codable, CaseIterable {
     case front
     case back
 }

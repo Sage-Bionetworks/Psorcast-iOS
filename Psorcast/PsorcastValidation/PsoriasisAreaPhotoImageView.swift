@@ -1,5 +1,5 @@
 //
-//  BellwetherImageView.swift
+//  PsoriasisAreaPhotoImageView.swift
 //  PsorcastValidation
 //
 //  Copyright © 2019 Sage Bionetworks. All rights reserved.
@@ -35,7 +35,7 @@ import UIKit
 import BridgeApp
 import BridgeAppUI
 
-open class BellwetherImageView: UIView, RSDViewDesignable {
+open class PsoriasisAreaPhotoImageView: UIView, RSDViewDesignable {
     
     /// The background tile this view is shown over top of
     public var backgroundColorTile: RSDColorTile? {
@@ -58,14 +58,14 @@ open class BellwetherImageView: UIView, RSDViewDesignable {
     fileprivate var lastAspectFitRect: CGRect?
     
     /// The joint pain map the will represent where the joint buttons will go
-    public var bellwetherMap: BellwetherMap? {
+    public var psoriasisAreaPhotoMap: PsoriasisAreaPhotoMap? {
         didSet {
             self.refreshUI()
         }
     }
     
     /// The zone currently selected by the user
-    public var selectedZone: BellwetherZone? {
+    public var selectedZone: PsoriasisAreaPhotoZone? {
         didSet {
             self.refreshUI()
         }
@@ -92,7 +92,7 @@ open class BellwetherImageView: UIView, RSDViewDesignable {
     }
     
     /// The region of zones to display
-    public var currentRegion: BellwetherRegion = .front {
+    public var currentRegion: PsoriasisAreaPhotoRegion = .front {
         didSet {
             self.refreshUI()
         }
@@ -104,11 +104,11 @@ open class BellwetherImageView: UIView, RSDViewDesignable {
     }
     
     /// The delegate to listen for joint button taps
-    public var delegate: BellwetherImageViewDelegate?
+    public var delegate: PsoriasisAreaPhotoImageViewDelegate?
     
-    /// All bellwether zones, including front and back
-    public var allZones: [BellwetherZone] {
-        return ((self.bellwetherMap?.front.zones ?? []) + (self.bellwetherMap?.back.zones ?? []))
+    /// All psoriasisAreaPhoto zones, including front and back
+    public var allZones: [PsoriasisAreaPhotoZone] {
+        return ((self.psoriasisAreaPhotoMap?.front.zones ?? []) + (self.psoriasisAreaPhotoMap?.back.zones ?? []))
     }
     
     /// Selected button color
@@ -209,9 +209,9 @@ open class BellwetherImageView: UIView, RSDViewDesignable {
             }
             self.lastAspectFitRect = aspectFitRect
             
-            var zones = self.bellwetherMap?.front.zones ?? []
+            var zones = self.psoriasisAreaPhotoMap?.front.zones ?? []
             if self.currentRegion == .back {
-                zones = self.bellwetherMap?.back.zones ?? []
+                zones = self.psoriasisAreaPhotoMap?.back.zones ?? []
             }
             
             self.removeAllJointPainButtons()
@@ -244,12 +244,12 @@ open class BellwetherImageView: UIView, RSDViewDesignable {
     
     fileprivate func zoneSize(for idx: Int) -> CGSize {
         if self.currentRegion == .front {
-            if let zones = self.bellwetherMap?.front.zones,
+            if let zones = self.psoriasisAreaPhotoMap?.front.zones,
                 idx < zones.count {
                 return zones[idx].dimensions.size
             }
         } else {
-            if let zones = self.bellwetherMap?.back.zones,
+            if let zones = self.psoriasisAreaPhotoMap?.back.zones,
                 idx < zones.count {
                 return zones[idx].dimensions.size
             }
@@ -334,8 +334,8 @@ open class BellwetherImageView: UIView, RSDViewDesignable {
     
     fileprivate func renderSelectedImage(to context: CGContext, size: CGSize, selectedColor: UIColor) {
         // The width and height of button
-        let selectedWidth = self.bellwetherMap?.selectedZoneSize.width ?? 40
-        let selectedHeight = self.bellwetherMap?.selectedZoneSize.height ?? 40
+        let selectedWidth = self.psoriasisAreaPhotoMap?.selectedZoneSize.width ?? 40
+        let selectedHeight = self.psoriasisAreaPhotoMap?.selectedZoneSize.height ?? 40
         
         context.setFillColor(selectedColor.cgColor)
         let x = CGFloat((size.width - selectedWidth) * 0.5)
@@ -398,11 +398,11 @@ open class BellwetherImageView: UIView, RSDViewDesignable {
         // Set new selected zone
         if button.isSelected {
             if self.currentRegion == .front,
-               button.tag < (self.bellwetherMap?.front.zones ?? []).count {
-                self.selectedZone = self.bellwetherMap?.front.zones[button.tag]
+               button.tag < (self.psoriasisAreaPhotoMap?.front.zones ?? []).count {
+                self.selectedZone = self.psoriasisAreaPhotoMap?.front.zones[button.tag]
             } else if self.currentRegion == .back,
-                button.tag < (self.bellwetherMap?.back.zones ?? []).count {
-                self.selectedZone = self.bellwetherMap?.back.zones[button.tag]
+                button.tag < (self.psoriasisAreaPhotoMap?.back.zones ?? []).count {
+                self.selectedZone = self.psoriasisAreaPhotoMap?.back.zones[button.tag]
             }
         }
         
@@ -410,7 +410,7 @@ open class BellwetherImageView: UIView, RSDViewDesignable {
     }
 }
 
-public protocol BellwetherImageViewDelegate {
-    func buttonTapped(for bellwetherView: BellwetherImageView, button: UIButton?)
-    func didLayoutButtons(for bellwetherView: BellwetherImageView)
+public protocol PsoriasisAreaPhotoImageViewDelegate {
+    func buttonTapped(for psoriasisAreaPhotoView: PsoriasisAreaPhotoImageView, button: UIButton?)
+    func didLayoutButtons(for psoriasisAreaPhotoView: PsoriasisAreaPhotoImageView)
 }
