@@ -47,7 +47,8 @@
                     "type": "default",
                     "buttonTitle": "Begin"
                 }
-            }
+            },
+            "shouldHideActions": ["goBackward"]
         },
         {
             "identifier": "psoriasisArea",

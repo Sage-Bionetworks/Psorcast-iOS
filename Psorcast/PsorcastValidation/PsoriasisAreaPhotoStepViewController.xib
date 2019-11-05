@@ -30,7 +30,7 @@
                     <rect key="frame" x="0.0" y="0.0" width="375" height="700"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kjp-vl-acf" userLabel="Header" customClass="RSDNavigationHeaderView" customModule="ResearchUI">
-                            <rect key="frame" x="0.0" y="0.0" width="375" height="111"/>
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="140"/>
                             <subviews>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1YI-gH-DGT" userLabel="Toggle Region Button" customClass="RSDUnderlinedButton" customModule="ResearchUI">
                                     <rect key="frame" x="207" y="24" width="144" height="64"/>
@@ -50,14 +50,22 @@
                                     <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <state key="normal" image="closeActivity"/>
                                 </button>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Select your joint pain" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="eMZ-8x-koe" userLabel="Title Label">
+                                    <rect key="frame" x="12" y="75" width="351" height="27.666666666666671"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="23"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
                             </subviews>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
+                                <constraint firstAttribute="trailing" secondItem="eMZ-8x-koe" secondAttribute="trailing" constant="12" id="2I4-OO-To9"/>
                                 <constraint firstItem="gYt-76-z57" firstAttribute="top" secondItem="kjp-vl-acf" secondAttribute="top" constant="24" id="8YB-N8-KmZ"/>
                                 <constraint firstItem="gYt-76-z57" firstAttribute="leading" secondItem="kjp-vl-acf" secondAttribute="leading" constant="8" id="9q4-Ke-8ah"/>
+                                <constraint firstItem="eMZ-8x-koe" firstAttribute="leading" secondItem="kjp-vl-acf" secondAttribute="leading" constant="12" id="XBf-VA-Qbu"/>
+                                <constraint firstItem="eMZ-8x-koe" firstAttribute="top" secondItem="kjp-vl-acf" secondAttribute="top" constant="75" id="ZUw-59-NQc"/>
                                 <constraint firstItem="1YI-gH-DGT" firstAttribute="top" secondItem="kjp-vl-acf" secondAttribute="top" constant="24" id="afM-oc-oE1"/>
                                 <constraint firstAttribute="trailing" secondItem="1YI-gH-DGT" secondAttribute="trailing" constant="24" id="hsA-aC-eTQ"/>
-                                <constraint firstAttribute="height" constant="111" id="tjs-nc-zcO"/>
+                                <constraint firstAttribute="height" constant="140" id="tjs-nc-zcO"/>
                             </constraints>
                             <connections>
                                 <outlet property="cancelButton" destination="gYt-76-z57" id="ErZ-Hc-PSH"/>
@@ -65,22 +73,17 @@
                                 <outlet property="titleLabel" destination="eMZ-8x-koe" id="oVn-Ub-ERi"/>
                             </connections>
                         </view>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Select your joint pain" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="eMZ-8x-koe" userLabel="Title Label">
-                            <rect key="frame" x="12" y="74" width="351" height="27.666666666666671"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="23"/>
-                            <nil key="highlightedColor"/>
-                        </label>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0AJ-A1-rc2">
-                            <rect key="frame" x="0.0" y="111" width="375" height="488"/>
+                            <rect key="frame" x="0.0" y="140" width="375" height="459"/>
                             <subviews>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8Ey-6A-1PJ" userLabel="Front Image Container">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="488"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="459"/>
                                     <subviews>
                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="dYb-vQ-sQX" userLabel="Background">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="488"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="459"/>
                                         </imageView>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qi0-an-zlg" userLabel="Front Image View" customClass="PsoriasisAreaPhotoImageView" customModule="PsorcastValidation" customModuleProvider="target">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="488"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="459"/>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </view>
                                     </subviews>
@@ -97,13 +100,13 @@
                                     </constraints>
                                 </view>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wqg-uH-bIm" userLabel="Back Image Container">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="488"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="459"/>
                                     <subviews>
                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Rfs-lj-K5O" userLabel="Background">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="488"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="459"/>
                                         </imageView>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oi8-j5-QaV" userLabel="Back Image View" customClass="PsoriasisAreaPhotoImageView" customModule="PsorcastValidation" customModuleProvider="target">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="488"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="459"/>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </view>
                                     </subviews>
@@ -141,17 +144,14 @@
                     <constraints>
                         <constraint firstAttribute="bottom" secondItem="Ncg-SY-6dE" secondAttribute="bottom" id="7IX-X3-3Ii"/>
                         <constraint firstItem="Ncg-SY-6dE" firstAttribute="leading" secondItem="nCy-4g-nIJ" secondAttribute="leading" id="Bzq-ex-byO"/>
-                        <constraint firstItem="eMZ-8x-koe" firstAttribute="top" secondItem="kjp-vl-acf" secondAttribute="bottom" constant="-37" id="H8V-8X-eyI"/>
-                        <constraint firstItem="eMZ-8x-koe" firstAttribute="leading" secondItem="nCy-4g-nIJ" secondAttribute="leading" constant="12" id="Jgb-xT-lQi"/>
                         <constraint firstItem="0AJ-A1-rc2" firstAttribute="leading" secondItem="nCy-4g-nIJ" secondAttribute="leading" id="Mve-bY-kYc"/>
                         <constraint firstAttribute="trailing" secondItem="kjp-vl-acf" secondAttribute="trailing" id="Oum-Vk-NiV"/>
                         <constraint firstAttribute="trailing" secondItem="Ncg-SY-6dE" secondAttribute="trailing" id="XDw-dP-K6d"/>
                         <constraint firstItem="kjp-vl-acf" firstAttribute="top" secondItem="nCy-4g-nIJ" secondAttribute="top" id="aP1-H6-AJI"/>
                         <constraint firstItem="Ncg-SY-6dE" firstAttribute="top" secondItem="0AJ-A1-rc2" secondAttribute="bottom" id="b7o-qL-Ibj"/>
                         <constraint firstAttribute="trailing" secondItem="0AJ-A1-rc2" secondAttribute="trailing" id="cYk-Ez-KSy"/>
-                        <constraint firstAttribute="trailing" secondItem="eMZ-8x-koe" secondAttribute="trailing" constant="12" id="kr5-2N-8eV"/>
                         <constraint firstItem="kjp-vl-acf" firstAttribute="leading" secondItem="nCy-4g-nIJ" secondAttribute="leading" id="nrX-k7-h40"/>
-                        <constraint firstItem="0AJ-A1-rc2" firstAttribute="top" secondItem="eMZ-8x-koe" secondAttribute="bottom" constant="9.3333333333333428" id="wkG-Kv-Q8X"/>
+                        <constraint firstItem="0AJ-A1-rc2" firstAttribute="top" secondItem="kjp-vl-acf" secondAttribute="bottom" id="pac-b9-5oN"/>
                     </constraints>
                 </view>
             </subviews>

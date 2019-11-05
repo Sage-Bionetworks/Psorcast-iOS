@@ -46,7 +46,7 @@ open class PsoriasisAreaPhotoCompletionStepObject: RSDUIStepObject, RSDStepViewC
 /// along with the label of the zone
 open class PsoriasisAreaPhotoCompletionStepViewController: RSDInstructionStepViewController {
     
-    let psoriasisAreaPhotoImageIdentifier = "image"
+    let psoriasisAreaPhotoImageIdentifier = "psoriasisAreaPhoto"
     
     /// The step for this view controller
     open var psoriasisAreaPhotoCompletionStep: PsoriasisAreaPhotoCompletionStepObject? {
