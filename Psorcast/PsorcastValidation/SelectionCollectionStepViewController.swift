@@ -121,6 +121,13 @@ open class SelectionCollectionStepViewController: RSDStepViewController, UIColle
         self.collectionView.register(SelectionBodyImageCollectionViewCell.self, forCellWithReuseIdentifier: selectionCellResuableCellId)
     }
     
+    override open func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+
+        // Invalidating the layout is necessary to get the navigation header height to be correct
+        collectionView.collectionViewLayout.invalidateLayout()
+    }
+    
     open override func setupViews() {
         
         if self.navigationHeader == nil {
@@ -137,6 +144,8 @@ open class SelectionCollectionStepViewController: RSDStepViewController, UIColle
         super.setupHeader(header)
         
         self.collectionView.reloadData()
+        // Invalidating the layout is necessary to get the navigation header height to 
+        self.collectionView.collectionViewLayout.invalidateLayout()
         
         // Initialize collection view to previous selection state
         if let previousAnswer = (self.initialResult?.inputResults.first as? RSDAnswerResultObject)?.value as? [String] {
