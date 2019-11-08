@@ -5,15 +5,42 @@
     "steps":
     [
         {
+            "identifier": "introduction",
+            "type":"overview",
+            "title":"Psoriasis Draw",
+            "text":"In this activity you will be drawing the approximate size and location of your psoriasis. This will help you to track your psoriasis over time.",
+            "image": {
+                "type":"fetchable",
+                "imageName":"PsoriasisDraw9",
+                "placementType":"topBackground"
+            },
+            "actions": {
+                "goForward":{
+                    "type":"default",
+                    "buttonTitle":"Get Started"
+                },
+                "skip":{
+                    "type":"reminder",
+                    "reminderIdentifier":"PsoriasisDraw"
+                },
+                "learnMore": {
+                    "type": "videoView",
+                    "buttonTitle" : "See this in action",
+                    "url": "video.mp4"
+                }
+            },
+            "shouldHideActions": ["goBackward"]
+        },
+        {
             "identifier":"psoriasisDrawInstruction",
             "type":"instruction",
             "title":"Select areas, then draw",
             "text":"First select the areas of your body that currently have Psoriasis, then 'draw' the approximate size and location in each area.",
             "image":{
                 "type": "animated",
-                "imageNames": ["PsoriasisDraw1", "PsoriasisDraw2", "PsoriasisDraw3", "PsoriasisDraw4"],
+                "imageNames": ["PsoriasisDraw1", "PsoriasisDraw2", "PsoriasisDraw3", "PsoriasisDraw4", "PsoriasisDraw5", "PsoriasisDraw6", "PsoriasisDraw7", "PsoriasisDraw8", "PsoriasisDraw9"],
                 "placementType": "topMarginBackground",
-                "animationDuration": 4.0
+                "animationDuration":6.0
             },
             "actions":{
                 "goForward":{
