@@ -7,8 +7,8 @@
         {
             "identifier":"jointSwellingInstruction",
             "type":"instruction",
-            "title":"Select joint pain",
-            "text":"First select the areas of your body with swollen joints, then tap the individual joints within those areas on the next screens. You can touch the joints you have selected to undo the selection.",
+            "title":"Select joints with swelling",
+            "text":"Select your joints that are swollen, red and warm. You can touch the joints you have selected to undo the selection.",
             "image":{
                 "type": "animated",
                 "imageNames": ["JointCount1", "JointCount2", "JointCount3", "JointCount4", "JointCount5", "JointCount6"],
@@ -20,7 +20,8 @@
                     "type":"default",
                     "buttonTitle":"Begin"
                 }
-            }
+            },
+            "shouldHideActions": ["goBackward"]
         },
         {
             "identifier": "selectionCollection",
