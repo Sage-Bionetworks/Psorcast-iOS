@@ -55,11 +55,6 @@ open class SelectionCollectionStepViewController: RSDStepViewController, UIColle
     /// then it should set this outlet using the interface builder.
     @IBOutlet open var collectionView: UICollectionView!
     
-    /// The data source for this table.
-    open var tableData: RSDTableDataSource? {
-        return self.stepViewModel as? RSDTableDataSource
-    }
-    
     open var selectionStep: SelectionCollectionStepObject? {
         return self.step as? SelectionCollectionStepObject
     }

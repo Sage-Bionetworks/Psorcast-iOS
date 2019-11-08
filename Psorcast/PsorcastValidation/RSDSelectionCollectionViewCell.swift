@@ -34,7 +34,7 @@
 import UIKit
 import BridgeAppUI
 
-/// `RSDSelectionTableViewCell` is the base implementation for a selection table view cell.
+/// `RSDSelectionTableViewCell` is the base implementation for a selection collection view cell.
 @IBDesignable open class RSDSelectionCollectionViewCell: RSDCollectionViewCell {
     
     @IBOutlet public var titleLabel: UILabel?
@@ -106,7 +106,7 @@ import BridgeAppUI
         detailLabel!.rsd_alignToSuperview([.leading, .trailing], padding: kCollectionCellSideMargin)
         detailLabel!.rsd_alignAbove(view: titleLabel!, padding: kCollectionCellBottomMargin)
         
-        // Add the line separator
+        // Add the image view
         imageView = UIImageView()
         contentView.addSubview(imageView!)
         

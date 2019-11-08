@@ -40,7 +40,7 @@ internal let kCollectionCellTopMargin: CGFloat = 20.0
 internal let kCollectionCellBottomMargin: CGFloat = 12.0
 internal let kCollectionCellSectionTopMargin: CGFloat = 40.0
 
-/// `RSDCollectionViewCell` is used to display a table cell that is linked to a `RSDTableItem`.
+/// `RSDCollectionViewCell` is used to display a collection cell.
 @IBDesignable open class RSDCollectionViewCell : RSDDesignableCollectionViewCell {
     
     /// The index path of the cell.
@@ -50,13 +50,13 @@ internal let kCollectionCellSectionTopMargin: CGFloat = 40.0
     open var tableItem: RSDTableItem!
 }
 
-/// `RSDDesignableCollectionViewCell` is used to display a table cell that conforms to the `RSDViewDesignable` protocol.
+/// `RSDDesignableCollectionViewCell` is used to display a collection cell that conforms to the `RSDViewDesignable` protocol.
 @IBDesignable open class RSDDesignableCollectionViewCell : UICollectionViewCell, RSDViewDesignable {
     
     /// Does this cell use the table background color to set the color of the content view?
     open private(set) var usesTableBackgroundColor: Bool = false
     
-    /// The background color for the table cell.
+    /// The background color for the collection cell.
     open var backgroundColorTile: RSDColorTile? {
         if usesTableBackgroundColor {
             if let background = collectionViewBackgroundColorTile {
