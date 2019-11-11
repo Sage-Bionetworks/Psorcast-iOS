@@ -23,39 +23,40 @@
             }
         },
         {
-            "identifier": "selectionCheckmark",
-            "type": "selectionCheckmark",
-            "title": "Which areas of your body have swollen joints?",
-            "text": "Select all areas with joints that bother you.",
+            "identifier": "selectionCollection",
+            "type": "selectionCollection",
+            "title": "Which areas of your body currently have swollen joints?",
+            "actions":{
+                "skip": {
+                    "type": "navigation",
+                    "buttonTitle" : "No areas have psoriasis",
+                    "skipToIdentifier": "completion"
+                }
+            },
             "inputFields": [
                 {
                     "uiHint": "list",
                     "type": "multipleChoice.string",
                     "choices": [
                         {
-                            "text": "Above the waist",
-                            "detail": "Shoulders, elbows, wrists",
-                            "value": "aboveTheWaist"
-                        },
-                        {
-                            "text": "Below the waist",
-                            "detail": "Knees, ankles",
-                            "value": "belowTheWaist"
+                            "text": "Above Waist",
+                            "value": "aboveTheWaist",
+                            "icon": "SelectionAboveTheWaistFront"
                         },
                         {
                             "text": "Hands",
-                            "detail": "Left hand, right hand",
-                            "value": "hands"
+                            "value": "hands",
+                            "icon": "SelectionHands"
+                        },
+                        {
+                            "text": "Below Waist",
+                            "value": "belowTheWaist",
+                            "icon": "SelectionBelowTheWaistFront"
                         },
                         {
                             "text": "Feet",
-                            "detail": "Left foot, right foot",
-                            "value": "feet"
-                        },
-                        {
-                            "text": "No joints bother me",
-                            "detail": "Skip joint selection",
-                            "isExclusive": true
+                            "value": "feet",
+                            "icon": "SelectionFeet"
                         }
                     ]
                 }

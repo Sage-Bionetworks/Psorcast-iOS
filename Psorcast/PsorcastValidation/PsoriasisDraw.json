@@ -23,14 +23,14 @@
             }
         },
         {
-            "identifier": "selectionCheckmark",
-            "type": "selectionCheckmark",
-            "title": "Which areas have psoriasis?",
-            "text": "Select all areas of your body that currently have psoriasis.",
+            "identifier": "selectionCollection",
+            "type": "selectionCollection",
+            "title": "Which areas of your body currently have psoriasis?",
             "actions":{
-                "goForward":{
-                    "type":"default",
-                    "buttonTitle":"Continue"
+                "skip": {
+                    "type": "navigation",
+                    "buttonTitle" : "No areas have psoriasis",
+                    "skipToIdentifier": "summary"
                 }
             },
             "inputFields": [
@@ -39,29 +39,24 @@
                     "type": "multipleChoice.string",
                     "choices": [
                         {
-                            "text": "Front: Above the waist",
-                            "detail": " ",
-                            "value": "aboveTheWaistFront"
+                            "text": "Above Waist: Front",
+                            "value": "aboveTheWaistFront",
+                            "icon": "SelectionAboveTheWaistFront"
                         },
                         {
-                            "text": "Front: Below the waist",
-                            "detail": " ",
-                            "value": "belowTheWaistFront"
+                            "text": "Above Waist: Back",
+                            "value": "aboveTheWaistBack",
+                            "icon": "SelectionAboveTheWaistBack"
                         },
                         {
-                            "text": "Back: Above the waist",
-                            "detail": " ",
-                            "value": "aboveTheWaistBack"
+                            "text": "Below Waist: Front",
+                            "value": "belowTheWaistFront",
+                            "icon": "SelectionBelowTheWaistFront"
                         },
                         {
-                            "text": "Back: Below the waist",
-                            "detail": " ",
-                            "value": "belowTheWaistBack"
-                        },
-                        {
-                            "text": "No areas are affected",
-                            "detail": " ",
-                            "isExclusive": true
+                            "text": "Below Waist: Back",
+                            "value": "belowTheWaistBack",
+                            "icon": "SelectionBelowTheWaistBack"
                         }
                     ]
                 }
