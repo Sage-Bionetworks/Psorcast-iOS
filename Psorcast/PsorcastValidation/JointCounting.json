@@ -5,10 +5,37 @@
     "steps":
     [
         {
+            "identifier": "introduction",
+            "type":"overview",
+            "title":"Painful Joint Count",
+            "text":"In this activity you will first select the areas of your body with painful joints, then you will select the individual joints in those areas.",
+            "image": {
+                "type":"fetchable",
+                "imageName":"JointCount6",
+                "placementType":"topBackground"
+            },
+            "actions": {
+                "goForward":{
+                    "type":"default",
+                    "buttonTitle":"Get Started"
+                },
+                "skip":{
+                    "type":"reminder",
+                    "reminderIdentifier":"PsoriasisAreaPhoto"
+                },
+                "learnMore": {
+                    "type": "videoView",
+                    "buttonTitle" : "See this in action",
+                    "url": "video.mp4"
+                }
+            },
+            "shouldHideActions": ["goBackward"]
+        },
+        {
             "identifier":"jointCountInstruction",
             "type":"instruction",
-            "title":"Select joint pain",
-            "text":"First select the areas of your body with painful joints, then tap the individual joints within those areas on the next screens. You can touch the joints you have selected to undo the selection.",
+            "title":"Select areas, then joints",
+            "text":"Select areas of your body that have painful joints, then tap on the individual joints in those areas that are painful or tender.",
             "image":{
                 "type": "animated",
                 "imageNames": ["JointCount1", "JointCount2", "JointCount3", "JointCount4", "JointCount5", "JointCount6"],
@@ -20,7 +47,8 @@
                     "type":"default",
                     "buttonTitle":"Begin"
                 }
-            }
+            },
+            "shouldHideActions": ["goBackward"]
         },
         {
             "identifier": "selectionCollection",
@@ -671,7 +699,7 @@
         {
             "identifier":"completion",
             "type":"completionJointPain",
-            "title":"Activity complete",
+            "title":"Joint Counting Complete",
             "detail":"Today you identified",
             "text": "0 Painful joints",
             "textSelectionFormat": "%@ Painful joint",
