@@ -48,6 +48,11 @@ open class PsoriasisAreaPhotoCompletionStepViewController: RSDInstructionStepVie
     
     let psoriasisAreaPhotoImageIdentifier = "psoriasisAreaPhoto"
     
+    // Set a max attempts to load images to avoid infinite attempts
+    var imageLoadAttempt = 0
+    let maxImageLoadAttempt = 8
+    let imageLoadAttemptDelay = 0.25
+    
     /// The step for this view controller
     open var psoriasisAreaPhotoCompletionStep: PsoriasisAreaPhotoCompletionStepObject? {
         return self.step as? PsoriasisAreaPhotoCompletionStepObject
@@ -96,16 +101,18 @@ open class PsoriasisAreaPhotoCompletionStepViewController: RSDInstructionStepVie
     }
     
     func loadImageAndDelayIfNecessary() {
+        self.imageLoadAttempt += 1
+        
         if let image = self.selectedZoneImage {
             debugPrint("Image loaded")
             self.navigationHeader?.imageView?.image = image
-        } else {
-            debugPrint("Image not available immediately, trying again in 0.25 sec")
+        } else if self.imageLoadAttempt < self.maxImageLoadAttempt {
+            debugPrint("Image not available immediately, trying again in \(self.imageLoadAttemptDelay) sec")
             // Because the user has taken the picture only moments before this
             // step view controller is loaded, it may not be immediately
             // available.  If the image is nil, keep trying to load it
             // until we have a successful image
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) { [weak self] in
+            DispatchQueue.main.asyncAfter(deadline: .now() + self.imageLoadAttemptDelay) { [weak self] in
                 self?.loadImageAndDelayIfNecessary()
             }
         }

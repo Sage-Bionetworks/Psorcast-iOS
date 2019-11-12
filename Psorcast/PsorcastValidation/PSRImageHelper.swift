@@ -115,6 +115,34 @@ public class PSRImageHelper {
         return (canvasSize, aboveFrontRect, belowFrontRect, aboveBackRect, belowBackRect)
     }
     
+    public static func createImageCaptureCompletionImage(
+        leftImage: UIImage, rightImage: UIImage) -> UIImage? {
+        
+        let imageRects = self.createImageCaptureCompletionImage(
+            leftImage: leftImage.size, rightImage: rightImage.size)
+        
+        UIGraphicsBeginImageContextWithOptions(CGSize(width: imageRects.canvas.width, height: imageRects.canvas.height), false, 1.0)
+                        
+        leftImage.draw(in: imageRects.leftImage)
+        rightImage.draw(in: imageRects.rightImage)
+        
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        return newImage
+    }
+    
+    public static func createImageCaptureCompletionImage(
+        leftImage: CGSize, rightImage: CGSize) ->
+        (canvas: CGSize, leftImage: CGRect, rightImage: CGRect) {
+        
+        let leftRect = CGRect(x: 0, y: 0, width: leftImage.width, height: leftImage.height)
+        let rightRect = CGRect(x: leftImage.width, y: 0, width: rightImage.width, height: rightImage.height)
+            let canvasSize = CGSize(width: leftImage.width + rightImage.width, height: max(leftImage.height, rightImage.height))
+            
+        return (canvasSize, leftRect, rightRect)
+    }
+    
     /// Calulate the bounding box of image within the image view
     public static func calculateAspectFit(imageWidth: CGFloat, imageHeight: CGFloat,
                             imageViewWidth: CGFloat, imageViewHeight: CGFloat) -> CGRect {

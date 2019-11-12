@@ -39,6 +39,7 @@
 		CB8AE6FF233FBA1800F5F8AC /* PsoriasisDrawImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB8AE6FE233FBA1800F5F8AC /* PsoriasisDrawImageView.swift */; };
 		CB8AE701233FBA5E00F5F8AC /* PsoriasisDrawStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB8AE700233FBA5E00F5F8AC /* PsoriasisDrawStepViewController.swift */; };
 		CB8AE703233FBB9800F5F8AC /* TouchDrawableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB8AE702233FBB9800F5F8AC /* TouchDrawableView.swift */; };
+		CB8F2A9E2375E4A4005A62E7 /* ImageCaptureCompletionStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB8F2A9D2375E4A4005A62E7 /* ImageCaptureCompletionStepViewController.swift */; };
 		CB9F5E1F22E0BED3003FBCEF /* lato_black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CB9F5E1422E0BEA3003FBCEF /* lato_black.ttf */; };
 		CB9F5E2022E0BED3003FBCEF /* lato_bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CB9F5E1222E0BEA3003FBCEF /* lato_bold.ttf */; };
 		CB9F5E2122E0BED3003FBCEF /* lato_bolditalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CB9F5E1522E0BEA3003FBCEF /* lato_bolditalic.ttf */; };
@@ -177,6 +178,7 @@
 		CB8AE6FE233FBA1800F5F8AC /* PsoriasisDrawImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PsoriasisDrawImageView.swift; sourceTree = "<group>"; };
 		CB8AE700233FBA5E00F5F8AC /* PsoriasisDrawStepViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PsoriasisDrawStepViewController.swift; sourceTree = "<group>"; };
 		CB8AE702233FBB9800F5F8AC /* TouchDrawableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchDrawableView.swift; sourceTree = "<group>"; };
+		CB8F2A9D2375E4A4005A62E7 /* ImageCaptureCompletionStepViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCaptureCompletionStepViewController.swift; sourceTree = "<group>"; };
 		CB9F5E1222E0BEA3003FBCEF /* lato_bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = lato_bold.ttf; path = Fonts/lato_bold.ttf; sourceTree = "<group>"; };
 		CB9F5E1322E0BEA3003FBCEF /* lato_light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = lato_light.ttf; path = Fonts/lato_light.ttf; sourceTree = "<group>"; };
 		CB9F5E1422E0BEA3003FBCEF /* lato_black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = lato_black.ttf; path = Fonts/lato_black.ttf; sourceTree = "<group>"; };
@@ -358,6 +360,7 @@
 				CB5E95FA22EE7A390001AAFE /* ParticipantIDRegistrationViewController.xib */,
 				CBD67D9822DFDC4E00998516 /* ImageCaptureStepViewController.swift */,
 				CBD67D9722DFDC4E00998516 /* ImageCaptureStepViewController.xib */,
+				CB8F2A9D2375E4A4005A62E7 /* ImageCaptureCompletionStepViewController.swift */,
 				CB55C7372319718D00EA0C19 /* JointPainStepObject.swift */,
 				CB55C72E231848CD00EA0C19 /* JointPainResultObject.swift */,
 				CB55C739231972BE00EA0C19 /* JointPainImageView.swift */,
@@ -779,6 +782,7 @@
 				CBD67D8422DFB90C00998516 /* ExternalIDRegistrationViewController.swift in Sources */,
 				CB5424D3237220910036DB6B /* RSDSelectionCollectionViewCell.swift in Sources */,
 				CB47E563233FC1BD00AE8501 /* PsoriasisDrawStepObject.swift in Sources */,
+				CB8F2A9E2375E4A4005A62E7 /* ImageCaptureCompletionStepViewController.swift in Sources */,
 				CBE908A92333BB2A00F88A9A /* PsoriasisAreaPhotoResultObject.swift in Sources */,
 				CB55C72F231848CD00EA0C19 /* JointPainResultObject.swift in Sources */,
 				CBD67D8D22DFC5EE00998516 /* MotorControl+Bridge.swift in Sources */,

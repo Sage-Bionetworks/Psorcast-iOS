@@ -56,8 +56,10 @@ open class PsoriasisDrawCompletionStepViewController: RSDStepViewController, Pro
     
     let coverageResult = PsoriasisDrawStepViewController.percentCoverageResultId
     
+    // Set a max attempts to load images to avoid infinite attempts
     var imageLoadAttempt = 0
-    let maxImageLoadAttempt = 4
+    let maxImageLoadAttempt = 8
+    let imageLoadAttemptDelay = 0.25
     
     /// The container for the body images
     @IBOutlet public var bodyImageContainer: UIView!
@@ -192,12 +194,12 @@ open class PsoriasisDrawCompletionStepViewController: RSDStepViewController, Pro
         if !allSuccessful &&
             self.imageLoadAttempt < self.maxImageLoadAttempt {
             
-            debugPrint("All images not available immediately, trying again in 0.25 sec")
+            debugPrint("All images not available immediately, trying again in \(imageLoadAttemptDelay) sec")
             // Because the user has taken the picture only moments before this
             // step view controller is loaded, it may not be immediately
             // available.  If the image is nil, keep trying to load it
             // until we have a successful image
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) { [weak self] in
+            DispatchQueue.main.asyncAfter(deadline: .now() + imageLoadAttemptDelay) { [weak self] in
                 self?.loadImageAndDelayIfNecessary()
             }
         } else {
