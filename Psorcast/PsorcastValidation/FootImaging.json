@@ -106,15 +106,18 @@
         },
         {
             "identifier":"completion",
-            "type":"completion",
-            "title":"Great job!",
-            "text":"You just completed the activity.",
+            "type":"imageCaptureCompletion",
+            "title":"Toes Photos Complete",
+            "text":"You have completed the toes photo activity. By imaging your toes, we can notice any changes in swelling or nail invovlement.",
+            "leftImageIdentifier": "leftFoot",
+            "rightImageIdentifier": "rightFoot",
             "actions": {
                 "goForward":{
                     "type":"default",
                     "buttonTitle":"Done"
                 }
-            }
+            },
+            "shouldHideActions": ["goBackward", "cancel"]
         }
     ]
 }

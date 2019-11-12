@@ -102,15 +102,18 @@
         },
         {
             "identifier":"completion",
-            "type":"completion",
-            "title":"Great job!",
-            "text":"You just completed the activity.",
+            "type":"imageCaptureCompletion",
+            "title":"Finger Photos Complete",
+            "text":"You have completed the fingers photo activity. By imaging your fingers, we can notice any changes in swelling or nail invovlement.",
+            "leftImageIdentifier": "leftHand",
+            "rightImageIdentifier": "rightHand",
             "actions": {
                 "goForward":{
                     "type":"default",
                     "buttonTitle":"Done"
                 }
-            }
+            },
+            "shouldHideActions": ["goBackward", "cancel"]
         }
     ]
 }
