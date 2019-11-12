@@ -72,12 +72,12 @@ public class PSRImageHelper {
         // The scale between the aboveFront image and the belowFront image sizes
         let frontAboveToBelowScale = CGFloat(179) / CGFloat(181)
         // The scale between the aboveBack image and the belowBack image sizes
-        let backAboveToBelowScale = CGFloat(179) / CGFloat(181)
+        let backAboveToBelowScale = CGFloat(178) / CGFloat(181)
         
         /// It is the vertical space between the front body images divided by width of them
-        let frontAboveToBelowVerticalSpacing = CGFloat(209.0 / 375.0)
+        let frontAboveToBelowVerticalSpacing = CGFloat(212.0 / 375.0)
         /// It is the vertical space between the back body images divided by width of them
-        let backAboveToBelowVerticalSpacing = CGFloat(212.0 / 375.0)
+        let backAboveToBelowVerticalSpacing = CGFloat(188.0 / 375.0)
         
         let aboveFrontWidth = aboveFront.width * aboveFrontScale
         let aboveFrontHeight = aboveFront.height * aboveFrontScale
@@ -109,7 +109,8 @@ public class PSRImageHelper {
         
         let aboveBackRect = CGRect(x: aboveFrontWidth, y: verticalPadding, width: aboveBackWidth, height: aboveBackHeight)
         
-        let backCenterAdjustment = (aboveBackWidth - belowBackWidth) * CGFloat(0.5)
+        let belowBackHorizontalOffeset = -CGFloat(1) * (belowBackWidth / CGFloat(375))
+        let backCenterAdjustment = ((aboveBackWidth - belowBackWidth) * CGFloat(0.5)) + (belowBackHorizontalOffeset)
         let belowBackRect = CGRect(x: aboveFrontWidth + backCenterAdjustment, y: verticalPadding + aboveBackHeight - backVerticalSpacing, width: belowBackWidth, height: belowBackHeight)
             
         return (canvasSize, aboveFrontRect, belowFrontRect, aboveBackRect, belowBackRect)
