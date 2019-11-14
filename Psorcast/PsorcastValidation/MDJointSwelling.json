@@ -30,7 +30,7 @@
             "actions":{
                 "skip": {
                     "type": "navigation",
-                    "buttonTitle" : "No areas have psoriasis",
+                    "buttonTitle" : "No areas have swollen joints",
                     "skipToIdentifier": "completion"
                 }
             },
