@@ -123,6 +123,7 @@ open class PsoriasisDrawCompletionStepViewController: RSDStepViewController, Pro
         // If we have finished processing then show coverage, otherwise wait until delegate fires
         if PsoriasisDrawTaskResultProcessor.shared.processingIdentifiers.count == 0 {
             self.refreshPsoriasisDrawCoverage()
+            self.loadingSpinner.isHidden = true
         } else {
             PsoriasisDrawTaskResultProcessor.shared.processingFinishedDelegate = self
             self.navigationHeader?.titleLabel?.text = Localization.localizedString("CALCULATING_COVERAGE")
