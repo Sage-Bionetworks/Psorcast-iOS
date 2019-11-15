@@ -9,10 +9,11 @@
             "type":"overview",
             "title":"Psoriasis Draw",
             "text":"In this activity you will be drawing the approximate size and location of your psoriasis. This will help you to track your psoriasis over time.",
-            "image": {
-                "type":"fetchable",
-                "imageName":"PsoriasisDraw9",
-                "placementType":"topBackground"
+            "image":{
+                "type": "animated",
+                "imageNames": ["PsoriasisDraw1", "PsoriasisDraw2", "PsoriasisDraw3", "PsoriasisDraw4", "PsoriasisDraw5", "PsoriasisDraw6", "PsoriasisDraw7", "PsoriasisDraw8", "PsoriasisDraw9"],
+                "placementType": "topMarginBackground",
+                "animationDuration":6.0
             },
             "actions": {
                 "goForward":{
