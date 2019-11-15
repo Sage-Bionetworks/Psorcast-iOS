@@ -912,10 +912,16 @@
             "type":"psoriasisDrawCompletion",
             "title": "%@%% Coverage",
             "text": "You have noted that %@%% of your skin is affected by psoriasis.",
+            "learnMoreTitle": "What does my psoriasis coverage mean?",
+            "learnMoreText": "The following are general guidelines to interpret the amount of coverage of psoriasis on your body:\n\nLess than 3%: Mild Psoriasis\nBetween 3-10%: Moderate Psoriasis\nMore than 10%: Severe Psoriasis\n\nThe National Psoriasis Foundation has also described “treat to target” guidelines that say that the goal of a psoriasis treatment is to get your psoriasis down to 1 percent of your body surface area or less by the time you’ve been on a treatment for three months.\n\nAn “acceptable response” after three months might also be that your psoriasis only covers 3 percent or less of your body, or you’ve experienced 75 percent improvement relative to where you started.",
             "actions": {
                 "goForward":{
                     "type":"default",
                     "buttonTitle":"Done"
+                },
+                "learnMore": {
+                    "type":"default",
+                    "buttonTitle":"What does this mean?"
                 }
             },
             "shouldHideActions": ["goBackward", "cancel"]

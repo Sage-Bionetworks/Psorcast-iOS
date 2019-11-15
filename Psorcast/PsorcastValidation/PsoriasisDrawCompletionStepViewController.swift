@@ -37,6 +37,41 @@ import BridgeAppUI
 
 open class PsoriasisDrawCompletionStepObject: RSDUIStepObject, RSDStepViewControllerVendor {
     
+    private enum CodingKeys: String, CodingKey, CaseIterable {
+        case learnMoreTitle, learnMoreText
+    }
+    
+    /// The title of the learn more screen
+    var learnMoreTitle: String?
+    /// The text of the learn more screen
+    var learnMoreText: String?
+    
+    public required init(from decoder: Decoder) throws {
+        try super.init(from: decoder)
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        if container.contains(.learnMoreTitle) {
+            learnMoreTitle = try container.decode(String.self, forKey: .learnMoreTitle)
+        }
+        if container.contains(.learnMoreText) {
+            learnMoreText = try container.decode(String.self, forKey: .learnMoreText)
+        }
+    }
+    
+    required public init(identifier: String, type: RSDStepType? = nil) {
+        super.init(identifier: identifier, type: type)
+    }
+    
+    /// Override to set the properties of the subclass.
+    override open func copyInto(_ copy: RSDUIStepObject) {
+        super.copyInto(copy)
+        guard let subclassCopy = copy as? PsoriasisDrawCompletionStepObject else {
+            assertionFailure("Superclass implementation of the `copy(with:)` protocol should return an instance of this class.")
+            return
+        }
+        subclassCopy.learnMoreTitle = self.learnMoreTitle
+        subclassCopy.learnMoreText = self.learnMoreText
+    }
+        
     open func instantiateViewController(with parent: RSDPathComponent?) -> (UIViewController & RSDStepController)? {
         return PsoriasisDrawCompletionStepViewController(step: self, parent: parent)
     }
@@ -44,7 +79,7 @@ open class PsoriasisDrawCompletionStepObject: RSDUIStepObject, RSDStepViewContro
 
 /// The 'PsoriasisDrawCompletionStepViewController' displays the images the user drew on
 /// to indicate their psoriasis coverage, along with their average psoriasis coverage percent.
-open class PsoriasisDrawCompletionStepViewController: RSDStepViewController, ProcessorFinishedDelegate {
+open class PsoriasisDrawCompletionStepViewController: RSDStepViewController, ProcessorFinishedDelegate, RSDTaskViewControllerDelegate {
     
     /// The result identifier for the summary data
     public let summarySelectedZonesResultIdentifier = "selectedZones"
@@ -64,19 +99,8 @@ open class PsoriasisDrawCompletionStepViewController: RSDStepViewController, Pro
     /// The container for the body images
     @IBOutlet public var bodyImageContainer: UIView!
     
-    /// This controls the space between above and below images
-    /// It may need adjusted for different screen sizes
-    @IBOutlet public var frontImageVerticalSpace: NSLayoutConstraint!
-    /// This value was taken from the xib to make the images line up to look like one image of a body
-    /// It is the vertical space between the body images divided by width of them
-    let frontVerticalSpaceConstant = CGFloat(82.0 / 171.67)
-    
-    /// This controls the space between above and below images
-    /// It may need adjusted for different screen sizes
-    @IBOutlet public var backImageVerticalSpace: NSLayoutConstraint!
-    /// This value was taken from the xib to make the images line up to look like one image of a body
-    /// It is the vertical space between the body images divided by width of them
-    let backVerticalSpaceConstant = CGFloat(84.0 / 171.67)
+    /// The height of the learn more button
+    @IBOutlet public var learnMoreButtonHeight: NSLayoutConstraint!
     
     /// The image view container for body summary
     @IBOutlet public var bodySummaryImageView: UIImageView!
@@ -96,20 +120,6 @@ open class PsoriasisDrawCompletionStepViewController: RSDStepViewController, Pro
     open var completionStep: PsoriasisDrawCompletionStepObject? {
         return self.step as? PsoriasisDrawCompletionStepObject
     }
-    
-    /// The background of the header, body, and footer
-    open var headerBackground: RSDColorTile {
-        return self.designSystem.colorRules.palette.successGreen.normal
-    }
-    
-    /// Override the default background for all the placements
-    open override func defaultBackgroundColorTile(for placement: RSDColorPlacement) -> RSDColorTile {
-        if placement == .header {
-            return headerBackground
-        } else {
-            return self.designSystem.colorRules.backgroundLight
-        }
-    }
 
     override open func setupHeader(_ header: RSDStepNavigationView) {
         super.setupHeader(header)
@@ -128,6 +138,11 @@ open class PsoriasisDrawCompletionStepViewController: RSDStepViewController, Pro
             self.navigationHeader?.titleLabel?.text = Localization.localizedString("CALCULATING_COVERAGE")
             self.navigationHeader?.textLabel?.text = ""
         }
+        
+        // Remove learn more vertical space
+        if self.stepViewModel.action(for: .navigation(.learnMore)) == nil {
+            self.learnMoreButtonHeight.constant = 0
+        }
     }
     
     override open func setupFooter(_ footer: RSDNavigationFooterView) {
@@ -139,6 +154,27 @@ open class PsoriasisDrawCompletionStepViewController: RSDStepViewController, Pro
         } else {
             self.navigationFooter?.nextButton?.isEnabled = false
         }
+    }
+    
+    override open func showLearnMore() {
+        let step = LearnMoreStep(identifier: "learnMore", type: "learnMore")
+        step.title = self.completionStep?.learnMoreTitle
+        step.text = self.completionStep?.learnMoreText
+        
+        var navigator = RSDConditionalStepNavigatorObject(with: [step])
+        navigator.progressMarkers = []
+        let task = RSDTaskObject(identifier: "learnMoreTask", stepNavigator: navigator)
+        let vc = RSDTaskViewController(task: task)
+        vc.delegate = self
+        self.presentModal(vc, animated: true, completion:   nil)
+    }
+    
+    public func taskController(_ taskController: RSDTaskController, didFinishWith reason: RSDTaskFinishReason, error: Error?) {
+        self.dismiss(animated: true, completion: nil)
+    }
+    
+    public func taskController(_ taskController: RSDTaskController, readyToSave taskViewModel: RSDTaskViewModel) {
+        // No-op needed
     }
     
     func refreshPsoriasisDrawCoverage() {
