@@ -31,6 +31,8 @@
 		CB55C7402319A18300EA0C19 /* JointPainCompletionStepViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB55C73F2319A18300EA0C19 /* JointPainCompletionStepViewController.xib */; };
 		CB5E95FB22EE7A390001AAFE /* ParticipantIDRegistrationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB5E95FA22EE7A390001AAFE /* ParticipantIDRegistrationViewController.xib */; };
 		CB5E960A22EE920D0001AAFE /* ExternalIDRegistrationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB5E960922EE920D0001AAFE /* ExternalIDRegistrationViewController.xib */; };
+		CB5F3777237EFA2B003648DB /* LearnMoreStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB5F3775237EFA2A003648DB /* LearnMoreStepViewController.swift */; };
+		CB5F377C237EFFD5003648DB /* LearnMoreStepViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB5F377B237EFFD5003648DB /* LearnMoreStepViewController.xib */; };
 		CB6F54F022E25C5B0073BFE9 /* ParticipantIDRegistrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6F54EF22E25C5B0073BFE9 /* ParticipantIDRegistrationViewController.swift */; };
 		CB737FEC231B100600FA1D3A /* MDJointSwelling.json in Resources */ = {isa = PBXBuildFile; fileRef = CB737FEB231B100600FA1D3A /* MDJointSwelling.json */; };
 		CB85FB52235F505300FDC59B /* PsoriasisDrawTaskResultProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB85FB51235F505300FDC59B /* PsoriasisDrawTaskResultProcessor.swift */; };
@@ -170,6 +172,8 @@
 		CB55C73F2319A18300EA0C19 /* JointPainCompletionStepViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JointPainCompletionStepViewController.xib; sourceTree = "<group>"; };
 		CB5E95FA22EE7A390001AAFE /* ParticipantIDRegistrationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ParticipantIDRegistrationViewController.xib; sourceTree = "<group>"; };
 		CB5E960922EE920D0001AAFE /* ExternalIDRegistrationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExternalIDRegistrationViewController.xib; sourceTree = "<group>"; };
+		CB5F3775237EFA2A003648DB /* LearnMoreStepViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LearnMoreStepViewController.swift; sourceTree = "<group>"; };
+		CB5F377B237EFFD5003648DB /* LearnMoreStepViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LearnMoreStepViewController.xib; sourceTree = "<group>"; };
 		CB6F54EF22E25C5B0073BFE9 /* ParticipantIDRegistrationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParticipantIDRegistrationViewController.swift; sourceTree = "<group>"; };
 		CB737FEB231B100600FA1D3A /* MDJointSwelling.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = MDJointSwelling.json; sourceTree = "<group>"; };
 		CB85FB51235F505300FDC59B /* PsoriasisDrawTaskResultProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PsoriasisDrawTaskResultProcessor.swift; sourceTree = "<group>"; };
@@ -368,6 +372,8 @@
 				CB55C72C2317859700EA0C19 /* JointPainStepViewController.xib */,
 				CB55C73D23198C1000EA0C19 /* JointPainCompletionStepViewController.swift */,
 				CB55C73F2319A18300EA0C19 /* JointPainCompletionStepViewController.xib */,
+				CB5F3775237EFA2A003648DB /* LearnMoreStepViewController.swift */,
+				CB5F377B237EFFD5003648DB /* LearnMoreStepViewController.xib */,
 				CBE908A22333BADA00F88A9A /* PsoriasisAreaPhotoStepViewController.swift */,
 				CBE908A32333BADA00F88A9A /* PsoriasisAreaPhotoStepViewController.xib */,
 				CBE908A72333BB2A00F88A9A /* PsoriasisAreaPhotoResultObject.swift */,
@@ -703,6 +709,7 @@
 				CB55C72D2317859700EA0C19 /* JointPainStepViewController.xib in Resources */,
 				CBD67D9922DFDC4E00998516 /* ImageCaptureStepViewController.xib in Resources */,
 				CB8AE6FD233FB53400F5F8AC /* PsoriasisDraw.json in Resources */,
+				CB5F377C237EFFD5003648DB /* LearnMoreStepViewController.xib in Resources */,
 				CB55C7152317391600EA0C19 /* JointCounting.json in Resources */,
 				CB9F5E2822E0BED4003FBCEF /* lato_bolditalic.ttf in Resources */,
 				CB9F5E2A22E0BED4003FBCEF /* lato_light.ttf in Resources */,
@@ -759,6 +766,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CB5F3777237EFA2B003648DB /* LearnMoreStepViewController.swift in Sources */,
 				CBD67D9122DFC6B400998516 /* BuildDateUtil.m in Sources */,
 				CB8AE701233FBA5E00F5F8AC /* PsoriasisDrawStepViewController.swift in Sources */,
 				CB55C7382319718D00EA0C19 /* JointPainStepObject.swift in Sources */,
