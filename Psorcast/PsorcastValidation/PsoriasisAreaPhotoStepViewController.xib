@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15400" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina5_9" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15404"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15509"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -73,16 +73,16 @@
                                 <outlet property="titleLabel" destination="eMZ-8x-koe" id="oVn-Ub-ERi"/>
                             </connections>
                         </view>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0AJ-A1-rc2">
+                        <view contentMode="scaleToFill" verticalHuggingPriority="249" verticalCompressionResistancePriority="749" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0AJ-A1-rc2">
                             <rect key="frame" x="0.0" y="140" width="375" height="459"/>
                             <subviews>
-                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8Ey-6A-1PJ" userLabel="Front Image Container">
+                                <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8Ey-6A-1PJ" userLabel="Front Image Container">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="459"/>
                                     <subviews>
-                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="dYb-vQ-sQX" userLabel="Background">
+                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dYb-vQ-sQX" userLabel="Background">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="459"/>
                                         </imageView>
-                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qi0-an-zlg" userLabel="Front Image View" customClass="PsoriasisAreaPhotoImageView" customModule="PsorcastValidation" customModuleProvider="target">
+                                        <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qi0-an-zlg" userLabel="Front Image View" customClass="PsoriasisAreaPhotoImageView" customModule="PsorcastValidation" customModuleProvider="target">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="459"/>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </view>
@@ -99,13 +99,13 @@
                                         <constraint firstItem="dYb-vQ-sQX" firstAttribute="leading" secondItem="8Ey-6A-1PJ" secondAttribute="leading" id="ysh-RV-qAN"/>
                                     </constraints>
                                 </view>
-                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wqg-uH-bIm" userLabel="Back Image Container">
+                                <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wqg-uH-bIm" userLabel="Back Image Container">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="459"/>
                                     <subviews>
-                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Rfs-lj-K5O" userLabel="Background">
+                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Rfs-lj-K5O" userLabel="Background">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="459"/>
                                         </imageView>
-                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oi8-j5-QaV" userLabel="Back Image View" customClass="PsoriasisAreaPhotoImageView" customModule="PsorcastValidation" customModuleProvider="target">
+                                        <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="oi8-j5-QaV" userLabel="Back Image View" customClass="PsoriasisAreaPhotoImageView" customModule="PsorcastValidation" customModuleProvider="target">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="459"/>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </view>
@@ -123,21 +123,24 @@
                                     </constraints>
                                 </view>
                             </subviews>
-                            <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                            <color key="backgroundColor" systemColor="systemGreenColor" red="0.20392156859999999" green="0.78039215689999997" blue="0.34901960780000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <constraints>
-                                <constraint firstAttribute="bottom" secondItem="8Ey-6A-1PJ" secondAttribute="bottom" id="2mQ-Gd-sVu"/>
-                                <constraint firstItem="wqg-uH-bIm" firstAttribute="leading" secondItem="0AJ-A1-rc2" secondAttribute="leading" id="68l-jR-9e2"/>
-                                <constraint firstAttribute="trailing" secondItem="wqg-uH-bIm" secondAttribute="trailing" id="I6G-lk-JEj"/>
-                                <constraint firstAttribute="trailing" secondItem="8Ey-6A-1PJ" secondAttribute="trailing" id="bHb-Z4-ZtY"/>
-                                <constraint firstAttribute="bottom" secondItem="wqg-uH-bIm" secondAttribute="bottom" id="crZ-jN-R1m"/>
-                                <constraint firstItem="8Ey-6A-1PJ" firstAttribute="top" secondItem="0AJ-A1-rc2" secondAttribute="top" id="d1U-fJ-Njj"/>
-                                <constraint firstItem="wqg-uH-bIm" firstAttribute="top" secondItem="0AJ-A1-rc2" secondAttribute="top" id="uDH-AQ-P2q"/>
-                                <constraint firstItem="8Ey-6A-1PJ" firstAttribute="leading" secondItem="0AJ-A1-rc2" secondAttribute="leading" id="vc0-xa-7un"/>
+                                <constraint firstItem="wqg-uH-bIm" firstAttribute="bottom" secondItem="8Ey-6A-1PJ" secondAttribute="bottom" id="0hK-PF-Hft"/>
+                                <constraint firstItem="wqg-uH-bIm" firstAttribute="leading" secondItem="8Ey-6A-1PJ" secondAttribute="leading" id="7eJ-oX-b3f"/>
+                                <constraint firstItem="8Ey-6A-1PJ" firstAttribute="width" secondItem="0AJ-A1-rc2" secondAttribute="width" id="SOA-0c-1eP"/>
+                                <constraint firstItem="8Ey-6A-1PJ" firstAttribute="leading" secondItem="0AJ-A1-rc2" secondAttribute="leading" id="UXm-N9-O5g"/>
+                                <constraint firstItem="8Ey-6A-1PJ" firstAttribute="height" secondItem="0AJ-A1-rc2" secondAttribute="height" id="h0U-wM-Dsd"/>
+                                <constraint firstItem="wqg-uH-bIm" firstAttribute="trailing" secondItem="8Ey-6A-1PJ" secondAttribute="trailing" id="hqc-Qv-K20"/>
+                                <constraint firstItem="wqg-uH-bIm" firstAttribute="top" secondItem="8Ey-6A-1PJ" secondAttribute="top" id="qdG-6S-HyO"/>
+                                <constraint firstItem="8Ey-6A-1PJ" firstAttribute="top" secondItem="0AJ-A1-rc2" secondAttribute="top" id="x7O-Dp-miB"/>
                             </constraints>
                         </view>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ncg-SY-6dE" userLabel="Footer" customClass="RSDGenericNavigationFooterView" customModule="ResearchUI">
+                        <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ncg-SY-6dE" userLabel="Footer" customClass="RSDGenericNavigationFooterView" customModule="ResearchUI">
                             <rect key="frame" x="0.0" y="599" width="375" height="101"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="200" id="9jl-yL-Wy7"/>
+                            </constraints>
                         </view>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
