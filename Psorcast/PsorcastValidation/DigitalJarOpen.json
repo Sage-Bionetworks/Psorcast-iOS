@@ -1,0 +1,94 @@
+{
+    "taskIdentifier"            : "DigitalJarOpen",
+    "schemaIdentifier"          : "DigitalJarOpen",
+    "progressMarkers":[],
+    "steps":
+    [
+        {
+            "identifier": "introduction",
+            "type":"overview",
+            "title":"Digital Jar Open",
+            "text":"In this activity you will place your phone on a flat surface, and rotate it several differnt distances and directions.",
+            "image": {
+                "type":"fetchable",
+                "imageName":"PsoriasisAreaPhoto3",
+                "placementType":"topBackground"
+            },
+            "icons": [
+                {
+                    "icon":"FlatFloorIcon",
+                    "title": "A FLAT FLOOR"
+                }
+            ],
+            "actions": {
+                "goForward":{
+                    "type":"default",
+                    "buttonTitle":"Get Started"
+                },
+                "skip":{
+                    "type":"reminder",
+                    "reminderIdentifier":"DigitalJarOpen"
+                },
+                "learnMore": {
+                    "type": "videoView",
+                    "buttonTitle" : "See this in action",
+                    "url": "video.mp4"
+                }
+            }
+        },
+        {
+            "identifier":"instruction1",
+            "type":"instruction",
+            "title":"Digital Jar Open",
+            "text":"Let’s first begin by placing your phone on a flat surface, like a table, with the bottom of the phone facing towards you.",
+            "image":{
+                "type":"fetchable",
+                "imageName": "Foot1",
+                "placementType":"topBackground"
+            },
+            "actions":{
+                "goForward":{
+                    "type":"default",
+                    "buttonTitle":"The phone is on a flat surface"
+                }
+            },
+            "shouldHideActions": ["goBackward"]
+        },
+        {
+            "identifier":"instruction2",
+            "type":"instruction",
+            "title":"Rotate your device",
+            "text":"After tapping the button below to proceed, rotate your device.",
+            "image":{
+                "type":"fetchable",
+                "imageName": "Foot2",
+                "placementType":"topBackground"
+            },
+            "actions":{
+                "goForward":{
+                    "type":"default",
+                    "buttonTitle":"Begin"
+                }
+            },
+            "shouldHideActions": ["goBackward"]
+        },
+        {
+            "identifier"    : "leftFoot",
+            "type"          : "imageCapture",
+            "title"         : "Left Toes"
+        },
+        {
+            "identifier":"completion",
+            "type":"instruction",
+            "title":"Digital Jar Open Complete",
+            "text":"You have completed the digital jar open activity.",
+            "actions": {
+                "goForward":{
+                    "type":"default",
+                    "buttonTitle":"Done"
+                }
+            },
+            "shouldHideActions": ["goBackward", "cancel"]
+        }
+    ]
+}
