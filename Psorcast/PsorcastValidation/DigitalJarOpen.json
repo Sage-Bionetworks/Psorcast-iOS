@@ -49,7 +49,7 @@
             "actions":{
                 "goForward":{
                     "type":"default",
-                    "buttonTitle":"The phone is on a flat surface"
+                    "buttonTitle":"Phone is on a flat surface"
                 }
             },
             "shouldHideActions": ["goBackward"]
