@@ -7,9 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		CB051468237F23410058D746 /* PsoriasisAreaPhoto.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = CB051465237F23410058D746 /* PsoriasisAreaPhoto.mp4 */; };
-		CB051469237F23410058D746 /* FingersPhoto.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = CB051466237F23410058D746 /* FingersPhoto.mp4 */; };
-		CB05146A237F23410058D746 /* ToesPhoto.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = CB051467237F23410058D746 /* ToesPhoto.mp4 */; };
 		CB05146C237F27560058D746 /* DigitalJarOpen.json in Resources */ = {isa = PBXBuildFile; fileRef = CB05146B237F27560058D746 /* DigitalJarOpen.json */; };
 		CB422D2A23316EB700787FEE /* BridgeAppUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB422D2923316EB700787FEE /* BridgeAppUI.framework */; };
 		CB422D2B23316EB700787FEE /* BridgeAppUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB422D2923316EB700787FEE /* BridgeAppUI.framework */; };
@@ -39,6 +36,7 @@
 		CB5F377C237EFFD5003648DB /* LearnMoreStepViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB5F377B237EFFD5003648DB /* LearnMoreStepViewController.xib */; };
 		CB6F54F022E25C5B0073BFE9 /* ParticipantIDRegistrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6F54EF22E25C5B0073BFE9 /* ParticipantIDRegistrationViewController.swift */; };
 		CB737FEC231B100600FA1D3A /* MDJointSwelling.json in Resources */ = {isa = PBXBuildFile; fileRef = CB737FEB231B100600FA1D3A /* MDJointSwelling.json */; };
+		CB77866C238984790009ECF9 /* DigitalJarOpenStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB77866B238984790009ECF9 /* DigitalJarOpenStepViewController.swift */; };
 		CB85FB52235F505300FDC59B /* PsoriasisDrawTaskResultProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB85FB51235F505300FDC59B /* PsoriasisDrawTaskResultProcessor.swift */; };
 		CB85FB56235F5C5500FDC59B /* SelectedIdentifiersResultObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB85FB55235F5C5500FDC59B /* SelectedIdentifiersResultObject.swift */; };
 		CB8AE6FD233FB53400F5F8AC /* PsoriasisDraw.json in Resources */ = {isa = PBXBuildFile; fileRef = CB8AE6FC233FB53400F5F8AC /* PsoriasisDraw.json */; };
@@ -157,9 +155,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		CB051465237F23410058D746 /* PsoriasisAreaPhoto.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = PsoriasisAreaPhoto.mp4; sourceTree = "<group>"; };
-		CB051466237F23410058D746 /* FingersPhoto.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = FingersPhoto.mp4; sourceTree = "<group>"; };
-		CB051467237F23410058D746 /* ToesPhoto.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = ToesPhoto.mp4; sourceTree = "<group>"; };
 		CB05146B237F27560058D746 /* DigitalJarOpen.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = DigitalJarOpen.json; sourceTree = "<group>"; };
 		CB422D2923316EB700787FEE /* BridgeAppUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BridgeAppUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB422D2D23316EB700787FEE /* MDJointCounting.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = MDJointCounting.json; sourceTree = "<group>"; };
@@ -187,6 +182,7 @@
 		CB5F377B237EFFD5003648DB /* LearnMoreStepViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LearnMoreStepViewController.xib; sourceTree = "<group>"; };
 		CB6F54EF22E25C5B0073BFE9 /* ParticipantIDRegistrationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParticipantIDRegistrationViewController.swift; sourceTree = "<group>"; };
 		CB737FEB231B100600FA1D3A /* MDJointSwelling.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = MDJointSwelling.json; sourceTree = "<group>"; };
+		CB77866B238984790009ECF9 /* DigitalJarOpenStepViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DigitalJarOpenStepViewController.swift; sourceTree = "<group>"; };
 		CB85FB51235F505300FDC59B /* PsoriasisDrawTaskResultProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PsoriasisDrawTaskResultProcessor.swift; sourceTree = "<group>"; };
 		CB85FB55235F5C5500FDC59B /* SelectedIdentifiersResultObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedIdentifiersResultObject.swift; sourceTree = "<group>"; };
 		CB8AE6FC233FB53400F5F8AC /* PsoriasisDraw.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = PsoriasisDraw.json; sourceTree = "<group>"; };
@@ -414,6 +410,7 @@
 				CBB93CB4234252BC00321A4D /* PsoriasisDrawCompletionStepViewController.swift */,
 				CBB93CB6234252D000321A4D /* PsoriasisDrawCompletionStepViewController.xib */,
 				CB85FB55235F5C5500FDC59B /* SelectedIdentifiersResultObject.swift */,
+				CB77866B238984790009ECF9 /* DigitalJarOpenStepViewController.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -829,6 +826,7 @@
 				CB8AE703233FBB9800F5F8AC /* TouchDrawableView.swift in Sources */,
 				CB8AE6FF233FBA1800F5F8AC /* PsoriasisDrawImageView.swift in Sources */,
 				CB55C73A231972BE00EA0C19 /* JointPainImageView.swift in Sources */,
+				CB77866C238984790009ECF9 /* DigitalJarOpenStepViewController.swift in Sources */,
 				CB6F54F022E25C5B0073BFE9 /* ParticipantIDRegistrationViewController.swift in Sources */,
 				CBD67D8B22DFC5CA00998516 /* TaskListScheduleManager.swift in Sources */,
 			);
