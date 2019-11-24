@@ -191,7 +191,7 @@ open class DigitalJarOpenStepViewController: RSDActiveStepViewController, RSDAsy
         self.view.addSubview(button)
         
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.rsd_alignAll(.equal, to: countdownDialView, padding: countdownDialView.dialWidth)
+        button.rsd_alignAll(.equal, to: countdownDialView, padding: countdownDialView.ringWidth * CGFloat(0.5))
         
         self.startStopButton = button
     }
@@ -208,6 +208,10 @@ open class DigitalJarOpenStepViewController: RSDActiveStepViewController, RSDAsy
         self.setInitialUIState()
     }
     
+    override open func updateCountdownLabels() {
+        // Override to control countdown label in this sub-class
+    }
+    
     /// Set the initial UI state with review instructions button and start button showing.
     open func setInitialUIState() {
         
@@ -220,6 +224,7 @@ open class DigitalJarOpenStepViewController: RSDActiveStepViewController, RSDAsy
             self.rotationImageView?.image = UIImage(named: "JarOpenCounterClockwise")
             (self.countdownDial as? RSDCountdownDial)?.clockwise = false
         }
+        self.countdownLabel?.text = ""
         
         if let titleLabel = self.stepTitleLabel {
             titleLabel.text = self.jarOpenStepTitle
@@ -264,6 +269,10 @@ open class DigitalJarOpenStepViewController: RSDActiveStepViewController, RSDAsy
             startBtn.isHidden = false
             startBtn.addTarget(self, action: #selector(self.stopJarOpenRecorder), for: .touchUpInside)
         }
+        
+        if let skipBtn = self.registeredButtons[.navigation(.skip)]?.first {
+            skipBtn.isHidden = true
+        }
 
         if let reviewBtn = self.registeredButtons[.navigation(.reviewInstructions)]?.first {
             reviewBtn.isHidden = true
@@ -286,6 +295,8 @@ open class DigitalJarOpenStepViewController: RSDActiveStepViewController, RSDAsy
             reviewBtn.setTitle(self.jarOpenRedoTitle, for: .normal)
             reviewBtn.isHidden = false
         }
+        
+        // TODO: calculate change in yaw final - initial
     }
     
     override open func actionTapped(with actionType: RSDUIActionType) -> Bool {
@@ -307,9 +318,25 @@ open class DigitalJarOpenStepViewController: RSDActiveStepViewController, RSDAsy
         }
         
         // Create a motion recorder
-        var motionConfig = RSDMotionRecorderConfiguration(identifier: "motion", recorderTypes: [.accelerometer, .gyro, .attitude])
+        var motionConfig = RSDMotionRecorderConfiguration(identifier: "motion", recorderTypes: [.accelerometer, .gyro, .attitude], requiresBackgroundAudio: false, frequency: nil, shouldDeletePrevious: true)
+        motionConfig.startStepIdentifier = self.step.identifier
         motionConfig.stopStepIdentifier = self.step.identifier
         motionRecorder = RSDMotionRecorder(configuration: motionConfig, taskViewModel: taskViewModel, outputDirectory: taskViewModel.outputDirectory)
+        
+        initialYawValue = nil
+        _motionObserver = motionRecorder!.observe(\.currentDeviceMotion) { (recorder, change) in
+            DispatchQueue.main.async { [weak self] in
+                if let current = self?.motionRecorder?.currentDeviceMotion {
+                    let newYaw = current.attitude.yaw
+                    debugPrint("Yaw = \(newYaw)")
+                    
+                    if self?.initialYawValue == nil {
+                        self?.initialYawValue = newYaw
+                    }
+                    self?.finalYawValue = newYaw
+                }
+            }
+        }
         
         // start the recorders
         self.taskController?.startAsyncActions(for: [motionRecorder!], showLoading: false, completion:{
@@ -317,24 +344,6 @@ open class DigitalJarOpenStepViewController: RSDActiveStepViewController, RSDAsy
                 self?.setRecordingInProgressUIState()
             }
         })
-                
-        initialYawValue = nil
-        _motionObserver = motionRecorder!.observe(\.currentDeviceMotion) { (recorder, change) in
-            guard let newValue = change.newValue, let deviceMotion = newValue else { return }
-            DispatchQueue.main.async { [weak self] in
-                let newYaw = deviceMotion.attitude.yaw
-                debugPrint("Yaw = \(newYaw)")
-                
-                if self?.initialYawValue == nil {
-                    self?.initialYawValue = newYaw
-                }
-                self?.finalYawValue = newYaw
-                
-                self?.countdownLabel?.text = "\(newYaw)"
-                
-                // TODO: calculate change in yaw final - initial
-            }
-        }
     }
     
     @objc public func stopJarOpenRecorder() {
