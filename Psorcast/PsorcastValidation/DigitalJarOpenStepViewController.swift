@@ -98,6 +98,10 @@ public enum DigitalJarOpenHand: String, Codable {
 /// rotation angle, and finally the user stopping the recorder.
 open class DigitalJarOpenStepViewController: RSDActiveStepViewController, RSDAsyncActionDelegate {
     
+    /// The suffix attached to the step identifier for the rotation answer result.
+    static let rotationResultSuffix = "_rotation"
+    static let motionResultSuffix = "_motion"
+    
     /// The additional amount on each border side of size for rotation image view compared to the countdown dial
     let kRotationImageViewSpacing = CGFloat(40)
     
@@ -113,26 +117,37 @@ open class DigitalJarOpenStepViewController: RSDActiveStepViewController, RSDAsy
     /// Observes changes in motion data while recording.
     private var _motionObserver: NSKeyValueObservation?
     
-    /// The initial yaw value when the user is doing the jar open task
-    private var initialYawValue: Double?
-    private var finalYawValue: Double?
+    /// The current rotation value and the last yaw value fo the jar open task
+    /// It will be translated from the device motion raw yaw
+    /// It will go from 0 to 2*pi counter-clockwise
+    private var currentRotationRad: Double = 0.0
+    private var lastYawRad: Double?
     
     /// The jar open step object that created this view controller.
     public var jarOpenStep: DigitalJarOpenStepObject? {
         return self.step as? DigitalJarOpenStepObject
     }
     
+    /// The jar open rotation direction
+    public var jarOpenRotationDirection: DigitalJarOpenRotationDirection {
+        return self.jarOpenStep?.rotationDirection ?? .clockwise
+    }
+    
+    /// If the rotation direction is clockwise or not
+    open var isClockwise: Bool {
+        return self.jarOpenRotationDirection == .clockwise
+    }
+    
     /// Depending on the hand and rotation direction, return an appropriate step title.
     open var jarOpenStepTitle: String? {
-        if let hand = self.jarOpenStep?.hand,
-            let direction = self.jarOpenStep?.rotationDirection {
-            if hand == .left && direction == .clockwise {
+        if let hand = self.jarOpenStep?.hand {
+            if hand == .left && isClockwise {
                 return Localization.localizedString("JAR_OPEN_TITLE_LEFT_CLOCKWISE")
-            } else if hand == .left && direction == .counterClockwise {
+            } else if hand == .left && !isClockwise {
                 return Localization.localizedString("JAR_OPEN_TITLE_LEFT_COUNTER_CLOCKWISE")
-            } else if hand == .right && direction == .clockwise {
+            } else if hand == .right && isClockwise {
                 return Localization.localizedString("JAR_OPEN_TITLE_RIGHT_CLOCKWISE")
-            } else if hand == .right && direction == .counterClockwise {
+            } else if hand == .right && !isClockwise {
                 return Localization.localizedString("JAR_OPEN_TITLE_RIGHT_COUNTER_CLOCKWISE")
             }
         }
@@ -217,12 +232,12 @@ open class DigitalJarOpenStepViewController: RSDActiveStepViewController, RSDAsy
         
         self.state = .initial
         
-        if (self.jarOpenStep?.rotationDirection ?? .clockwise) == .clockwise {
+        if self.isClockwise {
             self.rotationImageView?.image = UIImage(named: "JarOpenClockwise")
-            (self.countdownDial as? RSDCountdownDial)?.clockwise = true
+            (self.countdownDial as? RSDCountdownDial)?.isClockwise = true
         } else {
             self.rotationImageView?.image = UIImage(named: "JarOpenCounterClockwise")
-            (self.countdownDial as? RSDCountdownDial)?.clockwise = false
+            (self.countdownDial as? RSDCountdownDial)?.isClockwise = false
         }
         self.countdownLabel?.text = ""
         
@@ -233,7 +248,13 @@ open class DigitalJarOpenStepViewController: RSDActiveStepViewController, RSDAsy
         if let reviewBtn = self.registeredButtons[.navigation(.reviewInstructions)]?.first {
             let title = Localization.localizedString("REVIEW_INSTRUCTIONS_BTN_TITLE")
             reviewBtn.setTitle(title, for: .normal)
-            reviewBtn.isHidden = false
+            
+            // Do not show review instructions button unless we have the actin for it.
+            if self.stepViewModel.action(for: .navigation(.reviewInstructions)) == nil {
+                reviewBtn.isHidden = true
+            } else {
+                reviewBtn.isHidden = false
+            }
         }
         
         if let nextBtn = self.nextButton {
@@ -254,6 +275,7 @@ open class DigitalJarOpenStepViewController: RSDActiveStepViewController, RSDAsy
             startBtn.backgroundColor = btnBackgroundTile.color
             startBtn.setTitle(startBtnTitle, for: .normal)
             startBtn.isHidden = false
+            startBtn.removeTarget(nil, action: nil, for: .allEvents)
             startBtn.addTarget(self, action: #selector(self.startJarOpenRecorder), for: .touchUpInside)
         }
     }
@@ -267,6 +289,7 @@ open class DigitalJarOpenStepViewController: RSDActiveStepViewController, RSDAsy
             let startBtnTitle = Localization.localizedString("STOP_BTN_TITLE")
             startBtn.setTitle(startBtnTitle, for: .normal)
             startBtn.isHidden = false
+            startBtn.removeTarget(nil, action: nil, for: .allEvents)
             startBtn.addTarget(self, action: #selector(self.stopJarOpenRecorder), for: .touchUpInside)
         }
         
@@ -296,7 +319,8 @@ open class DigitalJarOpenStepViewController: RSDActiveStepViewController, RSDAsy
             reviewBtn.isHidden = false
         }
         
-        // TODO: calculate change in yaw final - initial
+        let finalRotationDeg = self.degreesClamped(radians: self.currentRotationRad)
+        countdownLabel?.text = String(format: "%d°", Int(finalRotationDeg))
     }
     
     override open func actionTapped(with actionType: RSDUIActionType) -> Bool {
@@ -318,23 +342,20 @@ open class DigitalJarOpenStepViewController: RSDActiveStepViewController, RSDAsy
         }
         
         // Create a motion recorder
-        var motionConfig = RSDMotionRecorderConfiguration(identifier: "motion", recorderTypes: [.accelerometer, .gyro, .attitude], requiresBackgroundAudio: false, frequency: nil, shouldDeletePrevious: true)
+        let configIdentifier = "\(self.step.identifier)\(DigitalJarOpenStepViewController.motionResultSuffix)"
+        var motionConfig = RSDMotionRecorderConfiguration(identifier: configIdentifier, recorderTypes: [.accelerometer, .gyro, .attitude], requiresBackgroundAudio: false, frequency: nil, shouldDeletePrevious: true)
         motionConfig.startStepIdentifier = self.step.identifier
         motionConfig.stopStepIdentifier = self.step.identifier
         motionRecorder = RSDMotionRecorder(configuration: motionConfig, taskViewModel: taskViewModel, outputDirectory: taskViewModel.outputDirectory)
         
-        initialYawValue = nil
+        currentRotationRad = 0.0
+        lastYawRad = nil
         _motionObserver = motionRecorder!.observe(\.currentDeviceMotion) { (recorder, change) in
             DispatchQueue.main.async { [weak self] in
-                if let current = self?.motionRecorder?.currentDeviceMotion {
-                    let newYaw = current.attitude.yaw
-                    debugPrint("Yaw = \(newYaw)")
-                    
-                    if self?.initialYawValue == nil {
-                        self?.initialYawValue = newYaw
-                    }
-                    self?.finalYawValue = newYaw
+                guard let current = self?.motionRecorder?.currentDeviceMotion else {
+                    return
                 }
+                self?.processNewYawValue(newYaw: current.attitude.yaw)
             }
         }
         
@@ -344,6 +365,95 @@ open class DigitalJarOpenStepViewController: RSDActiveStepViewController, RSDAsy
                 self?.setRecordingInProgressUIState()
             }
         })
+    }
+    
+    /// Process a new yaw value by calculating the difference in radians from last value,
+    /// and updating the UI to reflect that change.
+    public func processNewYawValue(newYaw: Double) {
+        if let lastYaw = self.lastYawRad {
+            let yawDiff = self.calculateDifferece(from: lastYaw, to: newYaw, clockwise: self.isClockwise)
+            self.currentRotationRad += yawDiff
+        }
+        self.lastYawRad = newYaw
+        
+        let currentRotationDeg = self.degreesClamped(radians: self.currentRotationRad)
+        self.countdownDial?.progress = CGFloat(currentRotationDeg / 360.0)
+    }
+    
+    /// Calulcates the difference between yaw1 and yaw2, the raw device motion yaw angles in radians.
+    /// These angles need to be within 180 degrees for the difference to be correctly calculated.
+    public func calculateDifferece(from yaw1: Double, to yaw2: Double, clockwise: Bool) -> Double {
+        
+        // The raw yaw value from the device sensor has unusual radian values as you go around the circle.
+        // If the circle was a clock traveling clockwise:
+        // 12 o'clock is 0 radians, 3 o'clock is -(pi / 2) radians, right before it turns 6 o'clock is -pi radians,
+        // right after it turns 6 o'clock is pi radians, and 9 o'clock is (pi / 2) radians.
+        
+        // Therefore, let's simplify the values to be the same as above except,
+        // Right before 6 o'clock is pi radians, 3 o'clock is 3*(pi/2),
+        // and right after noon is 2*pi radians.
+        
+        var yaw1Translated = yaw1
+        if yaw1 >= -Double.pi && yaw1 <= 0 {
+            yaw1Translated = (2 * Double.pi) + yaw1
+        }
+        
+        var yaw2Translated = yaw2
+        if yaw2 >= -Double.pi && yaw2 <= 0 {
+            yaw2Translated = (2 * Double.pi) + yaw2
+        }
+         
+        // Because the angles will be close to each other,
+        // we can assume a pass over from 360 -> 0 degrees or vice versa.
+        let quadrant1 = self.quadrantNumber(rawYaw: yaw1)
+        let quadrant2 = self.quadrantNumber(rawYaw: yaw2)
+        if ((quadrant1 == 1 && quadrant2 == 2) ||
+            (quadrant1 == 2 && quadrant2 == 1)) {
+            
+            if quadrant1 == 2 {
+                yaw1Translated = (2 * Double.pi) + yaw1Translated
+            }
+            if quadrant2 == 2 {
+                yaw2Translated = (2 * Double.pi) + yaw2Translated
+            }
+        }
+        
+        // Negate the difference for clockwise rotations.
+        if clockwise {
+            return yaw1Translated - yaw2Translated
+        }
+        return yaw2Translated - yaw1Translated
+    }
+    
+    /// Calculates the quadrant from the raw attitude data.
+    /// Quadrant 1 is upper right, 2 is upper left, 3 is lower left, and 4 is lower right.
+    public func quadrantNumber(rawYaw: Double) -> Int {
+        if rawYaw <= -(0.5 * Double.pi) {
+            return 4
+        } else if rawYaw <= 0 {
+            return 1
+        } else if rawYaw <= (0.5 * Double.pi) {
+            return 2
+        } else {
+            return 3
+        }
+    }
+    
+    /// Calculate degrees from radians.
+    public func degrees(radians:Double) -> Double {
+        return 180.0 / Double.pi * radians
+    }
+    
+    /// Calculate degrees from radians, and clamp between 0 and 360.
+    public func degreesClamped(radians:Double) -> Double {
+        let degrees = self.degrees(radians: radians)
+        if degrees <= 0 {
+            return 0
+        } else if degrees >= 360 {
+            return 360
+        } else {
+            return degrees
+        }
     }
     
     @objc public func stopJarOpenRecorder() {
@@ -364,13 +474,17 @@ open class DigitalJarOpenStepViewController: RSDActiveStepViewController, RSDAsy
         _motionObserver?.invalidate()
         _motionObserver = nil
         
-        // TODO: mdephillips 11/23/19 Add the rotation angle as a result
-        // Add the ending heart rate as a result for display to the user
-//        var bpmResult = RSDAnswerResultObject(identifier: "\(self.step.identifier)_end", answerType: RSDAnswerResultType(baseType: .decimal))
-//        bpmResult.value = bpmRecorder?.bpm
-//        addResult(bpmResult)
-        
         super.stop()
+    }
+    
+    override open func goForward() {
+        // Add the rotation result for this step in degrees.
+        let resultIdentifier = "\(self.step.identifier)\(DigitalJarOpenStepViewController.rotationResultSuffix)"
+        var rotationResult = RSDAnswerResultObject(identifier: resultIdentifier, answerType: RSDAnswerResultType(baseType: .integer))
+        rotationResult.value = Int(self.degreesClamped(radians: self.currentRotationRad))
+        _ = self.stepViewModel.parent?.taskResult.appendStepHistory(with: rotationResult)
+        
+        super.goForward()
     }
     
     /// RSDAsyncActionDelegate function.
