@@ -75,6 +75,45 @@
             "shouldHideActions": ["goBackward"]
         },
         {
+            "identifier":"leftCounter",
+            "type": "digitalJarOpen",
+            "hand": "left",
+            "rotationDirection": "counterClockwise",
+            "actions":{
+                "goForward":{
+                    "type":"default",
+                    "buttonTitle":"Go to Right Hand"
+                }
+            },
+            "shouldHideActions": ["goBackward"]
+        },
+        {
+            "identifier":"rightClockwise",
+            "type": "digitalJarOpen",
+            "hand": "right",
+            "rotationDirection": "clockwise",
+            "actions":{
+                "goForward":{
+                    "type":"default",
+                    "buttonTitle":"Do Opposite Direction"
+                }
+            },
+            "shouldHideActions": ["goBackward"]
+        },
+        {
+            "identifier":"rightCounter",
+            "type": "digitalJarOpen",
+            "hand": "right",
+            "rotationDirection": "counterClockwise",
+            "actions":{
+                "goForward":{
+                    "type":"default",
+                    "buttonTitle":"Complete Activity"
+                }
+            },
+            "shouldHideActions": ["goBackward"]
+        },
+        {
             "identifier":"completion",
             "type":"instruction",
             "title":"Digital Jar Open Complete",
