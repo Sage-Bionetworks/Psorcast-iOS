@@ -234,10 +234,11 @@ open class DigitalJarOpenStepViewController: RSDActiveStepViewController, RSDAsy
         
         if self.isClockwise {
             self.rotationImageView?.image = UIImage(named: "JarOpenClockwise")
-            (self.countdownDial as? RSDCountdownDial)?.isClockwise = true
         } else {
             self.rotationImageView?.image = UIImage(named: "JarOpenCounterClockwise")
-            (self.countdownDial as? RSDCountdownDial)?.isClockwise = false
+            // TODO: mdephillips 11/26/19 use new count down dial counter-clockwise feature
+            self.countdownDial?.transform = CGAffineTransform(scaleX: -1, y: 1)
+            self.countdownLabel?.transform = CGAffineTransform(scaleX: -1, y: 1)
         }
         self.countdownLabel?.text = ""
         
