@@ -57,6 +57,9 @@
 "STOP_BTN_TITLE" = "Stop";
 "REVIEW_INSTRUCTIONS_BTN_TITLE" = "Review instructions";
 
+"LEFT_HAND" = "Left Hand";
+"RIGHT_HAND" = "Right Hand";
+
 "JAR_OPEN_TITLE_LEFT_CLOCKWISE" = "Rotate the phone CLOCKWISE with your LEFT hand";
 "JAR_OPEN_TITLE_LEFT_COUNTER_CLOCKWISE" = "Rotate the phone COUNTER-CLOCKWISE with your LEFT hand";
 "JAR_OPEN_TITLE_RIGHT_CLOCKWISE" = "Rotate the phone CLOCKWISE with your RIGHT hand";

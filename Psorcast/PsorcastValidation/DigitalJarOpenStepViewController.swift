@@ -482,7 +482,14 @@ open class DigitalJarOpenStepViewController: RSDActiveStepViewController, RSDAsy
         // Add the rotation result for this step in degrees.
         let resultIdentifier = "\(self.step.identifier)\(DigitalJarOpenStepViewController.rotationResultSuffix)"
         var rotationResult = RSDAnswerResultObject(identifier: resultIdentifier, answerType: RSDAnswerResultType(baseType: .integer))
+        
         rotationResult.value = Int(self.degreesClamped(radians: self.currentRotationRad))
+        // The simulator does not have motion capability,
+        // but allow it to set a random degrees.
+        #if targetEnvironment(simulator)
+            rotationResult.value = Int.random(in: 0...360)
+        #endif
+        
         _ = self.stepViewModel.parent?.taskResult.appendStepHistory(with: rotationResult)
         
         super.goForward()

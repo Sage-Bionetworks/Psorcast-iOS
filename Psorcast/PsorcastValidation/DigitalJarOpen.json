@@ -115,9 +115,8 @@
         },
         {
             "identifier":"completion",
-            "type":"instruction",
+            "type":"digitalJarOpenCompletion",
             "title":"Digital Jar Open Complete",
-            "text":"You have completed the digital jar open activity.",
             "actions": {
                 "goForward":{
                     "type":"default",
