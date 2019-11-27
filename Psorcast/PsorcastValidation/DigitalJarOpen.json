@@ -8,11 +8,12 @@
             "identifier": "introduction",
             "type":"overview",
             "title":"Digital Jar Open",
-            "text":"In this activity, you will place your phone on a flat surface and rotate it like you are opening a jar in order to measure joint function.",
-            "image": {
-                "type":"fetchable",
-                "imageName":"PsoriasisAreaPhoto3",
-                "placementType":"topBackground"
+            "text":"In this activity, you will rotate your phone on a table like you are opening and closing the lid to a jar.",
+            "image":{
+                "type": "animated",
+                "imageNames": ["JarOpenHeader1", "JarOpenHeader2", "JarOpenHeader3"],
+                "placementType": "topMarginBackground",
+                "animationDuration": 3.0
             },
             "icons": [
                 {
@@ -39,49 +40,83 @@
         {
             "identifier":"instruction1",
             "type":"instruction",
-            "title":"Digital Jar Open",
-            "text":"Let’s first begin by placing your phone on a flat surface, like a table, with the bottom of the phone facing towards you.",
+            "title":"Put the phone on a table",
+            "text":"Place your phone on a flat surface such as a table before you begin the activity.",
             "image":{
-                "type":"fetchable",
-                "imageName": "Foot1",
-                "placementType":"topBackground"
+                "type": "animated",
+                "imageNames": ["JarOpenHeader1", "JarOpenHeader2", "JarOpenHeader3"],
+                "placementType": "topMarginBackground",
+                "animationDuration": 3.0
             },
             "actions":{
                 "goForward":{
                     "type":"default",
-                    "buttonTitle":"Phone is on a flat surface"
+                    "buttonTitle":"Did it"
+                }
+            },
+            "shouldHideActions": ["goBackward"]
+        },        
+        {
+            "identifier":"leftClockwise",
+            "type": "digitalJarOpen",
+            "hand": "left",
+            "rotationDirection": "clockwise",
+            "actions":{
+                "reviewInstructions":{
+                    "type":"navigation",
+                    "skipToIdentifier": "instruction1",
+                    "buttonTitle": "Review instructions"
+                },
+                "goForward":{
+                    "type":"default",
+                    "buttonTitle":"Do Opposite Direction"
                 }
             },
             "shouldHideActions": ["goBackward"]
         },
         {
-            "identifier":"instruction2",
-            "type":"instruction",
-            "title":"Rotate your device",
-            "text":"After tapping the button below to proceed, rotate your device.",
-            "image":{
-                "type":"fetchable",
-                "imageName": "Foot2",
-                "placementType":"topBackground"
-            },
+            "identifier":"leftCounter",
+            "type": "digitalJarOpen",
+            "hand": "left",
+            "rotationDirection": "counterClockwise",
             "actions":{
                 "goForward":{
                     "type":"default",
-                    "buttonTitle":"Begin"
+                    "buttonTitle":"Go to Right Hand"
                 }
             },
             "shouldHideActions": ["goBackward"]
         },
         {
-            "identifier"    : "leftFoot",
-            "type"          : "imageCapture",
-            "title"         : "Left Toes"
+            "identifier":"rightClockwise",
+            "type": "digitalJarOpen",
+            "hand": "right",
+            "rotationDirection": "clockwise",
+            "actions":{
+                "goForward":{
+                    "type":"default",
+                    "buttonTitle":"Do Opposite Direction"
+                }
+            },
+            "shouldHideActions": ["goBackward"]
+        },
+        {
+            "identifier":"rightCounter",
+            "type": "digitalJarOpen",
+            "hand": "right",
+            "rotationDirection": "counterClockwise",
+            "actions":{
+                "goForward":{
+                    "type":"default",
+                    "buttonTitle":"Complete Activity"
+                }
+            },
+            "shouldHideActions": ["goBackward"]
         },
         {
             "identifier":"completion",
-            "type":"instruction",
+            "type":"digitalJarOpenCompletion",
             "title":"Digital Jar Open Complete",
-            "text":"You have completed the digital jar open activity.",
             "actions": {
                 "goForward":{
                     "type":"default",

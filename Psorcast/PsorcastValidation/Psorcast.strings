@@ -52,3 +52,22 @@
 "END_OF_VALIDATION_BUTTON_TITLE" = "Enter new participant ID";
 
 "CALCULATING_COVERAGE" = "Calculating coverage...";
+
+"START_BTN_TITLE" = "Start";
+"STOP_BTN_TITLE" = "Stop";
+"REVIEW_INSTRUCTIONS_BTN_TITLE" = "Review instructions";
+
+"LEFT_HAND" = "Left Hand";
+"RIGHT_HAND" = "Right Hand";
+
+"JAR_OPEN_TITLE_LEFT_CLOCKWISE" = "Rotate the phone CLOCKWISE with your LEFT hand";
+"JAR_OPEN_TITLE_LEFT_COUNTER_CLOCKWISE" = "Rotate the phone COUNTER-CLOCKWISE with your LEFT hand";
+"JAR_OPEN_TITLE_RIGHT_CLOCKWISE" = "Rotate the phone CLOCKWISE with your RIGHT hand";
+"JAR_OPEN_TITLE_RIGHT_COUNTER_CLOCKWISE" = "Rotate the phone COUNTER-CLOCKWISE with your RIGHT hand";
+
+"JAR_OPEN_REDO_TITLE_LEFT_CLOCKWISE" = "Redo Left Hand: Clockwise";
+"JAR_OPEN_REDO_TITLE_LEFT_COUNTER_CLOCKWISE" = "Redo Left Hand: Counter Clockwise";
+"JAR_OPEN_REDO_TITLE_RIGHT_CLOCKWISE" = "Redo Right Hand: Clockwise";
+"JAR_OPEN_REDO_TITLE_RIGHT_COUNTER_CLOCKWISE" = "Redo Right Hand: Counter Clockwise";
+
+"MOTION_RECORDER_FAILED_TITLE" = "Motion recorder failed";
