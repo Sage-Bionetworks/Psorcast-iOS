@@ -46,6 +46,7 @@ extension RSDStepType {
     public static let digitalJarOpen: RSDStepType = "digitalJarOpen"
     public static let digitalJarOpenCompletion: RSDStepType = "digitalJarOpenCompletion"
     public static let endOfValidation: RSDStepType = "endOfValidation"
+    public static let noPsoriasis: RSDStepType = "noPsoriasis"
 }
 
 open class TaskFactory: SBAFactory {
@@ -76,8 +77,23 @@ open class TaskFactory: SBAFactory {
             return try DigitalJarOpenCompletionStepObject(from: decoder)
         case .endOfValidation:
             return try EndOfValidationStepObject(from: decoder)
+        case .noPsoriasis:
+            return try NoPsoriasisStepObject(from: decoder)
         default:
             return try super.decodeStep(from: decoder, with: type)
         }
+    }
+}
+
+/// 'NoPsoriasisStepObject' will show itself when the user has selected that they do not have Psoriasis right now
+open class NoPsoriasisStepObject: RSDUIStepObject, RSDNavigationSkipRule {
+    
+    public func shouldSkipStep(with result: RSDTaskResult?, isPeeking: Bool) -> Bool {
+        if let collectionResult = (result?.findResult(with: RSDStepType.selectionCollection.rawValue) as? RSDCollectionResultObject) {
+            let answerResult = collectionResult.inputResults.first as? RSDAnswerResultObject
+            let answers = answerResult?.value as? [String]
+            return (answerResult != nil && (answers?.count ?? 0) > 0)
+        }
+        return true
     }
 }
