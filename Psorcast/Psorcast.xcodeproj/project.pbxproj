@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		CB05146C237F27560058D746 /* DigitalJarOpen.json in Resources */ = {isa = PBXBuildFile; fileRef = CB05146B237F27560058D746 /* DigitalJarOpen.json */; };
+		CB28EBE82396FCA30043D7FE /* JointCounting.mov in Resources */ = {isa = PBXBuildFile; fileRef = CB28EBE52396FCA30043D7FE /* JointCounting.mov */; };
+		CB28EBE92396FCA30043D7FE /* PsoriasisDraw.mov in Resources */ = {isa = PBXBuildFile; fileRef = CB28EBE62396FCA30043D7FE /* PsoriasisDraw.mov */; };
+		CB28EBEA2396FCA30043D7FE /* DigitalJarOpen.mov in Resources */ = {isa = PBXBuildFile; fileRef = CB28EBE72396FCA30043D7FE /* DigitalJarOpen.mov */; };
 		CB422D2A23316EB700787FEE /* BridgeAppUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB422D2923316EB700787FEE /* BridgeAppUI.framework */; };
 		CB422D2B23316EB700787FEE /* BridgeAppUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB422D2923316EB700787FEE /* BridgeAppUI.framework */; };
 		CB422D2C23316EB700787FEE /* BridgeAppUI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CB422D2923316EB700787FEE /* BridgeAppUI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -159,6 +162,9 @@
 
 /* Begin PBXFileReference section */
 		CB05146B237F27560058D746 /* DigitalJarOpen.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = DigitalJarOpen.json; sourceTree = "<group>"; };
+		CB28EBE52396FCA30043D7FE /* JointCounting.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = JointCounting.mov; sourceTree = "<group>"; };
+		CB28EBE62396FCA30043D7FE /* PsoriasisDraw.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = PsoriasisDraw.mov; sourceTree = "<group>"; };
+		CB28EBE72396FCA30043D7FE /* DigitalJarOpen.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = DigitalJarOpen.mov; sourceTree = "<group>"; };
 		CB422D2923316EB700787FEE /* BridgeAppUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BridgeAppUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB422D2D23316EB700787FEE /* MDJointCounting.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = MDJointCounting.json; sourceTree = "<group>"; };
 		CB47E562233FC1BD00AE8501 /* PsoriasisDrawStepObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PsoriasisDrawStepObject.swift; sourceTree = "<group>"; };
@@ -314,6 +320,9 @@
 				CBB90AE62381FF8600F1DFA4 /* FingersPhoto.mov */,
 				CBB90AE52381FF8500F1DFA4 /* PsoriasisAreaPhoto.mov */,
 				CBB90AE72381FF8700F1DFA4 /* ToesPhoto.mov */,
+				CB28EBE72396FCA30043D7FE /* DigitalJarOpen.mov */,
+				CB28EBE52396FCA30043D7FE /* JointCounting.mov */,
+				CB28EBE62396FCA30043D7FE /* PsoriasisDraw.mov */,
 			);
 			name = MP4;
 			sourceTree = "<group>";
@@ -739,6 +748,7 @@
 				FFABCBED22DD1F2800D11109 /* Main.storyboard in Resources */,
 				CB422D2E23316EB700787FEE /* MDJointCounting.json in Resources */,
 				CBA8390F234A6B3F00408D81 /* EndOfValidationStepViewController.xib in Resources */,
+				CB28EBE92396FCA30043D7FE /* PsoriasisDraw.mov in Resources */,
 				CB9F5E2722E0BED4003FBCEF /* lato_bold.ttf in Resources */,
 				CB55C72D2317859700EA0C19 /* JointPainStepViewController.xib in Resources */,
 				CBD67D9922DFDC4E00998516 /* ImageCaptureStepViewController.xib in Resources */,
@@ -759,9 +769,11 @@
 				CB9F5E2B22E0BED4003FBCEF /* lato_lightitalic.ttf in Resources */,
 				CB05146C237F27560058D746 /* DigitalJarOpen.json in Resources */,
 				FF5010A922DD22A50035E83C /* BridgeInfo-private.plist in Resources */,
+				CB28EBE82396FCA30043D7FE /* JointCounting.mov in Resources */,
 				CBD67D9622DFDABE00998516 /* HandImaging.json in Resources */,
 				CBB90AE92381FF8700F1DFA4 /* FingersPhoto.mov in Resources */,
 				CBB93CB7234252D000321A4D /* PsoriasisDrawCompletionStepViewController.xib in Resources */,
+				CB28EBEA2396FCA30043D7FE /* DigitalJarOpen.mov in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
