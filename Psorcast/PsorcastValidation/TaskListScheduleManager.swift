@@ -39,7 +39,7 @@ import MotorControl
 /// Subclass the schedule manager to set up a predicate to filter the schedules.
 public class TaskListScheduleManager : SBAScheduleManager {
     
-    public let sortOrder: [RSDIdentifier] = [.walkingTask, .psoriasisAreaPhotoTask, .psoriasisDrawTask, .jointCountingTask,  .handImagingTask, .footImagingTask, .mdJointCountingTask, .mdJointSwellingTask]
+    public let sortOrder: [RSDIdentifier] = [.psoriasisDrawTask, .psoriasisAreaPhotoTask, .jointCountingTask, .digitalJarOpenTask, .handImagingTask, .footImagingTask, .walkingTask, .mdJointCountingTask, .mdJointSwellingTask]
     
     ///
     /// - returns: the total table row count including activities

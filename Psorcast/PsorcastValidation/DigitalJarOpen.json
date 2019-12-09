@@ -64,7 +64,7 @@
             "actions":{
                 "reviewInstructions":{
                     "type":"navigation",
-                    "skipToIdentifier": "instruction1",
+                    "skipToIdentifier": "introduction",
                     "buttonTitle": "Review instructions"
                 },
                 "goForward":{

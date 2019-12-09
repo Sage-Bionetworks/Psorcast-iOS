@@ -59,15 +59,15 @@ open class DigitalJarOpenCompletionStepViewController: RSDStepViewController, UI
     
     let collectionViewColumns = 2
     let collectionViewRows = 2
-    let collectionViewCellSpacing: CGFloat = 36
+    let collectionViewCellSpacing: CGFloat = 16
     let rotationImageCellResuableCellId = "RotationImageCell"
     
     @IBOutlet weak var leftHandLabel: UILabel!
     @IBOutlet weak var rightHandLabel: UILabel!
     
     open var collectionCellSize: CGSize {
-        let width = ((collectionView.bounds.width - (CGFloat(3) * collectionViewCellSpacing)) / CGFloat(collectionViewColumns))
-        let height = ((collectionView.bounds.height - (CGFloat(3) * collectionViewCellSpacing)) / CGFloat(collectionViewRows))
+        let width = ((collectionView.bounds.width - (CGFloat(collectionViewColumns + 1) * collectionViewCellSpacing)) / CGFloat(collectionViewColumns))
+        let height = ((collectionView.bounds.height - (CGFloat(collectionViewColumns + 1) * collectionViewCellSpacing)) / CGFloat(collectionViewRows))
         return CGSize(width: CGFloat(Int(width)), height: CGFloat(Int(height)))
     }
     
@@ -179,7 +179,8 @@ public enum RotationImageItem: Int {
 open class RotationImageCollectionViewCell: RSDSelectionCollectionViewCell {
     
     /// The additional amount on each border side of size for rotation image view compared to the countdown dial.
-    let kRotationImageViewSpacing = CGFloat(20)
+    let kRotationImageViewSpacing = CGFloat(32)
+    let kRotationDialWidth = CGFloat(8)
     
     let clockwiseImage = UIImage(named: "JarOpenClockwise")?.withRenderingMode(.alwaysTemplate)
     let counterClockwiseImage = UIImage(named: "JarOpenCounterClockwise")?.withRenderingMode(.alwaysTemplate)
@@ -229,6 +230,9 @@ open class RotationImageCollectionViewCell: RSDSelectionCollectionViewCell {
         
         rotationDial = RSDCountdownDial()
         contentView.addSubview(rotationDial!)
+        rotationDial?.backgroundColor = UIColor.clear
+        rotationDial?.dialWidth = kRotationDialWidth
+        rotationDial?.ringWidth = kRotationDialWidth
         rotationDial?.translatesAutoresizingMaskIntoConstraints = false
         rotationDial?.rsd_alignAllToSuperview(padding: kRotationImageViewSpacing)
         
@@ -248,7 +252,7 @@ open class RotationImageCollectionViewCell: RSDSelectionCollectionViewCell {
         rotationDial?.setDesignSystem(designSystem, with: background)
         let textColor = designSystem.colorRules.textColor(on: background, for: .smallNumber)
         rotationLabel?.textColor = textColor
-        rotationLabel?.font = designSystem.fontRules.font(for: .smallNumber)
+        rotationLabel?.font = designSystem.fontRules.font(for: .mediumHeader)
         rotationDirectionImageView?.tintColor = textColor
     }
 }

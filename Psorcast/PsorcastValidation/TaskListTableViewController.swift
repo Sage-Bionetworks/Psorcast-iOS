@@ -82,8 +82,8 @@ class TaskListTableViewController: UITableViewController, RSDTaskViewControllerD
         let releaseDate = compileDate() ?? ""
         let releaseDateStr = Localization.localizedStringWithFormatKey("RELEASE_DATE_%@", releaseDate)
         
-        // Done button is only enabled after user does all their activities
-        tableFooter?.doneButton?.isEnabled = self.scheduleManager.isAllComplete()
+        // Done button is always enabled
+        tableFooter?.doneButton?.isEnabled = true
         // For the trial app, show the user their external id
         if let participantID = UserDefaults.standard.string(forKey: "participantID") {
             tableFooter?.titleLabel?.text = String(format: "%@\n%@\n%@", participantID, versionStr, releaseDateStr)
