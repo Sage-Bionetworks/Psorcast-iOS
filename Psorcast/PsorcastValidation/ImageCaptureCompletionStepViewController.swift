@@ -83,6 +83,12 @@ open class ImageCaptureCompletionStepObject: RSDUIStepObject, RSDStepViewControl
 /// The 'ImageCaptureCompletionStepViewController' displays the photos the user took side by side
 open class ImageCaptureCompletionStepViewController: RSDInstructionStepViewController {
     
+    /// Processing queue for saving header image
+    private let processingQueue = DispatchQueue(label: "org.sagebase.Psorcast.iamge.capture.complete.processing")
+    
+    /// The result identifier for the summary image
+    public let summaryImageResultIdentifier = "summaryImage"
+    
     // Set a max attempts to load images to avoid infinite attempts
     var imageLoadAttempt = 0
     let maxImageLoadAttempt = 8
@@ -112,8 +118,10 @@ open class ImageCaptureCompletionStepViewController: RSDInstructionStepViewContr
             let rightImage = self.imageResult(with: rightImageId) {
             debugPrint("Images loaded")
             
-            let image = PSRImageHelper.createImageCaptureCompletionImage(leftImage: leftImage, rightImage: rightImage)
-            self.navigationHeader?.imageView?.image = image
+            if let image = PSRImageHelper.createImageCaptureCompletionImage(leftImage: leftImage, rightImage: rightImage) {
+                self.navigationHeader?.imageView?.image = image
+                self.saveSummaryImageResult(image: image)
+            }
             
         } else if self.imageLoadAttempt < self.maxImageLoadAttempt {
             debugPrint("Image not available immediately, trying again in 0.25 sec")
@@ -141,5 +149,34 @@ open class ImageCaptureCompletionStepViewController: RSDInstructionStepViewContr
             }
         }
         return nil
+    }
+    
+    private func saveSummaryImageResult(image: UIImage) {
+        // Add the image result of the header
+        var url: URL?
+        do {
+            if let imageData = image.pngData(),
+                let outputDir = self.stepViewModel.parentTaskPath?.outputDirectory {
+                url = try RSDFileResultUtility.createFileURL(identifier: self.summaryImageResultIdentifier, ext: "png", outputDirectory: outputDir, shouldDeletePrevious: true)
+                self.save(imageData, to: url!)
+            }
+        } catch let error {
+            debugPrint("Failed to save the camera image: \(error)")
+        }
+        
+        // Create the result and set it as the result for this step
+        var result = RSDFileResultObject(identifier: self.summaryImageResultIdentifier)
+        result.url = url
+        _ = self.stepViewModel.parent?.taskResult.appendStepHistory(with: result)
+    }
+    
+    private func save(_ imageData: Data, to url: URL) {
+        self.processingQueue.async {
+            do {
+                try imageData.write(to: url)
+            } catch let error {
+                debugPrint("Failed to save the camera image: \(error)")
+            }
+        }
     }
 }
