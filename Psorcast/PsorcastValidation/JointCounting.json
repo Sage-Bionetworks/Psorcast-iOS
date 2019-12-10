@@ -58,7 +58,7 @@
                 "skip": {
                     "type": "navigation",
                     "buttonTitle" : "No areas have painful joints",
-                    "skipToIdentifier": "completion"
+                    "skipToIdentifier": "noPsoriasisCompletion"
                 }
             },
             "inputFields": [
@@ -695,6 +695,24 @@
                     }
                 ]
             }
+        },
+        {
+            "identifier":"noPsoriasisCompletion",
+            "type":"noPsoriasis",
+            "title":"We’re glad to hear you are currently free of joint pain!",
+            "text":"Thank you for reporting that you are currently free of joint pain. By letting us know that you are pain-free, we can understand more about people’s remissions and their duration.",
+            "image":{
+                "type":"fetchable",
+                "imageName":"NoPsoriasisHeader",
+                "placementType":"topBackground"
+            },
+            "actions": {
+                "goForward":{
+                   "type":"default",
+                   "buttonTitle":"Next"
+                }
+            },
+            "shouldHideActions": ["cancel", "goBackward"]
         },
         {
             "identifier":"completion",
