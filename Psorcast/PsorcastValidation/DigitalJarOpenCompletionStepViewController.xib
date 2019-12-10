@@ -27,7 +27,7 @@
                     <rect key="frame" x="0.0" y="0.0" width="375" height="700"/>
                     <subviews>
                         <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="d7D-yP-xH3">
-                            <rect key="frame" x="0.0" y="219.66666666666666" width="375" height="379.33333333333337"/>
+                            <rect key="frame" x="0.0" y="207.66666666666666" width="375" height="391.33333333333337"/>
                             <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                             <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="rm9-3k-9gV">
                                 <size key="itemSize" width="50" height="50"/>
@@ -104,7 +104,7 @@
                         <constraint firstItem="wet-Rb-rnS" firstAttribute="centerY" secondItem="IAw-mr-tPo" secondAttribute="centerY" id="fPZ-FS-kYD"/>
                         <constraint firstItem="Ncg-SY-6dE" firstAttribute="top" secondItem="d7D-yP-xH3" secondAttribute="bottom" id="h6L-Bv-ZOH"/>
                         <constraint firstItem="1bZ-Hj-C8p" firstAttribute="leading" secondItem="nCy-4g-nIJ" secondAttribute="leading" id="ia8-xE-h1b"/>
-                        <constraint firstItem="d7D-yP-xH3" firstAttribute="top" secondItem="IAw-mr-tPo" secondAttribute="bottom" constant="12" id="siB-pA-OX3"/>
+                        <constraint firstItem="d7D-yP-xH3" firstAttribute="top" secondItem="IAw-mr-tPo" secondAttribute="bottom" id="siB-pA-OX3"/>
                         <constraint firstAttribute="trailing" secondItem="1bZ-Hj-C8p" secondAttribute="trailing" id="t5t-JZ-vfh"/>
                         <constraint firstItem="IAw-mr-tPo" firstAttribute="leading" secondItem="nCy-4g-nIJ" secondAttribute="leading" constant="12" id="wdJ-em-Ehr"/>
                         <constraint firstItem="d7D-yP-xH3" firstAttribute="leading" secondItem="nCy-4g-nIJ" secondAttribute="leading" id="xMa-1C-y2x"/>

@@ -49,6 +49,12 @@ open class DigitalJarOpenCompletionStepObject: RSDUIStepObject, RSDStepViewContr
 }
 
 open class DigitalJarOpenCompletionStepViewController: RSDStepViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+    
+    /// Processing queue for saving body image
+    private let processingQueue = DispatchQueue(label: "org.sagebase.Psorcast.digital.jar.open.complete.processing")
+    
+    /// The result identifier for the summary data
+    public let summaryResultIdentifier = "summary"
         
     /// The collection view associated with this view controller.
     @IBOutlet open var collectionView: UICollectionView!
@@ -76,7 +82,7 @@ open class DigitalJarOpenCompletionStepViewController: RSDStepViewController, UI
         
         if let flowLayout = self.collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
             flowLayout.headerReferenceSize = CGSize(width: 0, height: 0)
-            flowLayout.sectionInset = UIEdgeInsets(top: 0, left: collectionViewCellSpacing, bottom: 0, right: collectionViewCellSpacing)
+            flowLayout.sectionInset = UIEdgeInsets(top: collectionViewCellSpacing, left: collectionViewCellSpacing, bottom: 0, right: collectionViewCellSpacing)
             flowLayout.minimumInteritemSpacing = collectionViewCellSpacing
             flowLayout.minimumLineSpacing = collectionViewCellSpacing
             flowLayout.itemSize = self.collectionCellSize
@@ -90,6 +96,13 @@ open class DigitalJarOpenCompletionStepViewController: RSDStepViewController, UI
 
         // Invalidating the layout is necessary to get the cell size correct.
         collectionView.collectionViewLayout.invalidateLayout()
+    }
+    
+    override open func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        let image = PSRImageHelper.convertToImage(self.collectionView)
+        self.saveSummaryImageResult(image: image)
     }
     
     /// Override the set up of the header to set the background color for the table view and adjust the
@@ -138,6 +151,37 @@ open class DigitalJarOpenCompletionStepViewController: RSDStepViewController, UI
         
         return cell
     }
+    
+    /// Image saving functions
+    
+    private func saveSummaryImageResult(image: UIImage) {
+        // Add the image result of the header
+        var url: URL?
+        do {
+            if let imageData = image.pngData(),
+                let outputDir = self.stepViewModel.parentTaskPath?.outputDirectory {
+                url = try RSDFileResultUtility.createFileURL(identifier: self.summaryResultIdentifier, ext: "png", outputDirectory: outputDir, shouldDeletePrevious: true)
+                self.save(imageData, to: url!)
+            }
+        } catch let error {
+            debugPrint("Failed to save the camera image: \(error)")
+        }
+        
+        // Create the result and set it as the result for this step
+        var result = RSDFileResultObject(identifier: self.summaryResultIdentifier)
+        result.url = url
+        _ = self.stepViewModel.parent?.taskResult.appendStepHistory(with: result)
+    }
+
+    private func save(_ imageData: Data, to url: URL) {
+        self.processingQueue.async {
+            do {
+                try imageData.write(to: url)
+            } catch let error {
+                debugPrint("Failed to save the camera image: \(error)")
+            }
+        }
+    }
 }
 
 public enum RotationImageItem: Int {
@@ -173,7 +217,7 @@ public enum RotationImageItem: Int {
        case .rightCounterClockwise:
             return false
        }
-   }
+    }
 }
 
 open class RotationImageCollectionViewCell: RSDSelectionCollectionViewCell {
