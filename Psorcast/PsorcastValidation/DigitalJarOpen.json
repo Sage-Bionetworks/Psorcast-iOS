@@ -10,10 +10,9 @@
             "title":"Digital Jar Open",
             "text":"In this activity, you will rotate your phone on a table like you are opening and closing the lid to a jar.",
             "image":{
-                "type": "animated",
-                "imageNames": ["JarOpenHeader1", "JarOpenHeader2", "JarOpenHeader3"],
-                "placementType": "topMarginBackground",
-                "animationDuration": 3.0
+                "type":"fetchable",
+                "imageName": "JarOpenLeftHandBackground2",
+                "placementType":"topBackground"
             },
             "icons": [
                 {
@@ -40,11 +39,29 @@
         {
             "identifier":"instruction1",
             "type":"instruction",
+            "title":"Stand next to a table",
+            "text":"Stand directly next to a table that you can place your phone on and hold without bending your arm too much.",
+            "image":{
+                "type":"fetchable",
+                "imageName": "JarOpenInstruction1",
+                "placementType":"topBackground"
+            },
+            "actions":{
+                "goForward":{
+                    "type":"default",
+                    "buttonTitle":"Did it"
+                }
+            },
+            "shouldHideActions": ["goBackward"]
+        },
+        {
+            "identifier":"instruction2",
+            "type":"instruction",
             "title":"Put the phone on a table",
             "text":"Place your phone on a flat surface such as a table before you begin the activity.",
             "image":{
                 "type": "animated",
-                "imageNames": ["JarOpenHeader1", "JarOpenHeader2", "JarOpenHeader3"],
+                "imageNames": ["JarOpenInstruction2", "JarOpenLeftHandBackground1"],
                 "placementType": "topMarginBackground",
                 "animationDuration": 3.0
             },
@@ -55,18 +72,60 @@
                 }
             },
             "shouldHideActions": ["goBackward"]
-        },        
+        },
+        {
+            "identifier":"instruction3",
+            "type":"instruction",
+            "title":"Tap ‘Start’ then grip your phone with your fingers",
+            "text":"With the phone flat on the table, tap ‘start’ then grip the sides of the phone with your fingers as shown.",
+            "image":{
+                "type": "animated",
+                "imageNames": ["JarOpenRotateBackground1", "JarOpenRotateBackground2", "JarOpenRotateBackground3", "JarOpenRotateBackground4"],
+                "placementType": "topMarginBackground",
+                "animationDuration": 3.0
+            },
+            "actions":{
+                "goForward":{
+                    "type":"default",
+                    "buttonTitle":"I understand how to grip"
+                }
+            },
+            "shouldHideActions": ["goBackward"]
+        },
         {
             "identifier":"leftClockwise",
             "type": "digitalJarOpen",
             "hand": "left",
             "rotationDirection": "clockwise",
+            "image":{
+                "type":"fetchable",
+                "imageName":"JarOpenLeftFull",
+                "placementType":"fullsizeBackground"
+            },
             "actions":{
                 "reviewInstructions":{
                     "type":"navigation",
                     "skipToIdentifier": "introduction",
                     "buttonTitle": "Review instructions"
                 },
+                "goForward":{
+                    "type":"default",
+                    "buttonTitle":"Do Opposite Direction"
+                }
+            },
+            "shouldHideActions": ["goBackward"]
+        },
+        {
+            "identifier":"leftClockwiseInstruction",
+            "type":"digitalJarOpenInstruction",
+            "title":"Return to the starting position, tap ‘Start’, then grip with the indicated hand.",
+            "image":{
+                "type": "animated",
+                "imageNames": ["JarOpenLeftHandBackground1", "JarOpenLeftHandBackground2", "JarOpenLeftHandBackground3"],
+                "placementType": "fullsizeBackground",
+                "animationDuration": 3.0
+            },
+            "actions":{
                 "goForward":{
                     "type":"default",
                     "buttonTitle":"Do Opposite Direction"
@@ -88,10 +147,46 @@
             "shouldHideActions": ["goBackward"]
         },
         {
+            "identifier":"leftCounterInstruction",
+            "type":"digitalJarOpenInstruction",
+            "title":"Return to the starting position, tap ‘Start’, then grip with the indicated hand.",
+            "image":{
+                "type": "animated",
+                "imageNames": ["JarOpenRightHandBackground1", "JarOpenRightHandBackground2", "JarOpenRightHandBackground3"],
+                "placementType": "fullsizeBackground",
+                "animationDuration": 3.0
+            },
+            "actions":{
+                "goForward":{
+                    "type":"default",
+                    "buttonTitle":"Do Opposite Direction"
+                }
+            },
+            "shouldHideActions": ["goBackward"]
+        },
+        {
             "identifier":"rightClockwise",
             "type": "digitalJarOpen",
             "hand": "right",
             "rotationDirection": "clockwise",
+            "actions":{
+                "goForward":{
+                    "type":"default",
+                    "buttonTitle":"Do Opposite Direction"
+                }
+            },
+            "shouldHideActions": ["goBackward"]
+        },
+        {
+            "identifier":"rightClockwiseInstruction",
+            "type":"digitalJarOpenInstruction",
+            "title":"Return to the starting position, tap ‘Start’, then grip with the indicated hand.",
+            "image":{
+                "type": "animated",
+                "imageNames": ["JarOpenRightHandBackground1", "JarOpenRightHandBackground2", "JarOpenRightHandBackground3"],
+                "placementType": "fullsizeBackground",
+                "animationDuration": 3.0
+            },
             "actions":{
                 "goForward":{
                     "type":"default",
