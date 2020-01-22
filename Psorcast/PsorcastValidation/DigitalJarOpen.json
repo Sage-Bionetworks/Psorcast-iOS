@@ -40,7 +40,7 @@
             "identifier":"instruction1",
             "type":"instruction",
             "title":"Stand next to a table",
-            "text":"Stand directly next to a table that you can place your phone on and hold without bending your arm too much.",
+            "text":"Stand directly next to a table where you can place your phone without bending your arm too much.",
             "image":{
                 "type":"fetchable",
                 "imageName": "JarOpenInstruction1",
