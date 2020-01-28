@@ -83,12 +83,12 @@ open class ImageCaptureStepViewController: RSDStepViewController, UIImagePickerC
         super.viewDidLoad()
         
 //        var isSupported = UIImagePickerController.isSourceTypeAvailable(.camera)
-//
 //        // The simulator does not have image capture capability,
 //        // but allow it to show a photo library picker instead
 //        #if targetEnvironment(simulator)
 //            isSupported = true
 //        #endif
+        
 //
 //        if isSupported {
 //            // hide the capture button (it's included for simulator)
@@ -123,7 +123,8 @@ open class ImageCaptureStepViewController: RSDStepViewController, UIImagePickerC
 //        }
         
         // Disable the UI. Enable the UI later, if and only if the session starts running.
-//        cameraButton.isEnabled = false
+        self.captureButton.isEnabled = false
+        
 //        recordButton.isEnabled = false
 //        photoButton.isEnabled = false
 //        livePhotoModeButton.isEnabled = false
@@ -138,9 +139,7 @@ open class ImageCaptureStepViewController: RSDStepViewController, UIImagePickerC
         previewView.session = session
         previewView.videoPreviewLayer.videoGravity = .resizeAspectFill
         /*
-         Check the video authorization status. Video access is required and audio
-         access is optional. If the user denies audio access, AVCam won't
-         record audio during movie recording.
+         Check the video authorization status. Video access is required.
          */
         switch AVCaptureDevice.authorizationStatus(for: .video) {
         case .authorized:
@@ -152,9 +151,6 @@ open class ImageCaptureStepViewController: RSDStepViewController, UIImagePickerC
              The user has not yet been presented with the option to grant
              video access. Suspend the session queue to delay session
              setup until the access request has completed.
-             
-             Note that audio access will be implicitly requested when we
-             create an AVCaptureDeviceInput for audio during session setup.
              */
             sessionQueue.suspend()
             AVCaptureDevice.requestAccess(for: .video, completionHandler: { granted in
@@ -182,11 +178,6 @@ open class ImageCaptureStepViewController: RSDStepViewController, UIImagePickerC
         sessionQueue.async {
             self.configureSession()
         }
-//        DispatchQueue.main.async {
-//            self.spinner = UIActivityIndicatorView()
-//            self.spinner.color = UIColor.yellow
-//            self.previewView.addSubview(self.spinner)
-//        }
     }
     
     // MARK: View Controller Life Cycle
@@ -204,9 +195,9 @@ open class ImageCaptureStepViewController: RSDStepViewController, UIImagePickerC
                 
             case .notAuthorized:
                 DispatchQueue.main.async {
-                    let changePrivacySetting = "AVCam doesn't have permission to use the camera, please change privacy settings"
+                    let changePrivacySetting = "Psorcast doesn't have permission to use the camera, please change privacy settings"
                     let message = NSLocalizedString(changePrivacySetting, comment: "Alert message when the user has denied access to the camera")
-                    let alertController = UIAlertController(title: "AVCam", message: message, preferredStyle: .alert)
+                    let alertController = UIAlertController(title: "Psorcast", message: message, preferredStyle: .alert)
                     
                     alertController.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Alert OK button"),
                                                             style: .cancel,
@@ -226,8 +217,8 @@ open class ImageCaptureStepViewController: RSDStepViewController, UIImagePickerC
             case .configurationFailed:
                 DispatchQueue.main.async {
                     let alertMsg = "Alert message when something goes wrong during capture session configuration"
-                    let message = NSLocalizedString("Unable to capture media", comment: alertMsg)
-                    let alertController = UIAlertController(title: "AVCam", message: message, preferredStyle: .alert)
+                    let message = NSLocalizedString("Unable to capture image", comment: alertMsg)
+                    let alertController = UIAlertController(title: "Psorcast", message: message, preferredStyle: .alert)
                     
                     alertController.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Alert OK button"),
                                                             style: .cancel,
@@ -263,7 +254,7 @@ open class ImageCaptureStepViewController: RSDStepViewController, UIImagePickerC
             
             DispatchQueue.main.async {
                 // Only enable the ability to change camera if the device has more than one camera.
-//                self.cameraButton.isEnabled = isSessionRunning && self.videoDeviceDiscoverySession.uniqueDevicePositionsCount > 1
+//                self.captureButton.isEnabled = isSessionRunning && self.videoDeviceDiscoverySession.uniqueDevicePositionsCount > 1
 //                self.recordButton.isEnabled = isSessionRunning && self.movieFileOutput != nil
 //                self.photoButton.isEnabled = isSessionRunning
 //                self.captureModeControl.isEnabled = isSessionRunning
@@ -278,7 +269,7 @@ open class ImageCaptureStepViewController: RSDStepViewController, UIImagePickerC
         
         let systemPressureStateObservation = observe(\.videoDeviceInput.device.systemPressureState, options: .new) { _, change in
             guard let systemPressureState = change.newValue else { return }
-//            self.setRecommendedFrameRateRangeForPressureState(systemPressureState: systemPressureState)
+            self.setRecommendedFrameRateRangeForPressureState(systemPressureState: systemPressureState)
         }
         keyValueObservations.append(systemPressureStateObservation)
         
@@ -318,13 +309,35 @@ open class ImageCaptureStepViewController: RSDStepViewController, UIImagePickerC
         keyValueObservations.removeAll()
     }
     
+    /// - Tag: HandleSystemPressure
+    private func setRecommendedFrameRateRangeForPressureState(systemPressureState: AVCaptureDevice.SystemPressureState) {
+        /*
+         The frame rates used here are only for demonstration purposes.
+         Your frame rate throttling may be different depending on your app's camera configuration.
+         */
+        let pressureLevel = systemPressureState.level
+        if pressureLevel == .serious || pressureLevel == .critical {
+            do {
+                try self.videoDeviceInput.device.lockForConfiguration()
+                print("WARNING: Reached elevated system pressure level: \(pressureLevel). Throttling frame rate.")
+                self.videoDeviceInput.device.activeVideoMinFrameDuration = CMTime(value: 1, timescale: 20)
+                self.videoDeviceInput.device.activeVideoMaxFrameDuration = CMTime(value: 1, timescale: 15)
+                self.videoDeviceInput.device.unlockForConfiguration()
+            } catch {
+                print("Could not lock device for configuration: \(error)")
+            }
+        } else if pressureLevel == .shutdown {
+            print("Session stopped running due to shutdown system pressure level.")
+        }
+    }
+    
     /// - Tag: HandleInterruption
     @objc
     func sessionWasInterrupted(notification: NSNotification) {
         /*
          In some scenarios you want to enable the user to resume the session.
          For example, if music playback is initiated from Control Center while
-         using AVCam, then the user can let AVCam resume
+         using Psorcast imaging, then the user can let Psorcast resume
          the session running, which will stop music playback. Note that stopping
          music playback in Control Center will not automatically resume the session.
          Also note that it's not always possible to resume, see `resumeInterruptedSession(_:)`.
@@ -334,27 +347,43 @@ open class ImageCaptureStepViewController: RSDStepViewController, UIImagePickerC
             let reason = AVCaptureSession.InterruptionReason(rawValue: reasonIntegerValue) {
             print("Capture session was interrupted with reason \(reason)")
             
-//            var showResumeButton = false
-//            if reason == .audioDeviceInUseByAnotherClient || reason == .videoDeviceInUseByAnotherClient {
-//                showResumeButton = true
-//            } else if reason == .videoDeviceNotAvailableWithMultipleForegroundApps {
-//                // Fade-in a label to inform the user that the camera is unavailable.
-//                cameraUnavailableLabel.alpha = 0
-//                cameraUnavailableLabel.isHidden = false
-//                UIView.animate(withDuration: 0.25) {
-//                    self.cameraUnavailableLabel.alpha = 1
-//                }
-//            } else if reason == .videoDeviceNotAvailableDueToSystemPressure {
-//                print("Session stopped running due to shutdown system pressure level.")
-//            }
-//            if showResumeButton {
-//                // Fade-in a button to enable the user to try to resume the session running.
-//                resumeButton.alpha = 0
-//                resumeButton.isHidden = false
-//                UIView.animate(withDuration: 0.25) {
-//                    self.resumeButton.alpha = 1
-//                }
-//            }
+            var showResumeButton = false
+            if reason == .audioDeviceInUseByAnotherClient || reason == .videoDeviceInUseByAnotherClient {
+                showResumeButton = true
+            } else if reason == .videoDeviceNotAvailableWithMultipleForegroundApps {
+                // TODO: mdephillips 1/22/20 Do we need to inform the user that the camera is unavailable?
+                
+            } else if reason == .videoDeviceNotAvailableDueToSystemPressure {
+                print("Session stopped running due to shutdown system pressure level.")
+            }
+        }
+    }
+    
+    @IBAction private func resumeInterruptedSession(_ resumeButton: UIButton) {
+        sessionQueue.async {
+            /*
+             The session might fail to start running, for example, if a phone or FaceTime call is still
+             using audio or video. This failure is communicated by the session posting a
+             runtime error notification. To avoid repeatedly failing to start the session,
+             only try to restart the session in the error handler if you aren't
+             trying to resume the session.
+             */
+            self.session.startRunning()
+            self.isSessionRunning = self.session.isRunning
+            if !self.session.isRunning {
+                DispatchQueue.main.async {
+                    let message = NSLocalizedString("Unable to resume capture session", comment: "Alert message when unable to resume the session running")
+                    let alertController = UIAlertController(title: "Psorcast", message: message, preferredStyle: .alert)
+                    let cancelAction = UIAlertAction(title: NSLocalizedString("OK", comment: "Alert OK button"), style: .cancel, handler: nil)
+                    alertController.addAction(cancelAction)
+                    self.present(alertController, animated: true, completion: nil)
+                }
+            } else {
+                DispatchQueue.main.async {
+                    // No need to show resume button, just always resume
+                    //self.resumeButton.isHidden = true
+                }
+            }
         }
     }
     
@@ -362,6 +391,7 @@ open class ImageCaptureStepViewController: RSDStepViewController, UIImagePickerC
     func sessionInterruptionEnded(notification: NSNotification) {
         print("Capture session interruption ended")
         
+        // TODO: mdephillips 1/22/20 do we need to inform user that camera session was interupted?
 //        if !resumeButton.isHidden {
 //            UIView.animate(withDuration: 0.25,
 //                           animations: {
@@ -394,20 +424,20 @@ open class ImageCaptureStepViewController: RSDStepViewController, UIImagePickerC
         
         print("Capture session runtime error: \(error)")
 //        // If media services were reset, and the last start succeeded, restart the session.
-//        if error.code == .mediaServicesWereReset {
-//            sessionQueue.async {
-//                if self.isSessionRunning {
-//                    self.session.startRunning()
-//                    self.isSessionRunning = self.session.isRunning
-//                } else {
-//                    DispatchQueue.main.async {
-//                        self.resumeButton.isHidden = false
-//                    }
-//                }
-//            }
-//        } else {
-//            resumeButton.isHidden = false
-//        }
+        if error.code == .mediaServicesWereReset {
+            sessionQueue.async {
+                if self.isSessionRunning {
+                    self.session.startRunning()
+                    self.isSessionRunning = self.session.isRunning
+                } else {
+                    DispatchQueue.main.async {
+                        //self.resumeButton.isHidden = false
+                    }
+                }
+            }
+        } else {
+            //resumeButton.isHidden = false
+        }
     }
     
     override open var shouldAutorotate: Bool {
@@ -559,33 +589,6 @@ open class ImageCaptureStepViewController: RSDStepViewController, UIImagePickerC
         session.commitConfiguration()
     }
     
-    @IBAction private func resumeInterruptedSession(_ resumeButton: UIButton) {
-        sessionQueue.async {
-            /*
-             The session might fail to start running, for example, if a phone or FaceTime call is still
-             using audio or video. This failure is communicated by the session posting a
-             runtime error notification. To avoid repeatedly failing to start the session,
-             only try to restart the session in the error handler if you aren't
-             trying to resume the session.
-             */
-            self.session.startRunning()
-            self.isSessionRunning = self.session.isRunning
-            if !self.session.isRunning {
-                DispatchQueue.main.async {
-                    let message = NSLocalizedString("Unable to resume", comment: "Alert message when unable to resume the session running")
-                    let alertController = UIAlertController(title: "AVCam", message: message, preferredStyle: .alert)
-                    let cancelAction = UIAlertAction(title: NSLocalizedString("OK", comment: "Alert OK button"), style: .cancel, handler: nil)
-                    alertController.addAction(cancelAction)
-                    self.present(alertController, animated: true, completion: nil)
-                }
-            } else {
-                DispatchQueue.main.async {
-                    //self.resumeButton.isHidden = true
-                }
-            }
-        }
-    }
-    
     /// - Tag: CapturePhoto
     @IBAction func capturePhoto(_ photoButton: UIButton) {
         /*
@@ -597,7 +600,7 @@ open class ImageCaptureStepViewController: RSDStepViewController, UIImagePickerC
         
         var flashMode: AVCaptureDevice.FlashMode = .on
         if let captureStep = self.captureStep {
-            
+            // TODO: mdephillips 1/22/20 have this be adjustable in json
         }
         
         sessionQueue.async {
@@ -612,7 +615,7 @@ open class ImageCaptureStepViewController: RSDStepViewController, UIImagePickerC
             }
             
             if self.videoDeviceInput.device.isFlashAvailable {
-                photoSettings.flashMode = .auto
+                photoSettings.flashMode = flashMode
             }
             
             photoSettings.isHighResolutionPhotoEnabled = true
@@ -624,7 +627,7 @@ open class ImageCaptureStepViewController: RSDStepViewController, UIImagePickerC
             photoSettings.isPortraitEffectsMatteDeliveryEnabled = false
             
             let photoCaptureProcessor = PhotoCaptureProcessor(with: photoSettings, willCapturePhotoAnimation: {
-                // Flash the screen to signal that AVCam took a photo.
+                // Flash the screen to signal that Psorcast took a photo.
                 DispatchQueue.main.async {
                     self.previewView.videoPreviewLayer.opacity = 0
                     UIView.animate(withDuration: 0.25) {
@@ -634,6 +637,9 @@ open class ImageCaptureStepViewController: RSDStepViewController, UIImagePickerC
             }, completionHandler: { photoCaptureProcessor in
                 // When the capture is complete, remove a reference to the photo capture delegate so it can be deallocated.
                 self.sessionQueue.async {                    self.inProgressPhotoCaptureDelegates[photoCaptureProcessor.requestedPhotoSettings.uniqueID] = nil
+                }
+                DispatchQueue.main.async {
+                    
                 }
             }, photoProcessingHandler: { animate in
                 // Animates a spinner while photo is processing
@@ -646,6 +652,27 @@ open class ImageCaptureStepViewController: RSDStepViewController, UIImagePickerC
             self.inProgressPhotoCaptureDelegates[photoCaptureProcessor.requestedPhotoSettings.uniqueID] = photoCaptureProcessor
             self.photoOutput.capturePhoto(with: photoSettings, delegate: photoCaptureProcessor)
         }
+    }
+    
+    func saveCapturedPhotoAndGoForward(pngData: Data?) {
+        var url: URL?
+        do {
+            if let imageData = pngData,
+                let outputDir = self.stepViewModel.parentTaskPath?.outputDirectory {
+                url = try RSDFileResultUtility.createFileURL(identifier: self.step.identifier, ext: "png", outputDirectory: outputDir, shouldDeletePrevious: true)
+                save(imageData, to: url!)
+            }
+        } catch let error {
+            debugPrint("Failed to save the camera image: \(error)")
+        }
+        
+        // Create the result and set it as the result for this step
+        var result = RSDFileResultObject(identifier: self.step.identifier)
+        result.url = url
+        _ = self.stepViewModel.parent?.taskResult.appendStepHistory(with: result)
+        
+        // Go to the next step.
+        self.goForward()
     }
 }
 
@@ -765,6 +792,7 @@ class PhotoCaptureProcessor: NSObject {
 }
 
 extension PhotoCaptureProcessor: AVCapturePhotoCaptureDelegate {
+    
     /*
      This extension adopts all of the AVCapturePhotoCaptureDelegate protocol methods.
      */
@@ -797,8 +825,13 @@ extension PhotoCaptureProcessor: AVCapturePhotoCaptureDelegate {
         if let error = error {
             print("Error capturing photo: \(error)")
         } else {
-            photoData = photo.fileDataRepresentation()
+            if let cgImage = photo.cgImageRepresentation()?.takeRetainedValue() {
+                // TODO: mdephillips 1/22/20 get orientation
+                let image = UIImage(cgImage: cgImage, scale: 1.0, orientation: .up)
+                self.photoData = image.pngData()
+            }
         }
+        self.didFinish()
     }
     
     /// - Tag: DidFinishRecordingLive
@@ -830,4 +863,7 @@ extension PhotoCaptureProcessor: AVCapturePhotoCaptureDelegate {
         
         
     }
+}
+fileprivate protocol PhotoCaptureCompleteDelegate {
+    func photoCaptureComplete(pngData: Data)
 }
