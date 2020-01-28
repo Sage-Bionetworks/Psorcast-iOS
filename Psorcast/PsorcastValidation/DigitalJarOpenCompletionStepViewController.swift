@@ -68,9 +68,6 @@ open class DigitalJarOpenCompletionStepViewController: RSDStepViewController, UI
     let collectionViewCellSpacing: CGFloat = 16
     let rotationImageCellResuableCellId = "RotationImageCell"
     
-    @IBOutlet weak var leftHandLabel: UILabel!
-    @IBOutlet weak var rightHandLabel: UILabel!
-    
     open var collectionCellSize: CGSize {
         let width = ((collectionView.bounds.width - (CGFloat(collectionViewColumns + 1) * collectionViewCellSpacing)) / CGFloat(collectionViewColumns))
         let height = ((collectionView.bounds.height - (CGFloat(collectionViewColumns + 1) * collectionViewCellSpacing)) / CGFloat(collectionViewRows))
@@ -113,14 +110,6 @@ open class DigitalJarOpenCompletionStepViewController: RSDStepViewController, UI
         self.collectionView.reloadData()
         // Invalidating the layout is necessary to get the cell size correct.
         self.collectionView.collectionViewLayout.invalidateLayout()
-        
-        self.leftHandLabel.textColor = self.designSystem.colorRules.textColor(on: self.backgroundColor(for: .body), for: .mediumHeader)
-        self.leftHandLabel.font = self.designSystem.fontRules.font(for: .largeHeader)
-        self.leftHandLabel.text = Localization.localizedString("LEFT_HAND")
-        
-        self.rightHandLabel.textColor = self.designSystem.colorRules.textColor(on: self.backgroundColor(for: .body), for: .mediumHeader)
-        self.rightHandLabel.font = self.designSystem.fontRules.font(for: .largeHeader)
-        self.rightHandLabel.text = Localization.localizedString("RIGHT_HAND")
     }
     
     /// The rotation amount for the specified step.
@@ -146,6 +135,8 @@ open class DigitalJarOpenCompletionStepViewController: RSDStepViewController, UI
             if let item = RotationImageItem(rawValue: indexPath.row) {
                 rotationImageCell.rotationDegrees = self.rotation(for: item)
                 rotationImageCell.isClockwise = item.isClockwise
+                rotationImageCell.titleLabel?.text = item.title.uppercased()
+                rotationImageCell.detailLabel?.text = item.detail.uppercased()
             }
         }
         
@@ -185,7 +176,7 @@ open class DigitalJarOpenCompletionStepViewController: RSDStepViewController, UI
 }
 
 public enum RotationImageItem: Int {
-    case leftClockwise = 0, rightClockwise, leftCounterClockwise, rightCounterClockwise
+    case leftClockwise = 0, rightCounterClockwise, leftCounterClockwise, rightClockwise
     
     public var resultIdentifier: String {
         var prefix = ""
@@ -218,12 +209,39 @@ public enum RotationImageItem: Int {
             return false
        }
     }
+    
+    public var title: String {
+        switch self {
+        case .leftClockwise:
+            return Localization.localizedString("LEFT_ARM")
+        case .leftCounterClockwise:
+            return Localization.localizedString("LEFT_ARM")
+        case .rightClockwise:
+            return Localization.localizedString("RIGHT_ARM")
+        case .rightCounterClockwise:
+            return Localization.localizedString("RIGHT_ARM")
+        }
+    }
+    
+    public var detail: String {
+        switch self {
+        case .leftClockwise:
+            return Localization.localizedString("CLOCKWISE_END_LINE")
+        case .leftCounterClockwise:
+            return Localization.localizedString("COUNTER_CLOCKWISE_END_LINE")
+        case .rightClockwise:
+            return Localization.localizedString("CLOCKWISE_END_LINE")
+        case .rightCounterClockwise:
+            return Localization.localizedString("COUNTER_CLOCKWISE_END_LINE")
+        }
+    }
 }
 
 open class RotationImageCollectionViewCell: RSDSelectionCollectionViewCell {
     
     /// The additional amount on each border side of size for rotation image view compared to the countdown dial.
-    let kRotationImageViewSpacing = CGFloat(32)
+    let kRotationImageViewSpacing = CGFloat(36)
+    let kLabelPadding = CGFloat(0)
     let kRotationDialWidth = CGFloat(8)
     
     let clockwiseImage = UIImage(named: "JarOpenClockwise")?.withRenderingMode(.alwaysTemplate)
@@ -240,7 +258,6 @@ open class RotationImageCollectionViewCell: RSDSelectionCollectionViewCell {
                 rotationDirectionImageView?.image = clockwiseImage
             } else {
                 rotationDirectionImageView?.image = counterClockwiseImage
-                // TODO: mdephillips 11/26/19 use new count down dial counter-clockwise feature
                 self.rotationDial?.transform = CGAffineTransform(scaleX: -1, y: 1)
             }
         }
@@ -265,20 +282,37 @@ open class RotationImageCollectionViewCell: RSDSelectionCollectionViewCell {
     }
     
     private func commonInit() {
-             
-        rotationDirectionImageView = UIImageView()
-        contentView.addSubview(rotationDirectionImageView!)
-        rotationDirectionImageView?.contentMode = .scaleAspectFit
-        rotationDirectionImageView?.translatesAutoresizingMaskIntoConstraints = false
-        rotationDirectionImageView?.rsd_alignAllToSuperview(padding: 0)
         
+        detailLabel = UILabel()
+        detailLabel?.numberOfLines = 2
+        detailLabel?.adjustsFontSizeToFitWidth = true
+        detailLabel?.textAlignment = .center
+        detailLabel?.minimumScaleFactor = 0.2
+        detailLabel?.textAlignment = .center
+        contentView.addSubview(detailLabel!)
+        detailLabel?.translatesAutoresizingMaskIntoConstraints = false
+        detailLabel?.rsd_alignToSuperview([.leading, .trailing, .bottom], padding: kLabelPadding)
+        detailLabel?.rsd_makeHeight(.equal, 48)
+        
+        titleLabel = UILabel()
+        titleLabel?.numberOfLines = 1
+        titleLabel?.textAlignment = .center
+        titleLabel?.adjustsFontSizeToFitWidth = true
+        titleLabel?.minimumScaleFactor = 0.2
+        contentView.addSubview(titleLabel!)
+        titleLabel?.translatesAutoresizingMaskIntoConstraints = false
+        titleLabel?.rsd_alignToSuperview([.leading, .trailing], padding: kLabelPadding)
+        titleLabel?.rsd_alignAbove(view: detailLabel!, padding: kLabelPadding)
+        titleLabel?.rsd_makeHeight(.equal, 24)
+                     
         rotationDial = RSDCountdownDial()
         contentView.addSubview(rotationDial!)
         rotationDial?.backgroundColor = UIColor.clear
         rotationDial?.dialWidth = kRotationDialWidth
         rotationDial?.ringWidth = kRotationDialWidth
         rotationDial?.translatesAutoresizingMaskIntoConstraints = false
-        rotationDial?.rsd_alignAllToSuperview(padding: kRotationImageViewSpacing)
+        rotationDial?.rsd_alignToSuperview([.leading, .trailing, .top], padding: kRotationImageViewSpacing)
+        rotationDial?.rsd_alignAbove(view: titleLabel!, padding: kRotationImageViewSpacing)
         
         rotationLabel = UILabel()
         rotationLabel?.numberOfLines = 1
@@ -287,7 +321,8 @@ open class RotationImageCollectionViewCell: RSDSelectionCollectionViewCell {
         rotationLabel?.textAlignment = .center
         contentView.addSubview(rotationLabel!)
         rotationLabel?.translatesAutoresizingMaskIntoConstraints = false
-        rotationLabel?.rsd_alignAllToSuperview(padding: kRotationImageViewSpacing)
+        rotationLabel?.rsd_alignToSuperview([.leading, .trailing, .top], padding: kRotationImageViewSpacing)
+        rotationLabel?.rsd_align([.bottom], .equal, to: rotationDial, [.bottom], padding: 0)
     }
     
     override open func setDesignSystem(_ designSystem: RSDDesignSystem, with background: RSDColorTile) {
@@ -295,8 +330,13 @@ open class RotationImageCollectionViewCell: RSDSelectionCollectionViewCell {
                 
         rotationDial?.setDesignSystem(designSystem, with: background)
         let textColor = designSystem.colorRules.textColor(on: background, for: .smallNumber)
-        rotationLabel?.textColor = textColor
-        rotationLabel?.font = designSystem.fontRules.font(for: .mediumHeader)
+        
+        titleLabel?.textColor = designSystem.colorRules.textColor(on: background, for: .smallHeader)
+        titleLabel?.font = designSystem.fontRules.font(for: .smallHeader)
+        
+        detailLabel?.textColor = designSystem.colorRules.textColor(on: background, for: .microHeader)
+        detailLabel?.font = designSystem.fontRules.font(for: .microHeader)
+        
         rotationDirectionImageView?.tintColor = textColor
     }
 }
