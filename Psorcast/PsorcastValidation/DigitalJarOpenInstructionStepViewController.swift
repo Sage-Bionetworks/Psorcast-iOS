@@ -56,7 +56,7 @@ open class DigitalJarOpenInstructionStepViewController: RSDStepViewController {
         if placement == .header || placement == .footer {
             return RSDColorTile(RSDColor.clear, usesLightStyle: false)
         } else {
-            return self.designSystem.colorRules.backgroundPrimary
+            return self.designSystem.colorRules.palette?.grayScale.veryLightGray ?? RSDColorTile(RSDColor.white, usesLightStyle: false)
         }
     }
     
