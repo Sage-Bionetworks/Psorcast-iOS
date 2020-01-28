@@ -176,7 +176,7 @@ open class DigitalJarOpenCompletionStepViewController: RSDStepViewController, UI
 }
 
 public enum RotationImageItem: Int {
-    case leftClockwise = 0, leftCounterClockwise, rightClockwise, rightCounterClockwise
+    case leftClockwise = 0, rightCounterClockwise, leftCounterClockwise, rightClockwise
     
     public var resultIdentifier: String {
         var prefix = ""
@@ -212,18 +212,26 @@ public enum RotationImageItem: Int {
     
     public var title: String {
         switch self {
-        case .leftClockwise, .leftCounterClockwise:
+        case .leftClockwise:
             return Localization.localizedString("LEFT_ARM")
-        case .rightClockwise, .rightCounterClockwise:
+        case .leftCounterClockwise:
+            return Localization.localizedString("LEFT_ARM")
+        case .rightClockwise:
+            return Localization.localizedString("RIGHT_ARM")
+        case .rightCounterClockwise:
             return Localization.localizedString("RIGHT_ARM")
         }
     }
     
     public var detail: String {
         switch self {
-        case .leftClockwise, .leftCounterClockwise:
-            return Localization.localizedString("COUNTER_END_LINE")
-        case .rightClockwise, .rightCounterClockwise:
+        case .leftClockwise:
+            return Localization.localizedString("CLOCKWISE_END_LINE")
+        case .leftCounterClockwise:
+            return Localization.localizedString("COUNTER_CLOCKWISE_END_LINE")
+        case .rightClockwise:
+            return Localization.localizedString("CLOCKWISE_END_LINE")
+        case .rightCounterClockwise:
             return Localization.localizedString("COUNTER_CLOCKWISE_END_LINE")
         }
     }
