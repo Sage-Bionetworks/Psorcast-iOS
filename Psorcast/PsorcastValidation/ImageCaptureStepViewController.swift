@@ -82,58 +82,8 @@ open class ImageCaptureStepViewController: RSDStepViewController, UIImagePickerC
     open override func viewDidLoad() {
         super.viewDidLoad()
         
-//        var isSupported = UIImagePickerController.isSourceTypeAvailable(.camera)
-//        // The simulator does not have image capture capability,
-//        // but allow it to show a photo library picker instead
-//        #if targetEnvironment(simulator)
-//            isSupported = true
-//        #endif
-        
-//
-//        if isSupported {
-//            // hide the capture button (it's included for simulator)
-//            self.captureButton.isHidden = true
-//
-//            // Set up the picker.
-//            picker.delegate = self
-//            picker.allowsEditing = false
-//
-//            // The simulator does not have image capture capability,
-//            // but it does have gallery picker capability
-//            // So allow that source for testing the tasks
-//            #if targetEnvironment(simulator)
-//                picker.sourceType = UIImagePickerController.SourceType.photoLibrary
-//            #else
-//                picker.sourceType = UIImagePickerController.SourceType.camera
-//                picker.cameraCaptureMode = .photo
-//                picker.cameraFlashMode = .on
-//                picker.modalPresentationStyle = .overCurrentContext
-//                picker.cameraDevice = self.captureStep?.cameraDevice?.cameraDevice() ?? .rear
-//            #endif
-//
-//            // Embed the picker in this view.
-//            picker.edgesForExtendedLayout = UIRectEdge(rawValue: 0)
-//            self.addChild(picker)
-//
-//            let container = self.cameraView
-//            picker.view.frame = container.bounds
-//            container.addSubview(picker.view)
-//            picker.view.rsd_alignAllToSuperview(padding: 0)
-//            picker.didMove(toParent: self)
-//        }
-        
         // Disable the UI. Enable the UI later, if and only if the session starts running.
         self.captureButton.isEnabled = false
-        
-//        recordButton.isEnabled = false
-//        photoButton.isEnabled = false
-//        livePhotoModeButton.isEnabled = false
-//        depthDataDeliveryButton.isEnabled = false
-//        portraitEffectsMatteDeliveryButton.isEnabled = false
-//        semanticSegmentationMatteDeliveryButton.isEnabled = false
-//        photoQualityPrioritizationSegControl.isEnabled = false
-//        captureModeControl.isEnabled = false
-//
         
         // Set up the video preview view.
         previewView.session = session
@@ -246,23 +196,9 @@ open class ImageCaptureStepViewController: RSDStepViewController, UIImagePickerC
     /// - Tag: ObserveInterruption
     private func addObservers() {
         let keyValueObservation = session.observe(\.isRunning, options: .new) { _, change in
-            guard let isSessionRunning = change.newValue else { return }
-//            let isLivePhotoCaptureEnabled = self.photoOutput.isLivePhotoCaptureEnabled
-//            let isDepthDeliveryDataEnabled = self.photoOutput.isDepthDataDeliveryEnabled
-//            let isPortraitEffectsMatteEnabled = self.photoOutput.isPortraitEffectsMatteDeliveryEnabled
-            //let isSemanticSegmentationMatteEnabled = !self.photoOutput.enabledSemanticSegmentationMatteTypes.isEmpty
-            
+            guard change.newValue != nil else { return }
             DispatchQueue.main.async {
-                // Only enable the ability to change camera if the device has more than one camera.
-//                self.captureButton.isEnabled = isSessionRunning && self.videoDeviceDiscoverySession.uniqueDevicePositionsCount > 1
-//                self.recordButton.isEnabled = isSessionRunning && self.movieFileOutput != nil
-//                self.photoButton.isEnabled = isSessionRunning
-//                self.captureModeControl.isEnabled = isSessionRunning
-//                self.livePhotoModeButton.isEnabled = isSessionRunning && isLivePhotoCaptureEnabled
-//                self.depthDataDeliveryButton.isEnabled = isSessionRunning && isDepthDeliveryDataEnabled
-//                self.portraitEffectsMatteDeliveryButton.isEnabled = isSessionRunning && isPortraitEffectsMatteEnabled
-//                //self.semanticSegmentationMatteDeliveryButton.isEnabled = isSessionRunning && isSemanticSegmentationMatteEnabled
-//                self.photoQualityPrioritizationSegControl.isEnabled = isSessionRunning
+                self.captureButton.isEnabled = true
             }
         }
         keyValueObservations.append(keyValueObservation)
@@ -390,31 +326,10 @@ open class ImageCaptureStepViewController: RSDStepViewController, UIImagePickerC
     @objc
     func sessionInterruptionEnded(notification: NSNotification) {
         print("Capture session interruption ended")
-        
-        // TODO: mdephillips 1/22/20 do we need to inform user that camera session was interupted?
-//        if !resumeButton.isHidden {
-//            UIView.animate(withDuration: 0.25,
-//                           animations: {
-//                            self.resumeButton.alpha = 0
-//            }, completion: { _ in
-//                self.resumeButton.isHidden = true
-//            })
-//        }
-//        if !cameraUnavailableLabel.isHidden {
-//            UIView.animate(withDuration: 0.25,
-//                           animations: {
-//                            self.cameraUnavailableLabel.alpha = 0
-//            }, completion: { _ in
-//                self.cameraUnavailableLabel.isHidden = true
-//            }
-//            )
-//        }
     }
     
     @objc
     func subjectAreaDidChange(notification: NSNotification) {
-        //let devicePoint = CGPoint(x: 0.5, y: 0.5)
-//        focus(with: .continuousAutoFocus, exposureMode: .continuousAutoExposure, at: devicePoint, monitorSubjectAreaChange: false)
     }
     
     /// - Tag: HandleRuntimeError
@@ -446,39 +361,6 @@ open class ImageCaptureStepViewController: RSDStepViewController, UIImagePickerC
     
     override open var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         return .portrait
-    }
-    
-    // MARK: UIImagePickerControllerDelegate
-    
-    public func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        goBack()
-    }
-    
-    public func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        guard let chosenImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage else {
-            debugPrint("Failed to capture image: \(info)")
-            self.goForward()
-            return
-        }
-        
-        var url: URL?
-        do {
-            if let imageData = chosenImage.fixOrientationForPNG().pngData(),
-                let outputDir = self.stepViewModel.parentTaskPath?.outputDirectory {
-                url = try RSDFileResultUtility.createFileURL(identifier: self.step.identifier, ext: "png", outputDirectory: outputDir, shouldDeletePrevious: true)
-                save(imageData, to: url!)
-            }
-        } catch let error {
-            debugPrint("Failed to save the camera image: \(error)")
-        }
-        
-        // Create the result and set it as the result for this step
-        var result = RSDFileResultObject(identifier: self.step.identifier)
-        result.url = url
-        _ = self.stepViewModel.parent?.taskResult.appendStepHistory(with: result)
-        
-        // Go to the next step.
-        self.goForward()
     }
     
     private func save(_ imageData: Data, to url: URL) {
@@ -533,7 +415,7 @@ open class ImageCaptureStepViewController: RSDStepViewController, UIImagePickerC
             var defaultVideoDevice: AVCaptureDevice?
             
             // Choose the back dual camera, if available, otherwise default to a wide angle camera.
-            if (self.captureStep?.cameraDevice?.cameraDevice() ?? .front) == .front,
+            if (self.captureStep?.cameraDevice?.cameraDevice() ?? .rear) == .front,
                 let frontCameraDevice = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .front) {
                 defaultVideoDevice = frontCameraDevice
             } else if let dualCameraDevice = AVCaptureDevice.default(.builtInDualCamera, for: .video, position: .back) {
@@ -598,10 +480,7 @@ open class ImageCaptureStepViewController: RSDStepViewController, UIImagePickerC
          */
         let videoPreviewLayerOrientation = previewView.videoPreviewLayer.connection?.videoOrientation
         
-        var flashMode: AVCaptureDevice.FlashMode = .on
-        if let captureStep = self.captureStep {
-            // TODO: mdephillips 1/22/20 have this be adjustable in json
-        }
+        let flashMode: AVCaptureDevice.FlashMode = .on
         
         sessionQueue.async {
             if let photoOutputConnection = self.photoOutput.connection(with: .video) {
@@ -629,28 +508,48 @@ open class ImageCaptureStepViewController: RSDStepViewController, UIImagePickerC
             let photoCaptureProcessor = PhotoCaptureProcessor(with: photoSettings, willCapturePhotoAnimation: {
                 // Flash the screen to signal that Psorcast took a photo.
                 DispatchQueue.main.async {
+                    NSLog(" Flash the screen")
                     self.previewView.videoPreviewLayer.opacity = 0
                     UIView.animate(withDuration: 0.25) {
                         self.previewView.videoPreviewLayer.opacity = 1
                     }
+                    self.captureButton.isEnabled = false
                 }
             }, completionHandler: { photoCaptureProcessor in
                 // When the capture is complete, remove a reference to the photo capture delegate so it can be deallocated.
-                self.sessionQueue.async {                    self.inProgressPhotoCaptureDelegates[photoCaptureProcessor.requestedPhotoSettings.uniqueID] = nil
-                }
-                DispatchQueue.main.async {
+                NSLog("reference to the photo capture delegate")
+                self.sessionQueue.async {
+                    let pngData = self.inProgressPhotoCaptureDelegates[photoCaptureProcessor.requestedPhotoSettings.uniqueID]?.photoData
+                self.inProgressPhotoCaptureDelegates[photoCaptureProcessor.requestedPhotoSettings.uniqueID] = nil
+                    self.session.stopRunning()
                     
+                    DispatchQueue.main.async {
+                        NSLog("reference to the photo capture delegate")
+                        
+                        if let photoPngData = pngData {
+                            self.saveCapturedPhotoAndGoForward(pngData: photoPngData)
+                        }
+                    }
+                }
+            }, stopSessionRequestHandler: { photoCaptureProcessor in
+                // When the capture is complete, immediately stop the session so the
+                // image is on the screen
+                NSLog("stopSessionRequestHandler")
+                self.sessionQueue.async {
+                    self.session.stopRunning()
                 }
             }, photoProcessingHandler: { animate in
                 // Animates a spinner while photo is processing
                 DispatchQueue.main.async {
                     // TODO: mdephillips 12/20/19 need animation spinner?
+                    NSLog("photo is processing")
                 }
             })
             
             // The photo output holds a weak reference to the photo capture delegate and stores it in an array to maintain a strong reference.
             self.inProgressPhotoCaptureDelegates[photoCaptureProcessor.requestedPhotoSettings.uniqueID] = photoCaptureProcessor
             self.photoOutput.capturePhoto(with: photoSettings, delegate: photoCaptureProcessor)
+            NSLog("finished session")
         }
     }
     
@@ -767,22 +666,25 @@ class PhotoCaptureProcessor: NSObject {
     
     lazy var context = CIContext()
     
+    private let stopSessionRequestHandler: (PhotoCaptureProcessor) -> Void
     private let completionHandler: (PhotoCaptureProcessor) -> Void
     
     private let photoProcessingHandler: (Bool) -> Void
     
-    private var photoData: Data?
+    public var photoData: Data?
     
     private var maxPhotoProcessingTime: CMTime?
     
     init(with requestedPhotoSettings: AVCapturePhotoSettings,
          willCapturePhotoAnimation: @escaping () -> Void,
          completionHandler: @escaping (PhotoCaptureProcessor) -> Void,
+         stopSessionRequestHandler: @escaping (PhotoCaptureProcessor) -> Void,
          photoProcessingHandler: @escaping (Bool) -> Void) {
         
         self.requestedPhotoSettings = requestedPhotoSettings
         self.willCapturePhotoAnimation = willCapturePhotoAnimation
         self.completionHandler = completionHandler
+        self.stopSessionRequestHandler = stopSessionRequestHandler
         self.photoProcessingHandler = photoProcessingHandler
     }
     
@@ -799,12 +701,15 @@ extension PhotoCaptureProcessor: AVCapturePhotoCaptureDelegate {
     
     /// - Tag: WillBeginCapture
     func photoOutput(_ output: AVCapturePhotoOutput, willBeginCaptureFor resolvedSettings: AVCaptureResolvedPhotoSettings) {
-
+        NSLog("WillBeginCapture")
         // No-op
     }
     
     /// - Tag: WillCapturePhoto
     func photoOutput(_ output: AVCapturePhotoOutput, willCapturePhotoFor resolvedSettings: AVCaptureResolvedPhotoSettings) {
+        
+        NSLog("WillCapturePhoto")
+        
         willCapturePhotoAnimation()
         
         guard let maxPhotoProcessingTime = maxPhotoProcessingTime else {
@@ -820,27 +725,80 @@ extension PhotoCaptureProcessor: AVCapturePhotoCaptureDelegate {
     
     /// - Tag: DidFinishProcessingPhoto
     func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
+        
+        NSLog("DidFinishProcessingPhoto")
+        
         photoProcessingHandler(false)
+        
+        NSLog("DidFinishProcessingPhoto1")
         
         if let error = error {
             print("Error capturing photo: \(error)")
         } else {
-            if let cgImage = photo.cgImageRepresentation()?.takeRetainedValue() {
-                // TODO: mdephillips 1/22/20 get orientation
-                let image = UIImage(cgImage: cgImage, scale: 1.0, orientation: .up)
-                self.photoData = image.pngData()
-            }
+            NSLog("DidFinishProcessingPhoto2")
+//            if let cgImage = photo.cgImageRepresentation()?.takeRetainedValue() {
+//                // TODO: mdephillips 1/22/20 get orientation
+//                let image = UIImage(cgImage: cgImage, scale: 1.0, orientation: .up)
+//                self.photoData = image.pngData()
+//                NSLog("DidFinishProcessingPhoto3")
+//            }
         }
+        NSLog("DidFinishProcessingPhoto4")
+        
+        // Check if there is any error in capturing
+        guard error == nil else {
+            print("Fail to capture photo: \(String(describing: error))")
+            return
+        }
+
+        // Check if the pixel buffer could be converted to image data
+        guard let imageData = photo.fileDataRepresentation() else {
+            print("Fail to convert pixel buffer")
+            return
+        }
+
+        // Check if UIImage could be initialized with image data
+        guard let capturedImage = UIImage.init(data: imageData , scale: 1.0) else {
+            print("Fail to convert image data to UIImage")
+            return
+        }
+
+        stopSessionRequestHandler(self)
+        
+        // Get original image width/height
+        let imgWidth = capturedImage.size.width
+        let imgHeight = capturedImage.size.height
+        // Get origin of cropped image
+        let imgOrigin = CGPoint(x: (imgWidth - imgHeight)/2, y: (imgHeight - imgHeight)/2)
+        // Get size of cropped iamge
+        let imgSize = CGSize(width: imgHeight, height: imgHeight)
+
+        // Check if image could be cropped successfully
+        guard let imageRef = capturedImage.cgImage?.cropping(to: CGRect(origin: imgOrigin, size: imgSize)) else {
+            print("Fail to crop image")
+            return
+        }
+
+        // Convert cropped image ref to UIImage
+        // .right is for portrait, which this app is locked to
+        let imageToSave = UIImage(cgImage: imageRef, scale: 1.0, orientation: .right)
+        self.photoData = imageToSave.fixOrientationForPNG().pngData()
+        
         self.didFinish()
+        NSLog("DidFinishProcessingPhoto5")
     }
     
     /// - Tag: DidFinishRecordingLive
     func photoOutput(_ output: AVCapturePhotoOutput, didFinishRecordingLivePhotoMovieForEventualFileAt outputFileURL: URL, resolvedSettings: AVCaptureResolvedPhotoSettings) {
         // No-op recording live
+        NSLog("DidFinishRecordingLive")
     }
     
     /// - Tag: DidFinishProcessingLive
     func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingLivePhotoToMovieFileAt outputFileURL: URL, duration: CMTime, photoDisplayTime: CMTime, resolvedSettings: AVCaptureResolvedPhotoSettings, error: Error?) {
+        
+        NSLog("photoOutput")
+        
         if error != nil {
             print("Error processing Live Photo companion movie: \(String(describing: error))")
             return
@@ -849,6 +807,9 @@ extension PhotoCaptureProcessor: AVCapturePhotoCaptureDelegate {
     
     /// - Tag: DidFinishCapture
     func photoOutput(_ output: AVCapturePhotoOutput, didFinishCaptureFor resolvedSettings: AVCaptureResolvedPhotoSettings, error: Error?) {
+        
+        NSLog("DidFinishCapture")
+        
         if let error = error {
             print("Error capturing photo: \(error)")
             didFinish()

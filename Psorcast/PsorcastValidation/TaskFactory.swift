@@ -35,6 +35,7 @@ import BridgeApp
 
 extension RSDStepType {
     public static let imageCapture: RSDStepType = "imageCapture"
+    public static let reviewCapture: RSDStepType = "reviewCapture"
     public static let selectionCollection: RSDStepType = "selectionCollection"
     public static let imageCaptureCompletion: RSDStepType = "imageCaptureCompletion"
     public static let jointPain: RSDStepType = "jointPain"
@@ -55,6 +56,8 @@ open class TaskFactory: SBAFactory {
         switch type {
         case .imageCapture:
             return try ImageCaptureStepObject(from: decoder)
+        case .reviewCapture:
+            return try ReviewCaptureStepObject(from: decoder)
         case .selectionCollection:
             return try SelectionCollectionStepObject(from: decoder)
         case .imageCaptureCompletion:
