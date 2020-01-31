@@ -10,6 +10,8 @@
 		CB03196523E3ED0A005063A3 /* ReviewCaptureStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB03196423E3ED09005063A3 /* ReviewCaptureStepViewController.swift */; };
 		CB03196723E40836005063A3 /* ReviewCaptureStepViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB03196623E40835005063A3 /* ReviewCaptureStepViewController.xib */; };
 		CB05146C237F27560058D746 /* DigitalJarOpen.json in Resources */ = {isa = PBXBuildFile; fileRef = CB05146B237F27560058D746 /* DigitalJarOpen.json */; };
+		CB16BF5623E4B9140099FD08 /* GPUImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB16BF5323E4B90B0099FD08 /* GPUImage.framework */; };
+		CB16BF5723E4B9140099FD08 /* GPUImage.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CB16BF5323E4B90B0099FD08 /* GPUImage.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		CB28EBE82396FCA30043D7FE /* JointCounting.mov in Resources */ = {isa = PBXBuildFile; fileRef = CB28EBE52396FCA30043D7FE /* JointCounting.mov */; };
 		CB28EBEA2396FCA30043D7FE /* DigitalJarOpen.mov in Resources */ = {isa = PBXBuildFile; fileRef = CB28EBE72396FCA30043D7FE /* DigitalJarOpen.mov */; };
 		CB422D2A23316EB700787FEE /* BridgeAppUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB422D2923316EB700787FEE /* BridgeAppUI.framework */; };
@@ -126,6 +128,34 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		CB16BF4E23E4B90B0099FD08 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CB16BF4723E4B90B0099FD08 /* GPUImage.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = BC6E7CAB1C39A9D8006DF678;
+			remoteInfo = GPUImage_macOS;
+		};
+		CB16BF5023E4B90B0099FD08 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CB16BF4723E4B90B0099FD08 /* GPUImage.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = BC6E7CB51C39A9D8006DF678;
+			remoteInfo = GPUImageTests_macOS;
+		};
+		CB16BF5223E4B90B0099FD08 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CB16BF4723E4B90B0099FD08 /* GPUImage.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = BC9E34E91E524A2200B8604F;
+			remoteInfo = GPUImage_iOS;
+		};
+		CB16BF5423E4B90B0099FD08 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CB16BF4723E4B90B0099FD08 /* GPUImage.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = BC9E34F11E524A2200B8604F;
+			remoteInfo = GPUImageTests_iOS;
+		};
 		CB9F5E4522E0C27D003FBCEF /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FFABCBB622DD1EEB00D11109 /* Project object */;
@@ -154,6 +184,7 @@
 				FFABCC0922DD1FDB00D11109 /* BridgeSDK.framework in Embed Frameworks */,
 				FFABCC0022DD1FBC00D11109 /* ResearchMotion.framework in Embed Frameworks */,
 				FFABCBF922DD1FAB00D11109 /* Research.framework in Embed Frameworks */,
+				CB16BF5723E4B9140099FD08 /* GPUImage.framework in Embed Frameworks */,
 				CB422D2C23316EB700787FEE /* BridgeAppUI.framework in Embed Frameworks */,
 				FFABCBFD22DD1FB500D11109 /* ResearchUI.framework in Embed Frameworks */,
 			);
@@ -166,6 +197,7 @@
 		CB03196423E3ED09005063A3 /* ReviewCaptureStepViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReviewCaptureStepViewController.swift; sourceTree = "<group>"; };
 		CB03196623E40835005063A3 /* ReviewCaptureStepViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReviewCaptureStepViewController.xib; sourceTree = "<group>"; };
 		CB05146B237F27560058D746 /* DigitalJarOpen.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = DigitalJarOpen.json; sourceTree = "<group>"; };
+		CB16BF4723E4B90B0099FD08 /* GPUImage.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = GPUImage.xcodeproj; path = ../gpuimage/GPUImage.xcodeproj; sourceTree = "<group>"; };
 		CB28EBE52396FCA30043D7FE /* JointCounting.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = JointCounting.mov; sourceTree = "<group>"; };
 		CB28EBE72396FCA30043D7FE /* DigitalJarOpen.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = DigitalJarOpen.mov; sourceTree = "<group>"; };
 		CB422D2923316EB700787FEE /* BridgeAppUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BridgeAppUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -309,6 +341,7 @@
 				FFABCC0222DD1FC900D11109 /* MotorControl.framework in Frameworks */,
 				FFABCC0822DD1FDB00D11109 /* BridgeSDK.framework in Frameworks */,
 				FFABCBFF22DD1FBC00D11109 /* ResearchMotion.framework in Frameworks */,
+				CB16BF5623E4B9140099FD08 /* GPUImage.framework in Frameworks */,
 				CB422D2B23316EB700787FEE /* BridgeAppUI.framework in Frameworks */,
 				FFABCBF822DD1FAB00D11109 /* Research.framework in Frameworks */,
 				FFABCBFC22DD1FB500D11109 /* ResearchUI.framework in Frameworks */,
@@ -329,6 +362,17 @@
 				CBBC8770239F028300AC9D8E /* PsoriasisDraw.mov */,
 			);
 			name = MP4;
+			sourceTree = "<group>";
+		};
+		CB16BF4823E4B90B0099FD08 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				CB16BF4F23E4B90B0099FD08 /* GPUImage.framework */,
+				CB16BF5123E4B90B0099FD08 /* GPUImageTests_macOS.xctest */,
+				CB16BF5323E4B90B0099FD08 /* GPUImage.framework */,
+				CB16BF5523E4B90B0099FD08 /* GPUImageTests_iOS.xctest */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		CB9F5E1122E0BE8D003FBCEF /* Fonts */ = {
@@ -562,6 +606,7 @@
 		FFABCC0A22DD1FE800D11109 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CB16BF4723E4B90B0099FD08 /* GPUImage.xcodeproj */,
 				CB422D2923316EB700787FEE /* BridgeAppUI.framework */,
 				FFABCC0722DD1FDB00D11109 /* BridgeSDK.framework */,
 				FFABCC0422DD1FCF00D11109 /* BridgeApp.framework */,
@@ -693,6 +738,12 @@
 			mainGroup = FFABCBB522DD1EEB00D11109;
 			productRefGroup = FFABCBBF22DD1EEB00D11109 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = CB16BF4823E4B90B0099FD08 /* Products */;
+					ProjectRef = CB16BF4723E4B90B0099FD08 /* GPUImage.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				FFABCBBD22DD1EEB00D11109 /* Psorcast */,
@@ -702,6 +753,37 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		CB16BF4F23E4B90B0099FD08 /* GPUImage.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = GPUImage.framework;
+			remoteRef = CB16BF4E23E4B90B0099FD08 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		CB16BF5123E4B90B0099FD08 /* GPUImageTests_macOS.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = GPUImageTests_macOS.xctest;
+			remoteRef = CB16BF5023E4B90B0099FD08 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		CB16BF5323E4B90B0099FD08 /* GPUImage.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = GPUImage.framework;
+			remoteRef = CB16BF5223E4B90B0099FD08 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		CB16BF5523E4B90B0099FD08 /* GPUImageTests_iOS.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = GPUImageTests_iOS.xctest;
+			remoteRef = CB16BF5423E4B90B0099FD08 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		CB9F5E3E22E0C27C003FBCEF /* Resources */ = {

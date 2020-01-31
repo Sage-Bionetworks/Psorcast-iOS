@@ -35,6 +35,7 @@ import AVFoundation
 import UIKit
 import BridgeApp
 import BridgeAppUI
+import GPUImage
 
 open class ImageCaptureStepViewController: RSDStepViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
@@ -190,6 +191,18 @@ open class ImageCaptureStepViewController: RSDStepViewController, UIImagePickerC
         }
         
         super.viewWillDisappear(animated)
+    }
+    
+    override open func setupHeader(_ header: RSDStepNavigationView) {
+        super.setupHeader(header)
+    
+        if let appDelegate = AppDelegate.shared as? AppDelegate,
+            let lastImage = appDelegate.getSavedImage(with: self.step.identifier) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+                self.navigationHeader?.imageView?.image = UIImage(data: lastImage)
+                self.navigationHeader?.imageView?.alpha = 0.4
+            }
+        }
     }
     
     private var keyValueObservations = [NSKeyValueObservation]()
@@ -554,6 +567,10 @@ open class ImageCaptureStepViewController: RSDStepViewController, UIImagePickerC
     }
     
     func saveCapturedPhotoAndGoForward(pngData: Data?) {
+        guard let imageData = pngData else {
+            return
+        }
+        
         var url: URL?
         do {
             if let imageData = pngData,
@@ -569,6 +586,11 @@ open class ImageCaptureStepViewController: RSDStepViewController, UIImagePickerC
         var result = RSDFileResultObject(identifier: self.step.identifier)
         result.url = url
         _ = self.stepViewModel.parent?.taskResult.appendStepHistory(with: result)
+        
+        // Also trigger the user defaults to store the image as an overlay for next time
+        if let appDelegate = AppDelegate.shared as? AppDelegate {
+            appDelegate.filterImageAndSave(with: self.step.identifier, pngData: imageData)
+        }
         
         // Go to the next step.
         self.goForward()
