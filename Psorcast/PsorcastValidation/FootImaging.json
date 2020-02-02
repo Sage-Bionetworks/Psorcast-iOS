@@ -79,7 +79,28 @@
         {
             "identifier"    : "leftFoot",
             "type"          : "imageCapture",
-            "title"         : "Left Toes"
+            "title"         : "Left Toes",
+            "image": {
+                "type":"fetchable",
+                "imageName": "CameraOverlayLeftFoot",
+                "placementType":"topBackground"
+            }
+        },
+        {
+            "identifier":"reviewLeftFoot",
+            "type":"reviewCapture",
+            "title":"Are your nails in focus?",
+            "imageIdentifier": "leftFoot",
+            "actions":{
+                "goForward": {
+                    "type":"default",
+                    "buttonTitle":"Yes"
+                },
+                "goBackward":{
+                    "type":"default",
+                    "buttonTitle":"Retake"
+                }
+            }
         },
         {
             "identifier":"footInstruction3",
@@ -102,7 +123,28 @@
         {
             "identifier"    : "rightFoot",
             "type"          : "imageCapture",
-            "title"         : "Right Toes"
+            "title"         : "Right Toes",
+            "image": {
+                "type":"fetchable",
+                "imageName": "CameraOverlayRightFoot",
+                "placementType":"topBackground"
+            }
+        },
+        {
+            "identifier":"reviewRightFoot",
+            "type":"reviewCapture",
+            "title":"Are your nails in focus?",
+            "imageIdentifier": "rightFoot",
+            "actions":{
+                "goForward":{
+                    "type":"default",
+                    "buttonTitle":"Yes"
+                },
+                "goBackward":{
+                    "type":"default",
+                    "buttonTitle":"Retake"
+                }
+            }
         },
         {
             "identifier":"completion",

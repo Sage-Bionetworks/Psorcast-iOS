@@ -31,11 +31,36 @@
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
 
+import AVFoundation
 import UIKit
 import BridgeApp
 import BridgeAppUI
 
 open class ImageCaptureStepViewController: RSDStepViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    
+    // MARK: Session Management
+    
+    private enum SessionSetupResult {
+        case success
+        case notAuthorized
+        case configurationFailed
+    }
+    
+    private let session = AVCaptureSession()
+    private var isSessionRunning = false
+    
+    // Communicate with the session and other session objects on this queue.
+    private let sessionQueue = DispatchQueue(label: "camera session queue")
+    
+    private var setupResult: SessionSetupResult = .success
+    
+    @objc dynamic var videoDeviceInput: AVCaptureDeviceInput!
+    
+    @IBOutlet private weak var previewView: CameraPreviewView!
+    
+    private let photoOutput = AVCapturePhotoOutput()
+    
+    private var inProgressPhotoCaptureDelegates = [Int64: PhotoCaptureProcessor]()
     
     @IBOutlet public var captureButton: UIButton!
     
@@ -57,78 +82,285 @@ open class ImageCaptureStepViewController: RSDStepViewController, UIImagePickerC
     open override func viewDidLoad() {
         super.viewDidLoad()
         
-        var isSupported = UIImagePickerController.isSourceTypeAvailable(.camera)
+        // Disable the UI. Enable the UI later, if and only if the session starts running.
+        self.captureButton.isEnabled = false
         
-        // The simulator does not have image capture capability,
-        // but allow it to show a photo library picker instead
-        #if targetEnvironment(simulator)
-            isSupported = true
-        #endif
+        // Set up the video preview view.
+        previewView.session = session
+        previewView.videoPreviewLayer.videoGravity = .resizeAspectFill
+        /*
+         Check the video authorization status. Video access is required.
+         */
+        switch AVCaptureDevice.authorizationStatus(for: .video) {
+        case .authorized:
+            // The user has previously granted access to the camera.
+            break
+            
+        case .notDetermined:
+            /*
+             The user has not yet been presented with the option to grant
+             video access. Suspend the session queue to delay session
+             setup until the access request has completed.
+             */
+            sessionQueue.suspend()
+            AVCaptureDevice.requestAccess(for: .video, completionHandler: { granted in
+                if !granted {
+                    self.setupResult = .notAuthorized
+                }
+                self.sessionQueue.resume()
+            })
+            
+        default:
+            // The user has previously denied access.
+            setupResult = .notAuthorized
+        }
         
-        if isSupported {
-            // hide the capture button (it's included for simulator)
-            self.captureButton.isHidden = true
-            
-            // Set up the picker.
-            picker.delegate = self
-            picker.allowsEditing = false
-            
-            // The simulator does not have image capture capability,
-            // but it does have gallery picker capability
-            // So allow that source for testing the tasks
-            #if targetEnvironment(simulator)
-                picker.sourceType = UIImagePickerController.SourceType.photoLibrary
-            #else
-                picker.sourceType = UIImagePickerController.SourceType.camera
-                picker.cameraCaptureMode = .photo
-                picker.cameraFlashMode = .on
-                picker.modalPresentationStyle = .overCurrentContext
-                picker.cameraDevice = self.captureStep?.cameraDevice?.cameraDevice() ?? .rear
-            #endif
-            
-            // Embed the picker in this view.
-            picker.edgesForExtendedLayout = UIRectEdge(rawValue: 0)
-            self.addChild(picker)
-            
-            let container = self.cameraView
-            picker.view.frame = container.bounds
-            container.addSubview(picker.view)
-            picker.view.rsd_alignAllToSuperview(padding: 0)
-            picker.didMove(toParent: self)
+        /*
+         Setup the capture session.
+         In general, it's not safe to mutate an AVCaptureSession or any of its
+         inputs, outputs, or connections from multiple threads at the same time.
+         
+         Don't perform these tasks on the main queue because
+         AVCaptureSession.startRunning() is a blocking call, which can
+         take a long time. Dispatch session setup to the sessionQueue, so
+         that the main queue isn't blocked, which keeps the UI responsive.
+         */
+        sessionQueue.async {
+            self.configureSession()
         }
     }
     
-    // MARK: UIImagePickerControllerDelegate
+    // MARK: View Controller Life Cycle
     
-    public func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        goBack()
-    }
-    
-    public func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        guard let chosenImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage else {
-            debugPrint("Failed to capture image: \(info)")
-            self.goForward()
-            return
-        }
+    override open func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         
-        var url: URL?
-        do {
-            if let imageData = chosenImage.fixOrientationForPNG().pngData(),
-                let outputDir = self.stepViewModel.parentTaskPath?.outputDirectory {
-                url = try RSDFileResultUtility.createFileURL(identifier: self.step.identifier, ext: "png", outputDirectory: outputDir, shouldDeletePrevious: true)
-                save(imageData, to: url!)
+        sessionQueue.async {
+            switch self.setupResult {
+            case .success:
+                // Only setup observers and start the session if setup succeeded.
+                self.addObservers()
+                self.session.startRunning()
+                self.isSessionRunning = self.session.isRunning
+                
+            case .notAuthorized:
+                DispatchQueue.main.async {
+                    let changePrivacySetting = "Psorcast doesn't have permission to use the camera, please change privacy settings"
+                    let message = NSLocalizedString(changePrivacySetting, comment: "Alert message when the user has denied access to the camera")
+                    let alertController = UIAlertController(title: "Psorcast", message: message, preferredStyle: .alert)
+                    
+                    alertController.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Alert OK button"),
+                                                            style: .cancel,
+                                                            handler: nil))
+                    
+                    alertController.addAction(UIAlertAction(title: NSLocalizedString("Settings", comment: "Alert button to open Settings"),
+                                                            style: .`default`,
+                                                            handler: { _ in
+                                                                UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!,
+                                                                                          options: [:],
+                                                                                          completionHandler: nil)
+                    }))
+                    
+                    self.present(alertController, animated: true, completion: nil)
+                }
+                
+            case .configurationFailed:
+                DispatchQueue.main.async {
+                    let alertMsg = "Alert message when something goes wrong during capture session configuration"
+                    let message = NSLocalizedString("Unable to capture image", comment: alertMsg)
+                    let alertController = UIAlertController(title: "Psorcast", message: message, preferredStyle: .alert)
+                    
+                    alertController.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Alert OK button"),
+                                                            style: .cancel,
+                                                            handler: nil))
+                    
+                    self.present(alertController, animated: true, completion: nil)
+                }
             }
-        } catch let error {
-            debugPrint("Failed to save the camera image: \(error)")
+        }
+    }
+    
+    override open func viewWillDisappear(_ animated: Bool) {
+        sessionQueue.async {
+            if self.setupResult == .success {
+                self.session.stopRunning()
+                self.isSessionRunning = self.session.isRunning
+                self.removeObservers()
+            }
         }
         
-        // Create the result and set it as the result for this step
-        var result = RSDFileResultObject(identifier: self.step.identifier)
-        result.url = url
-        _ = self.stepViewModel.parent?.taskResult.appendStepHistory(with: result)
+        super.viewWillDisappear(animated)
+    }
+    
+    private var keyValueObservations = [NSKeyValueObservation]()
+    /// - Tag: ObserveInterruption
+    private func addObservers() {
+        let keyValueObservation = session.observe(\.isRunning, options: .new) { _, change in
+            guard change.newValue != nil else { return }
+            DispatchQueue.main.async {
+                self.captureButton.isEnabled = true
+            }
+        }
+        keyValueObservations.append(keyValueObservation)
         
-        // Go to the next step.
-        self.goForward()
+        let systemPressureStateObservation = observe(\.videoDeviceInput.device.systemPressureState, options: .new) { _, change in
+            guard let systemPressureState = change.newValue else { return }
+            self.setRecommendedFrameRateRangeForPressureState(systemPressureState: systemPressureState)
+        }
+        keyValueObservations.append(systemPressureStateObservation)
+        
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(subjectAreaDidChange),
+                                               name: .AVCaptureDeviceSubjectAreaDidChange,
+                                               object: videoDeviceInput.device)
+        
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(sessionRuntimeError),
+                                               name: .AVCaptureSessionRuntimeError,
+                                               object: session)
+        
+        /*
+         A session can only run when the app is full screen. It will be interrupted
+         in a multi-app layout, introduced in iOS 9, see also the documentation of
+         AVCaptureSessionInterruptionReason. Add observers to handle these session
+         interruptions and show a preview is paused message. See the documentation
+         of AVCaptureSessionWasInterruptedNotification for other interruption reasons.
+         */
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(sessionWasInterrupted),
+                                               name: .AVCaptureSessionWasInterrupted,
+                                               object: session)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(sessionInterruptionEnded),
+                                               name: .AVCaptureSessionInterruptionEnded,
+                                               object: session)
+    }
+    
+    private func removeObservers() {
+        NotificationCenter.default.removeObserver(self)
+        
+        for keyValueObservation in keyValueObservations {
+            keyValueObservation.invalidate()
+        }
+        keyValueObservations.removeAll()
+    }
+    
+    /// - Tag: HandleSystemPressure
+    private func setRecommendedFrameRateRangeForPressureState(systemPressureState: AVCaptureDevice.SystemPressureState) {
+        /*
+         The frame rates used here are only for demonstration purposes.
+         Your frame rate throttling may be different depending on your app's camera configuration.
+         */
+        let pressureLevel = systemPressureState.level
+        if pressureLevel == .serious || pressureLevel == .critical {
+            do {
+                try self.videoDeviceInput.device.lockForConfiguration()
+                print("WARNING: Reached elevated system pressure level: \(pressureLevel). Throttling frame rate.")
+                self.videoDeviceInput.device.activeVideoMinFrameDuration = CMTime(value: 1, timescale: 20)
+                self.videoDeviceInput.device.activeVideoMaxFrameDuration = CMTime(value: 1, timescale: 15)
+                self.videoDeviceInput.device.unlockForConfiguration()
+            } catch {
+                print("Could not lock device for configuration: \(error)")
+            }
+        } else if pressureLevel == .shutdown {
+            print("Session stopped running due to shutdown system pressure level.")
+        }
+    }
+    
+    /// - Tag: HandleInterruption
+    @objc
+    func sessionWasInterrupted(notification: NSNotification) {
+        /*
+         In some scenarios you want to enable the user to resume the session.
+         For example, if music playback is initiated from Control Center while
+         using Psorcast imaging, then the user can let Psorcast resume
+         the session running, which will stop music playback. Note that stopping
+         music playback in Control Center will not automatically resume the session.
+         Also note that it's not always possible to resume, see `resumeInterruptedSession(_:)`.
+         */
+        if let userInfoValue = notification.userInfo?[AVCaptureSessionInterruptionReasonKey] as AnyObject?,
+            let reasonIntegerValue = userInfoValue.integerValue,
+            let reason = AVCaptureSession.InterruptionReason(rawValue: reasonIntegerValue) {
+            print("Capture session was interrupted with reason \(reason)")
+            
+            var showResumeButton = false
+            if reason == .audioDeviceInUseByAnotherClient || reason == .videoDeviceInUseByAnotherClient {
+                showResumeButton = true
+            } else if reason == .videoDeviceNotAvailableWithMultipleForegroundApps {
+                // TODO: mdephillips 1/22/20 Do we need to inform the user that the camera is unavailable?
+                
+            } else if reason == .videoDeviceNotAvailableDueToSystemPressure {
+                print("Session stopped running due to shutdown system pressure level.")
+            }
+        }
+    }
+    
+    @IBAction private func resumeInterruptedSession(_ resumeButton: UIButton) {
+        sessionQueue.async {
+            /*
+             The session might fail to start running, for example, if a phone or FaceTime call is still
+             using audio or video. This failure is communicated by the session posting a
+             runtime error notification. To avoid repeatedly failing to start the session,
+             only try to restart the session in the error handler if you aren't
+             trying to resume the session.
+             */
+            self.session.startRunning()
+            self.isSessionRunning = self.session.isRunning
+            if !self.session.isRunning {
+                DispatchQueue.main.async {
+                    let message = NSLocalizedString("Unable to resume capture session", comment: "Alert message when unable to resume the session running")
+                    let alertController = UIAlertController(title: "Psorcast", message: message, preferredStyle: .alert)
+                    let cancelAction = UIAlertAction(title: NSLocalizedString("OK", comment: "Alert OK button"), style: .cancel, handler: nil)
+                    alertController.addAction(cancelAction)
+                    self.present(alertController, animated: true, completion: nil)
+                }
+            } else {
+                DispatchQueue.main.async {
+                    // No need to show resume button, just always resume
+                    //self.resumeButton.isHidden = true
+                }
+            }
+        }
+    }
+    
+    @objc
+    func sessionInterruptionEnded(notification: NSNotification) {
+        print("Capture session interruption ended")
+    }
+    
+    @objc
+    func subjectAreaDidChange(notification: NSNotification) {
+    }
+    
+    /// - Tag: HandleRuntimeError
+    @objc
+    func sessionRuntimeError(notification: NSNotification) {
+        guard let error = notification.userInfo?[AVCaptureSessionErrorKey] as? AVError else { return }
+        
+        print("Capture session runtime error: \(error)")
+//        // If media services were reset, and the last start succeeded, restart the session.
+        if error.code == .mediaServicesWereReset {
+            sessionQueue.async {
+                if self.isSessionRunning {
+                    self.session.startRunning()
+                    self.isSessionRunning = self.session.isRunning
+                } else {
+                    DispatchQueue.main.async {
+                        //self.resumeButton.isHidden = false
+                    }
+                }
+            }
+        } else {
+            //resumeButton.isHidden = false
+        }
+    }
+    
+    override open var shouldAutorotate: Bool {
+        return false
+    }
+    
+    override open var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        return .portrait
     }
     
     private func save(_ imageData: Data, to url: URL) {
@@ -154,11 +386,192 @@ open class ImageCaptureStepViewController: RSDStepViewController, UIImagePickerC
         super.setColorStyle(for: placement, background: background)
         
         if placement == .footer {
-            self.captureButton.backgroundColor = self.designSystem.colorRules.tintedButtonColor(on: background)
+            self.captureButton.backgroundColor = self.designSystem.colorRules.palette.secondary.normal.color
+            self.captureButton.tintColor = UIColor.white
+            self.navigationFooter?.backgroundColor = UIColor.white
         } else if placement == .header {
-            self.navigationHeader?.backgroundColor = UIColor.clear
-            self.navigationHeader?.titleLabel?.textColor = UIColor.white
+            self.navigationHeader?.backgroundColor = UIColor.white
+            self.navigationHeader?.titleLabel?.textColor = self.designSystem.colorRules.textColor(on: background, for: .largeHeader)
         }
+    }
+    
+    // Call this on the session queue.
+    /// - Tag: ConfigureSession
+    private func configureSession() {
+        if setupResult != .success {
+            return
+        }
+        
+        session.beginConfiguration()
+        
+        /*
+         Do not create an AVCaptureMovieFileOutput when setting up the session because
+         Live Photo is not supported when AVCaptureMovieFileOutput is added to the session.
+         */
+        session.sessionPreset = .photo
+        
+        // Add video input.
+        do {
+            var defaultVideoDevice: AVCaptureDevice?
+            
+            // Choose the back dual camera, if available, otherwise default to a wide angle camera.
+            if (self.captureStep?.cameraDevice?.cameraDevice() ?? .rear) == .front,
+                let frontCameraDevice = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .front) {
+                defaultVideoDevice = frontCameraDevice
+            } else if let dualCameraDevice = AVCaptureDevice.default(.builtInDualCamera, for: .video, position: .back) {
+                defaultVideoDevice = dualCameraDevice
+            } else if let backCameraDevice = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .back) {
+                // If a rear dual camera is not available, default to the rear wide angle camera.
+                defaultVideoDevice = backCameraDevice
+            }
+            
+            guard let videoDevice = defaultVideoDevice else {
+                print("Default video device is unavailable.")
+                setupResult = .configurationFailed
+                session.commitConfiguration()
+                return
+            }
+            let videoDeviceInput = try AVCaptureDeviceInput(device: videoDevice)
+            
+            if session.canAddInput(videoDeviceInput) {
+                session.addInput(videoDeviceInput)
+                self.videoDeviceInput = videoDeviceInput
+                
+                DispatchQueue.main.async {
+                    // Lock the camera capture to portrait
+                    self.previewView.videoPreviewLayer.connection?.videoOrientation = .portrait
+                }
+            } else {
+                print("Couldn't add video device input to the session.")
+                setupResult = .configurationFailed
+                session.commitConfiguration()
+                return
+            }
+        } catch {
+            print("Couldn't create video device input: \(error)")
+            setupResult = .configurationFailed
+            session.commitConfiguration()
+            return
+        }
+        
+        // Add the photo output.
+        if session.canAddOutput(photoOutput) {
+            session.addOutput(photoOutput)
+            photoOutput.isHighResolutionCaptureEnabled = true
+            photoOutput.isLivePhotoCaptureEnabled = false
+            photoOutput.isDepthDataDeliveryEnabled = false
+            photoOutput.isPortraitEffectsMatteDeliveryEnabled = false
+        } else {
+            print("Could not add photo output to the session")
+            setupResult = .configurationFailed
+            session.commitConfiguration()
+            return
+        }
+        
+        session.commitConfiguration()
+    }
+    
+    /// - Tag: CapturePhoto
+    @IBAction func capturePhoto(_ photoButton: UIButton) {
+        /*
+         Retrieve the video preview layer's video orientation on the main queue before
+         entering the session queue. Do this to ensure that UI elements are accessed on
+         the main thread and session configuration is done on the session queue.
+         */
+        let videoPreviewLayerOrientation = previewView.videoPreviewLayer.connection?.videoOrientation
+        
+        let flashMode: AVCaptureDevice.FlashMode = .on
+        
+        sessionQueue.async {
+            if let photoOutputConnection = self.photoOutput.connection(with: .video) {
+                photoOutputConnection.videoOrientation = videoPreviewLayerOrientation!
+            }
+            var photoSettings = AVCapturePhotoSettings()
+            
+            // Capture HEIF photos when supported. Enable auto-flash and high-resolution photos.
+            if  self.photoOutput.availablePhotoCodecTypes.contains(.hevc) {
+                photoSettings = AVCapturePhotoSettings(format: [AVVideoCodecKey: AVVideoCodecType.hevc])
+            }
+            
+            if self.videoDeviceInput.device.isFlashAvailable {
+                photoSettings.flashMode = flashMode
+            }
+            
+            photoSettings.isHighResolutionPhotoEnabled = true
+            if !photoSettings.__availablePreviewPhotoPixelFormatTypes.isEmpty {
+                photoSettings.previewPhotoFormat = [kCVPixelBufferPixelFormatTypeKey as String: photoSettings.__availablePreviewPhotoPixelFormatTypes.first!]
+            }
+            
+            photoSettings.isDepthDataDeliveryEnabled = false
+            photoSettings.isPortraitEffectsMatteDeliveryEnabled = false
+            
+            let photoCaptureProcessor = PhotoCaptureProcessor(with: photoSettings, willCapturePhotoAnimation: {
+                // Flash the screen to signal that Psorcast took a photo.
+                DispatchQueue.main.async {
+                    NSLog(" Flash the screen")
+                    self.previewView.videoPreviewLayer.opacity = 0
+                    UIView.animate(withDuration: 0.25) {
+                        self.previewView.videoPreviewLayer.opacity = 1
+                    }
+                    self.captureButton.isEnabled = false
+                }
+            }, completionHandler: { photoCaptureProcessor in
+                // When the capture is complete, remove a reference to the photo capture delegate so it can be deallocated.
+                NSLog("reference to the photo capture delegate")
+                self.sessionQueue.async {
+                    let pngData = self.inProgressPhotoCaptureDelegates[photoCaptureProcessor.requestedPhotoSettings.uniqueID]?.photoData
+                self.inProgressPhotoCaptureDelegates[photoCaptureProcessor.requestedPhotoSettings.uniqueID] = nil
+                    self.session.stopRunning()
+                    
+                    DispatchQueue.main.async {
+                        NSLog("reference to the photo capture delegate")
+                        
+                        if let photoPngData = pngData {
+                            self.saveCapturedPhotoAndGoForward(pngData: photoPngData)
+                        }
+                    }
+                }
+            }, stopSessionRequestHandler: { photoCaptureProcessor in
+                // When the capture is complete, immediately stop the session so the
+                // image is on the screen
+                NSLog("stopSessionRequestHandler")
+                self.sessionQueue.async {
+                    self.session.stopRunning()
+                }
+            }, photoProcessingHandler: { animate in
+                // Animates a spinner while photo is processing
+                DispatchQueue.main.async {
+                    // TODO: mdephillips 12/20/19 need animation spinner?
+                    NSLog("photo is processing")
+                }
+            })
+            
+            // The photo output holds a weak reference to the photo capture delegate and stores it in an array to maintain a strong reference.
+            self.inProgressPhotoCaptureDelegates[photoCaptureProcessor.requestedPhotoSettings.uniqueID] = photoCaptureProcessor
+            self.photoOutput.capturePhoto(with: photoSettings, delegate: photoCaptureProcessor)
+            NSLog("finished session")
+        }
+    }
+    
+    func saveCapturedPhotoAndGoForward(pngData: Data?) {
+        var url: URL?
+        do {
+            if let imageData = pngData,
+                let outputDir = self.stepViewModel.parentTaskPath?.outputDirectory {
+                url = try RSDFileResultUtility.createFileURL(identifier: self.step.identifier, ext: "png", outputDirectory: outputDir, shouldDeletePrevious: true)
+                save(imageData, to: url!)
+            }
+        } catch let error {
+            debugPrint("Failed to save the camera image: \(error)")
+        }
+        
+        // Create the result and set it as the result for this step
+        var result = RSDFileResultObject(identifier: self.step.identifier)
+        result.url = url
+        _ = self.stepViewModel.parent?.taskResult.appendStepHistory(with: result)
+        
+        // Go to the next step.
+        self.goForward()
     }
 }
 
@@ -222,4 +635,196 @@ public enum CameraDeviceWrapper: String, Codable, CaseIterable  {
             return UIImagePickerController.CameraDevice.rear
         }
     }
+}
+
+class CameraPreviewView: UIView {
+    var videoPreviewLayer: AVCaptureVideoPreviewLayer {
+        guard let layer = layer as? AVCaptureVideoPreviewLayer else {
+            fatalError("Expected `AVCaptureVideoPreviewLayer` type for layer. Check PreviewView.layerClass implementation.")
+        }
+        return layer
+    }
+    
+    var session: AVCaptureSession? {
+        get {
+            return videoPreviewLayer.session
+        }
+        set {
+            videoPreviewLayer.session = newValue
+        }
+    }
+    
+    override class var layerClass: AnyClass {
+        return AVCaptureVideoPreviewLayer.self
+    }
+}
+
+class PhotoCaptureProcessor: NSObject {
+    private(set) var requestedPhotoSettings: AVCapturePhotoSettings
+    
+    private let willCapturePhotoAnimation: () -> Void
+    
+    lazy var context = CIContext()
+    
+    private let stopSessionRequestHandler: (PhotoCaptureProcessor) -> Void
+    private let completionHandler: (PhotoCaptureProcessor) -> Void
+    
+    private let photoProcessingHandler: (Bool) -> Void
+    
+    public var photoData: Data?
+    
+    private var maxPhotoProcessingTime: CMTime?
+    
+    init(with requestedPhotoSettings: AVCapturePhotoSettings,
+         willCapturePhotoAnimation: @escaping () -> Void,
+         completionHandler: @escaping (PhotoCaptureProcessor) -> Void,
+         stopSessionRequestHandler: @escaping (PhotoCaptureProcessor) -> Void,
+         photoProcessingHandler: @escaping (Bool) -> Void) {
+        
+        self.requestedPhotoSettings = requestedPhotoSettings
+        self.willCapturePhotoAnimation = willCapturePhotoAnimation
+        self.completionHandler = completionHandler
+        self.stopSessionRequestHandler = stopSessionRequestHandler
+        self.photoProcessingHandler = photoProcessingHandler
+    }
+    
+    private func didFinish() {
+        completionHandler(self)
+    }    
+}
+
+extension PhotoCaptureProcessor: AVCapturePhotoCaptureDelegate {
+    
+    /*
+     This extension adopts all of the AVCapturePhotoCaptureDelegate protocol methods.
+     */
+    
+    /// - Tag: WillBeginCapture
+    func photoOutput(_ output: AVCapturePhotoOutput, willBeginCaptureFor resolvedSettings: AVCaptureResolvedPhotoSettings) {
+        NSLog("WillBeginCapture")
+        // No-op
+    }
+    
+    /// - Tag: WillCapturePhoto
+    func photoOutput(_ output: AVCapturePhotoOutput, willCapturePhotoFor resolvedSettings: AVCaptureResolvedPhotoSettings) {
+        
+        NSLog("WillCapturePhoto")
+        
+        willCapturePhotoAnimation()
+        
+        guard let maxPhotoProcessingTime = maxPhotoProcessingTime else {
+            return
+        }
+        
+        // Show a spinner if processing time exceeds one second.
+        let oneSecond = CMTime(seconds: 1, preferredTimescale: 1)
+        if maxPhotoProcessingTime > oneSecond {
+            photoProcessingHandler(true)
+        }
+    }
+    
+    /// - Tag: DidFinishProcessingPhoto
+    func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
+        
+        NSLog("DidFinishProcessingPhoto")
+        
+        photoProcessingHandler(false)
+        
+        NSLog("DidFinishProcessingPhoto1")
+        
+        if let error = error {
+            print("Error capturing photo: \(error)")
+        } else {
+            NSLog("DidFinishProcessingPhoto2")
+//            if let cgImage = photo.cgImageRepresentation()?.takeRetainedValue() {
+//                // TODO: mdephillips 1/22/20 get orientation
+//                let image = UIImage(cgImage: cgImage, scale: 1.0, orientation: .up)
+//                self.photoData = image.pngData()
+//                NSLog("DidFinishProcessingPhoto3")
+//            }
+        }
+        NSLog("DidFinishProcessingPhoto4")
+        
+        // Check if there is any error in capturing
+        guard error == nil else {
+            print("Fail to capture photo: \(String(describing: error))")
+            return
+        }
+
+        // Check if the pixel buffer could be converted to image data
+        guard let imageData = photo.fileDataRepresentation() else {
+            print("Fail to convert pixel buffer")
+            return
+        }
+
+        // Check if UIImage could be initialized with image data
+        guard let capturedImage = UIImage.init(data: imageData , scale: 1.0) else {
+            print("Fail to convert image data to UIImage")
+            return
+        }
+
+        stopSessionRequestHandler(self)
+        
+        // Get original image width/height
+        let imgWidth = capturedImage.size.width
+        let imgHeight = capturedImage.size.height
+        // Get origin of cropped image
+        let imgOrigin = CGPoint(x: (imgWidth - imgHeight)/2, y: (imgHeight - imgHeight)/2)
+        // Get size of cropped iamge
+        let imgSize = CGSize(width: imgHeight, height: imgHeight)
+
+        // Check if image could be cropped successfully
+        guard let imageRef = capturedImage.cgImage?.cropping(to: CGRect(origin: imgOrigin, size: imgSize)) else {
+            print("Fail to crop image")
+            return
+        }
+
+        // Convert cropped image ref to UIImage
+        // .right is for portrait, which this app is locked to
+        let imageToSave = UIImage(cgImage: imageRef, scale: 1.0, orientation: .right)
+        self.photoData = imageToSave.fixOrientationForPNG().pngData()
+        
+        self.didFinish()
+        NSLog("DidFinishProcessingPhoto5")
+    }
+    
+    /// - Tag: DidFinishRecordingLive
+    func photoOutput(_ output: AVCapturePhotoOutput, didFinishRecordingLivePhotoMovieForEventualFileAt outputFileURL: URL, resolvedSettings: AVCaptureResolvedPhotoSettings) {
+        // No-op recording live
+        NSLog("DidFinishRecordingLive")
+    }
+    
+    /// - Tag: DidFinishProcessingLive
+    func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingLivePhotoToMovieFileAt outputFileURL: URL, duration: CMTime, photoDisplayTime: CMTime, resolvedSettings: AVCaptureResolvedPhotoSettings, error: Error?) {
+        
+        NSLog("photoOutput")
+        
+        if error != nil {
+            print("Error processing Live Photo companion movie: \(String(describing: error))")
+            return
+        }
+    }
+    
+    /// - Tag: DidFinishCapture
+    func photoOutput(_ output: AVCapturePhotoOutput, didFinishCaptureFor resolvedSettings: AVCaptureResolvedPhotoSettings, error: Error?) {
+        
+        NSLog("DidFinishCapture")
+        
+        if let error = error {
+            print("Error capturing photo: \(error)")
+            didFinish()
+            return
+        }
+        
+        guard let photoData = photoData else {
+            print("No photo data resource")
+            didFinish()
+            return
+        }
+        
+        
+    }
+}
+fileprivate protocol PhotoCaptureCompleteDelegate {
+    func photoCaptureComplete(pngData: Data)
 }

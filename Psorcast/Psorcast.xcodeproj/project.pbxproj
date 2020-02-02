@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CB03196523E3ED0A005063A3 /* ReviewCaptureStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB03196423E3ED09005063A3 /* ReviewCaptureStepViewController.swift */; };
+		CB03196723E40836005063A3 /* ReviewCaptureStepViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB03196623E40835005063A3 /* ReviewCaptureStepViewController.xib */; };
 		CB05146C237F27560058D746 /* DigitalJarOpen.json in Resources */ = {isa = PBXBuildFile; fileRef = CB05146B237F27560058D746 /* DigitalJarOpen.json */; };
 		CB09F00123D644A9009D344E /* DigitalJarOpenInstructionStepViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB09F00023D644A8009D344E /* DigitalJarOpenInstructionStepViewController.xib */; };
 		CB09F00323D649FB009D344E /* DigitalJarOpenInstructionStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB09F00223D649FB009D344E /* DigitalJarOpenInstructionStepViewController.swift */; };
@@ -163,6 +165,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		CB03196423E3ED09005063A3 /* ReviewCaptureStepViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReviewCaptureStepViewController.swift; sourceTree = "<group>"; };
+		CB03196623E40835005063A3 /* ReviewCaptureStepViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReviewCaptureStepViewController.xib; sourceTree = "<group>"; };
 		CB05146B237F27560058D746 /* DigitalJarOpen.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = DigitalJarOpen.json; sourceTree = "<group>"; };
 		CB09F00023D644A8009D344E /* DigitalJarOpenInstructionStepViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DigitalJarOpenInstructionStepViewController.xib; sourceTree = "<group>"; };
 		CB09F00223D649FB009D344E /* DigitalJarOpenInstructionStepViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DigitalJarOpenInstructionStepViewController.swift; sourceTree = "<group>"; };
@@ -406,6 +410,8 @@
 				CBD67D9822DFDC4E00998516 /* ImageCaptureStepViewController.swift */,
 				CBD67D9722DFDC4E00998516 /* ImageCaptureStepViewController.xib */,
 				CB8F2A9D2375E4A4005A62E7 /* ImageCaptureCompletionStepViewController.swift */,
+				CB03196423E3ED09005063A3 /* ReviewCaptureStepViewController.swift */,
+				CB03196623E40835005063A3 /* ReviewCaptureStepViewController.xib */,
 				CB55C7372319718D00EA0C19 /* JointPainStepObject.swift */,
 				CB55C72E231848CD00EA0C19 /* JointPainResultObject.swift */,
 				CB55C739231972BE00EA0C19 /* JointPainImageView.swift */,
@@ -751,6 +757,7 @@
 				CB778674238D18F30009ECF9 /* DigitalJarOpenCompletionStepViewController.xib in Resources */,
 				CBD67D8122DFB8DE00998516 /* Psorcast.strings in Resources */,
 				FFABCBF222DD1F2800D11109 /* LaunchScreen.storyboard in Resources */,
+				CB03196723E40836005063A3 /* ReviewCaptureStepViewController.xib in Resources */,
 				FFABCBEF22DD1F2800D11109 /* Assets.xcassets in Resources */,
 				FFABCBED22DD1F2800D11109 /* Main.storyboard in Resources */,
 				CB422D2E23316EB700787FEE /* MDJointCounting.json in Resources */,
@@ -845,6 +852,7 @@
 				CBB93CB5234252BC00321A4D /* PsoriasisDrawCompletionStepViewController.swift in Sources */,
 				CB09F00323D649FB009D344E /* DigitalJarOpenInstructionStepViewController.swift in Sources */,
 				CBD62BAC23342CBA00C78F22 /* PsoriasisAreaPhotoCompletionStepViewController.swift in Sources */,
+				CB03196523E3ED0A005063A3 /* ReviewCaptureStepViewController.swift in Sources */,
 				CB55C71723173D6A00EA0C19 /* SelectionCollectionStepViewController.swift in Sources */,
 				CBD67D8422DFB90C00998516 /* ExternalIDRegistrationViewController.swift in Sources */,
 				CB5424D3237220910036DB6B /* RSDSelectionCollectionViewCell.swift in Sources */,

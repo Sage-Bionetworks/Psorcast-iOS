@@ -75,7 +75,28 @@
         {
             "identifier"    : "leftHand",
             "type"          : "imageCapture",
-            "title"         : "Left Hand"
+            "title"         : "Fit in the lines if you can",
+            "image":{
+                "type":"fetchable",
+                "imageName": "CameraOverlayLeftHand",
+                "placementType":"topBackground"
+            }
+        },
+        {
+            "identifier":"reviewLeftHand",
+            "type":"reviewCapture",
+            "title":"Are your nails in focus?",
+            "imageIdentifier": "leftHand",
+            "actions":{
+                "goForward":{
+                    "type":"default",
+                    "buttonTitle":"Yes"
+                },
+                "goBackward":{
+                    "type":"default",
+                    "buttonTitle":"Retake"
+                }
+            }
         },
         {
             "identifier":"handInstructionRight2",
@@ -98,7 +119,28 @@
         {
             "identifier"    : "rightHand",
             "type"          : "imageCapture",
-            "title"         : "Right Hand"
+            "title"         : "Fit in the lines if you can",
+            "image":{
+                "type":"fetchable",
+                "imageName": "CameraOverlayRightHand",
+                "placementType":"topBackground"
+            }
+        },
+        {
+            "identifier":"reviewRightHand",
+            "type":"reviewCapture",
+            "title":"Are your nails in focus?",
+            "imageIdentifier": "rightHand",
+            "actions":{
+                "goForward":{
+                    "type":"default",
+                    "buttonTitle":"Yes"
+                },
+                "goBackward":{
+                    "type":"default",
+                    "buttonTitle":"Retake"
+                }
+            }
         },
         {
             "identifier":"completion",
