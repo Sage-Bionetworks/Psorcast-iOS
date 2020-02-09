@@ -194,6 +194,7 @@ open class ImageCaptureStepViewController: RSDStepViewController, UIImagePickerC
     }
     
     override open func setupHeader(_ header: RSDStepNavigationView) {
+        // Hide the image until we decide which type of overlay to show
         self.navigationHeader?.imageView?.isHidden = true
         
         super.setupHeader(header)
@@ -201,6 +202,9 @@ open class ImageCaptureStepViewController: RSDStepViewController, UIImagePickerC
         if let imageDefaults = (AppDelegate.shared as? AppDelegate)?.imageDefaults,
             let lastImageData = imageDefaults.getSavedFilteredImage(with: self.step.identifier),
             let lastImage = UIImage(data: lastImageData) {
+            
+            // Setting the navigation header here immediately was not taking effect
+            // Use a delay to go around Research framework
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
                 self.navigationHeader?.imageView?.isHidden = false
                 self.navigationHeader?.imageView?.image = lastImage
@@ -698,8 +702,10 @@ class PhotoCaptureProcessor: NSObject {
     
     private let photoProcessingHandler: (Bool) -> Void
     
+    /// The photo captured, will be non-nil after capture completes
     public var photoData: Data?
     
+    /// When non-nil, this will be used to crop captured photo to video preview size
     public var metaDataOutputRect: CGRect?
     
     private var maxPhotoProcessingTime: CMTime?

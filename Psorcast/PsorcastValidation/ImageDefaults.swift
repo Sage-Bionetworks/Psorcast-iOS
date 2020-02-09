@@ -28,12 +28,16 @@ class ImageDefaults {
                 return
             }
             
+            // Prewitt Edge Detection will outline any body part
+            // and make it a black & white image with white being the edges
             let edgeFilter = PrewittEdgeDetection()
             edgeFilter.edgeStrength = 2.0
             let filteredImage = image.filterWithOperation(edgeFilter)
                             
             let inputImage = CIImage(image: filteredImage)
             
+            // The CIMaskToAlpha filter will take all black (non-edge)
+            // pixels and make them transparent
             guard let ciFilter = CIFilter(name:"CIMaskToAlpha") else {
                 NSLog("Could not create CIMaskToAlpha filter")
                 return
