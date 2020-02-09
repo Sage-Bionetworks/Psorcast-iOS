@@ -45,6 +45,7 @@ extension RSDStepType {
     public static let psoriasisDraw: RSDStepType = "psoriasisDraw"
     public static let psoriasisDrawCompletion: RSDStepType = "psoriasisDrawCompletion"
     public static let digitalJarOpen: RSDStepType = "digitalJarOpen"
+    public static let digitalJarOpenInstruction: RSDStepType = "digitalJarOpenInstruction"
     public static let digitalJarOpenCompletion: RSDStepType = "digitalJarOpenCompletion"
     public static let endOfValidation: RSDStepType = "endOfValidation"
     public static let noPsoriasis: RSDStepType = "noPsoriasis"
@@ -78,6 +79,8 @@ open class TaskFactory: SBAFactory {
             return try DigitalJarOpenStepObject(from: decoder)
         case .digitalJarOpenCompletion:
             return try DigitalJarOpenCompletionStepObject(from: decoder)
+        case .digitalJarOpenInstruction:
+            return try DigitalJarOpenInstructionStepObject(from: decoder)
         case .endOfValidation:
             return try EndOfValidationStepObject(from: decoder)
         case .noPsoriasis:

@@ -11,10 +11,8 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="DigitalJarOpenCompletionStepViewController" customModule="PsorcastValidation" customModuleProvider="target">
             <connections>
                 <outlet property="collectionView" destination="d7D-yP-xH3" id="mIv-vW-eFs"/>
-                <outlet property="leftHandLabel" destination="IAw-mr-tPo" id="yKm-qN-67h"/>
                 <outlet property="navigationFooter" destination="Ncg-SY-6dE" id="6pu-E0-pwN"/>
                 <outlet property="navigationHeader" destination="1bZ-Hj-C8p" id="Wdr-CY-SYb"/>
-                <outlet property="rightHandLabel" destination="wet-Rb-rnS" id="GmN-gV-jWe"/>
                 <outlet property="view" destination="Be1-UX-e65" id="BEo-OJ-8Gt"/>
             </connections>
         </placeholder>
@@ -27,7 +25,7 @@
                     <rect key="frame" x="0.0" y="0.0" width="375" height="700"/>
                     <subviews>
                         <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="d7D-yP-xH3">
-                            <rect key="frame" x="0.0" y="207.66666666666666" width="375" height="391.33333333333337"/>
+                            <rect key="frame" x="0.0" y="150.66666666666666" width="375" height="448.33333333333337"/>
                             <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                             <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="rm9-3k-9gV">
                                 <size key="itemSize" width="50" height="50"/>
@@ -40,18 +38,6 @@
                                 <outlet property="delegate" destination="-1" id="UxI-Zi-Y5b"/>
                             </connections>
                         </collectionView>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Left Hand" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="IAw-mr-tPo" userLabel="Left Hand">
-                            <rect key="frame" x="12" y="186.66666666666666" width="169.66666666666666" height="21"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                            <nil key="textColor"/>
-                            <nil key="highlightedColor"/>
-                        </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Right Hand" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="wet-Rb-rnS" userLabel="Right Hand">
-                            <rect key="frame" x="193.66666666666663" y="186.66666666666666" width="169.33333333333337" height="21"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                            <nil key="textColor"/>
-                            <nil key="highlightedColor"/>
-                        </label>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ncg-SY-6dE" userLabel="Footer" customClass="RSDGenericNavigationFooterView" customModule="ResearchUI">
                             <rect key="frame" x="0.0" y="599" width="375" height="101"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -94,19 +80,13 @@
                     <constraints>
                         <constraint firstAttribute="bottom" secondItem="Ncg-SY-6dE" secondAttribute="bottom" id="7IX-X3-3Ii"/>
                         <constraint firstItem="Ncg-SY-6dE" firstAttribute="leading" secondItem="nCy-4g-nIJ" secondAttribute="leading" id="Bzq-ex-byO"/>
+                        <constraint firstItem="d7D-yP-xH3" firstAttribute="top" secondItem="1bZ-Hj-C8p" secondAttribute="bottom" id="EcT-lN-maI"/>
                         <constraint firstItem="1bZ-Hj-C8p" firstAttribute="top" secondItem="nCy-4g-nIJ" secondAttribute="top" id="G03-Ex-Slz"/>
-                        <constraint firstAttribute="trailing" secondItem="wet-Rb-rnS" secondAttribute="trailing" constant="12" id="HFh-AV-NQR"/>
-                        <constraint firstItem="wet-Rb-rnS" firstAttribute="width" secondItem="IAw-mr-tPo" secondAttribute="width" id="HcN-ub-yks"/>
-                        <constraint firstItem="IAw-mr-tPo" firstAttribute="top" secondItem="1bZ-Hj-C8p" secondAttribute="bottom" constant="36" id="VTh-jD-tDk"/>
                         <constraint firstAttribute="trailing" secondItem="d7D-yP-xH3" secondAttribute="trailing" id="Vdx-rs-2ok"/>
                         <constraint firstAttribute="trailing" secondItem="Ncg-SY-6dE" secondAttribute="trailing" id="XDw-dP-K6d"/>
-                        <constraint firstItem="wet-Rb-rnS" firstAttribute="leading" secondItem="IAw-mr-tPo" secondAttribute="trailing" constant="12" id="aND-bH-ra7"/>
-                        <constraint firstItem="wet-Rb-rnS" firstAttribute="centerY" secondItem="IAw-mr-tPo" secondAttribute="centerY" id="fPZ-FS-kYD"/>
                         <constraint firstItem="Ncg-SY-6dE" firstAttribute="top" secondItem="d7D-yP-xH3" secondAttribute="bottom" id="h6L-Bv-ZOH"/>
                         <constraint firstItem="1bZ-Hj-C8p" firstAttribute="leading" secondItem="nCy-4g-nIJ" secondAttribute="leading" id="ia8-xE-h1b"/>
-                        <constraint firstItem="d7D-yP-xH3" firstAttribute="top" secondItem="IAw-mr-tPo" secondAttribute="bottom" id="siB-pA-OX3"/>
                         <constraint firstAttribute="trailing" secondItem="1bZ-Hj-C8p" secondAttribute="trailing" id="t5t-JZ-vfh"/>
-                        <constraint firstItem="IAw-mr-tPo" firstAttribute="leading" secondItem="nCy-4g-nIJ" secondAttribute="leading" constant="12" id="wdJ-em-Ehr"/>
                         <constraint firstItem="d7D-yP-xH3" firstAttribute="leading" secondItem="nCy-4g-nIJ" secondAttribute="leading" id="xMa-1C-y2x"/>
                     </constraints>
                 </view>

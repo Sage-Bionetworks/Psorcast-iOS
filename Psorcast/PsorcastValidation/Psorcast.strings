@@ -60,6 +60,12 @@
 "LEFT_HAND" = "Left Hand";
 "RIGHT_HAND" = "Right Hand";
 
+"LEFT_ARM" = "Left Arm";
+"RIGHT_ARM" = "Right Arm";
+
+"CLOCKWISE_END_LINE" = "Clockwise\n";
+"COUNTER_CLOCKWISE_END_LINE" = "Counter\nClockwise";
+
 "JAR_OPEN_TITLE_LEFT_CLOCKWISE" = "Rotate the phone CLOCKWISE with your LEFT hand";
 "JAR_OPEN_TITLE_LEFT_COUNTER_CLOCKWISE" = "Rotate the phone COUNTER-CLOCKWISE with your LEFT hand";
 "JAR_OPEN_TITLE_RIGHT_CLOCKWISE" = "Rotate the phone CLOCKWISE with your RIGHT hand";
