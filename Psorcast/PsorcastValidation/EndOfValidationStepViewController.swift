@@ -99,9 +99,18 @@ open class EndOfValidationStepViewController: RSDStepViewController {
                 self.loadingSpinner.isHidden = true
                 self.logoutButton.isEnabled = true
                 self.logoutButton.alpha = CGFloat(1.0)
+                self.resetDefaults()
                 self.goForward()
             }
         })
+    }
+    
+    func resetDefaults() {
+        let defaults = UserDefaults.standard
+        let dictionary = defaults.dictionaryRepresentation()
+        dictionary.keys.forEach { key in
+            defaults.removeObject(forKey: key)
+        }
     }
     
     override open func viewDidLoad() {

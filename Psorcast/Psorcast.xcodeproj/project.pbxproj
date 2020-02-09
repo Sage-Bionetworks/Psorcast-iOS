@@ -41,6 +41,7 @@
 		CB5F3777237EFA2B003648DB /* LearnMoreStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB5F3775237EFA2A003648DB /* LearnMoreStepViewController.swift */; };
 		CB5F377C237EFFD5003648DB /* LearnMoreStepViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB5F377B237EFFD5003648DB /* LearnMoreStepViewController.xib */; };
 		CB6F54F022E25C5B0073BFE9 /* ParticipantIDRegistrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6F54EF22E25C5B0073BFE9 /* ParticipantIDRegistrationViewController.swift */; };
+		CB704AC123EF8C4D00CC9D13 /* ImageDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB704AC023EF8C4D00CC9D13 /* ImageDefaults.swift */; };
 		CB737FEC231B100600FA1D3A /* MDJointSwelling.json in Resources */ = {isa = PBXBuildFile; fileRef = CB737FEB231B100600FA1D3A /* MDJointSwelling.json */; };
 		CB77866C238984790009ECF9 /* DigitalJarOpenStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB77866B238984790009ECF9 /* DigitalJarOpenStepViewController.swift */; };
 		CB778670238B3F4D0009ECF9 /* DigitalJarOpenStepViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB77866F238B3F4D0009ECF9 /* DigitalJarOpenStepViewControllerTests.swift */; };
@@ -225,6 +226,7 @@
 		CB5F3775237EFA2A003648DB /* LearnMoreStepViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LearnMoreStepViewController.swift; sourceTree = "<group>"; };
 		CB5F377B237EFFD5003648DB /* LearnMoreStepViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LearnMoreStepViewController.xib; sourceTree = "<group>"; };
 		CB6F54EF22E25C5B0073BFE9 /* ParticipantIDRegistrationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParticipantIDRegistrationViewController.swift; sourceTree = "<group>"; };
+		CB704AC023EF8C4D00CC9D13 /* ImageDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDefaults.swift; sourceTree = "<group>"; };
 		CB737FEB231B100600FA1D3A /* MDJointSwelling.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = MDJointSwelling.json; sourceTree = "<group>"; };
 		CB77866B238984790009ECF9 /* DigitalJarOpenStepViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DigitalJarOpenStepViewController.swift; sourceTree = "<group>"; };
 		CB77866F238B3F4D0009ECF9 /* DigitalJarOpenStepViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DigitalJarOpenStepViewControllerTests.swift; sourceTree = "<group>"; };
@@ -490,6 +492,7 @@
 				CBD67D8C22DFC5EE00998516 /* MotorControl+Bridge.swift */,
 				CBD67D8A22DFC5CA00998516 /* TaskListScheduleManager.swift */,
 				CB85FB51235F505300FDC59B /* PsoriasisDrawTaskResultProcessor.swift */,
+				CB704AC023EF8C4D00CC9D13 /* ImageDefaults.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -913,6 +916,7 @@
 				CB85FB52235F505300FDC59B /* PsoriasisDrawTaskResultProcessor.swift in Sources */,
 				CBD67D9A22DFDC4E00998516 /* ImageCaptureStepViewController.swift in Sources */,
 				CB5424D123721FFD0036DB6B /* RSDCollectionViewCell.swift in Sources */,
+				CB704AC123EF8C4D00CC9D13 /* ImageDefaults.swift in Sources */,
 				CBA8390E234A6B3F00408D81 /* EndOfValidationStepViewController.swift in Sources */,
 				FFABCBEA22DD1F2800D11109 /* ViewController.swift in Sources */,
 				CBD67D9322DFC71E00998516 /* TaskFactory.swift in Sources */,

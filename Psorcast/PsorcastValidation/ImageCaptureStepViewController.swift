@@ -194,14 +194,19 @@ open class ImageCaptureStepViewController: RSDStepViewController, UIImagePickerC
     }
     
     override open func setupHeader(_ header: RSDStepNavigationView) {
+        self.navigationHeader?.imageView?.isHidden = true
+        
         super.setupHeader(header)
     
-        if let appDelegate = AppDelegate.shared as? AppDelegate,
-            let lastImage = appDelegate.getSavedImage(with: self.step.identifier) {
+        if let imageDefaults = (AppDelegate.shared as? AppDelegate)?.imageDefaults,
+            let lastImageData = imageDefaults.getSavedFilteredImage(with: self.step.identifier),
+            let lastImage = UIImage(data: lastImageData) {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
-                self.navigationHeader?.imageView?.image = UIImage(data: lastImage)
-                self.navigationHeader?.imageView?.alpha = 0.4
+                self.navigationHeader?.imageView?.isHidden = false
+                self.navigationHeader?.imageView?.image = lastImage
             }
+        } else {
+            self.navigationHeader?.imageView?.isHidden = false
         }
     }
     
@@ -296,9 +301,7 @@ open class ImageCaptureStepViewController: RSDStepViewController, UIImagePickerC
             let reason = AVCaptureSession.InterruptionReason(rawValue: reasonIntegerValue) {
             print("Capture session was interrupted with reason \(reason)")
             
-            var showResumeButton = false
             if reason == .audioDeviceInUseByAnotherClient || reason == .videoDeviceInUseByAnotherClient {
-                showResumeButton = true
             } else if reason == .videoDeviceNotAvailableWithMultipleForegroundApps {
                 // TODO: mdephillips 1/22/20 Do we need to inform the user that the camera is unavailable?
                 
@@ -486,12 +489,16 @@ open class ImageCaptureStepViewController: RSDStepViewController, UIImagePickerC
     
     /// - Tag: CapturePhoto
     @IBAction func capturePhoto(_ photoButton: UIButton) {
-        /*
-         Retrieve the video preview layer's video orientation on the main queue before
-         entering the session queue. Do this to ensure that UI elements are accessed on
-         the main thread and session configuration is done on the session queue.
-         */
-        let videoPreviewLayerOrientation = previewView.videoPreviewLayer.connection?.videoOrientation
+        
+        let videoLayer = previewView.videoPreviewLayer
+                
+        // Retrieve the video preview layer's video orientation on the main queue before
+        // entering the session queue. Do this to ensure that UI elements are accessed on
+        // the main thread and session configuration is done on the session queue.
+        let videoPreviewLayerOrientation = videoLayer.connection?.videoOrientation
+        
+        // The output rect of the video preview will be used to crop the photo to the preview size
+        let outputRect = videoLayer.metadataOutputRectConverted(fromLayerRect: videoLayer.bounds)
         
         let flashMode: AVCaptureDevice.FlashMode = .on
         
@@ -558,6 +565,9 @@ open class ImageCaptureStepViewController: RSDStepViewController, UIImagePickerC
                     NSLog("photo is processing")
                 }
             })
+                    
+            // Setting this will make sure output image matches video preview
+            photoCaptureProcessor.metaDataOutputRect = outputRect
             
             // The photo output holds a weak reference to the photo capture delegate and stores it in an array to maintain a strong reference.
             self.inProgressPhotoCaptureDelegates[photoCaptureProcessor.requestedPhotoSettings.uniqueID] = photoCaptureProcessor
@@ -586,11 +596,6 @@ open class ImageCaptureStepViewController: RSDStepViewController, UIImagePickerC
         var result = RSDFileResultObject(identifier: self.step.identifier)
         result.url = url
         _ = self.stepViewModel.parent?.taskResult.appendStepHistory(with: result)
-        
-        // Also trigger the user defaults to store the image as an overlay for next time
-        if let appDelegate = AppDelegate.shared as? AppDelegate {
-            appDelegate.filterImageAndSave(with: self.step.identifier, pngData: imageData)
-        }
         
         // Go to the next step.
         self.goForward()
@@ -695,6 +700,8 @@ class PhotoCaptureProcessor: NSObject {
     
     public var photoData: Data?
     
+    public var metaDataOutputRect: CGRect?
+    
     private var maxPhotoProcessingTime: CMTime?
     
     init(with requestedPhotoSettings: AVCapturePhotoSettings,
@@ -752,20 +759,9 @@ extension PhotoCaptureProcessor: AVCapturePhotoCaptureDelegate {
         
         photoProcessingHandler(false)
         
-        NSLog("DidFinishProcessingPhoto1")
-        
         if let error = error {
             print("Error capturing photo: \(error)")
-        } else {
-            NSLog("DidFinishProcessingPhoto2")
-//            if let cgImage = photo.cgImageRepresentation()?.takeRetainedValue() {
-//                // TODO: mdephillips 1/22/20 get orientation
-//                let image = UIImage(cgImage: cgImage, scale: 1.0, orientation: .up)
-//                self.photoData = image.pngData()
-//                NSLog("DidFinishProcessingPhoto3")
-//            }
         }
-        NSLog("DidFinishProcessingPhoto4")
         
         // Check if there is any error in capturing
         guard error == nil else {
@@ -784,31 +780,28 @@ extension PhotoCaptureProcessor: AVCapturePhotoCaptureDelegate {
             print("Fail to convert image data to UIImage")
             return
         }
-
+        
         stopSessionRequestHandler(self)
         
-        // Get original image width/height
-        let imgWidth = capturedImage.size.width
-        let imgHeight = capturedImage.size.height
-        // Get origin of cropped image
-        let imgOrigin = CGPoint(x: (imgWidth - imgHeight)/2, y: (imgHeight - imgHeight)/2)
-        // Get size of cropped iamge
-        let imgSize = CGSize(width: imgHeight, height: imgHeight)
-
-        // Check if image could be cropped successfully
-        guard let imageRef = capturedImage.cgImage?.cropping(to: CGRect(origin: imgOrigin, size: imgSize)) else {
-            print("Fail to crop image")
-            return
+        // Allow for both full size image and
+        // cropped to video preview if metaDataOutputRect is set
+        var outputRect = CGRect(x: 0, y: 0, width: 1, height: 1)
+        if let metaOutput = self.metaDataOutputRect {
+            outputRect = metaOutput
         }
 
-        // Convert cropped image ref to UIImage
-        // .right is for portrait, which this app is locked to
-        let imageToSave = UIImage(cgImage: imageRef, scale: 1.0, orientation: .right)
+        var cgImage = capturedImage.cgImage!
+        let width = CGFloat(cgImage.width)
+        let height = CGFloat(cgImage.height)
+        let cropRect = CGRect(x: outputRect.origin.x * width, y: outputRect.origin.y * height, width: outputRect.size.width * width, height: outputRect.size.height * height)
+
+        cgImage = cgImage.cropping(to: cropRect)!
+        let imageToSave = UIImage(cgImage: cgImage, scale: 1.0, orientation: .right)
+        
         self.photoData = imageToSave.fixOrientationForPNG().pngData()
         
         self.didFinish()
-        NSLog("DidFinishProcessingPhoto5")
-    }
+    }        
     
     /// - Tag: DidFinishRecordingLive
     func photoOutput(_ output: AVCapturePhotoOutput, didFinishRecordingLivePhotoMovieForEventualFileAt outputFileURL: URL, resolvedSettings: AVCaptureResolvedPhotoSettings) {
@@ -838,13 +831,11 @@ extension PhotoCaptureProcessor: AVCapturePhotoCaptureDelegate {
             return
         }
         
-        guard let photoData = photoData else {
+        guard let _ = photoData else {
             print("No photo data resource")
             didFinish()
             return
         }
-        
-        
     }
 }
 fileprivate protocol PhotoCaptureCompleteDelegate {

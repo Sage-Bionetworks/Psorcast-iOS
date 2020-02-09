@@ -36,7 +36,6 @@ import BridgeApp
 import BridgeSDK
 import Research
 import BridgeAppUI
-import GPUImage
 
 @UIApplicationMain
 class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate {
@@ -52,7 +51,8 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate {
                                               colorRules: PSRColorRules(palette: colorPalette, version: 1),
                                               fontRules: PSRFontRules(version: 1))
     
-    private let filterProcessingQueue = DispatchQueue(label: "org.sagebase.ResearchSuite.prewitt.filter")
+    // The app's image data store
+    public let imageDefaults = ImageDefaults()
     
     override func instantiateColorPalette() -> RSDColorPalette? {
         return AppDelegate.colorPalette
@@ -108,21 +108,6 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate {
         let vc = RSDTaskViewController(task: task)
         vc.delegate = self
         self.transition(to: vc, state: .onboarding, animated: true)
-    }
-    
-    func filterImageAndSave(with identifier: String, pngData: Data) {
-        filterProcessingQueue.async {
-            if let image = UIImage(data: pngData) {
-                let filteredImage = image.filterWithOperation(PrewittEdgeDetection())
-                if let filteredData = filteredImage.pngData() {
-                    UserDefaults.standard.set(filteredData, forKey: identifier)
-                }
-            }
-        }
-    }
-    
-    func getSavedImage(with identifier: String) -> Data? {
-        return UserDefaults.standard.data(forKey: identifier)
     }
     
     func openStoryboard(_ name: String) -> UIStoryboard? {
