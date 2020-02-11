@@ -28,9 +28,9 @@ class ImageDefaults {
                 return
             }
             
-            // Prewitt Edge Detection will outline any body part
+            // Sobel Edge Detection will outline any body part
             // and make it a black & white image with white being the edges
-            let edgeFilter = PrewittEdgeDetection()
+            let edgeFilter = SobelEdgeDetection()
             edgeFilter.edgeStrength = 2.0
             let filteredImage = image.filterWithOperation(edgeFilter)
                             
