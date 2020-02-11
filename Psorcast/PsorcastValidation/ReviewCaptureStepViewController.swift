@@ -106,7 +106,6 @@ open class ReviewCaptureStepViewController: RSDStepViewController {
             let image = self.imageResult(with: imageId)?.fixOrientationForPNG() {
             debugPrint("Images loaded")
             self.navigationHeader?.imageView?.image = image
-            
         } else if self.imageLoadAttempt < self.maxImageLoadAttempt {
             debugPrint("Image not available immediately, trying again in 0.25 sec")
             // Because the user has taken the picture only moments before this
@@ -133,5 +132,17 @@ open class ReviewCaptureStepViewController: RSDStepViewController {
             }
         }
         return nil
+    }
+    
+    override open func goForward() {
+        
+        // If the user accepted the photo, we should save it for overlay use later
+        if let imageId = self.reviewCaptureStep?.imageIdentifier,
+            let imageData = self.navigationHeader?.imageView?.image?.pngData(),
+            let imageDefaults = (AppDelegate.shared as? AppDelegate)?.imageDefaults {
+            imageDefaults.filterImageAndSave(with: imageId, pngData: imageData)
+        }
+        
+        super.goForward()
     }
 }

@@ -25,7 +25,7 @@
                     <rect key="frame" x="0.0" y="0.0" width="395" height="720"/>
                     <subviews>
                         <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Bb7-gd-Spk" userLabel="CaptureView" customClass="CameraPreviewView" customModule="PsorcastValidation" customModuleProvider="target">
-                            <rect key="frame" x="0.0" y="114" width="395" height="444"/>
+                            <rect key="frame" x="0.0" y="114" width="395" height="450"/>
                             <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fxA-Tz-ZiS" customClass="RSDNavigationHeaderView" customModule="ResearchUI">
@@ -81,7 +81,7 @@
                                 <action selector="capturePhoto:" destination="-1" eventType="touchUpInside" id="nlE-wI-3dd"/>
                             </connections>
                         </button>
-                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="CameraOverlayLeftFoot" translatesAutoresizingMaskIntoConstraints="NO" id="h8j-iD-5fl">
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="h8j-iD-5fl">
                             <rect key="frame" x="0.0" y="114" width="395" height="450"/>
                         </imageView>
                     </subviews>
@@ -100,7 +100,7 @@
                         <constraint firstItem="h8j-iD-5fl" firstAttribute="top" secondItem="fxA-Tz-ZiS" secondAttribute="bottom" id="pTW-G1-8MQ"/>
                         <constraint firstItem="Bb7-gd-Spk" firstAttribute="top" secondItem="fxA-Tz-ZiS" secondAttribute="bottom" id="pki-Yv-2aA"/>
                         <constraint firstItem="fxA-Tz-ZiS" firstAttribute="leading" secondItem="nCy-4g-nIJ" secondAttribute="leading" id="rEg-ZD-hZb"/>
-                        <constraint firstAttribute="bottom" secondItem="Bb7-gd-Spk" secondAttribute="bottom" constant="162" id="t2M-kq-AFr"/>
+                        <constraint firstAttribute="bottom" secondItem="Bb7-gd-Spk" secondAttribute="bottom" constant="156" id="t2M-kq-AFr"/>
                         <constraint firstItem="Br6-tq-bnk" firstAttribute="centerX" secondItem="nCy-4g-nIJ" secondAttribute="centerX" id="xYT-Ri-THY"/>
                     </constraints>
                 </view>
@@ -120,7 +120,6 @@
     </objects>
     <resources>
         <image name="Camera" width="48" height="48"/>
-        <image name="CameraOverlayLeftFoot" width="375" height="389"/>
         <image name="closeActivity" width="50" height="50"/>
     </resources>
 </document>

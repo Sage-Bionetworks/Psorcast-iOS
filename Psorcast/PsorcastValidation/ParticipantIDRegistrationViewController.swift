@@ -99,9 +99,18 @@ class ParticipantIDRegistrationViewController: RSDStepViewController, UITextFiel
                 self.logoutButton.isEnabled = true
                 self.logoutButton.alpha = CGFloat(1.0)
                 self.submitButton.isEnabled = true
+                self.resetDefaults()
                 self.goBack()
             }
         })
+    }
+    
+    func resetDefaults() {
+        let defaults = UserDefaults.standard
+        let dictionary = defaults.dictionaryRepresentation()
+        dictionary.keys.forEach { key in
+            defaults.removeObject(forKey: key)
+        }
     }
     
     override open func viewDidLoad() {

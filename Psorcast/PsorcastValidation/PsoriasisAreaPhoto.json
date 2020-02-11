@@ -853,6 +853,22 @@
             "cameraDevice"  : "front"
         },
         {
+            "identifier":"reviewPsoriasisAreaPhoto",
+            "type":"reviewCapture",
+            "title":"Is the area in focus?",
+            "imageIdentifier": "psoriasisAreaPhoto",
+            "actions":{
+                "goForward":{
+                    "type":"default",
+                    "buttonTitle":"Yes"
+                },
+                "goBackward":{
+                    "type":"default",
+                    "buttonTitle":"Retake"
+                }
+            }
+        },
+        {
             "identifier":"completion",
             "type":"psoriasisAreaPhotoCompletion",
             "text": "You have selected %@ as your most representative area.",
