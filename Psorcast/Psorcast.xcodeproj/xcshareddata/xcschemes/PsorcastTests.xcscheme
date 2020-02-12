@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "1020"
+   LastUpgradeVersion = "1120"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -16,9 +16,9 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "CB9F5E3F22E0C27C003FBCEF"
-               BuildableName = "PsorcastValidationTests.xctest"
-               BlueprintName = "PsorcastValidationTests"
+               BlueprintIdentifier = "CB9F5E4E22E0C2BA003FBCEF"
+               BuildableName = "PsorcastTests.xctest"
+               BlueprintName = "PsorcastTests"
                ReferencedContainer = "container:Psorcast.xcodeproj">
             </BuildableReference>
          </TestableReference>
