@@ -93,6 +93,7 @@
 		CBB93CB7234252D000321A4D /* PsoriasisDrawCompletionStepViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CBB93CB6234252D000321A4D /* PsoriasisDrawCompletionStepViewController.xib */; };
 		CBBC8771239F028300AC9D8E /* PsoriasisDraw.mov in Resources */ = {isa = PBXBuildFile; fileRef = CBBC8770239F028300AC9D8E /* PsoriasisDraw.mov */; };
 		CBC6519423F391BC00C3FF0C /* PsorcastTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC6519323F391BC00C3FF0C /* PsorcastTests.swift */; };
+		CBC6519623F3931800C3FF0C /* Psorcast.strings in Resources */ = {isa = PBXBuildFile; fileRef = CBD67D8022DFB8DE00998516 /* Psorcast.strings */; };
 		CBD62BAC23342CBA00C78F22 /* PsoriasisAreaPhotoCompletionStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBD62BAA23342CBA00C78F22 /* PsoriasisAreaPhotoCompletionStepViewController.swift */; };
 		CBD67D8122DFB8DE00998516 /* Psorcast.strings in Resources */ = {isa = PBXBuildFile; fileRef = CBD67D8022DFB8DE00998516 /* Psorcast.strings */; };
 		CBD67D8422DFB90C00998516 /* ExternalIDRegistrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBD67D8322DFB90C00998516 /* ExternalIDRegistrationViewController.swift */; };
@@ -389,6 +390,7 @@
 		CBB93CB6234252D000321A4D /* PsoriasisDrawCompletionStepViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PsoriasisDrawCompletionStepViewController.xib; sourceTree = "<group>"; };
 		CBBC8770239F028300AC9D8E /* PsoriasisDraw.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = PsoriasisDraw.mov; sourceTree = "<group>"; };
 		CBC6519323F391BC00C3FF0C /* PsorcastTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PsorcastTests.swift; sourceTree = "<group>"; };
+		CBC6519523F392C700C3FF0C /* Psorcast.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Psorcast.entitlements; sourceTree = "<group>"; };
 		CBD62BAA23342CBA00C78F22 /* PsoriasisAreaPhotoCompletionStepViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PsoriasisAreaPhotoCompletionStepViewController.swift; sourceTree = "<group>"; };
 		CBD67D8022DFB8DE00998516 /* Psorcast.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = Psorcast.strings; sourceTree = "<group>"; };
 		CBD67D8322DFB90C00998516 /* ExternalIDRegistrationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExternalIDRegistrationViewController.swift; sourceTree = "<group>"; };
@@ -722,6 +724,7 @@
 		FFABCBC022DD1EEB00D11109 /* Psorcast */ = {
 			isa = PBXGroup;
 			children = (
+				CBC6519523F392C700C3FF0C /* Psorcast.entitlements */,
 				FFABCBC122DD1EEB00D11109 /* AppDelegate.swift */,
 				FFABCBC322DD1EEB00D11109 /* ViewController.swift */,
 				FFABCBCA22DD1EEC00D11109 /* LaunchScreen.storyboard */,
@@ -1004,6 +1007,7 @@
 				CBDCDCA223F3849E00E5CEB8 /* LearnMoreStepViewController.xib in Resources */,
 				CBDCDCAA23F3849E00E5CEB8 /* PsoriasisDrawStepViewController.xib in Resources */,
 				CB9F5E2122E0BED3003FBCEF /* lato_bolditalic.ttf in Resources */,
+				CBC6519623F3931800C3FF0C /* Psorcast.strings in Resources */,
 				CBDCDC8823F3848E00E5CEB8 /* PsoriasisDraw.mov in Resources */,
 				CBDCDC8723F3848E00E5CEB8 /* JointCounting.mov in Resources */,
 				CBDCDC9623F3849E00E5CEB8 /* ImageCaptureStepViewController.xib in Resources */,
@@ -1440,6 +1444,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Psorcast/Psorcast.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = KA9Z8R6M6K;
@@ -1461,6 +1466,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Psorcast/Psorcast.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = KA9Z8R6M6K;
