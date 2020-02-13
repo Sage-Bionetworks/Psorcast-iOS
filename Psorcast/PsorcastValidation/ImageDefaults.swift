@@ -15,7 +15,40 @@ class ImageDefaults {
     private let filterProcessingQueue = DispatchQueue(label: "org.sagebase.ResearchSuite.image.filter")
     
     private let filterSuffixKey = "EdgeDetection"
-
+    
+    /// Creates a new image with Sobel Edge Detection applied, with only
+    /// the edges highlighted as white, and the rest of the pixels transparent.
+    public static func createHighlightedEdgeImage(image: UIImage, edgeStrength: Float) -> UIImage? {
+        // Sobel Edge Detection will outline any body part
+        // and make it a black & white image with white being the edges
+        let edgeFilter = SobelEdgeDetection()
+        edgeFilter.edgeStrength = edgeStrength
+        let filteredImage = image.filterWithOperation(edgeFilter)
+                        
+        let inputImage = CIImage(image: filteredImage)
+        
+        // The CIMaskToAlpha filter will take all black (non-edge)
+        // pixels and make them transparent
+        guard let ciFilter = CIFilter(name:"CIMaskToAlpha") else {
+            NSLog("Could not create CIMaskToAlpha filter")
+            return nil
+        }
+        
+        ciFilter.setDefaults()
+        ciFilter.setValue(inputImage, forKey: kCIInputImageKey)
+        let context = CIContext(options: nil)
+        
+        guard let imageWithFilter = ciFilter.outputImage,
+            let newOuptutImage =  context.createCGImage(imageWithFilter, from: imageWithFilter.extent) else {
+            NSLog("Could not create CIMaskToAlpha filter image")
+            return nil
+        }
+            
+        let transparentFilteredImage = UIImage(cgImage: newOuptutImage)
+        
+        return transparentFilteredImage
+    }
+    
     /// Saves both the raw image and the sobel edge detection result
     func filterImageAndSave(with identifier: String, pngData: Data) {
         filterProcessingQueue.async {
@@ -27,35 +60,10 @@ class ImageDefaults {
                 NSLog("Could not create image from png data")
                 return
             }
-            
-            // Sobel Edge Detection will outline any body part
-            // and make it a black & white image with white being the edges
-            let edgeFilter = SobelEdgeDetection()
-            edgeFilter.edgeStrength = 2.0
-            let filteredImage = image.filterWithOperation(edgeFilter)
-                            
-            let inputImage = CIImage(image: filteredImage)
-            
-            // The CIMaskToAlpha filter will take all black (non-edge)
-            // pixels and make them transparent
-            guard let ciFilter = CIFilter(name:"CIMaskToAlpha") else {
-                NSLog("Could not create CIMaskToAlpha filter")
-                return
-            }
-            
-            ciFilter.setDefaults()
-            ciFilter.setValue(inputImage, forKey: kCIInputImageKey)
-            let context = CIContext(options: nil)
-            
-            guard let imageWithFilter = ciFilter.outputImage,
-                let newOuptutImage =  context.createCGImage(imageWithFilter, from: imageWithFilter.extent) else {
-                NSLog("Could not create CIMaskToAlpha filter image")
-                return
-            }
                 
-            let transparentFilteredImage = UIImage(cgImage: newOuptutImage)
-            
-            if let filteredData = transparentFilteredImage.pngData() {
+            if let transparentFilteredImage = ImageDefaults
+                .createHighlightedEdgeImage(image: image, edgeStrength: 2.0),
+                let filteredData = transparentFilteredImage.pngData() {
                 NSLog("Saved sobel edge detection result image")
                 UserDefaults.standard.set(filteredData, forKey: "\(identifier)\(self.filterSuffixKey)")
             }
