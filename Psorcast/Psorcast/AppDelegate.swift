@@ -2,45 +2,156 @@
 //  AppDelegate.swift
 //  Psorcast
 //
-//  Created by Shannon Young on 7/15/19.
 //  Copyright © 2019 Sage Bionetworks. All rights reserved.
+//
+// Redistribution and use in source and binary forms, with or without modification,
+// are permitted provided that the following conditions are met:
+//
+// 1.  Redistributions of source code must retain the above copyright notice, this
+// list of conditions and the following disclaimer.
+//
+// 2.  Redistributions in binary form must reproduce the above copyright notice,
+// this list of conditions and the following disclaimer in the documentation and/or
+// other materials provided with the distribution.
+//
+// 3.  Neither the name of the copyright holder(s) nor the names of any contributors
+// may be used to endorse or promote products derived from this software without
+// specific prior written permission. No license is granted to the trademarks of
+// the copyright holders even if such marks are included in this software.
+//
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+// AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+// IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+// ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE
+// FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+// DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+// SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+// CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+// OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+// OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
 
 import UIKit
+import BridgeApp
+import BridgeSDK
+import Research
+import BridgeAppUI
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
-
-    var window: UIWindow?
-
-
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
-        return true
+class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate {
+    
+    static let colorPalette = RSDColorPalette(version: 1,
+                                              primary: RSDColorMatrix.shared.colorKey(for: .palette(.fern),
+                                                                                      shade: .medium),
+                                              secondary: RSDColorMatrix.shared.colorKey(for: .palette(.lavender),
+                                                                                        shade: .dark),
+                                              accent: RSDColorMatrix.shared.colorKey(for: .palette(.rose),
+                                                                                     shade: .dark))
+    static let designSystem = RSDDesignSystem(version: 1,
+                                              colorRules: PSRColorRules(palette: colorPalette, version: 1),
+                                              fontRules: PSRFontRules(version: 1))
+    
+    // The app's image data store
+    public let imageDefaults = ImageDefaults()
+    
+    override func instantiateColorPalette() -> RSDColorPalette? {
+        return AppDelegate.colorPalette
     }
-
-    func applicationWillResignActive(_ application: UIApplication) {
-        // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
-        // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
+    
+    func showAppropriateViewController(animated: Bool) {
+        let participantID = UserDefaults.standard.string(forKey: "participantID")
+        if BridgeSDK.authManager.isAuthenticated() && participantID != nil {
+            showMainViewController(animated: animated)
+        } else {
+            showSignInViewController(animated: animated)
+        }
     }
-
-    func applicationDidEnterBackground(_ application: UIApplication) {
-        // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
-        // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+    
+    override func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+        
+        // Set up localization.
+        let mainBundle = LocalizationBundle(bundle: Bundle.main, tableName: "Psorcast")
+        Localization.insert(bundle: mainBundle, at: 0)
+        
+        // Set up font rules.
+        RSDStudyConfiguration.shared.fontRules = PSRFontRules(version: 0)
+        
+        return super.application(application, willFinishLaunchingWithOptions: launchOptions)
     }
-
-    func applicationWillEnterForeground(_ application: UIApplication) {
-        // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
+    
+    override func applicationDidBecomeActive(_ application: UIApplication) {
+        super.applicationDidBecomeActive(application)
+        self.showAppropriateViewController(animated: true)
     }
-
-    func applicationDidBecomeActive(_ application: UIApplication) {
-        // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+    
+    func showMainViewController(animated: Bool) {
+        guard self.rootViewController?.state != .main else { return }
+        guard let storyboard = openStoryboard("Main"),
+            let vc = storyboard.instantiateInitialViewController()
+            else {
+                fatalError("Failed to instantiate initial view controller in the main storyboard.")
+        }
+        self.transition(to: vc, state: .main, animated: true)
     }
-
-    func applicationWillTerminate(_ application: UIApplication) {
-        // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    
+    func showSignInViewController(animated: Bool) {
+        guard self.rootViewController?.state != .onboarding else { return }
+        
+        let externalIDStep = ExternalIDRegistrationStep(identifier: "enterExternalID", type: "externalID")
+        externalIDStep.shouldHideActions = [.navigation(.goBackward), .navigation(.skip
+            )]
+        let participantIDStep = ParticipantIDRegistrationStep(identifier: "enterParticipantID", type: "participantID")
+        
+        var navigator = RSDConditionalStepNavigatorObject(with: [externalIDStep, participantIDStep])
+        navigator.progressMarkers = []
+        let task = RSDTaskObject(identifier: "signin", stepNavigator: navigator)
+        let vc = RSDTaskViewController(task: task)
+        vc.delegate = self
+        self.transition(to: vc, state: .onboarding, animated: true)
     }
-
-
+    
+    func openStoryboard(_ name: String) -> UIStoryboard? {
+        return UIStoryboard(name: name, bundle: nil)
+    }
+    
+    
+    // MARK: RSDTaskViewControllerDelegate
+    
+    func taskController(_ taskController: RSDTaskController, didFinishWith reason: RSDTaskFinishReason, error: Error?) {
+        guard BridgeSDK.authManager.isAuthenticated() else { return }
+        showAppropriateViewController(animated: true)
+    }
+    
+    func taskController(_ taskController: RSDTaskController, readyToSave taskViewModel: RSDTaskViewModel) {
+    }
 }
 
+open class PSRColorRules: RSDColorRules {
+    
+}
+
+open class PSRFontRules: RSDFontRules {
+    
+    public let latoRegularName      = "Lato-Regular"
+    public let latoBoldName         = "Lato-Bold"
+    public let latoBlackName        = "Lato-Black"
+    public let latoLightName        = "Lato-Light"
+    public let latoItalicName       = "Lato-Italic"
+    public let latoBoldItalicName   = "Lato-BoldItalic"
+    public let latoLightItalicName  = "Lato-LightItalic"
+    
+    override open func font(ofSize fontSize: CGFloat, weight: RSDFont.Weight = .regular) -> RSDFont {
+        
+        // TODO: mdephillips 7/18/19 there is no weight for italic, how can we get italic fonts?
+        switch weight {
+        case .light:
+            return RSDFont(name: latoLightName, size: fontSize)!
+        case .bold:
+            return RSDFont(name: latoBoldName, size: fontSize)!
+        case .black:
+            return RSDFont(name: latoBlackName, size: fontSize)!
+        default:  // includes .regular and everything else
+            return RSDFont(name: latoRegularName, size: fontSize)!
+        }
+    }
+}
