@@ -79,7 +79,7 @@
         {
             "identifier"    : "leftFoot",
             "type"          : "imageCapture",
-            "title"         : "Left Toes",
+            "title"         : "Fit in the lines if you can",
             "image": {
                 "type":"fetchable",
                 "imageName": "CameraOverlayLeftFoot",
@@ -123,7 +123,7 @@
         {
             "identifier"    : "rightFoot",
             "type"          : "imageCapture",
-            "title"         : "Right Toes",
+            "title"         : "Fit in the lines if you can",
             "image": {
                 "type":"fetchable",
                 "imageName": "CameraOverlayRightFoot",

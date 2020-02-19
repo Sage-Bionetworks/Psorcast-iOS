@@ -290,10 +290,12 @@ open class JointPainCompletionStepViewController: RSDStepViewController, JointPa
         let image = PSRImageHelper.convertToImage(self.jointImageView)
         var url: URL?
         do {
-            if let imageData = image.pngData(),
+            if let pngDataUnwrapped = image.pngData(),
+                let appDelegate = (AppDelegate.shared as? AppDelegate),
+                let jpegData = appDelegate.imageDefaults.convertToJpegData(pngData: pngDataUnwrapped),
                 let outputDir = self.stepViewModel.parentTaskPath?.outputDirectory {
-                url = try RSDFileResultUtility.createFileURL(identifier: self.summaryImageResultIdentifier, ext: "png", outputDirectory: outputDir, shouldDeletePrevious: true)
-                self.save(imageData, to: url!)
+                url = try RSDFileResultUtility.createFileURL(identifier: self.summaryImageResultIdentifier, ext: "jpg", outputDirectory: outputDir, shouldDeletePrevious: true)
+                self.save(jpegData, to: url!)
             }
         } catch let error {
             debugPrint("Failed to save the camera image: \(error)")
