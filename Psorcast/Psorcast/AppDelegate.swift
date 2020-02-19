@@ -94,6 +94,16 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate {
         self.transition(to: vc, state: .main, animated: true)
     }
     
+    func showWelcomeViewController(animated: Bool) {
+        guard self.rootViewController?.state != .main else { return }
+        guard let storyboard = openStoryboard("Main"),
+            let vc = storyboard.instantiateInitialViewController()
+            else {
+                fatalError("Failed to instantiate initial view controller in the main storyboard.")
+        }
+        self.transition(to: vc, state: .main, animated: true)
+    }
+    
     func showSignInViewController(animated: Bool) {
         guard self.rootViewController?.state != .onboarding else { return }
         
