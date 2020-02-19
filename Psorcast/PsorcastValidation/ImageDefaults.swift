@@ -15,6 +15,15 @@ class ImageDefaults {
     private let filterProcessingQueue = DispatchQueue(label: "org.sagebase.ResearchSuite.image.filter")
     
     private let filterSuffixKey = "EdgeDetection"
+    
+    /// The compression quality that all raw png images will be compressed to,
+    /// when app uploads to Synapse as JPEG images.
+    public let jpegCompressionQuality = CGFloat(0.5)
+    
+    /// Converts PNG data to scaled JPEG data for smaller file size.
+    public func convertToJpegData(pngData: Data) -> Data? {
+        return (UIImage(data: pngData)?.jpegData(compressionQuality: jpegCompressionQuality))
+    }
 
     /// Saves both the raw image and the sobel edge detection result
     func filterImageAndSave(with identifier: String, pngData: Data) {
