@@ -278,11 +278,9 @@ open class PsoriasisDrawCompletionStepViewController: RSDStepViewController, Pro
             var url: URL?
             do { 
                 if let pngDataUnwrapped = image.pngData(),
-                    let appDelegate = (AppDelegate.shared as? AppDelegate),
-                    let jpegData = appDelegate.imageDefaults.convertToJpegData(pngData: pngDataUnwrapped),
                     let outputDir = self.stepViewModel.parentTaskPath?.outputDirectory {
-                    url = try RSDFileResultUtility.createFileURL(identifier: summaryImageResultIdentifier, ext: "jpg", outputDirectory: outputDir)
-                    save(jpegData, to: url!)
+                    url = try RSDFileResultUtility.createFileURL(identifier: summaryImageResultIdentifier, ext: "png", outputDirectory: outputDir)
+                    save(pngDataUnwrapped, to: url!)
                 }
             } catch let error {
                 debugPrint("Failed to save the image: \(error)")
