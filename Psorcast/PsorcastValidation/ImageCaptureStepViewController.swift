@@ -581,16 +581,17 @@ open class ImageCaptureStepViewController: RSDStepViewController, UIImagePickerC
     }
     
     func saveCapturedPhotoAndGoForward(pngData: Data?) {
-        guard let imageData = pngData else {
+        guard let pngDataUnwrapped = pngData else {
             return
         }
         
         var url: URL?
         do {
-            if let imageData = pngData,
+            if let appDelegate = (AppDelegate.shared as? AppDelegate),
+                let jpegData = appDelegate.imageDefaults.convertToJpegData(pngData: pngDataUnwrapped),
                 let outputDir = self.stepViewModel.parentTaskPath?.outputDirectory {
-                url = try RSDFileResultUtility.createFileURL(identifier: self.step.identifier, ext: "png", outputDirectory: outputDir, shouldDeletePrevious: true)
-                save(imageData, to: url!)
+                url = try RSDFileResultUtility.createFileURL(identifier: self.step.identifier, ext: "jpg", outputDirectory: outputDir, shouldDeletePrevious: true)
+                self.save(jpegData, to: url!)
             }
         } catch let error {
             debugPrint("Failed to save the camera image: \(error)")
