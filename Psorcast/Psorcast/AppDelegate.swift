@@ -63,7 +63,7 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate {
         if BridgeSDK.authManager.isAuthenticated() && participantID != nil {
             showMainViewController(animated: animated)
         } else {
-            showSignInViewController(animated: animated)
+            showWelcomeViewController(animated: animated)
         }
     }
     
