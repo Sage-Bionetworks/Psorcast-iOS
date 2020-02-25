@@ -8,8 +8,9 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ImageCaptureStepViewController" customModule="PsorcastValidation" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ImageCaptureStepViewController" customModule="Psorcast" customModuleProvider="target">
             <connections>
+                <outlet property="cameraToggleButton" destination="Oq7-H9-4LA" id="JJB-gO-m6g"/>
                 <outlet property="captureButton" destination="7Iz-4x-dLZ" id="b5R-jR-RN4"/>
                 <outlet property="navigationHeader" destination="fxA-Tz-ZiS" id="agX-5m-P7G"/>
                 <outlet property="previewView" destination="Bb7-gd-Spk" id="gx5-ZP-Ljt"/>
@@ -24,7 +25,7 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nCy-4g-nIJ" userLabel="Content View" customClass="RSDStepNavigationView" customModule="ResearchUI">
                     <rect key="frame" x="0.0" y="0.0" width="395" height="720"/>
                     <subviews>
-                        <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Bb7-gd-Spk" userLabel="CaptureView" customClass="CameraPreviewView" customModule="PsorcastValidation" customModuleProvider="target">
+                        <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Bb7-gd-Spk" userLabel="CaptureView" customClass="CameraPreviewView" customModule="Psorcast" customModuleProvider="target">
                             <rect key="frame" x="0.0" y="114" width="395" height="450"/>
                             <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </view>
@@ -81,9 +82,22 @@
                                 <action selector="capturePhoto:" destination="-1" eventType="touchUpInside" id="nlE-wI-3dd"/>
                             </connections>
                         </button>
-                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="h8j-iD-5fl">
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="h8j-iD-5fl" userLabel="Overlay Image View">
                             <rect key="frame" x="0.0" y="114" width="395" height="450"/>
                         </imageView>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Oq7-H9-4LA">
+                            <rect key="frame" x="331" y="114" width="64" height="64"/>
+                            <constraints>
+                                <constraint firstAttribute="width" secondItem="Oq7-H9-4LA" secondAttribute="height" multiplier="1:1" id="8vH-gz-g4m"/>
+                                <constraint firstAttribute="width" constant="64" id="CSI-BC-CoM"/>
+                            </constraints>
+                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <inset key="contentEdgeInsets" minX="12" minY="12" maxX="12" maxY="12"/>
+                            <state key="normal" image="CameraToggle"/>
+                            <connections>
+                                <action selector="changeCamera:" destination="-1" eventType="touchUpInside" id="6vf-uP-pd8"/>
+                            </connections>
+                        </button>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
@@ -94,7 +108,9 @@
                         <constraint firstItem="Br6-tq-bnk" firstAttribute="top" secondItem="7Iz-4x-dLZ" secondAttribute="bottom" constant="8" id="Nl3-Uq-fax"/>
                         <constraint firstItem="7Iz-4x-dLZ" firstAttribute="centerX" secondItem="nCy-4g-nIJ" secondAttribute="centerX" id="Otr-xa-UAw"/>
                         <constraint firstItem="fxA-Tz-ZiS" firstAttribute="top" secondItem="nCy-4g-nIJ" secondAttribute="top" id="SC4-I8-O5N"/>
+                        <constraint firstItem="Oq7-H9-4LA" firstAttribute="top" secondItem="fxA-Tz-ZiS" secondAttribute="bottom" id="Tij-2e-gPO"/>
                         <constraint firstItem="h8j-iD-5fl" firstAttribute="leading" secondItem="nCy-4g-nIJ" secondAttribute="leading" id="cNr-Hp-ibd"/>
+                        <constraint firstAttribute="trailing" secondItem="Oq7-H9-4LA" secondAttribute="trailing" id="hK2-m7-n2y"/>
                         <constraint firstAttribute="bottom" secondItem="h8j-iD-5fl" secondAttribute="bottom" constant="156" id="mTR-4G-bom"/>
                         <constraint firstItem="Bb7-gd-Spk" firstAttribute="leading" secondItem="nCy-4g-nIJ" secondAttribute="leading" id="mgY-QI-c9q"/>
                         <constraint firstItem="h8j-iD-5fl" firstAttribute="top" secondItem="fxA-Tz-ZiS" secondAttribute="bottom" id="pTW-G1-8MQ"/>
@@ -120,6 +136,7 @@
     </objects>
     <resources>
         <image name="Camera" width="48" height="48"/>
+        <image name="CameraToggle" width="150" height="150"/>
         <image name="closeActivity" width="50" height="50"/>
     </resources>
 </document>
