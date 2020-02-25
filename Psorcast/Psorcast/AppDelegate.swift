@@ -63,7 +63,7 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate {
         if BridgeSDK.authManager.isAuthenticated() && participantID != nil {
             showMainViewController(animated: animated)
         } else {
-            showSignInViewController(animated: animated)
+            showWelcomeViewController(animated: animated)
         }
     }
     
@@ -85,6 +85,16 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate {
     }
     
     func showMainViewController(animated: Bool) {
+        guard self.rootViewController?.state != .main else { return }
+        guard let storyboard = openStoryboard("Main"),
+            let vc = storyboard.instantiateInitialViewController()
+            else {
+                fatalError("Failed to instantiate initial view controller in the main storyboard.")
+        }
+        self.transition(to: vc, state: .main, animated: true)
+    }
+    
+    func showWelcomeViewController(animated: Bool) {
         guard self.rootViewController?.state != .main else { return }
         guard let storyboard = openStoryboard("Main"),
             let vc = storyboard.instantiateInitialViewController()

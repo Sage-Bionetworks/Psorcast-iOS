@@ -57,6 +57,8 @@
 		CB778670238B3F4D0009ECF9 /* DigitalJarOpenStepViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB77866F238B3F4D0009ECF9 /* DigitalJarOpenStepViewControllerTests.swift */; };
 		CB778672238D0E440009ECF9 /* DigitalJarOpenCompletionStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB778671238D0E440009ECF9 /* DigitalJarOpenCompletionStepViewController.swift */; };
 		CB778674238D18F30009ECF9 /* DigitalJarOpenCompletionStepViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB778673238D18F30009ECF9 /* DigitalJarOpenCompletionStepViewController.xib */; };
+		CB7CF2422400BF10003E02A5 /* WelcomeVideoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB7CF2412400BF10003E02A5 /* WelcomeVideoViewController.swift */; };
+		CB7CF2482400CFAA003E02A5 /* WelcomeVideo.mov in Resources */ = {isa = PBXBuildFile; fileRef = CB7CF2472400CFAA003E02A5 /* WelcomeVideo.mov */; };
 		CB85FB52235F505300FDC59B /* PsoriasisDrawTaskResultProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB85FB51235F505300FDC59B /* PsoriasisDrawTaskResultProcessor.swift */; };
 		CB85FB56235F5C5500FDC59B /* SelectedIdentifiersResultObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB85FB55235F5C5500FDC59B /* SelectedIdentifiersResultObject.swift */; };
 		CB8AE6FD233FB53400F5F8AC /* PsoriasisDraw.json in Resources */ = {isa = PBXBuildFile; fileRef = CB8AE6FC233FB53400F5F8AC /* PsoriasisDraw.json */; };
@@ -82,6 +84,7 @@
 		CB9F5E5222E0C2BA003FBCEF /* PsorcastTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB9F5E5122E0C2BA003FBCEF /* PsorcastTests.swift */; };
 		CB9F5E5B22E0C531003FBCEF /* CopyStepTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB9F5E5922E0C530003FBCEF /* CopyStepTests.swift */; };
 		CB9F5E5C22E0C531003FBCEF /* CodableStepObjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB9F5E5A22E0C531003FBCEF /* CodableStepObjectTests.swift */; };
+		CBA0250E23FC6B2500604F2D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CBA0250823FC6B2500604F2D /* Main.storyboard */; };
 		CBA8390E234A6B3F00408D81 /* EndOfValidationStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA8390C234A6B3F00408D81 /* EndOfValidationStepViewController.swift */; };
 		CBA8390F234A6B3F00408D81 /* EndOfValidationStepViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CBA8390D234A6B3F00408D81 /* EndOfValidationStepViewController.xib */; };
 		CBB90AE82381FF8700F1DFA4 /* PsoriasisAreaPhoto.mov in Resources */ = {isa = PBXBuildFile; fileRef = CBB90AE52381FF8500F1DFA4 /* PsoriasisAreaPhoto.mov */; };
@@ -173,7 +176,6 @@
 		CBDCDCBA23F384A400E5CEB8 /* PsoriasisDrawTaskResultProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB85FB51235F505300FDC59B /* PsoriasisDrawTaskResultProcessor.swift */; };
 		CBDCDCBB23F384A400E5CEB8 /* ImageDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB704AC023EF8C4D00CC9D13 /* ImageDefaults.swift */; };
 		CBDCDCBC23F384A800E5CEB8 /* PSRImageHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBB93CB0233FFA7500321A4D /* PSRImageHelper.swift */; };
-		CBDCDCBD23F384D100E5CEB8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FFABCBEB22DD1F2800D11109 /* Main.storyboard */; };
 		CBDCDCBE23F384D400E5CEB8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FFABCBEE22DD1F2800D11109 /* Assets.xcassets */; };
 		CBDCDCC223F3855300E5CEB8 /* BuildDateUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = CBDCDCC123F3855300E5CEB8 /* BuildDateUtil.m */; };
 		CBDCDCC523F385AF00E5CEB8 /* BridgeApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBDCDCC423F385AF00E5CEB8 /* BridgeApp.framework */; };
@@ -203,10 +205,8 @@
 		FF5010A822DD22A50035E83C /* psorcast-validation.pem in Resources */ = {isa = PBXBuildFile; fileRef = FF5010A622DD22A50035E83C /* psorcast-validation.pem */; };
 		FF5010A922DD22A50035E83C /* BridgeInfo-private.plist in Resources */ = {isa = PBXBuildFile; fileRef = FF5010A722DD22A50035E83C /* BridgeInfo-private.plist */; };
 		FFABCBC222DD1EEB00D11109 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFABCBC122DD1EEB00D11109 /* AppDelegate.swift */; };
-		FFABCBC422DD1EEB00D11109 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFABCBC322DD1EEB00D11109 /* ViewController.swift */; };
 		FFABCBCC22DD1EEC00D11109 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FFABCBCA22DD1EEC00D11109 /* LaunchScreen.storyboard */; };
 		FFABCBE822DD1F2800D11109 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFABCBE722DD1F2800D11109 /* AppDelegate.swift */; };
-		FFABCBEA22DD1F2800D11109 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFABCBE922DD1F2800D11109 /* ViewController.swift */; };
 		FFABCBED22DD1F2800D11109 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FFABCBEB22DD1F2800D11109 /* Main.storyboard */; };
 		FFABCBEF22DD1F2800D11109 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FFABCBEE22DD1F2800D11109 /* Assets.xcassets */; };
 		FFABCBF222DD1F2800D11109 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FFABCBF022DD1F2800D11109 /* LaunchScreen.storyboard */; };
@@ -357,6 +357,8 @@
 		CB77866F238B3F4D0009ECF9 /* DigitalJarOpenStepViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DigitalJarOpenStepViewControllerTests.swift; sourceTree = "<group>"; };
 		CB778671238D0E440009ECF9 /* DigitalJarOpenCompletionStepViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DigitalJarOpenCompletionStepViewController.swift; sourceTree = "<group>"; };
 		CB778673238D18F30009ECF9 /* DigitalJarOpenCompletionStepViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DigitalJarOpenCompletionStepViewController.xib; sourceTree = "<group>"; };
+		CB7CF2412400BF10003E02A5 /* WelcomeVideoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeVideoViewController.swift; sourceTree = "<group>"; };
+		CB7CF2472400CFAA003E02A5 /* WelcomeVideo.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = WelcomeVideo.mov; sourceTree = "<group>"; };
 		CB85FB51235F505300FDC59B /* PsoriasisDrawTaskResultProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PsoriasisDrawTaskResultProcessor.swift; sourceTree = "<group>"; };
 		CB85FB55235F5C5500FDC59B /* SelectedIdentifiersResultObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedIdentifiersResultObject.swift; sourceTree = "<group>"; };
 		CB8AE6FC233FB53400F5F8AC /* PsoriasisDraw.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = PsoriasisDraw.json; sourceTree = "<group>"; };
@@ -379,6 +381,7 @@
 		CB9F5E5322E0C2BA003FBCEF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CB9F5E5922E0C530003FBCEF /* CopyStepTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CopyStepTests.swift; sourceTree = "<group>"; };
 		CB9F5E5A22E0C531003FBCEF /* CodableStepObjectTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodableStepObjectTests.swift; sourceTree = "<group>"; };
+		CBA0250923FC6B2500604F2D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		CBA8390C234A6B3F00408D81 /* EndOfValidationStepViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EndOfValidationStepViewController.swift; sourceTree = "<group>"; };
 		CBA8390D234A6B3F00408D81 /* EndOfValidationStepViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EndOfValidationStepViewController.xib; sourceTree = "<group>"; };
 		CBB90AE52381FF8500F1DFA4 /* PsoriasisAreaPhoto.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = PsoriasisAreaPhoto.mov; sourceTree = "<group>"; };
@@ -428,12 +431,10 @@
 		FF5010A722DD22A50035E83C /* BridgeInfo-private.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "BridgeInfo-private.plist"; path = "../../../iOSPrivateProjectInfo/PsorcastValidation/BridgeInfo-private.plist"; sourceTree = "<group>"; };
 		FFABCBBE22DD1EEB00D11109 /* Psorcast.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Psorcast.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FFABCBC122DD1EEB00D11109 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		FFABCBC322DD1EEB00D11109 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		FFABCBCB22DD1EEC00D11109 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		FFABCBCD22DD1EEC00D11109 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FFABCBE522DD1F2800D11109 /* PsorcastValidation.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PsorcastValidation.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FFABCBE722DD1F2800D11109 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		FFABCBE922DD1F2800D11109 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		FFABCBEC22DD1F2800D11109 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		FFABCBEE22DD1F2800D11109 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FFABCBF122DD1F2800D11109 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -517,6 +518,30 @@
 				CB16BF5523E4B90B0099FD08 /* GPUImageTests_iOS.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		CB7CF23C2400BE84003E02A5 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				CB7CF2412400BF10003E02A5 /* WelcomeVideoViewController.swift */,
+			);
+			name = ViewControllers;
+			sourceTree = "<group>";
+		};
+		CB7CF2432400C627003E02A5 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				CB7CF2442400C62F003E02A5 /* MP4 */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		CB7CF2442400C62F003E02A5 /* MP4 */ = {
+			isa = PBXGroup;
+			children = (
+				CB7CF2472400CFAA003E02A5 /* WelcomeVideo.mov */,
+			);
+			name = MP4;
 			sourceTree = "<group>";
 		};
 		CB9F5E1122E0BE8D003FBCEF /* Fonts */ = {
@@ -724,11 +749,13 @@
 		FFABCBC022DD1EEB00D11109 /* Psorcast */ = {
 			isa = PBXGroup;
 			children = (
+				CBA0250823FC6B2500604F2D /* Main.storyboard */,
 				CBC6519523F392C700C3FF0C /* Psorcast.entitlements */,
 				FFABCBC122DD1EEB00D11109 /* AppDelegate.swift */,
-				FFABCBC322DD1EEB00D11109 /* ViewController.swift */,
 				FFABCBCA22DD1EEC00D11109 /* LaunchScreen.storyboard */,
 				CBDCDCC023F3854600E5CEB8 /* ObjC */,
+				CB7CF23C2400BE84003E02A5 /* ViewControllers */,
+				CB7CF2432400C627003E02A5 /* Resources */,
 				FF50109C22DD20DE0035E83C /* Support Files */,
 			);
 			path = Psorcast;
@@ -755,7 +782,6 @@
 			isa = PBXGroup;
 			children = (
 				FFABCBE722DD1F2800D11109 /* AppDelegate.swift */,
-				FFABCBE922DD1F2800D11109 /* ViewController.swift */,
 				FFABCBEB22DD1F2800D11109 /* Main.storyboard */,
 				FFABCBEE22DD1F2800D11109 /* Assets.xcassets */,
 				FFABCBF022DD1F2800D11109 /* LaunchScreen.storyboard */,
@@ -980,6 +1006,7 @@
 			files = (
 				CBDCDC7B23F3848500E5CEB8 /* FootImaging.json in Resources */,
 				CB9F5E2222E0BED3003FBCEF /* lato_italic.ttf in Resources */,
+				CB7CF2482400CFAA003E02A5 /* WelcomeVideo.mov in Resources */,
 				CBDCDC8523F3848E00E5CEB8 /* ToesPhoto.mov in Resources */,
 				FFABCBCC22DD1EEC00D11109 /* LaunchScreen.storyboard in Resources */,
 				CBDCDC8023F3848500E5CEB8 /* PsoriasisAreaPhoto.json in Resources */,
@@ -991,6 +1018,7 @@
 				CBDCDC9023F3849E00E5CEB8 /* ExternalIDRegistrationViewController.xib in Resources */,
 				CBDCDC7D23F3848500E5CEB8 /* JointCounting.json in Resources */,
 				CBDCDC9223F3849E00E5CEB8 /* EndOfValidationStepViewController.xib in Resources */,
+				CBA0250E23FC6B2500604F2D /* Main.storyboard in Resources */,
 				CB9F5E1F22E0BED3003FBCEF /* lato_black.ttf in Resources */,
 				CB9F5E2322E0BED3003FBCEF /* lato_light.ttf in Resources */,
 				CBDCDC8423F3848E00E5CEB8 /* PsoriasisAreaPhoto.mov in Resources */,
@@ -1000,7 +1028,6 @@
 				CBDCDC9923F3849E00E5CEB8 /* ReviewCaptureStepViewController.xib in Resources */,
 				CBDCDC7123F383DC00E5CEB8 /* sage-psorcast.pem in Resources */,
 				CBDCDC8223F3848500E5CEB8 /* DigitalJarOpen.json in Resources */,
-				CBDCDCBD23F384D100E5CEB8 /* Main.storyboard in Resources */,
 				CBDCDC8623F3848E00E5CEB8 /* DigitalJarOpen.mov in Resources */,
 				CBDCDC7223F383DC00E5CEB8 /* BridgeInfo-private.plist in Resources */,
 				CBDCDC8123F3848500E5CEB8 /* PsoriasisDraw.json in Resources */,
@@ -1126,7 +1153,6 @@
 				CBDCDCB223F3849E00E5CEB8 /* DigitalJarOpenStepViewController.swift in Sources */,
 				CBDCDCAD23F3849E00E5CEB8 /* PsoriasisDrawResultObject.swift in Sources */,
 				CBDCDCB723F384A400E5CEB8 /* TaskFactory.swift in Sources */,
-				FFABCBC422DD1EEB00D11109 /* ViewController.swift in Sources */,
 				CBDCDCC223F3855300E5CEB8 /* BuildDateUtil.m in Sources */,
 				CBDCDCB123F3849E00E5CEB8 /* SelectedIdentifiersResultObject.swift in Sources */,
 				CBDCDC8D23F3849E00E5CEB8 /* SelectionCollectionStepViewController.swift in Sources */,
@@ -1148,6 +1174,7 @@
 				CBDCDC9C23F3849E00E5CEB8 /* JointPainImageView.swift in Sources */,
 				CBDCDC8F23F3849E00E5CEB8 /* ExternalIDRegistrationViewController.swift in Sources */,
 				CBDCDC9D23F3849E00E5CEB8 /* JointPainStepViewController.swift in Sources */,
+				CB7CF2422400BF10003E02A5 /* WelcomeVideoViewController.swift in Sources */,
 				CBDCDC9823F3849E00E5CEB8 /* ReviewCaptureStepViewController.swift in Sources */,
 				CBDCDCA723F3849E00E5CEB8 /* PsoriasisAreaPhotoImageView.swift in Sources */,
 				CBDCDCAC23F3849E00E5CEB8 /* PsoriasisDrawStepObject.swift in Sources */,
@@ -1168,7 +1195,6 @@
 				CB5424D123721FFD0036DB6B /* RSDCollectionViewCell.swift in Sources */,
 				CB704AC123EF8C4D00CC9D13 /* ImageDefaults.swift in Sources */,
 				CBA8390E234A6B3F00408D81 /* EndOfValidationStepViewController.swift in Sources */,
-				FFABCBEA22DD1F2800D11109 /* ViewController.swift in Sources */,
 				CBD67D9322DFC71E00998516 /* TaskFactory.swift in Sources */,
 				FFABCBE822DD1F2800D11109 /* AppDelegate.swift in Sources */,
 				CB55C725231773FF00EA0C19 /* JointPainStepViewController.swift in Sources */,
@@ -1217,6 +1243,14 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		CBA0250823FC6B2500604F2D /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CBA0250923FC6B2500604F2D /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
 		FFABCBCA22DD1EEC00D11109 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
