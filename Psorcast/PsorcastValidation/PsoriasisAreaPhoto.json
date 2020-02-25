@@ -473,7 +473,7 @@
                     "zones": [
                         {
                             "identifier": "scalp_back",
-                            "label": "Scalp (Front)",
+                            "label": "Scalp (Back)",
                             "origin": {
                                 "x": 105,
                                 "y": 0
@@ -850,7 +850,7 @@
             "identifier"    : "psoriasisAreaPhoto",
             "type"          : "imageCapture",
             "title"         : "Capture Image",
-            "cameraDevice"  : "front"
+            "cameraDevice"  : "both"
         },
         {
             "identifier":"reviewPsoriasisAreaPhoto",

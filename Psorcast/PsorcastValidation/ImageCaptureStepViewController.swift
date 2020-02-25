@@ -37,6 +37,56 @@ import BridgeApp
 import BridgeAppUI
 import GPUImage
 
+open class ImageCaptureStepObject: RSDUIStepObject, RSDStepViewControllerVendor {
+    
+    private enum CodingKeys: String, CodingKey, CaseIterable {
+        case cameraDevice
+    }
+    
+    /// front or back camera
+    var cameraDevice: CameraDeviceWrapper?
+    
+    /// Default type is `.imageCapture`.
+    open override class func defaultType() -> RSDStepType {
+        return .imageCapture
+    }
+    
+    /// Override to set the properties of the subclass.
+    override open func copyInto(_ copy: RSDUIStepObject) {
+        super.copyInto(copy)
+        guard let subclassCopy = copy as? ImageCaptureStepObject else {
+            assertionFailure("Superclass implementation of the `copy(with:)` protocol should return an instance of this class.")
+            return
+        }
+        subclassCopy.cameraDevice = self.cameraDevice
+    }
+    
+    /// Override the decoder per device type b/c the task may require a different set of permissions depending upon the device.
+    open override func decode(from decoder: Decoder, for deviceType: RSDDeviceType?) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        
+        if container.contains(.cameraDevice) {
+            self.cameraDevice = try container.decode(CameraDeviceWrapper.self, forKey: .cameraDevice)
+        }
+        
+        try super.decode(from: decoder, for: deviceType)
+    }
+    
+    open class func examples() -> [[String : RSDJSONValue]] {
+        let jsonA: [String : RSDJSONValue] = [
+            "identifier"   : "imagecapture",
+            "type"         : "imageCapture",
+            "title"        : "Title"
+        ]
+        
+        return [jsonA]
+    }
+    
+    public func instantiateViewController(with parent: RSDPathComponent?) -> (UIViewController & RSDStepController)? {
+        return ImageCaptureStepViewController(step: self, parent: parent)
+    }
+}
+
 open class ImageCaptureStepViewController: RSDStepViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     // MARK: Session Management
@@ -65,6 +115,8 @@ open class ImageCaptureStepViewController: RSDStepViewController, UIImagePickerC
     
     @IBOutlet public var captureButton: UIButton!
     
+    @IBOutlet public var cameraToggleButton: UIButton?
+    
     @IBOutlet public var cameraContainerView: UIView?
     open var cameraView: UIView {
         if let cameraContainerViewUnwrapped = cameraContainerView {
@@ -75,6 +127,9 @@ open class ImageCaptureStepViewController: RSDStepViewController, UIImagePickerC
     
     private let picker = UIImagePickerController()
     private let processingQueue = DispatchQueue(label: "org.sagebase.ResearchSuite.camera.processing")
+    
+    private let videoDeviceDiscoverySession = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInWideAngleCamera, .builtInDualCamera, .builtInTrueDepthCamera],
+                                                                               mediaType: .video, position: .unspecified)
     
     var captureStep: ImageCaptureStepObject? {
         return self.step as? ImageCaptureStepObject
@@ -433,9 +488,19 @@ open class ImageCaptureStepViewController: RSDStepViewController, UIImagePickerC
         // Add video input.
         do {
             var defaultVideoDevice: AVCaptureDevice?
+            var cameraDevice = self.captureStep?.cameraDevice?.cameraDevice()
+            
+            // If camera device is both,
+            // look to see if we have any cached settings
+            if self.captureStep?.cameraDevice == .both,
+                let cachedCameraString = UserDefaults.standard.string(forKey: "\(self.step.identifier)CameraSetting"),
+                let cachedCameraDevice = CameraDeviceWrapper(rawValue: cachedCameraString)?.cameraDevice() {
+                                
+                cameraDevice = cachedCameraDevice
+            }
             
             // Choose the back dual camera, if available, otherwise default to a wide angle camera.
-            if (self.captureStep?.cameraDevice?.cameraDevice() ?? .rear) == .front,
+            if cameraDevice == .front,
                 let frontCameraDevice = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .front) {
                 defaultVideoDevice = frontCameraDevice
             } else if let dualCameraDevice = AVCaptureDevice.default(.builtInDualCamera, for: .video, position: .back) {
@@ -460,6 +525,20 @@ open class ImageCaptureStepViewController: RSDStepViewController, UIImagePickerC
                 DispatchQueue.main.async {
                     // Lock the camera capture to portrait
                     self.previewView.videoPreviewLayer.connection?.videoOrientation = .portrait
+                    
+                    if self.captureStep?.cameraDevice == .both {
+                        // Show the camera toggle button
+                        self.cameraToggleButton?.isHidden = false
+                        self.cameraToggleButton?.isEnabled = self.videoDeviceDiscoverySession.devices.count > 1
+                    } else {
+                        self.cameraToggleButton?.isHidden = true
+                    }
+                    
+                    // Setup tap to focus functionality on overlay imageview
+                    if self.cameraView.gestureRecognizers == nil {
+                        self.cameraView.gestureRecognizers = []
+                    }
+                    self.cameraView.gestureRecognizers?.append(UITapGestureRecognizer(target: self, action: #selector(self.focusAndExposeTap)))
                 }
             } else {
                 print("Couldn't add video device input to the session.")
@@ -580,6 +659,129 @@ open class ImageCaptureStepViewController: RSDStepViewController, UIImagePickerC
         }
     }
     
+    /// - Tag: ChangeCamera
+    @IBAction func changeCamera(_ cameraButton: UIButton) {
+        self.cameraToggleButton?.isEnabled = false
+        self.captureButton.isEnabled = false
+        
+        sessionQueue.async {
+            let currentVideoDevice = self.videoDeviceInput.device
+            let currentPosition = currentVideoDevice.position
+            
+            let preferredPosition: AVCaptureDevice.Position
+            let preferredDeviceType: AVCaptureDevice.DeviceType
+            
+            switch currentPosition {
+            case .unspecified, .front:
+                preferredPosition = .back
+                preferredDeviceType = .builtInDualCamera
+            case .back:
+                preferredPosition = .front
+                preferredDeviceType = .builtInWideAngleCamera
+            default:
+                preferredPosition = .back
+                preferredDeviceType = .builtInDualCamera
+            }
+            let devices = self.videoDeviceDiscoverySession.devices
+            var newVideoDevice: AVCaptureDevice? = nil
+            
+            // Save the new camera position setting on the main thread
+            // Next time this step runs under "both" cams it will default to the saved setting
+            DispatchQueue.main.async {
+                if preferredPosition == .front {
+                    UserDefaults.standard.set(CameraDeviceWrapper.front.rawValue, forKey: "\(self.step.identifier)CameraSetting")
+                } else if preferredPosition == .back {
+                    UserDefaults.standard.set(CameraDeviceWrapper.rear.rawValue, forKey: "\(self.step.identifier)CameraSetting")
+                }
+            }
+            
+            // First, seek a device with both the preferred position and device type. Otherwise, seek a device with only the preferred position.
+            if let device = devices.first(where: { $0.position == preferredPosition && $0.deviceType == preferredDeviceType }) {
+                newVideoDevice = device
+            } else if let device = devices.first(where: { $0.position == preferredPosition }) {
+                newVideoDevice = device
+            }
+            
+            if let videoDevice = newVideoDevice {
+                do {
+                    let videoDeviceInput = try AVCaptureDeviceInput(device: videoDevice)
+                    
+                    self.session.beginConfiguration()
+                    
+                    // Remove the existing device input first, because AVCaptureSession doesn't support
+                    // simultaneous use of the rear and front cameras.
+                    self.session.removeInput(self.videoDeviceInput)
+                    
+                    if self.session.canAddInput(videoDeviceInput) {
+                        NotificationCenter.default.removeObserver(self, name: .AVCaptureDeviceSubjectAreaDidChange, object: currentVideoDevice)
+                        NotificationCenter.default.addObserver(self, selector: #selector(self.subjectAreaDidChange), name: .AVCaptureDeviceSubjectAreaDidChange, object: videoDeviceInput.device)
+                        
+                        self.session.addInput(videoDeviceInput)
+                        self.videoDeviceInput = videoDeviceInput
+                    } else {
+                        self.session.addInput(self.videoDeviceInput)
+                    }
+                    
+                    /*
+                     Set Live Photo capture and depth data delivery if it's supported. When changing cameras, the
+                     `livePhotoCaptureEnabled` and `depthDataDeliveryEnabled` properties of the AVCapturePhotoOutput
+                     get set to false when a video device is disconnected from the session. After the new video device is
+                     added to the session, re-enable them on the AVCapturePhotoOutput, if supported.
+                     */
+                    self.photoOutput.isLivePhotoCaptureEnabled = self.photoOutput.isLivePhotoCaptureSupported
+                    self.photoOutput.isDepthDataDeliveryEnabled = self.photoOutput.isDepthDataDeliverySupported
+                    self.photoOutput.isPortraitEffectsMatteDeliveryEnabled = self.photoOutput.isPortraitEffectsMatteDeliverySupported
+
+                    self.session.commitConfiguration()
+                } catch {
+                    print("Error occurred while creating video device input: \(error)")
+                }
+            }
+            
+            DispatchQueue.main.async {
+                self.cameraToggleButton?.isEnabled = true
+                self.captureButton.isEnabled = true
+            }
+        }
+    }
+    
+    @objc func focusAndExposeTap(_ gestureRecognizer: UITapGestureRecognizer) {
+        let devicePoint = previewView.videoPreviewLayer.captureDevicePointConverted(fromLayerPoint: gestureRecognizer.location(in: gestureRecognizer.view))
+        focus(with: .autoFocus, exposureMode: .autoExpose, at: devicePoint, monitorSubjectAreaChange: true)
+    }
+    
+    private func focus(with focusMode: AVCaptureDevice.FocusMode,
+                       exposureMode: AVCaptureDevice.ExposureMode,
+                       at devicePoint: CGPoint,
+                       monitorSubjectAreaChange: Bool) {
+        
+        sessionQueue.async {
+            let device = self.videoDeviceInput.device
+            do {
+                try device.lockForConfiguration()
+                
+                /*
+                 Setting (focus/exposure)PointOfInterest alone does not initiate a (focus/exposure) operation.
+                 Call set(Focus/Exposure)Mode() to apply the new point of interest.
+                 */
+                if device.isFocusPointOfInterestSupported && device.isFocusModeSupported(focusMode) {
+                    device.focusPointOfInterest = devicePoint
+                    device.focusMode = focusMode
+                }
+                
+                if device.isExposurePointOfInterestSupported && device.isExposureModeSupported(exposureMode) {
+                    device.exposurePointOfInterest = devicePoint
+                    device.exposureMode = exposureMode
+                }
+                
+                device.isSubjectAreaChangeMonitoringEnabled = monitorSubjectAreaChange
+                device.unlockForConfiguration()
+            } catch {
+                print("Could not lock device for configuration: \(error)")
+            }
+        }
+    }
+    
     func saveCapturedPhotoAndGoForward(pngData: Data?) {
         guard let pngDataUnwrapped = pngData else {
             return
@@ -607,64 +809,16 @@ open class ImageCaptureStepViewController: RSDStepViewController, UIImagePickerC
     }
 }
 
-open class ImageCaptureStepObject: RSDUIStepObject, RSDStepViewControllerVendor {
-    
-    private enum CodingKeys: String, CodingKey, CaseIterable {
-        case cameraDevice
-    }
-    
-    /// front or back camera
-    var cameraDevice: CameraDeviceWrapper?
-    
-    /// Default type is `.imageCapture`.
-    open override class func defaultType() -> RSDStepType {
-        return .imageCapture
-    }
-    
-    /// Override to set the properties of the subclass.
-    override open func copyInto(_ copy: RSDUIStepObject) {
-        super.copyInto(copy)
-        guard let subclassCopy = copy as? ImageCaptureStepObject else {
-            assertionFailure("Superclass implementation of the `copy(with:)` protocol should return an instance of this class.")
-            return
-        }
-        subclassCopy.cameraDevice = self.cameraDevice
-    }
-    
-    /// Override the decoder per device type b/c the task may require a different set of permissions depending upon the device.
-    open override func decode(from decoder: Decoder, for deviceType: RSDDeviceType?) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        
-        if container.contains(.cameraDevice) {
-            self.cameraDevice = try container.decode(CameraDeviceWrapper.self, forKey: .cameraDevice)
-        }
-        
-        try super.decode(from: decoder, for: deviceType)
-    }
-    
-    open class func examples() -> [[String : RSDJSONValue]] {
-        let jsonA: [String : RSDJSONValue] = [
-            "identifier"   : "imagecapture",
-            "type"         : "imageCapture",
-            "title"        : "Title"
-        ]
-        
-        return [jsonA]
-    }
-    
-    public func instantiateViewController(with parent: RSDPathComponent?) -> (UIViewController & RSDStepController)? {
-        return ImageCaptureStepViewController(step: self, parent: parent)
-    }
-}
-
 public enum CameraDeviceWrapper: String, Codable, CaseIterable  {
-    case front, rear
+    case front, rear, both
     
-    func cameraDevice() -> UIImagePickerController.CameraDevice {
+    func cameraDevice() -> UIImagePickerController.CameraDevice? {
         if self == .front {
             return UIImagePickerController.CameraDevice.front
-        } else {
+        } else if self == .rear {
             return UIImagePickerController.CameraDevice.rear
+        } else {
+            return nil
         }
     }
 }
