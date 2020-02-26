@@ -129,9 +129,10 @@ class WelcomeVideoViewController: UIViewController {
     }
     
     @IBAction func tryItFirstTapped() {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let vc = storyboard.instantiateViewController(withIdentifier: "TaskListTableViewController") 
-        self.present(vc, animated: true, completion: nil)
+        guard let appDelegate = (AppDelegate.shared as? AppDelegate) else {
+            return
+        }
+        appDelegate.showTryItFirstViewController(animated: true)
     }
     
     @IBAction func loginTapped() {
