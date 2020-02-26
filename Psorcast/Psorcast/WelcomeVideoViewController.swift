@@ -41,6 +41,7 @@ class WelcomeVideoViewController: UIViewController {
     @IBOutlet weak var videoView: UIView!
     @IBOutlet weak var getStartedButton: UIButton!
     @IBOutlet weak var loginButton: UIButton!
+    @IBOutlet weak var tryItFirstButton: UIButton!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var textLabel: UILabel!
     
@@ -66,6 +67,7 @@ class WelcomeVideoViewController: UIViewController {
                         
         self.getStartedButton.recursiveSetDesignSystem(designSystem, with: primaryColor)
         self.loginButton.recursiveSetDesignSystem(designSystem, with: primaryColor)
+        self.tryItFirstButton.recursiveSetDesignSystem(designSystem, with: primaryColor)
         
         self.videoView.backgroundColor = primaryColor.color
     }
@@ -123,7 +125,13 @@ class WelcomeVideoViewController: UIViewController {
     }
     
     @IBAction func getStartedTapped() {
+        // TODO: mdephillips 2/23/20 implement for PSR-188
+    }
     
+    @IBAction func tryItFirstTapped() {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let vc = storyboard.instantiateViewController(withIdentifier: "TaskListTableViewController") 
+        self.present(vc, animated: true, completion: nil)
     }
     
     @IBAction func loginTapped() {

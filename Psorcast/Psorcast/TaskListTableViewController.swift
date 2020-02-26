@@ -1,6 +1,6 @@
 //
 //  TaskListTableViewController.swift
-//  PsorcastValidation
+//  Psorcast
 //
 //  Copyright © 2019 Sage Bionetworks. All rights reserved.
 //
@@ -36,11 +36,12 @@ import BridgeApp
 import BridgeSDK
 import MotorControl
 
-class TaskListTableViewController: UITableViewController, RSDTaskViewControllerDelegate, RSDButtonCellDelegate {
+class TaskListTableViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, RSDTaskViewControllerDelegate, RSDButtonCellDelegate {
     
     let scheduleManager = TaskListScheduleManager()
     
-    let endOfValidationTaskId = "endOfValidation"
+    @IBOutlet weak var tableView: UITableView?
+    @IBOutlet weak var signUpButton: UIButton?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -51,12 +52,10 @@ class TaskListTableViewController: UITableViewController, RSDTaskViewControllerD
         // reload the schedules and add an observer to observe changes.
         scheduleManager.reloadData()
         NotificationCenter.default.addObserver(forName: .SBAUpdatedScheduledActivities, object: scheduleManager, queue: OperationQueue.main) { (notification) in
-            self.tableView.reloadData()
-            self.updateHeaderFooterText()
+            self.tableView?.reloadData()
         }
         
         updateDesignSystem()
-        updateHeaderFooterText()
     }
     
     func updateDesignSystem() {
@@ -64,58 +63,32 @@ class TaskListTableViewController: UITableViewController, RSDTaskViewControllerD
         
         self.view.backgroundColor = designSystem.colorRules.backgroundPrimary.color
         
-        let tableHeader = self.tableView.tableHeaderView as? TaskTableHeaderView
-        tableHeader?.backgroundColor = AppDelegate.designSystem.colorRules.backgroundPrimary.color
+        let tableHeader = self.tableView?.tableHeaderView as? TaskTableHeaderView
+        tableHeader?.backgroundColor = AppDelegate.designSystem.colorRules.backgroundPrimary.color                
         
-        let tableFooter = self.tableView.tableFooterView as? TaskTableFooterView
-        tableFooter?.backgroundColor = AppDelegate.designSystem.colorRules.backgroundPrimary.color
-        tableFooter?.titleLabel?.textColor = designSystem.colorRules.textColor(on: designSystem.colorRules.backgroundPrimary, for: .smallHeader)
-        tableFooter?.titleLabel?.font = designSystem.fontRules.font(for: .small)
-        tableFooter?.doneButton?.setDesignSystem(designSystem, with: designSystem.colorRules.backgroundLight)
-    }
-    
-    func updateHeaderFooterText() {
-        // Obtain the version and the date that the app was compiled
-        let tableFooter = self.tableView.tableFooterView as? TaskTableFooterView
-        let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as! String
-        let versionStr = Localization.localizedStringWithFormatKey("RELEASE_VERSION_%@", version)
-        let releaseDate = compileDate() ?? ""
-        let releaseDateStr = Localization.localizedStringWithFormatKey("RELEASE_DATE_%@", releaseDate)
-        
-        // Done button is always enabled
-        tableFooter?.doneButton?.isEnabled = true
-        // For the trial app, show the user their external id
-        if let participantID = UserDefaults.standard.string(forKey: "participantID") {
-            tableFooter?.titleLabel?.text = String(format: "%@\n%@\n%@", participantID, versionStr, releaseDateStr)
-        } else { // For the study app, don't show the external ID
-            tableFooter?.titleLabel?.text = String(format: "%@\n%@", versionStr, releaseDateStr)
-        }
+        self.signUpButton?.recursiveSetDesignSystem(designSystem, with: designSystem.colorRules.backgroundLight)
     }
 
     // MARK: - Table view data source
 
-    override func numberOfSections(in tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return self.scheduleManager.tableSectionCount
     }
 
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.scheduleManager.tableRowCount
     }
 
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "PsorcastTaskCell", for: indexPath) as! TaskTableviewCell
         
         cell.titleLabel?.text = self.scheduleManager.title(for: indexPath)
-        cell.detailLabel?.text = self.scheduleManager.detail(for: indexPath)
+        cell.detailLabel?.text = self.scheduleManager.text(for: indexPath)
         cell.actionButton.setTitle(Localization
-            .localizedString("BUTTON_TITLE_BEGIN"), for: .normal)
+            .localizedString("BUTTON_TITLE_PREVIEW"), for: .normal)
         cell.indexPath = indexPath
         cell.delegate = self
-        cell.doneContainer?.tag = cell.indexPath.row
-        cell.doneContainer?.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.didTapDoneCell(sender:))))
         cell.setDesignSystem(AppDelegate.designSystem, with: AppDelegate.designSystem.colorRules.backgroundLight)
-        let taskId = self.scheduleManager.taskId(for: indexPath) ?? ""
-        cell.setIsComplete(isComplete: self.scheduleManager.isComplete(taskId: taskId))
         
         return cell
     }
@@ -125,14 +98,8 @@ class TaskListTableViewController: UITableViewController, RSDTaskViewControllerD
         self.runTask(at: cell.indexPath)
     }
     
-    /// Called when user taps done text on task they have already completed
-    @objc func didTapDoneCell(sender: UITapGestureRecognizer) {
-        if let doneContainer = sender.view {
-            self.runTask(at: IndexPath(row: doneContainer.tag, section: 0))
-        }
-    }
-    
     func runTask(at indexPath: IndexPath) {
+        // Initiate task factory
         RSDFactory.shared = TaskFactory()
         
         // Work-around fix for permission bug
@@ -140,60 +107,46 @@ class TaskListTableViewController: UITableViewController, RSDTaskViewControllerD
         // Usually research framework caches it and the state becomes invalid
         UserDefaults.standard.removeObject(forKey: "rsd_MotionAuthorizationStatus")
         
-        // This is an activity
-        guard let activity = self.scheduleManager.sortedScheduledActivity(for: indexPath) else { return }
-        let taskViewModel = scheduleManager.instantiateTaskViewModel(for: activity)
+        let taskInfo = self.scheduleManager.taskInfo(for: indexPath)
+        let taskViewModel = RSDTaskViewModel(taskInfo: taskInfo)
         let taskVc = RSDTaskViewController(taskViewModel: taskViewModel)
         taskVc.modalPresentationStyle = .fullScreen
         taskVc.delegate = self
         self.present(taskVc, animated: true, completion: nil)
     }
     
-    @IBAction func doneTapped() {
-        UserDefaults.standard.removeObject(forKey: "participantID")
-        self.scheduleManager.clearIsCompleteStatus()
-        
-        RSDFactory.shared = TaskFactory()
-        let endStep = EndOfValidationStepObject(identifier: self.endOfValidationTaskId, type: .endOfValidation)
-        var navigator = RSDConditionalStepNavigatorObject(with: [endStep])
-        navigator.progressMarkers = []
-        let task = RSDTaskObject(identifier: endOfValidationTaskId, stepNavigator: navigator)
-        let taskViewController = RSDTaskViewController(task: task)
-        taskViewController.modalPresentationStyle = .fullScreen
-        taskViewController.delegate = self
-        self.present(taskViewController, animated: true, completion: nil)
+    @IBAction func signUpForStudyTapped() {
+        guard let appDelegate = (AppDelegate.shared as? AppDelegate) else {
+            return
+        }
+        appDelegate.showWelcomeViewController(animated: true)
     }
 
     func taskController(_ taskController: RSDTaskController, didFinishWith reason: RSDTaskFinishReason, error: Error?) {
-        
+
         // dismiss the view controller
         (taskController as? UIViewController)?.dismiss(animated: true, completion: nil)
-        
-        let taskId = taskController.taskViewModel.taskResult.identifier
-        
-        // End of validation task complete, go to participant ID screen
-        if taskId == self.endOfValidationTaskId {
-            (AppDelegate.shared as? AppDelegate)?.showAppropriateViewController(animated: true)
-            return
-        }
-        
-        // Let the schedule manager handle the cleanup.
-        scheduleManager.taskController(taskController, didFinishWith: reason, error: error)
-        
-        if error == nil && reason == .completed {
-            self.scheduleManager.setIsComplete(taskId: taskId)
-            self.updateHeaderFooterText()
-        }
-        
-        // Reload the table view
-        self.tableView.reloadData()
     }
-    
+        
     func taskController(_ taskController: RSDTaskController, readyToSave taskViewModel: RSDTaskViewModel) {
-        scheduleManager.taskController(taskController, readyToSave: taskViewModel)
+        // Do not save or upload the data for the screening app
+        // scheduleManager.taskController(taskController, readyToSave: taskViewModel)
+        
+        // Let's delete all the files that were saved during the tests as well
+        taskViewModel.taskResult.stepHistory.forEach { (result) in
+            if let fileResult = result as? RSDFileResultObject,
+                let url = fileResult.url {
+                do {
+                    try FileManager.default.removeItem(at: url)
+                    print("Successfully deleted file: \(url.absoluteURL)")
+                } catch let error as NSError {
+                    print("Error deleting file: \(error.domain)")
+                }
+            }
+        }
     }
     
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 112.0
     }
     
@@ -215,14 +168,7 @@ open class TaskTableviewCell: RSDButtonCell {
     /// Divider view that is associated with this cell.
     @IBOutlet open var dividerView: UIView?
     
-    /// Done label
-    @IBOutlet open var doneLabel: UILabel?
-    
-    /// Container view that holds the done info
-    @IBOutlet open var doneContainer: UIView?
-    
     func setIsComplete(isComplete: Bool) {
-        doneContainer?.isHidden = !isComplete
         actionButton.isHidden = isComplete
     }
     
@@ -244,18 +190,8 @@ open class TaskTableviewCell: RSDButtonCell {
         dividerView?.backgroundColor = designSystem.colorRules.backgroundPrimary.color
         
         (self.actionButton as? RSDRoundedButton)?.setDesignSystem(designSystem, with: background)
-        
-        self.doneLabel?.font = designSystem.fontRules.font(for: .body)
-        self.doneLabel?.textColor = designSystem.colorRules.palette.successGreen.colorTiles[3].color
     }
 }
 
 open class TaskTableHeaderView: UIView {
-}
-
-open class TaskTableFooterView: UIView {
-    /// Title label that is associated with this cell.
-    @IBOutlet open var titleLabel: UILabel?
-    // Done button for switch participant IDs
-    @IBOutlet open var doneButton: RSDRoundedButton?
 }

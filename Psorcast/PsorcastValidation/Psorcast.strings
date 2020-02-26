@@ -37,6 +37,7 @@
 "RELEASE_DATE_%@" = "Released on %@";
 "STUDY_TITLE" = "A Psoriasis Research Study";
 "BUTTON_TITLE_BEGIN" = "Begin";
+"BUTTON_TITLE_PREVIEW" = "Preview";
 
 "WELCOME_STUDY" = "Welcome to Psorcast Validation Study";
 
