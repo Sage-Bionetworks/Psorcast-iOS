@@ -38,7 +38,7 @@ import MotorControl
 /// Subclass the schedule manager to set up a predicate to filter the schedules.
 public class TaskListScheduleManager : SBAScheduleManager {
     
-    public let tasks: [RSDIdentifier] = [.psoriasisDrawTask, .psoriasisAreaPhotoTask, .jointCountingTask, .digitalJarOpenTask, .handImagingTask, .footImagingTask, .walkingTask, .mdJointCountingTask, .mdJointSwellingTask]
+    public let tasks: [RSDIdentifier] = [.psoriasisDrawTask, .psoriasisAreaPhotoTask, .jointCountingTask, .digitalJarOpenTask, .handImagingTask, .footImagingTask, .walkingTask]
     
     ///
     /// - returns: the total table row count including activities
@@ -70,23 +70,19 @@ public class TaskListScheduleManager : SBAScheduleManager {
         let taskId = tasks[indexPath.row]
         switch taskId {
         case .psoriasisDrawTask:
-            return "Finger Tapping"
+            return Localization.localizedString("PSORIASIS_DRAW_TITLE")
         case .psoriasisAreaPhotoTask:
-            return "Phone Hold"
+            return Localization.localizedString("PSORIASIS_AREA_PHOTO_TITLE")
         case .jointCountingTask:
-            return "Finger-to-Nose"
+            return Localization.localizedString("COUNTING_PAINFUL_JOINS_TITLE")
         case .digitalJarOpenTask:
-            return "Dual Phone Hold"
+            return Localization.localizedString("DIGITAL_JAR_OPEN_TITLE")
         case .handImagingTask:
-            return "Digit Symbol Substitution"
+            return Localization.localizedString("FINGERS_PHOTO_TITLE")
         case .footImagingTask:
-            return "Go-No-Go"
+            return Localization.localizedString("TOES_PHOTO_TITLE")
         case .walkingTask:
-            return "N-Back"
-        case .mdJointCountingTask:
-            return "Spatial Working Memory"
-        case .mdJointSwellingTask:
-            return "Spatial Working Memory"
+            return Localization.localizedString("THIRTY_SECOND_WALK_TITLE")
         default:
             return taskId.rawValue
         }
@@ -101,23 +97,19 @@ public class TaskListScheduleManager : SBAScheduleManager {
         let taskId = tasks[indexPath.row]
         switch taskId {
         case .psoriasisDrawTask:
-            return "Finger Tapping"
+            return Localization.localizedString("TWO_MINUTES")
         case .psoriasisAreaPhotoTask:
-            return "Phone Hold"
+            return Localization.localizedString("ONE_MINUTE")
         case .jointCountingTask:
-            return "Finger-to-Nose"
+            return Localization.localizedString("TWO_MINUTES")
         case .digitalJarOpenTask:
-            return "Dual Phone Hold"
+            return Localization.localizedString("TWO_MINUTES")
         case .handImagingTask:
-            return "Digit Symbol Substitution"
+            return Localization.localizedString("ONE_MINUTE")
         case .footImagingTask:
-            return "Go-No-Go"
+            return Localization.localizedString("ONE_MINUTE")
         case .walkingTask:
-            return "N-Back"
-        case .mdJointCountingTask:
-            return "Spatial Working Memory"
-        case .mdJointSwellingTask:
-            return "Spatial Working Memory"
+            return Localization.localizedString("ONE_MINUTE")
         default:
             return taskId.rawValue
         }
