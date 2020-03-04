@@ -81,7 +81,7 @@ open class PsoriasisDrawStepViewController: RSDStepViewController, ProcessorFini
     
     /// The line width is proportional to the screen width
     open var lineWidth: CGFloat {
-        return (CGFloat(10) / CGFloat(375)) * self.view.frame.width
+        return (CGFloat(5) / CGFloat(375)) * self.view.frame.width
     }
     
     /// Processing queue for saving camera
