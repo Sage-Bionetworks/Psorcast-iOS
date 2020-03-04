@@ -95,17 +95,25 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate {
     }
     
     func showWelcomeViewController(animated: Bool) {
-        guard self.rootViewController?.state != .main else { return }
         guard let storyboard = openStoryboard("Main"),
             let vc = storyboard.instantiateInitialViewController()
             else {
                 fatalError("Failed to instantiate initial view controller in the main storyboard.")
         }
+        self.transition(to: vc, state: .launch, animated: true)
+    }
+    
+    func showTryItFirstViewController(animated: Bool) {
+        guard self.rootViewController?.state != .main else { return }
+        
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let vc = storyboard.instantiateViewController(withIdentifier: "TaskListTableViewController")
+        
         self.transition(to: vc, state: .main, animated: true)
     }
     
     func showSignInViewController(animated: Bool) {
-        guard self.rootViewController?.state != .onboarding else { return }
+        guard self.rootViewController?.state != .main else { return }
         
         let externalIDStep = ExternalIDRegistrationStep(identifier: "enterExternalID", type: "externalID")
         externalIDStep.shouldHideActions = [.navigation(.goBackward), .navigation(.skip

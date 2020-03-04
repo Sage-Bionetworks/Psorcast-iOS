@@ -37,6 +37,7 @@
 "RELEASE_DATE_%@" = "Released on %@";
 "STUDY_TITLE" = "A Psoriasis Research Study";
 "BUTTON_TITLE_BEGIN" = "Begin";
+"BUTTON_TITLE_PREVIEW" = "Preview";
 
 "WELCOME_STUDY" = "Welcome to Psorcast Validation Study";
 
@@ -77,3 +78,16 @@
 "JAR_OPEN_REDO_TITLE_RIGHT_COUNTER_CLOCKWISE" = "Redo Right Hand: Counter Clockwise";
 
 "MOTION_RECORDER_FAILED_TITLE" = "Motion recorder failed";
+
+"FINGERS_PHOTO_TITLE" = "Fingers Photo";
+"TOES_PHOTO_TITLE" = "Toes Photo";
+"THIRTY_SECOND_WALK_TITLE" = "30 Second Walk";
+"COUNTING_PAINFUL_JOINS_TITLE" = "Counting Painful Joints";
+"PSORIASIS_AREA_PHOTO_TITLE" = "Psoriasis Area Photo";
+"PSORIASIS_DRAW_TITLE" = "Psoriasis Draw";
+"DIGITAL_JAR_OPEN_TITLE" = "Digital Jar Open";
+
+"ONE_MINUTE" = "1 minute";
+"TWO_MINUTES" = "2 minutes";
+
+
