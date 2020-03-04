@@ -344,6 +344,8 @@ extension UIImage {
         if total == 0 {
             return 0
         }
+         
+        NSLog("Selected pixel count = \(selectedCount) out of \(total) total selectable pixels")
         
         return Float(selectedCount) / Float(total)
     }

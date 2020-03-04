@@ -198,6 +198,7 @@ open class PsoriasisDrawCompletionStepViewController: RSDStepViewController, Pro
         }
     }
     
+    /// Total coverage is calculated by adding up each body sections coverage.
     open func psoriasisDrawCoverage(from identifiers: [String]) -> Float {
         var sum = Float(0)
         for result in self.taskController?.taskViewModel.taskResult.stepHistory ?? [] {
@@ -205,10 +206,29 @@ open class PsoriasisDrawCompletionStepViewController: RSDStepViewController, Pro
                 let answerResult = result as? RSDAnswerResultObject,
                 answerResult.answerType == .decimal,
                 let decimalAnswer = answerResult.value as? Float {
-                sum += (decimalAnswer * 100)
+                let scaleFactor = self.coverageScaleFactor(for: result.identifier)
+                sum += ((decimalAnswer * scaleFactor) * 100)
             }
         }
-        return sum / Float(identifiers.count)
+        return sum
+    }
+    
+    /// Not every body section contains the same amount of selectable pixels.
+    /// These scale factors were computed by running the app and checking
+    /// the log output of PSRImageHelper.psoriasisCoverage for each section.
+    func coverageScaleFactor(for identifier: String) -> Float {
+        switch identifier {
+        case "\(aboveTheWaistFrontImageIdentifier)\(coverageResult)":
+            return 0.256873160187267
+        case "\(belowTheWaistFrontImageIdentifier)\(coverageResult)":
+            return 0.227544780091461
+        case "\(aboveTheWaistBackImageIdentifier)\(coverageResult)":
+            return 0.257628094415659
+        case "\(belowTheWaistBackImageIdentifier)\(coverageResult)":
+            return 0.257953965305613
+        default:
+            return 0
+        }
     }
     
     func loadImageAndDelayIfNecessary() {
