@@ -86,11 +86,8 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate {
     
     func showMainViewController(animated: Bool) {
         guard self.rootViewController?.state != .main else { return }
-        guard let storyboard = openStoryboard("Main"),
-            let vc = storyboard.instantiateInitialViewController()
-            else {
-                fatalError("Failed to instantiate initial view controller in the main storyboard.")
-        }
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let vc = storyboard.instantiateViewController(withIdentifier: "ValidationTaskTableViewController")
         self.transition(to: vc, state: .main, animated: true)
     }
     

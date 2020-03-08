@@ -194,6 +194,8 @@
 		CBDCDCD823F385E600E5CEB8 /* ResearchMotion.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CBDCDCD623F385E600E5CEB8 /* ResearchMotion.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		CBDCDCDA23F385EC00E5CEB8 /* ResearchUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBDCDCD923F385EC00E5CEB8 /* ResearchUI.framework */; };
 		CBDCDCDB23F385EC00E5CEB8 /* ResearchUI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CBDCDCD923F385EC00E5CEB8 /* ResearchUI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		CBE561532412BD96009A2930 /* ValidationTaskScheduleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE5614E2412BD96009A2930 /* ValidationTaskScheduleManager.swift */; };
+		CBE561552412BD9D009A2930 /* ValidationTaskTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE561542412BD9D009A2930 /* ValidationTaskTableViewController.swift */; };
 		CBE908952332ED9E00F88A9A /* PsoriasisAreaPhoto.json in Resources */ = {isa = PBXBuildFile; fileRef = CBE908942332ED9E00F88A9A /* PsoriasisAreaPhoto.json */; };
 		CBE908A42333BADA00F88A9A /* PsoriasisAreaPhotoStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE908A22333BADA00F88A9A /* PsoriasisAreaPhotoStepViewController.swift */; };
 		CBE908A52333BADA00F88A9A /* PsoriasisAreaPhotoStepViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CBE908A32333BADA00F88A9A /* PsoriasisAreaPhotoStepViewController.xib */; };
@@ -421,6 +423,8 @@
 		CBDCDCD323F385DA00E5CEB8 /* Research.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Research.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CBDCDCD623F385E600E5CEB8 /* ResearchMotion.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = ResearchMotion.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CBDCDCD923F385EC00E5CEB8 /* ResearchUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = ResearchUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		CBE5614E2412BD96009A2930 /* ValidationTaskScheduleManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ValidationTaskScheduleManager.swift; sourceTree = "<group>"; };
+		CBE561542412BD9D009A2930 /* ValidationTaskTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ValidationTaskTableViewController.swift; sourceTree = "<group>"; };
 		CBE908942332ED9E00F88A9A /* PsoriasisAreaPhoto.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = PsoriasisAreaPhoto.json; sourceTree = "<group>"; };
 		CBE908A22333BADA00F88A9A /* PsoriasisAreaPhotoStepViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PsoriasisAreaPhotoStepViewController.swift; sourceTree = "<group>"; };
 		CBE908A32333BADA00F88A9A /* PsoriasisAreaPhotoStepViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PsoriasisAreaPhotoStepViewController.xib; sourceTree = "<group>"; };
@@ -525,6 +529,7 @@
 		CB7CF23C2400BE84003E02A5 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				CBE561542412BD9D009A2930 /* ValidationTaskTableViewController.swift */,
 				CB7CF2412400BF10003E02A5 /* WelcomeVideoViewController.swift */,
 				CB24CB1D2403941F0081EBD3 /* TaskListTableViewController.swift */,
 			);
@@ -598,6 +603,7 @@
 			isa = PBXGroup;
 			children = (
 				CBBE0F6524039A5F0072452C /* TaskListScheduleManager.swift */,
+				CBE5614E2412BD96009A2930 /* ValidationTaskScheduleManager.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -1152,8 +1158,10 @@
 			files = (
 				CBDCDCB523F3849E00E5CEB8 /* DigitalJarOpenInstructionStepViewController.swift in Sources */,
 				CBDCDCAB23F3849E00E5CEB8 /* PsoriasisDrawImageView.swift in Sources */,
+				CBE561532412BD96009A2930 /* ValidationTaskScheduleManager.swift in Sources */,
 				CBDCDCA623F3849E00E5CEB8 /* PsoriasisAreaPhotoStepObject.swift in Sources */,
 				CBDCDC9523F3849E00E5CEB8 /* ImageCaptureStepViewController.swift in Sources */,
+				CBE561552412BD9D009A2930 /* ValidationTaskTableViewController.swift in Sources */,
 				CBDCDC9B23F3849E00E5CEB8 /* JointPainResultObject.swift in Sources */,
 				CBDCDCAF23F3849E00E5CEB8 /* PsoriasisDrawCompletionStepViewController.swift in Sources */,
 				CBDCDC9A23F3849E00E5CEB8 /* JointPainStepObject.swift in Sources */,
