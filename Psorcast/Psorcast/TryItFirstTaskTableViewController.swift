@@ -1,6 +1,6 @@
 //
-//  TaskListTableViewController.swift
-//  Psorcast
+//  TryItFirstTaskTableViewController.swift
+//  PsorcastValidation
 //
 //  Copyright © 2019 Sage Bionetworks. All rights reserved.
 //
@@ -36,9 +36,9 @@ import BridgeApp
 import BridgeSDK
 import MotorControl
 
-class TaskListTableViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, RSDTaskViewControllerDelegate, RSDButtonCellDelegate {
+class TryItFirstTaskTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, RSDTaskViewControllerDelegate, RSDButtonCellDelegate {
     
-    let scheduleManager = TaskListScheduleManager()
+    let scheduleManager = TryItFirstTaskScheduleManager()
     
     @IBOutlet weak var tableView: UITableView?
     @IBOutlet weak var signUpButton: UIButton?
@@ -63,8 +63,8 @@ class TaskListTableViewController: UIViewController, UITableViewDataSource, UITa
         
         self.view.backgroundColor = designSystem.colorRules.backgroundPrimary.color
         
-        let tableHeader = self.tableView?.tableHeaderView as? TaskTableHeaderView
-        tableHeader?.backgroundColor = AppDelegate.designSystem.colorRules.backgroundPrimary.color                
+        let tableHeader = self.tableView?.tableHeaderView as? TryItFirstTaskTableHeaderView
+        tableHeader?.backgroundColor = AppDelegate.designSystem.colorRules.backgroundPrimary.color
         
         self.signUpButton?.recursiveSetDesignSystem(designSystem, with: designSystem.colorRules.backgroundLight)
     }
@@ -80,7 +80,7 @@ class TaskListTableViewController: UIViewController, UITableViewDataSource, UITa
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "PsorcastTaskCell", for: indexPath) as! TaskTableviewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "PsorcastTaskCell", for: indexPath) as! TryItFirstTaskTableviewCell
         
         cell.titleLabel?.text = self.scheduleManager.title(for: indexPath)
         cell.detailLabel?.text = self.scheduleManager.text(for: indexPath)
@@ -156,7 +156,7 @@ class TaskListTableViewController: UIViewController, UITableViewDataSource, UITa
     }
 }
 
-open class TaskTableviewCell: RSDButtonCell {
+open class TryItFirstTaskTableviewCell: RSDButtonCell {
     open var backgroundTile = RSDGrayScale().white
     
     /// Title label that is associated with this cell.
@@ -193,5 +193,5 @@ open class TaskTableviewCell: RSDButtonCell {
     }
 }
 
-open class TaskTableHeaderView: UIView {
+open class TryItFirstTaskTableHeaderView: UIView {
 }
