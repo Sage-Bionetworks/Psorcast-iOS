@@ -82,7 +82,7 @@
                                 <action selector="capturePhoto:" destination="-1" eventType="touchUpInside" id="nlE-wI-3dd"/>
                             </connections>
                         </button>
-                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="h8j-iD-5fl" userLabel="Overlay Image View">
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="bottom" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="h8j-iD-5fl" userLabel="Overlay Image View">
                             <rect key="frame" x="0.0" y="114" width="395" height="450"/>
                         </imageView>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Oq7-H9-4LA">

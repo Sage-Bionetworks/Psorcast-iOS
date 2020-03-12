@@ -87,7 +87,7 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate {
     func showMainViewController(animated: Bool) {
         guard self.rootViewController?.state != .main else { return }
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let vc = storyboard.instantiateViewController(withIdentifier: "ValidationTaskTableViewController")
+        let vc = storyboard.instantiateViewController(withIdentifier: "TabBarViewController")
         self.transition(to: vc, state: .main, animated: true)
     }
     
@@ -104,7 +104,7 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate {
         guard self.rootViewController?.state != .main else { return }
         
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let vc = storyboard.instantiateViewController(withIdentifier: "TaskListTableViewController")
+        let vc = storyboard.instantiateViewController(withIdentifier: "TryItFirstTaskTableViewController")
         
         self.transition(to: vc, state: .main, animated: true)
     }
