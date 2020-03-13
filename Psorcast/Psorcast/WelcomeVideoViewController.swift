@@ -133,7 +133,7 @@ class WelcomeVideoViewController: UIViewController {
         guard let appDelegate = (AppDelegate.shared as? AppDelegate) else {
             return
         }
-        appDelegate.showTryItFirstViewController(animated: true)
+        appDelegate.showTryItFirstIntroScreens(animated: true)
     }
     
     @IBAction func loginTapped() {

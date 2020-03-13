@@ -51,6 +51,9 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate {
                                               colorRules: PSRColorRules(palette: colorPalette, version: 1),
                                               fontRules: PSRFontRules(version: 1))
     
+    /// The task identifier of the try it first intro screens
+    let tryItFirstTaskId = "TryItFirstIntro"
+    
     // The app's image data store
     public let imageDefaults = ImageDefaults()
     
@@ -100,6 +103,28 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate {
         self.transition(to: vc, state: .launch, animated: true)
     }
     
+    func showTryItFirstIntroScreens(animated: Bool) {
+        guard self.rootViewController?.state != .main else { return }
+        
+        var instructionSteps = [RSDStep]()
+        let stepIdList = ["TryItFirstInstruction0", "TryItFirstInstruction1", "TryItFirstInstruction2", "TryItFirstInstruction3"]
+        
+        for stepId in stepIdList {
+            let step = TryItFirstInstructionStepObject(identifier: stepId)
+            step.imageTheme = RSDFetchableImageThemeElementObject(imageName: stepId)
+            step.title = Localization.localizedString("\(stepId)Title")
+            step.text = Localization.localizedString("\(stepId)Text")
+            instructionSteps.append(step)
+        }
+        
+        var navigator = RSDConditionalStepNavigatorObject(with: instructionSteps)
+        navigator.progressMarkers = []
+        let task = RSDTaskObject(identifier: self.tryItFirstTaskId, stepNavigator: navigator)
+        let vc = RSDTaskViewController(task: task)
+        vc.delegate = self
+        self.transition(to: vc, state: .onboarding, animated: true)
+    }
+    
     func showTryItFirstViewController(animated: Bool) {
         guard self.rootViewController?.state != .main else { return }
         
@@ -133,6 +158,17 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate {
     // MARK: RSDTaskViewControllerDelegate
     
     func taskController(_ taskController: RSDTaskController, didFinishWith reason: RSDTaskFinishReason, error: Error?) {
+        
+        // If we finish the intro screens, send the user to the try it first task list
+        if taskController.task.identifier == self.tryItFirstTaskId {
+            if reason == .completed {
+                self.showTryItFirstViewController(animated: true)
+            } else {
+                self.showWelcomeViewController(animated: true)
+            }
+            return
+        }
+        
         guard BridgeSDK.authManager.isAuthenticated() else { return }
         showAppropriateViewController(animated: true)
     }
@@ -168,5 +204,12 @@ open class PSRFontRules: RSDFontRules {
         default:  // includes .regular and everything else
             return RSDFont(name: latoRegularName, size: fontSize)!
         }
+    }
+}
+
+open class TryItFirstInstructionStepObject: RSDUIStepObject, RSDStepViewControllerVendor {
+    public func instantiateViewController(with parent: RSDPathComponent?) -> (UIViewController & RSDStepController)? {
+        let vc = RSDInstructionStepViewController(step: self, parent: parent)
+        return vc
     }
 }

@@ -90,4 +90,12 @@
 "ONE_MINUTE" = "1 minute";
 "TWO_MINUTES" = "2 minutes";
 
+"TryItFirstInstruction0Title" = "Measure Your Psoriasis";
+"TryItFirstInstruction1Title" = "Animated GIFs of Symptoms";
+"TryItFirstInstruction2Title" = "Effect Of Your Treatments";
+"TryItFirstInstruction3Title" = "Your Data Belongs To You";
 
+"TryItFirstInstruction0Text" = "Psorcast activities will allow you to measure and view how your psoriasis changes with time and with different treatments.";
+"TryItFirstInstruction1Text" = "The more you engage with Psorcast activities, the more you will be able to track the history of your condition. Animated gifs will allow you to view how your condition has changed over time.";
+"TryItFirstInstruction2Text" = "The ability to tag your treatments to your measurements will allow you to monitor your treatment effectiveness and have a reference for your treatments in the past.";
+"TryItFirstInstruction3Text" = "You can view, export and share your Psorcast data however you would like. Your data is yours.";
