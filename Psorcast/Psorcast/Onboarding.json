@@ -1,0 +1,72 @@
+{
+    "identifier": "Onboarding",
+    "taskIdentifier" : "Onboarding",
+    "progressMarkers":[],
+    "steps":
+    [
+        {
+            "identifier": "psoriasisStatus",
+            "type": "form",
+            "title": "Has a doctor diagnosed you with psoriasis or psoriatic arthritis?",
+            "actions":{
+                "skip": {
+                    "type": "navigation",
+                    "buttonTitle" : "Don’t have either",
+                    "skipToIdentifier": "treatmentsSelection"
+                }
+            },
+            "inputFields": [
+                {
+                    "uiHint": "list",
+                    "type": "singleChoice.string",
+                    "choices": [
+                        {
+                            "text": "Psoriasis",
+                            "value": "psoriasis"
+                        },
+                        {
+                            "text": "Psoriatic Arthritis",
+                            "value": "psoriatic_arthritis"
+                        },
+                        {
+                            "text": "Both of the above",
+                            "value": "both",
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "identifier": "psoriasisSymptoms",
+            "type": "form",
+            "title": "What kind of symptoms do you currently experience?",
+            "actions":{
+                "skip": {
+                    "type": "navigation",
+                    "buttonTitle" : "Don’t have either",
+                    "skipToIdentifier": "treatmentsSelection"
+                }
+            },
+            "inputFields": [
+                {
+                    "uiHint": "list",
+                    "type": "singleChoice.string",
+                    "choices": [
+                        {
+                            "text": "Skin symptoms",
+                            "value": "skin"
+                        },
+                        {
+                            "text": "Painful or swollen joints",
+                            "value": "painful_joints"
+                        },
+                        {
+                            "text": "Both of the above",
+                            "value": "both",
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

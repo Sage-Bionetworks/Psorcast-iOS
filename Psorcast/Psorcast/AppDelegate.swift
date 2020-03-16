@@ -103,6 +103,21 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate {
         self.transition(to: vc, state: .launch, animated: true)
     }
     
+    func showOnboardingScreens(animated: Bool) {
+        guard self.rootViewController?.state != .main else { return }
+        
+        RSDFactory.shared = TaskFactory()
+        let resource = RSDResourceTransformerObject(resourceName: "Onboarding.json", bundle: Bundle.main)
+        do {
+            let task = try RSDFactory.shared.decodeTask(with: resource)
+            let vc = RSDTaskViewController(task: task)
+            vc.delegate = self
+            self.transition(to: vc, state: .consent, animated: true)
+        } catch {
+            NSLog("Failed to create task from Onboarding.json \(error)")
+        }
+    }
+    
     func showTryItFirstIntroScreens(animated: Bool) {
         guard self.rootViewController?.state != .main else { return }
         
@@ -163,6 +178,16 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate {
         if taskController.task.identifier == self.tryItFirstTaskId {
             if reason == .completed {
                 self.showTryItFirstViewController(animated: true)
+            } else {
+                self.showWelcomeViewController(animated: true)
+            }
+            return
+        }
+        
+        // If we finish the onboarding screens, send the user to sign in
+        if taskController.task.identifier == "Onboarding" {
+            if reason == .completed {
+                self.showSignInViewController(animated: true)
             } else {
                 self.showWelcomeViewController(animated: true)
             }
