@@ -181,8 +181,6 @@ public class TreatmentSelectionStepViewController: RSDStepViewController, UITabl
         self.tableView.keyboardDismissMode = .onDrag
         
         self.searchBar.delegate = self
-        self.searchBar.searchTextField.backgroundColor = RSDColor.white
-        self.searchBar.searchTextField.borderStyle = .roundedRect
             
         self.refreshFilteredTreatments()
         self.refreshNextButtonState()
@@ -340,7 +338,7 @@ public struct TreatmentItem: Codable {
 open class TreatmentSelectionTableHeader: UITableViewHeaderFooterView, RSDViewDesignable {
         
     internal let kHeaderHorizontalMargin: CGFloat = 28.0
-    internal let kHeaderVerticalMargin: CGFloat = 12.0
+    internal let kHeaderVerticalMargin: CGFloat = 8.0
     
     public var backgroundColorTile: RSDColorTile?
     

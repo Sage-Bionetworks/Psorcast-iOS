@@ -200,6 +200,11 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate {
     
     func taskController(_ taskController: RSDTaskController, readyToSave taskViewModel: RSDTaskViewModel) {
     }
+    
+    func updateGlobalColors() {
+        // Set all UISearchBar textfield background to white
+        UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).backgroundColor = .white
+    }
 }
 
 open class PSRColorRules: RSDColorRules {
