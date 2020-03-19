@@ -106,7 +106,7 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate {
     func showOnboardingScreens(animated: Bool) {
         guard self.rootViewController?.state != .main else { return }
         
-        RSDFactory.shared = TaskFactory()
+        RSDFactory.shared = StudyTaskFactory()
         let resource = RSDResourceTransformerObject(resourceName: "Onboarding.json", bundle: Bundle.main)
         do {
             let task = try RSDFactory.shared.decodeTask(with: resource)
