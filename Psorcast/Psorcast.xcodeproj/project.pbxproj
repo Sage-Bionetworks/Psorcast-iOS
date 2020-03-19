@@ -51,7 +51,6 @@
 		CB67C29B23F390AB005B6BCD /* CodableStepObjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB67C29123F390AA005B6BCD /* CodableStepObjectTests.swift */; };
 		CB67C29D23F390AB005B6BCD /* JointPainStepViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB67C29323F390AA005B6BCD /* JointPainStepViewControllerTests.swift */; };
 		CB67C29E23F390AB005B6BCD /* CopyStepTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB67C29423F390AB005B6BCD /* CopyStepTests.swift */; };
-		CB67C29F23F390AB005B6BCD /* TaskListScheduleManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB67C29523F390AB005B6BCD /* TaskListScheduleManagerTests.swift */; };
 		CB6F54F022E25C5B0073BFE9 /* ParticipantIDRegistrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6F54EF22E25C5B0073BFE9 /* ParticipantIDRegistrationViewController.swift */; };
 		CB704AC123EF8C4D00CC9D13 /* ImageDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB704AC023EF8C4D00CC9D13 /* ImageDefaults.swift */; };
 		CB72E8AF241C2BC0006ECC24 /* Onboarding.json in Resources */ = {isa = PBXBuildFile; fileRef = CB72E8AA241C2BC0006ECC24 /* Onboarding.json */; };
@@ -72,6 +71,7 @@
 		CB8DC7BA2418A333001B7982 /* TaskListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBD67D8722DFC59B00998516 /* TaskListTableViewController.swift */; };
 		CB8F2A9E2375E4A4005A62E7 /* ImageCaptureCompletionStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB8F2A9D2375E4A4005A62E7 /* ImageCaptureCompletionStepViewController.swift */; };
 		CB8F7D562422D73A00F77D62 /* StudyTaskFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB8F7D512422D73900F77D62 /* StudyTaskFactory.swift */; };
+		CB8F7D592423F6BB00F77D62 /* TreatmentSelectionStepViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB8F7D582423F6BB00F77D62 /* TreatmentSelectionStepViewControllerTests.swift */; };
 		CB9F5E1F22E0BED3003FBCEF /* lato_black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CB9F5E1422E0BEA3003FBCEF /* lato_black.ttf */; };
 		CB9F5E2022E0BED3003FBCEF /* lato_bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CB9F5E1222E0BEA3003FBCEF /* lato_bold.ttf */; };
 		CB9F5E2122E0BED3003FBCEF /* lato_bolditalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CB9F5E1522E0BEA3003FBCEF /* lato_bolditalic.ttf */; };
@@ -358,7 +358,6 @@
 		CB67C29223F390AA005B6BCD /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CB67C29323F390AA005B6BCD /* JointPainStepViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JointPainStepViewControllerTests.swift; sourceTree = "<group>"; };
 		CB67C29423F390AB005B6BCD /* CopyStepTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CopyStepTests.swift; sourceTree = "<group>"; };
-		CB67C29523F390AB005B6BCD /* TaskListScheduleManagerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskListScheduleManagerTests.swift; sourceTree = "<group>"; };
 		CB6F54EF22E25C5B0073BFE9 /* ParticipantIDRegistrationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParticipantIDRegistrationViewController.swift; sourceTree = "<group>"; };
 		CB704AC023EF8C4D00CC9D13 /* ImageDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDefaults.swift; sourceTree = "<group>"; };
 		CB72E8AA241C2BC0006ECC24 /* Onboarding.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Onboarding.json; sourceTree = "<group>"; };
@@ -378,6 +377,7 @@
 		CB8DC7B324189E31001B7982 /* TaskListScheduleManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskListScheduleManager.swift; sourceTree = "<group>"; };
 		CB8F2A9D2375E4A4005A62E7 /* ImageCaptureCompletionStepViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCaptureCompletionStepViewController.swift; sourceTree = "<group>"; };
 		CB8F7D512422D73900F77D62 /* StudyTaskFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StudyTaskFactory.swift; sourceTree = "<group>"; };
+		CB8F7D582423F6BB00F77D62 /* TreatmentSelectionStepViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreatmentSelectionStepViewControllerTests.swift; sourceTree = "<group>"; };
 		CB9F5E1222E0BEA3003FBCEF /* lato_bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = lato_bold.ttf; path = Fonts/lato_bold.ttf; sourceTree = "<group>"; };
 		CB9F5E1322E0BEA3003FBCEF /* lato_light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = lato_light.ttf; path = Fonts/lato_light.ttf; sourceTree = "<group>"; };
 		CB9F5E1422E0BEA3003FBCEF /* lato_black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = lato_black.ttf; path = Fonts/lato_black.ttf; sourceTree = "<group>"; };
@@ -806,7 +806,7 @@
 				CB67C28F23F390AA005B6BCD /* JointPainImageViewTests.swift */,
 				CB67C29323F390AA005B6BCD /* JointPainStepViewControllerTests.swift */,
 				CB67C28E23F390AA005B6BCD /* PSRImageHelperTests.swift */,
-				CB67C29523F390AB005B6BCD /* TaskListScheduleManagerTests.swift */,
+				CB8F7D582423F6BB00F77D62 /* TreatmentSelectionStepViewControllerTests.swift */,
 			);
 			path = PsorcastTests;
 			sourceTree = "<group>";
@@ -1165,8 +1165,8 @@
 				CB67C29923F390AB005B6BCD /* JointPainImageViewTests.swift in Sources */,
 				CB67C29B23F390AB005B6BCD /* CodableStepObjectTests.swift in Sources */,
 				CB9F5E5222E0C2BA003FBCEF /* PsorcastTests.swift in Sources */,
+				CB8F7D592423F6BB00F77D62 /* TreatmentSelectionStepViewControllerTests.swift in Sources */,
 				CB67C29823F390AB005B6BCD /* PSRImageHelperTests.swift in Sources */,
-				CB67C29F23F390AB005B6BCD /* TaskListScheduleManagerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -114,6 +114,25 @@ public class TreatmentSelectionStepViewController: RSDStepViewController, UITabl
     var filteredTreatments = [String: [TreatmentItem]]()
     var filteredSections = [String]()
     
+    /// Returns a new step view controller for the specified step.
+    /// - parameter step: The step to be presented.
+    public override init(step: RSDStep, parent: RSDPathComponent?) {
+        super.init(nibName: nil, bundle: nil)
+        
+        // Set the initial result if available.
+        if let previousResult = (parent as? RSDHistoryPathComponent)?
+            .previousResult(for: step) as? RSDAnswerResultObject,
+            let stringArrayAnswer = previousResult.value as? [String]  {
+            for identifier in stringArrayAnswer {
+                self.selectionState[identifier] = true
+            }
+        }
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+    
     open var treatmentStep: TreatmentSelectionStepObject? {
         return self.step as? TreatmentSelectionStepObject
     }
@@ -159,9 +178,44 @@ public class TreatmentSelectionStepViewController: RSDStepViewController, UITabl
                 
         self.tableView.estimatedSectionHeaderHeight = 60
         self.tableView.sectionHeaderHeight = UITableView.automaticDimension
+        self.tableView.keyboardDismissMode = .onDrag
         
         self.searchBar.delegate = self
+        self.searchBar.searchTextField.backgroundColor = RSDColor.white
+        self.searchBar.searchTextField.borderStyle = .roundedRect
+            
         self.refreshFilteredTreatments()
+        self.refreshNextButtonState()
+    }
+    
+    open override func setupFooter(_ footer: RSDNavigationFooterView) {
+        super.setupFooter(footer)
+        self.refreshNextButtonState()
+    }
+    
+    open override func setupHeader(_ header: RSDStepNavigationView) {
+        super.setupHeader(header)
+        self.navigationHeader?.isUserInteractionEnabled = true
+        self.navigationHeader?.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.dismissKeyboard)))
+    }
+    
+    open func setSelectionState(for identifier: String, state: Bool) {
+        self.selectionState[identifier] = state
+        self.refreshNextButtonState()
+    }
+    
+    open func refreshNextButtonState() {
+        var enabled = false
+        for key in self.selectionState.keys {
+            if self.selectionState[key] == true {
+                enabled = true
+            }
+        }
+        self.navigationFooter?.nextButton?.isEnabled = enabled
+    }
+    
+    @objc func dismissKeyboard() {
+        self.searchBar.endEditing(true)
     }
     
     public func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
@@ -199,8 +253,13 @@ public class TreatmentSelectionStepViewController: RSDStepViewController, UITabl
         guard let treatment = self.treatment(for: indexPath) else {
             return
         }
-        self.selectionState[treatment.identifier] = !(self.selectionState[treatment.identifier] ?? false)
+        self.setSelectionState(for: treatment.identifier, state: !(self.selectionState[treatment.identifier] ?? false))
         self.tableView.reloadRows(at: [indexPath], with: .automatic)
+        self.dismissKeyboard()
+    }
+    
+    public func searchBarSearchButtonClicked(_ searchBar: UISearchBar)  {
+        self.dismissKeyboard()
     }
     
     public func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -243,14 +302,10 @@ public class TreatmentSelectionStepViewController: RSDStepViewController, UITabl
             for j in 0..<rawTreatments.count {
                 let treatment = rawTreatments[j]
                 
-                // Make the treatment search text favor prefixes,
-                // because user will start typing word from the first letter
-                let treatmentSearchText = String(treatment.identifier.lowercased().prefix(searchText.count))
+                let minScore = LevensteinTools.minLevensteinScore(for: searchText, titleText: treatment.identifier, detailText: treatment.detail)
                 
-                let levensteinScore = LevensteinTools.levenshtein(aStr: searchText, bStr: treatmentSearchText)
-                
-                // If the score was
-                if levensteinScore <= levensteinThreshold {
+                // If the score was low enough, we have a match.
+                if minScore <= levensteinThreshold {
                     treatments.append(treatment)
                 }
             }
@@ -264,6 +319,15 @@ public class TreatmentSelectionStepViewController: RSDStepViewController, UITabl
         self.filteredTreatments = filtered
         
         self.tableView.reloadData()
+    }
+    
+    override open func goForward() {
+        /// Save a string list of the multi-choice answer identifiers
+        let answer = self.selectionState.filter({ $0.value == true }).map({ $0.key })
+        let stringArrayType = RSDAnswerResultType(baseType: .string, sequenceType: .array, formDataType: .collection(.multipleChoice, .string), dateFormat: nil, unit: nil, sequenceSeparator: nil)
+        let result = RSDAnswerResultObject(identifier: self.step.identifier, answerType: stringArrayType, value: answer)
+        _ = self.stepViewModel.parent?.taskResult.appendStepHistory(with: result)
+        super.goForward()
     }
 }
 
@@ -336,10 +400,6 @@ open class TreatmentSelectionTableHeader: UITableViewHeaderFooterView, RSDViewDe
         super.init(coder: aDecoder)
         updateColorsAndFonts()
     }
-    
-    open override func awakeFromNib() {
-        super.awakeFromNib()
-    }
 }
 
 extension UITextField {
@@ -358,7 +418,7 @@ extension UITextField {
 
 class LevensteinTools {
     // return minimum value in a list of Ints
-    class func min(_ numbers: Int...) -> Int {
+    fileprivate class func minNum(_ numbers: Int...) -> Int {
         return numbers.reduce(numbers[0], {$0 < $1 ? $0 : $1})
     }
 
@@ -388,7 +448,7 @@ class LevensteinTools {
                 if a[i-1] == b[j-1] {
                     dist[i][j] = dist[i-1][j-1]  // noop
                 } else {
-                    dist[i][j] = LevensteinTools.min(
+                    dist[i][j] = LevensteinTools.minNum(
                         dist[i-1][j] + 1,  // deletion
                         dist[i][j-1] + 1,  // insertion
                         dist[i-1][j-1] + 1  // substitution
@@ -398,6 +458,42 @@ class LevensteinTools {
         }
 
         return dist[a.count][b.count]
+    }
+    
+    ///
+    /// This function uses various phrases created from title and detail to calculate
+    /// the best, or min, levenstein score for the parameters.
+    /// This function favors favor prefixes, because the user will start typing word from the first letter
+    ///
+    class func minLevensteinScore(for searchText: String, titleText: String, detailText: String?) -> Int {
+        
+        if searchText.count == 0 {
+            return Int.max
+        }
+        var minScore = Int.max
+
+        var fullWordArray = [String]()
+        // Build the list of phrases we will test levenstein score against threshold.
+        for text in [titleText, detailText ?? ""] {
+            // Ignore empty strings
+            if text.count > 0 {
+                fullWordArray.append(text)
+                let splitWords = text.split(separator: " ")
+                // Ignore the first word, but add all other words after that.
+                if splitWords.count > 1 {
+                    fullWordArray.append(contentsOf: Array(splitWords.map({ String($0) })))
+                }
+            }
+        }
+                
+        for text in fullWordArray {
+            // Truncate the phrase to meet length of search text to also favor prefixes.
+            // Also, make everything lowercase to ignore capitalization differences.
+            let treatmentText = String(text.lowercased().prefix(searchText.count))
+            minScore = min(minScore, LevensteinTools.levenshtein(aStr: searchText, bStr: treatmentText))
+        }
+        
+        return minScore
     }
 }
  
