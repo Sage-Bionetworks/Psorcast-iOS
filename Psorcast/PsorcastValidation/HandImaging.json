@@ -75,7 +75,7 @@
         {
             "identifier"    : "leftHand",
             "type"          : "imageCapture",
-            "title"         : "Fit in the lines if you can",
+            "title"         : "Fit your LEFT hand to the outline if you can",
             "image":{
                 "type":"fetchable",
                 "imageName": "CameraOverlayLeftHand",
@@ -119,7 +119,7 @@
         {
             "identifier"    : "rightHand",
             "type"          : "imageCapture",
-            "title"         : "Fit in the lines if you can",
+            "title"         : "Fit your RIGHT hand to the outline if you can",
             "image":{
                 "type":"fetchable",
                 "imageName": "CameraOverlayRightHand",
