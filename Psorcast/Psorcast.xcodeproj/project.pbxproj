@@ -12,6 +12,8 @@
 		CB05146C237F27560058D746 /* DigitalJarOpen.json in Resources */ = {isa = PBXBuildFile; fileRef = CB05146B237F27560058D746 /* DigitalJarOpen.json */; };
 		CB09F00123D644A9009D344E /* DigitalJarOpenInstructionStepViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB09F00023D644A8009D344E /* DigitalJarOpenInstructionStepViewController.xib */; };
 		CB09F00323D649FB009D344E /* DigitalJarOpenInstructionStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB09F00223D649FB009D344E /* DigitalJarOpenInstructionStepViewController.swift */; };
+		CB09F0382421D5730005698D /* TreatmentSelectionStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB09F0372421D5730005698D /* TreatmentSelectionStepViewController.swift */; };
+		CB09F03E2421E9E80005698D /* TreatmentSelectionStepViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB09F03D2421E9E80005698D /* TreatmentSelectionStepViewController.xib */; };
 		CB16BF5623E4B9140099FD08 /* GPUImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB16BF5323E4B90B0099FD08 /* GPUImage.framework */; };
 		CB16BF5723E4B9140099FD08 /* GPUImage.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CB16BF5323E4B90B0099FD08 /* GPUImage.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		CB28EBE82396FCA30043D7FE /* JointCounting.mov in Resources */ = {isa = PBXBuildFile; fileRef = CB28EBE52396FCA30043D7FE /* JointCounting.mov */; };
@@ -49,7 +51,6 @@
 		CB67C29B23F390AB005B6BCD /* CodableStepObjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB67C29123F390AA005B6BCD /* CodableStepObjectTests.swift */; };
 		CB67C29D23F390AB005B6BCD /* JointPainStepViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB67C29323F390AA005B6BCD /* JointPainStepViewControllerTests.swift */; };
 		CB67C29E23F390AB005B6BCD /* CopyStepTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB67C29423F390AB005B6BCD /* CopyStepTests.swift */; };
-		CB67C29F23F390AB005B6BCD /* TaskListScheduleManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB67C29523F390AB005B6BCD /* TaskListScheduleManagerTests.swift */; };
 		CB6F54F022E25C5B0073BFE9 /* ParticipantIDRegistrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6F54EF22E25C5B0073BFE9 /* ParticipantIDRegistrationViewController.swift */; };
 		CB704AC123EF8C4D00CC9D13 /* ImageDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB704AC023EF8C4D00CC9D13 /* ImageDefaults.swift */; };
 		CB72E8AF241C2BC0006ECC24 /* Onboarding.json in Resources */ = {isa = PBXBuildFile; fileRef = CB72E8AA241C2BC0006ECC24 /* Onboarding.json */; };
@@ -69,6 +70,8 @@
 		CB8DC7B824189E31001B7982 /* TaskListScheduleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB8DC7B324189E31001B7982 /* TaskListScheduleManager.swift */; };
 		CB8DC7BA2418A333001B7982 /* TaskListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBD67D8722DFC59B00998516 /* TaskListTableViewController.swift */; };
 		CB8F2A9E2375E4A4005A62E7 /* ImageCaptureCompletionStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB8F2A9D2375E4A4005A62E7 /* ImageCaptureCompletionStepViewController.swift */; };
+		CB8F7D562422D73A00F77D62 /* StudyTaskFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB8F7D512422D73900F77D62 /* StudyTaskFactory.swift */; };
+		CB8F7D592423F6BB00F77D62 /* TreatmentSelectionStepViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB8F7D582423F6BB00F77D62 /* TreatmentSelectionStepViewControllerTests.swift */; };
 		CB9F5E1F22E0BED3003FBCEF /* lato_black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CB9F5E1422E0BEA3003FBCEF /* lato_black.ttf */; };
 		CB9F5E2022E0BED3003FBCEF /* lato_bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CB9F5E1222E0BEA3003FBCEF /* lato_bold.ttf */; };
 		CB9F5E2122E0BED3003FBCEF /* lato_bolditalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CB9F5E1522E0BEA3003FBCEF /* lato_bolditalic.ttf */; };
@@ -318,6 +321,8 @@
 		CB05146B237F27560058D746 /* DigitalJarOpen.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = DigitalJarOpen.json; sourceTree = "<group>"; };
 		CB09F00023D644A8009D344E /* DigitalJarOpenInstructionStepViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DigitalJarOpenInstructionStepViewController.xib; sourceTree = "<group>"; };
 		CB09F00223D649FB009D344E /* DigitalJarOpenInstructionStepViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DigitalJarOpenInstructionStepViewController.swift; sourceTree = "<group>"; };
+		CB09F0372421D5730005698D /* TreatmentSelectionStepViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreatmentSelectionStepViewController.swift; sourceTree = "<group>"; };
+		CB09F03D2421E9E80005698D /* TreatmentSelectionStepViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TreatmentSelectionStepViewController.xib; sourceTree = "<group>"; };
 		CB16BF4723E4B90B0099FD08 /* GPUImage.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = GPUImage.xcodeproj; path = ../gpuimage/GPUImage.xcodeproj; sourceTree = "<group>"; };
 		CB28EBE52396FCA30043D7FE /* JointCounting.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = JointCounting.mov; sourceTree = "<group>"; };
 		CB28EBE72396FCA30043D7FE /* DigitalJarOpen.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = DigitalJarOpen.mov; sourceTree = "<group>"; };
@@ -353,7 +358,6 @@
 		CB67C29223F390AA005B6BCD /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CB67C29323F390AA005B6BCD /* JointPainStepViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JointPainStepViewControllerTests.swift; sourceTree = "<group>"; };
 		CB67C29423F390AB005B6BCD /* CopyStepTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CopyStepTests.swift; sourceTree = "<group>"; };
-		CB67C29523F390AB005B6BCD /* TaskListScheduleManagerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskListScheduleManagerTests.swift; sourceTree = "<group>"; };
 		CB6F54EF22E25C5B0073BFE9 /* ParticipantIDRegistrationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParticipantIDRegistrationViewController.swift; sourceTree = "<group>"; };
 		CB704AC023EF8C4D00CC9D13 /* ImageDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDefaults.swift; sourceTree = "<group>"; };
 		CB72E8AA241C2BC0006ECC24 /* Onboarding.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Onboarding.json; sourceTree = "<group>"; };
@@ -372,6 +376,8 @@
 		CB8AE702233FBB9800F5F8AC /* TouchDrawableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchDrawableView.swift; sourceTree = "<group>"; };
 		CB8DC7B324189E31001B7982 /* TaskListScheduleManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskListScheduleManager.swift; sourceTree = "<group>"; };
 		CB8F2A9D2375E4A4005A62E7 /* ImageCaptureCompletionStepViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCaptureCompletionStepViewController.swift; sourceTree = "<group>"; };
+		CB8F7D512422D73900F77D62 /* StudyTaskFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StudyTaskFactory.swift; sourceTree = "<group>"; };
+		CB8F7D582423F6BB00F77D62 /* TreatmentSelectionStepViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreatmentSelectionStepViewControllerTests.swift; sourceTree = "<group>"; };
 		CB9F5E1222E0BEA3003FBCEF /* lato_bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = lato_bold.ttf; path = Fonts/lato_bold.ttf; sourceTree = "<group>"; };
 		CB9F5E1322E0BEA3003FBCEF /* lato_light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = lato_light.ttf; path = Fonts/lato_light.ttf; sourceTree = "<group>"; };
 		CB9F5E1422E0BEA3003FBCEF /* lato_black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = lato_black.ttf; path = Fonts/lato_black.ttf; sourceTree = "<group>"; };
@@ -536,6 +542,8 @@
 				CBE561542412BD9D009A2930 /* TryItFirstTaskTableViewController.swift */,
 				CB7CF2412400BF10003E02A5 /* WelcomeVideoViewController.swift */,
 				CBDD30E72416D403003B0488 /* MeasureTabViewController.swift */,
+				CB09F03D2421E9E80005698D /* TreatmentSelectionStepViewController.xib */,
+				CB09F0372421D5730005698D /* TreatmentSelectionStepViewController.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -606,6 +614,7 @@
 		CBBE0F6024039A4F0072452C /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				CB8F7D512422D73900F77D62 /* StudyTaskFactory.swift */,
 				CBBE0F6524039A5F0072452C /* MeasureTabScheduleManager.swift */,
 				CBE5614E2412BD96009A2930 /* TryItFirstTaskScheduleManager.swift */,
 			);
@@ -797,7 +806,7 @@
 				CB67C28F23F390AA005B6BCD /* JointPainImageViewTests.swift */,
 				CB67C29323F390AA005B6BCD /* JointPainStepViewControllerTests.swift */,
 				CB67C28E23F390AA005B6BCD /* PSRImageHelperTests.swift */,
-				CB67C29523F390AB005B6BCD /* TaskListScheduleManagerTests.swift */,
+				CB8F7D582423F6BB00F77D62 /* TreatmentSelectionStepViewControllerTests.swift */,
 			);
 			path = PsorcastTests;
 			sourceTree = "<group>";
@@ -1038,6 +1047,7 @@
 				CBDCDC7C23F3848500E5CEB8 /* HandImaging.json in Resources */,
 				CBDCDC9E23F3849E00E5CEB8 /* JointPainStepViewController.xib in Resources */,
 				CBDCDC8E23F3849E00E5CEB8 /* SelectionCollectionStepViewController.xib in Resources */,
+				CB09F03E2421E9E80005698D /* TreatmentSelectionStepViewController.xib in Resources */,
 				CBDCDCB023F3849E00E5CEB8 /* PsoriasisDrawCompletionStepViewController.xib in Resources */,
 				CBDCDC9023F3849E00E5CEB8 /* ExternalIDRegistrationViewController.xib in Resources */,
 				CBDCDC7D23F3848500E5CEB8 /* JointCounting.json in Resources */,
@@ -1155,8 +1165,8 @@
 				CB67C29923F390AB005B6BCD /* JointPainImageViewTests.swift in Sources */,
 				CB67C29B23F390AB005B6BCD /* CodableStepObjectTests.swift in Sources */,
 				CB9F5E5222E0C2BA003FBCEF /* PsorcastTests.swift in Sources */,
+				CB8F7D592423F6BB00F77D62 /* TreatmentSelectionStepViewControllerTests.swift in Sources */,
 				CB67C29823F390AB005B6BCD /* PSRImageHelperTests.swift in Sources */,
-				CB67C29F23F390AB005B6BCD /* TaskListScheduleManagerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1173,6 +1183,7 @@
 				CBDCDC9B23F3849E00E5CEB8 /* JointPainResultObject.swift in Sources */,
 				CBDCDCAF23F3849E00E5CEB8 /* PsoriasisDrawCompletionStepViewController.swift in Sources */,
 				CBDCDC9A23F3849E00E5CEB8 /* JointPainStepObject.swift in Sources */,
+				CB8F7D562422D73A00F77D62 /* StudyTaskFactory.swift in Sources */,
 				CBDCDCBB23F384A400E5CEB8 /* ImageDefaults.swift in Sources */,
 				CBDCDCAE23F3849E00E5CEB8 /* TouchDrawableView.swift in Sources */,
 				CBDCDCA823F3849E00E5CEB8 /* PsoriasisAreaPhotoCompletionStepViewController.swift in Sources */,
@@ -1199,6 +1210,7 @@
 				CBDCDCBC23F384A800E5CEB8 /* PSRImageHelper.swift in Sources */,
 				CBDCDC9723F3849E00E5CEB8 /* ImageCaptureCompletionStepViewController.swift in Sources */,
 				CBDCDC9323F3849E00E5CEB8 /* ParticipantIDRegistrationViewController.swift in Sources */,
+				CB09F0382421D5730005698D /* TreatmentSelectionStepViewController.swift in Sources */,
 				CBDCDC9C23F3849E00E5CEB8 /* JointPainImageView.swift in Sources */,
 				CBDCDC8F23F3849E00E5CEB8 /* ExternalIDRegistrationViewController.swift in Sources */,
 				CBDCDC9D23F3849E00E5CEB8 /* JointPainStepViewController.swift in Sources */,

@@ -100,7 +100,7 @@ class TryItFirstTaskTableViewController: UIViewController, UITableViewDelegate, 
     
     func runTask(at indexPath: IndexPath) {
         // Initiate task factory
-        RSDFactory.shared = TaskFactory()
+        RSDFactory.shared = StudyTaskFactory()
         
         // Work-around fix for permission bug
         // This will force the overview screen to check permission state every time
