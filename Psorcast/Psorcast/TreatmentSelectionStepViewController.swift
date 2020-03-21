@@ -255,7 +255,7 @@ public class TreatmentSelectionStepViewController: RSDStepViewController, UITabl
     }
     
     func setupInitialTableViewState() {
-        self.tableView.register(RSDSelectionTableViewCell.self, forCellReuseIdentifier: String(describing: RSDSelectionTableViewCell.self))
+        self.tableView.register(TreatmentSelectionTableViewCell.self, forCellReuseIdentifier: String(describing: TreatmentSelectionTableViewCell.self))
         
         self.tableView.register(TreatmentSelectionTableHeader.self, forHeaderFooterViewReuseIdentifier: String(describing: TreatmentSelectionTableHeader.self))
                 
@@ -349,9 +349,9 @@ public class TreatmentSelectionStepViewController: RSDStepViewController, UITabl
     }
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = self.tableView.dequeueReusableCell(withIdentifier: String(describing: RSDSelectionTableViewCell.self), for: indexPath)
+        let cell = self.tableView.dequeueReusableCell(withIdentifier: String(describing: TreatmentSelectionTableViewCell.self), for: indexPath)
         
-        guard let selectionCell = cell as? RSDSelectionTableViewCell,
+        guard let selectionCell = cell as? TreatmentSelectionTableViewCell,
             let treatment = self.treatment(for: indexPath) else {
             return cell
         }
@@ -359,6 +359,7 @@ public class TreatmentSelectionStepViewController: RSDStepViewController, UITabl
         selectionCell.setDesignSystem(AppDelegate.designSystem, with: self.backgroundColor(for: .body))
         selectionCell.titleLabel?.text = treatment.identifier
         selectionCell.detailLabel?.text = treatment.detail
+        selectionCell.removeImage?.isHidden = self.sectionIdentifier(for: indexPath.section) != self.currentTreatmentSectionId
         
         return cell
     }
@@ -370,6 +371,9 @@ public class TreatmentSelectionStepViewController: RSDStepViewController, UITabl
         guard let treatment = self.treatment(for: indexPath) else {
             return
         }
+        
+        // The cell being selected
+        let cell = tableView.cellForRow(at: indexPath) as? TreatmentSelectionTableViewCell
         
         self.tableView.beginUpdates()
         
@@ -404,6 +408,12 @@ public class TreatmentSelectionStepViewController: RSDStepViewController, UITabl
                 self.tableView.deleteRows(at: [indexPath], with: .automatic)
             }
         }
+        
+        // Moving a cell does not trigger a display update,
+        // so we need to manually add/remove the clear icon
+        if let cellUnwrapped = cell {
+            cellUnwrapped.removeImage?.isHidden = !isNowSelected
+        }
 
         self.tableView.endUpdates()
     
@@ -422,6 +432,18 @@ public class TreatmentSelectionStepViewController: RSDStepViewController, UITabl
         header.setDesignSystem(AppDelegate.designSystem, with: self.backgroundColor(for: .body))
         header.titleLabel?.text = sectionIdentifier
         return header
+    }
+    
+    public func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        guard self.sectionIdentifier(for: section) == self.currentTreatmentSectionId else { return 0.0 }
+        return 24.0
+    }
+    
+    public func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        guard self.sectionIdentifier(for: section) == self.currentTreatmentSectionId else { return nil }
+        let view = UIView(frame: CGRect(x: 0, y: 0, width: self.tableView.bounds.width, height: 24.0))
+        view.backgroundColor = designSystem.colorRules.backgroundPrimary.color
+        return view
     }
     
     /// Filter the treatment list based on the search text
@@ -497,6 +519,30 @@ public struct TreatmentItem: Codable {
     public var identifier: String
     public var detail: String?
     public var sectionIdentifier: String?
+}
+
+open class TreatmentSelectionTableViewCell: RSDSelectionTableViewCell {
+    
+    @IBOutlet public var removeImage: UIImageView?
+    
+    public override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        
+        // Add the line separator
+        removeImage = UIImageView()
+        removeImage?.image = UIImage(named: "ClearIcon")
+        contentView.addSubview(removeImage!)
+        
+        removeImage!.translatesAutoresizingMaskIntoConstraints = false
+        removeImage!.rsd_makeWidth(.equal, 18.0)
+        removeImage!.rsd_makeHeight(.equal, 18.0)
+        removeImage!.rsd_alignToSuperview([.trailing], padding: 24.0)
+        removeImage!.rsd_alignCenterVertical(padding: 0.0)
+    }
+    
+    required public init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
 }
 
 open class TreatmentSelectionTableHeader: UITableViewHeaderFooterView, RSDViewDesignable {
