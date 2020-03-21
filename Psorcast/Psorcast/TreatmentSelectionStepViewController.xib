@@ -10,10 +10,14 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TreatmentSelectionStepViewController" customModule="Psorcast" customModuleProvider="target">
             <connections>
+                <outlet property="addCustomTreatmentButton" destination="EcK-nM-U2c" id="PRI-6W-fcR"/>
+                <outlet property="addCustomTreatmentButtonHeight" destination="j56-p5-Ag2" id="Rq9-Pd-B73"/>
+                <outlet property="addCustomTreatmentLabel" destination="ZCw-8Y-as2" id="4pB-Ow-gxa"/>
                 <outlet property="navigationFooter" destination="eAW-rr-r7r" id="snM-01-m8u"/>
                 <outlet property="navigationHeader" destination="fxA-Tz-ZiS" id="agX-5m-P7G"/>
                 <outlet property="searchBar" destination="L2U-fG-69W" id="0cw-Cl-yJO"/>
                 <outlet property="tableView" destination="RuK-cZ-z7N" id="NnW-aC-RJg"/>
+                <outlet property="treatmentNotFoundView" destination="QFT-uT-pgN" id="xRZ-GL-IXu"/>
                 <outlet property="view" destination="Be1-UX-e65" id="eci-s9-hNP"/>
             </connections>
         </placeholder>
@@ -88,18 +92,49 @@
                                 <outlet property="titleLabel" destination="d3p-ES-nu8" id="LaJ-GO-IzF"/>
                             </connections>
                         </view>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eAW-rr-r7r" userLabel="Footer" customClass="RSDGenericNavigationFooterView" customModule="ResearchUI">
+                        <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eAW-rr-r7r" userLabel="Footer" customClass="RSDGenericNavigationFooterView" customModule="ResearchUI">
                             <rect key="frame" x="0.0" y="585" width="395" height="135"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </view>
-                        <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" allowsMultipleSelection="YES" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="RuK-cZ-z7N">
-                            <rect key="frame" x="0.0" y="248.33333333333334" width="395" height="336.66666666666663"/>
+                        <tableView clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" alwaysBounceVertical="YES" style="plain" separatorStyle="none" allowsMultipleSelection="YES" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="RuK-cZ-z7N">
+                            <rect key="frame" x="0.0" y="248.33333333333331" width="395" height="336.66666666666669"/>
                             <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                             <connections>
                                 <outlet property="dataSource" destination="-1" id="Caw-LD-OpN"/>
                                 <outlet property="delegate" destination="-1" id="YOk-SD-Hth"/>
                             </connections>
                         </tableView>
+                        <view hidden="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="QFT-uT-pgN" userLabel="No Results Container">
+                            <rect key="frame" x="0.0" y="334.66666666666669" width="395" height="164"/>
+                            <subviews>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="That treatment isn’t currently in our library, would you like to add it?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZCw-8Y-as2">
+                                    <rect key="frame" x="48" y="7" width="299" height="40.666666666666664"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                    <nil key="textColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EcK-nM-U2c">
+                                    <rect key="frame" x="48" y="99" width="299" height="53"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="53" id="j56-p5-Ag2"/>
+                                    </constraints>
+                                    <state key="normal" title="+ Add treatment to my list"/>
+                                    <connections>
+                                        <action selector="addCustomTreatment" destination="-1" eventType="touchUpInside" id="uk3-e5-7cs"/>
+                                    </connections>
+                                </button>
+                            </subviews>
+                            <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                            <constraints>
+                                <constraint firstAttribute="bottom" secondItem="EcK-nM-U2c" secondAttribute="bottom" constant="12" id="Fyz-aS-vDV"/>
+                                <constraint firstAttribute="trailing" secondItem="ZCw-8Y-as2" secondAttribute="trailing" constant="48" id="GhU-gT-tCf"/>
+                                <constraint firstItem="ZCw-8Y-as2" firstAttribute="top" secondItem="QFT-uT-pgN" secondAttribute="top" constant="7" id="cOx-QD-u5a"/>
+                                <constraint firstAttribute="height" constant="164" id="d7p-3y-hqW"/>
+                                <constraint firstItem="EcK-nM-U2c" firstAttribute="leading" secondItem="QFT-uT-pgN" secondAttribute="leading" constant="48" id="go0-BU-3q4"/>
+                                <constraint firstAttribute="trailing" secondItem="EcK-nM-U2c" secondAttribute="trailing" constant="48" id="oHu-RD-DzD"/>
+                                <constraint firstItem="ZCw-8Y-as2" firstAttribute="leading" secondItem="QFT-uT-pgN" secondAttribute="leading" constant="48" id="yxT-W6-9YY"/>
+                            </constraints>
+                        </view>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
@@ -108,8 +143,11 @@
                         <constraint firstAttribute="trailing" secondItem="eAW-rr-r7r" secondAttribute="trailing" id="5l7-vn-DMJ"/>
                         <constraint firstAttribute="trailing" secondItem="RuK-cZ-z7N" secondAttribute="trailing" id="6ly-Xv-3aY"/>
                         <constraint firstItem="eAW-rr-r7r" firstAttribute="leading" secondItem="nCy-4g-nIJ" secondAttribute="leading" id="9Co-vf-UGs"/>
+                        <constraint firstItem="QFT-uT-pgN" firstAttribute="centerY" secondItem="RuK-cZ-z7N" secondAttribute="centerY" id="Arz-MJ-512"/>
+                        <constraint firstAttribute="trailing" secondItem="QFT-uT-pgN" secondAttribute="trailing" id="Bdh-47-nEi"/>
                         <constraint firstItem="eAW-rr-r7r" firstAttribute="top" secondItem="RuK-cZ-z7N" secondAttribute="bottom" id="Nic-pB-zpw"/>
                         <constraint firstItem="fxA-Tz-ZiS" firstAttribute="top" secondItem="nCy-4g-nIJ" secondAttribute="top" id="SC4-I8-O5N"/>
+                        <constraint firstItem="QFT-uT-pgN" firstAttribute="leading" secondItem="nCy-4g-nIJ" secondAttribute="leading" id="jIT-o1-aMn"/>
                         <constraint firstItem="RuK-cZ-z7N" firstAttribute="top" secondItem="fxA-Tz-ZiS" secondAttribute="bottom" id="or5-sC-mRl"/>
                         <constraint firstItem="fxA-Tz-ZiS" firstAttribute="leading" secondItem="nCy-4g-nIJ" secondAttribute="leading" id="rEg-ZD-hZb"/>
                         <constraint firstItem="RuK-cZ-z7N" firstAttribute="leading" secondItem="nCy-4g-nIJ" secondAttribute="leading" id="sca-Mv-O6f"/>

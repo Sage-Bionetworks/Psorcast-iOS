@@ -107,12 +107,42 @@ public class TreatmentSelectionStepViewController: RSDStepViewController, UITabl
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var searchBar: UISearchBar!
+    @IBOutlet weak var treatmentNotFoundView: UIView!
+    @IBOutlet weak var addCustomTreatmentButton: UIButton!
+    @IBOutlet weak var addCustomTreatmentButtonHeight: NSLayoutConstraint!
+    @IBOutlet weak var addCustomTreatmentLabel: UILabel!
     
-    // Stores if the TreatmentItem is selected or not
-    var selectionState = [String : Bool]()
     // The filtered treatments are the step's items but with search text applied
     var filteredTreatments = [String: [TreatmentItem]]()
     var filteredSections = [String]()
+    
+    // The current treatments.
+    // These show up at the top of the table view.
+    var currentTreatments = [TreatmentItem]()
+    
+    // The current treatment identifiers.
+    var currentTreatmentsIds: [String] {
+        return currentTreatments.map({ $0.identifier })
+    }
+    
+    // Initial result is the selected treatment identifier array
+    var initialResult = [String]()
+    
+    // The localized title of the current treatments section
+    var currentTreatmentSectionId = Localization.localizedString("CURRENT_TREATMENTS_SECTION_TITLE")
+    
+    // The section count can change based on if any treatments are selected
+    var sectionCount: Int {
+        if self.shouldShowCurrentTreatmentSection {
+            return 1 + filteredSections.count
+        }
+        return filteredSections.count
+    }
+    
+    // Hide the current treatments unless a treatment is selected
+    var shouldShowCurrentTreatmentSection: Bool {
+        return self.currentTreatments.count > 0
+    }
     
     /// Returns a new step view controller for the specified step.
     /// - parameter step: The step to be presented.
@@ -123,9 +153,7 @@ public class TreatmentSelectionStepViewController: RSDStepViewController, UITabl
         if let previousResult = (parent as? RSDHistoryPathComponent)?
             .previousResult(for: step) as? RSDAnswerResultObject,
             let stringArrayAnswer = previousResult.value as? [String]  {
-            for identifier in stringArrayAnswer {
-                self.selectionState[identifier] = true
-            }
+            initialResult = stringArrayAnswer
         }
     }
     
@@ -154,7 +182,14 @@ public class TreatmentSelectionStepViewController: RSDStepViewController, UITabl
         guard let sectionIdentifier = self.sectionIdentifier(for: indexPath.section) else {
             return nil
         }
-        return self.filteredTreatments[sectionIdentifier]?[indexPath.row]
+        if sectionIdentifier == self.currentTreatmentSectionId {
+            guard self.currentTreatments.count > indexPath.row else {
+                return nil
+            }
+            return self.currentTreatments[indexPath.row]
+        }
+        let treatments = self.filteredTreatments[sectionIdentifier]?.filter({ !self.currentTreatmentsIds.contains($0.identifier) })
+        return treatments?[indexPath.row]
     }
     
     ///
@@ -162,16 +197,64 @@ public class TreatmentSelectionStepViewController: RSDStepViewController, UITabl
     /// @return  the seciton identifier within this index path
     ///
     open func sectionIdentifier(for section: Int) -> String? {
+        var sectionIndex = section
+        if self.shouldShowCurrentTreatmentSection {
+            if section == 0 {
+                return self.currentTreatmentSectionId
+            }
+            // Remove the current treatments section from the index search
+            sectionIndex = sectionIndex - 1
+        }
         // Code to protect index out of bounds exceptions
-        guard self.filteredSections.count > section else {
+        guard self.filteredSections.count > sectionIndex else {
             return nil
         }
-        return self.filteredSections[section]
+        return self.filteredSections[sectionIndex]
+    }
+    
+    ///
+    /// @param  treatment to calculate the index path for
+    /// @return  the index path of the treatment in the current state of the data model
+    ///
+    open func indexPath(of treatmentId: String) -> IndexPath? {
+        if let index = self.currentTreatments.firstIndex(where: { $0.identifier == treatmentId }) {
+            return IndexPath(row: index, section: 0)
+        }
+        for section in self.filteredSections {
+            if let rowIdx = self.filteredTreatments[section]?.filter({ !self.currentTreatmentsIds.contains($0.identifier) }).firstIndex(where: { $0.identifier == treatmentId }) {
+                var sectionIdx = self.filteredSections.firstIndex(of: section) ?? 0
+                if self.shouldShowCurrentTreatmentSection {
+                    sectionIdx = sectionIdx + 1
+                }
+                return IndexPath(row: rowIdx, section: sectionIdx)
+            }
+        }
+        return nil
     }
     
     override open func viewDidLoad() {
         super.viewDidLoad()
         
+        let design = AppDelegate.designSystem
+        let buttonColorTile = RSDColorTile(UIColor(hexString: "#EDEDED") ?? UIColor.white, usesLightStyle: true)
+        self.addCustomTreatmentButton.backgroundColor = buttonColorTile.color
+        self.addCustomTreatmentButton.clipsToBounds = true
+        self.addCustomTreatmentButton.layer.cornerRadius = self.addCustomTreatmentButtonHeight.constant * 0.5
+        self.addCustomTreatmentButton.titleLabel?.font = design.fontRules.buttonFont(for: .primary, state: .normal)
+        self.addCustomTreatmentButton.setTitleColor(design.colorRules.roundedButtonText(on: buttonColorTile, with: .primary, forState: .normal), for: .normal)
+        self.addCustomTreatmentLabel.font = design.fontRules.font(for: .mediumHeader)
+        self.addCustomTreatmentLabel.textColor = design.colorRules.textColor(on: RSDColorTile(RSDColor.white, usesLightStyle: false), for: .mediumHeader)
+        
+        self.searchBar.delegate = self
+            
+        self.refreshFilteredTreatments()
+        self.refreshNextButtonState()
+        
+        // This must be called after refreshFilteredTreatments
+        self.setupInitialTableViewState()
+    }
+    
+    func setupInitialTableViewState() {
         self.tableView.register(RSDSelectionTableViewCell.self, forCellReuseIdentifier: String(describing: RSDSelectionTableViewCell.self))
         
         self.tableView.register(TreatmentSelectionTableHeader.self, forHeaderFooterViewReuseIdentifier: String(describing: TreatmentSelectionTableHeader.self))
@@ -180,10 +263,19 @@ public class TreatmentSelectionStepViewController: RSDStepViewController, UITabl
         self.tableView.sectionHeaderHeight = UITableView.automaticDimension
         self.tableView.keyboardDismissMode = .onDrag
         
-        self.searchBar.delegate = self
-            
-        self.refreshFilteredTreatments()
-        self.refreshNextButtonState()
+        // Populate intial treatments
+        for treatmentId in self.initialResult {
+            if let treatmentIndexPath = self.indexPath(of: treatmentId) {
+                if let treatment = self.treatment(for: treatmentIndexPath) {
+                    self.currentTreatments.append(treatment)
+                }
+            } else {
+                // This is a custom treatment
+                self.currentTreatments.append(TreatmentItem(identifier: treatmentId, detail: nil, sectionIdentifier: nil))
+            }
+        }
+        
+        self.tableView.reloadData()
     }
     
     open override func setupFooter(_ footer: RSDNavigationFooterView) {
@@ -197,23 +289,45 @@ public class TreatmentSelectionStepViewController: RSDStepViewController, UITabl
         self.navigationHeader?.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.dismissKeyboard)))
     }
     
-    open func setSelectionState(for identifier: String, state: Bool) {
-        self.selectionState[identifier] = state
+    open func setCurrentTreatmentState(for treatment: TreatmentItem, selected: Bool) {
+        if selected {
+            if !self.currentTreatments.contains(where: { $0.identifier == treatment.identifier }) {
+                self.currentTreatments.append(treatment)
+            }
+        } else {
+            self.currentTreatments.remove(where: { $0.identifier == treatment.identifier })
+        }
         self.refreshNextButtonState()
     }
     
     open func refreshNextButtonState() {
-        var enabled = false
-        for key in self.selectionState.keys {
-            if self.selectionState[key] == true {
-                enabled = true
-            }
-        }
-        self.navigationFooter?.nextButton?.isEnabled = enabled
+        self.navigationFooter?.nextButton?.isEnabled = self.currentTreatments.count > 0
     }
     
     @objc func dismissKeyboard() {
         self.searchBar.endEditing(true)
+    }
+    
+    /// The user can add a row in the table with their own treatment that is the current text in the search bar
+    @IBAction func addCustomTreatment() {
+        guard let customTreatmentId = self.searchBar.text else { return }
+        let newTreatmentItem = TreatmentItem(identifier: customTreatmentId, detail: nil, sectionIdentifier: nil)
+        
+        self.treatmentNotFoundView.isHidden = true
+        self.tableView.isHidden = false
+        self.searchBar.text = nil
+        self.refreshFilteredTreatments()
+        self.refreshNextButtonState()
+        
+        // Animate addition of table view custom treatment row
+        self.setCurrentTreatmentState(for: newTreatmentItem, selected: true)
+        self.tableView.beginUpdates()
+        if self.currentTreatments.count == 1 {
+            // First treatment that is selected
+            self.tableView.insertSections(IndexSet(integer: 0), with: .left)
+        }
+        self.tableView.insertRows(at: [IndexPath(row: self.currentTreatments.count - 1, section: 0)], with: .left)
+        self.tableView.endUpdates()
     }
     
     public func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
@@ -224,11 +338,14 @@ public class TreatmentSelectionStepViewController: RSDStepViewController, UITabl
         guard let sectionIdentifier = self.sectionIdentifier(for: section) else {
             return 0
         }
-        return self.treatments(for: sectionIdentifier).count
+        if self.shouldShowCurrentTreatmentSection && section == 0 {
+            return self.currentTreatments.count
+        }
+        return self.filteredTreatments[sectionIdentifier]?.filter({ !self.currentTreatmentsIds.contains($0.identifier) }).count ?? 0
     }
     
     public func numberOfSections(in tableView: UITableView) -> Int {
-        return self.filteredSections.count
+        return self.sectionCount
     }
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -242,17 +359,54 @@ public class TreatmentSelectionStepViewController: RSDStepViewController, UITabl
         selectionCell.setDesignSystem(AppDelegate.designSystem, with: self.backgroundColor(for: .body))
         selectionCell.titleLabel?.text = treatment.identifier
         selectionCell.detailLabel?.text = treatment.detail
-        selectionCell.isSelected = self.selectionState[treatment.identifier] ?? false
         
         return cell
     }
     
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        self.tableView.deselectRow(at: indexPath, animated: false)
+
         guard let treatment = self.treatment(for: indexPath) else {
             return
         }
-        self.setSelectionState(for: treatment.identifier, state: !(self.selectionState[treatment.identifier] ?? false))
-        self.tableView.reloadRows(at: [indexPath], with: .automatic)
+        
+        self.tableView.beginUpdates()
+        
+        let isNowSelected = !self.currentTreatmentsIds.contains(treatment.identifier)
+        let currentTreatmentsSectionWasCreated = self.currentTreatments.count == 0
+        let currentTreatmentsSectionWasRemoved = self.currentTreatments.count == 1 && !isNowSelected
+        
+        // This will edit the data model to reflect the new tableview state
+        self.setCurrentTreatmentState(for: treatment, selected: isNowSelected)
+
+        // Calculate the new index path for the selected row
+        if let newIndexPath = self.indexPath(of: treatment.identifier) {
+            if currentTreatmentsSectionWasCreated {
+                NSLog("Creating current treatment section")
+                self.tableView.insertSections(IndexSet(integer: 0), with: .left)
+                self.tableView.deleteRows(at: [indexPath], with: .left)
+            } else if currentTreatmentsSectionWasRemoved {
+                NSLog("Deleting current treatment section")
+                self.tableView.deleteSections(IndexSet(integer: 0), with: .right)
+                self.tableView.insertRows(at: [newIndexPath], with: .right)
+            } else {
+                self.tableView.moveRow(at: indexPath, to: newIndexPath)
+                NSLog("Selecting and moving row from \(indexPath) to \(newIndexPath)")
+            }
+        } else {
+            // If we did not get a valid index, it's possible this item was removed
+            // from the current treatments, and is being filtered by the search bar
+            // In that case, just remove the item
+            if self.currentTreatments.count == 0 {
+                self.tableView.deleteSections(IndexSet(integer: 0), with: .right)
+            } else {
+                self.tableView.deleteRows(at: [indexPath], with: .automatic)
+            }
+        }
+
+        self.tableView.endUpdates()
+    
         self.dismissKeyboard()
     }
     
@@ -276,6 +430,10 @@ public class TreatmentSelectionStepViewController: RSDStepViewController, UITabl
             let rawTreatments = self.treatmentStep?.sortedItems else {
             return
         }
+        
+        // Hide the no treatment found view
+        self.treatmentNotFoundView.isHidden = true
+        self.tableView.isHidden = false
         
         guard let searchText = self.searchBar.text?.lowercased(),
             searchText.count > 0 else {
@@ -316,12 +474,18 @@ public class TreatmentSelectionStepViewController: RSDStepViewController, UITabl
         self.filteredSections = filteredIds.sorted(by: { $0 < $1 })
         self.filteredTreatments = filtered
         
+        // If we filtered every treatment, give the user a change to add a custom one
+        if self.filteredSections.count == 0 {
+            self.treatmentNotFoundView.isHidden = false
+            self.tableView.isHidden = true
+        }
+        
         self.tableView.reloadData()
     }
     
     override open func goForward() {
         /// Save a string list of the multi-choice answer identifiers
-        let answer = self.selectionState.filter({ $0.value == true }).map({ $0.key })
+        let answer = Array(self.currentTreatmentsIds)
         let stringArrayType = RSDAnswerResultType(baseType: .string, sequenceType: .array, formDataType: .collection(.multipleChoice, .string), dateFormat: nil, unit: nil, sequenceSeparator: nil)
         let result = RSDAnswerResultObject(identifier: self.step.identifier, answerType: stringArrayType, value: answer)
         _ = self.stepViewModel.parent?.taskResult.appendStepHistory(with: result)
