@@ -324,8 +324,8 @@ public class TreatmentSelectionStepViewController: RSDStepViewController, UITabl
                 self.tableView.deleteRows(at: [indexPath], with: .left)
             } else if currentTreatmentsSectionWasRemoved {
                 NSLog("Deleting current treatment section")
-                self.tableView.deleteSections(IndexSet(integer: 0), with: .right)
-                self.tableView.insertRows(at: [newIndexPath], with: .right)
+                self.tableView.deleteSections(IndexSet(integer: 0), with: .left)
+                self.tableView.insertRows(at: [newIndexPath], with: .left)
             } else {
                 self.tableView.moveRow(at: indexPath, to: newIndexPath)
                 NSLog("Selecting and moving row from \(indexPath) to \(newIndexPath)")
@@ -376,6 +376,19 @@ public class TreatmentSelectionStepViewController: RSDStepViewController, UITabl
         let view = UIView(frame: CGRect(x: 0, y: 0, width: self.tableView.bounds.width, height: 24.0))
         view.backgroundColor = designSystem.colorRules.backgroundPrimary.color
         return view
+    }
+    
+    public func tableView(_ tableView: UITableView, didHighlightRowAt indexPath: IndexPath) {
+        if let cell = tableView.cellForRow(at: indexPath) {
+            let background = RSDColorTile(RSDColor.white, usesLightStyle: true)
+            cell.contentView.backgroundColor = self.designSystem.colorRules.tableCellBackground(on: background, isSelected: true).color
+        }
+    }
+    
+    public func tableView(_ tableView: UITableView, didUnhighlightRowAt indexPath: IndexPath) {
+        if let cell = tableView.cellForRow(at: indexPath) {
+            cell.contentView.backgroundColor = RSDColor.white
+        }
     }
     
     /// Filter the treatment list based on the search text
