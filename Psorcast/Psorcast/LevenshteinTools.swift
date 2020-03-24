@@ -1,5 +1,5 @@
 //
-//  LevensteinTools.swift
+//  LevenshteinTools.swift
 //  Psorcast
 //
 //  Copyright © 2018-2019 Sage Bionetworks. All rights reserved.
@@ -34,7 +34,7 @@
 
 import Foundation
 
-class LevensteinTools {
+class LevenshteinTools {
     // return minimum value in a list of Ints
     fileprivate class func minNum(_ numbers: Int...) -> Int {
         return numbers.reduce(numbers[0], {$0 < $1 ? $0 : $1})
@@ -66,7 +66,7 @@ class LevensteinTools {
                 if a[i-1] == b[j-1] {
                     dist[i][j] = dist[i-1][j-1]  // noop
                 } else {
-                    dist[i][j] = LevensteinTools.minNum(
+                    dist[i][j] = LevenshteinTools.minNum(
                         dist[i-1][j] + 1,  // deletion
                         dist[i][j-1] + 1,  // insertion
                         dist[i-1][j-1] + 1  // substitution
@@ -80,10 +80,10 @@ class LevensteinTools {
     
     ///
     /// This function uses various phrases created from title and detail to calculate
-    /// the best, or min, levenstein score for the parameters.
+    /// the best, or min, Levenshtein score for the parameters.
     /// This function favors favor prefixes, because the user will start typing word from the first letter
     ///
-    class func minLevensteinScore(for searchText: String, titleText: String, detailText: String?) -> Int {
+    class func minLevenshteinScore(for searchText: String, titleText: String, detailText: String?) -> Int {
         
         if searchText.count == 0 {
             return Int.max
@@ -91,7 +91,7 @@ class LevensteinTools {
         var minScore = Int.max
 
         var fullWordArray = [String]()
-        // Build the list of phrases we will test levenstein score against threshold.
+        // Build the list of phrases we will test Levenshtein score against threshold.
         for text in [titleText, detailText ?? ""] {
             // Ignore empty strings
             if text.count > 0 {
@@ -108,7 +108,7 @@ class LevensteinTools {
             // Truncate the phrase to meet length of search text to also favor prefixes.
             // Also, make everything lowercase to ignore capitalization differences.
             let treatmentText = String(text.lowercased().prefix(searchText.count))
-            minScore = min(minScore, LevensteinTools.levenshtein(aStr: searchText, bStr: treatmentText))
+            minScore = min(minScore, LevenshteinTools.levenshtein(aStr: searchText, bStr: treatmentText))
         }
         
         return minScore

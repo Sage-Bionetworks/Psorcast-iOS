@@ -411,10 +411,10 @@ public class TreatmentSelectionStepViewController: RSDStepViewController, UITabl
             return
         }
         
-        // The Levenstein threshold is the result of the calculation that we consider
+        // The Levenshtein threshold is the result of the calculation that we consider
         // valid if it is less than or equal to this value.
-        // To start we are allowed 1 error every 3 letters
-        let levensteinThreshold = (searchText.count / 3)
+        // To start we are allowed 1 error every 3 letters, starting at 1
+        let LevenshteinThreshold = ((searchText.count + 1) / 3)
         var filtered = [String: [TreatmentItem]]()
         var filteredIds = Set<String>()
         
@@ -425,10 +425,10 @@ public class TreatmentSelectionStepViewController: RSDStepViewController, UITabl
             for j in 0..<rawTreatments.count {
                 let treatment = rawTreatments[j]
                 
-                let minScore = LevensteinTools.minLevensteinScore(for: searchText, titleText: treatment.identifier, detailText: treatment.detail)
+                let minScore = LevenshteinTools.minLevenshteinScore(for: searchText, titleText: treatment.identifier, detailText: treatment.detail)
                 
                 // If the score was low enough, we have a match.
-                if minScore <= levensteinThreshold {
+                if minScore <= LevenshteinThreshold {
                     treatments.append(treatment)
                 }
             }
