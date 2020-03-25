@@ -258,6 +258,7 @@ open class ImageCaptureStepViewController: RSDStepViewController, UIImagePickerC
         #if VALIDATION
             // validation study will just always show the default overlay
             self.navigationHeader?.imageView?.isHidden = false
+            self.navigationHeader?.imageView?.contentMode = UIView.ContentMode.bottom;
         #else
             // full study should show the custom overlay if available
             if let imageDefaults = (AppDelegate.shared as? AppDelegate)?.imageDefaults,
@@ -269,9 +270,11 @@ open class ImageCaptureStepViewController: RSDStepViewController, UIImagePickerC
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
                     self.navigationHeader?.imageView?.isHidden = false
                     self.navigationHeader?.imageView?.image = lastImage
+                    self.navigationHeader?.imageView?.contentMode = UIView.ContentMode.scaleAspectFit;
                 }
             } else {
                 self.navigationHeader?.imageView?.isHidden = false
+                self.navigationHeader?.imageView?.contentMode = UIView.ContentMode.bottom;
             }
         #endif
     
