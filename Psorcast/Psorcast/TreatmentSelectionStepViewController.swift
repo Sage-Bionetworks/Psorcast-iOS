@@ -291,7 +291,11 @@ public class TreatmentSelectionStepViewController: RSDStepViewController, UITabl
         selectionCell.setDesignSystem(AppDelegate.designSystem, with: self.backgroundColor(for: .body))
         selectionCell.titleLabel?.text = treatment.identifier
         selectionCell.detailLabel?.text = treatment.detail
-        selectionCell.removeImage?.isHidden = self.sectionIdentifier(for: indexPath.section) != self.currentTreatmentSectionId
+        if self.sectionIdentifier(for: indexPath.section) == self.currentTreatmentSectionId {
+            selectionCell.removeImage?.image = UIImage(named: "ClearIcon")
+        } else {
+            selectionCell.removeImage?.image = UIImage(named: "AddIcon")
+        }
         
         return cell
     }
@@ -344,7 +348,11 @@ public class TreatmentSelectionStepViewController: RSDStepViewController, UITabl
         // Moving a cell does not trigger a display update,
         // so we need to manually add/remove the clear icon
         if let cellUnwrapped = cell {
-            cellUnwrapped.removeImage?.isHidden = !isNowSelected
+            if isNowSelected {
+                cellUnwrapped.removeImage?.image = UIImage(named: "ClearIcon")
+            } else {
+                cellUnwrapped.removeImage?.image = UIImage(named: "AddIcon")
+            }
         }
 
         self.tableView.endUpdates()
