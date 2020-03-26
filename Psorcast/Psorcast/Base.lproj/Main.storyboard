@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="VJ3-hJ-g4d">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="VJ3-hJ-g4d">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16086"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="collection view cell content view" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -29,23 +29,23 @@
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                                 <subviews>
                                     <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DNP-n3-rC3">
-                                        <rect key="frame" x="0.0" y="0.0" width="414" height="565"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="564.5"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                     </view>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Track ymptoms and treatment of PsA" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="Q8p-Lc-Z7m" userLabel="Text Label">
-                                        <rect key="frame" x="8" y="655.5" width="398" height="20.5"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Research towards Psoriasis Forecasts" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="Q8p-Lc-Z7m" userLabel="Text Label">
+                                        <rect key="frame" x="8" y="655" width="398" height="21"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Welcome to Psorcast" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="eE4-TP-pcQ" userLabel="Title Label">
-                                        <rect key="frame" x="4" y="607.5" width="406" height="36"/>
+                                        <rect key="frame" x="4" y="607" width="406" height="36"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="30"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8Oi-Gn-n4p" userLabel="Get started button" customClass="RSDRoundedButton" customModule="ResearchUI">
                                         <rect key="frame" x="4" y="738.5" width="406" height="52"/>
-                                        <state key="normal" title="Get Started"/>
+                                        <state key="normal" title="Join the research study"/>
                                         <connections>
                                             <action selector="getStartedTapped" destination="VJ3-hJ-g4d" eventType="touchUpInside" id="5K4-ae-Pkm"/>
                                         </connections>
@@ -61,7 +61,7 @@
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fZ4-xJ-Sfz" userLabel="Try it first Button" customClass="RSDUnderlinedButton" customModule="ResearchUI">
                                         <rect key="frame" x="8" y="838.5" width="398" height="33.5"/>
-                                        <state key="normal" title="Try it first">
+                                        <state key="normal" title="Preview and try the app first">
                                             <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
                                         </state>
                                         <connections>
@@ -171,7 +171,7 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EZf-wd-h5e" userLabel="Bottom Header">
                                         <rect key="frame" x="0.0" y="148" width="414" height="87"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Week 2 Activities" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="K33-1P-nLf">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Treatment Week 2 Activities" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="K33-1P-nLf">
                                                 <rect key="frame" x="8" y="16" width="398" height="21"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
@@ -376,7 +376,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" contentViewInsetsToSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qql-zN-2Hw">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="812"/>
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="796"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <viewLayoutGuide key="safeArea" id="8bp-7X-8M6"/>
                                 <color key="separatorColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -491,7 +491,7 @@
                                 </connections>
                             </tableView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7Cn-y3-yth">
-                                <rect key="frame" x="0.0" y="812" width="414" height="84"/>
+                                <rect key="frame" x="0.0" y="796" width="414" height="100"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="04Z-nD-hfL" customClass="RSDShadowGradient" customModule="ResearchUI">
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="8"/>
@@ -501,7 +501,7 @@
                                         </constraints>
                                     </view>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Fqk-as-DfM" customClass="RSDRoundedButton" customModule="ResearchUI">
-                                        <rect key="frame" x="16" y="16" width="382" height="60"/>
+                                        <rect key="frame" x="24" y="24" width="366" height="60"/>
                                         <state key="normal" title="I’m done trying them out"/>
                                         <connections>
                                             <action selector="signUpForStudyTapped" destination="yhb-JO-pL9" eventType="touchUpInside" id="15x-wS-5M8"/>
