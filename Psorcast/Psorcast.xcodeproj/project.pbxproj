@@ -91,7 +91,6 @@
 		CB9F5E2B22E0BED4003FBCEF /* lato_lightitalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CB9F5E1822E0BEA3003FBCEF /* lato_lightitalic.ttf */; };
 		CB9F5E2C22E0BED4003FBCEF /* lato_regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CB9F5E1722E0BEA3003FBCEF /* lato_regular.ttf */; };
 		CB9F5E4A22E0C2AA003FBCEF /* TaskListScheduleManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB9F5E3322E0C1A5003FBCEF /* TaskListScheduleManagerTests.swift */; };
-		CB9F5E5222E0C2BA003FBCEF /* PsorcastTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB9F5E5122E0C2BA003FBCEF /* PsorcastTests.swift */; };
 		CB9F5E5B22E0C531003FBCEF /* CopyStepTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB9F5E5922E0C530003FBCEF /* CopyStepTests.swift */; };
 		CB9F5E5C22E0C531003FBCEF /* CodableStepObjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB9F5E5A22E0C531003FBCEF /* CodableStepObjectTests.swift */; };
 		CBA0250E23FC6B2500604F2D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CBA0250823FC6B2500604F2D /* Main.storyboard */; };
@@ -106,6 +105,8 @@
 		CBB93CB7234252D000321A4D /* PsoriasisDrawCompletionStepViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CBB93CB6234252D000321A4D /* PsoriasisDrawCompletionStepViewController.xib */; };
 		CBBC8771239F028300AC9D8E /* PsoriasisDraw.mov in Resources */ = {isa = PBXBuildFile; fileRef = CBBC8770239F028300AC9D8E /* PsoriasisDraw.mov */; };
 		CBBE0F6624039A5F0072452C /* MeasureTabScheduleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBBE0F6524039A5F0072452C /* MeasureTabScheduleManager.swift */; };
+		CBC0C85B242B2E1100E2EE80 /* PsorcastValidationTestsAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CBC0C85A242B2E1100E2EE80 /* PsorcastValidationTestsAssets.xcassets */; };
+		CBC0C85E242BBBF000E2EE80 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CBC0C85C242BBBEF00E2EE80 /* Assets.xcassets */; };
 		CBC6519423F391BC00C3FF0C /* PsorcastTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC6519323F391BC00C3FF0C /* PsorcastTests.swift */; };
 		CBC6519623F3931800C3FF0C /* Psorcast.strings in Resources */ = {isa = PBXBuildFile; fileRef = CBD67D8022DFB8DE00998516 /* Psorcast.strings */; };
 		CBD62BAC23342CBA00C78F22 /* PsoriasisAreaPhotoCompletionStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBD62BAA23342CBA00C78F22 /* PsoriasisAreaPhotoCompletionStepViewController.swift */; };
@@ -363,7 +364,6 @@
 		CB67C28F23F390AA005B6BCD /* JointPainImageViewTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JointPainImageViewTests.swift; sourceTree = "<group>"; };
 		CB67C29023F390AA005B6BCD /* CodableResultObjectTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodableResultObjectTests.swift; sourceTree = "<group>"; };
 		CB67C29123F390AA005B6BCD /* CodableStepObjectTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodableStepObjectTests.swift; sourceTree = "<group>"; };
-		CB67C29223F390AA005B6BCD /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CB67C29323F390AA005B6BCD /* JointPainStepViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JointPainStepViewControllerTests.swift; sourceTree = "<group>"; };
 		CB67C29423F390AB005B6BCD /* CopyStepTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CopyStepTests.swift; sourceTree = "<group>"; };
 		CB6F54EF22E25C5B0073BFE9 /* ParticipantIDRegistrationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParticipantIDRegistrationViewController.swift; sourceTree = "<group>"; };
@@ -397,8 +397,6 @@
 		CB9F5E4022E0C27C003FBCEF /* PsorcastValidationTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PsorcastValidationTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB9F5E4422E0C27D003FBCEF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CB9F5E4F22E0C2BA003FBCEF /* PsorcastTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PsorcastTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		CB9F5E5122E0C2BA003FBCEF /* PsorcastTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PsorcastTests.swift; sourceTree = "<group>"; };
-		CB9F5E5322E0C2BA003FBCEF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CB9F5E5922E0C530003FBCEF /* CopyStepTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CopyStepTests.swift; sourceTree = "<group>"; };
 		CB9F5E5A22E0C531003FBCEF /* CodableStepObjectTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodableStepObjectTests.swift; sourceTree = "<group>"; };
 		CBA0250923FC6B2500604F2D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -413,6 +411,9 @@
 		CBB93CB6234252D000321A4D /* PsoriasisDrawCompletionStepViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PsoriasisDrawCompletionStepViewController.xib; sourceTree = "<group>"; };
 		CBBC8770239F028300AC9D8E /* PsoriasisDraw.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = PsoriasisDraw.mov; sourceTree = "<group>"; };
 		CBBE0F6524039A5F0072452C /* MeasureTabScheduleManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MeasureTabScheduleManager.swift; sourceTree = "<group>"; };
+		CBC0C85A242B2E1100E2EE80 /* PsorcastValidationTestsAssets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = PsorcastValidationTestsAssets.xcassets; sourceTree = "<group>"; };
+		CBC0C85C242BBBEF00E2EE80 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		CBC0C85D242BBBF000E2EE80 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CBC6519323F391BC00C3FF0C /* PsorcastTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PsorcastTests.swift; sourceTree = "<group>"; };
 		CBC6519523F392C700C3FF0C /* Psorcast.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Psorcast.entitlements; sourceTree = "<group>"; };
 		CBD62BAA23342CBA00C78F22 /* PsoriasisAreaPhotoCompletionStepViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PsoriasisAreaPhotoCompletionStepViewController.swift; sourceTree = "<group>"; };
@@ -608,18 +609,10 @@
 				CB9F5E5A22E0C531003FBCEF /* CodableStepObjectTests.swift */,
 				CB9F5E5922E0C530003FBCEF /* CopyStepTests.swift */,
 				CB9F5E3322E0C1A5003FBCEF /* TaskListScheduleManagerTests.swift */,
+				CBC0C85A242B2E1100E2EE80 /* PsorcastValidationTestsAssets.xcassets */,
 				CB9F5E4422E0C27D003FBCEF /* Info.plist */,
 			);
 			path = PsorcastValidationTests;
-			sourceTree = "<group>";
-		};
-		CB9F5E5022E0C2BA003FBCEF /* PsorcastTests */ = {
-			isa = PBXGroup;
-			children = (
-				CB9F5E5122E0C2BA003FBCEF /* PsorcastTests.swift */,
-				CB9F5E5322E0C2BA003FBCEF /* Info.plist */,
-			);
-			path = PsorcastTests;
 			sourceTree = "<group>";
 		};
 		CBB93CAF233FFA3600321A4D /* Helper */ = {
@@ -778,7 +771,6 @@
 				FFABCBE622DD1F2800D11109 /* PsorcastValidation */,
 				FFABCBD522DD1EEC00D11109 /* PsorcastTests */,
 				CB9F5E4122E0C27D003FBCEF /* PsorcastValidationTests */,
-				CB9F5E5022E0C2BA003FBCEF /* PsorcastTests */,
 				FFABCC0A22DD1FE800D11109 /* Frameworks */,
 				FFABCBBF22DD1EEB00D11109 /* Products */,
 			);
@@ -817,12 +809,13 @@
 		FFABCBD522DD1EEC00D11109 /* PsorcastTests */ = {
 			isa = PBXGroup;
 			children = (
+				CBC0C85C242BBBEF00E2EE80 /* Assets.xcassets */,
+				CBC0C85D242BBBF000E2EE80 /* Info.plist */,
 				CBC6519323F391BC00C3FF0C /* PsorcastTests.swift */,
 				CB67C29023F390AA005B6BCD /* CodableResultObjectTests.swift */,
 				CB67C29123F390AA005B6BCD /* CodableStepObjectTests.swift */,
 				CB67C29423F390AB005B6BCD /* CopyStepTests.swift */,
 				CB67C28D23F390AA005B6BCD /* DigitalJarOpenStepViewControllerTests.swift */,
-				CB67C29223F390AA005B6BCD /* Info.plist */,
 				CB67C28F23F390AA005B6BCD /* JointPainImageViewTests.swift */,
 				CB67C29323F390AA005B6BCD /* JointPainStepViewControllerTests.swift */,
 				CB67C28E23F390AA005B6BCD /* PSRImageHelperTests.swift */,
@@ -1043,6 +1036,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CBC0C85B242B2E1100E2EE80 /* PsorcastValidationTestsAssets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1050,6 +1044,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CBC0C85E242BBBF000E2EE80 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1184,7 +1179,6 @@
 				CB67C29D23F390AB005B6BCD /* JointPainStepViewControllerTests.swift in Sources */,
 				CB67C29923F390AB005B6BCD /* JointPainImageViewTests.swift in Sources */,
 				CB67C29B23F390AB005B6BCD /* CodableStepObjectTests.swift in Sources */,
-				CB9F5E5222E0C2BA003FBCEF /* PsorcastTests.swift in Sources */,
 				CB8F7D592423F6BB00F77D62 /* LevenshteinToolsTests.swift in Sources */,
 				CB67C29823F390AB005B6BCD /* PSRImageHelperTests.swift in Sources */,
 			);
