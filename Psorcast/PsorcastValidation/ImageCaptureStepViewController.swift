@@ -253,20 +253,31 @@ open class ImageCaptureStepViewController: RSDStepViewController, UIImagePickerC
         self.navigationHeader?.imageView?.isHidden = true
         
         super.setupHeader(header)
-    
-        if let imageDefaults = (AppDelegate.shared as? AppDelegate)?.imageDefaults,
-            let lastImageData = imageDefaults.getSavedFilteredImage(with: self.step.identifier),
-            let lastImage = UIImage(data: lastImageData) {
-            
-            // Setting the navigation header here immediately was not taking effect
-            // Use a delay to go around Research framework
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
-                self.navigationHeader?.imageView?.isHidden = false
-                self.navigationHeader?.imageView?.image = lastImage
-            }
-        } else {
+        self.navigationHeader?.imageView?.isHidden = false
+        
+        #if VALIDATION
+            // validation study will just always show the default overlay
             self.navigationHeader?.imageView?.isHidden = false
-        }
+            self.navigationHeader?.imageView?.contentMode = UIView.ContentMode.bottom;
+        #else
+            // full study should show the custom overlay if available
+            if let imageDefaults = (AppDelegate.shared as? AppDelegate)?.imageDefaults,
+                let lastImageData = imageDefaults.getSavedFilteredImage(with: self.step.identifier),
+                let lastImage = UIImage(data: lastImageData) {
+
+                // Setting the navigation header here immediately was not taking effect
+                // Use a delay to go around Research framework
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+                    self.navigationHeader?.imageView?.isHidden = false
+                    self.navigationHeader?.imageView?.image = lastImage
+                    self.navigationHeader?.imageView?.contentMode = UIView.ContentMode.scaleAspectFit;
+                }
+            } else {
+                self.navigationHeader?.imageView?.isHidden = false
+                self.navigationHeader?.imageView?.contentMode = UIView.ContentMode.bottom;
+            }
+        #endif
+    
     }
     
     private var keyValueObservations = [NSKeyValueObservation]()
