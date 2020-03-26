@@ -51,6 +51,9 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate {
                                               colorRules: PSRColorRules(palette: colorPalette, version: 1),
                                               fontRules: PSRFontRules(version: 1))
     
+    /// The task identifier of the try it first intro screens
+    let tryItFirstTaskId = "TryItFirstIntro"
+    
     // The app's image data store
     public let imageDefaults = ImageDefaults()
     
@@ -86,11 +89,8 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate {
     
     func showMainViewController(animated: Bool) {
         guard self.rootViewController?.state != .main else { return }
-        guard let storyboard = openStoryboard("Main"),
-            let vc = storyboard.instantiateInitialViewController()
-            else {
-                fatalError("Failed to instantiate initial view controller in the main storyboard.")
-        }
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let vc = storyboard.instantiateViewController(withIdentifier: "TabBarViewController")
         self.transition(to: vc, state: .main, animated: true)
     }
     
@@ -103,11 +103,48 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate {
         self.transition(to: vc, state: .launch, animated: true)
     }
     
+    func showOnboardingScreens(animated: Bool) {
+        guard self.rootViewController?.state != .main else { return }
+        
+        RSDFactory.shared = StudyTaskFactory()
+        let resource = RSDResourceTransformerObject(resourceName: "Onboarding.json", bundle: Bundle.main)
+        do {
+            let task = try RSDFactory.shared.decodeTask(with: resource)
+            let vc = RSDTaskViewController(task: task)
+            vc.delegate = self
+            self.transition(to: vc, state: .consent, animated: true)
+        } catch {
+            NSLog("Failed to create task from Onboarding.json \(error)")
+        }
+    }
+    
+    func showTryItFirstIntroScreens(animated: Bool) {
+        guard self.rootViewController?.state != .main else { return }
+        
+        var instructionSteps = [RSDStep]()
+        let stepIdList = ["TryItFirstInstruction0", "TryItFirstInstruction1", "TryItFirstInstruction2", "TryItFirstInstruction3"]
+        
+        for stepId in stepIdList {
+            let step = TryItFirstInstructionStepObject(identifier: stepId)
+            step.imageTheme = RSDFetchableImageThemeElementObject(imageName: stepId)
+            step.title = Localization.localizedString("\(stepId)Title")
+            step.text = Localization.localizedString("\(stepId)Text")
+            instructionSteps.append(step)
+        }
+        
+        var navigator = RSDConditionalStepNavigatorObject(with: instructionSteps)
+        navigator.progressMarkers = []
+        let task = RSDTaskObject(identifier: self.tryItFirstTaskId, stepNavigator: navigator)
+        let vc = RSDTaskViewController(task: task)
+        vc.delegate = self
+        self.transition(to: vc, state: .onboarding, animated: true)
+    }
+    
     func showTryItFirstViewController(animated: Bool) {
         guard self.rootViewController?.state != .main else { return }
         
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let vc = storyboard.instantiateViewController(withIdentifier: "TaskListTableViewController")
+        let vc = storyboard.instantiateViewController(withIdentifier: "TryItFirstTaskTableViewController")
         
         self.transition(to: vc, state: .main, animated: true)
     }
@@ -136,11 +173,37 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate {
     // MARK: RSDTaskViewControllerDelegate
     
     func taskController(_ taskController: RSDTaskController, didFinishWith reason: RSDTaskFinishReason, error: Error?) {
+        
+        // If we finish the intro screens, send the user to the try it first task list
+        if taskController.task.identifier == self.tryItFirstTaskId {
+            if reason == .completed {
+                self.showTryItFirstViewController(animated: true)
+            } else {
+                self.showWelcomeViewController(animated: true)
+            }
+            return
+        }
+        
+        // If we finish the onboarding screens, send the user to sign in
+        if taskController.task.identifier == "Onboarding" {
+            if reason == .completed {
+                self.showSignInViewController(animated: true)
+            } else {
+                self.showWelcomeViewController(animated: true)
+            }
+            return
+        }
+        
         guard BridgeSDK.authManager.isAuthenticated() else { return }
         showAppropriateViewController(animated: true)
     }
     
     func taskController(_ taskController: RSDTaskController, readyToSave taskViewModel: RSDTaskViewModel) {
+    }
+    
+    func updateGlobalColors() {
+        // Set all UISearchBar textfield background to white
+        UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).backgroundColor = .white
     }
 }
 
@@ -171,5 +234,12 @@ open class PSRFontRules: RSDFontRules {
         default:  // includes .regular and everything else
             return RSDFont(name: latoRegularName, size: fontSize)!
         }
+    }
+}
+
+open class TryItFirstInstructionStepObject: RSDUIStepObject, RSDStepViewControllerVendor {
+    public func instantiateViewController(with parent: RSDPathComponent?) -> (UIViewController & RSDStepController)? {
+        let vc = RSDInstructionStepViewController(step: self, parent: parent)
+        return vc
     }
 }

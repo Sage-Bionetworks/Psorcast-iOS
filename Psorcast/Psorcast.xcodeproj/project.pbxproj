@@ -12,15 +12,20 @@
 		CB05146C237F27560058D746 /* DigitalJarOpen.json in Resources */ = {isa = PBXBuildFile; fileRef = CB05146B237F27560058D746 /* DigitalJarOpen.json */; };
 		CB09F00123D644A9009D344E /* DigitalJarOpenInstructionStepViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB09F00023D644A8009D344E /* DigitalJarOpenInstructionStepViewController.xib */; };
 		CB09F00323D649FB009D344E /* DigitalJarOpenInstructionStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB09F00223D649FB009D344E /* DigitalJarOpenInstructionStepViewController.swift */; };
+		CB09F0382421D5730005698D /* TreatmentSelectionStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB09F0372421D5730005698D /* TreatmentSelectionStepViewController.swift */; };
+		CB09F03E2421E9E80005698D /* TreatmentSelectionStepViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB09F03D2421E9E80005698D /* TreatmentSelectionStepViewController.xib */; };
 		CB16BF5623E4B9140099FD08 /* GPUImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB16BF5323E4B90B0099FD08 /* GPUImage.framework */; };
 		CB16BF5723E4B9140099FD08 /* GPUImage.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CB16BF5323E4B90B0099FD08 /* GPUImage.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		CB24CB1E2403941F0081EBD3 /* TaskListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB24CB1D2403941F0081EBD3 /* TaskListTableViewController.swift */; };
 		CB28EBE82396FCA30043D7FE /* JointCounting.mov in Resources */ = {isa = PBXBuildFile; fileRef = CB28EBE52396FCA30043D7FE /* JointCounting.mov */; };
 		CB28EBEA2396FCA30043D7FE /* DigitalJarOpen.mov in Resources */ = {isa = PBXBuildFile; fileRef = CB28EBE72396FCA30043D7FE /* DigitalJarOpen.mov */; };
 		CB422D2A23316EB700787FEE /* BridgeAppUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB422D2923316EB700787FEE /* BridgeAppUI.framework */; };
 		CB422D2B23316EB700787FEE /* BridgeAppUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB422D2923316EB700787FEE /* BridgeAppUI.framework */; };
 		CB422D2C23316EB700787FEE /* BridgeAppUI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CB422D2923316EB700787FEE /* BridgeAppUI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		CB422D2E23316EB700787FEE /* MDJointCounting.json in Resources */ = {isa = PBXBuildFile; fileRef = CB422D2D23316EB700787FEE /* MDJointCounting.json */; };
+		CB4794F12426B33300D5A7E6 /* LevenshteinTools.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4794F02426B33300D5A7E6 /* LevenshteinTools.swift */; };
+		CB4794F32426B36C00D5A7E6 /* ViewUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4794F22426B36C00D5A7E6 /* ViewUtils.swift */; };
+		CB4794F52426B39900D5A7E6 /* TreatmentSelectionStepObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4794F42426B39900D5A7E6 /* TreatmentSelectionStepObject.swift */; };
+		CB4794F72426B3D800D5A7E6 /* TreatmentSelectionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4794F62426B3D800D5A7E6 /* TreatmentSelectionTableViewCell.swift */; };
 		CB47E563233FC1BD00AE8501 /* PsoriasisDrawStepObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB47E562233FC1BD00AE8501 /* PsoriasisDrawStepObject.swift */; };
 		CB47E565233FC2EC00AE8501 /* PsoriasisDrawResultObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB47E564233FC2EC00AE8501 /* PsoriasisDrawResultObject.swift */; };
 		CB47E567233FC61400AE8501 /* PsoriasisDrawStepViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB47E566233FC61400AE8501 /* PsoriasisDrawStepViewController.xib */; };
@@ -50,9 +55,9 @@
 		CB67C29B23F390AB005B6BCD /* CodableStepObjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB67C29123F390AA005B6BCD /* CodableStepObjectTests.swift */; };
 		CB67C29D23F390AB005B6BCD /* JointPainStepViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB67C29323F390AA005B6BCD /* JointPainStepViewControllerTests.swift */; };
 		CB67C29E23F390AB005B6BCD /* CopyStepTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB67C29423F390AB005B6BCD /* CopyStepTests.swift */; };
-		CB67C29F23F390AB005B6BCD /* TaskListScheduleManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB67C29523F390AB005B6BCD /* TaskListScheduleManagerTests.swift */; };
 		CB6F54F022E25C5B0073BFE9 /* ParticipantIDRegistrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6F54EF22E25C5B0073BFE9 /* ParticipantIDRegistrationViewController.swift */; };
 		CB704AC123EF8C4D00CC9D13 /* ImageDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB704AC023EF8C4D00CC9D13 /* ImageDefaults.swift */; };
+		CB72E8AF241C2BC0006ECC24 /* Onboarding.json in Resources */ = {isa = PBXBuildFile; fileRef = CB72E8AA241C2BC0006ECC24 /* Onboarding.json */; };
 		CB737FEC231B100600FA1D3A /* MDJointSwelling.json in Resources */ = {isa = PBXBuildFile; fileRef = CB737FEB231B100600FA1D3A /* MDJointSwelling.json */; };
 		CB77866C238984790009ECF9 /* DigitalJarOpenStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB77866B238984790009ECF9 /* DigitalJarOpenStepViewController.swift */; };
 		CB778670238B3F4D0009ECF9 /* DigitalJarOpenStepViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB77866F238B3F4D0009ECF9 /* DigitalJarOpenStepViewControllerTests.swift */; };
@@ -66,7 +71,11 @@
 		CB8AE6FF233FBA1800F5F8AC /* PsoriasisDrawImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB8AE6FE233FBA1800F5F8AC /* PsoriasisDrawImageView.swift */; };
 		CB8AE701233FBA5E00F5F8AC /* PsoriasisDrawStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB8AE700233FBA5E00F5F8AC /* PsoriasisDrawStepViewController.swift */; };
 		CB8AE703233FBB9800F5F8AC /* TouchDrawableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB8AE702233FBB9800F5F8AC /* TouchDrawableView.swift */; };
+		CB8DC7B824189E31001B7982 /* TaskListScheduleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB8DC7B324189E31001B7982 /* TaskListScheduleManager.swift */; };
+		CB8DC7BA2418A333001B7982 /* TaskListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBD67D8722DFC59B00998516 /* TaskListTableViewController.swift */; };
 		CB8F2A9E2375E4A4005A62E7 /* ImageCaptureCompletionStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB8F2A9D2375E4A4005A62E7 /* ImageCaptureCompletionStepViewController.swift */; };
+		CB8F7D562422D73A00F77D62 /* StudyTaskFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB8F7D512422D73900F77D62 /* StudyTaskFactory.swift */; };
+		CB8F7D592423F6BB00F77D62 /* LevenshteinToolsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB8F7D582423F6BB00F77D62 /* LevenshteinToolsTests.swift */; };
 		CB9F5E1F22E0BED3003FBCEF /* lato_black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CB9F5E1422E0BEA3003FBCEF /* lato_black.ttf */; };
 		CB9F5E2022E0BED3003FBCEF /* lato_bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CB9F5E1222E0BEA3003FBCEF /* lato_bold.ttf */; };
 		CB9F5E2122E0BED3003FBCEF /* lato_bolditalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CB9F5E1522E0BEA3003FBCEF /* lato_bolditalic.ttf */; };
@@ -82,7 +91,6 @@
 		CB9F5E2B22E0BED4003FBCEF /* lato_lightitalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CB9F5E1822E0BEA3003FBCEF /* lato_lightitalic.ttf */; };
 		CB9F5E2C22E0BED4003FBCEF /* lato_regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CB9F5E1722E0BEA3003FBCEF /* lato_regular.ttf */; };
 		CB9F5E4A22E0C2AA003FBCEF /* TaskListScheduleManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB9F5E3322E0C1A5003FBCEF /* TaskListScheduleManagerTests.swift */; };
-		CB9F5E5222E0C2BA003FBCEF /* PsorcastTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB9F5E5122E0C2BA003FBCEF /* PsorcastTests.swift */; };
 		CB9F5E5B22E0C531003FBCEF /* CopyStepTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB9F5E5922E0C530003FBCEF /* CopyStepTests.swift */; };
 		CB9F5E5C22E0C531003FBCEF /* CodableStepObjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB9F5E5A22E0C531003FBCEF /* CodableStepObjectTests.swift */; };
 		CBA0250E23FC6B2500604F2D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CBA0250823FC6B2500604F2D /* Main.storyboard */; };
@@ -96,14 +104,14 @@
 		CBB93CB5234252BC00321A4D /* PsoriasisDrawCompletionStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBB93CB4234252BC00321A4D /* PsoriasisDrawCompletionStepViewController.swift */; };
 		CBB93CB7234252D000321A4D /* PsoriasisDrawCompletionStepViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CBB93CB6234252D000321A4D /* PsoriasisDrawCompletionStepViewController.xib */; };
 		CBBC8771239F028300AC9D8E /* PsoriasisDraw.mov in Resources */ = {isa = PBXBuildFile; fileRef = CBBC8770239F028300AC9D8E /* PsoriasisDraw.mov */; };
-		CBBE0F6624039A5F0072452C /* TaskListScheduleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBBE0F6524039A5F0072452C /* TaskListScheduleManager.swift */; };
+		CBBE0F6624039A5F0072452C /* MeasureTabScheduleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBBE0F6524039A5F0072452C /* MeasureTabScheduleManager.swift */; };
+		CBC0C85B242B2E1100E2EE80 /* PsorcastValidationTestsAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CBC0C85A242B2E1100E2EE80 /* PsorcastValidationTestsAssets.xcassets */; };
+		CBC0C85E242BBBF000E2EE80 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CBC0C85C242BBBEF00E2EE80 /* Assets.xcassets */; };
 		CBC6519423F391BC00C3FF0C /* PsorcastTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC6519323F391BC00C3FF0C /* PsorcastTests.swift */; };
 		CBC6519623F3931800C3FF0C /* Psorcast.strings in Resources */ = {isa = PBXBuildFile; fileRef = CBD67D8022DFB8DE00998516 /* Psorcast.strings */; };
 		CBD62BAC23342CBA00C78F22 /* PsoriasisAreaPhotoCompletionStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBD62BAA23342CBA00C78F22 /* PsoriasisAreaPhotoCompletionStepViewController.swift */; };
 		CBD67D8122DFB8DE00998516 /* Psorcast.strings in Resources */ = {isa = PBXBuildFile; fileRef = CBD67D8022DFB8DE00998516 /* Psorcast.strings */; };
 		CBD67D8422DFB90C00998516 /* ExternalIDRegistrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBD67D8322DFB90C00998516 /* ExternalIDRegistrationViewController.swift */; };
-		CBD67D8822DFC59B00998516 /* TaskListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBD67D8722DFC59B00998516 /* TaskListTableViewController.swift */; };
-		CBD67D8B22DFC5CA00998516 /* TaskListScheduleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBD67D8A22DFC5CA00998516 /* TaskListScheduleManager.swift */; };
 		CBD67D8D22DFC5EE00998516 /* MotorControl+Bridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBD67D8C22DFC5EE00998516 /* MotorControl+Bridge.swift */; };
 		CBD67D9122DFC6B400998516 /* BuildDateUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = CBD67D9022DFC6B400998516 /* BuildDateUtil.m */; };
 		CBD67D9322DFC71E00998516 /* TaskFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBD67D9222DFC71E00998516 /* TaskFactory.swift */; };
@@ -194,6 +202,10 @@
 		CBDCDCD823F385E600E5CEB8 /* ResearchMotion.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CBDCDCD623F385E600E5CEB8 /* ResearchMotion.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		CBDCDCDA23F385EC00E5CEB8 /* ResearchUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBDCDCD923F385EC00E5CEB8 /* ResearchUI.framework */; };
 		CBDCDCDB23F385EC00E5CEB8 /* ResearchUI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CBDCDCD923F385EC00E5CEB8 /* ResearchUI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		CBDD30E62416C7D1003B0488 /* PsorcastAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CBDD30E12416C7D1003B0488 /* PsorcastAssets.xcassets */; };
+		CBDD30E82416D403003B0488 /* MeasureTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBDD30E72416D403003B0488 /* MeasureTabViewController.swift */; };
+		CBE561532412BD96009A2930 /* TryItFirstTaskScheduleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE5614E2412BD96009A2930 /* TryItFirstTaskScheduleManager.swift */; };
+		CBE561552412BD9D009A2930 /* TryItFirstTaskTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE561542412BD9D009A2930 /* TryItFirstTaskTableViewController.swift */; };
 		CBE908952332ED9E00F88A9A /* PsoriasisAreaPhoto.json in Resources */ = {isa = PBXBuildFile; fileRef = CBE908942332ED9E00F88A9A /* PsoriasisAreaPhoto.json */; };
 		CBE908A42333BADA00F88A9A /* PsoriasisAreaPhotoStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE908A22333BADA00F88A9A /* PsoriasisAreaPhotoStepViewController.swift */; };
 		CBE908A52333BADA00F88A9A /* PsoriasisAreaPhotoStepViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CBE908A32333BADA00F88A9A /* PsoriasisAreaPhotoStepViewController.xib */; };
@@ -314,12 +326,17 @@
 		CB05146B237F27560058D746 /* DigitalJarOpen.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = DigitalJarOpen.json; sourceTree = "<group>"; };
 		CB09F00023D644A8009D344E /* DigitalJarOpenInstructionStepViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DigitalJarOpenInstructionStepViewController.xib; sourceTree = "<group>"; };
 		CB09F00223D649FB009D344E /* DigitalJarOpenInstructionStepViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DigitalJarOpenInstructionStepViewController.swift; sourceTree = "<group>"; };
+		CB09F0372421D5730005698D /* TreatmentSelectionStepViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreatmentSelectionStepViewController.swift; sourceTree = "<group>"; };
+		CB09F03D2421E9E80005698D /* TreatmentSelectionStepViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TreatmentSelectionStepViewController.xib; sourceTree = "<group>"; };
 		CB16BF4723E4B90B0099FD08 /* GPUImage.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = GPUImage.xcodeproj; path = ../gpuimage/GPUImage.xcodeproj; sourceTree = "<group>"; };
-		CB24CB1D2403941F0081EBD3 /* TaskListTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskListTableViewController.swift; sourceTree = "<group>"; };
 		CB28EBE52396FCA30043D7FE /* JointCounting.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = JointCounting.mov; sourceTree = "<group>"; };
 		CB28EBE72396FCA30043D7FE /* DigitalJarOpen.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = DigitalJarOpen.mov; sourceTree = "<group>"; };
 		CB422D2923316EB700787FEE /* BridgeAppUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BridgeAppUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB422D2D23316EB700787FEE /* MDJointCounting.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = MDJointCounting.json; sourceTree = "<group>"; };
+		CB4794F02426B33300D5A7E6 /* LevenshteinTools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevenshteinTools.swift; sourceTree = "<group>"; };
+		CB4794F22426B36C00D5A7E6 /* ViewUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewUtils.swift; sourceTree = "<group>"; };
+		CB4794F42426B39900D5A7E6 /* TreatmentSelectionStepObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreatmentSelectionStepObject.swift; sourceTree = "<group>"; };
+		CB4794F62426B3D800D5A7E6 /* TreatmentSelectionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreatmentSelectionTableViewCell.swift; sourceTree = "<group>"; };
 		CB47E562233FC1BD00AE8501 /* PsoriasisDrawStepObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PsoriasisDrawStepObject.swift; sourceTree = "<group>"; };
 		CB47E564233FC2EC00AE8501 /* PsoriasisDrawResultObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PsoriasisDrawResultObject.swift; sourceTree = "<group>"; };
 		CB47E566233FC61400AE8501 /* PsoriasisDrawStepViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PsoriasisDrawStepViewController.xib; sourceTree = "<group>"; };
@@ -347,12 +364,11 @@
 		CB67C28F23F390AA005B6BCD /* JointPainImageViewTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JointPainImageViewTests.swift; sourceTree = "<group>"; };
 		CB67C29023F390AA005B6BCD /* CodableResultObjectTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodableResultObjectTests.swift; sourceTree = "<group>"; };
 		CB67C29123F390AA005B6BCD /* CodableStepObjectTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodableStepObjectTests.swift; sourceTree = "<group>"; };
-		CB67C29223F390AA005B6BCD /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CB67C29323F390AA005B6BCD /* JointPainStepViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JointPainStepViewControllerTests.swift; sourceTree = "<group>"; };
 		CB67C29423F390AB005B6BCD /* CopyStepTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CopyStepTests.swift; sourceTree = "<group>"; };
-		CB67C29523F390AB005B6BCD /* TaskListScheduleManagerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskListScheduleManagerTests.swift; sourceTree = "<group>"; };
 		CB6F54EF22E25C5B0073BFE9 /* ParticipantIDRegistrationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParticipantIDRegistrationViewController.swift; sourceTree = "<group>"; };
 		CB704AC023EF8C4D00CC9D13 /* ImageDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDefaults.swift; sourceTree = "<group>"; };
+		CB72E8AA241C2BC0006ECC24 /* Onboarding.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Onboarding.json; sourceTree = "<group>"; };
 		CB737FEB231B100600FA1D3A /* MDJointSwelling.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = MDJointSwelling.json; sourceTree = "<group>"; };
 		CB77866B238984790009ECF9 /* DigitalJarOpenStepViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DigitalJarOpenStepViewController.swift; sourceTree = "<group>"; };
 		CB77866F238B3F4D0009ECF9 /* DigitalJarOpenStepViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DigitalJarOpenStepViewControllerTests.swift; sourceTree = "<group>"; };
@@ -366,7 +382,10 @@
 		CB8AE6FE233FBA1800F5F8AC /* PsoriasisDrawImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PsoriasisDrawImageView.swift; sourceTree = "<group>"; };
 		CB8AE700233FBA5E00F5F8AC /* PsoriasisDrawStepViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PsoriasisDrawStepViewController.swift; sourceTree = "<group>"; };
 		CB8AE702233FBB9800F5F8AC /* TouchDrawableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchDrawableView.swift; sourceTree = "<group>"; };
+		CB8DC7B324189E31001B7982 /* TaskListScheduleManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskListScheduleManager.swift; sourceTree = "<group>"; };
 		CB8F2A9D2375E4A4005A62E7 /* ImageCaptureCompletionStepViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCaptureCompletionStepViewController.swift; sourceTree = "<group>"; };
+		CB8F7D512422D73900F77D62 /* StudyTaskFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StudyTaskFactory.swift; sourceTree = "<group>"; };
+		CB8F7D582423F6BB00F77D62 /* LevenshteinToolsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevenshteinToolsTests.swift; sourceTree = "<group>"; };
 		CB9F5E1222E0BEA3003FBCEF /* lato_bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = lato_bold.ttf; path = Fonts/lato_bold.ttf; sourceTree = "<group>"; };
 		CB9F5E1322E0BEA3003FBCEF /* lato_light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = lato_light.ttf; path = Fonts/lato_light.ttf; sourceTree = "<group>"; };
 		CB9F5E1422E0BEA3003FBCEF /* lato_black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = lato_black.ttf; path = Fonts/lato_black.ttf; sourceTree = "<group>"; };
@@ -378,8 +397,6 @@
 		CB9F5E4022E0C27C003FBCEF /* PsorcastValidationTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PsorcastValidationTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB9F5E4422E0C27D003FBCEF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CB9F5E4F22E0C2BA003FBCEF /* PsorcastTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PsorcastTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		CB9F5E5122E0C2BA003FBCEF /* PsorcastTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PsorcastTests.swift; sourceTree = "<group>"; };
-		CB9F5E5322E0C2BA003FBCEF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CB9F5E5922E0C530003FBCEF /* CopyStepTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CopyStepTests.swift; sourceTree = "<group>"; };
 		CB9F5E5A22E0C531003FBCEF /* CodableStepObjectTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodableStepObjectTests.swift; sourceTree = "<group>"; };
 		CBA0250923FC6B2500604F2D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -393,7 +410,10 @@
 		CBB93CB4234252BC00321A4D /* PsoriasisDrawCompletionStepViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PsoriasisDrawCompletionStepViewController.swift; sourceTree = "<group>"; };
 		CBB93CB6234252D000321A4D /* PsoriasisDrawCompletionStepViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PsoriasisDrawCompletionStepViewController.xib; sourceTree = "<group>"; };
 		CBBC8770239F028300AC9D8E /* PsoriasisDraw.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = PsoriasisDraw.mov; sourceTree = "<group>"; };
-		CBBE0F6524039A5F0072452C /* TaskListScheduleManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskListScheduleManager.swift; sourceTree = "<group>"; };
+		CBBE0F6524039A5F0072452C /* MeasureTabScheduleManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MeasureTabScheduleManager.swift; sourceTree = "<group>"; };
+		CBC0C85A242B2E1100E2EE80 /* PsorcastValidationTestsAssets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = PsorcastValidationTestsAssets.xcassets; sourceTree = "<group>"; };
+		CBC0C85C242BBBEF00E2EE80 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		CBC0C85D242BBBF000E2EE80 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CBC6519323F391BC00C3FF0C /* PsorcastTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PsorcastTests.swift; sourceTree = "<group>"; };
 		CBC6519523F392C700C3FF0C /* Psorcast.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Psorcast.entitlements; sourceTree = "<group>"; };
 		CBD62BAA23342CBA00C78F22 /* PsoriasisAreaPhotoCompletionStepViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PsoriasisAreaPhotoCompletionStepViewController.swift; sourceTree = "<group>"; };
@@ -401,7 +421,6 @@
 		CBD67D8322DFB90C00998516 /* ExternalIDRegistrationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExternalIDRegistrationViewController.swift; sourceTree = "<group>"; };
 		CBD67D8622DFC45200998516 /* PsorcastValidation.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PsorcastValidation.entitlements; sourceTree = "<group>"; };
 		CBD67D8722DFC59B00998516 /* TaskListTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskListTableViewController.swift; sourceTree = "<group>"; };
-		CBD67D8A22DFC5CA00998516 /* TaskListScheduleManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskListScheduleManager.swift; sourceTree = "<group>"; };
 		CBD67D8C22DFC5EE00998516 /* MotorControl+Bridge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MotorControl+Bridge.swift"; sourceTree = "<group>"; };
 		CBD67D8F22DFC6B400998516 /* PsorcastValidation-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PsorcastValidation-Bridging-Header.h"; sourceTree = "<group>"; };
 		CBD67D9022DFC6B400998516 /* BuildDateUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BuildDateUtil.m; sourceTree = "<group>"; };
@@ -421,6 +440,10 @@
 		CBDCDCD323F385DA00E5CEB8 /* Research.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Research.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CBDCDCD623F385E600E5CEB8 /* ResearchMotion.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = ResearchMotion.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CBDCDCD923F385EC00E5CEB8 /* ResearchUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = ResearchUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		CBDD30E12416C7D1003B0488 /* PsorcastAssets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = PsorcastAssets.xcassets; sourceTree = "<group>"; };
+		CBDD30E72416D403003B0488 /* MeasureTabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeasureTabViewController.swift; sourceTree = "<group>"; };
+		CBE5614E2412BD96009A2930 /* TryItFirstTaskScheduleManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TryItFirstTaskScheduleManager.swift; sourceTree = "<group>"; };
+		CBE561542412BD9D009A2930 /* TryItFirstTaskTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TryItFirstTaskTableViewController.swift; sourceTree = "<group>"; };
 		CBE908942332ED9E00F88A9A /* PsoriasisAreaPhoto.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = PsoriasisAreaPhoto.json; sourceTree = "<group>"; };
 		CBE908A22333BADA00F88A9A /* PsoriasisAreaPhotoStepViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PsoriasisAreaPhotoStepViewController.swift; sourceTree = "<group>"; };
 		CBE908A32333BADA00F88A9A /* PsoriasisAreaPhotoStepViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PsoriasisAreaPhotoStepViewController.xib; sourceTree = "<group>"; };
@@ -522,11 +545,25 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		CB4794EB2426B31D00D5A7E6 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				CB4794F02426B33300D5A7E6 /* LevenshteinTools.swift */,
+				CB4794F22426B36C00D5A7E6 /* ViewUtils.swift */,
+			);
+			name = Utils;
+			sourceTree = "<group>";
+		};
 		CB7CF23C2400BE84003E02A5 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				CBE561542412BD9D009A2930 /* TryItFirstTaskTableViewController.swift */,
 				CB7CF2412400BF10003E02A5 /* WelcomeVideoViewController.swift */,
-				CB24CB1D2403941F0081EBD3 /* TaskListTableViewController.swift */,
+				CBDD30E72416D403003B0488 /* MeasureTabViewController.swift */,
+				CB09F03D2421E9E80005698D /* TreatmentSelectionStepViewController.xib */,
+				CB09F0372421D5730005698D /* TreatmentSelectionStepViewController.swift */,
+				CB4794F42426B39900D5A7E6 /* TreatmentSelectionStepObject.swift */,
+				CB4794F62426B3D800D5A7E6 /* TreatmentSelectionTableViewCell.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -572,18 +609,10 @@
 				CB9F5E5A22E0C531003FBCEF /* CodableStepObjectTests.swift */,
 				CB9F5E5922E0C530003FBCEF /* CopyStepTests.swift */,
 				CB9F5E3322E0C1A5003FBCEF /* TaskListScheduleManagerTests.swift */,
+				CBC0C85A242B2E1100E2EE80 /* PsorcastValidationTestsAssets.xcassets */,
 				CB9F5E4422E0C27D003FBCEF /* Info.plist */,
 			);
 			path = PsorcastValidationTests;
-			sourceTree = "<group>";
-		};
-		CB9F5E5022E0C2BA003FBCEF /* PsorcastTests */ = {
-			isa = PBXGroup;
-			children = (
-				CB9F5E5122E0C2BA003FBCEF /* PsorcastTests.swift */,
-				CB9F5E5322E0C2BA003FBCEF /* Info.plist */,
-			);
-			path = PsorcastTests;
 			sourceTree = "<group>";
 		};
 		CBB93CAF233FFA3600321A4D /* Helper */ = {
@@ -597,7 +626,9 @@
 		CBBE0F6024039A4F0072452C /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				CBBE0F6524039A5F0072452C /* TaskListScheduleManager.swift */,
+				CB8F7D512422D73900F77D62 /* StudyTaskFactory.swift */,
+				CBBE0F6524039A5F0072452C /* MeasureTabScheduleManager.swift */,
+				CBE5614E2412BD96009A2930 /* TryItFirstTaskScheduleManager.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -670,7 +701,7 @@
 			children = (
 				CBD67D9222DFC71E00998516 /* TaskFactory.swift */,
 				CBD67D8C22DFC5EE00998516 /* MotorControl+Bridge.swift */,
-				CBD67D8A22DFC5CA00998516 /* TaskListScheduleManager.swift */,
+				CB8DC7B324189E31001B7982 /* TaskListScheduleManager.swift */,
 				CB85FB51235F505300FDC59B /* PsoriasisDrawTaskResultProcessor.swift */,
 				CB704AC023EF8C4D00CC9D13 /* ImageDefaults.swift */,
 			);
@@ -740,7 +771,6 @@
 				FFABCBE622DD1F2800D11109 /* PsorcastValidation */,
 				FFABCBD522DD1EEC00D11109 /* PsorcastTests */,
 				CB9F5E4122E0C27D003FBCEF /* PsorcastValidationTests */,
-				CB9F5E5022E0C2BA003FBCEF /* PsorcastTests */,
 				FFABCC0A22DD1FE800D11109 /* Frameworks */,
 				FFABCBBF22DD1EEB00D11109 /* Products */,
 			);
@@ -764,10 +794,13 @@
 				CBC6519523F392C700C3FF0C /* Psorcast.entitlements */,
 				FFABCBC122DD1EEB00D11109 /* AppDelegate.swift */,
 				FFABCBCA22DD1EEC00D11109 /* LaunchScreen.storyboard */,
+				CBDD30E12416C7D1003B0488 /* PsorcastAssets.xcassets */,
 				CBDCDCC023F3854600E5CEB8 /* ObjC */,
 				CBBE0F6024039A4F0072452C /* Model */,
 				CB7CF23C2400BE84003E02A5 /* ViewControllers */,
+				CB4794EB2426B31D00D5A7E6 /* Utils */,
 				CB7CF2432400C627003E02A5 /* Resources */,
+				CB72E8AA241C2BC0006ECC24 /* Onboarding.json */,
 				FF50109C22DD20DE0035E83C /* Support Files */,
 			);
 			path = Psorcast;
@@ -776,16 +809,17 @@
 		FFABCBD522DD1EEC00D11109 /* PsorcastTests */ = {
 			isa = PBXGroup;
 			children = (
+				CBC0C85C242BBBEF00E2EE80 /* Assets.xcassets */,
+				CBC0C85D242BBBF000E2EE80 /* Info.plist */,
 				CBC6519323F391BC00C3FF0C /* PsorcastTests.swift */,
 				CB67C29023F390AA005B6BCD /* CodableResultObjectTests.swift */,
 				CB67C29123F390AA005B6BCD /* CodableStepObjectTests.swift */,
 				CB67C29423F390AB005B6BCD /* CopyStepTests.swift */,
 				CB67C28D23F390AA005B6BCD /* DigitalJarOpenStepViewControllerTests.swift */,
-				CB67C29223F390AA005B6BCD /* Info.plist */,
 				CB67C28F23F390AA005B6BCD /* JointPainImageViewTests.swift */,
 				CB67C29323F390AA005B6BCD /* JointPainStepViewControllerTests.swift */,
 				CB67C28E23F390AA005B6BCD /* PSRImageHelperTests.swift */,
-				CB67C29523F390AB005B6BCD /* TaskListScheduleManagerTests.swift */,
+				CB8F7D582423F6BB00F77D62 /* LevenshteinToolsTests.swift */,
 			);
 			path = PsorcastTests;
 			sourceTree = "<group>";
@@ -1002,6 +1036,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CBC0C85B242B2E1100E2EE80 /* PsorcastValidationTestsAssets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1009,6 +1044,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CBC0C85E242BBBF000E2EE80 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1026,6 +1062,7 @@
 				CBDCDC7C23F3848500E5CEB8 /* HandImaging.json in Resources */,
 				CBDCDC9E23F3849E00E5CEB8 /* JointPainStepViewController.xib in Resources */,
 				CBDCDC8E23F3849E00E5CEB8 /* SelectionCollectionStepViewController.xib in Resources */,
+				CB09F03E2421E9E80005698D /* TreatmentSelectionStepViewController.xib in Resources */,
 				CBDCDCB023F3849E00E5CEB8 /* PsoriasisDrawCompletionStepViewController.xib in Resources */,
 				CBDCDC9023F3849E00E5CEB8 /* ExternalIDRegistrationViewController.xib in Resources */,
 				CBDCDC7D23F3848500E5CEB8 /* JointCounting.json in Resources */,
@@ -1052,7 +1089,9 @@
 				CBDCDC9623F3849E00E5CEB8 /* ImageCaptureStepViewController.xib in Resources */,
 				CB9F5E2422E0BED3003FBCEF /* lato_lightitalic.ttf in Resources */,
 				CBDCDCB423F3849E00E5CEB8 /* DigitalJarOpenCompletionStepViewController.xib in Resources */,
+				CB72E8AF241C2BC0006ECC24 /* Onboarding.json in Resources */,
 				CBDCDC8323F3848E00E5CEB8 /* FingersPhoto.mov in Resources */,
+				CBDD30E62416C7D1003B0488 /* PsorcastAssets.xcassets in Resources */,
 				CBDCDC9423F3849E00E5CEB8 /* ParticipantIDRegistrationViewController.xib in Resources */,
 				FF5010A122DD214A0035E83C /* BridgeInfo.plist in Resources */,
 				CBDCDC7F23F3848500E5CEB8 /* MDJointCounting.json in Resources */,
@@ -1140,9 +1179,8 @@
 				CB67C29D23F390AB005B6BCD /* JointPainStepViewControllerTests.swift in Sources */,
 				CB67C29923F390AB005B6BCD /* JointPainImageViewTests.swift in Sources */,
 				CB67C29B23F390AB005B6BCD /* CodableStepObjectTests.swift in Sources */,
-				CB9F5E5222E0C2BA003FBCEF /* PsorcastTests.swift in Sources */,
+				CB8F7D592423F6BB00F77D62 /* LevenshteinToolsTests.swift in Sources */,
 				CB67C29823F390AB005B6BCD /* PSRImageHelperTests.swift in Sources */,
-				CB67C29F23F390AB005B6BCD /* TaskListScheduleManagerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1152,18 +1190,20 @@
 			files = (
 				CBDCDCB523F3849E00E5CEB8 /* DigitalJarOpenInstructionStepViewController.swift in Sources */,
 				CBDCDCAB23F3849E00E5CEB8 /* PsoriasisDrawImageView.swift in Sources */,
+				CBE561532412BD96009A2930 /* TryItFirstTaskScheduleManager.swift in Sources */,
 				CBDCDCA623F3849E00E5CEB8 /* PsoriasisAreaPhotoStepObject.swift in Sources */,
 				CBDCDC9523F3849E00E5CEB8 /* ImageCaptureStepViewController.swift in Sources */,
+				CBE561552412BD9D009A2930 /* TryItFirstTaskTableViewController.swift in Sources */,
 				CBDCDC9B23F3849E00E5CEB8 /* JointPainResultObject.swift in Sources */,
 				CBDCDCAF23F3849E00E5CEB8 /* PsoriasisDrawCompletionStepViewController.swift in Sources */,
 				CBDCDC9A23F3849E00E5CEB8 /* JointPainStepObject.swift in Sources */,
+				CB8F7D562422D73A00F77D62 /* StudyTaskFactory.swift in Sources */,
 				CBDCDCBB23F384A400E5CEB8 /* ImageDefaults.swift in Sources */,
 				CBDCDCAE23F3849E00E5CEB8 /* TouchDrawableView.swift in Sources */,
 				CBDCDCA823F3849E00E5CEB8 /* PsoriasisAreaPhotoCompletionStepViewController.swift in Sources */,
 				CBDCDC9F23F3849E00E5CEB8 /* JointPainCompletionStepViewController.swift in Sources */,
 				CBDCDCB223F3849E00E5CEB8 /* DigitalJarOpenStepViewController.swift in Sources */,
 				CBDCDCAD23F3849E00E5CEB8 /* PsoriasisDrawResultObject.swift in Sources */,
-				CB24CB1E2403941F0081EBD3 /* TaskListTableViewController.swift in Sources */,
 				CBDCDCB723F384A400E5CEB8 /* TaskFactory.swift in Sources */,
 				CBDCDCC223F3855300E5CEB8 /* BuildDateUtil.m in Sources */,
 				CBDCDCB123F3849E00E5CEB8 /* SelectedIdentifiersResultObject.swift in Sources */,
@@ -1171,23 +1211,29 @@
 				CBDCDC8B23F3849E00E5CEB8 /* RSDCollectionViewCell.swift in Sources */,
 				CBDCDCA523F3849E00E5CEB8 /* PsoriasisAreaPhotoResultObject.swift in Sources */,
 				CBDCDCBA23F384A400E5CEB8 /* PsoriasisDrawTaskResultProcessor.swift in Sources */,
-				CBBE0F6624039A5F0072452C /* TaskListScheduleManager.swift in Sources */,
+				CBBE0F6624039A5F0072452C /* MeasureTabScheduleManager.swift in Sources */,
 				CBDCDCB323F3849E00E5CEB8 /* DigitalJarOpenCompletionStepViewController.swift in Sources */,
 				CBDCDCA923F3849E00E5CEB8 /* PsoriasisDrawStepViewController.swift in Sources */,
+				CB4794F32426B36C00D5A7E6 /* ViewUtils.swift in Sources */,
 				CBDCDCA323F3849E00E5CEB8 /* PsoriasisAreaPhotoStepViewController.swift in Sources */,
+				CB4794F52426B39900D5A7E6 /* TreatmentSelectionStepObject.swift in Sources */,
 				CBDCDCB823F384A400E5CEB8 /* MotorControl+Bridge.swift in Sources */,
 				CBDCDC8C23F3849E00E5CEB8 /* RSDSelectionCollectionViewCell.swift in Sources */,
 				CBDCDCA123F3849E00E5CEB8 /* LearnMoreStepViewController.swift in Sources */,
+				CBDD30E82416D403003B0488 /* MeasureTabViewController.swift in Sources */,
 				FFABCBC222DD1EEB00D11109 /* AppDelegate.swift in Sources */,
 				CBDCDC9123F3849E00E5CEB8 /* EndOfValidationStepViewController.swift in Sources */,
 				CBDCDCBC23F384A800E5CEB8 /* PSRImageHelper.swift in Sources */,
 				CBDCDC9723F3849E00E5CEB8 /* ImageCaptureCompletionStepViewController.swift in Sources */,
 				CBDCDC9323F3849E00E5CEB8 /* ParticipantIDRegistrationViewController.swift in Sources */,
+				CB09F0382421D5730005698D /* TreatmentSelectionStepViewController.swift in Sources */,
 				CBDCDC9C23F3849E00E5CEB8 /* JointPainImageView.swift in Sources */,
 				CBDCDC8F23F3849E00E5CEB8 /* ExternalIDRegistrationViewController.swift in Sources */,
 				CBDCDC9D23F3849E00E5CEB8 /* JointPainStepViewController.swift in Sources */,
+				CB4794F12426B33300D5A7E6 /* LevenshteinTools.swift in Sources */,
 				CB7CF2422400BF10003E02A5 /* WelcomeVideoViewController.swift in Sources */,
 				CBDCDC9823F3849E00E5CEB8 /* ReviewCaptureStepViewController.swift in Sources */,
+				CB4794F72426B3D800D5A7E6 /* TreatmentSelectionTableViewCell.swift in Sources */,
 				CBDCDCA723F3849E00E5CEB8 /* PsoriasisAreaPhotoImageView.swift in Sources */,
 				CBDCDCAC23F3849E00E5CEB8 /* PsoriasisDrawStepObject.swift in Sources */,
 			);
@@ -1214,7 +1260,6 @@
 				CB778672238D0E440009ECF9 /* DigitalJarOpenCompletionStepViewController.swift in Sources */,
 				CB55C73E23198C1000EA0C19 /* JointPainCompletionStepViewController.swift in Sources */,
 				CBE908A42333BADA00F88A9A /* PsoriasisAreaPhotoStepViewController.swift in Sources */,
-				CBD67D8822DFC59B00998516 /* TaskListTableViewController.swift in Sources */,
 				CB47E565233FC2EC00AE8501 /* PsoriasisDrawResultObject.swift in Sources */,
 				CBB93CB5234252BC00321A4D /* PsoriasisDrawCompletionStepViewController.swift in Sources */,
 				CB09F00323D649FB009D344E /* DigitalJarOpenInstructionStepViewController.swift in Sources */,
@@ -1225,6 +1270,7 @@
 				CB5424D3237220910036DB6B /* RSDSelectionCollectionViewCell.swift in Sources */,
 				CB47E563233FC1BD00AE8501 /* PsoriasisDrawStepObject.swift in Sources */,
 				CB8F2A9E2375E4A4005A62E7 /* ImageCaptureCompletionStepViewController.swift in Sources */,
+				CB8DC7BA2418A333001B7982 /* TaskListTableViewController.swift in Sources */,
 				CBE908A92333BB2A00F88A9A /* PsoriasisAreaPhotoResultObject.swift in Sources */,
 				CB55C72F231848CD00EA0C19 /* JointPainResultObject.swift in Sources */,
 				CBD67D8D22DFC5EE00998516 /* MotorControl+Bridge.swift in Sources */,
@@ -1235,7 +1281,7 @@
 				CB55C73A231972BE00EA0C19 /* JointPainImageView.swift in Sources */,
 				CB77866C238984790009ECF9 /* DigitalJarOpenStepViewController.swift in Sources */,
 				CB6F54F022E25C5B0073BFE9 /* ParticipantIDRegistrationViewController.swift in Sources */,
-				CBD67D8B22DFC5CA00998516 /* TaskListScheduleManager.swift in Sources */,
+				CB8DC7B824189E31001B7982 /* TaskListScheduleManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1491,8 +1537,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Psorcast/Psorcast.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = KA9Z8R6M6K;
 				INFOPLIST_FILE = Psorcast/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1501,7 +1547,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.sagebionetworks.Psorcast;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "match Development org.sagebionetworks.Psorcast";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Psorcast/Psorcast-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -1513,8 +1559,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Psorcast/Psorcast.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = KA9Z8R6M6K;
 				INFOPLIST_FILE = Psorcast/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1523,7 +1569,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.sagebionetworks.Psorcast;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "match Distribution org.sagebionetworks.Psorcast";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Psorcast/Psorcast-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -1536,18 +1582,19 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = PsorcastValidation/PsorcastValidation.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 17;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 14;
 				DEVELOPMENT_TEAM = KA9Z8R6M6K;
 				INFOPLIST_FILE = PsorcastValidation/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				OTHER_SWIFT_FLAGS = "-D VALIDATION";
 				PRODUCT_BUNDLE_IDENTIFIER = org.sageBionetworks.psorcastValidation0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "match Development org.sageBionetworks.psorcastValidation0";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "PsorcastValidation/PsorcastValidation-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -1563,13 +1610,14 @@
 				CODE_SIGN_ENTITLEMENTS = PsorcastValidation/PsorcastValidation.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 17;
+				CURRENT_PROJECT_VERSION = 14;
 				DEVELOPMENT_TEAM = KA9Z8R6M6K;
 				INFOPLIST_FILE = PsorcastValidation/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				OTHER_SWIFT_FLAGS = "-D VALIDATION";
 				PRODUCT_BUNDLE_IDENTIFIER = org.sageBionetworks.psorcastValidation0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "match Distribution org.sageBionetworks.psorcastValidation0";

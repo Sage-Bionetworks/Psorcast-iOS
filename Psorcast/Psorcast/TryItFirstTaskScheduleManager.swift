@@ -1,5 +1,5 @@
 //
-//  TaskListScheduleManager.swift
+//  TryItFirstTaskScheduleManager.swift
 //  Psorcast
 //
 //  Copyright © 2019 Sage Bionetworks. All rights reserved.
@@ -33,10 +33,11 @@
 
 import Foundation
 import BridgeApp
+import Research
 import MotorControl
 
 /// Subclass the schedule manager to set up a predicate to filter the schedules.
-public class TaskListScheduleManager : SBAScheduleManager {
+public class TryItFirstTaskScheduleManager : SBAScheduleManager {
     
     public let tasks: [RSDIdentifier] = [.psoriasisDrawTask, .psoriasisAreaPhotoTask, .jointCountingTask, .digitalJarOpenTask, .handImagingTask, .footImagingTask, .walkingTask]
     

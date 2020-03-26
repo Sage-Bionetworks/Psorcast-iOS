@@ -198,6 +198,7 @@ open class PsoriasisDrawCompletionStepViewController: RSDStepViewController, Pro
         }
     }
     
+    /// Total coverage is calculated by adding up each body sections coverage.
     open func psoriasisDrawCoverage(from identifiers: [String]) -> Float {
         var sum = Float(0)
         for result in self.taskController?.taskViewModel.taskResult.stepHistory ?? [] {
@@ -205,10 +206,37 @@ open class PsoriasisDrawCompletionStepViewController: RSDStepViewController, Pro
                 let answerResult = result as? RSDAnswerResultObject,
                 answerResult.answerType == .decimal,
                 let decimalAnswer = answerResult.value as? Float {
-                sum += (decimalAnswer * 100)
+                let scaleFactor = self.coverageScaleFactor(for: result.identifier)
+                sum += ((decimalAnswer * scaleFactor) * 100)
             }
         }
-        return sum / Float(identifiers.count)
+        return sum
+    }
+    
+    /// Not every body section contains the same amount of selectable pixels.
+    /// These scale factors were computed by running the app and checking
+    /// the log output of PSRImageHelper.psoriasisCoverage for each section.
+    func coverageScaleFactor(for identifier: String) -> Float {
+        
+        let aboveTheWaistFrontTotalPixels = Float(198404)
+        let aboveTheWaistBackTotalPixels = Float(198837)
+        let belowTheWaistFrontTotalPixels = Float(194598)
+        let belowTheWaistBackTotalPixels = Float(214906)
+        
+        let total = Float(aboveTheWaistFrontTotalPixels + aboveTheWaistBackTotalPixels + belowTheWaistFrontTotalPixels + belowTheWaistBackTotalPixels)
+                    
+        switch identifier {
+        case "\(aboveTheWaistFrontImageIdentifier)\(coverageResult)":
+            return aboveTheWaistFrontTotalPixels / total
+        case "\(aboveTheWaistBackImageIdentifier)\(coverageResult)":
+            return aboveTheWaistBackTotalPixels / total
+        case "\(belowTheWaistFrontImageIdentifier)\(coverageResult)":
+            return belowTheWaistFrontTotalPixels / total
+        case "\(belowTheWaistBackImageIdentifier)\(coverageResult)":
+            return belowTheWaistBackTotalPixels / total
+        default:
+            return 0
+        }
     }
     
     func loadImageAndDelayIfNecessary() {
