@@ -53,6 +53,11 @@ class MeasureTabViewController: UIViewController, UICollectionViewDataSource, UI
     
     let gridLayout = RSDVerticalGridCollectionViewFlowLayout()
     
+    /// The timer that updates the time sensitive UI
+    var renewelTimer = Timer()
+    /// Keep track of the current week to detect transitions across weeks
+    var renewelWeek: Int?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -68,12 +73,16 @@ class MeasureTabViewController: UIViewController, UICollectionViewDataSource, UI
             self.gridLayout.itemCount = self.scheduleManager.sortedScheduleCount
             self.collectionView.reloadData()
         }
+        
+        // Schedule expiration timer to run every second
+        self.renewelTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.updateTimeFormattedText), userInfo: nil, repeats: true)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         
         self.scheduleManager.reloadData()
+        self.refreshUI()
     }
     
     open override func viewDidLayoutSubviews() {
@@ -84,6 +93,14 @@ class MeasureTabViewController: UIViewController, UICollectionViewDataSource, UI
         self.gridLayout.collectionViewWidth = self.collectionView.bounds.width
         // Refresh collection view sizes
         self.setupCollectionViewSizes()
+    }
+    
+    func refreshUI() {
+        self.treatmentLabel.text = Localization.localizedString("CURRENT_TREATMENTS_SECTION_TITLE").uppercased()
+        
+        self.updateCurrentTreatmentsText()
+    
+        self.updateTimeFormattedText()
     }
     
     func updateDesignSystem() {
@@ -126,6 +143,84 @@ class MeasureTabViewController: UIViewController, UICollectionViewDataSource, UI
         self.present(taskVc, animated: true, completion: nil)
     }
     
+    func updateCurrentTreatmentsText() {
+        guard let appDelegate = AppDelegate.shared as? AppDelegate else { return }
+        let treatments = appDelegate.dataDefaults.getCurrentTreatments()
+        let attributedText = NSAttributedString(string: treatments.joined(separator: ", "), attributes: [NSAttributedString.Key.underlineStyle: true])
+        self.treatmentButton.setAttributedTitle(attributedText, for: .normal)
+    }
+        
+    @objc func updateTimeFormattedText() {
+        
+        guard let appDelegate = AppDelegate.shared as? AppDelegate,
+            let setTreatmentsDate = appDelegate.dataDefaults.getDateSetCurrentTreatments() else {
+            return
+        }
+        
+        let now = Date()
+        let week = self.weeks(from: setTreatmentsDate, toNow: now)
+        
+        // Update the time sensitive text
+        self.weekActivitiesTitleLabel.text = self.treatmentWeekLabelText(for: week)
+        self.weekActivitiesTimerLabel.text = self.activityRenewalText(from: setTreatmentsDate, toNow: now)
+        
+        // Check for week crossover
+        if let previous = self.renewelWeek,
+            week != previous {
+            // Reload data on week crossover so new activities can be done
+            self.scheduleManager.reloadData()
+        }
+        
+        // Keep track of previous week so we can determine
+        // when dweek thresholds are passed
+        self.renewelWeek = week
+    }
+    
+    public func treatmentWeekLabelText(for weekCount: Int) -> String {
+        return String(format: Localization.localizedString("TREATMENT_WEEK_TITLE_%@"), "\(weekCount)")
+    }
+    
+    public func activityRenewalText(from treatmentSetDate: Date, toNow: Date) -> String {
+        let week = self.weeks(from: treatmentSetDate, toNow: toNow)
+        let weeklyRenewalDate = treatmentSetDate.startOfDay().addingNumberOfDays(7 * week)
+        let daysUntilRenewal = (Calendar.current.dateComponents([.day], from: toNow, to: weeklyRenewalDate).day ?? 0)
+        
+        var timeRenewalStr = ""
+        if daysUntilRenewal <= 0 {
+            // Same day, use the hours, min, sec countdown
+            timeRenewalStr = self.timeUntilExpiration(from: toNow, until: weeklyRenewalDate)
+        } else if daysUntilRenewal == 7 {
+            // This is an edge case where clock has tipped passed the week threshold
+            // and we want it to display 00:00:00 instead of switching
+            // to "renewel in 7 days" that will only last one second
+            return String(format: Localization.localizedString("TREATMENT_RENEWAL_TITLE_%@"), "00:00:00")
+        } else { // Days before renewal, show day counter
+            if daysUntilRenewal == 1 {
+                timeRenewalStr = String(format: Localization.localizedString("%@_DAYS_SINGULAR"), "\(daysUntilRenewal)")
+            } else {
+                timeRenewalStr = String(format: Localization.localizedString("%@_DAYS_PLURAL"), "\(daysUntilRenewal)")
+            }
+        }
+        return String(format: Localization.localizedString("TREATMENT_RENEWAL_TITLE_%@"), timeRenewalStr)
+    }
+    
+    public func weeks(from treatmentSetDate: Date, toNow: Date) -> Int {
+        return (Calendar.current.dateComponents([.weekOfYear], from: treatmentSetDate.startOfDay(), to: toNow).weekOfYear ?? 0) + 1
+    }
+    
+    public func timeUntilExpiration(from now: Date, until expiration: Date) -> String {
+        let secondsUntilExpiration = Int(expiration.timeIntervalSince(now))
+        
+        var secondsCalculation = secondsUntilExpiration
+        let hours = secondsCalculation / (60 * 60)
+        secondsCalculation -= (hours * 60 * 60)
+        let minutes = secondsCalculation / 60
+        secondsCalculation -= minutes * 60
+        let seconds = secondsCalculation
+        
+        return String(format: "%02d:%02d:%02d", hours, minutes, seconds)
+    }
+    
     // MARK: UICollectionView setup and delegates
 
     fileprivate func setupCollectionView() {
@@ -155,7 +250,14 @@ class MeasureTabViewController: UIViewController, UICollectionViewDataSource, UI
     }
     
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return self.gridLayout.secionInset(for: section)
+        
+        var sectionInsets = self.gridLayout.secionInset(for: section)
+        // Default behavior of grid layout is to have no top vertical spacing
+        // but we want that for this UI, so add it back in
+        if section == 0 {
+            sectionInsets.top = self.gridLayout.verticalCellSpacing
+        }
+        return sectionInsets
     }
 
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {

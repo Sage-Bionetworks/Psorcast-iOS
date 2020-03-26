@@ -65,6 +65,8 @@
 		CB778674238D18F30009ECF9 /* DigitalJarOpenCompletionStepViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB778673238D18F30009ECF9 /* DigitalJarOpenCompletionStepViewController.xib */; };
 		CB7CF2422400BF10003E02A5 /* WelcomeVideoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB7CF2412400BF10003E02A5 /* WelcomeVideoViewController.swift */; };
 		CB7CF2482400CFAA003E02A5 /* WelcomeVideo.mov in Resources */ = {isa = PBXBuildFile; fileRef = CB7CF2472400CFAA003E02A5 /* WelcomeVideo.mov */; };
+		CB81C928242D33CD00A84886 /* DataDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB81C927242D33CD00A84886 /* DataDefaults.swift */; };
+		CB81C92E242D3AB100A84886 /* MeasureTabViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB81C92D242D3AB100A84886 /* MeasureTabViewControllerTests.swift */; };
 		CB85FB52235F505300FDC59B /* PsoriasisDrawTaskResultProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB85FB51235F505300FDC59B /* PsoriasisDrawTaskResultProcessor.swift */; };
 		CB85FB56235F5C5500FDC59B /* SelectedIdentifiersResultObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB85FB55235F5C5500FDC59B /* SelectedIdentifiersResultObject.swift */; };
 		CB8AE6FD233FB53400F5F8AC /* PsoriasisDraw.json in Resources */ = {isa = PBXBuildFile; fileRef = CB8AE6FC233FB53400F5F8AC /* PsoriasisDraw.json */; };
@@ -376,6 +378,8 @@
 		CB778673238D18F30009ECF9 /* DigitalJarOpenCompletionStepViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DigitalJarOpenCompletionStepViewController.xib; sourceTree = "<group>"; };
 		CB7CF2412400BF10003E02A5 /* WelcomeVideoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeVideoViewController.swift; sourceTree = "<group>"; };
 		CB7CF2472400CFAA003E02A5 /* WelcomeVideo.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = WelcomeVideo.mov; sourceTree = "<group>"; };
+		CB81C927242D33CD00A84886 /* DataDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataDefaults.swift; sourceTree = "<group>"; };
+		CB81C92D242D3AB100A84886 /* MeasureTabViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MeasureTabViewControllerTests.swift; sourceTree = "<group>"; };
 		CB85FB51235F505300FDC59B /* PsoriasisDrawTaskResultProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PsoriasisDrawTaskResultProcessor.swift; sourceTree = "<group>"; };
 		CB85FB55235F5C5500FDC59B /* SelectedIdentifiersResultObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedIdentifiersResultObject.swift; sourceTree = "<group>"; };
 		CB8AE6FC233FB53400F5F8AC /* PsoriasisDraw.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = PsoriasisDraw.json; sourceTree = "<group>"; };
@@ -629,6 +633,7 @@
 				CB8F7D512422D73900F77D62 /* StudyTaskFactory.swift */,
 				CBBE0F6524039A5F0072452C /* MeasureTabScheduleManager.swift */,
 				CBE5614E2412BD96009A2930 /* TryItFirstTaskScheduleManager.swift */,
+				CB81C927242D33CD00A84886 /* DataDefaults.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -820,6 +825,7 @@
 				CB67C29323F390AA005B6BCD /* JointPainStepViewControllerTests.swift */,
 				CB67C28E23F390AA005B6BCD /* PSRImageHelperTests.swift */,
 				CB8F7D582423F6BB00F77D62 /* LevenshteinToolsTests.swift */,
+				CB81C92D242D3AB100A84886 /* MeasureTabViewControllerTests.swift */,
 			);
 			path = PsorcastTests;
 			sourceTree = "<group>";
@@ -1175,6 +1181,7 @@
 				CB67C29A23F390AB005B6BCD /* CodableResultObjectTests.swift in Sources */,
 				CB67C29E23F390AB005B6BCD /* CopyStepTests.swift in Sources */,
 				CBC6519423F391BC00C3FF0C /* PsorcastTests.swift in Sources */,
+				CB81C92E242D3AB100A84886 /* MeasureTabViewControllerTests.swift in Sources */,
 				CB67C29723F390AB005B6BCD /* DigitalJarOpenStepViewControllerTests.swift in Sources */,
 				CB67C29D23F390AB005B6BCD /* JointPainStepViewControllerTests.swift in Sources */,
 				CB67C29923F390AB005B6BCD /* JointPainImageViewTests.swift in Sources */,
@@ -1220,6 +1227,7 @@
 				CBDCDCB823F384A400E5CEB8 /* MotorControl+Bridge.swift in Sources */,
 				CBDCDC8C23F3849E00E5CEB8 /* RSDSelectionCollectionViewCell.swift in Sources */,
 				CBDCDCA123F3849E00E5CEB8 /* LearnMoreStepViewController.swift in Sources */,
+				CB81C928242D33CD00A84886 /* DataDefaults.swift in Sources */,
 				CBDD30E82416D403003B0488 /* MeasureTabViewController.swift in Sources */,
 				FFABCBC222DD1EEB00D11109 /* AppDelegate.swift in Sources */,
 				CBDCDC9123F3849E00E5CEB8 /* EndOfValidationStepViewController.swift in Sources */,
