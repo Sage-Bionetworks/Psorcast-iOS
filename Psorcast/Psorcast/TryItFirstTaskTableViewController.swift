@@ -36,69 +36,116 @@ import BridgeApp
 import BridgeSDK
 import MotorControl
 
-class TryItFirstTaskTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, RSDTaskViewControllerDelegate, RSDButtonCellDelegate {
+class TryItFirstTaskTableViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, MeasureTabCollectionViewCellDelegate, RSDTaskViewControllerDelegate {
     
+
     let scheduleManager = TryItFirstTaskScheduleManager()
     
-    @IBOutlet weak var tableView: UITableView?
+//    @IBOutlet weak var tableView: UITableView?
     @IBOutlet weak var signUpButton: UIButton?
+    @IBOutlet weak var collectionView: UICollectionView!
+    
+    let gridLayout = RSDVerticalGridCollectionViewFlowLayout()
+    let collectionViewReusableCell = "MeasureTabCollectionViewCell"
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.updateDesignSystem()
+        self.setupCollectionView()
+        
         // Register the 30 second walking task with the motor control framework
         SBABridgeConfiguration.shared.addMapping(with: MCTTaskInfo(.walk30Seconds).task)
-        
-        // reload the schedules and add an observer to observe changes.
-        scheduleManager.reloadData()
-        NotificationCenter.default.addObserver(forName: .SBAUpdatedScheduledActivities, object: scheduleManager, queue: OperationQueue.main) { (notification) in
-            self.tableView?.reloadData()
-        }
-        
-        updateDesignSystem()
     }
+    
+    open override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        // Set the collection view width for the layout,
+        // so it knows how to calculate the cell size.
+        self.gridLayout.collectionViewWidth = self.collectionView.bounds.width
+        // Refresh collection view sizes
+        self.setupCollectionViewSizes()
+        
+        self.gridLayout.itemCount = self.scheduleManager.tableRowCount
+        self.collectionView.reloadData()
+    }
+    
     
     func updateDesignSystem() {
         let designSystem = AppDelegate.designSystem
         
         self.view.backgroundColor = designSystem.colorRules.backgroundPrimary.color
         
-        let tableHeader = self.tableView?.tableHeaderView as? TryItFirstTaskTableHeaderView
-        tableHeader?.backgroundColor = AppDelegate.designSystem.colorRules.backgroundPrimary.color
+//        let tableHeader = self.tableView?.tableHeaderView as? TryItFirstTaskTableHeaderView
+//        tableHeader?.backgroundColor = AppDelegate.designSystem.colorRules.backgroundPrimary.color
         
         self.signUpButton?.recursiveSetDesignSystem(designSystem, with: designSystem.colorRules.backgroundLight)
     }
+    
+    // MARK: UICollectionView setup and delegates
 
-    // MARK: - Table view data source
-
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return self.scheduleManager.tableSectionCount
+    fileprivate func setupCollectionView() {
+        self.setupCollectionViewSizes()
+        
+        self.collectionView.collectionViewLayout = self.gridLayout
+    }
+    
+    fileprivate func setupCollectionViewSizes() {
+        self.gridLayout.columnCount = 2
+        self.gridLayout.horizontalCellSpacing = 16
+        self.gridLayout.cellHeightAbsolute = 120
+        // This matches the collection view's top inset
+        self.gridLayout.verticalCellSpacing = 16
+    }
+    
+    public func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return self.gridLayout.sectionCount
+    }
+    
+    public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return self.gridLayout.itemCountInGridRow(gridRow: section)
     }
 
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.scheduleManager.tableRowCount
+    public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return self.gridLayout.cellSize(for: indexPath)
+    }
+    
+    public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        return self.gridLayout.secionInset(for: section)
     }
 
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "PsorcastTaskCell", for: indexPath) as! TryItFirstTaskTableviewCell
+    public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+
+        let cell = self.collectionView.dequeueReusableCell(withReuseIdentifier: self.collectionViewReusableCell, for: indexPath)
         
-        cell.titleLabel?.text = self.scheduleManager.title(for: indexPath)
-        cell.detailLabel?.text = self.scheduleManager.text(for: indexPath)
-        cell.actionButton.setTitle(Localization
-            .localizedString("BUTTON_TITLE_PREVIEW"), for: .normal)
-        cell.indexPath = indexPath
-        cell.delegate = self
-        cell.setDesignSystem(AppDelegate.designSystem, with: AppDelegate.designSystem.colorRules.backgroundLight)
-        
+        // The grid layout stores items as (section, row),
+        // so make sure we use the grid layout to get the correct item index.
+        let itemIndex = self.gridLayout.itemIndex(for: indexPath)
+        let translatedIndexPath = IndexPath(item: itemIndex, section: 0)
+
+        if let measureCell = cell as? MeasureTabCollectionViewCell {
+            measureCell.setDesignSystem(AppDelegate.designSystem, with: RSDColorTile(RSDColor.white, usesLightStyle: true))
+            
+            measureCell.delegate = self
+            
+            let buttonTitle = self.scheduleManager.title(for: itemIndex)
+            let title = self.scheduleManager.text(for: itemIndex)
+            let image = self.scheduleManager.image(for: itemIndex)
+
+            measureCell.setItemIndex(itemIndex: translatedIndexPath.item, title: title, buttonTitle: buttonTitle, image: image)
+        }
+
         return cell
     }
     
-    /// Called when user taps "Begin" button in table view cell
-    func didTapButton(on cell: RSDButtonCell) {
-        self.runTask(at: cell.indexPath)
+    // MARK: MeasureTabCollectionViewCell delegate
+    
+    func didTapItem(for itemIndex: Int) {
+        self.runTask(at: itemIndex)
     }
     
-    func runTask(at indexPath: IndexPath) {
+    func runTask(at itemIndex: Int) {
         // Initiate task factory
         RSDFactory.shared = StudyTaskFactory()
         
@@ -107,7 +154,7 @@ class TryItFirstTaskTableViewController: UIViewController, UITableViewDelegate, 
         // Usually research framework caches it and the state becomes invalid
         UserDefaults.standard.removeObject(forKey: "rsd_MotionAuthorizationStatus")
         
-        let taskInfo = self.scheduleManager.taskInfo(for: indexPath)
+        let taskInfo = self.scheduleManager.taskInfo(for: itemIndex)
         let taskViewModel = RSDTaskViewModel(taskInfo: taskInfo)
         let taskVc = RSDTaskViewController(taskViewModel: taskViewModel)
         taskVc.modalPresentationStyle = .fullScreen
@@ -153,43 +200,6 @@ class TryItFirstTaskTableViewController: UIViewController, UITableViewDelegate, 
     /// Here we can customize which VCs show for a step within a survey
     func taskViewController(_ taskViewController: UIViewController, viewControllerForStep stepModel: RSDStepViewModel) -> UIViewController? {
         return nil
-    }
-}
-
-open class TryItFirstTaskTableviewCell: RSDButtonCell {
-    open var backgroundTile = RSDGrayScale().white
-    
-    /// Title label that is associated with this cell.
-    @IBOutlet open var titleLabel: UILabel?
-    
-    /// Detail label that is associated with this cell.
-    @IBOutlet open var detailLabel: UILabel?
-    
-    /// Divider view that is associated with this cell.
-    @IBOutlet open var dividerView: UIView?
-    
-    func setIsComplete(isComplete: Bool) {
-        actionButton.isHidden = isComplete
-    }
-    
-    override open func setDesignSystem(_ designSystem: RSDDesignSystem, with background: RSDColorTile) {
-        super.setDesignSystem(designSystem, with: background)
-        let cellBackground = self.backgroundColorTile ?? designSystem.colorRules.backgroundLight
-        updateColorsAndFonts(designSystem, cellBackground, background)
-    }
-    
-    func updateColorsAndFonts(_ designSystem: RSDDesignSystem, _ background: RSDColorTile, _ tableBackground: RSDColorTile) {
-        
-        // Set the title label and divider.
-        self.titleLabel?.textColor = designSystem.colorRules.textColor(on: background, for: .mediumHeader)
-        self.titleLabel?.font = designSystem.fontRules.font(for: .mediumHeader)
-        
-        self.titleLabel?.textColor = designSystem.colorRules.textColor(on: background, for: .body)
-        self.titleLabel?.font = designSystem.fontRules.font(for: .body)
-        
-        dividerView?.backgroundColor = designSystem.colorRules.backgroundPrimary.color
-        
-        (self.actionButton as? RSDRoundedButton)?.setDesignSystem(designSystem, with: background)
     }
 }
 
