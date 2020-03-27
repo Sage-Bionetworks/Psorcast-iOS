@@ -40,7 +40,7 @@ import MotorControl
 public class TryItFirstTaskScheduleManager : SBAScheduleManager {
     
     public let tasks: [RSDIdentifier] = [.psoriasisDrawTask, .psoriasisAreaPhotoTask, .jointCountingTask, .digitalJarOpenTask, .handImagingTask, .footImagingTask, .walkingTask]
-    
+        
     ///
     /// - returns: the total table row count including activities
     ///         and the supplemental rows that go after them
@@ -58,17 +58,17 @@ public class TryItFirstTaskScheduleManager : SBAScheduleManager {
     ///
     /// - returns: the task info object for the task list row
     ///
-    open func taskInfo(for indexPath: IndexPath) -> RSDTaskInfo {
-        return RSDTaskInfoObject(with: self.tasks[indexPath.row].rawValue)
+    open func taskInfo(for itemIndex: Int) -> RSDTaskInfo {
+        return RSDTaskInfoObject(with: self.tasks[itemIndex].rawValue)
     }
     
     ///
-    /// - parameter indexPath: from the table view
+    /// - parameter itemIndex: from the collection view
     ///
     /// - returns: the title for the task list row
     ///
-    open func title(for indexPath: IndexPath) -> String? {
-        let taskId = tasks[indexPath.row]
+    open func title(for itemIndex: Int) -> String? {
+        let taskId = tasks[itemIndex]
         switch taskId {
         case .psoriasisDrawTask:
             return Localization.localizedString("PSORIASIS_DRAW_TITLE")
@@ -90,12 +90,12 @@ public class TryItFirstTaskScheduleManager : SBAScheduleManager {
     }
     
     ///
-    /// - parameter indexPath: from the table view
+    /// - parameter itemIndex: from the collection view
     ///
     /// - returns: the text for the task list row
     ///
-    open func text(for indexPath: IndexPath) -> String? {
-        let taskId = tasks[indexPath.row]
+    open func text(for itemIndex: Int) -> String? {
+        let taskId = tasks[itemIndex]
         switch taskId {
         case .psoriasisDrawTask:
             return Localization.localizedString("TWO_MINUTES")
@@ -114,5 +114,16 @@ public class TryItFirstTaskScheduleManager : SBAScheduleManager {
         default:
             return taskId.rawValue
         }
+    }
+    
+    ///
+    /// - parameter itemIndex: pointing to an item in the list of sorted schedule items
+    ///
+    /// - returns: the image associated with the scheduled activity for the measure tab screen
+    ///
+    open func image(for itemIndex: Int) -> UIImage? {
+        let taskId = tasks[itemIndex]
+        let name = taskId.stringValue + "MeasureIcon"
+        return UIImage(named: name)
     }
 }
