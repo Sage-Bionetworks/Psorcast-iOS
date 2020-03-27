@@ -217,15 +217,23 @@ open class PsoriasisDrawCompletionStepViewController: RSDStepViewController, Pro
     /// These scale factors were computed by running the app and checking
     /// the log output of PSRImageHelper.psoriasisCoverage for each section.
     func coverageScaleFactor(for identifier: String) -> Float {
+        
+        let aboveTheWaistFrontTotalPixels = Float(198404)
+        let aboveTheWaistBackTotalPixels = Float(198837)
+        let belowTheWaistFrontTotalPixels = Float(194598)
+        let belowTheWaistBackTotalPixels = Float(214906)
+        
+        let total = Float(aboveTheWaistFrontTotalPixels + aboveTheWaistBackTotalPixels + belowTheWaistFrontTotalPixels + belowTheWaistBackTotalPixels)
+                    
         switch identifier {
         case "\(aboveTheWaistFrontImageIdentifier)\(coverageResult)":
-            return 0.256873160187267
-        case "\(belowTheWaistFrontImageIdentifier)\(coverageResult)":
-            return 0.227544780091461
+            return aboveTheWaistFrontTotalPixels / total
         case "\(aboveTheWaistBackImageIdentifier)\(coverageResult)":
-            return 0.257628094415659
+            return aboveTheWaistBackTotalPixels / total
+        case "\(belowTheWaistFrontImageIdentifier)\(coverageResult)":
+            return belowTheWaistFrontTotalPixels / total
         case "\(belowTheWaistBackImageIdentifier)\(coverageResult)":
-            return 0.257953965305613
+            return belowTheWaistBackTotalPixels / total
         default:
             return 0
         }

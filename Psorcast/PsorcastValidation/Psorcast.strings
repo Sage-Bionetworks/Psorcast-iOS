@@ -101,3 +101,10 @@
 "TryItFirstInstruction3Text" = "You can view, export and share your Psorcast data however you would like. Your data is yours.";
 
 "OTHER_TREATMENT_SECTION_TITLE" = "Other treatments";
+"CURRENT_TREATMENTS_SECTION_TITLE" = "Current treatments";
+
+"TREATMENT_RENEWAL_TITLE_%@" = "Activities renew in %@";
+"TREATMENT_WEEK_TITLE_%@" = "Treatment Week %@ Activities";
+"%@_DAYS_PLURAL" = "%@ Days";
+"%@_DAYS_SINGULAR" = "%@ Day";
+

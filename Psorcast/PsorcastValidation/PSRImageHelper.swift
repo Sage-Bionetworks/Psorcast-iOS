@@ -240,71 +240,39 @@ extension UIImage {
         return image
     }
     
-    func colors() -> [UIColor] {
-        var colors = [UIColor]()
-
-        let colorSpace = CGColorSpaceCreateDeviceRGB()
-        
-        guard let cgImage = cgImage else {
-            return []
-        }
-
-        let width = Int(size.width)
-        let height = Int(size.height)
-
-        var rawData = [UInt8](repeating: 0, count: width * height * 4)
-        let bytesPerPixel = 4
-        let bytesPerRow = bytesPerPixel * width
-        let bytesPerComponent = 8
-
-        let bitmapInfo = CGImageAlphaInfo.premultipliedLast.rawValue | CGBitmapInfo.byteOrder32Big.rawValue
-
-        let context = CGContext(data: &rawData,
-                                width: width,
-                                height: height,
-                                bitsPerComponent: bytesPerComponent,
-                                bytesPerRow: bytesPerRow,
-                                space: colorSpace,
-                                bitmapInfo: bitmapInfo)
-
-        let drawingRect = CGRect(origin: .zero, size: CGSize(width: width, height: height))
-        context?.draw(cgImage, in: drawingRect)
-
-        for x in 0..<width {
-            for y in 0..<height {
-                let byteIndex = (bytesPerRow * x) + y * bytesPerPixel
-
-                let red = CGFloat(rawData[byteIndex]) / 255.0
-                let green = CGFloat(rawData[byteIndex + 1]) / 255.0
-                let blue = CGFloat(rawData[byteIndex + 2]) / 255.0
-                let alpha = CGFloat(rawData[byteIndex + 3]) / 255.0
-
-                let color = UIColor(red: red, green: green, blue: blue, alpha: alpha)
-                colors.append(color)
-            }
-        }
-
-        return colors
-    }
-    
-    func totalFullAlphaPixelCount() -> Int {
-        let colors = self.colors()
-        
-        var total = 0
-        colors.forEach { (pixel) in
-            if pixel.cgColor.alpha == 1 {
-                total += 1
-            }
-        }
-        
-        return total
-    }
-    
     func psoriasisCoverage(psoriasisColor: UIColor) -> Float {
-        let colors = self.colors()
+        let pixelCounts = self.selectedPixelCounts(psoriasisColor: psoriasisColor)
+        NSLog("Coverage calculated \(pixelCounts.selected) selected with \(pixelCounts.total) total pixels.")
+        return Float(pixelCounts.selected) / Float(pixelCounts.total)
+    }
+    
+    func selectedPixelCounts(psoriasisColor: UIColor) -> (selected: Int, total: Int) {
+        guard let inputCGImage = self.cgImage else {
+            print("unable to get cgImage")
+            return (0, 0)
+        }
+        let colorSpace       = CGColorSpaceCreateDeviceRGB()
+        let width            = inputCGImage.width
+        let height           = inputCGImage.height
+        let bytesPerPixel    = 4
+        let bitsPerComponent = 8
+        let bytesPerRow      = bytesPerPixel * width
+        let bitmapInfo       = RGBA32.bitmapInfo
+
+        guard let context = CGContext(data: nil, width: width, height: height, bitsPerComponent: bitsPerComponent, bytesPerRow: bytesPerRow, space: colorSpace, bitmapInfo: bitmapInfo) else {
+            print("unable to create context")
+            return (0, 0)
+        }
+        context.draw(inputCGImage, in: CGRect(x: 0, y: 0, width: width, height: height))
+
+        guard let buffer = context.data else {
+            print("unable to get context data")
+            return (0, 0)
+        }
         
-        // The variance threshold
-        let varianceThreshold = 0.3
+        // The variance threshold, if a pixel has some saturation close
+        // to the selected pixel count, we consider it a match
+        let varianceThreshold = 0.5
         
         var selectedRed : CGFloat = 0
         var selectedGreen : CGFloat = 0
@@ -312,41 +280,210 @@ extension UIImage {
         var selectedAlpha: CGFloat = 0
         psoriasisColor.getRed(&selectedRed, green: &selectedGreen, blue: &selectedBlue, alpha: &selectedAlpha)
         
-        // Allocate the re-used rgb fields for getting each per pixel
-        var red : CGFloat = 0
-        var green : CGFloat = 0
-        var blue : CGFloat = 0
-        var alpha: CGFloat = 0
-        var computeThreshold = 0.0
+        let targetHsv = RGB.hsv(r: Float(selectedRed), g: Float(selectedGreen), b: Float(selectedBlue))
         
-        var total = 0
+        let pixelBuffer = buffer.bindMemory(to: RGBA32.self, capacity: width * height)
+
+        var totalCount = 0
         var selectedCount = 0
-        colors.forEach { (pixel) in
-            // Check for a pixel that is not clear
-            if pixel.cgColor.alpha == 1 {
-                total += 1
-                
+        
+        for row in 0 ..< Int(height) {
+            for column in 0 ..< Int(width) {
+                let offset = row * width + column
                 // Check for selected pixel
-                if pixel == psoriasisColor {
-                    selectedCount += 1
-                } else if pixel.getRed(&red, green: &green, blue: &blue, alpha: &alpha) {
-                    red = selectedRed - red
-                    green = selectedGreen - green
-                    blue = selectedBlue - blue
-                    computeThreshold = Double(red*red + green*green + blue*blue)
-                    if computeThreshold < varianceThreshold {
-                        selectedCount += 1
+                
+                // Check for a pixel that is not almost completely clear
+                if pixelBuffer[offset].alphaComponent > 50 {
+                                  
+                    totalCount = totalCount + 1
+                    
+                    let r = ((Float)(pixelBuffer[offset].redComponent)/Float(255))
+                    let g = ((Float)(pixelBuffer[offset].greenComponent)/Float(255))
+                    let b = ((Float)(pixelBuffer[offset].blueComponent)/Float(255))
+                    let hsv = RGB.hsv(r: r, g: g, b: b)
+                    
+                    // Check for selected pixel
+                    if (targetHsv.s - hsv.s) < Float(varianceThreshold) {
+                        selectedCount = selectedCount + 1
                     }
                 }
             }
         }
         
-        if total == 0 {
-            return 0
+        return (selectedCount, totalCount)
+    }
+
+    struct RGBA32: Equatable {
+        private var color: UInt32
+
+        var redComponent: UInt8 {
+            return UInt8((color >> 24) & 255)
         }
-         
-        NSLog("Selected pixel count = \(selectedCount) out of \(total) total selectable pixels")
+
+        var greenComponent: UInt8 {
+            return UInt8((color >> 16) & 255)
+        }
+
+        var blueComponent: UInt8 {
+            return UInt8((color >> 8) & 255)
+        }
+
+        var alphaComponent: UInt8 {
+            return UInt8((color >> 0) & 255)
+        }
+
+        init(red: UInt8, green: UInt8, blue: UInt8, alpha: UInt8) {
+            let red   = UInt32(red)
+            let green = UInt32(green)
+            let blue  = UInt32(blue)
+            let alpha = UInt32(alpha)
+            color = (red << 24) | (green << 16) | (blue << 8) | (alpha << 0)
+        }
+
+        static let red     = RGBA32(red: 255, green: 0,   blue: 0,   alpha: 255)
+        static let green   = RGBA32(red: 0,   green: 255, blue: 0,   alpha: 255)
+        static let blue    = RGBA32(red: 0,   green: 0,   blue: 255, alpha: 255)
+        static let white   = RGBA32(red: 255, green: 255, blue: 255, alpha: 255)
+        static let black   = RGBA32(red: 0,   green: 0,   blue: 0,   alpha: 255)
+        static let magenta = RGBA32(red: 255, green: 0,   blue: 255, alpha: 255)
+        static let yellow  = RGBA32(red: 255, green: 255, blue: 0,   alpha: 255)
+        static let cyan    = RGBA32(red: 0,   green: 255, blue: 255, alpha: 255)
+        static let psoriasis    = RGBA32(red: 167, green: 28, blue: 93, alpha: 255)
+
+        static let bitmapInfo = CGImageAlphaInfo.premultipliedLast.rawValue | CGBitmapInfo.byteOrder32Little.rawValue
+
+        static func ==(lhs: RGBA32, rhs: RGBA32) -> Bool {
+            return lhs.color == rhs.color
+        }
+    }
+}
+
+struct RGBA32: Equatable {
+    private var color: UInt32
+
+    var redComponent: UInt8 {
+        return UInt8((color >> 24) & 255)
+    }
+
+    var greenComponent: UInt8 {
+        return UInt8((color >> 16) & 255)
+    }
+
+    var blueComponent: UInt8 {
+        return UInt8((color >> 8) & 255)
+    }
+
+    var alphaComponent: UInt8 {
+        return UInt8((color >> 0) & 255)
+    }
+
+    init(red: UInt8, green: UInt8, blue: UInt8, alpha: UInt8) {
+        color = (UInt32(red) << 24) | (UInt32(green) << 16) | (UInt32(blue) << 8) | (UInt32(alpha) << 0)
+    }
+
+    static let bitmapInfo = CGImageAlphaInfo.premultipliedLast.rawValue | CGBitmapInfo.byteOrder32Little.rawValue
+
+    static func ==(lhs: RGBA32, rhs: RGBA32) -> Bool {
+        return lhs.color == rhs.color
+    }
+
+    static let black = RGBA32(red: 0, green: 0, blue: 0, alpha: 255)
+    static let red   = RGBA32(red: 255, green: 0, blue: 0, alpha: 255)
+    static let green = RGBA32(red: 0, green: 255, blue: 0, alpha: 255)
+    static let blue  = RGBA32(red: 0, green: 0, blue: 255, alpha: 255)
+}
+
+// https://www.cs.rit.edu/~ncs/color/t_convert.html
+struct RGB {
+    // Percent
+    let r: Float // [0,1]
+    let g: Float // [0,1]
+    let b: Float // [0,1]
+    
+    static func hsv(r: Float, g: Float, b: Float) -> HSV {
+        let min = r < g ? (r < b ? r : b) : (g < b ? g : b)
+        let max = r > g ? (r > b ? r : b) : (g > b ? g : b)
         
-        return Float(selectedCount) / Float(total)
+        let v = max
+        let delta = max - min
+        
+        guard delta > 0.00001 else { return HSV(h: 0, s: 0, v: max) }
+        guard max > 0 else { return HSV(h: -1, s: 0, v: v) } // Undefined, achromatic grey
+        let s = delta / max
+        
+        let hue: (Float, Float) -> Float = { max, delta -> Float in
+            if r == max { return (g-b)/delta } // between yellow & magenta
+            else if g == max { return 2 + (b-r)/delta } // between cyan & yellow
+            else { return 4 + (r-g)/delta } // between magenta & cyan
+        }
+        
+        let h = hue(max, delta) * 60 // In degrees
+        
+        return HSV(h: (h < 0 ? h+360 : h) , s: s, v: v)
+    }
+    
+    static func hsv(rgb: RGB) -> HSV {
+        return hsv(r: rgb.r, g: rgb.g, b: rgb.b)
+    }
+    
+    var hsv: HSV {
+        return RGB.hsv(rgb: self)
+    }
+}
+
+struct RGBA {
+    let a: Float
+    let rgb: RGB
+    
+    init(r: Float, g: Float, b: Float, a: Float) {
+        self.a = a
+        self.rgb = RGB(r: r, g: g, b: b)
+    }
+}
+
+struct HSV {
+    let h: Float // Angle in degrees [0,360] or -1 as Undefined
+    let s: Float // Percent [0,1]
+    let v: Float // Percent [0,1]
+    
+    static func rgb(h: Float, s: Float, v: Float) -> RGB {
+        if s == 0 { return RGB(r: v, g: v, b: v) } // Achromatic grey
+        
+        let angle = (h >= 360 ? 0 : h)
+        let sector = angle / 60 // Sector
+        let i = floor(sector)
+        let f = sector - i // Factorial part of h
+        
+        let p = v * (1 - s)
+        let q = v * (1 - (s * f))
+        let t = v * (1 - (s * (1 - f)))
+        
+        switch(i) {
+        case 0:
+            return RGB(r: v, g: t, b: p)
+        case 1:
+            return RGB(r: q, g: v, b: p)
+        case 2:
+            return RGB(r: p, g: v, b: t)
+        case 3:
+            return RGB(r: p, g: q, b: v)
+        case 4:
+            return RGB(r: t, g: p, b: v)
+        default:
+            return RGB(r: v, g: p, b: q)
+        }
+    }
+    
+    static func rgb(hsv: HSV) -> RGB {
+        return rgb(h: hsv.h, s: hsv.s, v: hsv.v)
+    }
+    
+    var rgb: RGB {
+        return HSV.rgb(hsv: self)
+    }
+    
+    /// Returns a normalized point with x=h and y=v
+    var point: CGPoint {
+        return CGPoint(x: CGFloat(h/360), y: CGFloat(v))
     }
 }
