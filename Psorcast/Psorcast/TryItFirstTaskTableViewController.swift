@@ -41,7 +41,7 @@ class TryItFirstTaskTableViewController: UIViewController, UICollectionViewDataS
 
     let scheduleManager = TryItFirstTaskScheduleManager()
     
-//    @IBOutlet weak var tableView: UITableView?
+    @IBOutlet weak var headerView: UIView!
     @IBOutlet weak var signUpButton: UIButton?
     @IBOutlet weak var collectionView: UICollectionView!
     
@@ -76,9 +76,8 @@ class TryItFirstTaskTableViewController: UIViewController, UICollectionViewDataS
         let designSystem = AppDelegate.designSystem
         
         self.view.backgroundColor = designSystem.colorRules.backgroundPrimary.color
+        headerView?.backgroundColor = AppDelegate.designSystem.colorRules.backgroundPrimary.color
         
-//        let tableHeader = self.tableView?.tableHeaderView as? TryItFirstTaskTableHeaderView
-//        tableHeader?.backgroundColor = AppDelegate.designSystem.colorRules.backgroundPrimary.color
         
         self.signUpButton?.recursiveSetDesignSystem(designSystem, with: designSystem.colorRules.backgroundLight)
     }
@@ -112,7 +111,14 @@ class TryItFirstTaskTableViewController: UIViewController, UICollectionViewDataS
     }
     
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return self.gridLayout.secionInset(for: section)
+       
+      var sectionInsets = self.gridLayout.secionInset(for: section)
+      // Default behavior of grid layout is to have no top vertical spacing
+      // but we want that for this UI, so add it back in
+      if section == 0 {
+        sectionInsets.top = self.gridLayout.verticalCellSpacing
+      }
+      return sectionInsets
     }
 
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {

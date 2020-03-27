@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="VJ3-hJ-g4d">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="VJ3-hJ-g4d">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16086"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="collection view cell content view" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -43,7 +43,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lJG-3B-rEz" userLabel="Login Button" customClass="RSDUnderlinedButton" customModule="ResearchUI">
-                                        <rect key="frame" x="8" y="805.5" width="398" height="30"/>
+                                        <rect key="frame" x="8" y="798.5" width="398" height="33.5"/>
                                         <state key="normal" title="Login">
                                             <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
                                         </state>
@@ -367,6 +367,20 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QAK-h8-L5Q" userLabel="Header">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="100"/>
+                                <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="AppHeader" translatesAutoresizingMaskIntoConstraints="NO" id="1cn-tv-fIQ">
+                                        <rect key="frame" x="-39" y="38" width="318" height="52"/>
+                                    </imageView>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="100" id="3tA-JI-KUo"/>
+                                    <constraint firstItem="1cn-tv-fIQ" firstAttribute="centerX" secondItem="QAK-h8-L5Q" secondAttribute="centerX" id="ZmF-BL-lIQ"/>
+                                    <constraint firstItem="1cn-tv-fIQ" firstAttribute="top" secondItem="QAK-h8-L5Q" secondAttribute="top" constant="48" id="uu3-dQ-sjA"/>
+                                </constraints>
+                            </view>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="AzC-91-YPM">
                                 <rect key="frame" x="0.0" y="44" width="414" height="752"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
@@ -402,8 +416,8 @@
                                                                 <constraint firstAttribute="width" secondItem="yBz-Yu-Q7a" secondAttribute="height" id="u1w-ry-WZK"/>
                                                             </constraints>
                                                         </imageView>
-                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cTR-0f-j62" customClass="RSDUnderlinedButton" customModule="ResearchUI">
-                                                            <rect key="frame" x="0.0" y="0.0" width="212" height="120"/>
+                                                        <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cTR-0f-j62" customClass="RSDUnderlinedButton" customModule="ResearchUI">
+                                                            <rect key="frame" x="3" y="12" width="212" height="120"/>
                                                             <inset key="titleEdgeInsets" minX="0.0" minY="43" maxX="0.0" maxY="0.0"/>
                                                             <state key="normal" title="Sleep Check-In"/>
                                                             <connections>
@@ -482,9 +496,12 @@
                         <constraints>
                             <constraint firstItem="AzC-91-YPM" firstAttribute="trailing" secondItem="gbl-4E-B8q" secondAttribute="trailing" id="5Ua-yE-oQI"/>
                             <constraint firstItem="7Cn-y3-yth" firstAttribute="top" secondItem="AzC-91-YPM" secondAttribute="bottom" id="Y1t-T0-WKi"/>
+                            <constraint firstItem="QAK-h8-L5Q" firstAttribute="leading" secondItem="gbl-4E-B8q" secondAttribute="leading" id="Y3m-Y2-zLu"/>
+                            <constraint firstItem="QAK-h8-L5Q" firstAttribute="trailing" secondItem="gbl-4E-B8q" secondAttribute="trailing" id="ZBU-W5-qEs"/>
+                            <constraint firstItem="QAK-h8-L5Q" firstAttribute="top" secondItem="So9-iy-X1j" secondAttribute="top" id="c6a-JY-yYZ"/>
                             <constraint firstItem="7Cn-y3-yth" firstAttribute="leading" secondItem="So9-iy-X1j" secondAttribute="leading" id="hsN-7R-pfV"/>
                             <constraint firstAttribute="bottom" secondItem="7Cn-y3-yth" secondAttribute="bottom" id="jb9-xh-jBX"/>
-                            <constraint firstItem="AzC-91-YPM" firstAttribute="top" secondItem="gbl-4E-B8q" secondAttribute="top" id="qOY-wb-TLz"/>
+                            <constraint firstItem="AzC-91-YPM" firstAttribute="top" secondItem="QAK-h8-L5Q" secondAttribute="bottom" id="qj0-I6-Uam"/>
                             <constraint firstItem="AzC-91-YPM" firstAttribute="leading" secondItem="gbl-4E-B8q" secondAttribute="leading" id="sPP-zI-1iz"/>
                             <constraint firstItem="7Cn-y3-yth" firstAttribute="trailing" secondItem="So9-iy-X1j" secondAttribute="trailing" id="vSn-Xw-LuN"/>
                         </constraints>
@@ -492,6 +509,7 @@
                     </view>
                     <connections>
                         <outlet property="collectionView" destination="AzC-91-YPM" id="Tjg-lU-jpU"/>
+                        <outlet property="headerView" destination="QAK-h8-L5Q" id="Ntm-2N-I7V"/>
                         <outlet property="signUpButton" destination="Fqk-as-DfM" id="IQW-Nq-2rO"/>
                     </connections>
                 </viewController>
@@ -501,6 +519,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="AppHeader" width="241" height="41"/>
         <image name="MeasureTabIcon" width="31" height="16"/>
         <image name="ProfileTabIcon" width="27" height="27"/>
         <image name="PsoriasisDrawMeasureIcon" width="72" height="72"/>
