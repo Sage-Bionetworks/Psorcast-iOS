@@ -54,8 +54,9 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate {
     /// The task identifier of the try it first intro screens
     let tryItFirstTaskId = "TryItFirstIntro"
     
-    // The app's image data store
+    // The app's image and data store
     public let imageDefaults = ImageDefaults()
+    public let dataDefaults = DataDefaults()
     
     override func instantiateColorPalette() -> RSDColorPalette? {
         return AppDelegate.colorPalette
@@ -187,6 +188,13 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate {
         // If we finish the onboarding screens, send the user to sign in
         if taskController.task.identifier == "Onboarding" {
             if reason == .completed {
+                
+                // Get the current treatments answer and set it to the data store
+                if let currentTreatmentsResult = taskController.taskViewModel.taskResult.findAnswerResult(with: "treatmentSelection"),
+                    let currentTreatments = currentTreatmentsResult.value as? [String] {
+                    dataDefaults.setCurrentTreatments(treatmentIds: currentTreatments)
+                }                
+                
                 self.showSignInViewController(animated: true)
             } else {
                 self.showWelcomeViewController(animated: true)

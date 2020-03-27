@@ -51,7 +51,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lJG-3B-rEz" userLabel="Login Button" customClass="RSDUnderlinedButton" customModule="ResearchUI">
-                                        <rect key="frame" x="8" y="798.5" width="398" height="33.5"/>
+                                        <rect key="frame" x="8" y="805.5" width="398" height="30"/>
                                         <state key="normal" title="Login">
                                             <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
                                         </state>
@@ -140,19 +140,19 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Mjc-cg-3zo" userLabel="Header">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="235"/>
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="194"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="D8m-la-ykO" userLabel="Top Header">
-                                        <rect key="frame" x="0.0" y="0.0" width="414" height="148"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="112"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="CURRENT TREATMENTS" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="bHu-d3-yL1">
-                                                <rect key="frame" x="8" y="64" width="398" height="21"/>
+                                                <rect key="frame" x="8" y="48" width="398" height="21"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tBT-AP-VDb">
-                                                <rect key="frame" x="48" y="85" width="318" height="30"/>
+                                                <rect key="frame" x="48" y="69" width="318" height="30"/>
                                                 <color key="tintColor" cocoaTouchSystemColor="viewFlipsideBackgroundColor"/>
                                                 <state key="normal" title="Enbrel, Hydrocorizone..."/>
                                             </button>
@@ -160,16 +160,16 @@
                                         <color key="backgroundColor" systemColor="systemGreenColor" red="0.20392156859999999" green="0.78039215689999997" blue="0.34901960780000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstItem="tBT-AP-VDb" firstAttribute="leading" secondItem="D8m-la-ykO" secondAttribute="leading" constant="48" id="0Pf-ji-Ekm"/>
-                                            <constraint firstItem="bHu-d3-yL1" firstAttribute="top" secondItem="D8m-la-ykO" secondAttribute="top" constant="64" id="IfX-9w-VSz"/>
+                                            <constraint firstItem="bHu-d3-yL1" firstAttribute="top" secondItem="D8m-la-ykO" secondAttribute="top" constant="48" id="IfX-9w-VSz"/>
                                             <constraint firstItem="tBT-AP-VDb" firstAttribute="top" secondItem="bHu-d3-yL1" secondAttribute="bottom" id="MP2-Zz-1Pu"/>
-                                            <constraint firstAttribute="height" constant="148" id="Mly-lT-RFo"/>
+                                            <constraint firstAttribute="height" constant="112" id="Mly-lT-RFo"/>
                                             <constraint firstAttribute="trailing" secondItem="tBT-AP-VDb" secondAttribute="trailing" constant="48" id="QP7-lY-hCq"/>
                                             <constraint firstItem="bHu-d3-yL1" firstAttribute="leading" secondItem="D8m-la-ykO" secondAttribute="leading" constant="8" id="XpG-kY-KL1"/>
                                             <constraint firstAttribute="trailing" secondItem="bHu-d3-yL1" secondAttribute="trailing" constant="8" id="ZtD-OK-iOe"/>
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EZf-wd-h5e" userLabel="Bottom Header">
-                                        <rect key="frame" x="0.0" y="148" width="414" height="87"/>
+                                        <rect key="frame" x="0.0" y="112" width="414" height="82"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Treatment Week 2 Activities" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="K33-1P-nLf">
                                                 <rect key="frame" x="8" y="16" width="398" height="21"/>
@@ -203,12 +203,12 @@
                                     <constraint firstItem="EZf-wd-h5e" firstAttribute="leading" secondItem="Mjc-cg-3zo" secondAttribute="leading" id="dWT-ik-ZVL"/>
                                     <constraint firstItem="EZf-wd-h5e" firstAttribute="top" secondItem="D8m-la-ykO" secondAttribute="bottom" id="fIU-Hm-I5f"/>
                                     <constraint firstAttribute="trailing" secondItem="EZf-wd-h5e" secondAttribute="trailing" id="kyw-kj-HL7"/>
-                                    <constraint firstAttribute="height" constant="235" id="mfl-1t-9L0"/>
+                                    <constraint firstAttribute="height" constant="194" id="mfl-1t-9L0"/>
                                     <constraint firstAttribute="bottom" secondItem="EZf-wd-h5e" secondAttribute="bottom" id="va3-yG-OaQ"/>
                                 </constraints>
                             </view>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="OR1-ou-7G7">
-                                <rect key="frame" x="0.0" y="251" width="414" height="562"/>
+                                <rect key="frame" x="0.0" y="194" width="414" height="619"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="vi1-YY-mcr">
                                     <size key="itemSize" width="212" height="120"/>
@@ -291,7 +291,7 @@
                         <constraints>
                             <constraint firstItem="w4r-wF-nM3" firstAttribute="trailing" secondItem="Mjc-cg-3zo" secondAttribute="trailing" id="6gT-x6-vXf"/>
                             <constraint firstItem="Mjc-cg-3zo" firstAttribute="leading" secondItem="w4r-wF-nM3" secondAttribute="leading" id="D2F-ct-B7n"/>
-                            <constraint firstItem="OR1-ou-7G7" firstAttribute="top" secondItem="Mjc-cg-3zo" secondAttribute="bottom" constant="16" id="Ova-Bv-kUJ"/>
+                            <constraint firstItem="OR1-ou-7G7" firstAttribute="top" secondItem="Mjc-cg-3zo" secondAttribute="bottom" id="Ova-Bv-kUJ"/>
                             <constraint firstItem="w4r-wF-nM3" firstAttribute="bottom" secondItem="OR1-ou-7G7" secondAttribute="bottom" id="Vpf-4f-48u"/>
                             <constraint firstItem="OR1-ou-7G7" firstAttribute="leading" secondItem="w4r-wF-nM3" secondAttribute="leading" id="hym-aS-Hhh"/>
                             <constraint firstAttribute="top" secondItem="Mjc-cg-3zo" secondAttribute="top" id="lC1-8V-TMS"/>
