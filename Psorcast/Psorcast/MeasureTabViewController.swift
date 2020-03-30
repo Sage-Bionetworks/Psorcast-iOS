@@ -38,6 +38,7 @@ import MotorControl
 
 class MeasureTabViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, MeasureTabCollectionViewCellDelegate, RSDTaskViewControllerDelegate {
         
+    /// Header views
     @IBOutlet weak var topHeader: UIView!
     @IBOutlet weak var bottomHeader: UIView!
     @IBOutlet weak var treatmentLabel: UILabel!
@@ -45,18 +46,33 @@ class MeasureTabViewController: UIViewController, UICollectionViewDataSource, UI
     @IBOutlet weak var weekActivitiesTitleLabel: UILabel!
     @IBOutlet weak var weekActivitiesTimerLabel: UILabel!
     
+    /// Once you unluck the inisght, it will show these views instead of the insight progress view
+    @IBOutlet weak var insightAchievedView: UIView!
+    @IBOutlet weak var insightUnlockedTitle: UILabel!
+    @IBOutlet weak var insightUnlockedText: UILabel!
+    
+    /// Before you unlocked your insight, it will show this view
+    @IBOutlet weak var insightNotAchievedView: UIView!
+    @IBOutlet weak var insightProgressBar: UIProgressView!
+    @IBOutlet weak var insightProgressBarHeight: NSLayoutConstraint!
+    @IBOutlet weak var insightAchievedImage: UIImageView!
+    
+    /// The activities collection view
     @IBOutlet weak var collectionView: UICollectionView!
+    let gridLayout = RSDVerticalGridCollectionViewFlowLayout()
     
     let collectionViewReusableCell = "MeasureTabCollectionViewCell"
     
     let scheduleManager = MeasureTabScheduleManager()
     
-    let gridLayout = RSDVerticalGridCollectionViewFlowLayout()
-    
     /// The timer that updates the time sensitive UI
     var renewelTimer = Timer()
     /// Keep track of the current week to detect transitions across weeks
     var renewelWeek: Int?
+    
+    /// The animation speed for insight progress change, range with 1.0 being 1 second long
+    /// Normal range is 0.5 (fast) to 2.0 (slow)
+    let insightAnimationSpeed = 1.0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -72,6 +88,7 @@ class MeasureTabViewController: UIViewController, UICollectionViewDataSource, UI
                         
             self.gridLayout.itemCount = self.scheduleManager.sortedScheduleCount
             self.collectionView.reloadData()
+            self.refreshUI()
         }
         
         // Schedule expiration timer to run every second
@@ -93,19 +110,27 @@ class MeasureTabViewController: UIViewController, UICollectionViewDataSource, UI
         self.gridLayout.collectionViewWidth = self.collectionView.bounds.width
         // Refresh collection view sizes
         self.setupCollectionViewSizes()
+        
+        // Make progress bar rounded
+        let radius = self.insightProgressBarHeight.constant / 2
+        self.insightProgressBar.layer.cornerRadius = radius
+        self.insightProgressBar.clipsToBounds = true
+        self.insightProgressBar.layer.sublayers![1].cornerRadius = radius
+        self.insightProgressBar.subviews[1].clipsToBounds = true
     }
     
     func refreshUI() {
         self.treatmentLabel.text = Localization.localizedString("CURRENT_TREATMENTS_SECTION_TITLE").uppercased()
         
         self.updateCurrentTreatmentsText()
-    
         self.updateTimeFormattedText()
+        self.updateInsightProgress()
     }
     
     func updateDesignSystem() {
         let design = AppDelegate.designSystem
         let primary = design.colorRules.backgroundPrimary
+        let accent = design.colorRules.palette.accent.normal
         
         self.topHeader.backgroundColor = primary.color
         self.bottomHeader.backgroundColor = primary.color.withAlphaComponent(0.15)
@@ -120,8 +145,20 @@ class MeasureTabViewController: UIViewController, UICollectionViewDataSource, UI
         self.weekActivitiesTitleLabel.textColor = design.colorRules.textColor(on: primary, for: .mediumHeader)
         self.weekActivitiesTitleLabel.font = design.fontRules.font(for: .mediumHeader)
         
-        self.weekActivitiesTimerLabel.textColor = design.colorRules.textColor(on: primary, for: .mediumHeader)
-        self.weekActivitiesTimerLabel.font = design.fontRules.font(for: .mediumHeader)
+        self.weekActivitiesTimerLabel.textColor = design.colorRules.textColor(on: primary, for: .body)
+        self.weekActivitiesTimerLabel.font = design.fontRules.font(for: .body)
+        
+        self.insightProgressBar.progressViewStyle = .bar
+        self.insightProgressBar.tintColor = accent.color
+        self.insightProgressBar.backgroundColor = RSDColor.white
+        
+        self.insightUnlockedTitle.textColor = design.colorRules.textColor(on: primary, for: .mediumHeader)
+        self.insightUnlockedTitle.font = design.fontRules.font(for: .mediumHeader)
+        self.insightUnlockedTitle.text = Localization.localizedString("INSIGHT_UNLOCKED_TITLE")
+        
+        self.insightUnlockedText.textColor = design.colorRules.textColor(on: primary, for: .body)
+        self.insightUnlockedText.font = design.fontRules.font(for: .body)
+        self.insightUnlockedText.attributedText = NSAttributedString(string: Localization.localizedString("INSIGHT_UNLOCKED_TEXT"), attributes: [NSAttributedString.Key.underlineStyle: NSUnderlineStyle.single.rawValue])
     }
     
     func runTask(for itemIndex: Int) {
@@ -143,6 +180,77 @@ class MeasureTabViewController: UIViewController, UICollectionViewDataSource, UI
         self.present(taskVc, animated: true, completion: nil)
     }
     
+    func updateInsightProgress() {
+        let totalSchedules = self.scheduleManager.sortedScheduleCount
+        
+        // Make sure pre-conditions are mets
+        guard let appDelegate = AppDelegate.shared as? AppDelegate,
+            let setTreatmentsDate = appDelegate.dataDefaults.getDateSetCurrentTreatments(),
+            totalSchedules != 0 else {
+            self.insightProgressBar.progress = 0
+            self.updateInsightAchievedImage()
+            return
+        }
+        
+        let renewalRange = self.weeklyRenewalDateRange(from: setTreatmentsDate, toNow: Date())
+        let activitiesCompletedThisWeek = self.scheduleManager.completedActivitiesCount(from: renewalRange.lowerBound, to: renewalRange.upperBound)
+                
+        let newProgress = Float(activitiesCompletedThisWeek) / Float(totalSchedules)
+        
+        let animateToInsightView = newProgress >= 1.0 && self.insightAchievedView.isHidden
+        let animateToInsightProgressView = newProgress < 1.0 && self.insightNotAchievedView.isHidden
+        
+        // Animate the progress going to full
+        UIView.animate(withDuration: 0.75 * insightAnimationSpeed, animations: {
+            self.insightProgressBar.setProgress(newProgress, animated: true)
+        })
+        
+        // Right before the progress change if finished, light up the bulb
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.625 * insightAnimationSpeed, execute:  {
+            self.updateInsightAchievedImage()
+        })
+        
+        // After the progress animation is done, possibly flip to the insight view
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.00 * insightAnimationSpeed, execute: {
+            if animateToInsightView {
+                // Animate in the new insight view if it was previously hidden
+                self.animateInsightAchievedView(hide: false)
+            } else if animateToInsightProgressView {
+                // Animate in the no insight view if it was previously hidden
+                self.animateInsightAchievedView(hide: true)
+            }
+        })
+    }
+            
+    @IBAction func insightTapped() {
+        // TODO: segue to insight screen
+        let alert = UIAlertController(title: "This feature will be implemented in a future release.", message: nil, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Okay", style: .default, handler: nil))
+        self.present(alert, animated: true)
+    }
+    
+    func animateInsightAchievedView(hide: Bool) {
+        if !hide {
+            UIView.transition(from: self.insightNotAchievedView, to: self.insightAchievedView, duration: 0.5, options: [.transitionFlipFromRight, .showHideTransitionViews], completion: { (finished) in
+                self.insightNotAchievedView.isHidden = true
+                self.insightAchievedView.isHidden = false
+            })
+        } else {
+            UIView.transition(from: self.insightAchievedView, to: self.insightNotAchievedView, duration: 0.5, options: [.transitionFlipFromRight, .showHideTransitionViews], completion: { (finished) in
+                self.insightNotAchievedView.isHidden = false
+                self.insightAchievedView.isHidden = true
+            })
+        }
+    }
+    
+    func updateInsightAchievedImage() {
+        if self.insightProgressBar.progress >= 1 {
+            self.insightAchievedImage.image = UIImage(named: "InsightIconSelected")
+        } else {
+            self.insightAchievedImage.image = UIImage(named: "InsightIcon")
+        }
+    }
+    
     func updateCurrentTreatmentsText() {
         guard let appDelegate = AppDelegate.shared as? AppDelegate else { return }
         let treatments = appDelegate.dataDefaults.getCurrentTreatments()
@@ -162,7 +270,13 @@ class MeasureTabViewController: UIViewController, UICollectionViewDataSource, UI
         
         // Update the time sensitive text
         self.weekActivitiesTitleLabel.text = self.treatmentWeekLabelText(for: week)
-        self.weekActivitiesTimerLabel.text = self.activityRenewalText(from: setTreatmentsDate, toNow: now)
+        
+        // Show only the time countdown text as bold
+        let renewalTimeTextAttributed = NSMutableAttributedString(string: Localization.localizedString("TREATMENT_RENEWAL_TITLE_NO_BOLD"))
+        let prefixText = NSAttributedString(string: self.activityRenewalText(from: setTreatmentsDate, toNow: now), attributes: [NSAttributedString.Key.font: AppDelegate.designSystem.fontRules.font(for: .mediumHeader)])
+        renewalTimeTextAttributed.append(prefixText)
+        
+        self.weekActivitiesTimerLabel.attributedText = renewalTimeTextAttributed
         
         // Check for week crossover
         if let previous = self.renewelWeek,
@@ -181,8 +295,7 @@ class MeasureTabViewController: UIViewController, UICollectionViewDataSource, UI
     }
     
     public func activityRenewalText(from treatmentSetDate: Date, toNow: Date) -> String {
-        let week = self.weeks(from: treatmentSetDate, toNow: toNow)
-        let weeklyRenewalDate = treatmentSetDate.startOfDay().addingNumberOfDays(7 * week)
+        let weeklyRenewalDate = self.weeklyRenewalDate(from: treatmentSetDate, toNow: toNow)
         let daysUntilRenewal = (Calendar.current.dateComponents([.day], from: toNow, to: weeklyRenewalDate).day ?? 0)
         
         var timeRenewalStr = ""
@@ -201,11 +314,23 @@ class MeasureTabViewController: UIViewController, UICollectionViewDataSource, UI
                 timeRenewalStr = String(format: Localization.localizedString("%@_DAYS_PLURAL"), "\(daysUntilRenewal)")
             }
         }
-        return String(format: Localization.localizedString("TREATMENT_RENEWAL_TITLE_%@"), timeRenewalStr)
+        return timeRenewalStr
     }
     
     public func weeks(from treatmentSetDate: Date, toNow: Date) -> Int {
         return (Calendar.current.dateComponents([.weekOfYear], from: treatmentSetDate.startOfDay(), to: toNow).weekOfYear ?? 0) + 1
+    }
+    
+    public func weeklyRenewalDateRange(from treatmentSetDate: Date, toNow: Date) -> ClosedRange<Date> {
+        let end = self.weeklyRenewalDate(from: treatmentSetDate, toNow: toNow)
+        let start = end.addingNumberOfDays(-7)
+        return start...end
+    }
+    
+    public func weeklyRenewalDate(from treatmentSetDate: Date, toNow: Date) -> Date {
+        let week = self.weeks(from: treatmentSetDate, toNow: toNow)
+        let weeklyRenewalDate = treatmentSetDate.startOfDay().addingNumberOfDays(7 * week)
+        return weeklyRenewalDate
     }
     
     public func timeUntilExpiration(from now: Date, until expiration: Date) -> String {
@@ -277,8 +402,15 @@ class MeasureTabViewController: UIViewController, UICollectionViewDataSource, UI
             let title = self.scheduleManager.detail(for: itemIndex)
             let buttonTitle = self.scheduleManager.title(for: itemIndex)
             let image = self.scheduleManager.image(for: itemIndex)
+            
+            var isComplete = false
+            if let appDelegate = AppDelegate.shared as? AppDelegate,
+                let setTreatmentsDate = appDelegate.dataDefaults.getDateSetCurrentTreatments(),
+                let finishedOn = self.scheduleManager.sortedScheduledActivity(for: itemIndex)?.finishedOn {
+                isComplete = self.weeklyRenewalDateRange(from: setTreatmentsDate, toNow: Date()).contains(finishedOn)
+            }
 
-            measureCell.setItemIndex(itemIndex: translatedIndexPath.item, title: title, buttonTitle: buttonTitle, image: image)
+            measureCell.setItemIndex(itemIndex: translatedIndexPath.item, title: title, buttonTitle: buttonTitle, image: image, isComplete: isComplete)
         }
 
         return cell
@@ -313,10 +445,11 @@ class MeasureTabViewController: UIViewController, UICollectionViewDataSource, UI
     @IBOutlet public var titleLabel: UILabel?
     @IBOutlet public var titleButton: RSDUnderlinedButton?
     @IBOutlet public var imageView: UIImageView?
+    @IBOutlet public var checkMarkView: UIImageView?
     
     var itemIndex: Int = -1
 
-    func setItemIndex(itemIndex: Int, title: String?, buttonTitle: String?, image: UIImage?) {
+    func setItemIndex(itemIndex: Int, title: String?, buttonTitle: String?, image: UIImage?, isComplete: Bool = false) {
         self.itemIndex = itemIndex
         
         if self.titleLabel?.text != title {
@@ -331,6 +464,7 @@ class MeasureTabViewController: UIViewController, UICollectionViewDataSource, UI
         }
         
         self.imageView?.image = image
+        self.checkMarkView?.isHidden = !isComplete
     }
 
     private func updateColorsAndFonts() {

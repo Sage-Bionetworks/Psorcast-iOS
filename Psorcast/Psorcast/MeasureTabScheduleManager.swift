@@ -39,13 +39,36 @@ import MotorControl
 /// Subclass the schedule manager to set up a predicate to filter the schedules.
 public class MeasureTabScheduleManager : SBAScheduleManager {
     
+    /// The schedules will be sorted in this order
     public let sortOrder: [RSDIdentifier] = [.psoriasisDrawTask, .psoriasisAreaPhotoTask, .digitalJarOpenTask, .handImagingTask, .footImagingTask, .walkingTask, .jointCountingTask]
+    
+    /// The schedules will filter to only have these tasks
+    public let filter: [RSDIdentifier] = [.psoriasisDrawTask, .digitalJarOpenTask, .walkingTask, .jointCountingTask]
     
     ///
     /// - returns: the count of the sorted schedules
     ///
     public var sortedScheduleCount: Int {
         return self.sortActivities(self.scheduledActivities)?.count ?? 0
+    }
+    
+    ///
+    /// - parameter from: the date in the past where completed activity counting starts
+    /// - parameter to: the date where completed activity counting ends
+    ///
+    /// - returns: the count of the sorted schedules that have been completed since the specified date
+    ///
+    public func completedActivitiesCount(from: Date, to: Date) -> Int {
+        guard let sorted = self.sortActivities(self.scheduledActivities) else {
+            return 0
+        }
+        let range = from...to
+        return sorted.filter { (schedule) -> Bool in
+            if let finishedOn = schedule.finishedOn {
+                return range.contains(finishedOn)
+            }
+            return false
+        }.count
     }
     
     public var tableSectionCount: Int {
@@ -65,8 +88,13 @@ public class MeasureTabScheduleManager : SBAScheduleManager {
     /// - returns: sorted activities
     ///
     override open func sortActivities(_ scheduledActivities: [SBBScheduledActivity]?) -> [SBBScheduledActivity]? {
-        guard (scheduledActivities?.count ?? 0) > 0 else { return nil }
-        return scheduledActivities!.sorted(by: { (scheduleA, scheduleB) -> Bool in
+        
+        guard let filtered = scheduledActivities?.filter({ self.filter.map({ $0.rawValue }).contains($0.activityIdentifier ?? "") }),
+            filtered.count > 0 else {
+            return nil
+        }
+        
+        return filtered.sorted(by: { (scheduleA, scheduleB) -> Bool in
             let idxA = sortOrder.firstIndex(of: RSDIdentifier(rawValue: scheduleA.activityIdentifier ?? "")) ?? sortOrder.count
             let idxB = sortOrder.firstIndex(of: RSDIdentifier(rawValue: scheduleB.activityIdentifier ?? "")) ?? sortOrder.count
             
