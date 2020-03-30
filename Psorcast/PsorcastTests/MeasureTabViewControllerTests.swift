@@ -112,50 +112,50 @@ class MeasureTabViewControllerTests: XCTestCase {
         
         var treatmentSetDate = date(27, 5, 0, 0)
         var activityText = vc.activityRenewalText(from: treatmentSetDate, toNow: now)
-        XCTAssertEqual(activityText, "Activities renew in 6 Days")
+        XCTAssertEqual(activityText, "6 Days")
                 
         treatmentSetDate = date(26, 5, 0, 0)
         activityText = vc.activityRenewalText(from: treatmentSetDate, toNow: now)
-        XCTAssertEqual(activityText, "Activities renew in 5 Days")
+        XCTAssertEqual(activityText, "5 Days")
         
         treatmentSetDate = date(25, 5, 0, 0)
         activityText = vc.activityRenewalText(from: treatmentSetDate, toNow: now)
-        XCTAssertEqual(activityText, "Activities renew in 4 Days")
+        XCTAssertEqual(activityText, "4 Days")
         
         treatmentSetDate = date(24, 5, 0, 0)
         activityText = vc.activityRenewalText(from: treatmentSetDate, toNow: now)
-        XCTAssertEqual(activityText, "Activities renew in 3 Days")
+        XCTAssertEqual(activityText, "3 Days")
         
         treatmentSetDate = date(23, 5, 0, 0)
         activityText = vc.activityRenewalText(from: treatmentSetDate, toNow: now)
-        XCTAssertEqual(activityText, "Activities renew in 2 Days")
+        XCTAssertEqual(activityText, "2 Days")
         
         treatmentSetDate = date(22, 5, 0, 0)
         activityText = vc.activityRenewalText(from: treatmentSetDate, toNow: now)
-        XCTAssertEqual(activityText, "Activities renew in 1 Day")
+        XCTAssertEqual(activityText, "1 Day")
         
         now = date(27, 5, 0, 0)
         treatmentSetDate = date(21, 5, 0, 0)
         activityText = vc.activityRenewalText(from: treatmentSetDate, toNow: now)
-        XCTAssertEqual(activityText, "Activities renew in 19:00:00")
+        XCTAssertEqual(activityText, "19:00:00")
         
         now = date(27, 23, 59, 59)
         activityText = vc.activityRenewalText(from: treatmentSetDate, toNow: now)
-        XCTAssertEqual(activityText, "Activities renew in 00:00:01")
+        XCTAssertEqual(activityText, "00:00:01")
         
         now = date(27, 0, 0, 1)
         activityText = vc.activityRenewalText(from: treatmentSetDate, toNow: now)
-        XCTAssertEqual(activityText, "Activities renew in 23:59:59")
+        XCTAssertEqual(activityText, "23:59:59")
         
         now = date(27, 11, 11, 11)
         activityText = vc.activityRenewalText(from: treatmentSetDate, toNow: now)
-        XCTAssertEqual(activityText, "Activities renew in 12:48:49")
+        XCTAssertEqual(activityText, "12:48:49")
         
         // This is an edge case where the timer has pass from one week to another
         // Let's make the count down reach 0, then 
         now = date(28, 0, 0, 0)
         activityText = vc.activityRenewalText(from: treatmentSetDate, toNow: now)
-        XCTAssertEqual(activityText, "Activities renew in 00:00:00")
+        XCTAssertEqual(activityText, "00:00:00")
     }
     
     private func date(_ day: Int, _ hour: Int, _ min: Int, _ sec: Int) -> Date {

@@ -306,7 +306,7 @@ class MeasureTabViewController: UIViewController, UICollectionViewDataSource, UI
             // This is an edge case where clock has tipped passed the week threshold
             // and we want it to display 00:00:00 instead of switching
             // to "renewel in 7 days" that will only last one second
-            return String(format: Localization.localizedString("TREATMENT_RENEWAL_TITLE_%@"), "00:00:00")
+            return "00:00:00"
         } else { // Days before renewal, show day counter
             if daysUntilRenewal == 1 {
                 timeRenewalStr = String(format: Localization.localizedString("%@_DAYS_SINGULAR"), "\(daysUntilRenewal)")
