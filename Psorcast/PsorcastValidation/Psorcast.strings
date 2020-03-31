@@ -103,8 +103,11 @@
 "OTHER_TREATMENT_SECTION_TITLE" = "Other treatments";
 "CURRENT_TREATMENTS_SECTION_TITLE" = "Current treatments";
 
-"TREATMENT_RENEWAL_TITLE_%@" = "Activities renew in %@";
+"TREATMENT_RENEWAL_TITLE_NO_BOLD" = "Activities renew in ";
 "TREATMENT_WEEK_TITLE_%@" = "Treatment Week %@ Activities";
 "%@_DAYS_PLURAL" = "%@ Days";
 "%@_DAYS_SINGULAR" = "%@ Day";
+
+"INSIGHT_UNLOCKED_TITLE" = "You unlocked your Psorcast Insight";
+"INSIGHT_UNLOCKED_TEXT" = "View Your Insight";
 
