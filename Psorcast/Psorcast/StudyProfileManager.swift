@@ -36,13 +36,14 @@ import BridgeApp
 open class StudyProfileManager: SBAProfileManagerObject {
     
     let treatmentsProfileKey = "treatmentSelection"
+    let treatmentsDateProfileKey = "treatmentSelectionDate"
     let diagnosisProfileKey = "psoriasisStatus"
     let symptomsProfileKey = "psoriasisSymptoms"
     
     let profileTasks = [RSDIdentifier.treatmentTask.rawValue]
     
     open var treatmentStepIdentifiers: [String] {
-        return [diagnosisProfileKey, symptomsProfileKey, treatmentsProfileKey]
+        return [diagnosisProfileKey, symptomsProfileKey, treatmentsProfileKey, treatmentsDateProfileKey]
     }
 
     override open func availablePredicate() -> NSPredicate {
@@ -50,7 +51,13 @@ open class StudyProfileManager: SBAProfileManagerObject {
     }
     
     open var treatmentsDate: Date? {
-        return self.report(with: RSDIdentifier.treatmentTask.rawValue)?.date
+        guard let timeIntervalSince1970 = self.value(forProfileKey: treatmentsDateProfileKey) as? Double else { return nil }
+        return Date(timeIntervalSince1970: timeIntervalSince1970)
+    }
+    
+    open var treatmentsDateResult: RSDAnswerResultObject? {
+        guard let treatmentsDateUnwrapped = self.treatmentsDate else { return nil }
+        return RSDAnswerResultObject(identifier: treatmentsDateProfileKey, answerType: .decimal, value: treatmentsDateUnwrapped)
     }
     
     open var treatments: [String]? {

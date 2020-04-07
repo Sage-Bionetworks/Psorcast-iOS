@@ -459,6 +459,10 @@ public class TreatmentSelectionStepViewController: RSDStepViewController, UITabl
     }
     
     override open func goForward() {
+        // Save when the user has changed their treatments
+        let dateAnswer = RSDAnswerResultObject(identifier: "\(self.step.identifier)Date", answerType: .decimal, value: Date().timeIntervalSince1970)
+        _ = self.stepViewModel.parent?.taskResult.appendStepHistory(with: dateAnswer)
+        
         /// Save a string list of the multi-choice answer identifiers
         let answer = Array(self.currentTreatmentsIds)
         let stringArrayType = RSDAnswerResultType(baseType: .string, sequenceType: .array, formDataType: .collection(.multipleChoice, .string), dateFormat: nil, unit: nil, sequenceSeparator: nil)
