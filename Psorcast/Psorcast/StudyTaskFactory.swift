@@ -38,6 +38,19 @@ extension RSDStepType {
 }
 
 open class StudyTaskFactory: TaskFactory {
+    
+    override open func decodeProfileManager(from decoder: Decoder) throws -> SBAProfileManager {
+        let typeName: String = try decoder.factory.typeName(from: decoder) ?? SBAProfileManagerType.profileManager.rawValue
+        let type = SBAProfileManagerType(rawValue: typeName)
+        
+        // Inject our own custom profile manager
+        if type == .profileManager {
+            return try StudyProfileManager(from: decoder)
+        }
+        
+        return try super.decodeProfileManager(from: decoder)
+    }
+    
     /// Override the base factory to vend Psorcast specific step objects.
     override open func decodeStep(from decoder: Decoder, with type: RSDStepType) throws -> RSDStep? {
         switch type {
@@ -47,4 +60,21 @@ open class StudyTaskFactory: TaskFactory {
             return try super.decodeStep(from: decoder, with: type)
         }
     }
+    
+    override open func decodeProfileDataSource(from decoder: Decoder) throws -> SBAProfileDataSource {
+        let type = try decoder.factory.typeName(from: decoder) ?? SBAProfileDataSourceType.studyProfileDataSource.rawValue
+        let dsType = SBAProfileDataSourceType(rawValue: type)
+
+        switch dsType {
+        case .studyProfileDataSource:
+            return try StudyProfileDataSource(from: decoder)
+        default:
+            return try super.decodeProfileDataSource(from: decoder)
+        }
+    }
+}
+
+extension SBAProfileDataSourceType {
+    /// Defaults to a `studyProfileDataSource`.
+    public static let studyProfileDataSource: SBAProfileDataSourceType = "studyProfileDataSource"
 }

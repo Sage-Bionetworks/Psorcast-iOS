@@ -151,10 +151,7 @@ class TryItFirstTaskTableViewController: UIViewController, UICollectionViewDataS
         self.runTask(at: itemIndex)
     }
     
-    func runTask(at itemIndex: Int) {
-        // Initiate task factory
-        RSDFactory.shared = StudyTaskFactory()
-        
+    func runTask(at itemIndex: Int) {        
         // Work-around fix for permission bug
         // This will force the overview screen to check permission state every time
         // Usually research framework caches it and the state becomes invalid

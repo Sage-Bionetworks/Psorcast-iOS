@@ -36,6 +36,8 @@ import BridgeApp
 import MotorControl
 
 public extension RSDIdentifier {
+    
+    // Measuring tasks
     static let walkingTask: RSDIdentifier = MCTTaskIdentifier.walk30Seconds.identifier    
     static let handImagingTask: RSDIdentifier = "HandImaging"
     static let footImagingTask: RSDIdentifier = "FootImaging"
@@ -45,6 +47,9 @@ public extension RSDIdentifier {
     static let psoriasisAreaPhotoTask: RSDIdentifier = "PsoriasisAreaPhoto"
     static let psoriasisDrawTask: RSDIdentifier = "PsoriasisDraw"
     static let digitalJarOpenTask: RSDIdentifier = "DigitalJarOpen"
+    
+    // Profile tasks
+    static let treatmentTask: RSDIdentifier = "Treatment"
 }
 
 extension MCTTaskInfo : SBAActivityInfo {
