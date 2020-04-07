@@ -120,6 +120,26 @@ open class StudyProfileManager: SBAProfileManagerObject {
         }
         return queries
     }
+    
+    override open func didUpdateReports(with newReports: [SBAReport]) {
+        self.reports = Set(self.reports.sorted(by: { $0.date < $1.date }))
+        super.didUpdateReports(with: newReports)
+    }
+    
+    override open func decodeItem(from decoder: Decoder, with type: SBAProfileItemType) throws -> SBAProfileItem? {
+        
+        switch (type) {
+        case .report:
+            // TODO remove once this is merged https://github.com/Sage-Bionetworks/BridgeApp-Apple-SDK/pull/184
+            let item = try HealthProfileItem(from: decoder)
+            item.reportManager = self
+            return item
+    
+        default:
+            break
+        }
+        return try super.decodeItem(from: decoder, with: type)
+    }
 }
 
 extension SBAProfileSectionType {
@@ -148,6 +168,7 @@ extension SBAProfileTableItemType {
 class StudyProfileSection: SBAProfileSectionObject {
 
     override open func decodeItem(from decoder:Decoder, with type:SBAProfileTableItemType) throws -> SBAProfileTableItem? {
+        
         switch type {
         default:
             return try super.decodeItem(from: decoder, with: type)
@@ -158,4 +179,3 @@ class StudyProfileSection: SBAProfileSectionObject {
 extension SBAProfileOnSelectedAction {
     public static let healthInformationProfileAction: SBAProfileOnSelectedAction = "healthInformationProfileAction"
 }
-
