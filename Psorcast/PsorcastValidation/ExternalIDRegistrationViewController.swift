@@ -37,9 +37,9 @@ import Research
 import BridgeSDK
 import BridgeApp
 
-class ExternalIDRegistrationStep : RSDUIStepObject, RSDStepViewControllerVendor, RSDNavigationSkipRule {
+open class ExternalIDRegistrationStep : RSDUIStepObject, RSDStepViewControllerVendor, RSDNavigationSkipRule {
     
-    func shouldSkipStep(with result: RSDTaskResult?, isPeeking: Bool) -> Bool {
+    open func shouldSkipStep(with result: RSDTaskResult?, isPeeking: Bool) -> Bool {
         return BridgeSDK.authManager.isAuthenticated()
     }    
     
@@ -48,7 +48,7 @@ class ExternalIDRegistrationStep : RSDUIStepObject, RSDStepViewControllerVendor,
     }
 }
 
-class ExternalIDRegistrationViewController: RSDStepViewController, UITextFieldDelegate {
+open class ExternalIDRegistrationViewController: RSDStepViewController, UITextFieldDelegate {
     
     /// The image header
     @IBOutlet public var imageView: UIImageView!
@@ -66,7 +66,7 @@ class ExternalIDRegistrationViewController: RSDStepViewController, UITextFieldDe
     @IBOutlet public var submitButton: RSDRoundedButton!
     
     /// The loading spinner
-    @IBOutlet public var loadingSpinner: UIActivityIndicatorView!
+    @IBOutlet public var loadingSpinner: UIActivityIndicatorView!        
     
     override open func viewDidLoad() {
         super.viewDidLoad()
@@ -121,7 +121,7 @@ class ExternalIDRegistrationViewController: RSDStepViewController, UITextFieldDe
         return self.textField.text
     }
     
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+    public func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         if let text = textField.text,
             let textRange = Range(range, in: text) {
             let updatedText = text.replacingCharacters(in: textRange, with: string)
@@ -130,7 +130,7 @@ class ExternalIDRegistrationViewController: RSDStepViewController, UITextFieldDe
         return true
     }
     
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+    public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         return self.textField.endEditing(false)
     }
     

@@ -147,6 +147,9 @@
                                                 <rect key="frame" x="48" y="69" width="318" height="30"/>
                                                 <color key="tintColor" cocoaTouchSystemColor="viewFlipsideBackgroundColor"/>
                                                 <state key="normal" title="Enbrel, Hydrocorizone..."/>
+                                                <connections>
+                                                    <action selector="treatmentTapped" destination="ehR-um-ksg" eventType="touchUpInside" id="PEI-WR-rSk"/>
+                                                </connections>
                                             </button>
                                         </subviews>
                                         <color key="backgroundColor" systemColor="systemGreenColor" red="0.20392156859999999" green="0.78039215689999997" blue="0.34901960780000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -425,7 +428,7 @@
                         <segue destination="ehR-um-ksg" kind="relationship" relationship="viewControllers" id="Ifi-Dg-ZaJ"/>
                         <segue destination="0VO-CW-s3X" kind="relationship" relationship="viewControllers" id="9Sg-YJ-ZpD"/>
                         <segue destination="JqJ-Ex-KGH" kind="relationship" relationship="viewControllers" id="4VR-YP-6WD"/>
-                        <segue destination="34b-e6-vS6" kind="relationship" relationship="viewControllers" id="A3N-ft-QvU"/>
+                        <segue destination="Zvf-eK-tGm" kind="relationship" relationship="viewControllers" id="FKF-09-0o5"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aWh-U2-7oE" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -449,20 +452,33 @@
             <point key="canvasLocation" x="1270" y="-642"/>
         </scene>
         <!--Profile-->
-        <scene sceneID="cyx-Bk-1Yt">
+        <scene sceneID="af0-3V-wGp">
             <objects>
-                <viewController id="34b-e6-vS6" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="2zK-jb-m9P">
+                <tableViewController id="Zvf-eK-tGm" customClass="ProfileTabViewController" customModule="Psorcast" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="F2I-9T-GB3">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
-                        <viewLayoutGuide key="safeArea" id="cX7-3V-Nv0"/>
-                    </view>
-                    <tabBarItem key="tabBarItem" title="Profile" image="ProfileTabIcon" id="I1y-pj-gda"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="KdR-B6-hB0" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="3ff-tM-fhY">
+                                <rect key="frame" x="0.0" y="28" width="414" height="43.5"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="3ff-tM-fhY" id="hTx-kc-ZQQ">
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="Zvf-eK-tGm" id="6tZ-N3-RFc"/>
+                            <outlet property="delegate" destination="Zvf-eK-tGm" id="CC7-xq-ftn"/>
+                        </connections>
+                    </tableView>
+                    <tabBarItem key="tabBarItem" title="Profile" image="ProfileTabIcon" id="466-Fv-pfO"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="LUN-g2-6lr" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2280" y="-959"/>
+            <point key="canvasLocation" x="2262" y="-928"/>
         </scene>
         <!--Try It First Task Table View Controller-->
         <scene sceneID="e1h-b6-pkd">

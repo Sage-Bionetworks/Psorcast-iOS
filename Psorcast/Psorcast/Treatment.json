@@ -1,6 +1,7 @@
 {
-    "identifier": "Onboarding",
-    "taskIdentifier" : "Onboarding",
+    "identifier": "Treatment",
+    "taskIdentifier" : "Treatment",
+    "schemaIdentifier" : "Treatment",
     "progressMarkers":[],
     "steps":
     [
@@ -8,13 +9,6 @@
             "identifier": "psoriasisStatus",
             "type": "form",
             "title": "Has a doctor diagnosed you with psoriasis or psoriatic arthritis?",
-            "actions":{
-                "skip": {
-                    "type": "navigation",
-                    "buttonTitle" : "Don’t have either",
-                    "skipToIdentifier": "treatmentsSelection"
-                }
-            },
             "inputFields": [
                 {
                     "uiHint": "list",
@@ -22,15 +16,19 @@
                     "choices": [
                         {
                             "text": "Psoriasis",
-                            "value": "psoriasis"
+                            "value": "Psoriasis"
                         },
                         {
                             "text": "Psoriatic Arthritis",
-                            "value": "psoriatic_arthritis"
+                            "value": "Psoriatic Arthritis"
                         },
                         {
                             "text": "Both of the above",
-                            "value": "both",
+                            "value": "Psoriasis, Psoriatic Arthritis",
+                        },
+                        {
+                            "text": "I don’t have either",
+                            "value": "I do not have psoriasis",
                         }
                     ]
                 }
@@ -40,13 +38,6 @@
             "identifier": "psoriasisSymptoms",
             "type": "form",
             "title": "What kind of symptoms do you currently experience?",
-            "actions":{
-                "skip": {
-                    "type": "navigation",
-                    "buttonTitle" : "Don’t have either",
-                    "skipToIdentifier": "treatmentsSelection"
-                }
-            },
             "inputFields": [
                 {
                     "uiHint": "list",
@@ -54,15 +45,21 @@
                     "choices": [
                         {
                             "text": "Skin symptoms",
-                            "value": "skin"
+                            "detail": "Red, scaling, itch, or changes to nails",
+                            "value": "Skin symptoms"
                         },
                         {
                             "text": "Painful or swollen joints",
-                            "value": "painful_joints"
+                            "detail": "Swollen, red, warm, painful or stiff joints",
+                            "value": "Painful or swollen joints"
                         },
                         {
                             "text": "Both of the above",
-                            "value": "both",
+                            "value": "Skin sympotms, Painful or swollen joints",
+                        },
+                        {
+                            "text": "I don’t have either",
+                            "value": "I do not have symptoms",
                         }
                     ]
                 }

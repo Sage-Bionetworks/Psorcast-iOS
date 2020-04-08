@@ -37,13 +37,16 @@ import Research
 import MotorControl
 
 /// Subclass the schedule manager to set up a predicate to filter the schedules.
-public class MeasureTabScheduleManager : SBAScheduleManager {
+public class MasterScheduleManager : SBAScheduleManager {
+    
+    /// The shared access to the schedule manager
+    public static let shared = MasterScheduleManager()
     
     /// The schedules will be sorted in this order
     public let sortOrder: [RSDIdentifier] = [.psoriasisDrawTask, .psoriasisAreaPhotoTask, .digitalJarOpenTask, .handImagingTask, .footImagingTask, .walkingTask, .jointCountingTask]
     
     /// The schedules will filter to only have these tasks
-    public let filter: [RSDIdentifier] = [.psoriasisDrawTask, .digitalJarOpenTask, .walkingTask, .jointCountingTask]
+    public var filter: [RSDIdentifier] = [.psoriasisDrawTask, .psoriasisAreaPhotoTask, .digitalJarOpenTask, .handImagingTask, .footImagingTask, .walkingTask, .jointCountingTask]
     
     ///
     /// - returns: the count of the sorted schedules

@@ -1,8 +1,8 @@
 //
-//  DataDefaults.swift
+//  StudyExternalIdRegistrationViewController.swift
 //  Psorcast
 //
-//  Copyright © 2019 Sage Bionetworks. All rights reserved.
+//  Copyright © 2018-2019 Sage Bionetworks. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without modification,
 // are permitted provided that the following conditions are met:
@@ -32,23 +32,33 @@
 //
 
 import UIKit
+import ResearchUI
+import Research
+import BridgeSDK
+import BridgeApp
 
-class DataDefaults {
+open class StudyExternalIdRegistrationStepObject: ExternalIDRegistrationStep {
+    override open func instantiateViewController(with parent: RSDPathComponent?) -> (UIViewController & RSDStepController)? {
+        return StudyExternalIdRegistrationViewController(step: self, parent: parent)
+    }
+}
+
+open class StudyExternalIdRegistrationViewController: ExternalIDRegistrationViewController {
     
-    private let currentTreatmentsKey = "CurrentTreatments"
-    private let dateSetCurrentTreatmentsKey = "DateSetCurrentTreatments"
-    
-    
-    public func setCurrentTreatments(treatmentIds: [String]) {
-        UserDefaults.standard.set(treatmentIds, forKey: currentTreatmentsKey)
-        UserDefaults.standard.set(Date(), forKey: dateSetCurrentTreatmentsKey)
+    open var profileManager: StudyProfileManager? {
+        return SBAProfileManagerObject.shared as? StudyProfileManager
     }
     
-    public func getCurrentTreatments() -> [String] {
-        return UserDefaults.standard.stringArray(forKey: currentTreatmentsKey) ?? [String]()
+    override open var nibName: String? {
+        return String(describing: ExternalIDRegistrationViewController.self)
     }
     
-    public func getDateSetCurrentTreatments() -> Date? {
-        return UserDefaults.standard.object(forKey: dateSetCurrentTreatmentsKey) as? Date
+    override open func goForward() {
+        
+        // At this point the user is signed in, and we should update their profile
+        // so we know if we should transition them to treatment selection
+        self.profileManager?.reloadData()    
+        
+        super.goForward()
     }
 }

@@ -53,10 +53,23 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate {
     
     /// The task identifier of the try it first intro screens
     let tryItFirstTaskId = "TryItFirstIntro"
+    let signInTaskId = "signIn"
     
     // The app's image and data store
     public let imageDefaults = ImageDefaults()
-    public let dataDefaults = DataDefaults()
+    
+    open var profileManager: StudyProfileManager? {
+        return SBAProfileManagerObject.shared as? StudyProfileManager
+    }
+    
+    open var profileDataSource: StudyProfileDataSource? {
+        return SBAProfileDataSourceObject.shared as? StudyProfileDataSource
+    }
+    
+    /// Override to set the shared factory on startup.
+    override open func instantiateFactory() -> RSDFactory {
+        return StudyTaskFactory()
+    }
     
     override func instantiateColorPalette() -> RSDColorPalette? {
         return AppDelegate.colorPalette
@@ -85,6 +98,7 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate {
     
     override func applicationDidBecomeActive(_ application: UIApplication) {
         super.applicationDidBecomeActive(application)
+        
         self.showAppropriateViewController(animated: true)
     }
     
@@ -104,11 +118,10 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate {
         self.transition(to: vc, state: .launch, animated: true)
     }
     
-    func showOnboardingScreens(animated: Bool) {
+    func showTreatmentSelectionScreens(animated: Bool) {
         guard self.rootViewController?.state != .main else { return }
         
-        RSDFactory.shared = StudyTaskFactory()
-        let resource = RSDResourceTransformerObject(resourceName: "Onboarding.json", bundle: Bundle.main)
+        let resource = RSDResourceTransformerObject(resourceName: "Treatment.json", bundle: Bundle.main)
         do {
             let task = try RSDFactory.shared.decodeTask(with: resource)
             let vc = RSDTaskViewController(task: task)
@@ -153,14 +166,14 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate {
     func showSignInViewController(animated: Bool) {
         guard self.rootViewController?.state != .main else { return }
         
-        let externalIDStep = ExternalIDRegistrationStep(identifier: "enterExternalID", type: "externalID")
+        let externalIDStep = StudyExternalIdRegistrationStepObject(identifier: "enterExternalID", type: "externalID")
         externalIDStep.shouldHideActions = [.navigation(.goBackward), .navigation(.skip
             )]
         let participantIDStep = ParticipantIDRegistrationStep(identifier: "enterParticipantID", type: "participantID")
         
         var navigator = RSDConditionalStepNavigatorObject(with: [externalIDStep, participantIDStep])
         navigator.progressMarkers = []
-        let task = RSDTaskObject(identifier: "signin", stepNavigator: navigator)
+        let task = RSDTaskObject(identifier: self.signInTaskId, stepNavigator: navigator)
         let vc = RSDTaskViewController(task: task)
         vc.delegate = self
         self.transition(to: vc, state: .onboarding, animated: true)
@@ -186,20 +199,35 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate {
         }
         
         // If we finish the onboarding screens, send the user to sign in
-        if taskController.task.identifier == "Onboarding" {
+        if taskController.task.identifier == RSDIdentifier.treatmentTask.rawValue {
             if reason == .completed {
                 
-                // Get the current treatments answer and set it to the data store
-                if let currentTreatmentsResult = taskController.taskViewModel.taskResult.findAnswerResult(with: "treatmentSelection"),
-                    let currentTreatments = currentTreatmentsResult.value as? [String] {
-                    dataDefaults.setCurrentTreatments(treatmentIds: currentTreatments)
-                }                
+                // Check for profile manager being set up properly
+                guard let profileManager = StudyProfileManager.shared as? StudyProfileManager else {
+                    self.presentAlertWithOk(title: "Error attempting access profile code", message: "", actionHandler: nil)
+                    debugPrint("Error attempting to find proper default profile manager and cast to StudyProfileManager")
+                    self.showWelcomeViewController(animated: true)
+                    return
+                }
                 
-                self.showSignInViewController(animated: true)
+                profileManager.taskController(taskController, didFinishWith: reason, error: error)
+                self.showAppropriateViewController(animated: true)
+                
             } else {
                 self.showWelcomeViewController(animated: true)
             }
             return
+        }
+        
+        // If the user finished signing in, we need to check if
+        // they need to see the treatment section
+        if taskController.task.identifier == self.signInTaskId &&
+            reason == .completed {
+            
+            if self.profileManager?.treatments == nil {
+                self.showTreatmentSelectionScreens(animated: true)
+                return
+            }
         }
         
         guard BridgeSDK.authManager.isAuthenticated() else { return }
@@ -207,6 +235,12 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate {
     }
     
     func taskController(_ taskController: RSDTaskController, readyToSave taskViewModel: RSDTaskViewModel) {
+        
+        // If we finish the onboarding screens, send the user to sign in
+        if taskController.task.identifier == RSDIdentifier.treatmentTask.rawValue,
+            let profileManager = StudyProfileManager.shared as? StudyProfileManager {
+            profileManager.taskController(taskController, readyToSave: taskViewModel)
+        }
     }
     
     func updateGlobalColors() {

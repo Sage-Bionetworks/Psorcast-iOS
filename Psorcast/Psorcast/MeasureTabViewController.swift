@@ -63,7 +63,8 @@ class MeasureTabViewController: UIViewController, UICollectionViewDataSource, UI
     
     let collectionViewReusableCell = "MeasureTabCollectionViewCell"
     
-    let scheduleManager = MeasureTabScheduleManager()
+    /// Master schedule manager for all tasks
+    let scheduleManager = MasterScheduleManager.shared
     
     /// The timer that updates the time sensitive UI
     var renewelTimer = Timer()
@@ -74,9 +75,13 @@ class MeasureTabViewController: UIViewController, UICollectionViewDataSource, UI
     /// Normal range is 0.5 (fast) to 2.0 (slow)
     let insightAnimationSpeed = 1.0
     
+    /// The profile manager
+    let profileManager = (AppDelegate.shared as? AppDelegate)?.profileManager
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.setupDefaultBlankUiState()
         self.updateDesignSystem()
         self.setupCollectionView()
         
@@ -91,15 +96,32 @@ class MeasureTabViewController: UIViewController, UICollectionViewDataSource, UI
             self.refreshUI()
         }
         
-        // Schedule expiration timer to run every second
-        self.renewelTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.updateTimeFormattedText), userInfo: nil, repeats: true)
+        // Reload the schedules and add an observer to observe changes.
+        if let manager = profileManager {
+            NotificationCenter.default.addObserver(forName: .SBAUpdatedReports, object: manager, queue: OperationQueue.main) { (notification) in
+                self.refreshUI()
+            }
+        }
+        
+        if let profileManager = SBAProfileManagerObject.shared as? SBAProfileManagerObject {
+            profileManager.reloadData()
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         
+        // Schedule expiration timer to run every second
+        self.renewelTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.updateTimeFormattedText), userInfo: nil, repeats: true)
+        
         self.scheduleManager.reloadData()
         self.refreshUI()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        // Pause the timer
+        self.renewelTimer.invalidate()
     }
     
     open override func viewDidLayoutSubviews() {
@@ -162,8 +184,6 @@ class MeasureTabViewController: UIViewController, UICollectionViewDataSource, UI
     }
     
     func runTask(for itemIndex: Int) {
-        RSDFactory.shared = StudyTaskFactory()
-        
         // Work-around fix for permission bug
         // This will force the overview screen to check permission state every time
         // Usually research framework caches it and the state becomes invalid
@@ -184,8 +204,7 @@ class MeasureTabViewController: UIViewController, UICollectionViewDataSource, UI
         let totalSchedules = self.scheduleManager.sortedScheduleCount
         
         // Make sure pre-conditions are mets
-        guard let appDelegate = AppDelegate.shared as? AppDelegate,
-            let setTreatmentsDate = appDelegate.dataDefaults.getDateSetCurrentTreatments(),
+        guard let setTreatmentsDate = self.profileManager?.treatmentsDate,
             totalSchedules != 0 else {
             self.insightProgressBar.progress = 0
             self.updateInsightAchievedImage()
@@ -221,6 +240,13 @@ class MeasureTabViewController: UIViewController, UICollectionViewDataSource, UI
             }
         })
     }
+    
+    @IBAction func treatmentTapped() {
+        if let vc = ProfileTabViewController.createTreatmentProfileVc(profileManager: self.profileManager, for: self.profileManager?.treatmentsProfileKey) {
+            vc.delegate = self
+            self.show(vc, sender: self)
+        }
+    }
             
     @IBAction func insightTapped() {
         // TODO: segue to insight screen
@@ -252,17 +278,17 @@ class MeasureTabViewController: UIViewController, UICollectionViewDataSource, UI
     }
     
     func updateCurrentTreatmentsText() {
-        guard let appDelegate = AppDelegate.shared as? AppDelegate else { return }
-        let treatments = appDelegate.dataDefaults.getCurrentTreatments()
+        guard let treatments = self.profileManager?.treatments else { return }
         let attributedText = NSAttributedString(string: treatments.joined(separator: ", "), attributes: [NSAttributedString.Key.underlineStyle: true])
         self.treatmentButton.setAttributedTitle(attributedText, for: .normal)
     }
         
     @objc func updateTimeFormattedText() {
+
+        self.updateCurrentTreatmentsText()
         
-        guard let appDelegate = AppDelegate.shared as? AppDelegate,
-            let setTreatmentsDate = appDelegate.dataDefaults.getDateSetCurrentTreatments() else {
-            return
+        guard let setTreatmentsDate = self.profileManager?.treatmentsDate else {
+            return 
         }
         
         let now = Date()
@@ -346,6 +372,14 @@ class MeasureTabViewController: UIViewController, UICollectionViewDataSource, UI
         return String(format: "%02d:%02d:%02d", hours, minutes, seconds)
     }
     
+    fileprivate func setupDefaultBlankUiState() {
+        // Blank string instead of nil will reserve space
+        
+        self.treatmentButton.setTitle(" ", for: .normal)
+        self.weekActivitiesTitleLabel.text = " "
+        self.weekActivitiesTimerLabel.text = " "
+    }
+    
     // MARK: UICollectionView setup and delegates
 
     fileprivate func setupCollectionView() {
@@ -404,8 +438,7 @@ class MeasureTabViewController: UIViewController, UICollectionViewDataSource, UI
             let image = self.scheduleManager.image(for: itemIndex)
             
             var isComplete = false
-            if let appDelegate = AppDelegate.shared as? AppDelegate,
-                let setTreatmentsDate = appDelegate.dataDefaults.getDateSetCurrentTreatments(),
+            if let setTreatmentsDate = self.profileManager?.treatmentsDate,
                 let finishedOn = self.scheduleManager.sortedScheduledActivity(for: itemIndex)?.finishedOn {
                 isComplete = self.weeklyRenewalDateRange(from: setTreatmentsDate, toNow: Date()).contains(finishedOn)
             }
@@ -425,12 +458,23 @@ class MeasureTabViewController: UIViewController, UICollectionViewDataSource, UI
     // MARK: RSDTaskViewControllerDelegate
     
     func taskController(_ taskController: RSDTaskController, readyToSave taskViewModel: RSDTaskViewModel) {
-        self.scheduleManager.taskController(taskController, readyToSave: taskViewModel)
+        if taskController.task.identifier == RSDIdentifier.treatmentTask.rawValue {
+            let prepared = ProfileTabViewController.prepareTreatmentResultForUpload(profileManager: self.profileManager, taskViewModel: taskViewModel)
+            self.profileManager?.taskController(taskController, readyToSave: prepared)
+        } else {
+            self.scheduleManager.taskController(taskController, readyToSave: taskViewModel)
+        }
     }
     
     func taskController(_ taskController: RSDTaskController, didFinishWith reason: RSDTaskFinishReason, error: Error?) {
-        // Let the schedule manager handle the cleanup.
-        self.scheduleManager.taskController(taskController, didFinishWith: reason, error: error)
+        
+        if taskController.task.identifier == RSDIdentifier.treatmentTask.rawValue {
+            self.profileManager?.taskController(taskController, didFinishWith: reason, error: error)
+        } else {
+            // Let the schedule manager handle the cleanup.
+            self.scheduleManager.taskController(taskController, didFinishWith: reason, error: error)
+        }
+                
         self.dismiss(animated: true, completion: nil)
     }
 }

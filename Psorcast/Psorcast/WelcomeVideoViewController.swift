@@ -126,7 +126,7 @@ class WelcomeVideoViewController: UIViewController {
     
     @IBAction func getStartedTapped() {
         guard let appDelegate = AppDelegate.shared as? AppDelegate else { return }
-        appDelegate.showOnboardingScreens(animated: true)
+        appDelegate.showSignInViewController(animated: true)
     }
     
     @IBAction func tryItFirstTapped() {
