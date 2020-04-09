@@ -59,7 +59,6 @@
 		CB67C29E23F390AB005B6BCD /* CopyStepTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB67C29423F390AB005B6BCD /* CopyStepTests.swift */; };
 		CB6F54F022E25C5B0073BFE9 /* ParticipantIDRegistrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6F54EF22E25C5B0073BFE9 /* ParticipantIDRegistrationViewController.swift */; };
 		CB704AC123EF8C4D00CC9D13 /* ImageDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB704AC023EF8C4D00CC9D13 /* ImageDefaults.swift */; };
-		CB72E8AF241C2BC0006ECC24 /* Treatment.json in Resources */ = {isa = PBXBuildFile; fileRef = CB72E8AA241C2BC0006ECC24 /* Treatment.json */; };
 		CB737FEC231B100600FA1D3A /* MDJointSwelling.json in Resources */ = {isa = PBXBuildFile; fileRef = CB737FEB231B100600FA1D3A /* MDJointSwelling.json */; };
 		CB77866C238984790009ECF9 /* DigitalJarOpenStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB77866B238984790009ECF9 /* DigitalJarOpenStepViewController.swift */; };
 		CB778670238B3F4D0009ECF9 /* DigitalJarOpenStepViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB77866F238B3F4D0009ECF9 /* DigitalJarOpenStepViewControllerTests.swift */; };
@@ -376,7 +375,6 @@
 		CB67C29423F390AB005B6BCD /* CopyStepTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CopyStepTests.swift; sourceTree = "<group>"; };
 		CB6F54EF22E25C5B0073BFE9 /* ParticipantIDRegistrationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParticipantIDRegistrationViewController.swift; sourceTree = "<group>"; };
 		CB704AC023EF8C4D00CC9D13 /* ImageDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDefaults.swift; sourceTree = "<group>"; };
-		CB72E8AA241C2BC0006ECC24 /* Treatment.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Treatment.json; sourceTree = "<group>"; };
 		CB737FEB231B100600FA1D3A /* MDJointSwelling.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = MDJointSwelling.json; sourceTree = "<group>"; };
 		CB77866B238984790009ECF9 /* DigitalJarOpenStepViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DigitalJarOpenStepViewController.swift; sourceTree = "<group>"; };
 		CB77866F238B3F4D0009ECF9 /* DigitalJarOpenStepViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DigitalJarOpenStepViewControllerTests.swift; sourceTree = "<group>"; };
@@ -816,7 +814,6 @@
 				CB7CF23C2400BE84003E02A5 /* ViewControllers */,
 				CB4794EB2426B31D00D5A7E6 /* Utils */,
 				CB7CF2432400C627003E02A5 /* Resources */,
-				CB72E8AA241C2BC0006ECC24 /* Treatment.json */,
 				FF50109C22DD20DE0035E83C /* Support Files */,
 			);
 			path = Psorcast;
@@ -1107,7 +1104,6 @@
 				CBDCDC9623F3849E00E5CEB8 /* ImageCaptureStepViewController.xib in Resources */,
 				CB9F5E2422E0BED3003FBCEF /* lato_lightitalic.ttf in Resources */,
 				CBDCDCB423F3849E00E5CEB8 /* DigitalJarOpenCompletionStepViewController.xib in Resources */,
-				CB72E8AF241C2BC0006ECC24 /* Treatment.json in Resources */,
 				CBDCDC8323F3848E00E5CEB8 /* FingersPhoto.mov in Resources */,
 				CBDD30E62416C7D1003B0488 /* PsorcastAssets.xcassets in Resources */,
 				CBDCDC9423F3849E00E5CEB8 /* ParticipantIDRegistrationViewController.xib in Resources */,

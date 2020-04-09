@@ -150,7 +150,7 @@ class ProfileTabViewController: UITableViewController, RSDTaskViewControllerDele
         }
         
         if let profileItem = item as? SBAProfileItemProfileTableItem,
-            let vc = ProfileTabViewController.createTreatmentProfileVc(profileManager: self.profileManager, for: profileItem.profileItemKey) {
+            let vc = self.profileManager?.instantiateSingleQuestionTreatmentTaskController(for: profileItem.profileItemKey) {
             vc.delegate = self
             self.show(vc, sender: self)
         }
@@ -163,32 +163,6 @@ class ProfileTabViewController: UITableViewController, RSDTaskViewControllerDele
 //            default:
 //                break
 //        }
-    }
-    
-    /// Create the individual treatment profile view controller
-    public static func createTreatmentProfileVc(profileManager: StudyProfileManager?, for profileKey: String?) -> RSDTaskViewController? {
-        guard let key = profileKey else { return nil }
-        
-        let resource = RSDResourceTransformerObject(resourceName: "Treatment.json", bundle: Bundle.main)
-        do {
-            let task = try RSDFactory.shared.decodeTask(with: resource)
-            if let step = task.stepNavigator.step(with: key) {
-                var navigator = RSDConditionalStepNavigatorObject(with: [step])
-                navigator.progressMarkers = []
-                let task = RSDTaskObject(identifier: RSDIdentifier.treatmentTask.rawValue, stepNavigator: navigator)
-                let vc = RSDTaskViewController(task: task)
-                
-                // Set the initial state of the question answer
-                if let prevAnswer = profileManager?.answerResult(for: key) {
-                    vc.taskViewModel.append(previousResult: prevAnswer)
-                }
-                
-                return vc
-            }
-        } catch {
-            NSLog("Failed to create task from Onboarding.json \(error)")
-        }
-        return nil
     }
     
     override func tableView(_ tableView: UITableView, didHighlightRowAt indexPath: IndexPath) {

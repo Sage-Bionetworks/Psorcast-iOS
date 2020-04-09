@@ -77,10 +77,15 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate {
     
     func showAppropriateViewController(animated: Bool) {
         let participantID = UserDefaults.standard.string(forKey: "participantID")
-        if BridgeSDK.authManager.isAuthenticated() && participantID != nil {
-            showMainViewController(animated: animated)
+        let isAuthenticated = BridgeSDK.authManager.isAuthenticated()
+        let hasSetTreatments = StudyProfileManager.hasTreatmentData(profileManager: self.profileManager)
+        
+        if isAuthenticated && participantID != nil && hasSetTreatments {
+            self.showMainViewController(animated: animated)
+        } else if isAuthenticated && participantID != nil {
+            self.showTreatmentSelectionScreens(animated: true)
         } else {
-            showWelcomeViewController(animated: animated)
+            self.showWelcomeViewController(animated: animated)
         }
     }
     
@@ -127,15 +132,16 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate {
     func showTreatmentSelectionScreens(animated: Bool) {
         guard self.rootViewController?.state != .main else { return }
         
-        let resource = RSDResourceTransformerObject(resourceName: "Treatment.json", bundle: Bundle.main)
-        do {
-            let task = try RSDFactory.shared.decodeTask(with: resource)
-            let vc = RSDTaskViewController(task: task)
-            vc.delegate = self
-            self.transition(to: vc, state: .consent, animated: true)
-        } catch {
-            NSLog("Failed to create task from Onboarding.json \(error)")
+        guard let vc = self.profileManager?.instantiateTreatmentTaskController() else {
+            debugPrint("WARNING! Failed to create treatment task from profile manager app config")
+            let alert = UIAlertController(title: "Connectivity issue", message: "We had trouble loading information from our server.  Please close the app and then try again.", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Okay", style: .default, handler: nil))
+            self.rootViewController?.present(alert, animated: true)
+            return
         }
+        
+        vc.delegate = self
+        self.transition(to: vc, state: .consent, animated: true)
     }
     
     func showTryItFirstIntroScreens(animated: Bool) {
@@ -204,36 +210,16 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate {
             return
         }
         
-        // If we finish the onboarding screens, send the user to sign in
-        if taskController.task.identifier == RSDIdentifier.treatmentTask.rawValue {
-            if reason == .completed {
-                
-                // Check for profile manager being set up properly
-                guard let profileManager = StudyProfileManager.shared as? StudyProfileManager else {
-                    self.presentAlertWithOk(title: "Error attempting access profile code", message: "", actionHandler: nil)
-                    debugPrint("Error attempting to find proper default profile manager and cast to StudyProfileManager")
-                    self.showWelcomeViewController(animated: true)
-                    return
-                }
-                
-                profileManager.taskController(taskController, didFinishWith: reason, error: error)
-                self.showAppropriateViewController(animated: true)
-                
-            } else {
-                self.showWelcomeViewController(animated: true)
-            }
+        // If we finish the treatment screen by cancelling, show the sign in screen again
+        if taskController.task.identifier == RSDIdentifier.treatmentTask.rawValue &&
+            reason != .completed {
+            self.showSignInViewController(animated: true)
             return
         }
         
-        // If the user finished signing in, we need to check if
-        // they need to see the treatment section
-        if taskController.task.identifier == self.signInTaskId &&
-            reason == .completed {
-            
-            if self.profileManager?.treatments == nil {
-                self.showTreatmentSelectionScreens(animated: true)
-                return
-            }
+        if taskController.task.identifier == self.signInTaskId && reason != .completed {
+            self.showWelcomeViewController(animated: true)
+            return
         }
         
         guard BridgeSDK.authManager.isAuthenticated() else { return }
