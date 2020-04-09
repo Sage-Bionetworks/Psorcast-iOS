@@ -113,9 +113,9 @@ open class ImageCaptureStepViewController: RSDStepViewController, UIImagePickerC
     
     private var inProgressPhotoCaptureDelegates = [Int64: PhotoCaptureProcessor]()
     
-    @IBOutlet public var captureButton: UIButton!
+    @IBOutlet weak var captureButton: UIButton!
     
-    @IBOutlet public var cameraToggleButton: UIButton?
+    @IBOutlet weak var cameraToggleButton: UIButton!
     
     @IBOutlet public var cameraContainerView: UIView?
     open var cameraView: UIView {
