@@ -58,7 +58,6 @@ class WelcomeVideoViewController: UIViewController {
         
         let designSystem = AppDelegate.designSystem
         let primaryColor = designSystem.colorRules.backgroundPrimary
-        //let secondaryColor = designSystem.colorRules.palette.secondary.normal.color
         
         self.tryItFirstButton.isSecondaryButton = true
         
