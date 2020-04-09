@@ -36,14 +36,21 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8Oi-Gn-n4p" userLabel="Get started button" customClass="RSDRoundedButton" customModule="ResearchUI">
-                                        <rect key="frame" x="4" y="767.5" width="406" height="30"/>
+                                        <rect key="frame" x="4" y="718.5" width="406" height="52"/>
                                         <state key="normal" title="Join the research study"/>
                                         <connections>
                                             <action selector="getStartedTapped" destination="VJ3-hJ-g4d" eventType="touchUpInside" id="5K4-ae-Pkm"/>
                                         </connections>
                                     </button>
+                                    <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fZ4-xJ-Sfz" userLabel="Try it first Button" customClass="RSDRoundedButton" customModule="ResearchUI">
+                                        <rect key="frame" x="9" y="786.5" width="398" height="52"/>
+                                        <state key="normal" title="Preview and try the app first"/>
+                                        <connections>
+                                            <action selector="tryItFirstTapped" destination="VJ3-hJ-g4d" eventType="touchUpInside" id="8nL-yG-Hf6"/>
+                                        </connections>
+                                    </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lJG-3B-rEz" userLabel="Login Button" customClass="RSDUnderlinedButton" customModule="ResearchUI">
-                                        <rect key="frame" x="8" y="805.5" width="398" height="30"/>
+                                        <rect key="frame" x="8" y="846.5" width="398" height="33.5"/>
                                         <state key="normal" title="Login">
                                             <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
                                         </state>
@@ -51,25 +58,16 @@
                                             <action selector="loginTapped" destination="VJ3-hJ-g4d" eventType="touchUpInside" id="RCE-ai-C4z"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fZ4-xJ-Sfz" userLabel="Try it first Button" customClass="RSDUnderlinedButton" customModule="ResearchUI">
-                                        <rect key="frame" x="8" y="842" width="398" height="30"/>
-                                        <state key="normal" title="Preview and try the app first">
-                                            <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="tryItFirstTapped" destination="VJ3-hJ-g4d" eventType="touchUpInside" id="8nL-yG-Hf6"/>
-                                        </connections>
-                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="bottom" secondItem="Q8p-Lc-Z7m" secondAttribute="bottom" constant="220" id="1uX-6X-FE4"/>
+                                    <constraint firstItem="fZ4-xJ-Sfz" firstAttribute="top" secondItem="8Oi-Gn-n4p" secondAttribute="bottom" constant="16" id="3uE-LM-C66"/>
                                     <constraint firstItem="Q8p-Lc-Z7m" firstAttribute="leading" secondItem="3Sp-Jq-mwa" secondAttribute="leading" constant="8" id="7FC-37-soq"/>
                                     <constraint firstAttribute="trailing" secondItem="DNP-n3-rC3" secondAttribute="trailing" id="Ebz-Am-8My"/>
                                     <constraint firstItem="DNP-n3-rC3" firstAttribute="top" secondItem="3Sp-Jq-mwa" secondAttribute="top" id="JeT-mk-WXK"/>
                                     <constraint firstItem="DNP-n3-rC3" firstAttribute="leading" secondItem="3Sp-Jq-mwa" secondAttribute="leading" id="Kdf-yh-PXw"/>
-                                    <constraint firstItem="lJG-3B-rEz" firstAttribute="top" secondItem="8Oi-Gn-n4p" secondAttribute="bottom" constant="8" id="RdH-3k-TQ3"/>
-                                    <constraint firstItem="fZ4-xJ-Sfz" firstAttribute="top" secondItem="lJG-3B-rEz" secondAttribute="bottom" constant="6.5" id="akD-3e-rsj"/>
+                                    <constraint firstAttribute="bottom" secondItem="lJG-3B-rEz" secondAttribute="bottom" constant="16" id="YPe-3Z-Wmj"/>
                                     <constraint firstAttribute="trailing" secondItem="8Oi-Gn-n4p" secondAttribute="trailing" constant="4" id="cYt-ej-16J"/>
                                     <constraint firstAttribute="trailing" secondItem="eE4-TP-pcQ" secondAttribute="trailing" constant="4" id="gaa-Bg-Ivv"/>
                                     <constraint firstAttribute="trailing" secondItem="Q8p-Lc-Z7m" secondAttribute="trailing" constant="8" id="l6T-3m-XZw"/>
@@ -78,8 +76,8 @@
                                     <constraint firstItem="Q8p-Lc-Z7m" firstAttribute="top" secondItem="eE4-TP-pcQ" secondAttribute="bottom" constant="12" id="nTb-jN-PtL"/>
                                     <constraint firstAttribute="trailing" secondItem="lJG-3B-rEz" secondAttribute="trailing" constant="8" id="qGD-1E-FNe"/>
                                     <constraint firstItem="fZ4-xJ-Sfz" firstAttribute="leading" secondItem="3Sp-Jq-mwa" secondAttribute="leading" constant="8" id="qYa-FW-Pr3"/>
+                                    <constraint firstItem="lJG-3B-rEz" firstAttribute="top" secondItem="fZ4-xJ-Sfz" secondAttribute="bottom" constant="8" id="sOa-eY-ZtW"/>
                                     <constraint firstItem="lJG-3B-rEz" firstAttribute="leading" secondItem="3Sp-Jq-mwa" secondAttribute="leading" constant="8" id="vTb-g6-J4H"/>
-                                    <constraint firstAttribute="bottom" secondItem="fZ4-xJ-Sfz" secondAttribute="bottom" constant="24" id="wrx-Bs-EB0"/>
                                     <constraint firstItem="eE4-TP-pcQ" firstAttribute="top" secondItem="DNP-n3-rC3" secondAttribute="bottom" constant="42.5" id="y7u-Is-tGl"/>
                                     <constraint firstItem="eE4-TP-pcQ" firstAttribute="leading" secondItem="3Sp-Jq-mwa" secondAttribute="leading" constant="4" id="yI7-7U-UPn"/>
                                 </constraints>

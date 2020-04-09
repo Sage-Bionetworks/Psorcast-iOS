@@ -41,7 +41,7 @@ class WelcomeVideoViewController: UIViewController {
     @IBOutlet weak var videoView: UIView!
     @IBOutlet weak var getStartedButton: UIButton!
     @IBOutlet weak var loginButton: UIButton!
-    @IBOutlet weak var tryItFirstButton: UIButton!
+    @IBOutlet weak var tryItFirstButton: RSDRoundedButton!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var textLabel: UILabel!
     
@@ -58,6 +58,9 @@ class WelcomeVideoViewController: UIViewController {
         
         let designSystem = AppDelegate.designSystem
         let primaryColor = designSystem.colorRules.backgroundPrimary
+        //let secondaryColor = designSystem.colorRules.palette.secondary.normal.color
+        
+        self.tryItFirstButton.isSecondaryButton = true
         
         self.titleLabel.textColor = designSystem.colorRules.textColor(on: primaryColor, for: .largeHeader)
         self.titleLabel.font = designSystem.fontRules.font(for: .largeHeader)
@@ -68,7 +71,7 @@ class WelcomeVideoViewController: UIViewController {
         self.getStartedButton.recursiveSetDesignSystem(designSystem, with: primaryColor)
         self.loginButton.recursiveSetDesignSystem(designSystem, with: primaryColor)
         self.tryItFirstButton.recursiveSetDesignSystem(designSystem, with: primaryColor)
-        
+                
         self.videoView.backgroundColor = primaryColor.color
     }
     
