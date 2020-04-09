@@ -26,11 +26,11 @@
                     <rect key="frame" x="0.0" y="0.0" width="395" height="720"/>
                     <subviews>
                         <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Bb7-gd-Spk" userLabel="CaptureView" customClass="CameraPreviewView" customModule="Psorcast" customModuleProvider="target">
-                            <rect key="frame" x="0.0" y="114" width="395" height="450"/>
+                            <rect key="frame" x="0.0" y="130" width="395" height="434"/>
                             <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fxA-Tz-ZiS" customClass="RSDNavigationHeaderView" customModule="ResearchUI">
-                            <rect key="frame" x="0.0" y="0.0" width="395" height="114"/>
+                            <rect key="frame" x="0.0" y="0.0" width="395" height="130"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Walk and Balance" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="d3p-ES-nu8" userLabel="Title Label">
                                     <rect key="frame" x="60" y="61.999999999999993" width="275" height="28.666666666666664"/>
@@ -52,7 +52,7 @@
                                 <constraint firstItem="d3p-ES-nu8" firstAttribute="top" secondItem="MAO-q7-fPw" secondAttribute="bottom" constant="-12" id="717-ek-QdP"/>
                                 <constraint firstItem="MAO-q7-fPw" firstAttribute="leading" secondItem="fxA-Tz-ZiS" secondAttribute="leading" constant="24" id="9OQ-QY-59V"/>
                                 <constraint firstAttribute="trailing" secondItem="d3p-ES-nu8" secondAttribute="trailing" constant="60" id="Smt-1Y-XlF"/>
-                                <constraint firstAttribute="height" constant="114" id="b0u-aS-MUB"/>
+                                <constraint firstAttribute="height" constant="130" id="b0u-aS-MUB"/>
                                 <constraint firstItem="d3p-ES-nu8" firstAttribute="leading" secondItem="fxA-Tz-ZiS" secondAttribute="leading" constant="60" id="bQC-or-EVq"/>
                                 <constraint firstItem="MAO-q7-fPw" firstAttribute="top" secondItem="fxA-Tz-ZiS" secondAttribute="top" constant="24" id="c4z-r0-dQU"/>
                             </constraints>
@@ -83,10 +83,10 @@
                             </connections>
                         </button>
                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="bottom" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="h8j-iD-5fl" userLabel="Overlay Image View">
-                            <rect key="frame" x="0.0" y="114" width="395" height="450"/>
+                            <rect key="frame" x="0.0" y="130" width="395" height="434"/>
                         </imageView>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="z7Q-cL-s9u">
-                            <rect key="frame" x="331" y="114" width="64" height="64"/>
+                            <rect key="frame" x="331" y="130" width="64" height="64"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="64" id="WjL-LO-zni"/>
                                 <constraint firstAttribute="width" constant="64" id="icX-ke-ucG"/>
