@@ -212,25 +212,7 @@ class ProfileTabViewController: UITableViewController, RSDTaskViewControllerDele
     }
     
     func taskController(_ taskController: RSDTaskController, readyToSave taskViewModel: RSDTaskViewModel) {
-        let prepared = ProfileTabViewController.prepareTreatmentResultForUpload(profileManager: self.profileManager, taskViewModel: taskViewModel)
-        self.profileManager?.taskController(taskController, readyToSave: prepared)
-    }
-    
-    // If we just upload the answer to the individual question,
-    // the report data will be incomplete when we search later
-    // Let's build the full expected treatment task answers each time
-    public static func prepareTreatmentResultForUpload(profileManager: StudyProfileManager?, taskViewModel: RSDTaskViewModel) -> RSDTaskViewModel {
-        if taskViewModel.task?.identifier == RSDIdentifier.treatmentTask.identifierValue {
-            for treatmentStepId in profileManager?.treatmentStepIdentifiers ?? [] {
-                // Don't overwrite any answers from the task
-                if taskViewModel.taskResult.findResult(with: treatmentStepId) == nil,
-                    let current = profileManager?.answerResult(for: treatmentStepId) {
-                    // Append the current state of the rest of the treatments task
-                    taskViewModel.taskResult.appendStepHistory(with: current)
-                }
-            }
-        }
-        return taskViewModel
+        self.profileManager?.taskController(taskController, readyToSave: taskViewModel)
     }
 }
 

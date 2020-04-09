@@ -459,8 +459,7 @@ class MeasureTabViewController: UIViewController, UICollectionViewDataSource, UI
     
     func taskController(_ taskController: RSDTaskController, readyToSave taskViewModel: RSDTaskViewModel) {
         if taskController.task.identifier == RSDIdentifier.treatmentTask.rawValue {
-            let prepared = ProfileTabViewController.prepareTreatmentResultForUpload(profileManager: self.profileManager, taskViewModel: taskViewModel)
-            self.profileManager?.taskController(taskController, readyToSave: prepared)
+            self.profileManager?.taskController(taskController, readyToSave: taskViewModel)
         } else {
             self.scheduleManager.taskController(taskController, readyToSave: taskViewModel)
         }

@@ -38,12 +38,28 @@ open class StudyProfileManager: SBAProfileManagerObject {
     let treatmentsProfileKey = "treatmentSelection"
     let treatmentsDateProfileKey = "treatmentSelectionDate"
     let diagnosisProfileKey = "psoriasisStatus"
+    let diagnosisDateProfileKey = "psoriasisStatusDate"
     let symptomsProfileKey = "psoriasisSymptoms"
+    let symptomsDateProfileKey = "psoriasisSymptomsDate"
+    
+    /// The date formatter for when you want to encode/decode answer dates in the profile
+    public static func profileDateFormatter() -> DateFormatter {
+        let formatter = DateFormatter()
+        formatter.locale = Locale.current
+        formatter.timeZone = TimeZone.autoupdatingCurrent
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZZZ"
+        return formatter
+    }
+    
+    /// The answer result type to use for profile bound data in a task result
+    public static func profileDateAnswerType() -> RSDAnswerResultType {
+        return RSDAnswerResultType(baseType: .date, sequenceType: nil, formDataType: nil, dateFormat: StudyProfileManager.profileDateFormatter().dateFormat, unit: nil, sequenceSeparator: nil)
+    }
     
     let profileTasks = [RSDIdentifier.treatmentTask.rawValue]
     
     open var treatmentStepIdentifiers: [String] {
-        return [diagnosisProfileKey, symptomsProfileKey, treatmentsProfileKey, treatmentsDateProfileKey]
+        return [diagnosisProfileKey, diagnosisDateProfileKey, symptomsProfileKey, symptomsDateProfileKey, treatmentsProfileKey, treatmentsDateProfileKey]
     }
 
     override open func availablePredicate() -> NSPredicate {
@@ -51,58 +67,83 @@ open class StudyProfileManager: SBAProfileManagerObject {
     }
     
     open var treatmentsDate: Date? {
-        guard let timeIntervalSince1970 = self.value(forProfileKey: treatmentsDateProfileKey) as? Double else { return nil }
-        return Date(timeIntervalSince1970: timeIntervalSince1970)
-    }
-    
-    open var treatmentsDateResult: RSDAnswerResultObject? {
-        guard let treatmentsDateUnwrapped = self.treatmentsDate else { return nil }
-        return RSDAnswerResultObject(identifier: treatmentsDateProfileKey, answerType: .decimal, value: treatmentsDateUnwrapped)
+        return self.value(forProfileKey: treatmentsDateProfileKey) as? Date
     }
     
     open var treatments: [String]? {
         return self.value(forProfileKey: treatmentsProfileKey) as? [String]
     }
     
-    /// The current value of treatments as an answer result
-    open var treatmentsResult: RSDAnswerResultObject? {
-        guard let treatmentsUnwrapped = self.treatments else { return nil }
-        let stringArrayType = RSDAnswerResultType(baseType: .string, sequenceType: .array, formDataType: .collection(.multipleChoice, .string), dateFormat: nil, unit: nil, sequenceSeparator: nil)
-        return RSDAnswerResultObject(identifier: treatmentsProfileKey, answerType: stringArrayType, value: treatmentsUnwrapped)
-    }
-    
     open var diagnosis: String? {
         return self.value(forProfileKey: diagnosisProfileKey) as? String
-    }
-    
-    /// The current value of diagnosis as an answer result
-    open var diagnosisResult: RSDAnswerResultObject? {
-        guard let diagnosisUnwrapped = self.diagnosis else { return nil }
-        return RSDAnswerResultObject(identifier: diagnosisProfileKey, answerType: .string, value: diagnosisUnwrapped)
     }
     
     open var symptoms: String? {
        return self.value(forProfileKey: symptomsProfileKey) as? String
     }
     
-    /// The current value of symptoms as an answer result
-    open var symptomsResult: RSDAnswerResultObject? {
-        guard let symptomsUnwrapped = self.symptoms else { return nil }
-        return RSDAnswerResultObject(identifier: symptomsProfileKey, answerType: .string, value: symptomsUnwrapped)
+    func multiChoiceStringResult(for profileKey: String) -> RSDAnswerResultObject? {
+        guard let answer = self.value(forProfileKey: profileKey) as? [String] else { return nil }
+        let stringArrayType = RSDAnswerResultType(baseType: .string, sequenceType: .array, formDataType: .collection(.multipleChoice, .string), dateFormat: nil, unit: nil, sequenceSeparator: nil)
+        return RSDAnswerResultObject(identifier: profileKey, answerType: stringArrayType, value: answer)
+    }
+    
+    func stringResult(for profileKey: String) -> RSDAnswerResultObject? {
+        guard let answer = self.value(forProfileKey: profileKey) as? String else { return nil }
+        return RSDAnswerResultObject(identifier: profileKey, answerType: .string, value: answer)
+    }
+    
+    func dateResult(for profileKey: String) -> RSDAnswerResultObject? {
+        guard let answer = self.value(forProfileKey: profileKey) as? Date else { return nil }
+        return RSDAnswerResultObject(identifier: profileKey, answerType: StudyProfileManager.profileDateAnswerType(), value: answer)
     }
     
     /// Creates and returns the answer result for the current state of the profile key
     open func answerResult(for profileKey: String) -> RSDAnswerResultObject? {
-        switch profileKey {
-        case treatmentsProfileKey:
-            return self.treatmentsResult
-        case symptomsProfileKey:
-            return self.symptomsResult
-        case diagnosisProfileKey:
-            return self.diagnosisResult
-        default:
-            return nil
+        guard let profileItem = self.profileItems().values.first(where: { $0.profileKey == profileKey }) else { return nil }
+        
+        if profileItem.itemType == .collection(.multipleChoice, .string) {
+            return self.multiChoiceStringResult(for: profileKey)
         }
+        
+        if profileItem.itemType.baseType == .string {
+            return self.stringResult(for: profileKey)
+        } else if profileItem.itemType.baseType == .date {
+            return self.dateResult(for: profileKey)
+        }
+        
+        debugPrint("You need to add support for profile type \(profileItem.itemType.baseType)")
+        return nil
+    }
+    
+    override open func taskController(_ taskController: RSDTaskController, readyToSave taskViewModel: RSDTaskViewModel) {
+        
+        // Prepare the treatment task for upload by making sure it reflects
+        // the current state of the entire profile report,
+        // even if the user just change a single answer
+        if taskViewModel.task?.identifier == RSDIdentifier.treatmentTask.identifierValue {
+            for treatmentStepId in self.treatmentStepIdentifiers {
+                // Don't overwrite any answers from the task
+                if taskViewModel.taskResult.findResult(with: treatmentStepId) == nil {
+                    if let current = self.answerResult(for: treatmentStepId) {
+                        // Append the current state of the rest of the treatments task
+                        taskViewModel.taskResult.appendStepHistory(with: current)
+                    } else {
+                        debugPrint("WARNING! We don't have all the treatment data")
+                    }
+                } else if treatmentStepId == self.diagnosisProfileKey ||
+                    treatmentStepId == self.symptomsProfileKey {
+                    // If we do have an answer from completing the task,
+                    // Do not overwrite the data, but check for if we need to
+                    // add supplemental date information.
+                    // This is needed for synapse data analysis.
+                    let dateAnswer = RSDAnswerResultObject(identifier: "\(treatmentStepId)Date", answerType: StudyProfileManager.profileDateAnswerType(), value: Date())
+                    _ = taskViewModel.taskResult.appendStepHistory(with: dateAnswer)
+                }
+            }
+        }
+        
+        super.taskController(taskController, readyToSave: taskViewModel)
     }
     
     override open func reportCategory(for reportIdentifier: String) -> SBAReportCategory {

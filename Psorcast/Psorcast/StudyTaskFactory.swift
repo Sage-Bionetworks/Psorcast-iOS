@@ -171,6 +171,14 @@ open class HealthProfileItem: SBAProfileItem {
             json = propJson
         }
         
+        if self.itemType.baseType == RSDFormDataType.BaseType.date,
+            let stringJsonVal = json as? String {
+            let formatter = StudyProfileManager.profileDateFormatter()
+            if let date = formatter.date(from: stringJsonVal) {
+                return date
+            }
+        }
+        
         return self.commonBridgeJsonToItemType(jsonVal: json)
     }
     
