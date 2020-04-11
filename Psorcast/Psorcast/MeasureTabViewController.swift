@@ -78,6 +78,8 @@ class MeasureTabViewController: UIViewController, UICollectionViewDataSource, UI
     /// The profile manager
     let profileManager = (AppDelegate.shared as? AppDelegate)?.profileManager
     
+    let showInsightTaskId = "showInsight"
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -200,6 +202,22 @@ class MeasureTabViewController: UIViewController, UICollectionViewDataSource, UI
         self.present(taskVc, animated: true, completion: nil)
     }
     
+    @IBAction func insightTapped() {
+        //guard self.rootViewController?.state == .main else { return }
+        
+        let step = ShowInsightStepObject(identifier: "showInsight")
+        step.title = "I'm a happy title"
+        step.text = "I'm a an extra happy text thing"
+        step.imageTheme = RSDFetchableImageThemeElementObject(imageName: "WhiteLightBulb")
+        
+        var navigator = RSDConditionalStepNavigatorObject(with: [step])
+        navigator.progressMarkers = []
+        let task = RSDTaskObject(identifier: self.showInsightTaskId, stepNavigator: navigator)
+        let vc = RSDTaskViewController(task: task)
+        vc.delegate = self
+        self.present(vc, animated: true, completion: nil)
+    }
+    
     func updateInsightProgress() {
         let totalSchedules = self.scheduleManager.sortedScheduleCount
         
@@ -214,7 +232,8 @@ class MeasureTabViewController: UIViewController, UICollectionViewDataSource, UI
         let renewalRange = self.weeklyRenewalDateRange(from: setTreatmentsDate, toNow: Date())
         let activitiesCompletedThisWeek = self.scheduleManager.completedActivitiesCount(from: renewalRange.lowerBound, to: renewalRange.upperBound)
                 
-        let newProgress = Float(activitiesCompletedThisWeek) / Float(totalSchedules)
+        //let newProgress = Float(activitiesCompletedThisWeek) / Float(totalSchedules)
+        let newProgress = Float(1.0) / Float(1.0)
         
         let animateToInsightView = newProgress >= 1.0 && self.insightAchievedView.isHidden
         let animateToInsightProgressView = newProgress < 1.0 && self.insightNotAchievedView.isHidden
@@ -246,13 +265,6 @@ class MeasureTabViewController: UIViewController, UICollectionViewDataSource, UI
             vc.delegate = self
             self.show(vc, sender: self)
         }
-    }
-            
-    @IBAction func insightTapped() {
-        // TODO: segue to insight screen
-        let alert = UIAlertController(title: "This feature will be implemented in a future release.", message: nil, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Okay", style: .default, handler: nil))
-        self.present(alert, animated: true)
     }
     
     func animateInsightAchievedView(hide: Bool) {
