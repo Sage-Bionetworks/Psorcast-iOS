@@ -204,6 +204,27 @@ class MeasureTabViewController: UIViewController, UICollectionViewDataSource, UI
     
     @IBAction func insightTapped() {
         //guard self.rootViewController?.state == .main else { return }
+        // First, find what insight to display
+        let resource = RSDResourceTransformerObject(resourceName: "Insights.json", bundle: Bundle.main)
+        do {
+            let task = try RSDFactory.shared.decodeTask(with: resource)
+            let debugStep = true
+        } catch {
+            NSLog("Failed to create task from INSIGHTS.json \(error)")
+        }
+//            let task = try RSDFactory.shared.decodeTask(with: resource)
+//            if let step = task.stepNavigator.step(with: key) {
+//                var navigator = RSDConditionalStepNavigatorObject(with: [step])
+//                navigator.progressMarkers = []
+//                let task = RSDTaskObject(identifier: RSDIdentifier.treatmentTask.rawValue, stepNavigator: navigator)
+//                let vc = RSDTaskViewController(task: task)
+//
+//                // Set the initial state of the question answer
+//                if let prevAnswer = profileManager?.answerResult(for: key) {
+//                    vc.taskViewModel.append(previousResult: prevAnswer)
+//                }
+//
+//                return vc
         
         let step = ShowInsightStepObject(identifier: "showInsight")
         step.title = "I'm a happy title"

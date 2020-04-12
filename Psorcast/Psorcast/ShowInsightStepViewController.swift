@@ -38,27 +38,6 @@ import BridgeApp
 import BridgeAppUI
 import GPUImage
 
-class HorizontallyCenteredButton: UIButton {
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        self.contentHorizontalAlignment = .left
-    }
-
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        self.centerButtonImageAndTitle()
-    }
-
-    func centerButtonImageAndTitle() {
-        let size = self.bounds.size
-        let titleSize = self.titleLabel!.frame.size
-        let imageSize = self.imageView!.frame.size
-
-        self.imageEdgeInsets = UIEdgeInsets(top: self.imageEdgeInsets.top, left: size.width/2 - imageSize.width/2, bottom: self.imageEdgeInsets.bottom, right: 0)
-        self.titleEdgeInsets = UIEdgeInsets(top: self.titleEdgeInsets.top, left: -imageSize.width + size.width/2 - titleSize.width/2, bottom: self.titleEdgeInsets.bottom, right: 0)
-    }
-}
-
 open class ShowInsightStepObject: RSDUIStepObject, RSDStepViewControllerVendor {
     
     public func instantiateViewController(with parent: RSDPathComponent?) -> (UIViewController & RSDStepController)? {
@@ -66,6 +45,15 @@ open class ShowInsightStepObject: RSDUIStepObject, RSDStepViewControllerVendor {
     }
 }
 
-open class ShowInsightStepViewController: RSDStepViewController {
+public class ShowInsightStepViewController: RSDStepViewController {
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
     
+}
+
+public struct InsightItem: Codable {
+    public var identifier: String
+    public var title: String?
+    public var text: String?
 }
