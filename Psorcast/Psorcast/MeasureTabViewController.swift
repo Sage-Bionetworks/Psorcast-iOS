@@ -242,7 +242,7 @@ class MeasureTabViewController: UIViewController, UICollectionViewDataSource, UI
     }
     
     @IBAction func treatmentTapped() {
-        if let vc = ProfileTabViewController.createTreatmentProfileVc(profileManager: self.profileManager, for: self.profileManager?.treatmentsProfileKey) {
+        if let vc = self.profileManager?.instantiateSingleQuestionTreatmentTaskController(for: ProfileIdentifier.treatments.id) {
             vc.delegate = self
             self.show(vc, sender: self)
         }
@@ -278,7 +278,7 @@ class MeasureTabViewController: UIViewController, UICollectionViewDataSource, UI
     }
     
     func updateCurrentTreatmentsText() {
-        guard let treatments = self.profileManager?.treatments else { return }
+        guard let treatments = self.profileManager?.treatmentIdentifiers else { return }
         let attributedText = NSAttributedString(string: treatments.joined(separator: ", "), attributes: [NSAttributedString.Key.underlineStyle: true])
         self.treatmentButton.setAttributedTitle(attributedText, for: .normal)
     }
@@ -459,8 +459,7 @@ class MeasureTabViewController: UIViewController, UICollectionViewDataSource, UI
     
     func taskController(_ taskController: RSDTaskController, readyToSave taskViewModel: RSDTaskViewModel) {
         if taskController.task.identifier == RSDIdentifier.treatmentTask.rawValue {
-            let prepared = ProfileTabViewController.prepareTreatmentResultForUpload(profileManager: self.profileManager, taskViewModel: taskViewModel)
-            self.profileManager?.taskController(taskController, readyToSave: prepared)
+            self.profileManager?.taskController(taskController, readyToSave: taskViewModel)
         } else {
             self.scheduleManager.taskController(taskController, readyToSave: taskViewModel)
         }

@@ -459,11 +459,16 @@ public class TreatmentSelectionStepViewController: RSDStepViewController, UITabl
     }
     
     override open func goForward() {
-        // Save when the user has changed their treatments
-        let dateAnswer = RSDAnswerResultObject(identifier: "\(self.step.identifier)Date", answerType: .decimal, value: Date().timeIntervalSince1970)
+        
+        // We want a JSON attachment sent to Synapse
+        let treatmentJsonResult = TreatmentSelectionResultObject(identifier: "\(self.step.identifier)Json", items: self.currentTreatments)
+        _ = self.stepViewModel.parent?.taskResult.appendStepHistory(with: treatmentJsonResult)
+        
+        // Save when the user has changed their treatments for reports and profile
+        let dateAnswer = RSDAnswerResultObject(identifier: "\(self.step.identifier)Date", answerType: StudyProfileManager.profileDateAnswerType(), value: Date())
         _ = self.stepViewModel.parent?.taskResult.appendStepHistory(with: dateAnswer)
         
-        /// Save a string list of the multi-choice answer identifiers
+        // Save a string list of the multi-choice answer identifiers that works best for reports and profile
         let answer = Array(self.currentTreatmentsIds)
         let stringArrayType = RSDAnswerResultType(baseType: .string, sequenceType: .array, formDataType: .collection(.multipleChoice, .string), dateFormat: nil, unit: nil, sequenceSeparator: nil)
         let result = RSDAnswerResultObject(identifier: self.step.identifier, answerType: stringArrayType, value: answer)

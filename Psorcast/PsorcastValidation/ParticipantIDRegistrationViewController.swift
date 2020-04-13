@@ -100,7 +100,11 @@ class ParticipantIDRegistrationViewController: RSDStepViewController, UITextFiel
                 self.logoutButton.alpha = CGFloat(1.0)
                 self.submitButton.isEnabled = true
                 self.resetDefaults()
-                self.goBack()
+                #if VALIDATION
+                    self.goBack()
+                #else
+                    self.cancelTask(shouldSave: false)
+                #endif
             }
         })
     }

@@ -32,18 +32,57 @@
 //
 
 import BridgeApp
+import Research
+import ResearchUI
+
+public enum ProfileIdentifier: RSDIdentifier {
+    case treatments = "treatmentSelection"
+    case treatmentsDate = "treatmentSelectionDate"
+    case diagnosis = "psoriasisStatus"
+    case diagnosisDate = "psoriasisStatusDate"
+    case symptoms = "psoriasisSymptoms"
+    case symptomsDate = "psoriasisSymptomsDate"
+    
+    public var id: String {
+        return self.rawValue.rawValue
+    }
+}
 
 open class StudyProfileManager: SBAProfileManagerObject {
     
-    let treatmentsProfileKey = "treatmentSelection"
-    let treatmentsDateProfileKey = "treatmentSelectionDate"
-    let diagnosisProfileKey = "psoriasisStatus"
-    let symptomsProfileKey = "psoriasisSymptoms"
+    public static let treatmentsSetDefaultsKey = "treatmentsSet"
+    
+    /// The date formatter for when you want to encode/decode answer dates in the profile
+    public static func profileDateFormatter() -> DateFormatter {
+        let formatter = DateFormatter()
+        formatter.locale = Locale.current
+        formatter.timeZone = TimeZone.autoupdatingCurrent
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZZZ"
+        return formatter
+    }
+    
+    /// The answer result type to use for profile bound data in a task result
+    public static func profileDateAnswerType() -> RSDAnswerResultType {
+        return RSDAnswerResultType(baseType: .date, sequenceType: nil, formDataType: nil, dateFormat: StudyProfileManager.profileDateFormatter().dateFormat, unit: nil, sequenceSeparator: nil)
+    }
     
     let profileTasks = [RSDIdentifier.treatmentTask.rawValue]
+        
+    /// Check if the user has set their treatments yet
+    /// Usually you would expect this always to be available, but because we refresh the app config on app startup
+    /// and because the profile data is backed by reports, it is not always immediately available on app load in one data location.
+    /// However, when checking both these locations, we can get an accurate look if the user has set their treatments.
+    public static func hasTreatmentData(profileManager: StudyProfileManager?) -> Bool {
+        // Back up data that is immediately available on app load
+        if BridgeSDK.sharedUserDefaults().bool(forKey: treatmentsSetDefaultsKey) {
+            return true
+        }
+        // Users that have just signed in will have these reports immediately available
+        return profileManager?.treatments != nil && profileManager?.treatmentsDate != nil
+    }    
     
-    open var treatmentStepIdentifiers: [String] {
-        return [diagnosisProfileKey, symptomsProfileKey, treatmentsProfileKey, treatmentsDateProfileKey]
+    open var treatmentStepIdentifiers: [ProfileIdentifier] {
+        return [.diagnosis, .diagnosisDate, .symptoms, .symptomsDate, .treatments, .treatmentsDate]
     }
 
     override open func availablePredicate() -> NSPredicate {
@@ -51,58 +90,141 @@ open class StudyProfileManager: SBAProfileManagerObject {
     }
     
     open var treatmentsDate: Date? {
-        guard let timeIntervalSince1970 = self.value(forProfileKey: treatmentsDateProfileKey) as? Double else { return nil }
-        return Date(timeIntervalSince1970: timeIntervalSince1970)
+        return self.value(forProfileKey: ProfileIdentifier.treatmentsDate.rawValue.rawValue) as? Date
     }
     
-    open var treatmentsDateResult: RSDAnswerResultObject? {
-        guard let treatmentsDateUnwrapped = self.treatmentsDate else { return nil }
-        return RSDAnswerResultObject(identifier: treatmentsDateProfileKey, answerType: .decimal, value: treatmentsDateUnwrapped)
+    open var treatmentIdentifiers: [String]? {
+        return self.value(forProfileKey: ProfileIdentifier.treatments.rawValue.rawValue) as? [String]
     }
     
-    open var treatments: [String]? {
-        return self.value(forProfileKey: treatmentsProfileKey) as? [String]
-    }
-    
-    /// The current value of treatments as an answer result
-    open var treatmentsResult: RSDAnswerResultObject? {
-        guard let treatmentsUnwrapped = self.treatments else { return nil }
-        let stringArrayType = RSDAnswerResultType(baseType: .string, sequenceType: .array, formDataType: .collection(.multipleChoice, .string), dateFormat: nil, unit: nil, sequenceSeparator: nil)
-        return RSDAnswerResultObject(identifier: treatmentsProfileKey, answerType: stringArrayType, value: treatmentsUnwrapped)
+    open var treatments: [TreatmentItem]? {
+        guard let treatmentIds = self.treatmentIdentifiers else { return nil }
+        let selectedTreatments = self.treatmentsAvailable
+        return treatmentIds.map { (id) -> TreatmentItem in
+            if let treatment = selectedTreatments?.first(where: { $0.identifier == id }) {
+                return treatment
+            } else {
+                return TreatmentItem(identifier: id, detail: nil, sectionIdentifier: nil)
+            }
+        }
     }
     
     open var diagnosis: String? {
-        return self.value(forProfileKey: diagnosisProfileKey) as? String
-    }
-    
-    /// The current value of diagnosis as an answer result
-    open var diagnosisResult: RSDAnswerResultObject? {
-        guard let diagnosisUnwrapped = self.diagnosis else { return nil }
-        return RSDAnswerResultObject(identifier: diagnosisProfileKey, answerType: .string, value: diagnosisUnwrapped)
+        return self.value(forProfileKey: ProfileIdentifier.diagnosis.id) as? String
     }
     
     open var symptoms: String? {
-       return self.value(forProfileKey: symptomsProfileKey) as? String
+       return self.value(forProfileKey: ProfileIdentifier.symptoms.id) as? String
     }
     
-    /// The current value of symptoms as an answer result
-    open var symptomsResult: RSDAnswerResultObject? {
-        guard let symptomsUnwrapped = self.symptoms else { return nil }
-        return RSDAnswerResultObject(identifier: symptomsProfileKey, answerType: .string, value: symptomsUnwrapped)
+    func multiChoiceStringResult(for profileKey: String) -> RSDAnswerResultObject? {
+        guard let answer = self.value(forProfileKey: profileKey) as? [String] else { return nil }
+        let stringArrayType = RSDAnswerResultType(baseType: .string, sequenceType: .array, formDataType: .collection(.multipleChoice, .string), dateFormat: nil, unit: nil, sequenceSeparator: nil)
+        return RSDAnswerResultObject(identifier: profileKey, answerType: stringArrayType, value: answer)
+    }
+    
+    func stringResult(for profileKey: String) -> RSDAnswerResultObject? {
+        guard let answer = self.value(forProfileKey: profileKey) as? String else { return nil }
+        return RSDAnswerResultObject(identifier: profileKey, answerType: .string, value: answer)
+    }
+    
+    func dateResult(for profileKey: String) -> RSDAnswerResultObject? {
+        guard let answer = self.value(forProfileKey: profileKey) as? Date else { return nil }
+        return RSDAnswerResultObject(identifier: profileKey, answerType: StudyProfileManager.profileDateAnswerType(), value: answer)
     }
     
     /// Creates and returns the answer result for the current state of the profile key
     open func answerResult(for profileKey: String) -> RSDAnswerResultObject? {
-        switch profileKey {
-        case treatmentsProfileKey:
-            return self.treatmentsResult
-        case symptomsProfileKey:
-            return self.symptomsResult
-        case diagnosisProfileKey:
-            return self.diagnosisResult
-        default:
-            return nil
+        guard let profileItem = self.profileItems().values.first(where: { $0.profileKey == profileKey }) else { return nil }
+        
+        if profileItem.itemType == .collection(.multipleChoice, .string) {
+            return self.multiChoiceStringResult(for: profileKey)
         }
+        
+        if profileItem.itemType.baseType == .string {
+            return self.stringResult(for: profileKey)
+        } else if profileItem.itemType.baseType == .date {
+            return self.dateResult(for: profileKey)
+        }
+        
+        debugPrint("You need to add support for profile type \(profileItem.itemType.baseType)")
+        return nil
+    }
+    
+    open var treatmentsAvailable: [TreatmentItem]? {
+        return (self.treatmentTask?.stepNavigator.step(with: ProfileIdentifier.treatments.id) as? TreatmentSelectionStepObject)?.items
+    }
+    
+    open var treatmentTask: RSDTask? {
+        return SBABridgeConfiguration.shared.task(for: RSDIdentifier.treatmentTask.rawValue)
+    }
+    
+    open func instantiateTreatmentTaskController() -> RSDTaskViewController? {
+        guard let task = self.treatmentTask else { return nil }
+        return RSDTaskViewController(task: task)
+    }
+    
+    open func instantiateSingleQuestionTreatmentTaskController(for profileKey: String) -> RSDTaskViewController? {
+        
+        // This task viewcontroller has all the treament questions
+        var vc = self.instantiateTreatmentTaskController()
+        
+        // Re-crate the task as a single question
+        if let step = vc?.task.stepNavigator.step(with: profileKey) {
+            var navigator = RSDConditionalStepNavigatorObject(with: [step])
+            navigator.progressMarkers = []
+            let task = RSDTaskObject(identifier: RSDIdentifier.treatmentTask.rawValue, stepNavigator: navigator)
+            vc = RSDTaskViewController(task: task)
+            
+            // Set the initial state of the question answer
+            if let prevAnswer = self.answerResult(for: profileKey) {
+                vc?.taskViewModel.append(previousResult: prevAnswer)
+            }
+        }
+
+        return vc
+    }
+    
+    override open func taskController(_ taskController: RSDTaskController, readyToSave taskViewModel: RSDTaskViewModel) {
+        
+        // Prepare the treatment task for upload by making sure it reflects
+        // the current state of the entire profile report,
+        // even if the user just change a single answer
+        if taskViewModel.task?.identifier == RSDIdentifier.treatmentTask.identifierValue {
+            for treatmentStepId in self.treatmentStepIdentifiers.map({ $0.id }) {
+                // Don't overwrite any answers from the task
+                if taskViewModel.taskResult.findResult(with: treatmentStepId) == nil {
+                    if let current = self.answerResult(for: treatmentStepId) {
+                        // Append the current state of the rest of the treatments task
+                        taskViewModel.taskResult.appendStepHistory(with: current)
+                        
+                        // Let's also upload the JSON file for consistency
+                        // This is built from AppConfig's current treatment list
+                        // and the selected treatment identifiers
+                        if treatmentStepId == ProfileIdentifier.treatments.id,
+                            let selectedTreatments = self.treatments {
+                            let treatmentAnswer = TreatmentSelectionResultObject(identifier: "\(treatmentStepId)Json", items: selectedTreatments)
+                            _ = taskViewModel.taskResult.appendStepHistory(with: treatmentAnswer)
+                        }
+                    } else {
+                        debugPrint("WARNING! We don't have all the treatment data")
+                    }
+                } else if treatmentStepId == ProfileIdentifier.diagnosis.id ||
+                    treatmentStepId == ProfileIdentifier.symptoms.id {
+                    // If we do have an answer from completing the task,
+                    // Do not overwrite the data, but check for if we need to
+                    // add supplemental date information.
+                    // This is needed for synapse data analysis.
+                    let dateAnswer = RSDAnswerResultObject(identifier: "\(treatmentStepId)Date", answerType: StudyProfileManager.profileDateAnswerType(), value: Date())
+                    _ = taskViewModel.taskResult.appendStepHistory(with: dateAnswer)
+                }
+            }
+            
+            // Save the status that treatments are set for the user
+            BridgeSDK.sharedUserDefaults().set(true, forKey: StudyProfileManager.treatmentsSetDefaultsKey)
+        }
+        
+        super.taskController(taskController, readyToSave: taskViewModel)
     }
     
     override open func reportCategory(for reportIdentifier: String) -> SBAReportCategory {
