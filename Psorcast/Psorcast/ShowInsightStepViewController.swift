@@ -105,6 +105,18 @@ public class ShowInsightStepViewController: RSDStepViewController {
     @IBOutlet weak var noButton: HorizontallyCenteredButton!
     @IBOutlet weak var yesButton: HorizontallyCenteredButton!
     
+    @IBAction func yesButtonTapped(_ sender: Any) {
+        let answer = RSDAnswerResultObject(identifier: self.step.identifier, answerType: .string, value: "Yes")
+        _ = self.stepViewModel.parent?.taskResult.appendStepHistory(with: answer)
+        super.goForward()
+    }
+    
+    @IBAction func noButtonTapped(_ sender: Any) {
+        let answer = RSDAnswerResultObject(identifier: self.step.identifier, answerType: .string, value: "No")
+        _ = self.stepViewModel.parent?.taskResult.appendStepHistory(with: answer)
+        super.goForward()
+    }
+    
 }
 
 public struct InsightItem: Codable {

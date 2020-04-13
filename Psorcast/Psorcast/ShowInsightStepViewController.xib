@@ -93,6 +93,9 @@
                                             </fragment>
                                         </attributedString>
                                     </state>
+                                    <connections>
+                                        <action selector="yesButtonTapped:" destination="-1" eventType="touchUpInside" id="5oJ-yv-GIs"/>
+                                    </connections>
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JQL-Sr-GHo" customClass="HorizontallyCenteredButton" customModule="Psorcast" customModuleProvider="target">
                                     <rect key="frame" x="70" y="80" width="120" height="120"/>
@@ -110,6 +113,9 @@
                                             </fragment>
                                         </attributedString>
                                     </state>
+                                    <connections>
+                                        <action selector="noButtonTapped:" destination="-1" eventType="touchUpInside" id="TQ3-gf-f9u"/>
+                                    </connections>
                                 </button>
                             </subviews>
                             <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
