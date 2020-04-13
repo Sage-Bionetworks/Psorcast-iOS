@@ -2,7 +2,18 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "ToggleCameraButton.pdf"
+      "filename" : "Camera@1x.png",
+      "scale" : "1x"
+    },
+    {
+      "idiom" : "universal",
+      "filename" : "Camera@2x.png",
+      "scale" : "2x"
+    },
+    {
+      "idiom" : "universal",
+      "filename" : "Camera@3x.png",
+      "scale" : "3x"
     }
   ],
   "info" : {
