@@ -179,4 +179,18 @@ public class MasterScheduleManager : SBAScheduleManager {
         
         super.saveResults(from: taskViewModel)
     }
+    
+    open var insightsTask: RSDTask? {
+        return SBABridgeConfiguration.shared.task(for: RSDIdentifier.insightsTask.rawValue)
+    }
+    
+    open func instantiateInsightsTaskController() -> RSDTaskViewController? {
+        guard let task = self.insightsTask else { return nil }
+        let step = task.stepNavigator.step(with: "insightStep") as? ShowInsightStepObject
+        let testInsightItem = step?.items[0]
+        step?.title = testInsightItem?.title
+        step?.text = testInsightItem?.text
+        step?.imageTheme = RSDFetchableImageThemeElementObject(imageName: "WhiteLightBulb")
+        return RSDTaskViewController(task: task)
+    }
 }

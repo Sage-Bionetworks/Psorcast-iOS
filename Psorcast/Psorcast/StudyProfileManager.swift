@@ -66,7 +66,7 @@ open class StudyProfileManager: SBAProfileManagerObject {
         return RSDAnswerResultType(baseType: .date, sequenceType: nil, formDataType: nil, dateFormat: StudyProfileManager.profileDateFormatter().dateFormat, unit: nil, sequenceSeparator: nil)
     }
     
-    let profileTasks = [RSDIdentifier.treatmentTask.rawValue]
+    let profileTasks = [RSDIdentifier.treatmentTask.rawValue, RSDIdentifier.insightsTask.rawValue]
         
     /// Check if the user has set their treatments yet
     /// Usually you would expect this always to be available, but because we refresh the app config on app startup
@@ -86,6 +86,7 @@ open class StudyProfileManager: SBAProfileManagerObject {
     }
 
     override open func availablePredicate() -> NSPredicate {
+        // Defines which tasks this schedule manager cares about
         return SBBScheduledActivity.includeTasksPredicate(with: self.profileTasks)
     }
     

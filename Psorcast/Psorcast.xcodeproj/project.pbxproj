@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		04F00572243FE64800EDB120 /* ShowInsightStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F00571243FE64800EDB120 /* ShowInsightStepViewController.swift */; };
+		04F00578243FE76E00EDB120 /* ShowInsightStepViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 04F00577243FE76E00EDB120 /* ShowInsightStepViewController.xib */; };
 		CB03196523E3ED0A005063A3 /* ReviewCaptureStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB03196423E3ED09005063A3 /* ReviewCaptureStepViewController.swift */; };
 		CB03196723E40836005063A3 /* ReviewCaptureStepViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB03196623E40835005063A3 /* ReviewCaptureStepViewController.xib */; };
 		CB05146C237F27560058D746 /* DigitalJarOpen.json in Resources */ = {isa = PBXBuildFile; fileRef = CB05146B237F27560058D746 /* DigitalJarOpen.json */; };
@@ -326,6 +328,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		04F00571243FE64800EDB120 /* ShowInsightStepViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowInsightStepViewController.swift; sourceTree = "<group>"; };
+		04F00577243FE76E00EDB120 /* ShowInsightStepViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ShowInsightStepViewController.xib; sourceTree = "<group>"; };
 		CB03196423E3ED09005063A3 /* ReviewCaptureStepViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReviewCaptureStepViewController.swift; sourceTree = "<group>"; };
 		CB03196623E40835005063A3 /* ReviewCaptureStepViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReviewCaptureStepViewController.xib; sourceTree = "<group>"; };
 		CB05146B237F27560058D746 /* DigitalJarOpen.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = DigitalJarOpen.json; sourceTree = "<group>"; };
@@ -576,6 +580,8 @@
 				CB09F0372421D5730005698D /* TreatmentSelectionStepViewController.swift */,
 				CB4794F42426B39900D5A7E6 /* TreatmentSelectionStepObject.swift */,
 				CB4794F62426B3D800D5A7E6 /* TreatmentSelectionTableViewCell.swift */,
+				04F00571243FE64800EDB120 /* ShowInsightStepViewController.swift */,
+				04F00577243FE76E00EDB120 /* ShowInsightStepViewController.xib */,
 				CBAA09CE243E4F5500D63CCD /* TreatmentSelectionResultObject.swift */,
 			);
 			name = ViewControllers;
@@ -1108,6 +1114,7 @@
 				CBDD30E62416C7D1003B0488 /* PsorcastAssets.xcassets in Resources */,
 				CBDCDC9423F3849E00E5CEB8 /* ParticipantIDRegistrationViewController.xib in Resources */,
 				FF5010A122DD214A0035E83C /* BridgeInfo.plist in Resources */,
+				04F00578243FE76E00EDB120 /* ShowInsightStepViewController.xib in Resources */,
 				CBDCDC7F23F3848500E5CEB8 /* MDJointCounting.json in Resources */,
 				CBDCDCA423F3849E00E5CEB8 /* PsoriasisAreaPhotoStepViewController.xib in Resources */,
 				CB9F5E2022E0BED3003FBCEF /* lato_bold.ttf in Resources */,
@@ -1236,6 +1243,7 @@
 				CBDCDCB823F384A400E5CEB8 /* MotorControl+Bridge.swift in Sources */,
 				CBDCDC8C23F3849E00E5CEB8 /* RSDSelectionCollectionViewCell.swift in Sources */,
 				CBDCDCA123F3849E00E5CEB8 /* LearnMoreStepViewController.swift in Sources */,
+				04F00572243FE64800EDB120 /* ShowInsightStepViewController.swift in Sources */,
 				CBDD30E82416D403003B0488 /* MeasureTabViewController.swift in Sources */,
 				FFABCBC222DD1EEB00D11109 /* AppDelegate.swift in Sources */,
 				CBDCDC9123F3849E00E5CEB8 /* EndOfValidationStepViewController.swift in Sources */,

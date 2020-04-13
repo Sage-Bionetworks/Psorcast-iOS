@@ -78,6 +78,8 @@ class MeasureTabViewController: UIViewController, UICollectionViewDataSource, UI
     /// The profile manager
     let profileManager = (AppDelegate.shared as? AppDelegate)?.profileManager
     
+    let showInsightTaskId = "showInsight"
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -200,6 +202,12 @@ class MeasureTabViewController: UIViewController, UICollectionViewDataSource, UI
         self.present(taskVc, animated: true, completion: nil)
     }
     
+    @IBAction func insightTapped() {
+        guard let vc = self.scheduleManager.instantiateInsightsTaskController() else { return }
+        vc.delegate = self
+        self.present(vc, animated: true, completion: nil)
+    }
+    
     func updateInsightProgress() {
         let totalSchedules = self.scheduleManager.sortedScheduleCount
         
@@ -246,13 +254,6 @@ class MeasureTabViewController: UIViewController, UICollectionViewDataSource, UI
             vc.delegate = self
             self.show(vc, sender: self)
         }
-    }
-            
-    @IBAction func insightTapped() {
-        // TODO: segue to insight screen
-        let alert = UIAlertController(title: "This feature will be implemented in a future release.", message: nil, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Okay", style: .default, handler: nil))
-        self.present(alert, animated: true)
     }
     
     func animateInsightAchievedView(hide: Bool) {
@@ -458,7 +459,9 @@ class MeasureTabViewController: UIViewController, UICollectionViewDataSource, UI
     // MARK: RSDTaskViewControllerDelegate
     
     func taskController(_ taskController: RSDTaskController, readyToSave taskViewModel: RSDTaskViewModel) {
-        if taskController.task.identifier == RSDIdentifier.treatmentTask.rawValue {
+        if taskController.task.identifier == RSDIdentifier.treatmentTask.rawValue ||
+            taskController.task.identifier == RSDIdentifier.insightsTask.rawValue {
+            
             self.profileManager?.taskController(taskController, readyToSave: taskViewModel)
         } else {
             self.scheduleManager.taskController(taskController, readyToSave: taskViewModel)

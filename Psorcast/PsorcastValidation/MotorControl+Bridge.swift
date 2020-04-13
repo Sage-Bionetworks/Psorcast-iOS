@@ -50,6 +50,9 @@ public extension RSDIdentifier {
     
     // Profile tasks
     static let treatmentTask: RSDIdentifier = "Treatment"
+    
+    // Insight tasks
+    static let insightsTask: RSDIdentifier = "Insights"
 }
 
 extension MCTTaskInfo : SBAActivityInfo {
