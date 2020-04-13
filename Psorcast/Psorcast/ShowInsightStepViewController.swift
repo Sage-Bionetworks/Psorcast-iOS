@@ -72,9 +72,9 @@ open class ShowInsightStepObject: RSDUIStepObject, RSDStepViewControllerVendor {
         return ShowInsightStepViewController(step: self, parent: parent)
     }
     
-    /// Default type is `.treatmentSelection`.
+    /// Default type is `.insights`.
     open override class func defaultType() -> RSDStepType {
-        return .treatmentSelection
+        return .insights
     }
     
     public required init(from decoder: Decoder) throws {
