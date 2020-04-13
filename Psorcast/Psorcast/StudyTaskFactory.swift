@@ -35,6 +35,7 @@ import BridgeApp
 
 extension RSDStepType {
     public static let treatmentSelection: RSDStepType = "treatmentSelection"
+    public static let insights: RSDStepType = "insights"
 }
 
 open class StudyTaskFactory: TaskFactory {
@@ -56,6 +57,8 @@ open class StudyTaskFactory: TaskFactory {
         switch type {
         case .treatmentSelection:
             return try TreatmentSelectionStepObject(from: decoder)
+        case .insights:
+            return try ShowInsightStepObject(from: decoder)
         default:
             return try super.decodeStep(from: decoder, with: type)
         }

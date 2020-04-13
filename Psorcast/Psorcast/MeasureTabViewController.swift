@@ -203,38 +203,7 @@ class MeasureTabViewController: UIViewController, UICollectionViewDataSource, UI
     }
     
     @IBAction func insightTapped() {
-        //guard self.rootViewController?.state == .main else { return }
-        // First, find what insight to display
-        let resource = RSDResourceTransformerObject(resourceName: "Insights.json", bundle: Bundle.main)
-        do {
-            let task = try RSDFactory.shared.decodeTask(with: resource)
-            let debugStep = true
-        } catch {
-            NSLog("Failed to create task from INSIGHTS.json \(error)")
-        }
-//            let task = try RSDFactory.shared.decodeTask(with: resource)
-//            if let step = task.stepNavigator.step(with: key) {
-//                var navigator = RSDConditionalStepNavigatorObject(with: [step])
-//                navigator.progressMarkers = []
-//                let task = RSDTaskObject(identifier: RSDIdentifier.treatmentTask.rawValue, stepNavigator: navigator)
-//                let vc = RSDTaskViewController(task: task)
-//
-//                // Set the initial state of the question answer
-//                if let prevAnswer = profileManager?.answerResult(for: key) {
-//                    vc.taskViewModel.append(previousResult: prevAnswer)
-//                }
-//
-//                return vc
-        
-        let step = ShowInsightStepObject(identifier: "showInsight")
-        step.title = "I'm a happy title"
-        step.text = "I'm a an extra happy text thing"
-        step.imageTheme = RSDFetchableImageThemeElementObject(imageName: "WhiteLightBulb")
-        
-        var navigator = RSDConditionalStepNavigatorObject(with: [step])
-        navigator.progressMarkers = []
-        let task = RSDTaskObject(identifier: self.showInsightTaskId, stepNavigator: navigator)
-        let vc = RSDTaskViewController(task: task)
+        guard let vc = self.scheduleManager.instantiateInsightsTaskController() else { return }
         vc.delegate = self
         self.present(vc, animated: true, completion: nil)
     }
@@ -491,7 +460,9 @@ class MeasureTabViewController: UIViewController, UICollectionViewDataSource, UI
     // MARK: RSDTaskViewControllerDelegate
     
     func taskController(_ taskController: RSDTaskController, readyToSave taskViewModel: RSDTaskViewModel) {
-        if taskController.task.identifier == RSDIdentifier.treatmentTask.rawValue {
+        if taskController.task.identifier == RSDIdentifier.treatmentTask.rawValue ||
+            taskController.task.identifier == RSDIdentifier.insightsTask.rawValue {
+            
             self.profileManager?.taskController(taskController, readyToSave: taskViewModel)
         } else {
             self.scheduleManager.taskController(taskController, readyToSave: taskViewModel)

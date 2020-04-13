@@ -40,15 +40,46 @@ import GPUImage
 
 open class ShowInsightStepObject: RSDUIStepObject, RSDStepViewControllerVendor {
     
+    private enum CodingKeys: String, CodingKey, CaseIterable {
+        case items
+    }
+    
+    public var items = [InsightItem]()
+    
     public func instantiateViewController(with parent: RSDPathComponent?) -> (UIViewController & RSDStepController)? {
         return ShowInsightStepViewController(step: self, parent: parent)
+    }
+    
+    /// Default type is `.treatmentSelection`.
+    open override class func defaultType() -> RSDStepType {
+        return .treatmentSelection
+    }
+    
+    public required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        
+        self.items = try container.decode([InsightItem].self, forKey: .items)
+        
+        try super.init(from: decoder)
+    }
+    
+    required public init(identifier: String, type: RSDStepType? = nil) {
+        super.init(identifier: identifier, type: type)
+    }
+    
+    /// Override to set the properties of the subclass.
+    override open func copyInto(_ copy: RSDUIStepObject) {
+        super.copyInto(copy)
+        guard let subclassCopy = copy as? ShowInsightStepObject else {
+            assertionFailure("Superclass implementation of the `copy(with:)` protocol should return an instance of this class.")
+            return
+        }
+        subclassCopy.items = self.items
     }
 }
 
 public class ShowInsightStepViewController: RSDStepViewController {
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
+
     
 }
 
