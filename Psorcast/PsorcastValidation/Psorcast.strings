@@ -113,3 +113,11 @@
 
 "PROFILE_TITLE" = "Your Profile";
 
+"REMINDER_NOTIFICATION_TITLE" = "Time to do your weekly activities";
+"SET_WEEKLY_REMINDER" = "Set weekly reminder";
+"REMINDER_WEEKLY_TITLE" = "When would you like to be reminded to do your weekly activities?";
+"REMINDER_WEEKLY_TEXT" = "You can always change your time later if it no longer works for you.";
+"NO_REMINDERS_PLEASE" = "No reminders please";
+"SAVE_REMINDER_BUTTON" = "Save reminder";
+"REMINDERS_WEEKLY_I_HAVE_NOT_SET_REMINDERS" = "I have not set reminders";
+

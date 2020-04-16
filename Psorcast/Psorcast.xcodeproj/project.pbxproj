@@ -19,6 +19,11 @@
 		CB1535E024395410007D0307 /* ProfileTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB1535DF24395410007D0307 /* ProfileTabViewController.swift */; };
 		CB16BF5623E4B9140099FD08 /* GPUImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB16BF5323E4B90B0099FD08 /* GPUImage.framework */; };
 		CB16BF5723E4B9140099FD08 /* GPUImage.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CB16BF5323E4B90B0099FD08 /* GPUImage.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		CB16C38924465BB80046E200 /* ReminderManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB16C38424465BB80046E200 /* ReminderManager.swift */; };
+		CB16C38C24465BC20046E200 /* ReminderStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB16C38A24465BC20046E200 /* ReminderStepViewController.swift */; };
+		CB16C38D24465BC20046E200 /* ReminderStepViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB16C38B24465BC20046E200 /* ReminderStepViewController.xib */; };
+		CB16C39524466AE80046E200 /* ReminderManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB16C39424466AE80046E200 /* ReminderManagerTests.swift */; };
+		CB16C39724466B140046E200 /* MockReminderManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB16C39624466B140046E200 /* MockReminderManager.swift */; };
 		CB27B9F1243596F4007D36D8 /* MasterScheduleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB27B9F0243596F4007D36D8 /* MasterScheduleManager.swift */; };
 		CB28EBE82396FCA30043D7FE /* JointCounting.mov in Resources */ = {isa = PBXBuildFile; fileRef = CB28EBE52396FCA30043D7FE /* JointCounting.mov */; };
 		CB28EBEA2396FCA30043D7FE /* DigitalJarOpen.mov in Resources */ = {isa = PBXBuildFile; fileRef = CB28EBE72396FCA30043D7FE /* DigitalJarOpen.mov */; };
@@ -100,7 +105,6 @@
 		CBA0250E23FC6B2500604F2D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CBA0250823FC6B2500604F2D /* Main.storyboard */; };
 		CBA8390E234A6B3F00408D81 /* EndOfValidationStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA8390C234A6B3F00408D81 /* EndOfValidationStepViewController.swift */; };
 		CBA8390F234A6B3F00408D81 /* EndOfValidationStepViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CBA8390D234A6B3F00408D81 /* EndOfValidationStepViewController.xib */; };
-		CBAA09CD243E229700D63CCD /* StudyTaskFactoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBAA09CC243E229700D63CCD /* StudyTaskFactoryTests.swift */; };
 		CBAA09CF243E4F5500D63CCD /* TreatmentSelectionResultObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBAA09CE243E4F5500D63CCD /* TreatmentSelectionResultObject.swift */; };
 		CBAF1DA32437C93700ECC699 /* StudyProfileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBAF1DA22437C93700ECC699 /* StudyProfileManager.swift */; };
 		CBAF1DA92437CB2A00ECC699 /* StudyExternalIdRegistrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBAF1DA82437CB2A00ECC699 /* StudyExternalIdRegistrationViewController.swift */; };
@@ -339,6 +343,11 @@
 		CB09F03D2421E9E80005698D /* TreatmentSelectionStepViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TreatmentSelectionStepViewController.xib; sourceTree = "<group>"; };
 		CB1535DF24395410007D0307 /* ProfileTabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileTabViewController.swift; sourceTree = "<group>"; };
 		CB16BF4723E4B90B0099FD08 /* GPUImage.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = GPUImage.xcodeproj; path = ../gpuimage/GPUImage.xcodeproj; sourceTree = "<group>"; };
+		CB16C38424465BB80046E200 /* ReminderManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReminderManager.swift; sourceTree = "<group>"; };
+		CB16C38A24465BC20046E200 /* ReminderStepViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReminderStepViewController.swift; sourceTree = "<group>"; };
+		CB16C38B24465BC20046E200 /* ReminderStepViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReminderStepViewController.xib; sourceTree = "<group>"; };
+		CB16C39424466AE80046E200 /* ReminderManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderManagerTests.swift; sourceTree = "<group>"; };
+		CB16C39624466B140046E200 /* MockReminderManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockReminderManager.swift; sourceTree = "<group>"; };
 		CB27B9F0243596F4007D36D8 /* MasterScheduleManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MasterScheduleManager.swift; sourceTree = "<group>"; };
 		CB28EBE52396FCA30043D7FE /* JointCounting.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = JointCounting.mov; sourceTree = "<group>"; };
 		CB28EBE72396FCA30043D7FE /* DigitalJarOpen.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = DigitalJarOpen.mov; sourceTree = "<group>"; };
@@ -413,7 +422,6 @@
 		CBA0250923FC6B2500604F2D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		CBA8390C234A6B3F00408D81 /* EndOfValidationStepViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EndOfValidationStepViewController.swift; sourceTree = "<group>"; };
 		CBA8390D234A6B3F00408D81 /* EndOfValidationStepViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EndOfValidationStepViewController.xib; sourceTree = "<group>"; };
-		CBAA09CC243E229700D63CCD /* StudyTaskFactoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyTaskFactoryTests.swift; sourceTree = "<group>"; };
 		CBAA09CE243E4F5500D63CCD /* TreatmentSelectionResultObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TreatmentSelectionResultObject.swift; sourceTree = "<group>"; };
 		CBAF1DA22437C93700ECC699 /* StudyProfileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyProfileManager.swift; sourceTree = "<group>"; };
 		CBAF1DA82437CB2A00ECC699 /* StudyExternalIdRegistrationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyExternalIdRegistrationViewController.swift; sourceTree = "<group>"; };
@@ -583,6 +591,8 @@
 				04F00571243FE64800EDB120 /* ShowInsightStepViewController.swift */,
 				04F00577243FE76E00EDB120 /* ShowInsightStepViewController.xib */,
 				CBAA09CE243E4F5500D63CCD /* TreatmentSelectionResultObject.swift */,
+				CB16C38A24465BC20046E200 /* ReminderStepViewController.swift */,
+				CB16C38B24465BC20046E200 /* ReminderStepViewController.xib */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -649,6 +659,7 @@
 				CBAF1DA22437C93700ECC699 /* StudyProfileManager.swift */,
 				CBE5614E2412BD96009A2930 /* TryItFirstTaskScheduleManager.swift */,
 				CB27B9F0243596F4007D36D8 /* MasterScheduleManager.swift */,
+				CB16C38424465BB80046E200 /* ReminderManager.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -840,7 +851,8 @@
 				CB67C28E23F390AA005B6BCD /* PSRImageHelperTests.swift */,
 				CB8F7D582423F6BB00F77D62 /* LevenshteinToolsTests.swift */,
 				CB81C92D242D3AB100A84886 /* MeasureTabViewControllerTests.swift */,
-				CBAA09CC243E229700D63CCD /* StudyTaskFactoryTests.swift */,
+				CB16C39424466AE80046E200 /* ReminderManagerTests.swift */,
+				CB16C39624466B140046E200 /* MockReminderManager.swift */,
 			);
 			path = PsorcastTests;
 			sourceTree = "<group>";
@@ -1081,6 +1093,7 @@
 				CBDCDC8023F3848500E5CEB8 /* PsoriasisAreaPhoto.json in Resources */,
 				CB9F5E2522E0BED3003FBCEF /* lato_regular.ttf in Resources */,
 				CBDCDC7C23F3848500E5CEB8 /* HandImaging.json in Resources */,
+				CB16C38D24465BC20046E200 /* ReminderStepViewController.xib in Resources */,
 				CBDCDC9E23F3849E00E5CEB8 /* JointPainStepViewController.xib in Resources */,
 				CBDCDC8E23F3849E00E5CEB8 /* SelectionCollectionStepViewController.xib in Resources */,
 				CB09F03E2421E9E80005698D /* TreatmentSelectionStepViewController.xib in Resources */,
@@ -1197,10 +1210,11 @@
 				CB67C29E23F390AB005B6BCD /* CopyStepTests.swift in Sources */,
 				CBC6519423F391BC00C3FF0C /* PsorcastTests.swift in Sources */,
 				CB81C92E242D3AB100A84886 /* MeasureTabViewControllerTests.swift in Sources */,
+				CB16C39724466B140046E200 /* MockReminderManager.swift in Sources */,
 				CB67C29723F390AB005B6BCD /* DigitalJarOpenStepViewControllerTests.swift in Sources */,
+				CB16C39524466AE80046E200 /* ReminderManagerTests.swift in Sources */,
 				CB67C29D23F390AB005B6BCD /* JointPainStepViewControllerTests.swift in Sources */,
 				CB67C29923F390AB005B6BCD /* JointPainImageViewTests.swift in Sources */,
-				CBAA09CD243E229700D63CCD /* StudyTaskFactoryTests.swift in Sources */,
 				CB67C29B23F390AB005B6BCD /* CodableStepObjectTests.swift in Sources */,
 				CB8F7D592423F6BB00F77D62 /* LevenshteinToolsTests.swift in Sources */,
 				CB67C29823F390AB005B6BCD /* PSRImageHelperTests.swift in Sources */,
@@ -1234,6 +1248,7 @@
 				CBDCDC8B23F3849E00E5CEB8 /* RSDCollectionViewCell.swift in Sources */,
 				CBDCDCA523F3849E00E5CEB8 /* PsoriasisAreaPhotoResultObject.swift in Sources */,
 				CBDCDCBA23F384A400E5CEB8 /* PsoriasisDrawTaskResultProcessor.swift in Sources */,
+				CB16C38C24465BC20046E200 /* ReminderStepViewController.swift in Sources */,
 				CBDCDCB323F3849E00E5CEB8 /* DigitalJarOpenCompletionStepViewController.swift in Sources */,
 				CB1535E024395410007D0307 /* ProfileTabViewController.swift in Sources */,
 				CBDCDCA923F3849E00E5CEB8 /* PsoriasisDrawStepViewController.swift in Sources */,
@@ -1256,6 +1271,7 @@
 				CBDCDC9C23F3849E00E5CEB8 /* JointPainImageView.swift in Sources */,
 				CBDCDC8F23F3849E00E5CEB8 /* ExternalIDRegistrationViewController.swift in Sources */,
 				CBAF1DA92437CB2A00ECC699 /* StudyExternalIdRegistrationViewController.swift in Sources */,
+				CB16C38924465BB80046E200 /* ReminderManager.swift in Sources */,
 				CBDCDC9D23F3849E00E5CEB8 /* JointPainStepViewController.swift in Sources */,
 				CB4794F12426B33300D5A7E6 /* LevenshteinTools.swift in Sources */,
 				CB7CF2422400BF10003E02A5 /* WelcomeVideoViewController.swift in Sources */,
@@ -1567,7 +1583,7 @@
 				CODE_SIGN_ENTITLEMENTS = Psorcast/Psorcast.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = KA9Z8R6M6K;
 				INFOPLIST_FILE = Psorcast/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1590,7 +1606,7 @@
 				CODE_SIGN_ENTITLEMENTS = Psorcast/Psorcast.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = KA9Z8R6M6K;
 				INFOPLIST_FILE = Psorcast/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (

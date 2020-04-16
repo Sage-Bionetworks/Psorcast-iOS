@@ -101,13 +101,16 @@ class MeasureTabViewController: UIViewController, UICollectionViewDataSource, UI
         // Reload the schedules and add an observer to observe changes.
         if let manager = profileManager {
             NotificationCenter.default.addObserver(forName: .SBAUpdatedReports, object: manager, queue: OperationQueue.main) { (notification) in
-                self.refreshUI()
+                self.refreshUI()                                
             }
         }
         
         if let profileManager = SBAProfileManagerObject.shared as? SBAProfileManagerObject {
             profileManager.reloadData()
         }
+        
+        // We have seen the measure screen, remove any badge numbers from notifications
+        UIApplication.shared.applicationIconBadgeNumber = 0
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -222,7 +225,7 @@ class MeasureTabViewController: UIViewController, UICollectionViewDataSource, UI
         let renewalRange = self.weeklyRenewalDateRange(from: setTreatmentsDate, toNow: Date())
         let activitiesCompletedThisWeek = self.scheduleManager.completedActivitiesCount(from: renewalRange.lowerBound, to: renewalRange.upperBound)
                 
-        let newProgress = Float(activitiesCompletedThisWeek) / Float(totalSchedules)
+        let newProgress = Float(1.0)//Float(activitiesCompletedThisWeek) / Float(totalSchedules)
         
         let animateToInsightView = newProgress >= 1.0 && self.insightAchievedView.isHidden
         let animateToInsightProgressView = newProgress < 1.0 && self.insightNotAchievedView.isHidden
@@ -459,9 +462,9 @@ class MeasureTabViewController: UIViewController, UICollectionViewDataSource, UI
     // MARK: RSDTaskViewControllerDelegate
     
     func taskController(_ taskController: RSDTaskController, readyToSave taskViewModel: RSDTaskViewModel) {
+        
         if taskController.task.identifier == RSDIdentifier.treatmentTask.rawValue ||
             taskController.task.identifier == RSDIdentifier.insightsTask.rawValue {
-            
             self.profileManager?.taskController(taskController, readyToSave: taskViewModel)
         } else {
             self.scheduleManager.taskController(taskController, readyToSave: taskViewModel)
@@ -469,15 +472,24 @@ class MeasureTabViewController: UIViewController, UICollectionViewDataSource, UI
     }
     
     func taskController(_ taskController: RSDTaskController, didFinishWith reason: RSDTaskFinishReason, error: Error?) {
-        
-        if taskController.task.identifier == RSDIdentifier.treatmentTask.rawValue {
+
+        if taskController.task.identifier == RSDIdentifier.treatmentTask.rawValue ||
+            taskController.task.identifier == RSDIdentifier.insightsTask.rawValue {
             self.profileManager?.taskController(taskController, didFinishWith: reason, error: error)
         } else {
             // Let the schedule manager handle the cleanup.
             self.scheduleManager.taskController(taskController, didFinishWith: reason, error: error)
         }
-                
-        self.dismiss(animated: true, completion: nil)
+        
+        self.dismiss(animated: true, completion: {
+            // If the user has not set their reminders yet, we should show them
+            if taskController.task.identifier == RSDIdentifier.insightsTask.rawValue &&
+                !(self.profileManager?.haveWeeklyRemindersBeenSet ?? false) {
+                let vc = ReminderType.weekly.createReminderTaskViewController()
+                vc.delegate = self
+                self.show(vc, sender: self)
+            }
+        })
     }
 }
 

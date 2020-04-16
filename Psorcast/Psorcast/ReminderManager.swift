@@ -1,0 +1,362 @@
+//
+//  ReminderManager.swift
+//  Psorcast
+//
+//  Copyright © 2019 Sage Bionetworks. All rights reserved.
+//
+// Redistribution and use in source and binary forms, with or without modification,
+// are permitted provided that the following conditions are met:
+//
+// 1.  Redistributions of source code must retain the above copyright notice, this
+// list of conditions and the following disclaimer.
+//
+// 2.  Redistributions in binary form must reproduce the above copyright notice,
+// this list of conditions and the following disclaimer in the documentation and/or
+// other materials provided with the distribution.
+//
+// 3.  Neither the name of the copyright holder(s) nor the names of any contributors
+// may be used to endorse or promote products derived from this software without
+// specific prior written permission. No license is granted to the trademarks of
+// the copyright holders even if such marks are included in this software.
+//
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+// AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+// IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+// ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE
+// FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+// DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+// SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+// CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+// OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+// OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+//
+
+import Foundation
+import UserNotifications
+import BridgeApp
+import BridgeAppUI
+
+let TaskReminderNotificationCategory = "TaskReminder"
+
+open class ReminderManager : NSObject, UNUserNotificationCenterDelegate {
+    public static var shared = ReminderManager()
+    
+    public static let reminderStepId = "reminder"
+    
+    fileprivate var timeFormatterPrivate: DateFormatter?
+    open var timeFormatter: DateFormatter {
+        if let timeFormatterUnwrapped = timeFormatterPrivate {
+            return timeFormatterUnwrapped
+        }
+        let timeFormatterUnwrapped = DateFormatter()
+        timeFormatterUnwrapped.locale = Locale(identifier: "en_US_POSIX")
+        timeFormatterUnwrapped.dateFormat = "h:mm a"
+        timeFormatterUnwrapped.amSymbol = "AM"
+        timeFormatterUnwrapped.pmSymbol = "PM"
+        timeFormatterPrivate = timeFormatterUnwrapped
+        return timeFormatterUnwrapped
+    }
+    
+    open func userNotificationCenter(_ center: UNUserNotificationCenter,
+                                     willPresent notification: UNNotification,
+                                     withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        
+        // Play sound and show alert to the user
+        completionHandler([.alert, .sound])
+    }
+    
+    open func userNotificationCenter(_ center: UNUserNotificationCenter,
+                                     didReceive response: UNNotificationResponse,
+                                     withCompletionHandler completionHandler: @escaping () -> Void) {
+        
+        debugPrint("Received notification with identifier \(response.notification.request.identifier)")
+        
+        if let tabVc = (AppDelegate.shared as? AppDelegate)?.rootViewController?.children.first(where: { $0 is UITabBarController }) as? UITabBarController {
+            // Make sure the measure tab is selected instead of being on reminders tab
+            tabVc.selectedIndex = 0
+        }
+        
+        completionHandler()
+    }
+    
+    public func setupNotifications() {
+        let categories = self.notificationCategories()
+        UNUserNotificationCenter.current().setNotificationCategories(categories)
+    }
+    
+    public func cancelAllNotifications() {
+        debugPrint("Cancelling all notifications")
+        UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+        UIApplication.shared.applicationIconBadgeNumber = 0
+    }
+    
+    public func cancelNotification(for type: ReminderType) {
+        debugPrint("Cancelling notification for reminder type \(type)")
+        UNUserNotificationCenter.current().getPendingNotificationRequests { (requests) in
+            let requestIds: [String] = requests.compactMap {
+                guard $0.content.categoryIdentifier == TaskReminderNotificationCategory,
+                    $0.identifier == type.rawValue else { return nil }
+                return $0.identifier
+            }
+           
+            if requestIds.count > 0 {
+               debugPrint("Cancelling notifications with ids \(requestIds)")
+                UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: requestIds)
+            } else {
+                debugPrint("No existing notifications found to cancel")
+            }
+        }
+    }
+    
+    open func notificationCategories() -> Set<UNNotificationCategory> {
+        let defaultCategory = UNNotificationCategory(identifier: TaskReminderNotificationCategory,
+                                              actions: [],
+                                              intentIdentifiers: [], options: [])
+        
+        return [defaultCategory]
+    }
+    
+    public func updateNotifications(profileManager: StudyProfileManager) {
+        ReminderType.allCases.forEach { (type) in
+            
+            // We have the do not remind answer, which means this reminder
+            // type was saved during this task
+            // Cancel any existing notifications
+            self.cancelNotification(for: type)
+            
+            if !(type.doNotRemindSetting(profileManager: profileManager) ?? false),
+                let time = type.timeSetting(profileManager: profileManager) {
+                
+                if let day = type.daySetting(profileManager: profileManager) {
+                    if let weekly = self.weeklyDateComponents(with: time, on: day) {
+                        self.scheduleReminderNotification(for: type, dateComponents: weekly, identifier: type.rawValue)
+                    }
+                } else if let daily = self.dailyDateComponents(with: time) {
+                    self.scheduleReminderNotification(for: type, dateComponents: daily, identifier: type.rawValue)
+                }
+            }
+        }
+    }
+    
+    func scheduleReminderNotification(for type: ReminderType, dateComponents: DateComponents, identifier: String) {
+        
+        debugPrint("Scheduling notification reminder type \(type) at time \(dateComponents.hour ?? 0):\(dateComponents.minute ?? 0) on weekday \(dateComponents.weekday ?? -1)")
+        
+        // Set up the notification
+        let content = UNMutableNotificationContent()
+        content.body = type.notificationTitle()
+        content.sound = UNNotificationSound.default
+        content.badge = NSNumber(integerLiteral: UIApplication.shared.applicationIconBadgeNumber + 1)
+        content.categoryIdentifier = TaskReminderNotificationCategory
+        content.threadIdentifier = identifier
+        
+        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
+        
+        // Create the request.
+        let request =  UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
+        
+        // use dispatch async to allow the method to return and put updating reminders on the next run loop
+        UNUserNotificationCenter.current().getNotificationSettings { (settings) in
+            DispatchQueue.main.async {
+                switch settings.authorizationStatus {
+                case .denied:
+                break   // Do nothing. We don't want to pester the user with message.
+                case .notDetermined:
+                    // The user has not given authorization, but the app has a record of previously requested.
+                    // we still don't want to message the user about it
+                    break
+                case .authorized, .provisional:
+                    debugPrint("Notification authorized, adding request \(request)")
+                    UNUserNotificationCenter.current().add(request)
+                    break
+                @unknown default:
+                    // Do nothing.
+                    break
+                }
+            }
+        }
+    }
+    
+    func dailyDateComponents(with timeStr: String) -> DateComponents? {
+        guard let date = timeFormatter.date(from: timeStr) else { return nil }
+        return Calendar.current.dateComponents([.hour, .minute], from: date)
+    }
+    
+    func weeklyDateComponents(with timeStr: String, on weekday: RSDWeekday) -> DateComponents? {
+        guard let date = timeFormatter.date(from: timeStr) else { return nil }
+        var dateComponents = Calendar.current.dateComponents([.hour, .minute], from: date)
+        dateComponents.weekday = weekday.rawValue
+        return dateComponents
+    }
+    
+    open func hasReminderBeenScheduled(profileManager: StudyProfileManager, type: ReminderType) -> Bool {
+        return type.hasBeenScheduled(profileManager: profileManager)
+    }
+    
+    open func doNotRemindSetting(profileManager: StudyProfileManager, for type: ReminderType) -> Bool? {
+        return type.doNotRemindSetting(profileManager: profileManager)
+    }
+    
+    open func timeSetting(profileManager: StudyProfileManager, for type: ReminderType) -> String? {
+        return type.timeSetting(profileManager: profileManager)
+    }
+    
+    open func daySetting(profileManager: StudyProfileManager, for type: ReminderType) -> RSDWeekday? {
+        return type.daySetting(profileManager: profileManager)
+    }
+}
+
+public enum ReminderType: String, CaseIterable, Decodable {
+    case weekly = "weekly"
+    
+    fileprivate func hasBeenScheduled(profileManager: StudyProfileManager) -> Bool {
+        switch self {
+        case .weekly:
+            return profileManager.haveWeeklyRemindersBeenSet
+        }
+    }
+    
+    fileprivate func doNotRemindSetting(profileManager: StudyProfileManager) -> Bool? {
+        switch self {
+        case .weekly:
+            return profileManager.weeklyReminderDoNotRemind
+        }
+    }
+    
+    fileprivate func timeSetting(profileManager: StudyProfileManager) -> String? {
+        switch self {
+        case .weekly:
+            return profileManager.weeklyReminderTime
+        }
+    }
+    
+    fileprivate func daySetting(profileManager: StudyProfileManager) -> RSDWeekday? {
+        switch self {
+        case .weekly:
+            return profileManager.weeklyReminderDay
+        }
+    }
+    
+    func doNotRemindIdentifier() -> String {
+        return "\(self.rawValue)\(ReminderStepObject.doNotRemindResultIdentifier)"
+    }
+    
+    func timeRemindIdentifier() -> String {
+        return "\(self.rawValue)\(ReminderStepObject.timeResultIdentifier)"
+    }
+    
+    func dayRemindIdentifier() -> String {
+        return "\(self.rawValue)\(ReminderStepObject.dayResultIdentifier)"
+    }
+    
+    func setHasBeenScheduled() {
+        UserDefaults.standard.set(true, forKey: "\(self.rawValue)\(ReminderStepObject.doNotRemindResultIdentifier)")
+    }
+    
+    func notificationTitle() -> String {
+        switch self {
+        case .weekly:
+            return Localization.localizedString("REMINDER_NOTIFICATION_TITLE")
+        }
+    }
+    
+    func defaultTime() -> String {
+        let formatter = DateFormatter()
+        formatter.timeStyle = .short
+        switch self {
+        case .weekly: return formatter.string(from: Date())
+        }
+    }
+    
+    func defaultDay() -> String? {
+        switch self {
+        case .weekly: return RSDWeekday(date: Date()).text
+        }
+    }
+    
+    func imageTheme() -> RSDImageThemeElement? {
+        return RSDFetchableImageThemeElementObject(imageName: "ReminderHeader")
+    }
+    
+    func createReminderTaskViewController(defaultTime: String?, defaultDay: RSDWeekday?, doNotRemind: Bool?) -> RSDTaskViewController {
+        let reminderStep = self.createReminderStep(defaultTime: defaultTime, defaultDay: defaultDay, doNotRemind: doNotRemind)
+        var navigator = RSDConditionalStepNavigatorObject(with: [reminderStep])
+        navigator.progressMarkers = []
+        let task = RSDTaskObject(identifier: RSDIdentifier.remindersTask.rawValue, stepNavigator: navigator)
+        return RSDTaskViewController(task: task)
+    }
+    
+    func createReminderStep(defaultTime: String?, defaultDay: RSDWeekday?, doNotRemind: Bool?) -> ReminderStepObject {
+        let reminderStep = ReminderStepObject(identifier: ReminderManager.reminderStepId)
+        reminderStep.reminderType = self
+        if let time = defaultTime {
+            reminderStep.defaultTime = time
+        } else {
+            reminderStep.defaultTime = self.defaultTime()
+        }
+        if let day = defaultDay {
+            reminderStep.defaultDayOfWeek = day.text
+        } else {
+            reminderStep.defaultDayOfWeek = self.defaultDay()
+        }
+        if let noReminder = doNotRemind {
+            reminderStep.defaultDoNotRemind = noReminder
+        } else {
+            reminderStep.defaultDoNotRemind = false
+        }
+        reminderStep.hideDayOfWeek = false
+        
+        reminderStep.doNotRemindMeTitle = Localization.localizedString("NO_REMINDERS_PLEASE")
+        reminderStep.title = self.stepTitle()
+        reminderStep.text = self.stepText()
+        reminderStep.detail = Localization.localizedString("SET_WEEKLY_REMINDER")
+        
+        reminderStep.imageTheme = self.imageTheme()
+        reminderStep.shouldHideActions = [.navigation(.skip)]
+        
+        reminderStep.actions = [.navigation(.goForward) : RSDUIActionObject(buttonTitle: Localization.localizedString("SAVE_REMINDER_BUTTON"))]
+        return reminderStep
+    }
+    
+    func createReminderTaskViewController() -> RSDTaskViewController {
+        let reminderStep = self.createReminderStep()
+        var navigator = RSDConditionalStepNavigatorObject(with: [reminderStep])
+        navigator.progressMarkers = []
+        let task = RSDTaskObject(identifier: RSDIdentifier.remindersTask.rawValue, stepNavigator: navigator)
+        return RSDTaskViewController(task: task)
+    }
+    
+    func createReminderStep() -> ReminderStepObject {
+        let reminderStep = ReminderStepObject(identifier: ReminderManager.reminderStepId)
+        reminderStep.reminderType = self
+        reminderStep.defaultTime = self.defaultTime()
+        reminderStep.defaultDayOfWeek = self.defaultDay()
+        reminderStep.hideDayOfWeek = false
+        
+        reminderStep.doNotRemindMeTitle = Localization.localizedString("NO_REMINDERS_PLEASE")
+        reminderStep.title = self.stepTitle()
+        reminderStep.text = self.stepText()
+        reminderStep.detail = Localization.localizedString("SET_WEEKLY_REMINDER")
+        
+        reminderStep.imageTheme = self.imageTheme()
+        reminderStep.shouldHideActions = [.navigation(.skip)]
+        
+        reminderStep.actions = [.navigation(.goForward) : RSDUIActionObject(buttonTitle: Localization.localizedString("SAVE_REMINDER_BUTTON"))]
+        return reminderStep
+    }
+    
+    func stepTitle() -> String? {
+        switch self {
+        case .weekly:
+            return Localization.localizedString("REMINDER_WEEKLY_TITLE")
+        }
+    }
+    
+    fileprivate func stepText() -> String? {
+        switch self {
+        case .weekly:
+            return Localization.localizedString("REMINDER_WEEKLY_TEXT")
+        }
+    }
+}
+

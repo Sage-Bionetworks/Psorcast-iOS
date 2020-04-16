@@ -1,8 +1,8 @@
 //
-//  MotorControl+Bridge.swift
-//  PsorcastValidation
-//
-//  Copyright © 2019 Sage Bionetworks. All rights reserved.
+// ReminderManagerTests.swift
+// PsorcastTests
+
+// Copyright © 2019 Sage Bionetworks. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without modification,
 // are permitted provided that the following conditions are met:
@@ -32,38 +32,48 @@
 //
 
 import Foundation
+import XCTest
 import BridgeApp
-import MotorControl
+@testable import Psorcast
 
-public extension RSDIdentifier {
+class ReminderManagerTests: XCTestCase {
     
-    // Measuring tasks
-    static let walkingTask: RSDIdentifier = MCTTaskIdentifier.walk30Seconds.identifier    
-    static let handImagingTask: RSDIdentifier = "HandImaging"
-    static let footImagingTask: RSDIdentifier = "FootImaging"
-    static let jointCountingTask: RSDIdentifier = "JointCounting"
-    static let mdJointCountingTask: RSDIdentifier = "MDJointCounting"
-    static let mdJointSwellingTask: RSDIdentifier = "MDJointSwelling"
-    static let psoriasisAreaPhotoTask: RSDIdentifier = "PsoriasisAreaPhoto"
-    static let psoriasisDrawTask: RSDIdentifier = "PsoriasisDraw"
-    static let digitalJarOpenTask: RSDIdentifier = "DigitalJarOpen"
-    
-    // Profile tasks
-    static let treatmentTask: RSDIdentifier = "Treatment"
-    static let remindersTask: RSDIdentifier = "Reminders"
-    
-    // Insight tasks
-    static let insightsTask: RSDIdentifier = "Insights"
-}
-
-extension MCTTaskInfo : SBAActivityInfo {
-    public var moduleId: SBAModuleIdentifier? {
-        return SBAModuleIdentifier(rawValue: self.identifier)
+    open var manager: MockReminderManager {
+        return ReminderManager.shared as! MockReminderManager
     }
-}
-
-extension MCTTaskIdentifier {
-    public var rsdIdentifier : RSDIdentifier {
-        return RSDIdentifier(rawValue: self.rawValue)
+    
+    override func setUp() {
+        super.setUp()
+        ReminderManager.shared = MockReminderManager()
+        // Put setup code here. This method is called before the invocation of each test method in the class.
+    }
+    
+    override func tearDown() {
+        // Put teardown code here. This method is called after the invocation of each test method in the class.
+        super.tearDown()
+    }
+    
+    func testDailyDateComponents() {
+        var components = manager.dailyDateComponents(with: "12:34 AM")
+        XCTAssertNil(components?.weekday)
+        XCTAssertEqual(components?.hour, 0)
+        XCTAssertEqual(components?.minute, 34)
+        
+        components = manager.dailyDateComponents(with: "12:34 PM")
+        XCTAssertNil(components?.weekday)
+        XCTAssertEqual(components?.hour, 12)
+        XCTAssertEqual(components?.minute, 34)
+    }
+    
+    func testWeekDateComponents() {
+        var components = manager.weeklyDateComponents(with: "12:34 AM", on: .monday)
+        XCTAssertEqual(components?.weekday, 2)
+        XCTAssertEqual(components?.hour, 0)
+        XCTAssertEqual(components?.minute, 34)
+        
+        components = manager.weeklyDateComponents(with: "9:02 PM", on: .saturday)
+        XCTAssertEqual(components?.weekday, 7)
+        XCTAssertEqual(components?.hour, 21)
+        XCTAssertEqual(components?.minute, 2)
     }
 }

@@ -1,8 +1,8 @@
 //
-//  MotorControl+Bridge.swift
-//  PsorcastValidation
-//
-//  Copyright © 2019 Sage Bionetworks. All rights reserved.
+// MockReminderManager.swift
+// PsorcastTests
+
+// Copyright © 2019 Sage Bionetworks. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without modification,
 // are permitted provided that the following conditions are met:
@@ -32,38 +32,29 @@
 //
 
 import Foundation
+import XCTest
 import BridgeApp
-import MotorControl
+@testable import Psorcast
 
-public extension RSDIdentifier {
+open class MockReminderManager: ReminderManager {
+    var hasReminderBeenScheduled = false
+    var doNotRemindSetting = false
+    var timeSetting: String?
+    var daySetting = RSDWeekday.sunday.rawValue
     
-    // Measuring tasks
-    static let walkingTask: RSDIdentifier = MCTTaskIdentifier.walk30Seconds.identifier    
-    static let handImagingTask: RSDIdentifier = "HandImaging"
-    static let footImagingTask: RSDIdentifier = "FootImaging"
-    static let jointCountingTask: RSDIdentifier = "JointCounting"
-    static let mdJointCountingTask: RSDIdentifier = "MDJointCounting"
-    static let mdJointSwellingTask: RSDIdentifier = "MDJointSwelling"
-    static let psoriasisAreaPhotoTask: RSDIdentifier = "PsoriasisAreaPhoto"
-    static let psoriasisDrawTask: RSDIdentifier = "PsoriasisDraw"
-    static let digitalJarOpenTask: RSDIdentifier = "DigitalJarOpen"
-    
-    // Profile tasks
-    static let treatmentTask: RSDIdentifier = "Treatment"
-    static let remindersTask: RSDIdentifier = "Reminders"
-    
-    // Insight tasks
-    static let insightsTask: RSDIdentifier = "Insights"
-}
-
-extension MCTTaskInfo : SBAActivityInfo {
-    public var moduleId: SBAModuleIdentifier? {
-        return SBAModuleIdentifier(rawValue: self.identifier)
+    override open func hasReminderBeenScheduled(type: ReminderType) -> Bool {
+        return hasReminderBeenScheduled
     }
-}
-
-extension MCTTaskIdentifier {
-    public var rsdIdentifier : RSDIdentifier {
-        return RSDIdentifier(rawValue: self.rawValue)
+    
+    override open func doNotRemindSetting(for type: ReminderType) -> Bool {
+        return doNotRemindSetting
+    }
+    
+    override open func timeSetting(for type: ReminderType) -> String? {
+        return timeSetting
+    }
+    
+    override open func daySetting(for type: ReminderType) -> Int {
+        return daySetting
     }
 }

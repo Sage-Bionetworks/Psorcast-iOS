@@ -43,6 +43,10 @@ public enum ProfileIdentifier: RSDIdentifier {
     case symptoms = "psoriasisSymptoms"
     case symptomsDate = "psoriasisSymptomsDate"
     
+    case weeklyReminderDoNotRemind = "weeklyDoNotRemind"
+    case weeklyReminderDay = "weeklyDay"
+    case weeklyReminderTime = "weeklyTime"
+    
     public var id: String {
         return self.rawValue.rawValue
     }
@@ -116,6 +120,35 @@ open class StudyProfileManager: SBAProfileManagerObject {
     
     open var symptoms: String? {
        return self.value(forProfileKey: ProfileIdentifier.symptoms.id) as? String
+    }
+    
+    open var haveWeeklyRemindersBeenSet: Bool {
+        return self.weeklyReminderDoNotRemind != nil
+    }
+    
+    open var weeklyReminderDay: RSDWeekday? {
+        if let weekdayInt = self.value(forProfileKey: ProfileIdentifier.weeklyReminderDay.id) as? Int {
+            return RSDWeekday(rawValue: weekdayInt)
+        } else if let weekdayStr = self.value(forProfileKey: ProfileIdentifier.weeklyReminderDay.id) as? String,
+            let weekdayInt = Int(weekdayStr) {
+            return RSDWeekday(rawValue: weekdayInt)
+        }
+        return nil
+    }
+    
+    open var weeklyReminderTime: String? {
+        return self.value(forProfileKey: ProfileIdentifier.weeklyReminderTime.id) as? String
+    }
+    
+    open var weeklyReminderDoNotRemind: Bool? {
+        if let doNotRemindInt = self.value(forProfileKey: ProfileIdentifier.weeklyReminderDoNotRemind.id) as? Int {
+            if doNotRemindInt == 0 {
+                return false
+            } else if doNotRemindInt == 1 {
+                return true
+            }
+        }
+        return self.value(forProfileKey: ProfileIdentifier.weeklyReminderDoNotRemind.id) as? Bool
     }
     
     func multiChoiceStringResult(for profileKey: String) -> RSDAnswerResultObject? {
@@ -254,6 +287,9 @@ open class StudyProfileManager: SBAProfileManagerObject {
     override open func didUpdateReports(with newReports: [SBAReport]) {
         self.reports = Set(self.reports.sorted(by: { $0.date < $1.date }))
         super.didUpdateReports(with: newReports)
+        
+        // Update the reminders status
+        ReminderManager.shared.updateNotifications(profileManager: self)
     }
     
     override open func decodeItem(from decoder: Decoder, with type: SBAProfileItemType) throws -> SBAProfileItem? {
@@ -261,7 +297,7 @@ open class StudyProfileManager: SBAProfileManagerObject {
         switch (type) {
         case .report:
             // TODO remove once this is merged https://github.com/Sage-Bionetworks/BridgeApp-Apple-SDK/pull/184
-            let item = try HealthProfileItem(from: decoder)
+            let item = try StudyProfileItem(from: decoder)
             item.reportManager = self
             return item
     
@@ -290,6 +326,12 @@ class StudyProfileDataSource: SBAProfileDataSourceObject {
 
 }
 
+public struct Reminder {
+    public var time: String?
+    public var day: RSDWeekday?
+    public var doNotRemind: Bool?
+}
+
 extension SBAProfileTableItemType {
     /// Creates a `HealthInformationProfileTableItem`.
     public static let healthInformation: SBAProfileTableItemType = "healthInformation"
@@ -308,4 +350,139 @@ class StudyProfileSection: SBAProfileSectionObject {
 
 extension SBAProfileOnSelectedAction {
     public static let healthInformationProfileAction: SBAProfileOnSelectedAction = "healthInformationProfileAction"
+}
+
+open class StudyProfileItem: SBAProfileItem {
+    
+    private enum CodingKeys: String, CodingKey {
+        case profileKey, _sourceKey = "sourceKey", _demographicKey = "demographicKey", demographicSchema,
+        _clientDataIsItem = "clientDataIsItem", itemType, _readonly = "readonly", type
+    }
+    
+    var _sourceKey: String?
+    public var sourceKey: String {
+        get {
+            return self._sourceKey ?? self.profileKey
+        }
+        set {
+            self._sourceKey = newValue
+        }
+    }
+    
+    var _demographicKey: String?
+    public var demographicKey: String {
+        get {
+            return self._demographicKey ?? self.profileKey
+        }
+        set {
+            self._demographicKey = newValue
+        }
+    }
+    
+    var _readonly: Bool?
+    public var readonly: Bool {
+        get {
+            return self._readonly ?? false
+        }
+        set {
+            self._readonly = newValue
+        }
+    }
+    
+    /// profileKey is used to access a specific profile item, and so must be unique across all SBAProfileItems
+    /// within an app.
+    public var profileKey: String
+    
+    /// demographicSchema is an optional schema identifier to mark a profile item as being part of the indicated
+    /// demographic data upload schema.
+    public var demographicSchema: String?
+    
+    /// If clientDataIsItem is true, the report's clientData field is assumed to contain the item value itself.
+    ///
+    /// If clientDataIsItem is false, the report's clientData field is assumed to be a dictionary in which
+    /// the item value is stored and retrieved via the demographicKey.
+    ///
+    /// The default value is false.
+    public var _clientDataIsItem: Bool?
+    public var clientDataIsItem: Bool {
+        get {
+            return self._clientDataIsItem ?? false
+        }
+        set {
+            self._clientDataIsItem = newValue
+        }
+    }
+
+    /// itemType specifies what type to store the profileItem's value as. Defaults to String if not otherwise specified.
+    public var itemType: RSDFormDataType
+    
+    /// The class type to which to deserialize this profile item.
+    public var type: SBAProfileItemType
+    
+    /// The report manager to use when storing and retrieving the item's value.
+    ///
+    /// By default, the profile manager that decodes this item will point this property at itself. If you point it at
+    /// a different report manager, you will need to ensure that report manager is set up to handle the relevant report.
+    public weak var reportManager: SBAReportManager?
+    
+    public func storedValue(forKey key: String) -> Any? {
+        
+        guard let reportManager = self.reportManager,
+            // This is the most recent report's client data.
+            let clientData = reportManager.report(with: RSDIdentifier(rawValue: key).rawValue)?.clientData
+            else {
+                return nil
+        }
+        var json = clientData
+        if !self.clientDataIsItem {
+            guard let dict = clientData as? NSDictionary,
+                    let propJson = dict[self.demographicKey] as? SBBJSONValue
+                else {
+                    return nil
+            }
+            json = propJson
+        }
+        
+        if self.itemType.baseType == RSDFormDataType.BaseType.date,
+            let stringJsonVal = json as? String {
+            let formatter = StudyProfileManager.profileDateFormatter()
+            if let date = formatter.date(from: stringJsonVal) {
+                return date
+            }
+        }
+        
+        return self.commonBridgeJsonToItemType(jsonVal: json)
+    }
+    
+    public func setStoredValue(_ newValue: Any?) {
+        guard !self.readonly, let reportManager = self.reportManager else { return }
+        let previousReport = reportManager.reports
+            .sorted(by: { $0.date < $1.date })
+            .last(where: { $0.reportKey == RSDIdentifier(rawValue: self.sourceKey) })
+        var clientData : SBBJSONValue = NSNull()
+        if self.clientDataIsItem {
+            clientData = self.commonItemTypeToBridgeJson(val: newValue)
+        } else {
+            var clientJsonDict = previousReport?.clientData as? [String : Any] ?? [String : Any] ()
+            clientJsonDict[self.demographicKey] = self.commonItemTypeToBridgeJson(val: newValue)
+            clientData = clientJsonDict as NSDictionary
+        }
+        let report = reportManager.newReport(reportIdentifier: self.sourceKey, date: Date(), clientData: clientData)
+        reportManager.saveReport(report)
+    }
+    
+    /// The value property is used to get and set the profile item's value in whatever internal data
+    /// storage is used by the implementing type. Setting the value on a non-readonly profile item causes
+    /// a notification to be posted.
+    public var value: Any? {
+        get {
+            return self.storedValue(forKey: sourceKey)
+        }
+        set {
+            guard !readonly else { return }
+            self.setStoredValue(newValue)
+            let updatedItems: [String: Any?] = [self.profileKey: newValue]
+            NotificationCenter.default.post(name: .SBAProfileItemValueUpdated, object: self, userInfo: [SBAProfileItemUpdatedItemsKey: updatedItems])
+        }
+    }
 }
