@@ -58,7 +58,7 @@ class ProfileTabViewController: UITableViewController, RSDTaskViewControllerDele
         // Reload the schedules and add an observer to observe changes.
         if let manager = profileManager {
             NotificationCenter.default.addObserver(forName: .SBAUpdatedReports, object: manager, queue: OperationQueue.main) { (notification) in
-                self.tableView.reloadData()
+                self.tableView.reloadData()                                
             }
         }
     }
@@ -78,6 +78,21 @@ class ProfileTabViewController: UITableViewController, RSDTaskViewControllerDele
         title.text = Localization.localizedString("PROFILE_TITLE")
         header.addSubview(title)
         self.tableView.tableHeaderView = header
+    }
+    
+    func reminderProfileItemValue() -> String {
+        // Get time string, day of week int, and "do not remind me" state
+        if self.profileManager?.haveWeeklyRemindersBeenSet ?? false {
+            if self.profileManager?.weeklyReminderDoNotRemind ?? false {
+                return Localization.localizedString("NO_REMINDERS_PLEASE")
+            } else if let time = self.profileManager?.weeklyReminderTime,
+                let day = self.profileManager?.weeklyReminderDay {
+                return "\(day.text ?? "") at \(time)"
+            } else if let time = self.profileManager?.weeklyReminderTime {
+                return "At \(time)"
+            }
+        }
+        return Localization.localizedString("REMINDERS_WEEKLY_I_HAVE_NOT_SET_REMINDERS")
     }
     
     // MARK: - Table view data source
@@ -102,7 +117,14 @@ class ProfileTabViewController: UITableViewController, RSDTaskViewControllerDele
        
         // Configure the cell...
         cell.titleLabel?.text = titleText
-        cell.detailLabel?.text = detailText
+        
+        if (tableItem as? SBAProfileItemProfileTableItem)?.profileItemKey == RSDIdentifier.remindersTask.rawValue {
+            // Check for reminders edge case, where it is not a basic report form type
+            cell.detailLabel?.text = self.reminderProfileItemValue()
+        } else {
+            cell.detailLabel?.text = detailText
+        }
+        
         cell.setDesignSystem(self.design, with: RSDColorTile(RSDColor.white, usesLightStyle: true))
        
         return cell
@@ -143,16 +165,17 @@ class ProfileTabViewController: UITableViewController, RSDTaskViewControllerDele
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
-        guard let item = itemForRow(at: indexPath),
-                let onSelected = item.onSelected
-            else {
-            return
-        }
+        guard let item = itemForRow(at: indexPath) else { return }
         
-        if let profileItem = item as? SBAProfileItemProfileTableItem,
-            let vc = self.profileManager?.instantiateSingleQuestionTreatmentTaskController(for: profileItem.profileItemKey) {
-            vc.delegate = self
-            self.show(vc, sender: self)
+        if let profileItem = item as? SBAProfileItemProfileTableItem {
+            if profileItem.profileItemKey == RSDIdentifier.remindersTask.rawValue {
+                let vc = ReminderType.weekly.createReminderTaskViewController(defaultTime: self.profileManager?.weeklyReminderTime, defaultDay: self.profileManager?.weeklyReminderDay, doNotRemind: self.profileManager?.weeklyReminderDoNotRemind)
+                vc.delegate = self
+                self.show(vc, sender: self)
+            } else if let vc = self.profileManager?.instantiateSingleQuestionTreatmentTaskController(for: profileItem.profileItemKey) {
+                vc.delegate = self
+                self.show(vc, sender: self)
+            }
         }
         
         // TMight need these as we add more profile items

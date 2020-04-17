@@ -1,6 +1,6 @@
 //
 //  TaskListScheduleManager.swift
-//  PsorcastValidation
+//  Psorcast
 //
 //  Copyright © 2019 Sage Bionetworks. All rights reserved.
 //

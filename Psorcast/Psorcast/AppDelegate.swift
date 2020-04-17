@@ -98,6 +98,10 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate {
         // Set up font rules.
         RSDStudyConfiguration.shared.fontRules = PSRFontRules(version: 0)
         
+        // Setup reminder manager
+        ReminderManager.shared.setupNotifications()
+        UNUserNotificationCenter.current().delegate = ReminderManager.shared
+        
         return super.application(application, willFinishLaunchingWithOptions: launchOptions)
     }
     
