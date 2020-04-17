@@ -225,7 +225,9 @@ class MeasureTabViewController: UIViewController, UICollectionViewDataSource, UI
         let renewalRange = self.weeklyRenewalDateRange(from: setTreatmentsDate, toNow: Date())
         let activitiesCompletedThisWeek = self.scheduleManager.completedActivitiesCount(from: renewalRange.lowerBound, to: renewalRange.upperBound)
                 
-        let newProgress = Float(1.0)//Float(activitiesCompletedThisWeek) / Float(totalSchedules)
+        //to trigger completion of the activities and surfacing of insight, comment/uncomment below
+        Float(activitiesCompletedThisWeek) / Float(totalSchedules)
+        //let newProgress = Float(1.0)
         
         let animateToInsightView = newProgress >= 1.0 && self.insightAchievedView.isHidden
         let animateToInsightProgressView = newProgress < 1.0 && self.insightNotAchievedView.isHidden
@@ -549,4 +551,3 @@ class MeasureTabViewController: UIViewController, UICollectionViewDataSource, UI
 protocol MeasureTabCollectionViewCellDelegate: class {
     func didTapItem(for itemIndex: Int)
 }
-
