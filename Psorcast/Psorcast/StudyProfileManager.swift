@@ -56,6 +56,17 @@ open class StudyProfileManager: SBAProfileManagerObject {
     
     public static let treatmentsSetDefaultsKey = "treatmentsSet"
     
+    /// These are the bridge stored answers from the Treatment task Config Element
+    public static let symptomsNoneAnswer = "I do not have symptoms"
+    public static let symptomsSkinAnswer = "Skin symptoms"
+    public static let symptomsJointsAnswer = "Painful or swollen joints"
+    public static let symptomsBothAnswer = "Skin sympotms, Painful or swollen joints"
+    /// These are the bridge stored answers from the Treatment task Config Element
+    public static let diagnosisNoneAnswer = "I do not have psoriasis"
+    public static let diagnosisPsoriasisAnswer = "Psoriasis"
+    public static let diagnosisArthritisAnswer = "Psoriatic Arthritis"
+    public static let diagnosisBothAnswer = "Psoriasis, Psoriatic Arthritis"    
+    
     /// The date formatter for when you want to encode/decode answer dates in the profile
     public static func profileDateFormatter() -> DateFormatter {
         let formatter = DateFormatter()
@@ -96,6 +107,16 @@ open class StudyProfileManager: SBAProfileManagerObject {
     
     open var treatmentsDate: Date? {
         return self.value(forProfileKey: ProfileIdentifier.treatmentsDate.rawValue.rawValue) as? Date
+    }
+    
+    public func treatmentWeek(toNow: Date) -> Int {
+        guard let treatmentSetDate = self.treatmentsDate else { return 1 }
+        return StudyProfileManager.treatmentWeek(from: treatmentSetDate, toNow: toNow)
+    }
+    
+    // Seperated out for unit tests
+    public static func treatmentWeek(from treatmentSetDate: Date, toNow: Date) -> Int {
+        return (Calendar.current.dateComponents([.weekOfYear], from: treatmentSetDate.startOfDay(), to: toNow).weekOfYear ?? 0) + 1
     }
     
     open var treatmentIdentifiers: [String]? {

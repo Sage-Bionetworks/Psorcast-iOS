@@ -37,7 +37,7 @@ import Research
 import MotorControl
 
 /// Subclass the schedule manager to set up a predicate to filter the schedules.
-public class MasterScheduleManager : SBAScheduleManager {
+open class MasterScheduleManager : SBAScheduleManager {
     
     /// The shared access to the schedule manager
     public static let shared = MasterScheduleManager()
@@ -46,7 +46,17 @@ public class MasterScheduleManager : SBAScheduleManager {
     public let sortOrder: [RSDIdentifier] = [.psoriasisDrawTask, .psoriasisAreaPhotoTask, .digitalJarOpenTask, .handImagingTask, .footImagingTask, .walkingTask, .jointCountingTask]
     
     /// The schedules will filter to only have these tasks
-    public var filter: [RSDIdentifier] = [.psoriasisDrawTask, .psoriasisAreaPhotoTask, .digitalJarOpenTask, .handImagingTask, .footImagingTask, .walkingTask, .jointCountingTask]
+    public var filterAll: [RSDIdentifier] = [.psoriasisDrawTask, .psoriasisAreaPhotoTask, .digitalJarOpenTask, .handImagingTask, .footImagingTask, .walkingTask, .jointCountingTask]
+    
+    /// The profile manager for the app, could also be a standard variable, but lets keep it connected to the one source of truth
+    open weak var profileManager: StudyProfileManager? {
+        return (AppDelegate.shared as? AppDelegate)?.profileManager
+    }
+    
+    /// The date available for unit test override
+    open func nowDate() -> Date {
+        return Date()
+    }
     
     ///
     /// - returns: the count of the sorted schedules
@@ -56,22 +66,33 @@ public class MasterScheduleManager : SBAScheduleManager {
     }
     
     ///
-    /// - parameter from: the date in the past where completed activity counting starts
-    /// - parameter to: the date where completed activity counting ends
-    ///
     /// - returns: the count of the sorted schedules that have been completed since the specified date
     ///
-    public func completedActivitiesCount(from: Date, to: Date) -> Int {
+    public func completedActivitiesCount() -> Int {
         guard let sorted = self.sortActivities(self.scheduledActivities) else {
             return 0
         }
-        let range = from...to
-        return sorted.filter { (schedule) -> Bool in
-            if let finishedOn = schedule.finishedOn {
-                return range.contains(finishedOn)
-            }
+        return sorted.filter { self.isComplete(schedule: $0) }.count
+    }
+    
+    public func isComplete(schedule: SBBScheduledActivity) -> Bool {
+        
+        guard let treatmentDate = self.profileManager?.treatmentsDate else {
             return false
-        }.count
+        }
+        
+        let range = self.completionRange(treatmentDate: treatmentDate, treatmentWeek: self.treatmentWeek())
+        if let finishedOn = schedule.finishedOn {
+            return range.contains(finishedOn)
+        }
+        return false
+    }
+    
+    func completionRange(treatmentDate: Date, treatmentWeek: Int) -> ClosedRange<Date> {
+        // All schedules are treated as weekly finished on ranges
+        let rangeStart = treatmentDate.startOfDay().addingNumberOfDays(7 * (treatmentWeek - 1))
+        let rangeEnd = rangeStart.addingNumberOfDays(7)
+        return rangeStart...rangeEnd
     }
     
     public var tableSectionCount: Int {
@@ -92,7 +113,7 @@ public class MasterScheduleManager : SBAScheduleManager {
     ///
     override open func sortActivities(_ scheduledActivities: [SBBScheduledActivity]?) -> [SBBScheduledActivity]? {
         
-        guard let filtered = scheduledActivities?.filter({ self.filter.map({ $0.rawValue }).contains($0.activityIdentifier ?? "") }),
+        guard let filtered = scheduledActivities?.filter({ self.filterList.map({ $0.rawValue }).contains($0.activityIdentifier ?? "") }),
             filtered.count > 0 else {
             return nil
         }
@@ -103,6 +124,30 @@ public class MasterScheduleManager : SBAScheduleManager {
             
             return idxA < idxB
         })
+    }
+    
+    /// The filter list is dynamic based on business requirements surrounding symptoms and diagnosis
+    open var filterList: [RSDIdentifier] {
+        let treatmentWeek = self.treatmentWeek()
+        var includeList = [RSDIdentifier]()
+        for rsdIdentifier in self.filterAll {
+            let timingInfo = self.scheduleFrequency(for: rsdIdentifier)
+            if timingInfo.freq == .weekly {
+                // All weekly activities are included
+                includeList.append(rsdIdentifier)
+            } else if timingInfo.freq == .monthly {
+                // Only monthly activities that fall on the correct week are included
+                if treatmentWeek >= timingInfo.startWeek &&
+                    ((treatmentWeek - timingInfo.startWeek) % 4) == 0 {
+                    includeList.append(rsdIdentifier)
+                }
+            } else {
+                // If it is not specified, include it
+                includeList.append(rsdIdentifier)
+            }
+        }
+        
+        return includeList
     }
     
     ///
@@ -193,4 +238,68 @@ public class MasterScheduleManager : SBAScheduleManager {
         step?.imageTheme = RSDFetchableImageThemeElementObject(imageName: "WhiteLightBulb")
         return RSDTaskViewController(task: task)
     }
+    
+    /// Based on study requirements to make the schedules apply more to users
+    /// that have certain diagnosis and symptom requirements, set frequency per scheduled activity
+    public func scheduleFrequency(for identifier: RSDIdentifier) -> (freq: StudyScheduleFrequency, startWeek: Int) {
+        guard let symptoms = self.symptoms(),
+            let diagnosis = self.diagnosis() else {
+            return (.weekly, 1)
+        }
+        
+        let userHasJointIssues =
+            symptoms == StudyProfileManager.symptomsJointsAnswer ||
+            diagnosis == StudyProfileManager.diagnosisArthritisAnswer
+        
+        let userHasSkinIssues =
+            symptoms == StudyProfileManager.symptomsSkinAnswer ||
+            diagnosis == StudyProfileManager.diagnosisPsoriasisAnswer
+                
+        if userHasJointIssues && !userHasSkinIssues {
+            // User has joint issues but no skin issues
+            // Joint Count&Hand/Foot&Walk&Jar Open: 1x/week
+            if identifier == RSDIdentifier.jointCountingTask ||
+                identifier == RSDIdentifier.handImagingTask ||
+                identifier == RSDIdentifier.footImagingTask ||
+                identifier == RSDIdentifier.walkingTask ||
+                identifier == RSDIdentifier.digitalJarOpenTask {
+                return (.weekly, 1)
+            } else { // Rest of measures: 1x/month (starting on week 2)
+                return (.monthly, 2)
+            }
+        } else if userHasSkinIssues && !userHasJointIssues {
+            // User just has symptoms and has not been diagnosed yet
+            // Draw & Area Photo: 1x/week
+            if identifier == RSDIdentifier.psoriasisDrawTask ||
+                identifier == RSDIdentifier.psoriasisAreaPhotoTask {
+                return (.weekly, 1)
+            } else { // Rest of measures: 1x/month (starting on week 2)
+                return (.monthly, 2)
+            }
+        }
+        
+        return (.weekly, 1)
+    }
+    
+    /// Exposed for unit testing
+    open func treatmentDate() -> Date? {
+        return self.profileManager?.treatmentsDate
+    }
+    /// Exposed for unit testing
+    open func treatmentWeek() -> Int {
+        return self.profileManager?.treatmentWeek(toNow: self.nowDate()) ?? 1
+    }
+    // Exposed for unit testing
+    open func symptoms() -> String? {
+        return self.profileManager?.symptoms
+    }
+    // Exposed for unit testing
+    open func diagnosis() -> String? {
+        return self.profileManager?.diagnosis
+    }
+}
+
+public enum StudyScheduleFrequency {
+    case weekly
+    case monthly
 }

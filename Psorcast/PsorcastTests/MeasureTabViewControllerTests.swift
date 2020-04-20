@@ -38,7 +38,7 @@ import BridgeApp
 
 class MeasureTabViewControllerTests: XCTestCase {
     
-    let vc = MeasureTabViewController()
+    let vc = MockMeasureTabViewController()
     
     override func setUp() {
         super.setUp()
@@ -80,37 +80,11 @@ class MeasureTabViewControllerTests: XCTestCase {
         XCTAssertEqual("Treatment Week 101 Activities", weekStr)
     }
     
-    func testWeekCalculation() {
-        // Week calculation is based on the start of day for treatment date
-        let now = date(28, 5, 0, 0)
-        
-        var treatmentDate = date(27, 5, 0, 0)
-        var week = vc.weeks(from: treatmentDate, toNow: now)
-        XCTAssertEqual(week, 1)
-        
-        // doesn't matter of the specific time, we use start of day for treatment date
-        treatmentDate = date(21, 5, 0, 1)
-        week = vc.weeks(from: treatmentDate, toNow: now)
-        XCTAssertEqual(week, 2)
-        
-        treatmentDate = date(21, 4, 0, 0)
-        week = vc.weeks(from: treatmentDate, toNow: now)
-        XCTAssertEqual(week, 2)
-        
-        treatmentDate = date(1, 4, 0, 0)
-        week = vc.weeks(from: treatmentDate, toNow: now)
-        XCTAssertEqual(week, 4)
-        
-        // doesn't matter of the specific time, we use start of day for treatment date
-        treatmentDate = date(0, 4, 0, 0)
-        week = vc.weeks(from: treatmentDate, toNow: now)
-        XCTAssertEqual(week, 5)
-    }
-    
     func testActivityRenewText() {
         var now = date(27, 5, 0, 0)
         
         var treatmentSetDate = date(27, 5, 0, 0)
+        vc.mockWeek = 1
         var activityText = vc.activityRenewalText(from: treatmentSetDate, toNow: now)
         XCTAssertEqual(activityText, "6 Days")
                 
@@ -163,3 +137,9 @@ class MeasureTabViewControllerTests: XCTestCase {
     }
 }
 
+open class MockMeasureTabViewController: MeasureTabViewController {
+    var mockWeek = 1
+    override open func treatmentWeek() -> Int {
+        return mockWeek
+    }
+}
