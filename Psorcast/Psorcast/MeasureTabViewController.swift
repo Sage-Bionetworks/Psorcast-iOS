@@ -36,7 +36,7 @@ import BridgeApp
 import BridgeSDK
 import MotorControl
 
-class MeasureTabViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, MeasureTabCollectionViewCellDelegate, RSDTaskViewControllerDelegate {
+open class MeasureTabViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, MeasureTabCollectionViewCellDelegate, RSDTaskViewControllerDelegate {
         
     /// Header views
     @IBOutlet weak var topHeader: UIView!
@@ -77,10 +77,14 @@ class MeasureTabViewController: UIViewController, UICollectionViewDataSource, UI
     
     /// The profile manager
     let profileManager = (AppDelegate.shared as? AppDelegate)?.profileManager
+    open func treatmentWeek() -> Int {
+        let now = Date()
+        return self.profileManager?.treatmentWeek(toNow: now) ?? 1
+    }
     
     let showInsightTaskId = "showInsight"
     
-    override func viewDidLoad() {
+    override open func viewDidLoad() {
         super.viewDidLoad()
         
         self.setupDefaultBlankUiState()
@@ -94,7 +98,6 @@ class MeasureTabViewController: UIViewController, UICollectionViewDataSource, UI
         NotificationCenter.default.addObserver(forName: .SBAUpdatedScheduledActivities, object: scheduleManager, queue: OperationQueue.main) { (notification) in
                         
             self.gridLayout.itemCount = self.scheduleManager.sortedScheduleCount
-            self.collectionView.reloadData()
             self.refreshUI()
         }
         
@@ -113,7 +116,7 @@ class MeasureTabViewController: UIViewController, UICollectionViewDataSource, UI
         UIApplication.shared.applicationIconBadgeNumber = 0
     }
     
-    override func viewWillAppear(_ animated: Bool) {
+    override open func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         
         // Schedule expiration timer to run every second
@@ -123,7 +126,7 @@ class MeasureTabViewController: UIViewController, UICollectionViewDataSource, UI
         self.refreshUI()
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
+    override open func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         // Pause the timer
         self.renewelTimer.invalidate()
@@ -152,6 +155,8 @@ class MeasureTabViewController: UIViewController, UICollectionViewDataSource, UI
         self.updateCurrentTreatmentsText()
         self.updateTimeFormattedText()
         self.updateInsightProgress()
+        
+        self.collectionView.reloadData()
     }
     
     func updateDesignSystem() {
@@ -215,15 +220,13 @@ class MeasureTabViewController: UIViewController, UICollectionViewDataSource, UI
         let totalSchedules = self.scheduleManager.sortedScheduleCount
         
         // Make sure pre-conditions are mets
-        guard let setTreatmentsDate = self.profileManager?.treatmentsDate,
-            totalSchedules != 0 else {
+        guard totalSchedules != 0 else {
             self.insightProgressBar.progress = 0
             self.updateInsightAchievedImage()
             return
         }
         
-        let renewalRange = self.weeklyRenewalDateRange(from: setTreatmentsDate, toNow: Date())
-        let activitiesCompletedThisWeek = self.scheduleManager.completedActivitiesCount(from: renewalRange.lowerBound, to: renewalRange.upperBound)
+        let activitiesCompletedThisWeek = self.scheduleManager.completedActivitiesCount()
                         
         let newProgress = Float(activitiesCompletedThisWeek) / Float(totalSchedules)
         // to trigger completion of the activities and surfacing of insight, comment/uncomment below
@@ -298,7 +301,7 @@ class MeasureTabViewController: UIViewController, UICollectionViewDataSource, UI
         }
         
         let now = Date()
-        let week = self.weeks(from: setTreatmentsDate, toNow: now)
+        let week = self.treatmentWeek()
         
         // Update the time sensitive text
         self.weekActivitiesTitleLabel.text = self.treatmentWeekLabelText(for: week)
@@ -349,10 +352,6 @@ class MeasureTabViewController: UIViewController, UICollectionViewDataSource, UI
         return timeRenewalStr
     }
     
-    public func weeks(from treatmentSetDate: Date, toNow: Date) -> Int {
-        return (Calendar.current.dateComponents([.weekOfYear], from: treatmentSetDate.startOfDay(), to: toNow).weekOfYear ?? 0) + 1
-    }
-    
     public func weeklyRenewalDateRange(from treatmentSetDate: Date, toNow: Date) -> ClosedRange<Date> {
         let end = self.weeklyRenewalDate(from: treatmentSetDate, toNow: toNow)
         let start = end.addingNumberOfDays(-7)
@@ -360,7 +359,7 @@ class MeasureTabViewController: UIViewController, UICollectionViewDataSource, UI
     }
     
     public func weeklyRenewalDate(from treatmentSetDate: Date, toNow: Date) -> Date {
-        let week = self.weeks(from: treatmentSetDate, toNow: toNow)
+        let week = self.treatmentWeek()
         let weeklyRenewalDate = treatmentSetDate.startOfDay().addingNumberOfDays(7 * week)
         return weeklyRenewalDate
     }
@@ -463,7 +462,7 @@ class MeasureTabViewController: UIViewController, UICollectionViewDataSource, UI
     
     // MARK: RSDTaskViewControllerDelegate
     
-    func taskController(_ taskController: RSDTaskController, readyToSave taskViewModel: RSDTaskViewModel) {
+    public func taskController(_ taskController: RSDTaskController, readyToSave taskViewModel: RSDTaskViewModel) {
         
         if taskController.task.identifier == RSDIdentifier.treatmentTask.rawValue ||
             taskController.task.identifier == RSDIdentifier.insightsTask.rawValue {
@@ -473,7 +472,7 @@ class MeasureTabViewController: UIViewController, UICollectionViewDataSource, UI
         }
     }
     
-    func taskController(_ taskController: RSDTaskController, didFinishWith reason: RSDTaskFinishReason, error: Error?) {
+    public func taskController(_ taskController: RSDTaskController, didFinishWith reason: RSDTaskFinishReason, error: Error?) {
 
         if taskController.task.identifier == RSDIdentifier.treatmentTask.rawValue ||
             taskController.task.identifier == RSDIdentifier.insightsTask.rawValue {
