@@ -232,7 +232,20 @@ open class MasterScheduleManager : SBAScheduleManager {
     open func instantiateInsightsTaskController() -> RSDTaskViewController? {
         guard let task = self.insightsTask else { return nil }
         let step = task.stepNavigator.step(with: "insightStep") as? ShowInsightStepObject
+        step?.items.sort(by: { (insightItem1, insightItem2) -> Bool in
+            if let sortValue1 = insightItem1.sortValue, let sortValue2 = insightItem2.sortValue {
+               return sortValue1 < sortValue2
+            } else {
+                if (insightItem1.sortValue != nil) {
+                    return true
+                } else {
+                    return false
+                }
+            }
+        })
+        // Now that they are sorted, let's iterate through to see 
         let testInsightItem = step?.items[0]
+        step?.currentStepIdentifier = testInsightItem?.identifier ?? ""
         step?.title = testInsightItem?.title
         step?.text = testInsightItem?.text
         step?.imageTheme = RSDFetchableImageThemeElementObject(imageName: "WhiteLightBulb")

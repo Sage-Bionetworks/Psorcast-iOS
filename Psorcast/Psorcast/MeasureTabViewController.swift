@@ -228,9 +228,9 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
         
         let activitiesCompletedThisWeek = self.scheduleManager.completedActivitiesCount()
                         
-        let newProgress = Float(activitiesCompletedThisWeek) / Float(totalSchedules)
+        //let newProgress = Float(activitiesCompletedThisWeek) / Float(totalSchedules)
         // to trigger completion of the activities and surfacing of insight, comment/uncomment below
-        //let newProgress = Float(1.0)
+        let newProgress = Float(1.0)
         
         let animateToInsightView = newProgress >= 1.0 && self.insightAchievedView.isHidden
         let animateToInsightProgressView = newProgress < 1.0 && self.insightNotAchievedView.isHidden
