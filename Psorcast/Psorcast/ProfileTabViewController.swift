@@ -61,7 +61,7 @@ class ProfileTabViewController: UITableViewController, RSDTaskViewControllerDele
                 self.tableView.reloadData()                                
             }
         }
-    }
+}
 
     func setupTableView() {
         self.tableView.estimatedSectionHeaderHeight = 40

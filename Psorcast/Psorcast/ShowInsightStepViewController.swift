@@ -121,7 +121,7 @@ public class ShowInsightStepViewController: RSDStepViewController {
         _ = self.stepViewModel.parent?.taskResult.appendStepHistory(with: usefulAnswer)
         
         // Store the date the answer was selected
-        let dateAnswer = RSDAnswerResultObject(identifier: ProfileIdentifier.insightDate.rawValue.rawValue, answerType: StudyProfileManager.profileDateAnswerType(), value: Date())
+        let dateAnswer = RSDAnswerResultObject(identifier: ProfileIdentifier.insightViewedDate.rawValue.rawValue, answerType: StudyProfileManager.profileDateAnswerType(), value: Date())
         _ = self.stepViewModel.parent?.taskResult.appendStepHistory(with: dateAnswer)
         
         let currentInsightStep = self.step as? ShowInsightStepObject

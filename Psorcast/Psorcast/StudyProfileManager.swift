@@ -44,7 +44,7 @@ public enum ProfileIdentifier: RSDIdentifier {
     case symptomsDate = "psoriasisSymptomsDate"
     
     case insights = "Insights"
-    case insightDate = "insightViewedDate"
+    case insightViewedDate = "insightViewedDate"
     case insightUsefulAnswer = "insightUsefulAnswer"
     case insightViewedIdentifier = "insightViewedIdentifier"
     
@@ -106,7 +106,7 @@ open class StudyProfileManager: SBAProfileManagerObject {
     }
     
     open var insightStepIdentifiers: [ProfileIdentifier] {
-        return [.insightViewedIdentifier, .insightDate, .insightUsefulAnswer]
+        return [.insightViewedIdentifier, .insightViewedDate, .insightUsefulAnswer]
     }
 
     override open func availablePredicate() -> NSPredicate {
@@ -118,21 +118,24 @@ open class StudyProfileManager: SBAProfileManagerObject {
         return self.value(forProfileKey: ProfileIdentifier.treatmentsDate.rawValue.rawValue) as? Date
     }
     
-    open var insightDate: Date? {
+    open var insightViewedDate: Date? {
+      return self.value(forProfileKey: ProfileIdentifier.insightViewedDate.id) as? Date
+    }
+    
+    open var insightIdentifiers: [String] {
         let insightReports = self.reports.filter { $0.reportKey == ProfileIdentifier.insights.rawValue.rawValue }
+        var result = [String]()
         if (insightReports.isEmpty) {
-            return nil
+            return result
         } else {
-            // This feels super clunky, let's redo it
-            var returnDate = Date.distantPast
             for report in insightReports {
-                let insightDictionary = report.clientData as? NSDictionary
-                let reportDate = insightDictionary?.value(forKey: ProfileIdentifier.insightDate.rawValue.rawValue) as? Date
-                if (reportDate ?? Date.distantPast > returnDate) {
-                    returnDate = reportDate ?? Date.distantPast
+                let clientDataDict = report.clientData as? NSDictionary
+                let insightString = clientDataDict?.value(forKey: ProfileIdentifier.insightViewedIdentifier.id) as? String
+                if (insightString != nil) {
+                    result.append(insightString!)
                 }
             }
-            return returnDate;
+            return result
         }
     }
     
@@ -501,6 +504,10 @@ open class StudyProfileItem: SBAProfileItem {
             if let date = formatter.date(from: stringJsonVal) {
                 return date
             }
+        }
+        
+        if self.demographicKey == "insightViewedDate" {
+          let i = 0
         }
         
         return self.commonBridgeJsonToItemType(jsonVal: json)

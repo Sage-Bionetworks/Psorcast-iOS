@@ -229,10 +229,13 @@ open class MasterScheduleManager : SBAScheduleManager {
         return SBABridgeConfiguration.shared.task(for: RSDIdentifier.insightsTask.rawValue)
     }
     
-    open func instantiateInsightsTaskController() -> RSDTaskViewController? {
+    open func nextInsightItem() -> InsightItem? {
         guard let task = self.insightsTask else { return nil }
         let step = task.stepNavigator.step(with: "insightStep") as? ShowInsightStepObject
-        step?.items.sort(by: { (insightItem1, insightItem2) -> Bool in
+        if (step == nil) {
+            return nil
+        }
+        step!.items.sort(by: { (insightItem1, insightItem2) -> Bool in
             if let sortValue1 = insightItem1.sortValue, let sortValue2 = insightItem2.sortValue {
                return sortValue1 < sortValue2
             } else {
@@ -243,13 +246,35 @@ open class MasterScheduleManager : SBAScheduleManager {
                 }
             }
         })
-        // Now that they are sorted, let's iterate through to see 
-        let testInsightItem = step?.items[0]
-        step?.currentStepIdentifier = testInsightItem?.identifier ?? ""
-        step?.title = testInsightItem?.title
-        step?.text = testInsightItem?.text
-        step?.imageTheme = RSDFetchableImageThemeElementObject(imageName: "WhiteLightBulb")
-        return RSDTaskViewController(task: task)
+        
+        // Now that they are sorted, look for the first item that we haven't already viewed
+        for item in step!.items {
+            if (!self.profileManager!.insightIdentifiers.contains(item.identifier)) {
+                // We haven't viewed this before, so return this item
+                return item
+            }
+        }
+        
+        // If we made it here, we've already viewed all the insights
+        return nil
+    }
+    
+    open func instantiateInsightsTaskController() -> RSDTaskViewController? {
+        
+        // Now that they are sorted, let's iterate through to see
+        
+        guard let task = self.insightsTask else { return nil }
+        let insightItem = self.nextInsightItem()
+        if (insightItem == nil) {
+            return nil
+        } else {
+            let step = task.stepNavigator.step(with: "insightStep") as? ShowInsightStepObject
+            step?.currentStepIdentifier = insightItem!.identifier
+            step?.title = insightItem!.title
+            step?.text = insightItem!.text
+            step?.imageTheme = RSDFetchableImageThemeElementObject(imageName: "WhiteLightBulb")
+            return RSDTaskViewController(task: task)
+        }
     }
     
     /// Based on study requirements to make the schedules apply more to users

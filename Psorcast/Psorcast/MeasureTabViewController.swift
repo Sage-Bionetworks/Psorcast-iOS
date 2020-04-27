@@ -216,6 +216,37 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
         self.present(vc, animated: true, completion: nil)
     }
     
+    func shouldShowInsight() -> Bool {
+        // First, make sure we haven't viewed an insight this week
+        let insightDate = self.profileManager?.insightViewedDate
+        let treatmentSetDate = self.profileManager?.treatmentsDate
+        if (insightDate == nil) {
+            // We've never viewed an insight, so they should all be available
+            return true
+        } else if (treatmentSetDate == nil) {
+            // We don't have a treatment date, so don't view insights for now
+            return false
+        } else {
+            // We have viewed an insight and have a treatment date, so let's make
+            // sure we haven't viewed an insight this week
+            let weekStartDate = self.weeklyRenewalDate(from: treatmentSetDate!, toNow: Date()).addingNumberOfDays(-7)
+            if (insightDate! > weekStartDate) {
+                // We've already viewed an insight this week
+                return false
+            } else {
+                // Okay, we haven't viewed an insight yet this week. Let's make sure we
+                // haven't already seen all the identifiers
+                if (self.scheduleManager.nextInsightItem() != nil) {
+                    // We have an unviewed insight to show, so return true
+                    return true
+                } else {
+                    // No new insights to view, so return false
+                    return false
+                }
+            }
+        }
+    }
+    
     func updateInsightProgress() {
         let totalSchedules = self.scheduleManager.sortedScheduleCount
         
@@ -228,12 +259,12 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
         
         let activitiesCompletedThisWeek = self.scheduleManager.completedActivitiesCount()
                         
-        //let newProgress = Float(activitiesCompletedThisWeek) / Float(totalSchedules)
+        let newProgress = Float(activitiesCompletedThisWeek) / Float(totalSchedules)
         // to trigger completion of the activities and surfacing of insight, comment/uncomment below
-        let newProgress = Float(1.0)
+        //let newProgress = Float(1.0)
         
-        let animateToInsightView = newProgress >= 1.0 && self.insightAchievedView.isHidden
-        let animateToInsightProgressView = newProgress < 1.0 && self.insightNotAchievedView.isHidden
+        let animateToInsightView = newProgress >= 1.0 && self.insightAchievedView.isHidden && self.shouldShowInsight()
+        let animateToInsightProgressView = (newProgress < 1.0 || !self.shouldShowInsight()) && self.insightNotAchievedView.isHidden
         
         // Animate the progress going to full
         UIView.animate(withDuration: 0.75 * insightAnimationSpeed, animations: {
