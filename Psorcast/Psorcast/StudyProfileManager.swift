@@ -90,10 +90,22 @@ open class StudyProfileManager: SBAProfileManagerObject {
     public static func hasTreatmentData(profileManager: StudyProfileManager?) -> Bool {
         // Back up data that is immediately available on app load
         if BridgeSDK.sharedUserDefaults().bool(forKey: treatmentsSetDefaultsKey) {
+            debugPrint("User has cached treatments")
             return true
         }
+        let profileHasTreatments = profileManager?.treatments != nil
+        let profileHasTreatmentsDate = profileManager?.treatmentsDate != nil
+        let profileHasData = profileHasTreatments && profileHasTreatmentsDate
+        
         // Users that have just signed in will have these reports immediately available
-        return profileManager?.treatments != nil && profileManager?.treatmentsDate != nil
+        if profileHasData {
+            debugPrint("Profile manager has needed treatment data")
+            // Save the status that treatments are set for the user
+            BridgeSDK.sharedUserDefaults().set(true, forKey: StudyProfileManager.treatmentsSetDefaultsKey)
+        } else {
+            debugPrint("Profile does not have needed treatment data")
+        }
+        return profileHasData
     }    
     
     open var treatmentStepIdentifiers: [ProfileIdentifier] {
