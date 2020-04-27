@@ -260,9 +260,6 @@ open class MasterScheduleManager : SBAScheduleManager {
     }
     
     open func instantiateInsightsTaskController() -> RSDTaskViewController? {
-        
-        // Now that they are sorted, let's iterate through to see
-        
         guard let task = self.insightsTask else { return nil }
         let insightItem = self.nextInsightItem()
         if (insightItem == nil) {
