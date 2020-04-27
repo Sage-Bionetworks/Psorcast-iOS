@@ -104,6 +104,9 @@
 		CBA8390E234A6B3F00408D81 /* EndOfValidationStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA8390C234A6B3F00408D81 /* EndOfValidationStepViewController.swift */; };
 		CBA8390F234A6B3F00408D81 /* EndOfValidationStepViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CBA8390D234A6B3F00408D81 /* EndOfValidationStepViewController.xib */; };
 		CBAA09CF243E4F5500D63CCD /* TreatmentSelectionResultObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBAA09CE243E4F5500D63CCD /* TreatmentSelectionResultObject.swift */; };
+		CBADD5372450C33A00422CE4 /* VideoExporterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBADD5362450C33A00422CE4 /* VideoExporterTests.swift */; };
+		CBADD53D2450ECC600422CE4 /* VideoExporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBADD53C2450ECC600422CE4 /* VideoExporter.swift */; };
+		CBADD53F2450ED1200422CE4 /* ResearchTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBADD53E2450ED1200422CE4 /* ResearchTabViewController.swift */; };
 		CBAF1DA32437C93700ECC699 /* StudyProfileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBAF1DA22437C93700ECC699 /* StudyProfileManager.swift */; };
 		CBAF1DA92437CB2A00ECC699 /* StudyExternalIdRegistrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBAF1DA82437CB2A00ECC699 /* StudyExternalIdRegistrationViewController.swift */; };
 		CBB90AE82381FF8700F1DFA4 /* PsoriasisAreaPhoto.mov in Resources */ = {isa = PBXBuildFile; fileRef = CBB90AE52381FF8500F1DFA4 /* PsoriasisAreaPhoto.mov */; };
@@ -420,6 +423,9 @@
 		CBA8390C234A6B3F00408D81 /* EndOfValidationStepViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EndOfValidationStepViewController.swift; sourceTree = "<group>"; };
 		CBA8390D234A6B3F00408D81 /* EndOfValidationStepViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EndOfValidationStepViewController.xib; sourceTree = "<group>"; };
 		CBAA09CE243E4F5500D63CCD /* TreatmentSelectionResultObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TreatmentSelectionResultObject.swift; sourceTree = "<group>"; };
+		CBADD5362450C33A00422CE4 /* VideoExporterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoExporterTests.swift; sourceTree = "<group>"; };
+		CBADD53C2450ECC600422CE4 /* VideoExporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoExporter.swift; sourceTree = "<group>"; };
+		CBADD53E2450ED1200422CE4 /* ResearchTabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResearchTabViewController.swift; sourceTree = "<group>"; };
 		CBAF1DA22437C93700ECC699 /* StudyProfileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyProfileManager.swift; sourceTree = "<group>"; };
 		CBAF1DA82437CB2A00ECC699 /* StudyExternalIdRegistrationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyExternalIdRegistrationViewController.swift; sourceTree = "<group>"; };
 		CBB90AE52381FF8500F1DFA4 /* PsoriasisAreaPhoto.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = PsoriasisAreaPhoto.mov; sourceTree = "<group>"; };
@@ -570,6 +576,7 @@
 			children = (
 				CB4794F02426B33300D5A7E6 /* LevenshteinTools.swift */,
 				CB4794F22426B36C00D5A7E6 /* ViewUtils.swift */,
+				CBADD53C2450ECC600422CE4 /* VideoExporter.swift */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -591,6 +598,7 @@
 				CBAA09CE243E4F5500D63CCD /* TreatmentSelectionResultObject.swift */,
 				CB16C38A24465BC20046E200 /* ReminderStepViewController.swift */,
 				CB16C38B24465BC20046E200 /* ReminderStepViewController.xib */,
+				CBADD53E2450ED1200422CE4 /* ResearchTabViewController.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -850,6 +858,7 @@
 				CB8F7D582423F6BB00F77D62 /* LevenshteinToolsTests.swift */,
 				CB81C92D242D3AB100A84886 /* MeasureTabViewControllerTests.swift */,
 				CBD0A5AE244E2D12002EE886 /* MasterScheduleManagerTests.swift */,
+				CBADD5362450C33A00422CE4 /* VideoExporterTests.swift */,
 			);
 			path = PsorcastTests;
 			sourceTree = "<group>";
@@ -1209,6 +1218,7 @@
 				CBC6519423F391BC00C3FF0C /* PsorcastTests.swift in Sources */,
 				CB81C92E242D3AB100A84886 /* MeasureTabViewControllerTests.swift in Sources */,
 				CB67C29723F390AB005B6BCD /* DigitalJarOpenStepViewControllerTests.swift in Sources */,
+				CBADD5372450C33A00422CE4 /* VideoExporterTests.swift in Sources */,
 				CB67C29D23F390AB005B6BCD /* JointPainStepViewControllerTests.swift in Sources */,
 				CB67C29923F390AB005B6BCD /* JointPainImageViewTests.swift in Sources */,
 				CB67C29B23F390AB005B6BCD /* CodableStepObjectTests.swift in Sources */,
@@ -1235,6 +1245,7 @@
 				CBDCDCAE23F3849E00E5CEB8 /* TouchDrawableView.swift in Sources */,
 				CBDCDCA823F3849E00E5CEB8 /* PsoriasisAreaPhotoCompletionStepViewController.swift in Sources */,
 				CBDCDC9F23F3849E00E5CEB8 /* JointPainCompletionStepViewController.swift in Sources */,
+				CBADD53D2450ECC600422CE4 /* VideoExporter.swift in Sources */,
 				CBDCDCB223F3849E00E5CEB8 /* DigitalJarOpenStepViewController.swift in Sources */,
 				CBDCDCAD23F3849E00E5CEB8 /* PsoriasisDrawResultObject.swift in Sources */,
 				CBDCDCB723F384A400E5CEB8 /* TaskFactory.swift in Sources */,
@@ -1257,6 +1268,7 @@
 				04F00572243FE64800EDB120 /* ShowInsightStepViewController.swift in Sources */,
 				CBDD30E82416D403003B0488 /* MeasureTabViewController.swift in Sources */,
 				FFABCBC222DD1EEB00D11109 /* AppDelegate.swift in Sources */,
+				CBADD53F2450ED1200422CE4 /* ResearchTabViewController.swift in Sources */,
 				CBDCDC9123F3849E00E5CEB8 /* EndOfValidationStepViewController.swift in Sources */,
 				CBDCDCBC23F384A800E5CEB8 /* PSRImageHelper.swift in Sources */,
 				CBDCDC9723F3849E00E5CEB8 /* ImageCaptureCompletionStepViewController.swift in Sources */,
