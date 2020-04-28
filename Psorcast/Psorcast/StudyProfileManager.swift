@@ -43,6 +43,11 @@ public enum ProfileIdentifier: RSDIdentifier {
     case symptoms = "psoriasisSymptoms"
     case symptomsDate = "psoriasisSymptomsDate"
     
+    case insights = "Insights"
+    case insightViewedDate = "insightViewedDate"
+    case insightUsefulAnswer = "insightUsefulAnswer"
+    case insightViewedIdentifier = "insightViewedIdentifier"
+    
     case weeklyReminderDoNotRemind = "weeklyDoNotRemind"
     case weeklyReminderDay = "weeklyDay"
     case weeklyReminderTime = "weeklyTime"
@@ -60,7 +65,7 @@ open class StudyProfileManager: SBAProfileManagerObject {
     public static let symptomsNoneAnswer = "I do not have symptoms"
     public static let symptomsSkinAnswer = "Skin symptoms"
     public static let symptomsJointsAnswer = "Painful or swollen joints"
-    public static let symptomsBothAnswer = "Skin sympotms, Painful or swollen joints"
+    public static let symptomsBothAnswer = "Skin symptoms, Painful or swollen joints"
     /// These are the bridge stored answers from the Treatment task Config Element
     public static let diagnosisNoneAnswer = "I do not have psoriasis"
     public static let diagnosisPsoriasisAnswer = "Psoriasis"
@@ -111,6 +116,10 @@ open class StudyProfileManager: SBAProfileManagerObject {
     open var treatmentStepIdentifiers: [ProfileIdentifier] {
         return [.diagnosis, .diagnosisDate, .symptoms, .symptomsDate, .treatments, .treatmentsDate]
     }
+    
+    open var insightStepIdentifiers: [ProfileIdentifier] {
+        return [.insightViewedIdentifier, .insightViewedDate, .insightUsefulAnswer]
+    }
 
     override open func availablePredicate() -> NSPredicate {
         // Defines which tasks this schedule manager cares about
@@ -121,10 +130,32 @@ open class StudyProfileManager: SBAProfileManagerObject {
         return self.value(forProfileKey: ProfileIdentifier.treatmentsDate.rawValue.rawValue) as? Date
     }
     
+    open var insightViewedDate: Date? {
+      return self.value(forProfileKey: ProfileIdentifier.insightViewedDate.id) as? Date
+    }
+    
+    open var insightIdentifiers: [String] {
+        let insightReports = self.reports.filter { $0.reportKey == ProfileIdentifier.insights.rawValue.rawValue }
+        var result = [String]()
+        if (insightReports.isEmpty) {
+            return result
+        } else {
+            for report in insightReports {
+                let clientDataDict = report.clientData as? NSDictionary
+                let insightString = clientDataDict?.value(forKey: ProfileIdentifier.insightViewedIdentifier.id) as? String
+                if (insightString != nil) {
+                    result.append(insightString!)
+                }
+            }
+            return result
+        }
+    }
+    
     public func treatmentWeek(toNow: Date) -> Int {
         guard let treatmentSetDate = self.treatmentsDate else { return 1 }
         return StudyProfileManager.treatmentWeek(from: treatmentSetDate, toNow: toNow)
     }
+    
     
     // Seperated out for unit tests
     public static func treatmentWeek(from treatmentSetDate: Date, toNow: Date) -> Int {
@@ -314,6 +345,9 @@ open class StudyProfileManager: SBAProfileManagerObject {
         if let treatmentQuery = queries.first(where: { $0.reportIdentifier == RSDIdentifier.treatmentTask.rawValue }) {
             queries.append(ReportQuery(reportKey: RSDIdentifier(rawValue: treatmentQuery.reportIdentifier), queryType: .all, dateRange: nil))
         }
+        if let insightQuery = queries.first(where: { $0.reportIdentifier == RSDIdentifier.insightsTask.rawValue }) {
+            queries.append(ReportQuery(reportKey: RSDIdentifier(rawValue: insightQuery.reportIdentifier), queryType: .all, dateRange: nil))
+        }
         return queries
     }
     
@@ -482,6 +516,10 @@ open class StudyProfileItem: SBAProfileItem {
             if let date = formatter.date(from: stringJsonVal) {
                 return date
             }
+        }
+        
+        if self.demographicKey == "insightViewedDate" {
+          let i = 0
         }
         
         return self.commonBridgeJsonToItemType(jsonVal: json)

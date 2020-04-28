@@ -68,6 +68,8 @@ open class ShowInsightStepObject: RSDUIStepObject, RSDStepViewControllerVendor {
     
     public var items = [InsightItem]()
     
+    public var currentStepIdentifier = ""
+    
     public func instantiateViewController(with parent: RSDPathComponent?) -> (UIViewController & RSDStepController)? {
         return ShowInsightStepViewController(step: self, parent: parent)
     }
@@ -106,14 +108,26 @@ public class ShowInsightStepViewController: RSDStepViewController {
     @IBOutlet weak var yesButton: HorizontallyCenteredButton!
     
     @IBAction func yesButtonTapped(_ sender: Any) {
-        let answer = RSDAnswerResultObject(identifier: self.step.identifier, answerType: .string, value: "Yes")
-        _ = self.stepViewModel.parent?.taskResult.appendStepHistory(with: answer)
-        super.goForward()
+        finish(useful: true)
     }
     
     @IBAction func noButtonTapped(_ sender: Any) {
-        let answer = RSDAnswerResultObject(identifier: self.step.identifier, answerType: .string, value: "No")
-        _ = self.stepViewModel.parent?.taskResult.appendStepHistory(with: answer)
+        finish(useful: false)
+    }
+    
+    open func finish(useful: Bool) {
+        // Store the answer selected
+        let usefulAnswer = RSDAnswerResultObject(identifier: ProfileIdentifier.insightUsefulAnswer.rawValue.rawValue, answerType: .string, value: useful ? "Yes" : "No")
+        _ = self.stepViewModel.parent?.taskResult.appendStepHistory(with: usefulAnswer)
+        
+        // Store the date the answer was selected
+        let dateAnswer = RSDAnswerResultObject(identifier: ProfileIdentifier.insightViewedDate.rawValue.rawValue, answerType: StudyProfileManager.profileDateAnswerType(), value: Date())
+        _ = self.stepViewModel.parent?.taskResult.appendStepHistory(with: dateAnswer)
+        
+        let currentInsightStep = self.step as? ShowInsightStepObject
+        let identifierAnswer = RSDAnswerResultObject(identifier: ProfileIdentifier.insightViewedIdentifier.rawValue.rawValue, answerType: .string, value: currentInsightStep?.currentStepIdentifier)
+        _ = self.stepViewModel.parent?.taskResult.appendStepHistory(with: identifierAnswer)
+
         super.goForward()
     }
     
@@ -123,4 +137,5 @@ public struct InsightItem: Codable {
     public var identifier: String
     public var title: String?
     public var text: String?
+    public var sortValue: Int?
 }
