@@ -269,7 +269,7 @@ public class TreatmentSelectionStepViewController: RSDStepViewController, UITabl
         for i in stride(from: self.currentTreatments.count - 1, to: -1, by: -1) {
             let treatment = self.currentTreatments[i]
             let indexPath = IndexPath(item: i, section: 0)
-            _ = self.treatmentTapped(treatment: treatment, indexPath: indexPath)
+            self.treatmentTapped(treatment: treatment, indexPath: indexPath)
         }
     }
     
@@ -359,25 +359,13 @@ public class TreatmentSelectionStepViewController: RSDStepViewController, UITabl
             return
         }
         
-        // The cell being selected
-        let cell = tableView.cellForRow(at: indexPath) as? TreatmentSelectionTableViewCell
-        
-        let isNowSelected = self.treatmentTapped(treatment: treatment, indexPath: indexPath)
-        
-        // Moving a cell does not trigger a display update,
-        // so we need to manually add/remove the clear icon
-        if let cellUnwrapped = cell {
-            if isNowSelected {
-                cellUnwrapped.removeImage?.image = UIImage(named: "ClearIcon")
-            } else {
-                cellUnwrapped.removeImage?.image = UIImage(named: "AddIcon")
-            }
-        }
-    
-        self.dismissKeyboard()
+        self.treatmentTapped(treatment: treatment, indexPath: indexPath)
     }
     
-    func treatmentTapped(treatment: TreatmentItem, indexPath: IndexPath) -> Bool {
+    func treatmentTapped(treatment: TreatmentItem, indexPath: IndexPath) {
+        
+        // The cell being selected
+        let cell = tableView.cellForRow(at: indexPath) as? TreatmentSelectionTableViewCell
         
         let isNowSelected = !self.currentTreatmentsIds.contains(treatment.identifier)
         let currentTreatmentsSectionWasCreated = self.currentTreatments.count == 0
@@ -429,7 +417,17 @@ public class TreatmentSelectionStepViewController: RSDStepViewController, UITabl
 
         self.tableView.endUpdates()
         
-        return isNowSelected
+        // Moving a cell does not trigger a display update,
+        // so we need to manually add/remove the clear icon
+        if let cellUnwrapped = cell {
+            if isNowSelected {
+                cellUnwrapped.removeImage?.image = UIImage(named: "ClearIcon")
+            } else {
+                cellUnwrapped.removeImage?.image = UIImage(named: "AddIcon")
+            }
+        }
+        
+        self.dismissKeyboard()
     }
     
     public func searchBarSearchButtonClicked(_ searchBar: UISearchBar)  {
