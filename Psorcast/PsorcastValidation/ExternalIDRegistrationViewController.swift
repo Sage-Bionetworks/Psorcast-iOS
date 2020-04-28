@@ -165,17 +165,20 @@ open class ExternalIDRegistrationViewController: RSDStepViewController, UITextFi
         }
         // In some instances, core data can persist so sign out and clear that before we sign in
         BridgeSDK.authManager.signOut { (session, obj, error) in
-            self.signUpAndSignIn { (task, result, error) in
-                DispatchQueue.main.async {
-                    self.loadingSpinner.isHidden = true
-                    self.submitButton.isEnabled = true
-                    if error == nil {
-                       super.goForward()
-                    } else {
-                        self.presentAlertWithOk(title: "Error attempting sign in", message: error!.localizedDescription, actionHandler: nil)
-                        // TODO: emm 2018-04-25 handle error from Bridge
-                        // 400 is the response for an invalid external ID
-                        debugPrint("Error attempting to sign up and sign in:\n\(String(describing: error))\n\nResult:\n\(String(describing: result))")
+            // Switch back to main thread so our code isn't executed in the background
+            DispatchQueue.main.async {
+                self.signUpAndSignIn { (task, result, error) in
+                    DispatchQueue.main.async {
+                        self.loadingSpinner.isHidden = true
+                        self.submitButton.isEnabled = true
+                        if error == nil {
+                           super.goForward()
+                        } else {
+                            self.presentAlertWithOk(title: "Error attempting sign in", message: error!.localizedDescription, actionHandler: nil)
+                            // TODO: emm 2018-04-25 handle error from Bridge
+                            // 400 is the response for an invalid external ID
+                            debugPrint("Error attempting to sign up and sign in:\n\(String(describing: error))\n\nResult:\n\(String(describing: result))")
+                        }
                     }
                 }
             }
