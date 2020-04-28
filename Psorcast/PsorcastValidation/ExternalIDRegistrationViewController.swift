@@ -163,7 +163,7 @@ open class ExternalIDRegistrationViewController: RSDStepViewController, UITextFi
             self.submitButton.isEnabled = false
             self.loadingSpinner.isHidden = false
         }
-        self.signUpAndSignIn { (task, result, error) in
+       self.signUpAndSignIn { (task, result, error) in
             DispatchQueue.main.async {
                 self.loadingSpinner.isHidden = true
                 self.submitButton.isEnabled = true
@@ -178,5 +178,4 @@ open class ExternalIDRegistrationViewController: RSDStepViewController, UITextFi
             }
         }
     }
-
 }
