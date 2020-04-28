@@ -107,12 +107,6 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate {
     
     override func applicationDidBecomeActive(_ application: UIApplication) {
         super.applicationDidBecomeActive(application)
-    
-        // If we are authenticated, refresh app config when we start the app
-        // This may trigger updates to the treatments list or insights
-        if (BridgeSDK.authManager.isAuthenticated()) {
-            SBABridgeConfiguration.shared.refreshAppConfig()
-        }
         
         self.showAppropriateViewController(animated: true)
     }
