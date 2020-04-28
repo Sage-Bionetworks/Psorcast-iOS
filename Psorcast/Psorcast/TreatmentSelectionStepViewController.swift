@@ -44,6 +44,9 @@ public class TreatmentSelectionStepViewController: RSDStepViewController, UITabl
     @IBOutlet weak var addCustomTreatmentButtonHeight: NSLayoutConstraint!
     @IBOutlet weak var addCustomTreatmentLabel: UILabel!
     
+    // The check box button that shows under the search bar
+    @IBOutlet weak var noTreatmentsButton: UIButton!
+    
     // The filtered treatments are the step's items but with search text applied
     var filteredTreatments = [String: [TreatmentItem]]()
     var filteredSections = [String]()
@@ -70,6 +73,9 @@ public class TreatmentSelectionStepViewController: RSDStepViewController, UITabl
         }
         return filteredSections.count
     }
+    
+    // The treatment item that shows up when "No Treatments" checkbox is selected
+    let noTreatmentItem = TreatmentItem(identifier: "No Treatments", detail: nil, sectionIdentifier: nil)
     
     // Hide the current treatments unless a treatment is selected
     var shouldShowCurrentTreatmentSection: Bool {
@@ -168,6 +174,7 @@ public class TreatmentSelectionStepViewController: RSDStepViewController, UITabl
         super.viewDidLoad()
         
         let design = AppDelegate.designSystem
+        let whiteColor = RSDColorTile(RSDColor.white, usesLightStyle: false)
         let buttonColorTile = RSDColorTile(UIColor(hexString: "#EDEDED") ?? UIColor.white, usesLightStyle: true)
         self.addCustomTreatmentButton.backgroundColor = buttonColorTile.color
         self.addCustomTreatmentButton.clipsToBounds = true
@@ -175,7 +182,10 @@ public class TreatmentSelectionStepViewController: RSDStepViewController, UITabl
         self.addCustomTreatmentButton.titleLabel?.font = design.fontRules.buttonFont(for: .primary, state: .normal)
         self.addCustomTreatmentButton.setTitleColor(design.colorRules.roundedButtonText(on: buttonColorTile, with: .primary, forState: .normal), for: .normal)
         self.addCustomTreatmentLabel.font = design.fontRules.font(for: .mediumHeader)
-        self.addCustomTreatmentLabel.textColor = design.colorRules.textColor(on: RSDColorTile(RSDColor.white, usesLightStyle: false), for: .mediumHeader)
+        self.addCustomTreatmentLabel.textColor = design.colorRules.textColor(on: whiteColor, for: .mediumHeader)
+        
+        self.noTreatmentsButton.setTitleColor(design.colorRules.textColor(on: whiteColor, for: .small), for: .normal)
+        self.noTreatmentsButton.titleLabel?.font = design.fontRules.font(for: .small)
         
         self.searchBar.delegate = self
             
@@ -206,6 +216,8 @@ public class TreatmentSelectionStepViewController: RSDStepViewController, UITabl
                 self.currentTreatments.append(TreatmentItem(identifier: treatmentId, detail: nil, sectionIdentifier: nil))
             }
         }
+        // Check for the initial state of the "No Treatments" selection
+        self.noTreatmentsButton.isSelected = self.currentTreatmentsIds.first == noTreatmentItem.identifier
         
         self.tableView.reloadData()
     }
@@ -240,10 +252,35 @@ public class TreatmentSelectionStepViewController: RSDStepViewController, UITabl
         self.searchBar.endEditing(true)
     }
     
+    @IBAction func noTreatmentsTapped() {
+        let newSelectedState = !noTreatmentsButton.isSelected
+        
+        self.removeAllCurrentTreatments() // Remove all treatments in either case
+        if newSelectedState == true { // Add "No Treatments" item when we select the check-box
+            self.setCustomTreatmentSelected(noTreatmentItem, selected: true)
+        }
+        
+        noTreatmentsButton.isSelected = newSelectedState
+    }
+    
+    func removeAllCurrentTreatments() {
+        // Loops from the count - 1 to 0 to clear our the treatments 1 by 1
+        // Loop backwards to avoid the index path's changing while removing items
+        for i in stride(from: self.currentTreatments.count - 1, to: -1, by: -1) {
+            let treatment = self.currentTreatments[i]
+            let indexPath = IndexPath(item: i, section: 0)
+            self.treatmentTapped(treatment: treatment, indexPath: indexPath)
+        }
+    }
+    
     /// The user can add a row in the table with their own treatment that is the current text in the search bar
     @IBAction func addCustomTreatment() {
         guard let customTreatmentId = self.searchBar.text else { return }
         let newTreatmentItem = TreatmentItem(identifier: customTreatmentId, detail: nil, sectionIdentifier: nil)
+        
+        if self.currentTreatmentsIds.first == self.noTreatmentItem.identifier {
+            self.noTreatmentsTapped()
+        }
         
         self.treatmentNotFoundView.isHidden = true
         self.tableView.isHidden = false
@@ -251,14 +288,28 @@ public class TreatmentSelectionStepViewController: RSDStepViewController, UITabl
         self.refreshFilteredTreatments()
         self.refreshNextButtonState()
         
+        self.setCustomTreatmentSelected(newTreatmentItem, selected: true)
+    }
+    
+    func setCustomTreatmentSelected(_ newTreatmentItem: TreatmentItem, selected: Bool) {
         // Animate addition of table view custom treatment row
-        self.setCurrentTreatmentState(for: newTreatmentItem, selected: true)
+        self.setCurrentTreatmentState(for: newTreatmentItem, selected: selected)
         self.tableView.beginUpdates()
-        if self.currentTreatments.count == 1 {
-            // First treatment that is selected
-            self.tableView.insertSections(IndexSet(integer: 0), with: .left)
+        
+        if selected {
+            if self.currentTreatments.count == 1 {
+                // First treatment that is selected
+                self.tableView.insertSections(IndexSet(integer: 0), with: .left)
+            }
+            self.tableView.insertRows(at: [IndexPath(row: self.currentTreatments.count - 1, section: 0)], with: .left)
+        } else {
+            if self.currentTreatments.count == 1 {
+                // First treatment that is selected
+                self.tableView.insertSections(IndexSet(integer: 0), with: .left)
+            }
+            self.tableView.insertRows(at: [IndexPath(row: self.currentTreatments.count - 1, section: 0)], with: .left)
         }
-        self.tableView.insertRows(at: [IndexPath(row: self.currentTreatments.count - 1, section: 0)], with: .left)
+            
         self.tableView.endUpdates()
     }
     
@@ -308,18 +359,23 @@ public class TreatmentSelectionStepViewController: RSDStepViewController, UITabl
             return
         }
         
+        self.treatmentTapped(treatment: treatment, indexPath: indexPath)
+    }
+    
+    func treatmentTapped(treatment: TreatmentItem, indexPath: IndexPath) {
+        
         // The cell being selected
         let cell = tableView.cellForRow(at: indexPath) as? TreatmentSelectionTableViewCell
-        
-        self.tableView.beginUpdates()
         
         let isNowSelected = !self.currentTreatmentsIds.contains(treatment.identifier)
         let currentTreatmentsSectionWasCreated = self.currentTreatments.count == 0
         let currentTreatmentsSectionWasRemoved = self.currentTreatments.count == 1 && !isNowSelected
         
+        self.tableView.beginUpdates()
+        
         // This will edit the data model to reflect the new tableview state
         self.setCurrentTreatmentState(for: treatment, selected: isNowSelected)
-
+        
         // Calculate the new index path for the selected row
         if let newIndexPath = self.indexPath(of: treatment.identifier) {
             if currentTreatmentsSectionWasCreated {
@@ -331,7 +387,18 @@ public class TreatmentSelectionStepViewController: RSDStepViewController, UITabl
                 self.tableView.deleteSections(IndexSet(integer: 0), with: .left)
                 self.tableView.insertRows(at: [newIndexPath], with: .left)
             } else {
-                self.tableView.moveRow(at: indexPath, to: newIndexPath)
+                var adjustedNewIndexPath = newIndexPath
+                if noTreatmentsButton.isSelected,
+                    self.currentTreatments.first?.identifier == noTreatmentItem.identifier,
+                    treatment.identifier != noTreatmentItem.identifier {
+                    // This scenario is when the user has tapped a treatment,
+                    // but they also have the "No Treatment" check-box selected
+                    noTreatmentsButton.isSelected = false
+                    adjustedNewIndexPath = IndexPath(item: 0, section: 0)
+                    self.tableView.deleteRows(at: [adjustedNewIndexPath], with: .left)
+                    self.currentTreatments = self.currentTreatments.filter({ $0.identifier != noTreatmentItem.identifier })
+                }
+                self.tableView.moveRow(at: indexPath, to: adjustedNewIndexPath)
                 NSLog("Selecting and moving row from \(indexPath) to \(newIndexPath)")
             }
         } else {
@@ -343,7 +410,12 @@ public class TreatmentSelectionStepViewController: RSDStepViewController, UITabl
             } else {
                 self.tableView.deleteRows(at: [indexPath], with: .automatic)
             }
+            // Whether we are actually removing "No Treatments" or not
+            // we should de-select the check-box in this scenario
+            self.noTreatmentsButton.isSelected = false
         }
+
+        self.tableView.endUpdates()
         
         // Moving a cell does not trigger a display update,
         // so we need to manually add/remove the clear icon
@@ -354,9 +426,7 @@ public class TreatmentSelectionStepViewController: RSDStepViewController, UITabl
                 cellUnwrapped.removeImage?.image = UIImage(named: "AddIcon")
             }
         }
-
-        self.tableView.endUpdates()
-    
+        
         self.dismissKeyboard()
     }
     
