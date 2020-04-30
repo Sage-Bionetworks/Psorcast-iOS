@@ -445,11 +445,16 @@
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="813"/>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="l2c-8g-IEF">
+                                <rect key="frame" x="188.5" y="410" width="37" height="37"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="l2c-8g-IEF" firstAttribute="centerY" secondItem="s81-BP-z3Z" secondAttribute="centerY" id="Bp3-it-FWO"/>
                             <constraint firstItem="5qR-Rm-ota" firstAttribute="leading" secondItem="s81-BP-z3Z" secondAttribute="leading" id="C8n-5n-T5G"/>
                             <constraint firstItem="5qR-Rm-ota" firstAttribute="top" secondItem="aEA-Lq-LBx" secondAttribute="top" id="FTg-dJ-DsW"/>
+                            <constraint firstItem="l2c-8g-IEF" firstAttribute="centerX" secondItem="s81-BP-z3Z" secondAttribute="centerX" id="RWl-sx-Ot2"/>
                             <constraint firstItem="5qR-Rm-ota" firstAttribute="trailing" secondItem="s81-BP-z3Z" secondAttribute="trailing" id="Smt-4U-JUu"/>
                             <constraint firstItem="5qR-Rm-ota" firstAttribute="bottom" secondItem="s81-BP-z3Z" secondAttribute="bottom" id="mBp-xj-qQS"/>
                         </constraints>
@@ -457,6 +462,7 @@
                     </view>
                     <tabBarItem key="tabBarItem" title="Research" image="ResearchTabIcon" id="XIB-eJ-Sia"/>
                     <connections>
+                        <outlet property="progressIndicator" destination="l2c-8g-IEF" id="Ndg-o7-NeJ"/>
                         <outlet property="videoView" destination="5qR-Rm-ota" id="VM0-Fi-IxU"/>
                     </connections>
                 </viewController>

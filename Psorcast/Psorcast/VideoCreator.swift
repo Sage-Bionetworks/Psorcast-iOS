@@ -37,9 +37,9 @@ import AVFoundation
 import Photos
 import UIKit
 
-open class VideoExporter {
+open class VideoCreator {
  
-    struct RenderSettings {
+    public struct RenderSettings {
         public var processingQueue = DispatchQueue(label: "org.sagebase.Psorcast.video.exporter.processing")
         
         var width: CGFloat = 1125
@@ -50,7 +50,7 @@ open class VideoExporter {
         var avCodecKey = AVVideoCodecType.h264
         var videoFilename = "render"
         var videoFilenameExt = ".mp4"
-        var fileDirectory: FileManager.SearchPathDirectory = .cachesDirectory
+        var fileDirectory: FileManager.SearchPathDirectory = .documentDirectory
         var tmpDirectoryForUnitTests: String?
         
         var numOfFramesPerImage = 30
@@ -63,14 +63,15 @@ open class VideoExporter {
         }
 
         var outputURL: URL? {
+            let fullFilename = "\(videoFilename)\(videoFilenameExt)"
             
             if let tmpDir = self.tmpDirectoryForUnitTests {
-                return URL(fileURLWithPath: "\(tmpDir)\(videoFilename)\(videoFilenameExt)")
+                return URL(fileURLWithPath: "\(tmpDir)\(fullFilename)")
             }
             
             do {
                 let tmpDirURL = try FileManager.default.url(for: fileDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
-                return tmpDirURL.appendingPathComponent(videoFilename).appendingPathComponent(videoFilenameExt)
+                return tmpDirURL.appendingPathComponent(fullFilename)
             } catch {
                 print("ERROR: file output directory: \(error)")
             }
@@ -82,9 +83,12 @@ open class VideoExporter {
     enum FrameTransition {
         case none
         case crossFade
-    }
+    }        
     
-    class ImageAnimator {
+    open class Task {
+        
+        /// Set this flag to true for detailed debugging
+        public let detailedDebugging = true
 
         // Apple suggests a timescale of 600 because it's a multiple of standard video rates 24, 25, 30, 60 fps etc.
         static let kTimescale: Int32 = 600
@@ -94,7 +98,9 @@ open class VideoExporter {
 
         var frameNum = 0
         
-        var frames: [RenderFrame] = []
+        var frames: [RenderFrameUrl] = []
+        
+        fileprivate var isCancelled = AtomicBool(initialValue: false)
 
         class func saveToLibrary(videoURL: URL) {
             PHPhotoLibrary.requestAuthorization { status in
@@ -128,7 +134,7 @@ open class VideoExporter {
 
             // The VideoWriter will fail if a file exists at the URL, so clear it out first.
             if let url = settings.outputURL {
-                ImageAnimator.removeFileAtURL(fileURL: url)
+                Task.removeFileAtURL(fileURL: url)
                 
                 videoWriter.start()
                 videoWriter.render(appendPixelBuffers: appendPixelBuffers) {
@@ -136,53 +142,68 @@ open class VideoExporter {
                 }
             }
         }
+        
+        func cancelRender() {
+            _ = self.isCancelled.getAndSet(value: true)
+        }
 
         // This is the callback function for VideoWriter.render()
         func appendPixelBuffers(writer: VideoWriter) -> Bool {
 
-            let frameDuration = CMTimeMake(value: Int64(ImageAnimator.kTimescale / settings.fps), timescale: ImageAnimator.kTimescale)
-
-            let firstFrame = frames.first
-            
-            while !frames.isEmpty {
-
-                let frame = frames.removeFirst()
-                                                                      
-                while writer.isReadyForData == false {
-                    // Wait for writer to have more buffers to write to.
-                }
-                
-                let presentationTime = CMTimeMultiply(frameDuration, multiplier: Int32(frameNum))
-                let success = videoWriter.addImage(frame: frame, withPresentationTime: presentationTime)
-                if success == false {
-                    debugPrint("Failed to write opaque image")
-                }
-                
-                frameNum = frameNum + settings.numOfFramesPerImage
-                let nextPresentationTime = CMTimeMultiply(frameDuration, multiplier: Int32(frameNum))
-                
-                if settings.transition == .crossFade,
-                    let nextFrame = (frames.first ?? firstFrame) {
-                    // On all frames but the last, do the cross-fade into the next image
-                    let crossFadeDuration = CMTimeMultiply(frameDuration, multiplier: Int32(settings.numOfFramesPerTransition))
-                    // Cross fade start time
-                    var crossFadeTime = CMTimeSubtract(nextPresentationTime, crossFadeDuration)
-                    for i in 1...settings.numOfFramesPerTransition {
+            let frameDuration = CMTimeMake(value: Int64(Task.kTimescale / settings.fps), timescale: Task.kTimescale)
                         
-                        // Write the cross-faded frames
-                        while writer.isReadyForData == false {
-                            // Wait for writer to have more buffers to write to.
-                        }
-                        let transitioningIntoFrameAlpha = CGFloat(1.0) - ((CGFloat(settings.numOfFramesPerTransition) - CGFloat(i)) / CGFloat(settings.numOfFramesPerTransition))
+            for frameIdx in 0 ..< frames.count {
+                
+                if self.isCancelled.get() == true { return true }
+                
+                // Auto release pool is necessary here so that the video image frames
+                // will now get constantly released and don't build up
+                // Without it, auto-release only runs after for run-loop is over
+                autoreleasepool {
+                    let nextFrameIdx = (frameIdx < (frames.count - 1)) ? (frameIdx + 1) : 0
+                    
+                    if let curFrame: RenderFrameImage = frames[frameIdx].asFrameImage(),
+                        let nextFrame: RenderFrameImage = frames[nextFrameIdx].asFrameImage() {
+                    
+                        // Wait for writer to have more buffers to write to and check for cancellation
+                        while writer.isReadyForData == false {}
                         
-                        let success = videoWriter.addCrossFadeImages(frame: frame, transitioningIntoFrame: nextFrame, transitioningIntoFrameAlpha: transitioningIntoFrameAlpha, withPresentationTime: crossFadeTime)
+                        let presentationTime = CMTimeMultiply(frameDuration, multiplier: Int32(frameNum))
                         
-                        if success == false {
-                            debugPrint("Failed to write opaque image")
+                        if self.detailedDebugging {
+                            debugPrint("Wrote frame \(curFrame.text) at time \(presentationTime.value)")
                         }
                         
-                        // Move to next cross-faded frame
-                        crossFadeTime = CMTimeAdd(crossFadeTime, frameDuration)
+                        if !videoWriter.addImage(frame: curFrame, withPresentationTime: presentationTime) {
+                            print("ERROR: Video creator could not write frame \(curFrame.text) at time \(presentationTime.value)")
+                        }
+
+                        // Compute the next frame time
+                        frameNum = frameNum + settings.numOfFramesPerImage
+                        let nextPresentationTime = CMTimeMultiply(frameDuration, multiplier: Int32(frameNum))
+                        
+                        if settings.transition == .crossFade {
+                            let crossFadeDuration = CMTimeMultiply(frameDuration, multiplier: Int32(settings.numOfFramesPerTransition))
+                            var crossFadeTime = CMTimeSubtract(nextPresentationTime, crossFadeDuration)
+                            for i in 1...settings.numOfFramesPerTransition {
+                                
+                                // Wait for writer to have more buffers to write to and check for cancellation
+                                while writer.isReadyForData == false {}
+                                
+                                let transitioningIntoFrameAlpha = CGFloat(1.0) - ((CGFloat(settings.numOfFramesPerTransition) - CGFloat(i)) / CGFloat(settings.numOfFramesPerTransition))
+                                         
+                                if detailedDebugging {
+                                    debugPrint("Writing frame \(curFrame.text) faded into \(nextFrame.text) at alpha \(transitioningIntoFrameAlpha) time \(crossFadeTime.value)")
+                                }
+                                
+                                if !videoWriter.addCrossFadeImages(frame: curFrame, transitioningIntoFrame: nextFrame, transitioningIntoFrameAlpha: transitioningIntoFrameAlpha, withPresentationTime: crossFadeTime) {
+                                    print("ERROR: Video creator could not write frame")
+                                }
+                                
+                                // Move to next cross-faded frame
+                                crossFadeTime = CMTimeAdd(crossFadeTime, frameDuration)
+                            }
+                        }
                     }
                 }
             }
@@ -206,7 +227,7 @@ open class VideoExporter {
             return videoWriterInput?.isReadyForMoreMediaData ?? false
         }
 
-        class func pixelBufferFromImage(frame: RenderFrame, pixelBufferPool: CVPixelBufferPool, size: CGSize) -> CVPixelBuffer? {
+        class func pixelBufferFromImage(frame: RenderFrameImage, pixelBufferPool: CVPixelBufferPool, size: CGSize) -> CVPixelBuffer? {
 
             var pixelBufferOut: CVPixelBuffer?
 
@@ -269,7 +290,7 @@ open class VideoExporter {
             return pixelBuffer
         }
         
-        class func pixelBufferFromCrossFadeImage(frame: RenderFrame, transitioningIntoFrame: RenderFrame, transitioningIntoFrameAlpha: CGFloat, pixelBufferPool: CVPixelBufferPool, size: CGSize) -> CVPixelBuffer? {
+        class func pixelBufferFromCrossFadeImage(frame: RenderFrameImage, transitioningIntoFrame: RenderFrameImage, transitioningIntoFrameAlpha: CGFloat, pixelBufferPool: CVPixelBufferPool, size: CGSize) -> CVPixelBuffer? {
 
             var pixelBufferOut: CVPixelBuffer?
 
@@ -400,7 +421,7 @@ open class VideoExporter {
             precondition(pixelBufferAdaptor.pixelBufferPool != nil, "nil pixelBufferPool")
         }
 
-        func render(appendPixelBuffers: @escaping (VideoWriter)->Bool, completion: @escaping () -> Void) {
+        func render(appendPixelBuffers: @escaping (VideoWriter)-> Bool, completion: @escaping () -> Void) {
 
             precondition(videoWriter != nil, "Call start() to initialze the writer")
 
@@ -420,7 +441,7 @@ open class VideoExporter {
             }
         }
 
-        func addImage(frame: RenderFrame, withPresentationTime presentationTime: CMTime) -> Bool {
+        func addImage(frame: RenderFrameImage, withPresentationTime presentationTime: CMTime) -> Bool {
 
             precondition(pixelBufferAdaptor != nil, "Call start() to initialze the writer")
 
@@ -433,7 +454,7 @@ open class VideoExporter {
             return true
         }
         
-        func addCrossFadeImages(frame: RenderFrame, transitioningIntoFrame: RenderFrame, transitioningIntoFrameAlpha: CGFloat, withPresentationTime presentationTime: CMTime) -> Bool {
+        func addCrossFadeImages(frame: RenderFrameImage, transitioningIntoFrame: RenderFrameImage, transitioningIntoFrameAlpha: CGFloat, withPresentationTime presentationTime: CMTime) -> Bool {
 
             precondition(pixelBufferAdaptor != nil, "Call start() to initialze the writer")
 
@@ -447,7 +468,24 @@ open class VideoExporter {
         }
     }
     
-    struct RenderFrame {
+    struct RenderFrameUrl {
+        var url: URL
+        var text: String
+        
+        func asFrameImage() -> RenderFrameImage? {
+            do {
+                let imageData = try Data(contentsOf: url)
+                if let image = UIImage(data: imageData) {
+                    return RenderFrameImage(image: image, text: self.text)
+                }
+            } catch {
+                print("Error loading image : \(error)")
+            }
+            return nil
+        }
+    }
+    
+    struct RenderFrameImage {
         var image: UIImage
         var text: String
     }

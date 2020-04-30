@@ -222,6 +222,9 @@ open class MasterScheduleManager : SBAScheduleManager {
             taskController.taskViewModel.taskResult.stepHistory.append(RSDAnswerResultObject(identifier: "participantID", answerType: .string, value: participantID))
         }
         
+        // Allow the image report manager to process a potential video frame
+        ImageReportManager.shared.processTaskResult(taskController, profileManager: self.profileManager)
+        
         super.saveResults(from: taskViewModel)
     }
     

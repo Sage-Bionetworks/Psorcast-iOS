@@ -56,6 +56,10 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
     @IBOutlet weak var insightProgressBar: UIProgressView!
     @IBOutlet weak var insightProgressBarHeight: NSLayoutConstraint!
     @IBOutlet weak var insightAchievedImage: UIImageView!
+        
+    /// The current scheduled activities, these are maintianed separately from
+    /// the master schedule manager for performance reasons
+    var currentActivityState = [ActivityState]()
     
     /// The activities collection view
     @IBOutlet weak var collectionView: UICollectionView!
@@ -77,6 +81,7 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
     
     /// The profile manager
     let profileManager = (AppDelegate.shared as? AppDelegate)?.profileManager
+    var currentTreatmentDate: Date? = nil
     open func treatmentWeek() -> Int {
         let now = Date()
         return self.profileManager?.treatmentWeek(toNow: now) ?? 1
@@ -96,24 +101,29 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
         
         // Reload the schedules and add an observer to observe changes.
         NotificationCenter.default.addObserver(forName: .SBAUpdatedScheduledActivities, object: scheduleManager, queue: OperationQueue.main) { (notification) in
-                        
-            self.gridLayout.itemCount = self.scheduleManager.sortedScheduleCount
+                                                            
             self.refreshUI()
         }
         
         // Reload the schedules and add an observer to observe changes.
         if let manager = profileManager {
             NotificationCenter.default.addObserver(forName: .SBAUpdatedReports, object: manager, queue: OperationQueue.main) { (notification) in
-                self.refreshUI()                                
+                                
+                self.refreshUI()
             }
         }
         
-        if let profileManager = SBAProfileManagerObject.shared as? SBAProfileManagerObject {
-            profileManager.reloadData()
-        }
+        self.profileManager?.reloadData()
+        self.scheduleManager.reloadData()
         
         // We have seen the measure screen, remove any badge numbers from notifications
         UIApplication.shared.applicationIconBadgeNumber = 0
+    }
+    
+    fileprivate func updateScheduledActivities() {
+        if let newActivities = self.scheduleManager.sortActivities(self.scheduleManager.scheduledActivities) {
+            self.updateCollectionView(newActivities: newActivities)
+        }
     }
     
     override open func viewWillAppear(_ animated: Bool) {
@@ -121,8 +131,7 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
         
         // Schedule expiration timer to run every second
         self.renewelTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.updateTimeFormattedText), userInfo: nil, repeats: true)
-        
-        self.scheduleManager.reloadData()
+                
         self.refreshUI()
     }
     
@@ -156,7 +165,70 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
         self.updateTimeFormattedText()
         self.updateInsightProgress()
         
-        self.collectionView.reloadData()
+        if let newActivities = self.scheduleManager.sortActivities(self.scheduleManager.scheduledActivities) {
+            self.updateCollectionView(newActivities: newActivities)
+        }
+    }
+    
+    /// Due to a performance hit of updating the collection view, let's only do it when necessary
+    func updateCollectionView(newActivities: [SBBScheduledActivity]) {
+        
+        // Check for a change in treatment selection date, which should refresh the whole list
+        let treatmentDate = self.profileManager?.treatmentsDate
+        let treatmentDateChanged = self.currentTreatmentDate?.timeIntervalSince1970 != treatmentDate?.timeIntervalSince1970
+        self.currentTreatmentDate = treatmentDate
+        
+        let newItemCount = newActivities.count
+        // Check for a change in the number of activity items
+        if self.currentActivityState.count != newItemCount || treatmentDateChanged {
+            debugPrint("Collection view item count has changed")
+            self.refreshActivityState(to: newActivities)
+            self.gridLayout.itemCount = newItemCount
+            self.collectionView.reloadData()
+            return
+        }
+        
+        // Check for if an activity was finished, then just update that activity
+        var indexPathsToUpdate = [IndexPath]()
+        for (idx, activity) in newActivities.enumerated() {
+            if let oldActivity = self.currentActivityState.first(where: { $0.identifier == activity.activityIdentifier }),
+                let newFinishedOn = activity.finishedOn,
+                !(oldActivity.finishedOn?.timeIntervalSince1970 == newFinishedOn.timeIntervalSince1970),
+                let indexPath = self.collectionViewIndexPath(for: idx) {
+                indexPathsToUpdate.append(indexPath)
+            }
+        }
+        
+        debugPrint("Collection view index paths to update \(indexPathsToUpdate)")
+        if !indexPathsToUpdate.isEmpty {
+            self.collectionView.reloadItems(at: indexPathsToUpdate)
+        }
+        
+        // Refresh to current activity states
+        self.refreshActivityState(to: newActivities)
+    }
+    
+    fileprivate func refreshActivityState(to newActivities: [SBBScheduledActivity]) {
+        self.currentActivityState = newActivities.map({ (activity) -> ActivityState in
+            if let finishedOn = activity.finishedOn {
+                return ActivityState(identifier: activity.activityIdentifier, finishedOn: Date(timeIntervalSince1970: finishedOn.timeIntervalSince1970))
+            }
+            return ActivityState(identifier: activity.activityIdentifier, finishedOn: nil)
+        })
+    }
+    
+    /// Compute the index path for the element
+    func collectionViewIndexPath(for itemIndex: Int) -> IndexPath? {
+        for section in 0 ..< self.gridLayout.sectionCount {
+            for column in 0 ..< self.gridLayout.itemCountInGridRow(gridRow: section) {
+                let indexPath = IndexPath(item: column, section: section)
+                if itemIndex == self.gridLayout.itemIndex(for: indexPath) {
+                    return indexPath
+                }
+            }
+        }
+        debugPrint("Collection view could not find index path for item idx \(itemIndex)")
+        return nil
     }
     
     func updateDesignSystem() {
@@ -324,7 +396,6 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
     }
         
     @objc func updateTimeFormattedText() {
-
         self.updateCurrentTreatmentsText()
         
         guard let setTreatmentsDate = self.profileManager?.treatmentsDate else {
@@ -420,7 +491,6 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
 
     fileprivate func setupCollectionView() {
         self.setupCollectionViewSizes()
-        
         self.collectionView.collectionViewLayout = self.gridLayout
     }
     
@@ -472,6 +542,10 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
             let title = self.scheduleManager.detail(for: itemIndex)
             let buttonTitle = self.scheduleManager.title(for: itemIndex)
             let image = self.scheduleManager.image(for: itemIndex)
+            
+            if self.scheduleManager.sortActivities(self.scheduleManager.scheduledActivities)?[itemIndex].activityIdentifier == RSDIdentifier.walkingTask.rawValue {
+                let i = 0
+            }
             
             var isComplete = false
             if let setTreatmentsDate = self.profileManager?.treatmentsDate,
@@ -580,4 +654,9 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
 
 protocol MeasureTabCollectionViewCellDelegate: class {
     func didTapItem(for itemIndex: Int)
+}
+
+struct ActivityState {
+    var identifier: String?
+    var finishedOn: Date?
 }

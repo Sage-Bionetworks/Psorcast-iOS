@@ -163,6 +163,7 @@ open class DigitalJarOpenCompletionStepViewController: RSDStepViewController, UI
         // Create the result and set it as the result for this step
         var result = RSDFileResultObject(identifier: self.summaryResultIdentifier)
         result.url = url
+        result.contentType = "image/jpeg"
         _ = self.stepViewModel.parent?.taskResult.appendStepHistory(with: result)
     }
 

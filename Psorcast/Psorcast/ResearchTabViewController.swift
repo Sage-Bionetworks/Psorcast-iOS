@@ -38,7 +38,22 @@ import BridgeSDK
 
 open class ResearchTabViewController: UIViewController {
     
+    /// For debugging and demos, it may be useful to set this flag to true
+    fileprivate let shouldPrepopulateDigitalJarOpenImages = true
+    fileprivate let taskVideoToView = RSDIdentifier.handImagingTask.rawValue
+    
+    /// The date when pre-population will start and subtract an hour every image added
+    /// These images will be associated with the treatment date range they fall within.
+    fileprivate let prepopulateDate = StudyProfileManager.profileDateFormatter().date(from: "2020-04-29T00:26:08.393-0700")
+    
     @IBOutlet weak var videoView: UIView!
+    @IBOutlet weak var progressIndicator: UIActivityIndicatorView!
+    
+    /// The image report manager
+    let imageReportManager = ImageReportManager.shared
+    
+    /// The profile manager
+    let profileManager = (AppDelegate.shared as? AppDelegate)?.profileManager
     
     /// Video player variables
     var playerLayer: AVPlayerLayer?
@@ -50,43 +65,90 @@ open class ResearchTabViewController: UIViewController {
 
     override open func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        var settings = VideoExporter.RenderSettings()
-        settings.tmpDirectoryForUnitTests = NSTemporaryDirectory()
-        //settings.transition = VideoExporter.FrameTransition.none
-        settings.transition = VideoExporter.FrameTransition.crossFade
-        
-        var frames = [VideoExporter.RenderFrame]()
-        for index in 1...52 {
-            if let image = UIImage(named: "DJO\((index % 4) + 1)") {
-                let day = (index) + 1
-                let dateTxt = "4/\(day)/2020"
-                let frame = VideoExporter.RenderFrame(image: image, text: dateTxt)
-                frames.append(frame)
-            }
+                
+        if shouldPrepopulateDigitalJarOpenImages {
+            self.prepopulateDigitalJarOpenImages()
         }
         
-        let imageAnimator = VideoExporter.ImageAnimator(renderSettings: settings)
-        imageAnimator.frames = frames
-        let startTime = Date().timeIntervalSince1970
-        imageAnimator.render() {
-            if let url = settings.outputURL {
-                let endTime = Date().timeIntervalSince1970
-                debugPrint("Video Render took \(endTime - startTime)ms")
-                self.configure(videoUrl: url)
-                self.play()
+        DispatchQueue.main.async {
+            self.progressIndicator.isHidden = false
+        }
+        
+        // Check for when new videos are created
+        NotificationCenter.default.addObserver(forName: ImageReportManager.newVideoCreated, object: self.imageReportManager, queue: OperationQueue.main) { (notification) in
+                                    
+            if let videoUrl = notification.userInfo?[ImageReportManager.NotificationKey.videoUrl] as? URL {
+                DispatchQueue.main.async {
+                    self.progressIndicator.isHidden = true
+                    self.stop()
+                    self.configure(videoUrl: videoUrl)
+                    self.play()
+                }
             }
         }
+        // Re-create the digital jar open video
+        self.imageReportManager.createCurrentTreatmentVideo(for: taskVideoToView, using: self.profileManager)
+    }
+    
+    override open func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        
+        debugPrint("Memory issue!")
+        self.pause()
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0, execute:  {
+            // delay for 2 seconds
+            self.play()
+        })
+    }
+    
+    func prepopulateDigitalJarOpenImages() {
+                
+        let now = prepopulateDate ?? Date()
+        let calendar = Calendar.current
+        for index in 1...4 {
+            let date = calendar.date(byAdding: .hour, value: -1 * index, to: now) ?? now
+            let dateStr = StudyProfileManager.profileDateFormatter().string(from: date)
+            let imageName = "DigitalJarOpen_\(dateStr)"
+            let assetImageName = "DJO\(index)"
+            if let image = UIImage(named: assetImageName) {
+                // Create a copy of the image in documents folder, made to look like digital jar open results
+                _ = self.createLocalUrl(forImageNamed: imageName, image: image)
+            }
+        }
+    }
+    
+    func createLocalUrl(forImageNamed name: String, image: UIImage) -> URL? {
+
+        let fileManager = FileManager.default
+        guard let cacheDirectory = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first else { return nil }
+        let url = cacheDirectory.appendingPathComponent("\(name).jpg")
+
+        guard fileManager.fileExists(atPath: url.path) else {
+            guard let data = image.jpegData(compressionQuality: 1.0)
+            else { return nil }
+
+            fileManager.createFile(atPath: url.path, contents: data, attributes: nil)
+            return url
+        }
+
+        return url
     }
     
     func configure(videoUrl: URL) {
         player = AVPlayer(url: videoUrl)
         playerLayer = AVPlayerLayer(player: player)
             playerLayer?.frame = self.videoView.bounds
+        
         playerLayer?.videoGravity = AVLayerVideoGravity.resizeAspect
+        
+        // Remove previous layers
+        self.videoView.layer.sublayers?.forEach({ $0.removeFromSuperlayer() })
+        
         if let playerLayer = self.playerLayer {
             self.videoView.layer.addSublayer(playerLayer)
         }
+        
         NotificationCenter.default.addObserver(self, selector: #selector(reachTheEndOfTheVideo(_:)), name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: self.player?.currentItem)
         self.isConfigured = true
     }

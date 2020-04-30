@@ -104,8 +104,11 @@
 		CBA8390E234A6B3F00408D81 /* EndOfValidationStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA8390C234A6B3F00408D81 /* EndOfValidationStepViewController.swift */; };
 		CBA8390F234A6B3F00408D81 /* EndOfValidationStepViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CBA8390D234A6B3F00408D81 /* EndOfValidationStepViewController.xib */; };
 		CBAA09CF243E4F5500D63CCD /* TreatmentSelectionResultObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBAA09CE243E4F5500D63CCD /* TreatmentSelectionResultObject.swift */; };
+		CBAAB6D32458B53C00C1A619 /* ImageReportManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBAAB6D22458B53C00C1A619 /* ImageReportManager.swift */; };
+		CBAAB6D92458CB2D00C1A619 /* AtomicBool.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBAAB6D82458CB2D00C1A619 /* AtomicBool.swift */; };
+		CBAAB6DD2458D30F00C1A619 /* FileManagerExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBAAB6DC2458D30F00C1A619 /* FileManagerExtensions.swift */; };
+		CBAAB6E2245914FF00C1A619 /* VideoCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBAAB6E1245914FF00C1A619 /* VideoCreator.swift */; };
 		CBADD5372450C33A00422CE4 /* VideoExporterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBADD5362450C33A00422CE4 /* VideoExporterTests.swift */; };
-		CBADD53D2450ECC600422CE4 /* VideoExporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBADD53C2450ECC600422CE4 /* VideoExporter.swift */; };
 		CBADD53F2450ED1200422CE4 /* ResearchTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBADD53E2450ED1200422CE4 /* ResearchTabViewController.swift */; };
 		CBAF1DA32437C93700ECC699 /* StudyProfileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBAF1DA22437C93700ECC699 /* StudyProfileManager.swift */; };
 		CBAF1DA92437CB2A00ECC699 /* StudyExternalIdRegistrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBAF1DA82437CB2A00ECC699 /* StudyExternalIdRegistrationViewController.swift */; };
@@ -423,8 +426,11 @@
 		CBA8390C234A6B3F00408D81 /* EndOfValidationStepViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EndOfValidationStepViewController.swift; sourceTree = "<group>"; };
 		CBA8390D234A6B3F00408D81 /* EndOfValidationStepViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EndOfValidationStepViewController.xib; sourceTree = "<group>"; };
 		CBAA09CE243E4F5500D63CCD /* TreatmentSelectionResultObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TreatmentSelectionResultObject.swift; sourceTree = "<group>"; };
+		CBAAB6D22458B53C00C1A619 /* ImageReportManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageReportManager.swift; sourceTree = "<group>"; };
+		CBAAB6D82458CB2D00C1A619 /* AtomicBool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomicBool.swift; sourceTree = "<group>"; };
+		CBAAB6DC2458D30F00C1A619 /* FileManagerExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManagerExtensions.swift; sourceTree = "<group>"; };
+		CBAAB6E1245914FF00C1A619 /* VideoCreator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoCreator.swift; sourceTree = "<group>"; };
 		CBADD5362450C33A00422CE4 /* VideoExporterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoExporterTests.swift; sourceTree = "<group>"; };
-		CBADD53C2450ECC600422CE4 /* VideoExporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoExporter.swift; sourceTree = "<group>"; };
 		CBADD53E2450ED1200422CE4 /* ResearchTabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResearchTabViewController.swift; sourceTree = "<group>"; };
 		CBAF1DA22437C93700ECC699 /* StudyProfileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyProfileManager.swift; sourceTree = "<group>"; };
 		CBAF1DA82437CB2A00ECC699 /* StudyExternalIdRegistrationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyExternalIdRegistrationViewController.swift; sourceTree = "<group>"; };
@@ -576,7 +582,9 @@
 			children = (
 				CB4794F02426B33300D5A7E6 /* LevenshteinTools.swift */,
 				CB4794F22426B36C00D5A7E6 /* ViewUtils.swift */,
-				CBADD53C2450ECC600422CE4 /* VideoExporter.swift */,
+				CBAAB6D82458CB2D00C1A619 /* AtomicBool.swift */,
+				CBAAB6DC2458D30F00C1A619 /* FileManagerExtensions.swift */,
+				CBAAB6E1245914FF00C1A619 /* VideoCreator.swift */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -666,6 +674,7 @@
 				CBE5614E2412BD96009A2930 /* TryItFirstTaskScheduleManager.swift */,
 				CB27B9F0243596F4007D36D8 /* MasterScheduleManager.swift */,
 				CB16C38424465BB80046E200 /* ReminderManager.swift */,
+				CBAAB6D22458B53C00C1A619 /* ImageReportManager.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -1245,7 +1254,6 @@
 				CBDCDCAE23F3849E00E5CEB8 /* TouchDrawableView.swift in Sources */,
 				CBDCDCA823F3849E00E5CEB8 /* PsoriasisAreaPhotoCompletionStepViewController.swift in Sources */,
 				CBDCDC9F23F3849E00E5CEB8 /* JointPainCompletionStepViewController.swift in Sources */,
-				CBADD53D2450ECC600422CE4 /* VideoExporter.swift in Sources */,
 				CBDCDCB223F3849E00E5CEB8 /* DigitalJarOpenStepViewController.swift in Sources */,
 				CBDCDCAD23F3849E00E5CEB8 /* PsoriasisDrawResultObject.swift in Sources */,
 				CBDCDCB723F384A400E5CEB8 /* TaskFactory.swift in Sources */,
@@ -1258,6 +1266,7 @@
 				CB16C38C24465BC20046E200 /* ReminderStepViewController.swift in Sources */,
 				CBDCDCB323F3849E00E5CEB8 /* DigitalJarOpenCompletionStepViewController.swift in Sources */,
 				CB1535E024395410007D0307 /* ProfileTabViewController.swift in Sources */,
+				CBAAB6D92458CB2D00C1A619 /* AtomicBool.swift in Sources */,
 				CBDCDCA923F3849E00E5CEB8 /* PsoriasisDrawStepViewController.swift in Sources */,
 				CB4794F32426B36C00D5A7E6 /* ViewUtils.swift in Sources */,
 				CBDCDCA323F3849E00E5CEB8 /* PsoriasisAreaPhotoStepViewController.swift in Sources */,
@@ -1271,6 +1280,7 @@
 				CBADD53F2450ED1200422CE4 /* ResearchTabViewController.swift in Sources */,
 				CBDCDC9123F3849E00E5CEB8 /* EndOfValidationStepViewController.swift in Sources */,
 				CBDCDCBC23F384A800E5CEB8 /* PSRImageHelper.swift in Sources */,
+				CBAAB6E2245914FF00C1A619 /* VideoCreator.swift in Sources */,
 				CBDCDC9723F3849E00E5CEB8 /* ImageCaptureCompletionStepViewController.swift in Sources */,
 				CBDCDC9323F3849E00E5CEB8 /* ParticipantIDRegistrationViewController.swift in Sources */,
 				CB09F0382421D5730005698D /* TreatmentSelectionStepViewController.swift in Sources */,
@@ -1282,6 +1292,8 @@
 				CB16C38924465BB80046E200 /* ReminderManager.swift in Sources */,
 				CBDCDC9D23F3849E00E5CEB8 /* JointPainStepViewController.swift in Sources */,
 				CB4794F12426B33300D5A7E6 /* LevenshteinTools.swift in Sources */,
+				CBAAB6D32458B53C00C1A619 /* ImageReportManager.swift in Sources */,
+				CBAAB6DD2458D30F00C1A619 /* FileManagerExtensions.swift in Sources */,
 				CB7CF2422400BF10003E02A5 /* WelcomeVideoViewController.swift in Sources */,
 				CBDCDC9823F3849E00E5CEB8 /* ReviewCaptureStepViewController.swift in Sources */,
 				CBAA09CF243E4F5500D63CCD /* TreatmentSelectionResultObject.swift in Sources */,
