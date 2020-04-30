@@ -178,6 +178,50 @@ open class StudyProfileManager: SBAProfileManagerObject {
         }
     }
     
+    var allTreatmentRanges: [TreatmentRange] {
+        var treatmentRanges = [TreatmentRange]()
+        
+        let treatmentReports =
+            self.reports.filter({ $0.reportKey == RSDIdentifier.treatmentTask.rawValue })
+                .sorted(by: { $0.date < $1.date })
+        
+        var currentTreatmentReport: TreatmentReportStruct? = nil
+        let lastReportIdx = (treatmentReports.count - 1)
+        for reportIdx in 0 ..< treatmentReports.count {
+            
+            let report = treatmentReports[reportIdx]
+            if let treatmentReport = TreatmentReportStruct.from(clientData:  report.clientData),
+                let treatments = treatmentReport.treatmentSelection {
+                
+                if let prevTreatment = currentTreatmentReport {
+                    if let prevTreatmentSelection = prevTreatment.treatmentSelection,
+                        self.haveTreatmentsChanged(from: prevTreatmentSelection, to: treatments),
+                        let prevTreatmentDate = prevTreatment.treatmentSelectionDate,
+                        let currentTreatmentDate = treatmentReport.treatmentSelectionDate {
+                        
+                        treatmentRanges.append(TreatmentRange(treatments: treatments, startDate: prevTreatmentDate, endDate: currentTreatmentDate))
+                    }
+                }
+                currentTreatmentReport = treatmentReport
+                
+                if reportIdx == lastReportIdx,
+                    let treatmentDate = treatmentReport.treatmentSelectionDate {  // Last treatment, add a report
+                    treatmentRanges.append(TreatmentRange(treatments: treatments, startDate: treatmentDate, endDate: nil))
+                }
+            }
+        }
+        
+        return treatmentRanges
+    }
+    
+    func haveTreatmentsChanged(from: [String], to: [String]) -> Bool {
+        guard from.count == to.count else { return false }
+        for i in 0..<from.count {
+            guard from[i] == to[i] else { return false }
+        }
+        return true
+    }
+    
     open var diagnosis: String? {
         return self.value(forProfileKey: ProfileIdentifier.diagnosis.id) as? String
     }
@@ -372,6 +416,54 @@ open class StudyProfileManager: SBAProfileManagerObject {
             break
         }
         return try super.decodeItem(from: decoder, with: type)
+    }
+}
+
+public struct TreatmentReportStruct {
+    var psoriasisStatus: String?
+    var psoriasisStatusDate: Date?
+    var psoriasisSymptoms: String?
+    var psoriasisSymptomsDate: Date?
+    var treatmentSelection: [String]?
+    var treatmentSelectionDate: Date?
+    
+    public static func from(clientData: SBBJSONValue?) -> TreatmentReportStruct? {
+        guard let clientDataDict = clientData as? [String : Any] else { return nil }
+        
+        var psoriasisStatusDate: Date? = nil
+        if let psoriasisStatusDateStr = clientDataDict["psoriasisStatusDate"] as? String {
+            psoriasisStatusDate = StudyProfileManager.profileDateFormatter().date(from: psoriasisStatusDateStr)
+        }
+        
+        var psoriasisSymptomsDate: Date? = nil
+        if let psoriasisSymptomsDateStr = clientDataDict["psoriasisSymptomsDate"] as? String {
+            psoriasisSymptomsDate = StudyProfileManager.profileDateFormatter().date(from: psoriasisSymptomsDateStr)
+        }
+        
+        var treatmentSelectionDate: Date? = nil
+        if let treatmentSelectionDateStr = clientDataDict["treatmentSelectionDate"] as? String {
+            treatmentSelectionDate = StudyProfileManager.profileDateFormatter().date(from: treatmentSelectionDateStr)
+        }
+        
+        return TreatmentReportStruct(
+            psoriasisStatus: clientDataDict["psoriasisStatus"] as? String,
+            psoriasisStatusDate: psoriasisStatusDate,
+            psoriasisSymptoms: clientDataDict["psoriasisSymptoms"] as? String,
+            psoriasisSymptomsDate: psoriasisSymptomsDate,
+            treatmentSelection: clientDataDict["treatmentSelection"] as? [String],
+            treatmentSelectionDate: treatmentSelectionDate)
+    }
+}
+
+
+public struct TreatmentRange {
+    var treatments: [String]
+    var startDate: Date
+    var endDate: Date?
+    
+    func range() -> ClosedRange<Date>? {
+        guard let endDateUnwrapped = endDate else { return nil }
+        return ClosedRange(uncheckedBounds: (startDate, endDateUnwrapped))
     }
 }
 

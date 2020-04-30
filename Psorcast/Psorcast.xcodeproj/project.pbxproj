@@ -72,6 +72,8 @@
 		CB7CF2422400BF10003E02A5 /* WelcomeVideoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB7CF2412400BF10003E02A5 /* WelcomeVideoViewController.swift */; };
 		CB7CF2482400CFAA003E02A5 /* WelcomeVideo.mov in Resources */ = {isa = PBXBuildFile; fileRef = CB7CF2472400CFAA003E02A5 /* WelcomeVideo.mov */; };
 		CB81C92E242D3AB100A84886 /* MeasureTabViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB81C92D242D3AB100A84886 /* MeasureTabViewControllerTests.swift */; };
+		CB844C72245B4D5100539987 /* ReviewVideoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB844C71245B4D5100539987 /* ReviewVideoViewController.swift */; };
+		CB844C78245B4D6F00539987 /* ReviewVideoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB844C77245B4D6F00539987 /* ReviewVideoViewController.xib */; };
 		CB85FB52235F505300FDC59B /* PsoriasisDrawTaskResultProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB85FB51235F505300FDC59B /* PsoriasisDrawTaskResultProcessor.swift */; };
 		CB85FB56235F5C5500FDC59B /* SelectedIdentifiersResultObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB85FB55235F5C5500FDC59B /* SelectedIdentifiersResultObject.swift */; };
 		CB8AE6FD233FB53400F5F8AC /* PsoriasisDraw.json in Resources */ = {isa = PBXBuildFile; fileRef = CB8AE6FC233FB53400F5F8AC /* PsoriasisDraw.json */; };
@@ -104,6 +106,12 @@
 		CBA8390E234A6B3F00408D81 /* EndOfValidationStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA8390C234A6B3F00408D81 /* EndOfValidationStepViewController.swift */; };
 		CBA8390F234A6B3F00408D81 /* EndOfValidationStepViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CBA8390D234A6B3F00408D81 /* EndOfValidationStepViewController.xib */; };
 		CBAA09CF243E4F5500D63CCD /* TreatmentSelectionResultObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBAA09CE243E4F5500D63CCD /* TreatmentSelectionResultObject.swift */; };
+		CBAAB6D32458B53C00C1A619 /* ImageReportManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBAAB6D22458B53C00C1A619 /* ImageReportManager.swift */; };
+		CBAAB6D92458CB2D00C1A619 /* AtomicBool.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBAAB6D82458CB2D00C1A619 /* AtomicBool.swift */; };
+		CBAAB6DD2458D30F00C1A619 /* FileManagerExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBAAB6DC2458D30F00C1A619 /* FileManagerExtensions.swift */; };
+		CBAAB6E2245914FF00C1A619 /* VideoCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBAAB6E1245914FF00C1A619 /* VideoCreator.swift */; };
+		CBADD5372450C33A00422CE4 /* VideoExporterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBADD5362450C33A00422CE4 /* VideoExporterTests.swift */; };
+		CBADD53F2450ED1200422CE4 /* ResearchTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBADD53E2450ED1200422CE4 /* ResearchTabViewController.swift */; };
 		CBAF1DA32437C93700ECC699 /* StudyProfileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBAF1DA22437C93700ECC699 /* StudyProfileManager.swift */; };
 		CBAF1DA92437CB2A00ECC699 /* StudyExternalIdRegistrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBAF1DA82437CB2A00ECC699 /* StudyExternalIdRegistrationViewController.swift */; };
 		CBB90AE82381FF8700F1DFA4 /* PsoriasisAreaPhoto.mov in Resources */ = {isa = PBXBuildFile; fileRef = CBB90AE52381FF8500F1DFA4 /* PsoriasisAreaPhoto.mov */; };
@@ -214,6 +222,7 @@
 		CBDCDCDB23F385EC00E5CEB8 /* ResearchUI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CBDCDCD923F385EC00E5CEB8 /* ResearchUI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		CBDD30E62416C7D1003B0488 /* PsorcastAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CBDD30E12416C7D1003B0488 /* PsorcastAssets.xcassets */; };
 		CBDD30E82416D403003B0488 /* MeasureTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBDD30E72416D403003B0488 /* MeasureTabViewController.swift */; };
+		CBE1D7DC245A97350063FEB2 /* ReviewTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE1D7DB245A97350063FEB2 /* ReviewTabViewController.swift */; };
 		CBE561532412BD96009A2930 /* TryItFirstTaskScheduleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE5614E2412BD96009A2930 /* TryItFirstTaskScheduleManager.swift */; };
 		CBE561552412BD9D009A2930 /* TryItFirstTaskTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE561542412BD9D009A2930 /* TryItFirstTaskTableViewController.swift */; };
 		CBE908952332ED9E00F88A9A /* PsoriasisAreaPhoto.json in Resources */ = {isa = PBXBuildFile; fileRef = CBE908942332ED9E00F88A9A /* PsoriasisAreaPhoto.json */; };
@@ -393,6 +402,8 @@
 		CB7CF2412400BF10003E02A5 /* WelcomeVideoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeVideoViewController.swift; sourceTree = "<group>"; };
 		CB7CF2472400CFAA003E02A5 /* WelcomeVideo.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = WelcomeVideo.mov; sourceTree = "<group>"; };
 		CB81C92D242D3AB100A84886 /* MeasureTabViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MeasureTabViewControllerTests.swift; sourceTree = "<group>"; };
+		CB844C71245B4D5100539987 /* ReviewVideoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewVideoViewController.swift; sourceTree = "<group>"; };
+		CB844C77245B4D6F00539987 /* ReviewVideoViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReviewVideoViewController.xib; sourceTree = "<group>"; };
 		CB85FB51235F505300FDC59B /* PsoriasisDrawTaskResultProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PsoriasisDrawTaskResultProcessor.swift; sourceTree = "<group>"; };
 		CB85FB55235F5C5500FDC59B /* SelectedIdentifiersResultObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedIdentifiersResultObject.swift; sourceTree = "<group>"; };
 		CB8AE6FC233FB53400F5F8AC /* PsoriasisDraw.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = PsoriasisDraw.json; sourceTree = "<group>"; };
@@ -420,6 +431,12 @@
 		CBA8390C234A6B3F00408D81 /* EndOfValidationStepViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EndOfValidationStepViewController.swift; sourceTree = "<group>"; };
 		CBA8390D234A6B3F00408D81 /* EndOfValidationStepViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EndOfValidationStepViewController.xib; sourceTree = "<group>"; };
 		CBAA09CE243E4F5500D63CCD /* TreatmentSelectionResultObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TreatmentSelectionResultObject.swift; sourceTree = "<group>"; };
+		CBAAB6D22458B53C00C1A619 /* ImageReportManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageReportManager.swift; sourceTree = "<group>"; };
+		CBAAB6D82458CB2D00C1A619 /* AtomicBool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomicBool.swift; sourceTree = "<group>"; };
+		CBAAB6DC2458D30F00C1A619 /* FileManagerExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManagerExtensions.swift; sourceTree = "<group>"; };
+		CBAAB6E1245914FF00C1A619 /* VideoCreator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoCreator.swift; sourceTree = "<group>"; };
+		CBADD5362450C33A00422CE4 /* VideoExporterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoExporterTests.swift; sourceTree = "<group>"; };
+		CBADD53E2450ED1200422CE4 /* ResearchTabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResearchTabViewController.swift; sourceTree = "<group>"; };
 		CBAF1DA22437C93700ECC699 /* StudyProfileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyProfileManager.swift; sourceTree = "<group>"; };
 		CBAF1DA82437CB2A00ECC699 /* StudyExternalIdRegistrationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyExternalIdRegistrationViewController.swift; sourceTree = "<group>"; };
 		CBB90AE52381FF8500F1DFA4 /* PsoriasisAreaPhoto.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = PsoriasisAreaPhoto.mov; sourceTree = "<group>"; };
@@ -462,6 +479,7 @@
 		CBDCDCD923F385EC00E5CEB8 /* ResearchUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = ResearchUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CBDD30E12416C7D1003B0488 /* PsorcastAssets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = PsorcastAssets.xcassets; sourceTree = "<group>"; };
 		CBDD30E72416D403003B0488 /* MeasureTabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeasureTabViewController.swift; sourceTree = "<group>"; };
+		CBE1D7DB245A97350063FEB2 /* ReviewTabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewTabViewController.swift; sourceTree = "<group>"; };
 		CBE5614E2412BD96009A2930 /* TryItFirstTaskScheduleManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TryItFirstTaskScheduleManager.swift; sourceTree = "<group>"; };
 		CBE561542412BD9D009A2930 /* TryItFirstTaskTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TryItFirstTaskTableViewController.swift; sourceTree = "<group>"; };
 		CBE908942332ED9E00F88A9A /* PsoriasisAreaPhoto.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = PsoriasisAreaPhoto.json; sourceTree = "<group>"; };
@@ -570,6 +588,9 @@
 			children = (
 				CB4794F02426B33300D5A7E6 /* LevenshteinTools.swift */,
 				CB4794F22426B36C00D5A7E6 /* ViewUtils.swift */,
+				CBAAB6D82458CB2D00C1A619 /* AtomicBool.swift */,
+				CBAAB6DC2458D30F00C1A619 /* FileManagerExtensions.swift */,
+				CBAAB6E1245914FF00C1A619 /* VideoCreator.swift */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -591,6 +612,10 @@
 				CBAA09CE243E4F5500D63CCD /* TreatmentSelectionResultObject.swift */,
 				CB16C38A24465BC20046E200 /* ReminderStepViewController.swift */,
 				CB16C38B24465BC20046E200 /* ReminderStepViewController.xib */,
+				CBE1D7DB245A97350063FEB2 /* ReviewTabViewController.swift */,
+				CBADD53E2450ED1200422CE4 /* ResearchTabViewController.swift */,
+				CB844C71245B4D5100539987 /* ReviewVideoViewController.swift */,
+				CB844C77245B4D6F00539987 /* ReviewVideoViewController.xib */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -658,6 +683,7 @@
 				CBE5614E2412BD96009A2930 /* TryItFirstTaskScheduleManager.swift */,
 				CB27B9F0243596F4007D36D8 /* MasterScheduleManager.swift */,
 				CB16C38424465BB80046E200 /* ReminderManager.swift */,
+				CBAAB6D22458B53C00C1A619 /* ImageReportManager.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -850,6 +876,7 @@
 				CB8F7D582423F6BB00F77D62 /* LevenshteinToolsTests.swift */,
 				CB81C92D242D3AB100A84886 /* MeasureTabViewControllerTests.swift */,
 				CBD0A5AE244E2D12002EE886 /* MasterScheduleManagerTests.swift */,
+				CBADD5362450C33A00422CE4 /* VideoExporterTests.swift */,
 			);
 			path = PsorcastTests;
 			sourceTree = "<group>";
@@ -1120,6 +1147,7 @@
 				CBDCDC9623F3849E00E5CEB8 /* ImageCaptureStepViewController.xib in Resources */,
 				CB9F5E2422E0BED3003FBCEF /* lato_lightitalic.ttf in Resources */,
 				CBDCDCB423F3849E00E5CEB8 /* DigitalJarOpenCompletionStepViewController.xib in Resources */,
+				CB844C78245B4D6F00539987 /* ReviewVideoViewController.xib in Resources */,
 				CBDCDC8323F3848E00E5CEB8 /* FingersPhoto.mov in Resources */,
 				CBDD30E62416C7D1003B0488 /* PsorcastAssets.xcassets in Resources */,
 				CBDCDC9423F3849E00E5CEB8 /* ParticipantIDRegistrationViewController.xib in Resources */,
@@ -1209,6 +1237,7 @@
 				CBC6519423F391BC00C3FF0C /* PsorcastTests.swift in Sources */,
 				CB81C92E242D3AB100A84886 /* MeasureTabViewControllerTests.swift in Sources */,
 				CB67C29723F390AB005B6BCD /* DigitalJarOpenStepViewControllerTests.swift in Sources */,
+				CBADD5372450C33A00422CE4 /* VideoExporterTests.swift in Sources */,
 				CB67C29D23F390AB005B6BCD /* JointPainStepViewControllerTests.swift in Sources */,
 				CB67C29923F390AB005B6BCD /* JointPainImageViewTests.swift in Sources */,
 				CB67C29B23F390AB005B6BCD /* CodableStepObjectTests.swift in Sources */,
@@ -1229,6 +1258,7 @@
 				CBE561552412BD9D009A2930 /* TryItFirstTaskTableViewController.swift in Sources */,
 				CBDCDC9B23F3849E00E5CEB8 /* JointPainResultObject.swift in Sources */,
 				CBDCDCAF23F3849E00E5CEB8 /* PsoriasisDrawCompletionStepViewController.swift in Sources */,
+				CB844C72245B4D5100539987 /* ReviewVideoViewController.swift in Sources */,
 				CBDCDC9A23F3849E00E5CEB8 /* JointPainStepObject.swift in Sources */,
 				CB8F7D562422D73A00F77D62 /* StudyTaskFactory.swift in Sources */,
 				CBDCDCBB23F384A400E5CEB8 /* ImageDefaults.swift in Sources */,
@@ -1247,6 +1277,7 @@
 				CB16C38C24465BC20046E200 /* ReminderStepViewController.swift in Sources */,
 				CBDCDCB323F3849E00E5CEB8 /* DigitalJarOpenCompletionStepViewController.swift in Sources */,
 				CB1535E024395410007D0307 /* ProfileTabViewController.swift in Sources */,
+				CBAAB6D92458CB2D00C1A619 /* AtomicBool.swift in Sources */,
 				CBDCDCA923F3849E00E5CEB8 /* PsoriasisDrawStepViewController.swift in Sources */,
 				CB4794F32426B36C00D5A7E6 /* ViewUtils.swift in Sources */,
 				CBDCDCA323F3849E00E5CEB8 /* PsoriasisAreaPhotoStepViewController.swift in Sources */,
@@ -1254,11 +1285,14 @@
 				CBDCDCB823F384A400E5CEB8 /* MotorControl+Bridge.swift in Sources */,
 				CBDCDC8C23F3849E00E5CEB8 /* RSDSelectionCollectionViewCell.swift in Sources */,
 				CBDCDCA123F3849E00E5CEB8 /* LearnMoreStepViewController.swift in Sources */,
+				CBE1D7DC245A97350063FEB2 /* ReviewTabViewController.swift in Sources */,
 				04F00572243FE64800EDB120 /* ShowInsightStepViewController.swift in Sources */,
 				CBDD30E82416D403003B0488 /* MeasureTabViewController.swift in Sources */,
 				FFABCBC222DD1EEB00D11109 /* AppDelegate.swift in Sources */,
+				CBADD53F2450ED1200422CE4 /* ResearchTabViewController.swift in Sources */,
 				CBDCDC9123F3849E00E5CEB8 /* EndOfValidationStepViewController.swift in Sources */,
 				CBDCDCBC23F384A800E5CEB8 /* PSRImageHelper.swift in Sources */,
+				CBAAB6E2245914FF00C1A619 /* VideoCreator.swift in Sources */,
 				CBDCDC9723F3849E00E5CEB8 /* ImageCaptureCompletionStepViewController.swift in Sources */,
 				CBDCDC9323F3849E00E5CEB8 /* ParticipantIDRegistrationViewController.swift in Sources */,
 				CB09F0382421D5730005698D /* TreatmentSelectionStepViewController.swift in Sources */,
@@ -1270,6 +1304,8 @@
 				CB16C38924465BB80046E200 /* ReminderManager.swift in Sources */,
 				CBDCDC9D23F3849E00E5CEB8 /* JointPainStepViewController.swift in Sources */,
 				CB4794F12426B33300D5A7E6 /* LevenshteinTools.swift in Sources */,
+				CBAAB6D32458B53C00C1A619 /* ImageReportManager.swift in Sources */,
+				CBAAB6DD2458D30F00C1A619 /* FileManagerExtensions.swift in Sources */,
 				CB7CF2422400BF10003E02A5 /* WelcomeVideoViewController.swift in Sources */,
 				CBDCDC9823F3849E00E5CEB8 /* ReviewCaptureStepViewController.swift in Sources */,
 				CBAA09CF243E4F5500D63CCD /* TreatmentSelectionResultObject.swift in Sources */,

@@ -317,6 +317,7 @@ open class PsoriasisDrawCompletionStepViewController: RSDStepViewController, Pro
             // Create the result and set it as the result for this step
             var result = RSDFileResultObject(identifier: summaryImageResultIdentifier)
             result.url = url
+            result.contentType = "image/jpeg"
             _ = self.stepViewModel.parent?.taskResult.appendStepHistory(with: result)
             
             // Create the selected zones result for the summary
