@@ -468,7 +468,7 @@ open class VideoCreator {
         }
     }
     
-    struct RenderFrameUrl {
+    public struct RenderFrameUrl {
         var url: URL
         var text: String
         

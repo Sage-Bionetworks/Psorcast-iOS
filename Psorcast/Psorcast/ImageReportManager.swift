@@ -95,8 +95,18 @@ open class ImageReportManager : SBAReportManager {
         // Copy new video frames into the documents directory
         // Copy the result file url into a the local cache so it persists upload complete
         if FileManager.default.copyFile(at: summaryImageUrl, to: storageDir, filename: "\(imageFileName).\(imagePathExtension)") {
+            
+            guard let treatments = profileManager?.treatments?.map({ $0.identifier }),
+                let treatmentStartDate = profileManager?.treatmentsDate else {
+                print("Error creating new video because treatmentStartDate is invalid")
+                return
+            }
+            
+            let treatmentRange = TreatmentRange(treatments: treatments, startDate: treatmentStartDate, endDate: Date())
+            
             // We should re-export the most recent treatment task video if we have a new frame
-            self.recreateCurrentTreatmentVideo(for: taskIdentifier, using: profileManager)
+            self.recreateCurrentTreatmentVideo(for: taskIdentifier, with: treatmentRange)
+            
         } else { // Not successful
             debugPrint("Error copying file from \(summaryImageUrl.absoluteURL)" +
                 "to \(storageDir) with filename \(imageFileName)")
@@ -106,12 +116,21 @@ open class ImageReportManager : SBAReportManager {
     public func createCurrentTreatmentVideo(for taskIdentifier: String, using profileManager: StudyProfileManager?) {
         
         guard let treatmentStartDate = profileManager?.treatmentsDate,
-            let videoFilename = self.videoFilename(for: taskIdentifier, using: profileManager) else {
+            let treatments = profileManager?.treatments?.map({ $0.identifier }) else {
             return
         }
         
+        let treatmentRange = TreatmentRange(treatments: treatments, startDate: treatmentStartDate, endDate: Date())
+        
+        self.createTreatmentVideo(for: taskIdentifier, with: treatmentRange)
+    }
+    
+    public func createTreatmentVideo(for taskIdentifier: String, with treatmentRange: TreatmentRange) {
+        
+        guard let videoFilename = self.videoFilename(for: taskIdentifier, with: treatmentRange) else { return }
+        
         // First let's check if the video has already been created
-        if let existingVideo = self.findVideoUrl(for: taskIdentifier, with: treatmentStartDate) {
+        if let existingVideo = self.findVideoUrl(for: taskIdentifier, with: treatmentRange.startDate) {
             debugPrint("Video is already created, do not start again")
             self.postNotification(url: existingVideo)
             return
@@ -124,11 +143,11 @@ open class ImageReportManager : SBAReportManager {
         }
         
         // Otherwise we need to re-create it
-        self.recreateCurrentTreatmentVideo(for: taskIdentifier, using: profileManager)
+        self.recreateCurrentTreatmentVideo(for: taskIdentifier, with: treatmentRange)
     }
     
-    fileprivate func recreateCurrentTreatmentVideo(for taskIdentifier: String, using profileManager: StudyProfileManager?) {
-        guard let videoFilename = self.videoFilename(for: taskIdentifier, using: profileManager) else { return }
+    fileprivate func recreateCurrentTreatmentVideo(for taskIdentifier: String, with treatmentRange: TreatmentRange) {
+        guard let videoFilename = self.videoFilename(for: taskIdentifier, with: treatmentRange) else { return }
                 
         // Cancel all identical tasks that would have different frames
         self.cancelVideoCreatorTask(videoFileName: videoFilename)
@@ -137,9 +156,7 @@ open class ImageReportManager : SBAReportManager {
         let task = VideoCreator.Task(renderSettings: renderSettings)
                 
         // Create the new video in the background
-        guard let currentTreatment = profileManager?.allTreatmentRanges.last else { return }
-        let currentRange = ClosedRange<Date>(uncheckedBounds: (currentTreatment.startDate,  currentTreatment.endDate ?? Date()))
-        let frames = self.findFrames(for: taskIdentifier, within: currentRange)
+        let frames = self.findFrames(for: taskIdentifier, with: treatmentRange)
         task.frames = frames
         
         let startTime = Date().timeIntervalSince1970
@@ -160,7 +177,7 @@ open class ImageReportManager : SBAReportManager {
                                         userInfo: [NotificationKey.videoUrl : url])
     }
     
-    func findFrames(for taskIdentifier: String, within: ClosedRange<Date>) -> [VideoCreator.RenderFrameUrl] {
+    public func findFrames(for taskIdentifier: String, with treatmentRange: TreatmentRange, dateTextFormatter: DateFormatter? = nil) -> [VideoCreator.RenderFrameUrl] {
         var frames = [VideoCreator.RenderFrameUrl]()
         
         var allPossibleImageFiles = FileManager.default.urls(for: storageDir)?
@@ -175,12 +192,17 @@ open class ImageReportManager : SBAReportManager {
             return date1 < date2
         })
         
+        let formatter = dateTextFormatter ?? self.dateFormatter
+        
+        let endDate = treatmentRange.endDate ?? Date()
+        let within = ClosedRange<Date>(uncheckedBounds: (treatmentRange.startDate, endDate))
+        
         for imageFile in allPossibleImageFiles {
             let filename = imageFile.lastPathComponent
             if let components = self.filenameComponents(filename),
                 taskIdentifier == components.taskId,
                 within.contains(components.date) {
-                let dateStr = dateFormatter.string(from: components.date)
+                let dateStr = formatter.string(from: components.date)
                 frames.append(VideoCreator.RenderFrameUrl(url: imageFile, text: dateStr))
             }
         }
@@ -237,12 +259,8 @@ open class ImageReportManager : SBAReportManager {
         return settings
     }
     
-    fileprivate func videoFilename(for taskIdentifier: String, using profileManager: StudyProfileManager?) -> String? {
-        guard let treatmentStartDate = profileManager?.treatmentsDate else {
-            debugPrint("ERROR: Cannot create video filename without valid profile treatment data")
-            return nil
-        }
-        let treatmentStartDateStr = dateFormatter.string(from: treatmentStartDate)
+    fileprivate func videoFilename(for taskIdentifier: String, with treatmentRange: TreatmentRange) -> String? {
+        let treatmentStartDateStr = dateFormatter.string(from: treatmentRange.startDate)
         return "\(taskIdentifier)\(fileNameSeperator)\(treatmentStartDateStr)"
     }
     
