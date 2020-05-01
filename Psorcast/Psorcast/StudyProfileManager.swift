@@ -314,6 +314,13 @@ open class StudyProfileManager: SBAProfileManagerObject {
         // Re-crate the task as a single question
         if let step = vc?.task.stepNavigator.step(with: profileKey) {
             var navigator = RSDConditionalStepNavigatorObject(with: [step])
+            
+            // The treatment selection step vc, when shown as a single step,
+            // Should not allow the same treatments as a new treatment selection
+            if let treatmentSelectionStep = step as? TreatmentSelectionStepObject {
+                treatmentSelectionStep.goBackOnSameTreatments = true
+            }
+            
             navigator.progressMarkers = []
             let task = RSDTaskObject(identifier: RSDIdentifier.treatmentTask.rawValue, stepNavigator: navigator)
             vc = RSDTaskViewController(task: task)

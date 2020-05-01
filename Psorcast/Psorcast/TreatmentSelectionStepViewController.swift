@@ -530,6 +530,23 @@ public class TreatmentSelectionStepViewController: RSDStepViewController, UITabl
     
     override open func goForward() {
         
+        // Check for if we should go back on no actual new treatments selected
+        if (self.treatmentStep?.goBackOnSameTreatments ?? false),
+            self.initialResult.count == self.currentTreatments.count {
+            var sameTreatments = true
+            for treatmentId in self.initialResult {
+                if !self.currentTreatmentsIds.contains(treatmentId) {
+                    sameTreatments = false
+                }
+            }
+            if sameTreatments {
+                // No need to save their treatments if they didn't change
+                self.cancelTask(shouldSave: false)
+                print("Users treatments did not change from \(self.initialResult) to \(self.currentTreatmentsIds), leaving task without saving")
+                return
+            }
+        }
+        
         // We want a JSON attachment sent to Synapse
         let treatmentJsonResult = TreatmentSelectionResultObject(identifier: "\(self.step.identifier)Json", items: self.currentTreatments)
         _ = self.stepViewModel.parent?.taskResult.appendStepHistory(with: treatmentJsonResult)

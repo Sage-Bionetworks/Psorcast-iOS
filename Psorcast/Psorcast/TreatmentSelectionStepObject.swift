@@ -38,7 +38,7 @@ import BridgeAppUI
 public class TreatmentSelectionStepObject: RSDUIStepObject, RSDStepViewControllerVendor {
         
     private enum CodingKeys: String, CodingKey, CaseIterable {
-        case items
+        case items, goBackOnSameTreatments
     }
     
     public var items = [TreatmentItem]() {
@@ -46,6 +46,8 @@ public class TreatmentSelectionStepObject: RSDUIStepObject, RSDStepViewControlle
             self.refreshSorting()
         }
     }
+    
+    public var goBackOnSameTreatments: Bool = false
     
     public private (set) var sortedItems = [String: [TreatmentItem]]()
     public private (set) var sortedSections = [String]()
@@ -78,6 +80,10 @@ public class TreatmentSelectionStepObject: RSDUIStepObject, RSDStepViewControlle
         
         self.items = try container.decode([TreatmentItem].self, forKey: .items)
         
+        if container.contains(.goBackOnSameTreatments) {
+            self.goBackOnSameTreatments = try container.decode(Bool.self, forKey: .goBackOnSameTreatments)
+        }
+        
         try super.init(from: decoder)
         
         self.refreshSorting()
@@ -96,6 +102,7 @@ public class TreatmentSelectionStepObject: RSDUIStepObject, RSDStepViewControlle
             return
         }
         subclassCopy.items = self.items
+        subclassCopy.goBackOnSameTreatments = self.goBackOnSameTreatments
     }
     
     public func instantiateViewController(with parent: RSDPathComponent?) -> (UIViewController & RSDStepController)? {

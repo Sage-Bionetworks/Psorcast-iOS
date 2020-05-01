@@ -162,6 +162,16 @@ open class ReviewTabViewController: UIViewController, UITableViewDataSource, UIT
         filterVc.delegate = self
         self.show(filterVc, sender: self)
     }
+        
+    func finished(vc: FilterTreatmentViewController) {
+        let didTreatmentRangeChange = !(self.selectedTreatmentRange?.isEqual(to: vc.selectedTreatment) ?? false)
+        self.selectedTreatmentRange = vc.selectedTreatment
+        self.dismiss(animated: true, completion: {
+            if didTreatmentRangeChange {
+                self.refreshTreatmentContent()
+            }
+        })
+    }
     
     func playButtonTapped(with taskIdentifier: String) {
         guard let selectedRange = self.selectedTreatmentRange else { return }
@@ -265,19 +275,6 @@ open class ReviewTabViewController: UIViewController, UITableViewDataSource, UIT
     
     public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return self.tableViewCellHeight
-    }
-    
-    func finished(vc: FilterTreatmentViewController) {
-        let didTreatmentRangeChange = !(self.selectedTreatmentRange?.isEqual(to: vc.selectedTreatment) ?? false)
-        debugPrint("TODO_REMOVE from \(self.selectedTreatmentRange?.treatments)")
-        self.selectedTreatmentRange = vc.selectedTreatment
-        debugPrint("TODO_REMOVE to \(self.selectedTreatmentRange?.treatments)")
-        debugPrint("TODO_REMOVE \(didTreatmentRangeChange)")
-        self.dismiss(animated: true, completion: {
-            if didTreatmentRangeChange {
-                self.refreshTreatmentContent()
-            }
-        })
     }
 }
 
