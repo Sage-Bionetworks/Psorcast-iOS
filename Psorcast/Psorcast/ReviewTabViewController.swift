@@ -57,8 +57,12 @@ open class ReviewTabViewController: UIViewController, UITableViewDataSource, UIT
         return self.tableView.bounds.height - CGFloat(4 * self.sectionHeaderHeight)
     }
     
-    var allTreatmentRanges = [TreatmentRange]()
+    /// This is the current treatment the user is doing
+    var currentTreatmentRange: TreatmentRange?
+    /// This is the treatment range the user has selected as the filter
     var selectedTreatmentRange: TreatmentRange?
+    /// This is the full history of treatments the user has done
+    var allTreatmentRanges = [TreatmentRange]()
     
     let designSystem = AppDelegate.designSystem
     
@@ -105,12 +109,20 @@ open class ReviewTabViewController: UIViewController, UITableViewDataSource, UIT
         guard let profileManager = (AppDelegate.shared as? AppDelegate)?.profileManager else { return }
         
         self.allTreatmentRanges = profileManager.allTreatmentRanges
+        guard let currentRange = self.allTreatmentRanges.last else { return }
         
         // If not set, set the header to the current treatment
         if self.selectedTreatmentRange == nil {
-            guard let currentRange = self.allTreatmentRanges.last else { return }
+            self.selectedTreatmentRange = currentRange
+        } else if let prevCurrentTreatment = self.currentTreatmentRange,
+            !currentRange.isEqual(to: prevCurrentTreatment),
+            (self.selectedTreatmentRange?.isEqual(to: prevCurrentTreatment) ?? false) {
+            // This is the scenario when the user had the current treatment filtered,
+            // and the changed their current treatment, show the newest one
             self.selectedTreatmentRange = currentRange
         }
+            
+        self.currentTreatmentRange = currentRange
         
         self.refreshTreatmentContent()
     }

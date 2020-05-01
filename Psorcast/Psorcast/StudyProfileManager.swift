@@ -178,6 +178,7 @@ open class StudyProfileManager: SBAProfileManagerObject {
         }
     }
     
+    // TODO: mdephillips 5/1/20 unit test after we decide this is how we want the data
     var allTreatmentRanges: [TreatmentRange] {
         var treatmentRanges = [TreatmentRange]()
         
@@ -198,8 +199,7 @@ open class StudyProfileManager: SBAProfileManagerObject {
                         self.haveTreatmentsChanged(from: prevTreatmentSelection, to: treatments),
                         let prevTreatmentDate = prevTreatment.treatmentSelectionDate,
                         let currentTreatmentDate = treatmentReport.treatmentSelectionDate {
-                        
-                        treatmentRanges.append(TreatmentRange(treatments: treatments, startDate: prevTreatmentDate, endDate: currentTreatmentDate))
+                        treatmentRanges.append(TreatmentRange(treatments: prevTreatmentSelection, startDate: prevTreatmentDate, endDate: currentTreatmentDate))
                     }
                 }
                 currentTreatmentReport = treatmentReport
@@ -215,11 +215,11 @@ open class StudyProfileManager: SBAProfileManagerObject {
     }
     
     func haveTreatmentsChanged(from: [String], to: [String]) -> Bool {
-        guard from.count == to.count else { return false }
-        for i in 0..<from.count {
-            guard from[i] == to[i] else { return false }
+        guard from.count == to.count else { return true }
+        for i in 0 ..< from.count {
+            guard to.contains(from[i]) else { return true }
         }
-        return true
+        return false
     }
     
     open var diagnosis: String? {
