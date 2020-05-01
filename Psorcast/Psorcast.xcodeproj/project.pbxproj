@@ -82,6 +82,8 @@
 		CB8AE703233FBB9800F5F8AC /* TouchDrawableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB8AE702233FBB9800F5F8AC /* TouchDrawableView.swift */; };
 		CB8DC7B824189E31001B7982 /* TaskListScheduleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB8DC7B324189E31001B7982 /* TaskListScheduleManager.swift */; };
 		CB8DC7BA2418A333001B7982 /* TaskListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBD67D8722DFC59B00998516 /* TaskListTableViewController.swift */; };
+		CB8F2926245BD14C00ABE5B3 /* FilterTreatmentViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB8F2920245BD14C00ABE5B3 /* FilterTreatmentViewController.xib */; };
+		CB8F2927245BD14C00ABE5B3 /* FilterTreatmentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB8F2925245BD14C00ABE5B3 /* FilterTreatmentViewController.swift */; };
 		CB8F2A9E2375E4A4005A62E7 /* ImageCaptureCompletionStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB8F2A9D2375E4A4005A62E7 /* ImageCaptureCompletionStepViewController.swift */; };
 		CB8F7D562422D73A00F77D62 /* StudyTaskFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB8F7D512422D73900F77D62 /* StudyTaskFactory.swift */; };
 		CB8F7D592423F6BB00F77D62 /* LevenshteinToolsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB8F7D582423F6BB00F77D62 /* LevenshteinToolsTests.swift */; };
@@ -411,6 +413,8 @@
 		CB8AE700233FBA5E00F5F8AC /* PsoriasisDrawStepViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PsoriasisDrawStepViewController.swift; sourceTree = "<group>"; };
 		CB8AE702233FBB9800F5F8AC /* TouchDrawableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchDrawableView.swift; sourceTree = "<group>"; };
 		CB8DC7B324189E31001B7982 /* TaskListScheduleManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskListScheduleManager.swift; sourceTree = "<group>"; };
+		CB8F2920245BD14C00ABE5B3 /* FilterTreatmentViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FilterTreatmentViewController.xib; sourceTree = "<group>"; };
+		CB8F2925245BD14C00ABE5B3 /* FilterTreatmentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterTreatmentViewController.swift; sourceTree = "<group>"; };
 		CB8F2A9D2375E4A4005A62E7 /* ImageCaptureCompletionStepViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCaptureCompletionStepViewController.swift; sourceTree = "<group>"; };
 		CB8F7D512422D73900F77D62 /* StudyTaskFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StudyTaskFactory.swift; sourceTree = "<group>"; };
 		CB8F7D582423F6BB00F77D62 /* LevenshteinToolsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevenshteinToolsTests.swift; sourceTree = "<group>"; };
@@ -616,6 +620,8 @@
 				CBADD53E2450ED1200422CE4 /* ResearchTabViewController.swift */,
 				CB844C71245B4D5100539987 /* ReviewVideoViewController.swift */,
 				CB844C77245B4D6F00539987 /* ReviewVideoViewController.xib */,
+				CB8F2925245BD14C00ABE5B3 /* FilterTreatmentViewController.swift */,
+				CB8F2920245BD14C00ABE5B3 /* FilterTreatmentViewController.xib */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -1133,6 +1139,7 @@
 				CBDCDCA023F3849E00E5CEB8 /* JointPainCompletionStepViewController.xib in Resources */,
 				CBDCDC7E23F3848500E5CEB8 /* MDJointSwelling.json in Resources */,
 				CBDCDC9923F3849E00E5CEB8 /* ReviewCaptureStepViewController.xib in Resources */,
+				CB8F2926245BD14C00ABE5B3 /* FilterTreatmentViewController.xib in Resources */,
 				CBDCDC7123F383DC00E5CEB8 /* sage-psorcast.pem in Resources */,
 				CBDCDC8223F3848500E5CEB8 /* DigitalJarOpen.json in Resources */,
 				CBDCDC8623F3848E00E5CEB8 /* DigitalJarOpen.mov in Resources */,
@@ -1310,6 +1317,7 @@
 				CBDCDC9823F3849E00E5CEB8 /* ReviewCaptureStepViewController.swift in Sources */,
 				CBAA09CF243E4F5500D63CCD /* TreatmentSelectionResultObject.swift in Sources */,
 				CB4794F72426B3D800D5A7E6 /* TreatmentSelectionTableViewCell.swift in Sources */,
+				CB8F2927245BD14C00ABE5B3 /* FilterTreatmentViewController.swift in Sources */,
 				CBDCDCA723F3849E00E5CEB8 /* PsoriasisAreaPhotoImageView.swift in Sources */,
 				CBDCDCAC23F3849E00E5CEB8 /* PsoriasisDrawStepObject.swift in Sources */,
 			);

@@ -36,7 +36,9 @@ import BridgeApp
 import BridgeSDK
 import MotorControl
 
-class ProfileTabViewController: UITableViewController, RSDTaskViewControllerDelegate {
+class ProfileTabViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, RSDTaskViewControllerDelegate {
+    
+    @IBOutlet weak var tableView: UITableView!
     
     /// The profile manager
     let profileManager = (AppDelegate.shared as? AppDelegate)?.profileManager
@@ -61,7 +63,7 @@ class ProfileTabViewController: UITableViewController, RSDTaskViewControllerDele
                 self.tableView.reloadData()                                
             }
         }
-}
+    }
 
     func setupTableView() {
         self.tableView.estimatedSectionHeaderHeight = 40
@@ -70,13 +72,19 @@ class ProfileTabViewController: UITableViewController, RSDTaskViewControllerDele
         
         self.tableView.register(ProfileTableViewCell.self, forCellReuseIdentifier: String(describing: ProfileTableViewCell.self))
         
-        let header = UIView(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: 100))
+        
+        let header = UIView(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: 112))
         header.backgroundColor = design.colorRules.backgroundPrimary.color
-        let title = UILabel(frame: CGRect(x: 24, y: 33, width: self.view.bounds.width - 48, height: 33))
+        let title = UILabel()
         title.font = self.design.fontRules.font(for: .largeHeader)
         title.textColor = self.design.colorRules.textColor(on: design.colorRules.backgroundPrimary, for: .largeHeader)
         title.text = Localization.localizedString("PROFILE_TITLE")
+        
+        title.translatesAutoresizingMaskIntoConstraints = false
         header.addSubview(title)
+        title.rsd_alignToSuperview([.leading, .trailing], padding: 24)
+        title.rsd_alignToSuperview([.bottom], padding: 16)
+        
         self.tableView.tableHeaderView = header
     }
     
@@ -97,11 +105,11 @@ class ProfileTabViewController: UITableViewController, RSDTaskViewControllerDele
     
     // MARK: - Table view data source
        
-    override func numberOfSections(in tableView: UITableView) -> Int {
+    public func numberOfSections(in tableView: UITableView) -> Int {
         return self.profileDataSource?.numberOfSections() ?? 0
     }
 
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.profileDataSource?.numberOfRows(for: section) ?? 0
     }
    
@@ -109,7 +117,7 @@ class ProfileTabViewController: UITableViewController, RSDTaskViewControllerDele
         return self.profileDataSource?.profileTableItem(at: indexPath)
     }
    
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let tableItem = itemForRow(at: indexPath)
         let titleText = tableItem?.title
         let detailText = tableItem?.detail
@@ -130,24 +138,24 @@ class ProfileTabViewController: UITableViewController, RSDTaskViewControllerDele
         return cell
     }
     
-    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    public func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         guard self.profileDataSource?.title(for: section) != nil else { return CGFloat.leastNormalMagnitude }
         return UITableView.automaticDimension
     }
     
-    override func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat {
+    public func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat {
         return self.tableView.estimatedSectionHeaderHeight
     }
     
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableView.automaticDimension
     }
     
-    override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+    public func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
         return self.tableView.estimatedRowHeight
     }
     
-    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    public func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         guard let title = self.profileDataSource?.title(for: section) else { return nil }
         
         let sectionHeaderView = tableView.dequeueReusableHeaderFooterView(withIdentifier: ProfileTableHeaderView.className) as! ProfileTableHeaderView
@@ -156,13 +164,13 @@ class ProfileTabViewController: UITableViewController, RSDTaskViewControllerDele
         return sectionHeaderView
     }
     
-    override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+    public func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         let footer = UIView(frame: CGRect(x: 0, y: 0, width: self.tableView.bounds.width, height: 8))
         footer.backgroundColor = self.design.colorRules.backgroundPrimary.color
         return footer
     }
     
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
         guard let item = itemForRow(at: indexPath) else { return }
@@ -188,14 +196,14 @@ class ProfileTabViewController: UITableViewController, RSDTaskViewControllerDele
 //        }
     }
     
-    override func tableView(_ tableView: UITableView, didHighlightRowAt indexPath: IndexPath) {
+    public func tableView(_ tableView: UITableView, didHighlightRowAt indexPath: IndexPath) {
         if let cell = tableView.cellForRow(at: indexPath) {
             let background = RSDColorTile(RSDColor.white, usesLightStyle: true)
             cell.contentView.backgroundColor = self.design.colorRules.tableCellBackground(on: background, isSelected: true).color
         }
     }
     
-    override func tableView(_ tableView: UITableView, didUnhighlightRowAt indexPath: IndexPath) {
+    public func tableView(_ tableView: UITableView, didUnhighlightRowAt indexPath: IndexPath) {
         if let cell = tableView.cellForRow(at: indexPath) {
             cell.contentView.backgroundColor = RSDColor.white
         }

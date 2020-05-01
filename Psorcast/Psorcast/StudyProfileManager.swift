@@ -465,6 +465,54 @@ public struct TreatmentRange {
         guard let endDateUnwrapped = endDate else { return nil }
         return ClosedRange(uncheckedBounds: (startDate, endDateUnwrapped))
     }
+    
+    func isEqual(to: TreatmentRange) -> Bool {
+        return startDate.timeIntervalSince1970 == to.startDate.timeIntervalSince1970 &&
+            endDate?.timeIntervalSince1970 == to.endDate?.timeIntervalSince1970
+    }
+    
+    // TODO: mdephillips 5/1/20 unit test after we decide this is how we want dates
+    func createDateRangeString() -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MMM yyyy"
+        
+        let calendar = Calendar.current
+        
+        var endDateStr = ""
+        let endDateUnwrapped = self.endDate ?? Date()
+        
+        let isSameYear =
+            calendar.component(.year, from: self.startDate) ==
+            calendar.component(.year, from: endDateUnwrapped)
+        let isSameMonth =
+            calendar.component(.month, from: self.startDate) ==
+            calendar.component(.month, from: endDateUnwrapped)
+        let isSameDay =
+            calendar.component(.day, from: self.startDate) ==
+            calendar.component(.day, from: endDateUnwrapped)
+        let isOneMonthAway = abs(
+            calendar.dateComponents([.day], from: self.startDate, to: endDateUnwrapped).day ?? 32) < 30
+        
+        if (isSameMonth && isSameYear) || isOneMonthAway {
+            // If we are on the same month and year, use the day preceision
+            dateFormatter.dateFormat = "MMM d yyyy"
+            
+            // If we are on the same day, show the hour and minute
+            if isSameDay {
+                dateFormatter.dateFormat = "MMM d yyyy H:m"
+            }
+        }
+        
+        if self.endDate == nil {
+            endDateStr = Localization.localizedString("ACTIVITY_TODAY")
+        } else {
+            endDateStr = dateFormatter.string(from: endDateUnwrapped)
+        }
+                
+        let startDateStr = dateFormatter.string(from: self.startDate)
+        let treatmentDateRangeStr = "\(startDateStr) to \(endDateStr)"
+        return treatmentDateRangeStr
+    }
 }
 
 extension SBAProfileSectionType {

@@ -177,6 +177,7 @@ open class ImageReportManager : SBAReportManager {
                                         userInfo: [NotificationKey.videoUrl : url])
     }
     
+    // TODO: mdephillips 5/1/20 unit test after we decide this is how we want dates
     public func findFrames(for taskIdentifier: String, with treatmentRange: TreatmentRange, dateTextFormatter: DateFormatter? = nil) -> [VideoCreator.RenderFrameUrl] {
         var frames = [VideoCreator.RenderFrameUrl]()
         
@@ -210,6 +211,7 @@ open class ImageReportManager : SBAReportManager {
         return frames
     }
     
+    // TODO: mdephillips 5/1/20 unit test after we decide this is how we want dates
     func findVideoUrl(for taskIdentifier: String, with treatmentStartDate: Date) -> URL? {
         let allPossibleVideoFiles = FileManager.default.urls(for: storageDir)?
             .filter({ $0.pathExtension == videoPathExtension }) ?? []
@@ -226,6 +228,7 @@ open class ImageReportManager : SBAReportManager {
         return nil
     }
     
+    // TODO: mdephillips 5/1/20 unit test after we decide this is how we want dates
     func filenameComponents(_ filename: String) -> (taskId: String, date: Date)? {
         let separators = CharacterSet(charactersIn: fileNameSeperator)
         let parts = filename
@@ -259,6 +262,7 @@ open class ImageReportManager : SBAReportManager {
         return settings
     }
     
+    // TODO: mdephillips 5/1/20 unit test after we decide this is how we want dates
     fileprivate func videoFilename(for taskIdentifier: String, with treatmentRange: TreatmentRange) -> String? {
         let treatmentStartDateStr = dateFormatter.string(from: treatmentRange.startDate)
         return "\(taskIdentifier)\(fileNameSeperator)\(treatmentStartDateStr)"
@@ -272,9 +276,5 @@ open class ImageReportManager : SBAReportManager {
         }
         
         self.videoCreatorTasks.removeAll(where: { $0.settings.videoFilename == videoFileName })
-    }
-    
-    fileprivate func url(for videoFilename: String) {
-        
     }
 }
