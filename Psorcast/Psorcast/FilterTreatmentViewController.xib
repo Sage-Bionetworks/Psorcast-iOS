@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="FilterTreatmentViewController" customModule="Psorcast" customModuleProvider="target">
+            <connections>
+                <outlet property="closeButton" destination="JIG-vd-P2G" id="2jR-AD-Q3g"/>
+                <outlet property="tableView" destination="Xvr-Cq-70a" id="Cww-UL-IBH"/>
+                <outlet property="treatmentButton" destination="vjs-A3-fLl" id="Tgm-ie-iXR"/>
+                <outlet property="treatmentHeaderView" destination="LMV-QP-zXS" id="tbb-i0-cDj"/>
+                <outlet property="view" destination="iN0-l3-epB" id="oDz-fG-usR"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="RSDStepNavigationView" customModule="ResearchUI">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4Bo-Uj-Ixi" userLabel="Content View">
+                    <rect key="frame" x="0.0" y="0.0" width="414" height="862"/>
+                    <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LMV-QP-zXS">
+                            <rect key="frame" x="0.0" y="0.0" width="414" height="112"/>
+                            <subviews>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vjs-A3-fLl">
+                                    <rect key="frame" x="140" y="36" width="134" height="76"/>
+                                    <state key="normal">
+                                        <string key="title">Treatments
+OCT 2020 to Today</string>
+                                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </state>
+                                    <connections>
+                                        <action selector="doneTapped" destination="-1" eventType="touchUpInside" id="2OD-Up-7JS"/>
+                                    </connections>
+                                </button>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tnq-kN-j9h">
+                                    <rect key="frame" x="274" y="55" width="32" height="38"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="32" id="LC7-Pc-TjO"/>
+                                        <constraint firstAttribute="height" constant="38" id="Opp-Eu-QFB"/>
+                                    </constraints>
+                                    <state key="normal" image="FilterUpArrow"/>
+                                    <connections>
+                                        <action selector="doneTapped" destination="-1" eventType="touchUpInside" id="Dgn-zD-Lla"/>
+                                    </connections>
+                                </button>
+                            </subviews>
+                            <color key="backgroundColor" systemColor="systemBlueColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <constraints>
+                                <constraint firstItem="tnq-kN-j9h" firstAttribute="centerY" secondItem="vjs-A3-fLl" secondAttribute="centerY" id="4MV-sP-nIQ"/>
+                                <constraint firstItem="vjs-A3-fLl" firstAttribute="centerX" secondItem="LMV-QP-zXS" secondAttribute="centerX" id="JhA-GS-DNL"/>
+                                <constraint firstAttribute="bottom" secondItem="vjs-A3-fLl" secondAttribute="bottom" id="YoH-Dv-T2m"/>
+                                <constraint firstAttribute="height" constant="112" id="kV9-5B-Vai"/>
+                                <constraint firstItem="tnq-kN-j9h" firstAttribute="leading" secondItem="vjs-A3-fLl" secondAttribute="trailing" id="xPC-09-uP6"/>
+                                <constraint firstItem="vjs-A3-fLl" firstAttribute="top" secondItem="LMV-QP-zXS" secondAttribute="top" constant="36" id="zK9-pp-vLE"/>
+                            </constraints>
+                        </view>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wdI-dt-uMj">
+                            <rect key="frame" x="0.0" y="768" width="414" height="94"/>
+                            <subviews>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Hfb-MJ-Ogz" customClass="RSDShadowGradient" customModule="ResearchUI">
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="4"/>
+                                    <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="4" id="KlN-ca-hgO"/>
+                                    </constraints>
+                                </view>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JIG-vd-P2G" customClass="RSDRoundedButton" customModule="ResearchUI">
+                                    <rect key="frame" x="24" y="21" width="366" height="52"/>
+                                    <state key="normal" title="Close"/>
+                                    <connections>
+                                        <action selector="doneTapped" destination="-1" eventType="touchUpInside" id="XS8-ed-hBD"/>
+                                    </connections>
+                                </button>
+                            </subviews>
+                            <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                            <constraints>
+                                <constraint firstAttribute="trailing" secondItem="JIG-vd-P2G" secondAttribute="trailing" constant="24" id="0rr-v1-gcS"/>
+                                <constraint firstItem="JIG-vd-P2G" firstAttribute="centerY" secondItem="wdI-dt-uMj" secondAttribute="centerY" id="Ivy-gT-RXz"/>
+                                <constraint firstAttribute="height" constant="94" id="OpM-Sc-l4M"/>
+                                <constraint firstItem="Hfb-MJ-Ogz" firstAttribute="leading" secondItem="wdI-dt-uMj" secondAttribute="leading" id="Z2O-b9-Z40"/>
+                                <constraint firstItem="JIG-vd-P2G" firstAttribute="leading" secondItem="wdI-dt-uMj" secondAttribute="leading" constant="24" id="dRa-yU-8KR"/>
+                                <constraint firstItem="Hfb-MJ-Ogz" firstAttribute="top" secondItem="wdI-dt-uMj" secondAttribute="top" id="ndK-Fo-NrG"/>
+                                <constraint firstAttribute="trailing" secondItem="Hfb-MJ-Ogz" secondAttribute="trailing" id="pUV-GS-Adt"/>
+                            </constraints>
+                        </view>
+                        <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="grouped" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="Xvr-Cq-70a">
+                            <rect key="frame" x="0.0" y="112" width="414" height="656"/>
+                            <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                            <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                            <connections>
+                                <outlet property="dataSource" destination="-1" id="w84-hm-oBR"/>
+                                <outlet property="delegate" destination="-1" id="Jq5-eu-S0O"/>
+                            </connections>
+                        </tableView>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="Xvr-Cq-70a" firstAttribute="leading" secondItem="4Bo-Uj-Ixi" secondAttribute="leading" id="3j8-WJ-bfO"/>
+                        <constraint firstItem="Xvr-Cq-70a" firstAttribute="top" secondItem="LMV-QP-zXS" secondAttribute="bottom" id="7Nn-1d-8Vr"/>
+                        <constraint firstItem="wdI-dt-uMj" firstAttribute="top" secondItem="Xvr-Cq-70a" secondAttribute="bottom" id="Ew2-lw-kPg"/>
+                        <constraint firstItem="LMV-QP-zXS" firstAttribute="leading" secondItem="4Bo-Uj-Ixi" secondAttribute="leading" id="cnp-7M-u3w"/>
+                        <constraint firstAttribute="bottom" secondItem="wdI-dt-uMj" secondAttribute="bottom" id="dar-fm-J9M"/>
+                        <constraint firstAttribute="trailing" secondItem="LMV-QP-zXS" secondAttribute="trailing" id="fTH-IN-W41"/>
+                        <constraint firstItem="wdI-dt-uMj" firstAttribute="leading" secondItem="4Bo-Uj-Ixi" secondAttribute="leading" id="k9F-EQ-qNJ"/>
+                        <constraint firstItem="LMV-QP-zXS" firstAttribute="top" secondItem="4Bo-Uj-Ixi" secondAttribute="top" id="oZ0-zO-yxo"/>
+                        <constraint firstAttribute="trailing" secondItem="Xvr-Cq-70a" secondAttribute="trailing" id="wSF-q5-mQY"/>
+                        <constraint firstAttribute="trailing" secondItem="wdI-dt-uMj" secondAttribute="trailing" id="x09-H6-fWU"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="4Bo-Uj-Ixi" secondAttribute="trailing" id="db7-ZT-dS3"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="top" secondItem="4Bo-Uj-Ixi" secondAttribute="top" constant="44" id="pho-QT-O8Y"/>
+                <constraint firstItem="4Bo-Uj-Ixi" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="uKb-kT-gdu"/>
+                <constraint firstItem="4Bo-Uj-Ixi" firstAttribute="bottom" secondItem="vUN-kp-3ea" secondAttribute="bottom" id="yJl-9f-aWo"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <point key="canvasLocation" x="131.8840579710145" y="153.34821428571428"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="FilterUpArrow" width="14" height="8"/>
+    </resources>
+</document>

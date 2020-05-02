@@ -178,6 +178,7 @@ open class StudyProfileManager: SBAProfileManagerObject {
         }
     }
     
+    // TODO: mdephillips 5/1/20 unit test after we decide this is how we want the data
     var allTreatmentRanges: [TreatmentRange] {
         var treatmentRanges = [TreatmentRange]()
         
@@ -198,8 +199,7 @@ open class StudyProfileManager: SBAProfileManagerObject {
                         self.haveTreatmentsChanged(from: prevTreatmentSelection, to: treatments),
                         let prevTreatmentDate = prevTreatment.treatmentSelectionDate,
                         let currentTreatmentDate = treatmentReport.treatmentSelectionDate {
-                        
-                        treatmentRanges.append(TreatmentRange(treatments: treatments, startDate: prevTreatmentDate, endDate: currentTreatmentDate))
+                        treatmentRanges.append(TreatmentRange(treatments: prevTreatmentSelection, startDate: prevTreatmentDate, endDate: currentTreatmentDate))
                     }
                 }
                 currentTreatmentReport = treatmentReport
@@ -215,11 +215,11 @@ open class StudyProfileManager: SBAProfileManagerObject {
     }
     
     func haveTreatmentsChanged(from: [String], to: [String]) -> Bool {
-        guard from.count == to.count else { return false }
-        for i in 0..<from.count {
-            guard from[i] == to[i] else { return false }
+        guard from.count == to.count else { return true }
+        for i in 0 ..< from.count {
+            guard to.contains(from[i]) else { return true }
         }
-        return true
+        return false
     }
     
     open var diagnosis: String? {
@@ -314,6 +314,13 @@ open class StudyProfileManager: SBAProfileManagerObject {
         // Re-crate the task as a single question
         if let step = vc?.task.stepNavigator.step(with: profileKey) {
             var navigator = RSDConditionalStepNavigatorObject(with: [step])
+            
+            // The treatment selection step vc, when shown as a single step,
+            // Should not allow the same treatments as a new treatment selection
+            if let treatmentSelectionStep = step as? TreatmentSelectionStepObject {
+                treatmentSelectionStep.goBackOnSameTreatments = true
+            }
+            
             navigator.progressMarkers = []
             let task = RSDTaskObject(identifier: RSDIdentifier.treatmentTask.rawValue, stepNavigator: navigator)
             vc = RSDTaskViewController(task: task)
@@ -464,6 +471,54 @@ public struct TreatmentRange {
     func range() -> ClosedRange<Date>? {
         guard let endDateUnwrapped = endDate else { return nil }
         return ClosedRange(uncheckedBounds: (startDate, endDateUnwrapped))
+    }
+    
+    func isEqual(to: TreatmentRange) -> Bool {
+        return startDate.timeIntervalSince1970 == to.startDate.timeIntervalSince1970 &&
+            endDate?.timeIntervalSince1970 == to.endDate?.timeIntervalSince1970
+    }
+    
+    // TODO: mdephillips 5/1/20 unit test after we decide this is how we want dates
+    func createDateRangeString() -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MMM yyyy"
+        
+        let calendar = Calendar.current
+        
+        var endDateStr = ""
+        let endDateUnwrapped = self.endDate ?? Date()
+        
+        let isSameYear =
+            calendar.component(.year, from: self.startDate) ==
+            calendar.component(.year, from: endDateUnwrapped)
+        let isSameMonth =
+            calendar.component(.month, from: self.startDate) ==
+            calendar.component(.month, from: endDateUnwrapped)
+        let isSameDay =
+            calendar.component(.day, from: self.startDate) ==
+            calendar.component(.day, from: endDateUnwrapped)
+        let isOneMonthAway = abs(
+            calendar.dateComponents([.day], from: self.startDate, to: endDateUnwrapped).day ?? 32) < 30
+        
+        if (isSameMonth && isSameYear) || isOneMonthAway {
+            // If we are on the same month and year, use the day preceision
+            dateFormatter.dateFormat = "MMM d yyyy"
+            
+            // If we are on the same day, show the hour and minute
+            if isSameDay {
+                dateFormatter.dateFormat = "MMM d yyyy H:m"
+            }
+        }
+        
+        if self.endDate == nil {
+            endDateStr = Localization.localizedString("ACTIVITY_TODAY")
+        } else {
+            endDateStr = dateFormatter.string(from: endDateUnwrapped)
+        }
+                
+        let startDateStr = dateFormatter.string(from: self.startDate)
+        let treatmentDateRangeStr = "\(startDateStr) to \(endDateStr)"
+        return treatmentDateRangeStr
     }
 }
 

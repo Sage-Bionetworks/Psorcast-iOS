@@ -35,7 +35,7 @@ import UIKit
 import BridgeApp
 import ResearchUI
 
-open class ReviewTabViewController: UIViewController, UITableViewDataSource, UITableViewDelegate,  ReviewTableViewCellDelegate {
+open class ReviewTabViewController: UIViewController, UITableViewDataSource, UITableViewDelegate,  ReviewTableViewCellDelegate, FilterTreatmentViewControllerDelegate {
     
     @IBOutlet weak var tableView: UITableView!
     
@@ -44,11 +44,27 @@ open class ReviewTabViewController: UIViewController, UITableViewDataSource, UIT
     
     @IBOutlet weak var noResultsView: UIView!
     
-    @IBOutlet weak var treatmentLabel: UILabel!
-    @IBOutlet weak var treatmentDateRangeLabel: UILabel!
+    @IBOutlet weak var treatmentButton: UIButton!
+    @IBOutlet weak var treatmentIndicator: UIButton!
     
-    var allTreatmentRanges = [TreatmentRange]()
+    let sectionHeaderHeight = CGFloat(48)
+    let sectionHeaderPadding = CGFloat(8)
+    // 80% of screen width you can see about 10% of the next image cell
+    var tableViewCellWidth: CGFloat {
+        self.tableView.bounds.width * CGFloat(0.8)
+    }
+    var tableViewCellHeight: CGFloat {
+        return self.tableView.bounds.height - CGFloat(4 * self.sectionHeaderHeight)
+    }
+    
+    /// This is the current treatment the user is doing
+    var currentTreatmentRange: TreatmentRange?
+    /// This is the treatment range the user has selected as the filter
     var selectedTreatmentRange: TreatmentRange?
+    /// This is the full history of treatments the user has done
+    var allTreatmentRanges = [TreatmentRange]()
+    
+    let designSystem = AppDelegate.designSystem
     
     public let allTaskRows: [RSDIdentifier] = [
         .psoriasisDrawTask,
@@ -59,7 +75,7 @@ open class ReviewTabViewController: UIViewController, UITableViewDataSource, UIT
         .jointCountingTask
     ]
     
-    public var taskRowsHaveScrolledToEnd = [RSDIdentifier : Bool]()
+    public var taskRowsScrollPosition = [RSDIdentifier : CGFloat]()
     public var taskRows = [RSDIdentifier]()
     
     public var taskRowImageMap = [RSDIdentifier : [VideoCreator.RenderFrameUrl]]()
@@ -70,25 +86,21 @@ open class ReviewTabViewController: UIViewController, UITableViewDataSource, UIT
         super.viewDidLoad()
         
         self.noResultsView.isHidden = true
-        self.treatmentLabel.text = nil
-        self.treatmentDateRangeLabel.text = nil
+        self.treatmentButton.setTitle("", for: .normal)
+        self.treatmentIndicator.isHidden = true
         self.updateDesignSystem()
     }
     
     func updateDesignSystem() {
-        let design = AppDelegate.designSystem
-        let secondary = design.colorRules.palette.secondary.normal
+        let secondary = designSystem.colorRules.palette.secondary.normal
         
         self.contentBelowHeaderView.backgroundColor = tableViewBackground.color
         self.tableView.backgroundColor = tableViewBackground.color
         
         self.treatmentHeaderView.backgroundColor = secondary.color
         
-        self.treatmentLabel.textColor = design.colorRules.textColor(on: secondary, for: .small)
-        self.treatmentLabel.font = design.fontRules.font(for: .small)
-        
-        self.treatmentDateRangeLabel.textColor = design.colorRules.textColor(on: secondary, for: .microDetail)
-        self.treatmentDateRangeLabel.font = design.fontRules.font(for: .microDetail)
+        self.treatmentButton.setTitleColor(designSystem.colorRules.textColor(on: secondary, for: .small), for: .normal)
+        self.treatmentButton.titleLabel?.font = designSystem.fontRules.font(for: .mediumHeader)
     }
     
     override open func viewWillAppear(_ animated: Bool) {
@@ -97,26 +109,41 @@ open class ReviewTabViewController: UIViewController, UITableViewDataSource, UIT
         guard let profileManager = (AppDelegate.shared as? AppDelegate)?.profileManager else { return }
         
         self.allTreatmentRanges = profileManager.allTreatmentRanges
-        
-        // For now set the header to the current treatment
         guard let currentRange = self.allTreatmentRanges.last else { return }
-        self.selectedTreatmentRange = currentRange
-        self.treatmentLabel.text = currentRange.treatments.joined(separator: ", ")
         
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "MMM yyyy"
-        let startDateStr = dateFormatter.string(from: currentRange.startDate)
-        var endDateStr = Localization.localizedString("ACTIVITY_TODAY")
-        if let endDate = currentRange.endDate {
-            endDateStr = dateFormatter.string(from: endDate)
+        // If not set, set the header to the current treatment
+        if self.selectedTreatmentRange == nil {
+            self.selectedTreatmentRange = currentRange
+        } else if let prevCurrentTreatment = self.currentTreatmentRange,
+            !currentRange.isEqual(to: prevCurrentTreatment),
+            (self.selectedTreatmentRange?.isEqual(to: prevCurrentTreatment) ?? false) {
+            // This is the scenario when the user had the current treatment filtered,
+            // and the changed their current treatment, show the newest one
+            self.selectedTreatmentRange = currentRange
         }
-        self.treatmentDateRangeLabel.text = "\(startDateStr) to \(endDateStr)"
+            
+        self.currentTreatmentRange = currentRange
+        
+        self.refreshTreatmentContent()
+    }
+    
+    func refreshTreatmentContent() {
+        
+        guard let currentRange = self.selectedTreatmentRange else { return }
+        let treatmentsStr = currentRange.treatments.joined(separator: ", ")
+        let treatmentDateRangeStr = currentRange.createDateRangeString()
+        
+        self.treatmentButton.titleLabel?.lineBreakMode = .byWordWrapping
+        self.treatmentButton.titleLabel?.textAlignment = .center
+        self.treatmentButton.titleLabel?.numberOfLines = 2
+        self.treatmentButton.setTitle("\(treatmentsStr)\n\(treatmentDateRangeStr)", for: .normal)
+        self.treatmentIndicator.isHidden = false
         
         // Rebuild image map
         self.taskRows.removeAll()
         for taskId in self.allTaskRows {
             self.taskRowImageMap[taskId] = []
-            self.taskRowsHaveScrolledToEnd[taskId] = false
+            self.taskRowsScrollPosition[taskId] = CGFloat(-1)
         }
         
         let dateTextFormatter = DateFormatter()
@@ -131,16 +158,31 @@ open class ReviewTabViewController: UIViewController, UITableViewDataSource, UIT
             }
         }
         
-        // Reset so that all collections
-        for taskId in self.taskRows {
-            self.taskRowsHaveScrolledToEnd[taskId] = false
-        }
-        
         // Reload table view with the newest data
         self.tableView.reloadData()
         
         self.noResultsView.isHidden = !self.taskRows.isEmpty
         self.tableView.isHidden = self.taskRows.isEmpty
+    }
+    
+    @IBAction func filterTapped() {
+        guard let treatmentRange = self.selectedTreatmentRange else { return }
+        
+        let filterVc = FilterTreatmentViewController(nibName: String(describing: FilterTreatmentViewController.self), bundle: nil)
+        filterVc.allTreatmentRanges = self.allTreatmentRanges
+        filterVc.selectedTreatment = treatmentRange
+        filterVc.delegate = self
+        self.show(filterVc, sender: self)
+    }
+        
+    func finished(vc: FilterTreatmentViewController) {
+        let didTreatmentRangeChange = !(self.selectedTreatmentRange?.isEqual(to: vc.selectedTreatment) ?? false)
+        self.selectedTreatmentRange = vc.selectedTreatment
+        self.dismiss(animated: true, completion: {
+            if didTreatmentRangeChange {
+                self.refreshTreatmentContent()
+            }
+        })
     }
     
     func playButtonTapped(with taskIdentifier: String) {
@@ -165,39 +207,86 @@ open class ReviewTabViewController: UIViewController, UITableViewDataSource, UIT
         guard let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: ReviewTableViewCell.self)) as? ReviewTableViewCell else {
             return UITableViewCell()
         }
-        
         let taskId = self.taskRows[indexPath.section]
-        let cellPadding = CGFloat(40)
-        cell.cellWidth = self.tableView.bounds.width - CGFloat(2 * cellPadding)
-        cell.cellHeight = tableView.bounds.height - CGFloat(2 * cellPadding)
-        cell.frames = self.taskRowImageMap[taskId] ?? []
+        
         cell.setDesignSystem(AppDelegate.designSystem, with: tableViewBackground)
+                
+        cell.collectionCellWidth = self.tableViewCellWidth
+        cell.collectionCellHeight = self.tableViewCellHeight
+                
+        cell.frames = self.taskRowImageMap[taskId] ?? []
         cell.taskIdentifier = taskId.rawValue
         cell.delegate = self
         
         cell.collectionView.reloadData()
-        
-        if !(self.taskRowsHaveScrolledToEnd[taskId] ?? false) {
-            self.taskRowsHaveScrolledToEnd[taskId] = true
-            let lastItemIndex = IndexPath(item: cell.frames.count - 1, section: 0)
-            // This waits until the collection view has finished updating before scrolling to the end
-            cell.collectionView.performBatchUpdates(nil, completion: { (result) in
-                cell.collectionView.scrollToItem(at: lastItemIndex, at: .left, animated: false)
-            })
-        }
+
+        // This waits until the collection view has finished updating before scrolling to the end
+        cell.collectionView.performBatchUpdates(nil, completion: { (result) in
+            // Because these collection views are re-used, we need to
+            // save the scroll position for each and re-load them as they are passed around
+            var scrollPos = self.taskRowsScrollPosition[taskId] ?? CGFloat(-1)
+            if scrollPos < 0 {
+                scrollPos = cell.collectionView.contentSize.width - cell.collectionView.bounds.width
+            }
+            cell.collectionView.setContentOffset(CGPoint(x: scrollPos, y: cell.collectionView.contentOffset.y), animated: false)
+            self.taskRowsScrollPosition[taskId] = scrollPos
+        })
                         
         return cell
     }
     
-    public func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        guard self.taskRows.count > section else { return nil }
-        return self.taskRows[section].rawValue
+    public func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        guard let reviewCell = cell as? ReviewTableViewCell,
+            self.taskRows.count > indexPath.section else {
+            return
+        }
+        let taskId = self.taskRows[indexPath.section]
+        
+        // Save the collection view scroll position before it leaves the visible screen
+        if (self.taskRowsScrollPosition[taskId] ?? CGFloat(1)) >= 0 {
+            self.taskRowsScrollPosition[taskId] = reviewCell.collectionView.contentOffset.x
+        }
+    }
+    
+    public func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        guard self.taskRows.count > section else {
+            return nil
+        }
+        let header = UIView()
+        
+        let roundedBackgroundView = UIView()
+        roundedBackgroundView.translatesAutoresizingMaskIntoConstraints = false
+        header.addSubview(roundedBackgroundView)
+        
+        let viewHeight = self.sectionHeaderHeight - (self.sectionHeaderPadding * CGFloat(1.5))
+        roundedBackgroundView.backgroundColor = designSystem.colorRules.palette.primary.dark.color
+        roundedBackgroundView.layer.cornerRadius = viewHeight * CGFloat(0.5)
+        roundedBackgroundView.rsd_alignCenterHorizontal(padding: 0)
+        roundedBackgroundView.rsd_alignCenterVertical(padding: 0)
+        roundedBackgroundView.rsd_makeHeight(.equal, viewHeight)
+        
+        let titleLabel = UILabel()
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        roundedBackgroundView.addSubview(titleLabel)
+        
+        let taskId = self.taskRows[section].rawValue
+        let title = MasterScheduleManager.shared.scheduledActivities.first(where: { $0.activityIdentifier == taskId })?.activity.label
+        
+        titleLabel.text = title
+        titleLabel.textColor = UIColor.white
+        titleLabel.font = designSystem.fontRules.font(for: .smallHeader)
+        titleLabel.rsd_alignToSuperview([.leading, .trailing], padding: CGFloat(2 * self.sectionHeaderPadding))
+        titleLabel.rsd_alignToSuperview([.top, .bottom], padding: self.sectionHeaderPadding)
+        
+        return header
+    }
+    
+    public func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return self.sectionHeaderHeight
     }
     
     public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        let headerHeight = 40 // todo calculate this better
-        let cellHeight = tableView.bounds.height - CGFloat(2 * headerHeight)
-        return cellHeight
+        return self.tableViewCellHeight
     }
 }
 
@@ -206,8 +295,8 @@ public class ReviewTableViewCell: RSDDesignableTableViewCell, UICollectionViewDe
     
     weak var delegate: ReviewTableViewCellDelegate?
     
-    var cellWidth = CGFloat(0)
-    var cellHeight = CGFloat(0)
+    var collectionCellWidth = CGFloat(0)
+    var collectionCellHeight = CGFloat(0)
     
     var taskIdentifier: String?
     var frames = [VideoCreator.RenderFrameUrl]()
@@ -241,7 +330,7 @@ public class ReviewTableViewCell: RSDDesignableTableViewCell, UICollectionViewDe
     }
     
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: cellWidth, height: cellHeight - 20)
+        return CGSize(width: collectionCellWidth, height: collectionCellHeight)
     }
     
     @IBAction func playButtonTapped() {
