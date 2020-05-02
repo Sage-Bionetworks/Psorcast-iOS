@@ -87,6 +87,8 @@ open class ReviewTabViewController: UIViewController, UITableViewDataSource, UIT
     
     let tableViewBackground = AppDelegate.designSystem.colorRules.backgroundPrimary
     
+    public var reloadOnViewWillAppear = true
+    
     override open func viewDidLoad() {
         super.viewDidLoad()
         
@@ -107,8 +109,12 @@ open class ReviewTabViewController: UIViewController, UITableViewDataSource, UIT
             self.processVideoUpdated(notification: notification)
         }
         // Check for new export status updates
-        NotificationCenter.default.addObserver(forName: ImageReportManager.videoProgress, object: self.imageManager, queue: OperationQueue.main) { (notification) in
+        NotificationCenter.default.addObserver(forName: ImageReportManager.videoExportStatusChanged, object: self.imageManager, queue: OperationQueue.main) { (notification) in
             self.processExportStatusChanged(notification: notification)
+        }
+        // Check for new images
+        NotificationCenter.default.addObserver(forName: ImageReportManager.imageFrameAdded, object: self.imageManager, queue: OperationQueue.main) { (notification) in
+            self.reloadOnViewWillAppear = true
         }
     }
     
@@ -130,7 +136,7 @@ open class ReviewTabViewController: UIViewController, UITableViewDataSource, UIT
     func processExportStatusChanged(notification: Notification) {
         guard let exportStatus = notification.userInfo?[ImageReportManager.NotificationKey.exportStatusChange] as? Bool,
             let taskId = notification.userInfo?[ImageReportManager.NotificationKey.taskId] as? String,
-            let videoUrl = notification.userInfo?[ImageReportManager.NotificationKey.videoUrl] as? URL else {
+            let videoUrl = notification.userInfo?[ImageReportManager.NotificationKey.url] as? URL else {
             print("Video update notification user info invalid")
             return
         }
@@ -187,6 +193,9 @@ open class ReviewTabViewController: UIViewController, UITableViewDataSource, UIT
             // This is the scenario when the user had the current treatment filtered,
             // and the changed their current treatment, show the newest one
             self.selectedTreatmentRange = currentRange
+            shouldRefreshUi = true
+        } else if self.reloadOnViewWillAppear {
+            self.reloadOnViewWillAppear = false
             shouldRefreshUi = true
         }
             
@@ -249,7 +258,7 @@ open class ReviewTabViewController: UIViewController, UITableViewDataSource, UIT
         guard let treatmentRange = self.selectedTreatmentRange else { return }
         
         let filterVc = FilterTreatmentViewController(nibName: String(describing: FilterTreatmentViewController.self), bundle: nil)
-        filterVc.allTreatmentRanges = self.allTreatmentRanges
+        filterVc.allTreatmentRanges = self.allTreatmentRanges.reversed()
         filterVc.selectedTreatment = treatmentRange
         filterVc.delegate = self
         self.show(filterVc, sender: self)
