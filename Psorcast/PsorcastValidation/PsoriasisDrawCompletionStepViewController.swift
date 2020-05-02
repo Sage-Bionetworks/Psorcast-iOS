@@ -304,11 +304,13 @@ open class PsoriasisDrawCompletionStepViewController: RSDStepViewController, Pro
     override open func goForward() {
         if let image = self.bodySummaryImageView.image {
             var url: URL?
-            do { 
+            do {
                 if let pngDataUnwrapped = image.pngData(),
+                    let appDelegate = (AppDelegate.shared as? AppDelegate),
+                    let jpegData = appDelegate.imageDefaults.convertToJpegData(pngData: pngDataUnwrapped),
                     let outputDir = self.stepViewModel.parentTaskPath?.outputDirectory {
-                    url = try RSDFileResultUtility.createFileURL(identifier: summaryImageResultIdentifier, ext: "png", outputDirectory: outputDir)
-                    save(pngDataUnwrapped, to: url!)
+                    url = try RSDFileResultUtility.createFileURL(identifier: summaryImageResultIdentifier, ext: "jpg", outputDirectory: outputDir)
+                    self.save(jpegData, to: url!)
                 }
             } catch let error {
                 debugPrint("Failed to save the image: \(error)")
