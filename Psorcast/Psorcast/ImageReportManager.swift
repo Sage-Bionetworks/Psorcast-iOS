@@ -41,15 +41,31 @@ open class ImageReportManager : SBAReportManager {
     
     /// List of keys used in the notifications sent by this manager.
     public enum NotificationKey : String {
-        case videoUrl
+        case videoUrl, videoLoadProgress, taskId, exportStatusChange
     }
     
     /// Notification name posted by the `ImageReportManager` before the manager will send an update
     /// the url of the new video that was just created
     public static let newVideoCreated = Notification.Name(rawValue: "newVideoCreated")
+    public static let videoProgress = Notification.Name(rawValue: "videoProgress")
     
     /// The shared access to the video report manager
     public static let shared = ImageReportManager()
+    
+    /// When a user saves an  export, it will store the state here
+    public let exportUserDefaults = UserDefaults(suiteName: "ImageReportManagerExportStatus")
+    public func imageExported(photoUrl: URL) {
+        exportUserDefaults?.set(true, forKey: photoUrl.lastPathComponent)
+    }
+    public func videoExported(videoUrl: URL) {
+        exportUserDefaults?.set(true, forKey: videoUrl.lastPathComponent)
+    }
+    public func removeVideoExportedStatus(videoUrl: URL) {
+        exportUserDefaults?.set(false, forKey: videoUrl.lastPathComponent)
+    }
+    public func exportState(for url: URL) -> Bool {
+        return exportUserDefaults?.bool(forKey: url.lastPathComponent) ?? false
+    }
     
     // The date formatter for storing image files
     public let dateFormatter = StudyProfileManager.profileDateFormatter()
@@ -132,7 +148,7 @@ open class ImageReportManager : SBAReportManager {
         // First let's check if the video has already been created
         if let existingVideo = self.findVideoUrl(for: taskIdentifier, with: treatmentRange.startDate) {
             debugPrint("Video is already created, do not start again")
-            self.postNotification(url: existingVideo)
+            self.postVideoCreatedNotification(url: existingVideo)
             return
         }
         
@@ -159,22 +175,53 @@ open class ImageReportManager : SBAReportManager {
         let frames = self.findFrames(for: taskIdentifier, with: treatmentRange)
         task.frames = frames
         
+        // Update export state
+        if let outputUrl = renderSettings.outputURL {
+            self.removeVideoExportedStatus(videoUrl: outputUrl)
+            self.postExportStatusChangedNotification(url: outputUrl, newState: false)
+        }
+        
         let startTime = Date().timeIntervalSince1970
-        task.render() {
+        task.render(completion: {
             if let url = renderSettings.outputURL {
                 let endTime = Date().timeIntervalSince1970
                 debugPrint("Video Render took \(endTime - startTime)ms")
                 self.videoCreatorTasks.removeAll(where: { $0.settings.videoFilename == renderSettings.videoFilename })
-                self.postNotification(url: url)
+                self.postVideoCreatedNotification(url: url)
+            }
+        }) { (progress) in
+            if let url = renderSettings.outputURL {
+                self.postVideoProgressUpdatedNotification(url: url, progress: progress)
             }
         }
     }
     
+    func taskIdentifier(from url: URL) -> String? {
+        return url.lastPathComponent.components(separatedBy: self.fileNameSeperator).first
+    }
+    
     /// Notify about a completed video
-    fileprivate func postNotification(url: URL) {
+    fileprivate func postVideoCreatedNotification(url: URL) {
         NotificationCenter.default.post(name: ImageReportManager.newVideoCreated,
                                         object: self,
-                                        userInfo: [NotificationKey.videoUrl : url])
+                                        userInfo: [NotificationKey.videoUrl : url,
+                                        NotificationKey.taskId: (self.taskIdentifier(from: url) ?? "") as Any])
+    }
+    
+    fileprivate func postVideoProgressUpdatedNotification(url: URL, progress: Float) {
+        NotificationCenter.default.post(name: ImageReportManager.videoProgress,
+                                        object: self,
+                                        userInfo: [NotificationKey.videoUrl : url,
+                                                   NotificationKey.videoLoadProgress: progress,
+                                                   NotificationKey.taskId: (self.taskIdentifier(from: url) ?? "") as Any])
+    }
+    
+    fileprivate func postExportStatusChangedNotification(url: URL, newState: Bool) {
+        NotificationCenter.default.post(name: ImageReportManager.videoProgress,
+                                        object: self,
+                                        userInfo: [NotificationKey.videoUrl : url,
+                                                   NotificationKey.taskId: (self.taskIdentifier(from: url) ?? "") as Any,
+                                                   NotificationKey.exportStatusChange : newState])
     }
     
     // TODO: mdephillips 5/1/20 unit test after we decide this is how we want dates
@@ -212,7 +259,7 @@ open class ImageReportManager : SBAReportManager {
     }
     
     // TODO: mdephillips 5/1/20 unit test after we decide this is how we want dates
-    func findVideoUrl(for taskIdentifier: String, with treatmentStartDate: Date) -> URL? {
+    public func findVideoUrl(for taskIdentifier: String, with treatmentStartDate: Date) -> URL? {
         let allPossibleVideoFiles = FileManager.default.urls(for: storageDir)?
             .filter({ $0.pathExtension == videoPathExtension }) ?? []
         

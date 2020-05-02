@@ -36,7 +36,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8Oi-Gn-n4p" userLabel="Get started button" customClass="RSDRoundedButton" customModule="ResearchUI">
-                                        <rect key="frame" x="4" y="718.5" width="406" height="52"/>
+                                        <rect key="frame" x="4" y="766" width="406" height="30"/>
                                         <state key="normal" title="Join the research study"/>
                                         <connections>
                                             <action selector="getStartedTapped" destination="VJ3-hJ-g4d" eventType="touchUpInside" id="5K4-ae-Pkm"/>
@@ -50,7 +50,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lJG-3B-rEz" userLabel="Login Button" customClass="RSDUnderlinedButton" customModule="ResearchUI">
-                                        <rect key="frame" x="8" y="846.5" width="398" height="33.5"/>
+                                        <rect key="frame" x="8" y="850" width="398" height="30"/>
                                         <state key="normal" title="Login">
                                             <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
                                         </state>
@@ -133,7 +133,7 @@ OCT 2020 to Today</string>
                                             <constraint firstAttribute="height" constant="38" id="xI4-wy-fZx"/>
                                             <constraint firstAttribute="width" constant="32" id="yiL-zU-dfs"/>
                                         </constraints>
-                                        <state key="normal" image="FilterArrow"/>
+                                        <state key="normal" image="FilterUpArrow"/>
                                         <connections>
                                             <action selector="filterTapped" destination="0VO-CW-s3X" eventType="touchUpInside" id="XDT-F5-RAR"/>
                                         </connections>
@@ -163,7 +163,7 @@ OCT 2020 to Today</string>
                                                     <rect key="frame" x="0.0" y="0.0" width="414" height="280"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
-                                                        <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="k8i-qm-a06">
+                                                        <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="k8i-qm-a06">
                                                             <rect key="frame" x="16" y="0.0" width="382" height="280"/>
                                                             <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                                             <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="16" minimumInteritemSpacing="16" id="Smn-xR-3AF">
@@ -183,6 +183,10 @@ OCT 2020 to Today</string>
                                                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="kzt-gc-t9k">
                                                                                 <rect key="frame" x="0.0" y="0.0" width="224" height="141"/>
                                                                             </imageView>
+                                                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Qup-aP-iD5" userLabel="Circular Progress" customClass="RSDCountdownDial" customModule="ResearchUI">
+                                                                                <rect key="frame" x="64" y="22.5" width="96" height="96"/>
+                                                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                            </view>
                                                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EzX-Aj-qXN">
                                                                                 <rect key="frame" x="72" y="30.5" width="80" height="80"/>
                                                                                 <constraints>
@@ -203,6 +207,16 @@ OCT 2020 to Today</string>
                                                                                         <nil key="textColor"/>
                                                                                         <nil key="highlightedColor"/>
                                                                                     </label>
+                                                                                    <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Checkmark" translatesAutoresizingMaskIntoConstraints="NO" id="QQb-AO-WUP">
+                                                                                        <rect key="frame" x="136" y="20" width="72" height="24"/>
+                                                                                    </imageView>
+                                                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XdZ-hy-h7V">
+                                                                                        <rect key="frame" x="184" y="20" width="24" height="24"/>
+                                                                                        <state key="normal" image="ExportButton"/>
+                                                                                        <connections>
+                                                                                            <action selector="exportTapped" destination="LrK-q2-M3U" eventType="touchUpInside" id="FFE-Bp-Djf"/>
+                                                                                        </connections>
+                                                                                    </button>
                                                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cpr-6J-n4P" customClass="RSDShadowGradient" customModule="ResearchUI">
                                                                                         <rect key="frame" x="0.0" y="0.0" width="224" height="4"/>
                                                                                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
@@ -213,8 +227,14 @@ OCT 2020 to Today</string>
                                                                                 </subviews>
                                                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                                 <constraints>
+                                                                                    <constraint firstItem="QQb-AO-WUP" firstAttribute="leading" secondItem="XdZ-hy-h7V" secondAttribute="leading" constant="-48" id="0Zy-O0-nwa"/>
+                                                                                    <constraint firstItem="QQb-AO-WUP" firstAttribute="top" secondItem="XdZ-hy-h7V" secondAttribute="top" id="2RE-5f-TcM"/>
                                                                                     <constraint firstItem="1H7-cQ-zmt" firstAttribute="centerY" secondItem="cT5-M1-1Ta" secondAttribute="centerY" id="Frj-hn-Te1"/>
+                                                                                    <constraint firstItem="XdZ-hy-h7V" firstAttribute="centerY" secondItem="cT5-M1-1Ta" secondAttribute="centerY" id="LbR-uD-ReA"/>
+                                                                                    <constraint firstItem="QQb-AO-WUP" firstAttribute="trailing" secondItem="XdZ-hy-h7V" secondAttribute="trailing" id="R4e-8e-9vd"/>
                                                                                     <constraint firstItem="cpr-6J-n4P" firstAttribute="top" secondItem="cT5-M1-1Ta" secondAttribute="top" id="RMf-gg-zSm"/>
+                                                                                    <constraint firstItem="QQb-AO-WUP" firstAttribute="bottom" secondItem="XdZ-hy-h7V" secondAttribute="bottom" id="V4Y-uc-g7w"/>
+                                                                                    <constraint firstAttribute="trailing" secondItem="XdZ-hy-h7V" secondAttribute="trailing" constant="16" id="Vpx-FW-3Q7"/>
                                                                                     <constraint firstAttribute="trailing" secondItem="cpr-6J-n4P" secondAttribute="trailing" id="Xv2-Pf-iwD"/>
                                                                                     <constraint firstAttribute="height" constant="64" id="aDL-Ui-A1x"/>
                                                                                     <constraint firstItem="1H7-cQ-zmt" firstAttribute="leading" secondItem="cT5-M1-1Ta" secondAttribute="leading" constant="16" id="bom-vY-4KS"/>
@@ -224,6 +244,8 @@ OCT 2020 to Today</string>
                                                                             </view>
                                                                         </subviews>
                                                                         <constraints>
+                                                                            <constraint firstItem="Qup-aP-iD5" firstAttribute="top" secondItem="EzX-Aj-qXN" secondAttribute="top" constant="-8" id="0PH-mn-vJE"/>
+                                                                            <constraint firstItem="Qup-aP-iD5" firstAttribute="trailing" secondItem="EzX-Aj-qXN" secondAttribute="trailing" constant="8" id="17e-6S-aM1"/>
                                                                             <constraint firstAttribute="trailing" secondItem="cT5-M1-1Ta" secondAttribute="trailing" id="1JS-TW-jBJ"/>
                                                                             <constraint firstItem="kzt-gc-t9k" firstAttribute="leading" secondItem="LK6-SB-uTj" secondAttribute="leading" id="1fP-5j-F0V"/>
                                                                             <constraint firstItem="cT5-M1-1Ta" firstAttribute="leading" secondItem="LK6-SB-uTj" secondAttribute="leading" id="2rM-0R-Kgc"/>
@@ -232,6 +254,8 @@ OCT 2020 to Today</string>
                                                                             <constraint firstItem="cT5-M1-1Ta" firstAttribute="leading" secondItem="LK6-SB-uTj" secondAttribute="leading" id="NQU-Jj-IxJ"/>
                                                                             <constraint firstAttribute="trailing" secondItem="cT5-M1-1Ta" secondAttribute="trailing" id="QKD-0J-i2Y"/>
                                                                             <constraint firstAttribute="trailing" secondItem="kzt-gc-t9k" secondAttribute="trailing" id="SpY-zv-Yva"/>
+                                                                            <constraint firstItem="Qup-aP-iD5" firstAttribute="bottom" secondItem="EzX-Aj-qXN" secondAttribute="bottom" constant="8" id="jT5-nj-Kfo"/>
+                                                                            <constraint firstItem="Qup-aP-iD5" firstAttribute="leading" secondItem="EzX-Aj-qXN" secondAttribute="leading" constant="-8" id="rDz-9J-fOI"/>
                                                                             <constraint firstAttribute="bottom" secondItem="cT5-M1-1Ta" secondAttribute="bottom" id="ttF-TB-Lcm"/>
                                                                             <constraint firstAttribute="bottom" secondItem="cT5-M1-1Ta" secondAttribute="bottom" id="x6d-q6-HyU"/>
                                                                             <constraint firstItem="EzX-Aj-qXN" firstAttribute="centerX" secondItem="kzt-gc-t9k" secondAttribute="centerX" id="yro-nW-hi7"/>
@@ -240,8 +264,11 @@ OCT 2020 to Today</string>
                                                                     </collectionViewCellContentView>
                                                                     <size key="customSize" width="224" height="205"/>
                                                                     <connections>
+                                                                        <outlet property="checkMarkImage" destination="QQb-AO-WUP" id="dug-3O-aYP"/>
                                                                         <outlet property="dateLabel" destination="1H7-cQ-zmt" id="Xhu-wN-dIr"/>
+                                                                        <outlet property="exportButton" destination="XdZ-hy-h7V" id="pxD-t5-ifT"/>
                                                                         <outlet property="imageView" destination="kzt-gc-t9k" id="CkM-Oo-1w9"/>
+                                                                        <outlet property="loadProgress" destination="Qup-aP-iD5" id="NIE-X4-w88"/>
                                                                         <outlet property="playButton" destination="EzX-Aj-qXN" id="DAq-UU-M6I"/>
                                                                     </connections>
                                                                 </collectionViewCell>
@@ -850,7 +877,8 @@ OCT 2020 to Today</string>
     <resources>
         <image name="AppHeader" width="241" height="41"/>
         <image name="Checkmark" width="24" height="24"/>
-        <image name="FilterArrow" width="14" height="8"/>
+        <image name="ExportButton" width="24" height="24"/>
+        <image name="FilterUpArrow" width="14" height="8"/>
         <image name="InsightBulb" width="41" height="59"/>
         <image name="InsightIcon" width="34" height="34"/>
         <image name="MeasureTabIcon" width="31" height="16"/>

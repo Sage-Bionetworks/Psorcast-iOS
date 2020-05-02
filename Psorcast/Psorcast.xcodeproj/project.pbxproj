@@ -72,8 +72,6 @@
 		CB7CF2422400BF10003E02A5 /* WelcomeVideoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB7CF2412400BF10003E02A5 /* WelcomeVideoViewController.swift */; };
 		CB7CF2482400CFAA003E02A5 /* WelcomeVideo.mov in Resources */ = {isa = PBXBuildFile; fileRef = CB7CF2472400CFAA003E02A5 /* WelcomeVideo.mov */; };
 		CB81C92E242D3AB100A84886 /* MeasureTabViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB81C92D242D3AB100A84886 /* MeasureTabViewControllerTests.swift */; };
-		CB844C72245B4D5100539987 /* ReviewVideoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB844C71245B4D5100539987 /* ReviewVideoViewController.swift */; };
-		CB844C78245B4D6F00539987 /* ReviewVideoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB844C77245B4D6F00539987 /* ReviewVideoViewController.xib */; };
 		CB85FB52235F505300FDC59B /* PsoriasisDrawTaskResultProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB85FB51235F505300FDC59B /* PsoriasisDrawTaskResultProcessor.swift */; };
 		CB85FB56235F5C5500FDC59B /* SelectedIdentifiersResultObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB85FB55235F5C5500FDC59B /* SelectedIdentifiersResultObject.swift */; };
 		CB8AE6FD233FB53400F5F8AC /* PsoriasisDraw.json in Resources */ = {isa = PBXBuildFile; fileRef = CB8AE6FC233FB53400F5F8AC /* PsoriasisDraw.json */; };
@@ -404,8 +402,6 @@
 		CB7CF2412400BF10003E02A5 /* WelcomeVideoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeVideoViewController.swift; sourceTree = "<group>"; };
 		CB7CF2472400CFAA003E02A5 /* WelcomeVideo.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = WelcomeVideo.mov; sourceTree = "<group>"; };
 		CB81C92D242D3AB100A84886 /* MeasureTabViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MeasureTabViewControllerTests.swift; sourceTree = "<group>"; };
-		CB844C71245B4D5100539987 /* ReviewVideoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewVideoViewController.swift; sourceTree = "<group>"; };
-		CB844C77245B4D6F00539987 /* ReviewVideoViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReviewVideoViewController.xib; sourceTree = "<group>"; };
 		CB85FB51235F505300FDC59B /* PsoriasisDrawTaskResultProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PsoriasisDrawTaskResultProcessor.swift; sourceTree = "<group>"; };
 		CB85FB55235F5C5500FDC59B /* SelectedIdentifiersResultObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedIdentifiersResultObject.swift; sourceTree = "<group>"; };
 		CB8AE6FC233FB53400F5F8AC /* PsoriasisDraw.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = PsoriasisDraw.json; sourceTree = "<group>"; };
@@ -618,8 +614,6 @@
 				CB16C38B24465BC20046E200 /* ReminderStepViewController.xib */,
 				CBE1D7DB245A97350063FEB2 /* ReviewTabViewController.swift */,
 				CBADD53E2450ED1200422CE4 /* ResearchTabViewController.swift */,
-				CB844C71245B4D5100539987 /* ReviewVideoViewController.swift */,
-				CB844C77245B4D6F00539987 /* ReviewVideoViewController.xib */,
 				CB8F2925245BD14C00ABE5B3 /* FilterTreatmentViewController.swift */,
 				CB8F2920245BD14C00ABE5B3 /* FilterTreatmentViewController.xib */,
 			);
@@ -1154,7 +1148,6 @@
 				CBDCDC9623F3849E00E5CEB8 /* ImageCaptureStepViewController.xib in Resources */,
 				CB9F5E2422E0BED3003FBCEF /* lato_lightitalic.ttf in Resources */,
 				CBDCDCB423F3849E00E5CEB8 /* DigitalJarOpenCompletionStepViewController.xib in Resources */,
-				CB844C78245B4D6F00539987 /* ReviewVideoViewController.xib in Resources */,
 				CBDCDC8323F3848E00E5CEB8 /* FingersPhoto.mov in Resources */,
 				CBDD30E62416C7D1003B0488 /* PsorcastAssets.xcassets in Resources */,
 				CBDCDC9423F3849E00E5CEB8 /* ParticipantIDRegistrationViewController.xib in Resources */,
@@ -1265,7 +1258,6 @@
 				CBE561552412BD9D009A2930 /* TryItFirstTaskTableViewController.swift in Sources */,
 				CBDCDC9B23F3849E00E5CEB8 /* JointPainResultObject.swift in Sources */,
 				CBDCDCAF23F3849E00E5CEB8 /* PsoriasisDrawCompletionStepViewController.swift in Sources */,
-				CB844C72245B4D5100539987 /* ReviewVideoViewController.swift in Sources */,
 				CBDCDC9A23F3849E00E5CEB8 /* JointPainStepObject.swift in Sources */,
 				CB8F7D562422D73A00F77D62 /* StudyTaskFactory.swift in Sources */,
 				CBDCDCBB23F384A400E5CEB8 /* ImageDefaults.swift in Sources */,
