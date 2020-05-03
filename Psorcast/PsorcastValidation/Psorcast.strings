@@ -128,3 +128,4 @@
 
 "PHOTO_LIBRARY_PERMISSION_ERROR" = "This app needs the photo permission to export data to your photo library.\n\nYou can enable this permission by turning on 'Read and Write' in the app's settings.";
 
+"PHOTO_LIBRARY_FIRST_ASK_TITLE" = "Would you like to export to your Photo Library?";

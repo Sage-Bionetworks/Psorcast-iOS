@@ -407,35 +407,57 @@ open class ReviewTabViewController: UIViewController, UITableViewDataSource, UIT
     }
         
     func saveToLibrary(videoURL: URL?, photoUrl: URL?, taskId: RSDIdentifier, cellIdx: Int) {
-        PHPhotoLibrary.requestAuthorization { (status) in
-            DispatchQueue.main.async {
-                guard status == .authorized else {
-                    self.showPhotoPermissionAlert()
-                    return
-                }
-                
+        
+        func requestAuth() {
+            PHPhotoLibrary.requestAuthorization { (status) in
                 DispatchQueue.main.async {
-                    if let video = videoURL {
-                        self.imageManager.videoExported(videoUrl: video)
-                        self.taskRowState[taskId]?.exportStatusList[video.lastPathComponent] = true
-                    } else if let photo = photoUrl {
-                        self.imageManager.imageExported(photoUrl: photo)
-                        self.taskRowState[taskId]?.exportStatusList[photo.lastPathComponent] = true
+                    guard status == .authorized else {
+                        self.showPhotoPermissionAlert()
+                        return
                     }
-                    if let taskIdx = self.taskRows.map({ $0.rawValue }).firstIndex(of: taskId.rawValue) {
-                        self.reloadCell(taskIdx: taskIdx, imageCelIdx: cellIdx)
-                    }
+                    
+                    self.userHasPermissionToSaveToLibary(videoURL: videoURL, photoUrl: photoUrl, taskId: taskId, cellIdx: cellIdx)
                 }
-
-                PHPhotoLibrary.shared().performChanges({
-                    if let video = videoURL {
-                        PHAssetChangeRequest.creationRequestForAssetFromVideo(atFileURL: video)
-                    } else if let photo = photoUrl {
-                        PHAssetChangeRequest.creationRequestForAssetFromImage(atFileURL: photo)
-                    }
-                })
             }
         }
+        
+        let authStatus = PHPhotoLibrary.authorizationStatus()
+        if authStatus == .notDetermined {
+            self.showFirstTimeExportingAlert(yesCompletion: { _ in
+                requestAuth()
+            })
+        } else {
+            requestAuth()
+        }
+    }
+    
+    func showFirstTimeExportingAlert(yesCompletion: @escaping ((UIAlertAction) -> Void)) {
+        let title = Localization.localizedString("PHOTO_LIBRARY_FIRST_ASK_TITLE")
+        let alert = UIAlertController(title: title, message: nil, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: Localization.buttonNo(), style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: Localization.buttonYes(), style: .default, handler: yesCompletion))
+        self.present(alert, animated: true)
+    }
+    
+    func userHasPermissionToSaveToLibary(videoURL: URL?, photoUrl: URL?, taskId: RSDIdentifier, cellIdx: Int) {
+        if let video = videoURL {
+            self.imageManager.videoExported(videoUrl: video)
+            self.taskRowState[taskId]?.exportStatusList[video.lastPathComponent] = true
+        } else if let photo = photoUrl {
+            self.imageManager.imageExported(photoUrl: photo)
+            self.taskRowState[taskId]?.exportStatusList[photo.lastPathComponent] = true
+        }
+        if let taskIdx = self.taskRows.map({ $0.rawValue }).firstIndex(of: taskId.rawValue) {
+            self.reloadCell(taskIdx: taskIdx, imageCelIdx: cellIdx)
+        }
+
+        PHPhotoLibrary.shared().performChanges({
+            if let video = videoURL {
+                PHAssetChangeRequest.creationRequestForAssetFromVideo(atFileURL: video)
+            } else if let photo = photoUrl {
+                PHAssetChangeRequest.creationRequestForAssetFromImage(atFileURL: photo)
+            }
+        })
     }
     
     func showPhotoPermissionAlert() {
@@ -454,14 +476,6 @@ open class ReviewTabViewController: UIViewController, UITableViewDataSource, UIT
         let okAction = UIAlertAction(title: Localization.buttonOK(), style: .default, handler: nil)
         actions.append(okAction)
         self.presentAlertWithActions(title: title, message: message, preferredStyle: .alert, actions: actions)
-    }
-    
-    func showOkAlertOnMainQueue(title: String, msg: String) {
-        DispatchQueue.main.async {
-            let alert = UIAlertController(title: title, message: msg, preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: Localization.buttonOK(), style: .default, handler: nil))
-            self.present(alert, animated: true)
-        }
     }
     
     fileprivate struct TaskRowState {
