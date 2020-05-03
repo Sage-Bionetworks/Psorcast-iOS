@@ -34,7 +34,6 @@
 
 import Foundation
 import AVFoundation
-import Photos
 import UIKit
 
 open class VideoCreator {
@@ -102,26 +101,13 @@ open class VideoCreator {
         
         fileprivate var isCancelled = AtomicBool(initialValue: false)
 
-        class func saveToLibrary(videoURL: URL) {
-            PHPhotoLibrary.requestAuthorization { status in
-                guard status == .authorized else { return }
-
-                PHPhotoLibrary.shared().performChanges({
-                    PHAssetChangeRequest.creationRequestForAssetFromVideo(atFileURL: videoURL)
-                    }) { success, error in
-                        if !success, let err = error {
-                            print("Could not save video to photo library:", err)
-                        }
-                }
-            }
-        }
-
         class func removeFileAtURL(fileURL: URL) {
             do {
                 try FileManager.default.removeItem(atPath: fileURL.path)
             }
-            catch _ as NSError {
+            catch {
                 // Assume file doesn't exist.
+                print("No previous file \(error)")
             }
         }
 
@@ -130,16 +116,22 @@ open class VideoCreator {
             videoWriter = VideoWriter(renderSettings: settings)
         }
 
-        func render(completion: @escaping () -> Void) {
+        func render(completion: @escaping () -> Void, progress: @escaping (Float) -> Void) {
 
             // The VideoWriter will fail if a file exists at the URL, so clear it out first.
             if let url = settings.outputURL {
                 Task.removeFileAtURL(fileURL: url)
                 
                 videoWriter.start()
-                videoWriter.render(appendPixelBuffers: appendPixelBuffers) {
-                    completion()
-                }
+                videoWriter.render(appendPixelBuffers: appendPixelBuffers, completion: {
+                    DispatchQueue.main.async {
+                        completion()
+                    }
+                }, progress: { (progressFloat) in
+                    DispatchQueue.main.async {
+                        progress(progressFloat)
+                    }
+                })
             }
         }
         
@@ -148,10 +140,11 @@ open class VideoCreator {
         }
 
         // This is the callback function for VideoWriter.render()
-        func appendPixelBuffers(writer: VideoWriter) -> Bool {
+        func appendPixelBuffers(writer: VideoWriter, progress: @escaping (Float) -> Void) -> Bool {
 
             let frameDuration = CMTimeMake(value: Int64(Task.kTimescale / settings.fps), timescale: Task.kTimescale)
                         
+            let endTime = CMTimeMultiply(frameDuration, multiplier: Int32(frames.count * settings.numOfFramesPerImage))
             for frameIdx in 0 ..< frames.count {
                 
                 if self.isCancelled.get() == true { return true }
@@ -182,9 +175,10 @@ open class VideoCreator {
                         frameNum = frameNum + settings.numOfFramesPerImage
                         let nextPresentationTime = CMTimeMultiply(frameDuration, multiplier: Int32(frameNum))
                         
-                        if settings.transition == .crossFade {
-                            let crossFadeDuration = CMTimeMultiply(frameDuration, multiplier: Int32(settings.numOfFramesPerTransition))
-                            var crossFadeTime = CMTimeSubtract(nextPresentationTime, crossFadeDuration)
+                        let crossFadeDuration = CMTimeMultiply(frameDuration, multiplier: Int32(settings.numOfFramesPerTransition))
+                        var crossFadeTime = CMTimeSubtract(nextPresentationTime, crossFadeDuration)
+                        if settings.transition == .crossFade,
+                            frameIdx < (frames.count - 1) {
                             for i in 1...settings.numOfFramesPerTransition {
                                 
                                 // Wait for writer to have more buffers to write to and check for cancellation
@@ -204,6 +198,22 @@ open class VideoCreator {
                                 crossFadeTime = CMTimeAdd(crossFadeTime, frameDuration)
                             }
                         }
+                        
+                        if frameIdx == (frames.count - 1) {
+                            // The last frame we need to write an extra presentation time
+                            // so that the last image frame shows for the correct time
+                            while writer.isReadyForData == false {}
+                            
+                            if self.detailedDebugging {
+                                debugPrint("Wrote last frame \(curFrame.text) at time \(nextPresentationTime.value)")
+                            }
+                            
+                            if !videoWriter.addImage(frame: curFrame, withPresentationTime: crossFadeTime) {
+                                print("ERROR: Video creator could not write frame \(curFrame.text) at time \(presentationTime.value)")
+                            }
+                        }
+                        let exportProgress = Float(crossFadeTime.value) / Float(endTime.value)
+                        progress(exportProgress)
                     }
                 }
             }
@@ -421,18 +431,16 @@ open class VideoCreator {
             precondition(pixelBufferAdaptor.pixelBufferPool != nil, "nil pixelBufferPool")
         }
 
-        func render(appendPixelBuffers: @escaping (VideoWriter)-> Bool, completion: @escaping () -> Void) {
+        func render(appendPixelBuffers: @escaping (VideoWriter, @escaping (Float) -> Void)-> Bool, completion: @escaping () -> Void, progress: @escaping (Float) -> Void) {
 
             precondition(videoWriter != nil, "Call start() to initialze the writer")
 
             videoWriterInput.requestMediaDataWhenReady(on: renderSettings.processingQueue) {
-                let isFinished = appendPixelBuffers(self)
+                let isFinished = appendPixelBuffers(self, progress)
                 if isFinished {
                     self.videoWriterInput.markAsFinished()
                     self.videoWriter.finishWriting() {
-                        DispatchQueue.main.async {
-                            completion()
-                        }
+                        completion()
                     }
                 }
                 else {

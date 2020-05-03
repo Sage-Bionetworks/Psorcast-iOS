@@ -45,7 +45,7 @@ OCT 2020 to Today</string>
                                         <constraint firstAttribute="width" constant="32" id="LC7-Pc-TjO"/>
                                         <constraint firstAttribute="height" constant="38" id="Opp-Eu-QFB"/>
                                     </constraints>
-                                    <state key="normal" image="FilterUpArrow"/>
+                                    <state key="normal" image="FilterArrow"/>
                                     <connections>
                                         <action selector="doneTapped" destination="-1" eventType="touchUpInside" id="Dgn-zD-Lla"/>
                                     </connections>
@@ -127,6 +127,6 @@ OCT 2020 to Today</string>
         </view>
     </objects>
     <resources>
-        <image name="FilterUpArrow" width="14" height="8"/>
+        <image name="FilterArrow" width="14" height="8"/>
     </resources>
 </document>

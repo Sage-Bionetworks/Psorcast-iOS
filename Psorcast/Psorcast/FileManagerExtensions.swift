@@ -35,12 +35,16 @@
 import Foundation
 
 extension FileManager {
-    public func copyFile(at srcURL: URL, to dir: FileManager.SearchPathDirectory, filename: String) -> Bool {
+    public func copyFile(at srcURL: URL, to dir: FileManager.SearchPathDirectory, filename: String) -> URL? {
         guard let directory = try? self.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
             else {
-            return false
+            return nil
         }
-        return self.copyFile(at: srcURL, to: directory.appendingPathComponent(filename))
+        let newUrl = directory.appendingPathComponent(filename)
+        if !self.copyFile(at: srcURL, to: newUrl) {
+            print("File write did not work")
+        }
+        return newUrl
     }
     
     public func copyFile(at srcURL: URL, to dstURL: URL) -> Bool {

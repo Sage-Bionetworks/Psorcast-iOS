@@ -77,7 +77,7 @@ open class ResearchTabViewController: UIViewController {
         // Check for when new videos are created
         NotificationCenter.default.addObserver(forName: ImageReportManager.newVideoCreated, object: self.imageReportManager, queue: OperationQueue.main) { (notification) in
                                     
-            if let videoUrl = notification.userInfo?[ImageReportManager.NotificationKey.videoUrl] as? URL {
+            if let videoUrl = notification.userInfo?[ImageReportManager.NotificationKey.url] as? URL {
                 DispatchQueue.main.async {
                     self.progressIndicator.isHidden = true
                     self.stop()

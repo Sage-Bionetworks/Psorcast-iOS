@@ -121,4 +121,11 @@
 "SAVE_REMINDER_BUTTON" = "Save reminder";
 "REMINDERS_WEEKLY_I_HAVE_NOT_SET_REMINDERS" = "I have not set reminders";
 "TREATMENT" = "Treatment";
+"PLAY" = "Play";
+"PAUSE" = "Pause";
 
+"REMINDER_PERMISSION_ERROR" = "This app needs the notification permission to schedule a reminder.\n\nYou can enable the notification permission by turning on 'Allow notifications' in the app's settings.";
+
+"PHOTO_LIBRARY_PERMISSION_ERROR" = "This app needs the photo permission to export data to your photo library.\n\nYou can enable this permission by turning on 'Read and Write' in the app's settings.";
+
+"PHOTO_LIBRARY_FIRST_ASK_TITLE" = "Would you like to export to your Photo Library?";
