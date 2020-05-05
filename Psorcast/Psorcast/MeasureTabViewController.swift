@@ -78,6 +78,7 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
     /// The animation speed for insight progress change, range with 1.0 being 1 second long
     /// Normal range is 0.5 (fast) to 2.0 (slow)
     let insightAnimationSpeed = 1.0
+    var isInsightAnimating = false
     
     /// The profile manager
     let profileManager = (AppDelegate.shared as? AppDelegate)?.profileManager
@@ -283,40 +284,22 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
     }
     
     @IBAction func insightTapped() {
-        guard let vc = self.scheduleManager.instantiateInsightsTaskController() else { return }
+        guard let vc = self.profileManager?.instantiateInsightsTaskController() else { return }
         vc.delegate = self
         self.present(vc, animated: true, completion: nil)
     }
     
     func shouldShowInsight() -> Bool {
-        // First, make sure we haven't viewed an insight this week
-        let insightDate = self.profileManager?.insightViewedDate
-        let treatmentSetDate = self.profileManager?.treatmentsDate
-        if (insightDate == nil) {
-            // We've never viewed an insight, so they should all be available
-            return true
-        } else if (treatmentSetDate == nil) {
-            // We don't have a treatment date, so don't view insights for now
-            return false
-        } else {
-            // We have viewed an insight and have a treatment date, so let's make
-            // sure we haven't viewed an insight this week
-            let weekStartDate = self.weeklyRenewalDate(from: treatmentSetDate!, toNow: Date()).addingNumberOfDays(-7)
-            if (insightDate! > weekStartDate) {
-                // We've already viewed an insight this week
-                return false
-            } else {
-                // Okay, we haven't viewed an insight yet this week. Let's make sure we
-                // haven't already seen all the identifiers
-                if (self.scheduleManager.nextInsightItem() != nil) {
-                    // We have an unviewed insight to show, so return true
-                    return true
-                } else {
-                    // No new insights to view, so return false
-                    return false
-                }
-            }
+        guard let insightDate = self.profileManager?.insightViewedDate else {
+            return true // We've never viewed an insight, so they should all be available
         }
+        guard let treatmentDate = self.profileManager?.treatmentsDate,
+            let treatmentWeek = self.profileManager?.treatmentWeek(toNow: Date()) else {
+            return false // We don't have valid data
+        }
+        let insightViewedRange = self.scheduleManager.completionRange(treatmentDate: treatmentDate, treatmentWeek: treatmentWeek)
+        return !insightViewedRange.contains(insightDate) &&
+               self.profileManager?.nextInsightItem() != nil
     }
     
     func updateInsightProgress() {
@@ -335,8 +318,10 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
         // to trigger completion of the activities and surfacing of insight, comment/uncomment below
         //let newProgress = Float(1.0)
         
-        let animateToInsightView = newProgress >= 1.0 && self.insightAchievedView.isHidden && self.shouldShowInsight()
-        let animateToInsightProgressView = (newProgress < 1.0 || !self.shouldShowInsight()) && self.insightNotAchievedView.isHidden
+        let animateToInsightView = newProgress >= 1.0 && self.insightAchievedView.isHidden && self.shouldShowInsight() && !isInsightAnimating
+        let animateToInsightProgressView = (newProgress < 1.0 || !self.shouldShowInsight()) && self.insightNotAchievedView.isHidden && !isInsightAnimating
+        
+        self.isInsightAnimating = true
         
         // Animate the progress going to full
         UIView.animate(withDuration: 0.75 * insightAnimationSpeed, animations: {
@@ -357,6 +342,7 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
                 // Animate in the no insight view if it was previously hidden
                 self.animateInsightAchievedView(hide: true)
             }
+            self.isInsightAnimating = false
         })
     }
     
@@ -544,7 +530,6 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
             let image = self.scheduleManager.image(for: itemIndex)
             
             if self.scheduleManager.sortActivities(self.scheduleManager.scheduledActivities)?[itemIndex].activityIdentifier == RSDIdentifier.walkingTask.rawValue {
-                let i = 0
             }
             
             var isComplete = false

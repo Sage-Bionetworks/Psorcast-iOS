@@ -36,7 +36,7 @@ import AVFoundation
 import UIKit
 import BridgeApp
 import BridgeAppUI
-import GPUImage
+import SDWebImage
 
 class HorizontallyCenteredButton: UIButton {
     override func awakeFromNib() {
@@ -107,6 +107,25 @@ public class ShowInsightStepViewController: RSDStepViewController {
     @IBOutlet weak var noButton: HorizontallyCenteredButton!
     @IBOutlet weak var yesButton: HorizontallyCenteredButton!
     
+    @IBOutlet weak var imageView: UIImageView!
+    
+    let placeholder = UIImage(named: "InsightPlaceholder")
+    
+    open var insightStep: ShowInsightStepObject? {
+        return self.step as? ShowInsightStepObject
+    }
+    
+    override open func setupHeader(_ header: RSDStepNavigationView) {
+        super.setupHeader(header)
+        
+        if let inisightId = self.insightStep?.currentStepIdentifier,
+            let urlStr = self.insightStep?.items.first(where: { inisightId == $0.identifier })?.image,
+            let url = URL(string: urlStr) {
+            self.imageView.sd_imageIndicator = SDWebImageActivityIndicator.gray
+            self.imageView.sd_setImage(with: url, placeholderImage: placeholder, options: [.progressiveLoad, .highPriority], completed: nil)
+        }
+    }
+    
     @IBAction func yesButtonTapped(_ sender: Any) {
         finish(useful: true)
     }
@@ -138,4 +157,5 @@ public struct InsightItem: Codable {
     public var title: String?
     public var text: String?
     public var sortValue: Int?
+    public var image: String?
 }

@@ -134,21 +134,26 @@ open class StudyProfileManager: SBAProfileManagerObject {
       return self.value(forProfileKey: ProfileIdentifier.insightViewedDate.id) as? Date
     }
     
-    open var insightIdentifiers: [String] {
+    open var insightsTask: RSDTask? {
+        return SBABridgeConfiguration.shared.task(for: RSDIdentifier.insightsTask.rawValue)
+    }
+    
+    open var pastInsightItems: [InsightItem] {
+        let past = self.pastInsightIdentifiers
+        return self.insightItems().filter({ past.contains($0.identifier) })
+    }
+    
+    open var pastInsightIdentifiers: [String] {
         let insightReports = self.reports.filter { $0.reportKey == ProfileIdentifier.insights.rawValue.rawValue }
         var result = [String]()
-        if (insightReports.isEmpty) {
-            return result
-        } else {
-            for report in insightReports {
-                let clientDataDict = report.clientData as? NSDictionary
-                let insightString = clientDataDict?.value(forKey: ProfileIdentifier.insightViewedIdentifier.id) as? String
-                if (insightString != nil) {
-                    result.append(insightString!)
-                }
+        for report in insightReports {
+            let clientDataDict = report.clientData as? NSDictionary
+            let insightString = clientDataDict?.value(forKey: ProfileIdentifier.insightViewedIdentifier.id) as? String
+            if (insightString != nil) {
+                result.append(insightString!)
             }
-            return result
         }
+        return result
     }
     
     public func treatmentWeek(toNow: Date) -> Int {
@@ -374,6 +379,45 @@ open class StudyProfileManager: SBAProfileManagerObject {
         }
         
         super.taskController(taskController, readyToSave: taskViewModel)
+    }
+        
+    open func insightItems() -> [InsightItem] {
+        guard let task = self.insightsTask,
+            let step = task.stepNavigator.step(with: "insightStep") as? ShowInsightStepObject else {
+            return []
+        }
+        return step.items
+    }
+    
+    open func nextInsightItem() -> InsightItem? {
+        var items = insightItems()
+        items.sort(by: { (insightItem1, insightItem2) -> Bool in
+            if let sortValue1 = insightItem1.sortValue, let sortValue2 = insightItem2.sortValue {
+               return sortValue1 < sortValue2
+            } else {
+                if (insightItem1.sortValue != nil) {
+                    return true
+                } else {
+                    return false
+                }
+            }
+        })
+        let pastInsights = self.pastInsightIdentifiers
+        return items.first(where: { !pastInsights.contains($0.identifier) })
+    }
+    
+    open func instantiateInsightsTaskController() -> RSDTaskViewController? {
+        guard let insightItem = self.nextInsightItem() else { return nil }
+        return self.instantiateInsightsTaskController(for: insightItem)
+    }
+    
+    open func instantiateInsightsTaskController(for insightItem: InsightItem) -> RSDTaskViewController? {
+        guard let task = self.insightsTask else { return nil }
+        let step = task.stepNavigator.step(with: "insightStep") as? ShowInsightStepObject
+        step?.currentStepIdentifier = insightItem.identifier
+        step?.title = insightItem.title
+        step?.text = insightItem.text
+        return RSDTaskViewController(task: task)
     }
     
     override open func reportCategory(for reportIdentifier: String) -> SBAReportCategory {
@@ -663,10 +707,6 @@ open class StudyProfileItem: SBAProfileItem {
             if let date = formatter.date(from: stringJsonVal) {
                 return date
             }
-        }
-        
-        if self.demographicKey == "insightViewedDate" {
-          let i = 0
         }
         
         return self.commonBridgeJsonToItemType(jsonVal: json)

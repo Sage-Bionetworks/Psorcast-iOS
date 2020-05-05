@@ -10,3 +10,6 @@
 [submodule "Carthage/Checkouts/MotorControl-iOS"]
 	path = Carthage/Checkouts/MotorControl-iOS
 	url = https://github.com/Sage-Bionetworks/MotorControl-iOS.git
+[submodule "Carthage/Checkouts/SDWebImage"]
+	path = Carthage/Checkouts/SDWebImage
+	url = https://github.com/SDWebImage/SDWebImage.git

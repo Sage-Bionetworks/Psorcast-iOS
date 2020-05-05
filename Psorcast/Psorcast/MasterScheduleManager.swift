@@ -228,55 +228,6 @@ open class MasterScheduleManager : SBAScheduleManager {
         super.saveResults(from: taskViewModel)
     }
     
-    open var insightsTask: RSDTask? {
-        return SBABridgeConfiguration.shared.task(for: RSDIdentifier.insightsTask.rawValue)
-    }
-    
-    open func nextInsightItem() -> InsightItem? {
-        guard let task = self.insightsTask else { return nil }
-        let step = task.stepNavigator.step(with: "insightStep") as? ShowInsightStepObject
-        if (step == nil) {
-            return nil
-        }
-        step!.items.sort(by: { (insightItem1, insightItem2) -> Bool in
-            if let sortValue1 = insightItem1.sortValue, let sortValue2 = insightItem2.sortValue {
-               return sortValue1 < sortValue2
-            } else {
-                if (insightItem1.sortValue != nil) {
-                    return true
-                } else {
-                    return false
-                }
-            }
-        })
-        
-        // Now that they are sorted, look for the first item that we haven't already viewed
-        for item in step!.items {
-            if (!self.profileManager!.insightIdentifiers.contains(item.identifier)) {
-                // We haven't viewed this before, so return this item
-                return item
-            }
-        }
-        
-        // If we made it here, we've already viewed all the insights
-        return nil
-    }
-    
-    open func instantiateInsightsTaskController() -> RSDTaskViewController? {
-        guard let task = self.insightsTask else { return nil }
-        let insightItem = self.nextInsightItem()
-        if (insightItem == nil) {
-            return nil
-        } else {
-            let step = task.stepNavigator.step(with: "insightStep") as? ShowInsightStepObject
-            step?.currentStepIdentifier = insightItem!.identifier
-            step?.title = insightItem!.title
-            step?.text = insightItem!.text
-            step?.imageTheme = RSDFetchableImageThemeElementObject(imageName: "WhiteLightBulb")
-            return RSDTaskViewController(task: task)
-        }
-    }
-    
     /// Based on study requirements to make the schedules apply more to users
     /// that have certain diagnosis and symptom requirements, set frequency per scheduled activity
     public func scheduleFrequency(for identifier: RSDIdentifier) -> (freq: StudyScheduleFrequency, startWeek: Int) {

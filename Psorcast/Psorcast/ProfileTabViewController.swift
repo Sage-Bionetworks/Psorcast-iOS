@@ -180,6 +180,10 @@ class ProfileTabViewController: UIViewController, UITableViewDelegate, UITableVi
                 let vc = ReminderType.weekly.createReminderTaskViewController(defaultTime: self.profileManager?.weeklyReminderTime, defaultDay: self.profileManager?.weeklyReminderDay, doNotRemind: self.profileManager?.weeklyReminderDoNotRemind)
                 vc.delegate = self
                 self.show(vc, sender: self)
+            } else if profileItem.profileItemKey == RSDIdentifier.insightsTask.rawValue {
+                let vc = PastInsightsViewController()
+                vc.insightItems = self.profileManager?.pastInsightItems ?? []
+                self.show(vc, sender: self)
             } else if let vc = self.profileManager?.instantiateSingleQuestionTreatmentTaskController(for: profileItem.profileItemKey) {
                 vc.delegate = self
                 self.show(vc, sender: self)

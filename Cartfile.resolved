@@ -1,4 +1,5 @@
+github "SDWebImage/SDWebImage" "5.7.3"
 github "Sage-Bionetworks/Bridge-iOS-SDK" "v4.2.75"
 github "Sage-Bionetworks/BridgeApp-Apple-SDK" "v3.1.21"
 github "Sage-Bionetworks/MotorControl-iOS" "v1.7.37"
-github "Sage-Bionetworks/SageResearch" "v2.8.82"
+github "Sage-Bionetworks/SageResearch" "v2.8.84"
