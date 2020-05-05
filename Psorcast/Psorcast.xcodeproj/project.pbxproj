@@ -24,6 +24,7 @@
 		CB16C38D24465BC20046E200 /* ReminderStepViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB16C38B24465BC20046E200 /* ReminderStepViewController.xib */; };
 		CB2219D024611FE8007546CD /* SDWebImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB2219B124611FC4007546CD /* SDWebImage.framework */; };
 		CB2219D124611FE8007546CD /* SDWebImage.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CB2219B124611FC4007546CD /* SDWebImage.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		CB2219D6246132D2007546CD /* PastInsightsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB2219D5246132D2007546CD /* PastInsightsViewController.swift */; };
 		CB27B9F1243596F4007D36D8 /* MasterScheduleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB27B9F0243596F4007D36D8 /* MasterScheduleManager.swift */; };
 		CB28EBE82396FCA30043D7FE /* JointCounting.mov in Resources */ = {isa = PBXBuildFile; fileRef = CB28EBE52396FCA30043D7FE /* JointCounting.mov */; };
 		CB28EBEA2396FCA30043D7FE /* DigitalJarOpen.mov in Resources */ = {isa = PBXBuildFile; fileRef = CB28EBE72396FCA30043D7FE /* DigitalJarOpen.mov */; };
@@ -379,6 +380,7 @@
 		CB16C38A24465BC20046E200 /* ReminderStepViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReminderStepViewController.swift; sourceTree = "<group>"; };
 		CB16C38B24465BC20046E200 /* ReminderStepViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReminderStepViewController.xib; sourceTree = "<group>"; };
 		CB2219A324611FC4007546CD /* SDWebImage.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SDWebImage.xcodeproj; path = ../Carthage/Checkouts/SDWebImage/SDWebImage.xcodeproj; sourceTree = "<group>"; };
+		CB2219D5246132D2007546CD /* PastInsightsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PastInsightsViewController.swift; sourceTree = "<group>"; };
 		CB27B9F0243596F4007D36D8 /* MasterScheduleManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MasterScheduleManager.swift; sourceTree = "<group>"; };
 		CB28EBE52396FCA30043D7FE /* JointCounting.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = JointCounting.mov; sourceTree = "<group>"; };
 		CB28EBE72396FCA30043D7FE /* DigitalJarOpen.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = DigitalJarOpen.mov; sourceTree = "<group>"; };
@@ -652,6 +654,7 @@
 				CBADD53E2450ED1200422CE4 /* ResearchTabViewController.swift */,
 				CB8F2925245BD14C00ABE5B3 /* FilterTreatmentViewController.swift */,
 				CB8F2920245BD14C00ABE5B3 /* FilterTreatmentViewController.xib */,
+				CB2219D5246132D2007546CD /* PastInsightsViewController.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -1365,6 +1368,7 @@
 				CB16C38924465BB80046E200 /* ReminderManager.swift in Sources */,
 				CBDCDC9D23F3849E00E5CEB8 /* JointPainStepViewController.swift in Sources */,
 				CB4794F12426B33300D5A7E6 /* LevenshteinTools.swift in Sources */,
+				CB2219D6246132D2007546CD /* PastInsightsViewController.swift in Sources */,
 				CBAAB6D32458B53C00C1A619 /* ImageReportManager.swift in Sources */,
 				CBAAB6DD2458D30F00C1A619 /* FileManagerExtensions.swift in Sources */,
 				CB7CF2422400BF10003E02A5 /* WelcomeVideoViewController.swift in Sources */,
