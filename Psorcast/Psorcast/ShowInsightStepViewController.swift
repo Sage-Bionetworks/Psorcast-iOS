@@ -122,7 +122,7 @@ public class ShowInsightStepViewController: RSDStepViewController {
             let urlStr = self.insightStep?.items.first(where: { inisightId == $0.identifier })?.image,
             let url = URL(string: urlStr) {
             self.imageView.sd_imageIndicator = SDWebImageActivityIndicator.gray
-            self.imageView.sd_setImage(with: url, placeholderImage: placeholder, options: [.highPriority], completed: nil)
+            self.imageView.sd_setImage(with: url, placeholderImage: placeholder, options: [.progressiveLoad, .highPriority], completed: nil)
         }
     }
     
