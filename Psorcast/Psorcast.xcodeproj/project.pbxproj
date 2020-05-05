@@ -22,6 +22,8 @@
 		CB16C38924465BB80046E200 /* ReminderManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB16C38424465BB80046E200 /* ReminderManager.swift */; };
 		CB16C38C24465BC20046E200 /* ReminderStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB16C38A24465BC20046E200 /* ReminderStepViewController.swift */; };
 		CB16C38D24465BC20046E200 /* ReminderStepViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB16C38B24465BC20046E200 /* ReminderStepViewController.xib */; };
+		CB2219D024611FE8007546CD /* SDWebImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB2219B124611FC4007546CD /* SDWebImage.framework */; };
+		CB2219D124611FE8007546CD /* SDWebImage.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CB2219B124611FC4007546CD /* SDWebImage.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		CB27B9F1243596F4007D36D8 /* MasterScheduleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB27B9F0243596F4007D36D8 /* MasterScheduleManager.swift */; };
 		CB28EBE82396FCA30043D7FE /* JointCounting.mov in Resources */ = {isa = PBXBuildFile; fileRef = CB28EBE52396FCA30043D7FE /* JointCounting.mov */; };
 		CB28EBEA2396FCA30043D7FE /* DigitalJarOpen.mov in Resources */ = {isa = PBXBuildFile; fileRef = CB28EBE72396FCA30043D7FE /* DigitalJarOpen.mov */; };
@@ -284,6 +286,27 @@
 			remoteGlobalIDString = BC9E34F11E524A2200B8604F;
 			remoteInfo = GPUImageTests_iOS;
 		};
+		CB2219AE24611FC4007546CD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CB2219A324611FC4007546CD /* SDWebImage.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 53761325155AD0D5005750A4;
+			remoteInfo = "SDWebImage static";
+		};
+		CB2219B024611FC4007546CD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CB2219A324611FC4007546CD /* SDWebImage.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 4A2CADFF1AB4BB5300B6BC39;
+			remoteInfo = SDWebImage;
+		};
+		CB2219B224611FC4007546CD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CB2219A324611FC4007546CD /* SDWebImage.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 80B6DFEE2142B71600BCB334;
+			remoteInfo = SDWebImageMapKit;
+		};
 		CB9F5E4522E0C27D003FBCEF /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FFABCBB622DD1EEB00D11109 /* Project object */;
@@ -314,6 +337,7 @@
 				CBDCDCD823F385E600E5CEB8 /* ResearchMotion.framework in Embed Frameworks */,
 				CBDCDCCA23F385B800E5CEB8 /* BridgeAppUI.framework in Embed Frameworks */,
 				CBDCDCCD23F385C200E5CEB8 /* BridgeSDK.framework in Embed Frameworks */,
+				CB2219D124611FE8007546CD /* SDWebImage.framework in Embed Frameworks */,
 				CBDCDCD223F385D400E5CEB8 /* MotorControl.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -354,6 +378,7 @@
 		CB16C38424465BB80046E200 /* ReminderManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReminderManager.swift; sourceTree = "<group>"; };
 		CB16C38A24465BC20046E200 /* ReminderStepViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReminderStepViewController.swift; sourceTree = "<group>"; };
 		CB16C38B24465BC20046E200 /* ReminderStepViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReminderStepViewController.xib; sourceTree = "<group>"; };
+		CB2219A324611FC4007546CD /* SDWebImage.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SDWebImage.xcodeproj; path = ../Carthage/Checkouts/SDWebImage/SDWebImage.xcodeproj; sourceTree = "<group>"; };
 		CB27B9F0243596F4007D36D8 /* MasterScheduleManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MasterScheduleManager.swift; sourceTree = "<group>"; };
 		CB28EBE52396FCA30043D7FE /* JointCounting.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = JointCounting.mov; sourceTree = "<group>"; };
 		CB28EBE72396FCA30043D7FE /* DigitalJarOpen.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = DigitalJarOpen.mov; sourceTree = "<group>"; };
@@ -536,6 +561,7 @@
 				CBDCDCD723F385E600E5CEB8 /* ResearchMotion.framework in Frameworks */,
 				CBDCDCC923F385B800E5CEB8 /* BridgeAppUI.framework in Frameworks */,
 				CBDCDCCC23F385C200E5CEB8 /* BridgeSDK.framework in Frameworks */,
+				CB2219D024611FE8007546CD /* SDWebImage.framework in Frameworks */,
 				CBDCDCD123F385D400E5CEB8 /* MotorControl.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -579,6 +605,16 @@
 				CB16BF5123E4B90B0099FD08 /* GPUImageTests_macOS.xctest */,
 				CB16BF5323E4B90B0099FD08 /* GPUImage.framework */,
 				CB16BF5523E4B90B0099FD08 /* GPUImageTests_iOS.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		CB2219A424611FC4007546CD /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				CB2219AF24611FC4007546CD /* libSDWebImage.a */,
+				CB2219B124611FC4007546CD /* SDWebImage.framework */,
+				CB2219B324611FC4007546CD /* SDWebImageMapKit.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -901,6 +937,7 @@
 		FFABCC0A22DD1FE800D11109 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CB2219A324611FC4007546CD /* SDWebImage.xcodeproj */,
 				CBDCDCD923F385EC00E5CEB8 /* ResearchUI.framework */,
 				CBDCDCD623F385E600E5CEB8 /* ResearchMotion.framework */,
 				CBDCDCD323F385DA00E5CEB8 /* Research.framework */,
@@ -1046,6 +1083,10 @@
 					ProductGroup = CB16BF4823E4B90B0099FD08 /* Products */;
 					ProjectRef = CB16BF4723E4B90B0099FD08 /* GPUImage.xcodeproj */;
 				},
+				{
+					ProductGroup = CB2219A424611FC4007546CD /* Products */;
+					ProjectRef = CB2219A324611FC4007546CD /* SDWebImage.xcodeproj */;
+				},
 			);
 			projectRoot = "";
 			targets = (
@@ -1084,6 +1125,27 @@
 			fileType = wrapper.cfbundle;
 			path = GPUImageTests_iOS.xctest;
 			remoteRef = CB16BF5423E4B90B0099FD08 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		CB2219AF24611FC4007546CD /* libSDWebImage.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libSDWebImage.a;
+			remoteRef = CB2219AE24611FC4007546CD /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		CB2219B124611FC4007546CD /* SDWebImage.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = SDWebImage.framework;
+			remoteRef = CB2219B024611FC4007546CD /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		CB2219B324611FC4007546CD /* SDWebImageMapKit.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = SDWebImageMapKit.framework;
+			remoteRef = CB2219B224611FC4007546CD /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */

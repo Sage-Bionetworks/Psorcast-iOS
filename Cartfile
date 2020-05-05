@@ -1,3 +1,4 @@
 github "Sage-Bionetworks/SageResearch" ~> 2.3
 github "Sage-Bionetworks/BridgeApp-Apple-SDK" ~> 3.0
 github "Sage-Bionetworks/MotorControl-iOS" ~> 1.7
+github "SDWebImage/SDWebImage"

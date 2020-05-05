@@ -100,6 +100,11 @@ class ParticipantIDRegistrationViewController: RSDStepViewController, UITextFiel
                 self.logoutButton.alpha = CGFloat(1.0)
                 self.submitButton.isEnabled = true
                 self.resetDefaults()
+                
+                // TODO: mdephillips 5/4/20 delete sd web image cache?
+                // SDImageCache.shared().clearMemory()
+                // SDImageCache.shared().clearDisk()
+                
                 #if VALIDATION
                     self.goBack()
                 #else

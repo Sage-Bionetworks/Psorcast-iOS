@@ -78,6 +78,7 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
     /// The animation speed for insight progress change, range with 1.0 being 1 second long
     /// Normal range is 0.5 (fast) to 2.0 (slow)
     let insightAnimationSpeed = 1.0
+    var isInsightAnimating = false
     
     /// The profile manager
     let profileManager = (AppDelegate.shared as? AppDelegate)?.profileManager
@@ -335,8 +336,10 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
         // to trigger completion of the activities and surfacing of insight, comment/uncomment below
         //let newProgress = Float(1.0)
         
-        let animateToInsightView = newProgress >= 1.0 && self.insightAchievedView.isHidden && self.shouldShowInsight()
-        let animateToInsightProgressView = (newProgress < 1.0 || !self.shouldShowInsight()) && self.insightNotAchievedView.isHidden
+        let animateToInsightView = newProgress >= 1.0 && self.insightAchievedView.isHidden && self.shouldShowInsight() && !isInsightAnimating
+        let animateToInsightProgressView = (newProgress < 1.0 || !self.shouldShowInsight()) && self.insightNotAchievedView.isHidden && !isInsightAnimating
+        
+        self.isInsightAnimating = true
         
         // Animate the progress going to full
         UIView.animate(withDuration: 0.75 * insightAnimationSpeed, animations: {
@@ -357,6 +360,7 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
                 // Animate in the no insight view if it was previously hidden
                 self.animateInsightAchievedView(hide: true)
             }
+            self.isInsightAnimating = false
         })
     }
     
