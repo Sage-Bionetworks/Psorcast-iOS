@@ -348,28 +348,21 @@ open class ReviewTabViewController: UIViewController, UITableViewDataSource, UIT
         }
         let header = UIView()
         
-        let roundedBackgroundView = UIView()
-        roundedBackgroundView.translatesAutoresizingMaskIntoConstraints = false
-        header.addSubview(roundedBackgroundView)
-        
-        let viewHeight = self.sectionHeaderHeight - (self.sectionHeaderPadding * CGFloat(1.5))
-        roundedBackgroundView.backgroundColor = designSystem.colorRules.palette.primary.dark.color
-        roundedBackgroundView.layer.cornerRadius = viewHeight * CGFloat(0.5)
-        roundedBackgroundView.rsd_alignCenterHorizontal(padding: 0)
-        roundedBackgroundView.rsd_alignCenterVertical(padding: 0)
-        roundedBackgroundView.rsd_makeHeight(.equal, viewHeight)
-        
         let titleLabel = UILabel()
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        roundedBackgroundView.addSubview(titleLabel)
+        header.addSubview(titleLabel)
         
         let taskId = self.taskRows[section].rawValue
         let title = MasterScheduleManager.shared.scheduledActivities.first(where: { $0.activityIdentifier == taskId })?.activity.label
         
-        titleLabel.text = title
-        titleLabel.textColor = UIColor.white
-        titleLabel.font = designSystem.fontRules.font(for: .smallHeader)
-        titleLabel.rsd_alignToSuperview([.leading, .trailing], padding: CGFloat(2 * self.sectionHeaderPadding))
+        titleLabel.text = title?.uppercased()
+        titleLabel.textAlignment = .center
+        titleLabel.numberOfLines = 1
+        titleLabel.minimumScaleFactor = 0.5
+        titleLabel.adjustsFontSizeToFitWidth = true
+        titleLabel.textColor = designSystem.colorRules.textColor(on: designSystem.colorRules.backgroundPrimary, for: .microHeader)
+        titleLabel.font = designSystem.fontRules.font(for: .microHeader)
+        titleLabel.rsd_alignToSuperview([.leading, .trailing], padding: self.sectionHeaderPadding)
         titleLabel.rsd_alignToSuperview([.top, .bottom], padding: self.sectionHeaderPadding)
         
         return header
