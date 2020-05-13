@@ -37,6 +37,7 @@ extension RSDStepType {
     public static let treatmentSelection: RSDStepType = "treatmentSelection"
     public static let insights: RSDStepType = "insights"
     public static let reminder: RSDStepType = "reminder"
+    public static let webImageInstruction: RSDStepType = "webImageInstruction"
 }
 
 open class StudyTaskFactory: TaskFactory {
@@ -62,6 +63,8 @@ open class StudyTaskFactory: TaskFactory {
             return try ShowInsightStepObject(from: decoder)
         case .reminder:
             return try ReminderStepObject(from: decoder)
+        case .webImageInstruction:
+            return try WebImageInstructionStepObject(from: decoder)
         default:
             return try super.decodeStep(from: decoder, with: type)
         }
@@ -78,9 +81,78 @@ open class StudyTaskFactory: TaskFactory {
             return try super.decodeProfileDataSource(from: decoder)
         }
     }
+    
+    /// Decode an object. This will check the category type to decide which decode* method to call.
+    override open func decodeObject(from decoder: Decoder) throws -> (SBACategoryType, Any) {
+        let catTypeName = try self.catTypeName(from: decoder)
+        let catType: SBACategoryType = SBACategoryType(rawValue: catTypeName)
+        switch catType {
+        case .deepDiveList:
+            let container = try decoder.container(keyedBy: DeepDiveListKeys.self)
+            let sortOrder = try container.decode([DeepDiveSortedTask].self, forKey: DeepDiveListKeys.sortOrder)
+            return (catType, DeepDiveList(sortOrder: sortOrder))
+        default:
+            return try super.decodeObject(from: decoder)
+        }
+    }
 }
 
 extension SBAProfileDataSourceType {
     /// Defaults to a `studyProfileDataSource`.
     public static let studyProfileDataSource: SBAProfileDataSourceType = "studyProfileDataSource"
+}
+
+open class StudyBridgeConfiguration: SBABridgeConfiguration {
+    
+    public var deepDiveList: DeepDiveList?
+    
+    override open func addConfigElementMapping(for key: String, with json: SBBJSONValue) throws {
+        do {
+            let decoder = self.factory(for: json, using: key).createJSONDecoder()
+            let objWrapper = try decoder.decode(ConfigElementWrapper.self, from: json)
+            switch objWrapper.catType {
+            case .deepDiveList:
+                self.deepDiveList = objWrapper.object as? DeepDiveList
+                debugPrint("Setting up \(key) with catType \(objWrapper.catType)")
+                return
+            default:
+                debugPrint("Setting up \(key) with catType \(objWrapper.catType)")
+            }
+        } catch let err {
+            debugPrint("Failed to decode config element for \(key) with \(json): \(err)")
+        }
+        
+        try super.addConfigElementMapping(for: key, with: json)
+    }
+}
+
+public struct ConfigElementWrapper : Decodable {
+    public let catType: SBACategoryType
+    public let object: Any
+
+    public init(from decoder: Decoder) throws {
+        guard let factory: SBAFactory = decoder.factory as? SBAFactory else {
+            let context = DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Expecting the factory to be a subclass of `SBAFactory`")
+            throw DecodingError.typeMismatch(SBAFactory.self, context)
+        }
+        (self.catType, self.object) = try factory.decodeObject(from: decoder)
+    }
+}
+
+extension SBACategoryType {
+    /// Defaults to decoding the DeepDiveList object.
+    public static let deepDiveList: SBACategoryType = "deepDiveList"
+}
+
+fileprivate enum DeepDiveListKeys: String, CodingKey {
+    case sortOrder
+}
+
+public struct DeepDiveList {
+    public var sortOrder: [DeepDiveSortedTask]
+}
+
+public struct DeepDiveSortedTask: Decodable {
+    public var identifier: String
+    public var title: String
 }

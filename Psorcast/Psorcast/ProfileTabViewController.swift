@@ -138,6 +138,12 @@ class ProfileTabViewController: UIViewController, UITableViewDelegate, UITableVi
         return cell
     }
     
+    func showDeepDiveViewController() {
+        let vc = DeepDiveTableViewController()
+        vc.deepDiveItems = MasterScheduleManager.shared.deepDiveTaskItems
+        self.present(vc, animated: true, completion: nil)
+    }
+    
     public func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         guard self.profileDataSource?.title(for: section) != nil else { return CGFloat.leastNormalMagnitude }
         return UITableView.automaticDimension
@@ -184,6 +190,8 @@ class ProfileTabViewController: UIViewController, UITableViewDelegate, UITableVi
                 let vc = PastInsightsViewController()
                 vc.insightItems = self.profileManager?.pastInsightItems ?? []
                 self.show(vc, sender: self)
+            } else if profileItem.profileItemKey == StudyProfileManager.deepDiveProfileIdentifier {
+                self.showDeepDiveViewController()
             } else if let vc = self.profileManager?.instantiateSingleQuestionTreatmentTaskController(for: profileItem.profileItemKey) {
                 vc.delegate = self
                 self.show(vc, sender: self)
