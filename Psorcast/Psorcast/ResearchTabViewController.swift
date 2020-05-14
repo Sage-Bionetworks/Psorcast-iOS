@@ -38,146 +38,25 @@ import BridgeSDK
 
 open class ResearchTabViewController: UIViewController {
     
-    /// For debugging and demos, it may be useful to set this flag to true
-    fileprivate let shouldPrepopulateDigitalJarOpenImages = true
-    fileprivate let taskVideoToView = RSDIdentifier.handImagingTask.rawValue
+    @IBOutlet weak var demoHeader: UIImageView!
+    @IBOutlet weak var demoBody: UIImageView!
     
-    /// The date when pre-population will start and subtract an hour every image added
-    /// These images will be associated with the treatment date range they fall within.
-    fileprivate let prepopulateDate = StudyProfileManager.profileDateFormatter().date(from: "2020-04-29T00:26:08.393-0700")
-    
-    @IBOutlet weak var videoView: UIView!
-    @IBOutlet weak var progressIndicator: UIActivityIndicatorView!
-    
-    /// The image report manager
-    let imageReportManager = ImageReportManager.shared
-    
-    /// The profile manager
-    let profileManager = (AppDelegate.shared as? AppDelegate)?.profileManager
-    
-    /// Video player variables
-    var playerLayer: AVPlayerLayer?
-    var player: AVPlayer?
-    /// Here you can make the video loop or not after it is done.
-    var isLoop: Bool = true
-    /// Bool to track only configuring the video player once
-    var isConfigured: Bool = false
-
-    override open func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-                
-        if shouldPrepopulateDigitalJarOpenImages {
-            self.prepopulateDigitalJarOpenImages()
-        }
+    override open func viewDidLoad() {
+        super.viewDidLoad()
         
-        DispatchQueue.main.async {
-            self.progressIndicator.isHidden = false
-        }
-        
-        // Check for when new videos are created
-        NotificationCenter.default.addObserver(forName: ImageReportManager.newVideoCreated, object: self.imageReportManager, queue: OperationQueue.main) { (notification) in
-                                    
-            if let videoUrl = notification.userInfo?[ImageReportManager.NotificationKey.url] as? URL {
-                DispatchQueue.main.async {
-                    self.progressIndicator.isHidden = true
-                    self.stop()
-                    self.configure(videoUrl: videoUrl)
-                    self.play()
-                }
-            }
-        }
-        // Re-create the digital jar open video
-        self.imageReportManager.createCurrentTreatmentVideo(for: taskVideoToView, using: self.profileManager)
+        self.view.backgroundColor = AppDelegate.designSystem.colorRules.backgroundPrimary.color
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.imageTapped))
+        self.demoHeader.isUserInteractionEnabled = true
+        self.demoHeader.addGestureRecognizer(tapGestureRecognizer)
+        let tapGestureRecognizer2 = UITapGestureRecognizer(target: self, action: #selector(self.imageTapped))
+        self.demoBody.isUserInteractionEnabled = true
+        self.demoBody.addGestureRecognizer(tapGestureRecognizer2)
     }
     
-    override open func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        
-        debugPrint("Memory issue!")
-        self.pause()
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0, execute:  {
-            // delay for 2 seconds
-            self.play()
-        })
-    }
-    
-    func prepopulateDigitalJarOpenImages() {
-                
-        let now = prepopulateDate ?? Date()
-        let calendar = Calendar.current
-        for index in 1...4 {
-            let date = calendar.date(byAdding: .hour, value: -1 * index, to: now) ?? now
-            let dateStr = StudyProfileManager.profileDateFormatter().string(from: date)
-            let imageName = "DigitalJarOpen_\(dateStr)"
-            let assetImageName = "DJO\(index)"
-            if let image = UIImage(named: assetImageName) {
-                // Create a copy of the image in documents folder, made to look like digital jar open results
-                _ = self.createLocalUrl(forImageNamed: imageName, image: image)
-            }
-        }
-    }
-    
-    func createLocalUrl(forImageNamed name: String, image: UIImage) -> URL? {
-
-        let fileManager = FileManager.default
-        guard let cacheDirectory = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first else { return nil }
-        let url = cacheDirectory.appendingPathComponent("\(name).jpg")
-
-        guard fileManager.fileExists(atPath: url.path) else {
-            guard let data = image.jpegData(compressionQuality: 1.0)
-            else { return nil }
-
-            fileManager.createFile(atPath: url.path, contents: data, attributes: nil)
-            return url
-        }
-
-        return url
-    }
-    
-    func configure(videoUrl: URL) {
-        player = AVPlayer(url: videoUrl)
-        playerLayer = AVPlayerLayer(player: player)
-            playerLayer?.frame = self.videoView.bounds
-        
-        playerLayer?.videoGravity = AVLayerVideoGravity.resizeAspect
-        
-        // Remove previous layers
-        self.videoView.layer.sublayers?.forEach({ $0.removeFromSuperlayer() })
-        
-        if let playerLayer = self.playerLayer {
-            self.videoView.layer.addSublayer(playerLayer)
-        }
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(reachTheEndOfTheVideo(_:)), name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: self.player?.currentItem)
-        self.isConfigured = true
-    }
-    
-    override open func viewWillDisappear(_ animated: Bool) {
-        self.stop()
-    }
-    
-    func play() {
-        if player?.timeControlStatus != AVPlayer.TimeControlStatus.playing {
-            player?.play()
-        }
-    }
-    
-    func pause() {
-        player?.pause()
-    }
-    
-    func stop() {
-        player?.pause()
-        player?.seek(to: CMTime.zero)
-    }
-    
-    @objc func reachTheEndOfTheVideo(_ notification: Notification) {
-        if isLoop {
-            player?.pause()
-            player?.seek(to: CMTime.zero)
-            player?.play()
-        }
+    @objc func imageTapped() {
+        let alert = UIAlertController(title: "This feature will be available in a future version of the app.", message: nil, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Okay", style: .default, handler: nil))
+        self.present(alert, animated: true)
     }
 }
 
