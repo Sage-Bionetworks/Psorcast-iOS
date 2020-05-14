@@ -46,25 +46,32 @@ class ProfileTabViewController: UIViewController, UITableViewDelegate, UITableVi
     
     open var design = AppDelegate.designSystem
     
-    override open func viewDidLoad() {
-        super.viewDidLoad()
-        
-        self.setupTableView()
-    }
+    var didRegisterObserver = false
+    var previousReportCount = 0
     
     override open func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        self.previousReportCount = self.profileManager?.reports.count ?? 0
+        self.registerObserver()
         self.tableView.reloadData()
-        
+    }
+
+    func registerObserver() {
+        guard !self.didRegisterObserver else { return }
         // Reload the schedules and add an observer to observe changes.
         if let manager = profileManager {
             NotificationCenter.default.addObserver(forName: .SBAUpdatedReports, object: manager, queue: OperationQueue.main) { (notification) in
-                self.tableView.reloadData()                                
+                let newReportCount = self.profileManager?.reports.count ?? 0
+                if newReportCount != self.previousReportCount {
+                    self.tableView.reloadData()
+                }
+                self.previousReportCount = newReportCount
             }
+            self.didRegisterObserver = true
         }
     }
-
+    
     func setupTableView() {
         self.tableView.estimatedSectionHeaderHeight = 40
         
@@ -140,7 +147,7 @@ class ProfileTabViewController: UIViewController, UITableViewDelegate, UITableVi
     
     func showDeepDiveViewController() {
         let vc = DeepDiveTableViewController()
-        vc.deepDiveItems = MasterScheduleManager.shared.deepDiveTaskItems
+        vc.deepDiveItems = DeepDiveReportManager.shared.deepDiveTaskItems
         self.present(vc, animated: true, completion: nil)
     }
     

@@ -104,15 +104,14 @@ extension SBAProfileDataSourceType {
 
 open class StudyBridgeConfiguration: SBABridgeConfiguration {
     
-    public var deepDiveList: DeepDiveList?
-    
     override open func addConfigElementMapping(for key: String, with json: SBBJSONValue) throws {
+        
         do {
             let decoder = self.factory(for: json, using: key).createJSONDecoder()
             let objWrapper = try decoder.decode(ConfigElementWrapper.self, from: json)
             switch objWrapper.catType {
             case .deepDiveList:
-                self.deepDiveList = objWrapper.object as? DeepDiveList
+                DeepDiveReportManager.shared.deepDiveList = objWrapper.object as? DeepDiveList
                 debugPrint("Setting up \(key) with catType \(objWrapper.catType)")
                 return
             default:
@@ -123,6 +122,12 @@ open class StudyBridgeConfiguration: SBABridgeConfiguration {
         }
         
         try super.addConfigElementMapping(for: key, with: json)
+    }
+    
+    override open func setup(with appConfig: SBBAppConfig) {
+        super.setup(with: appConfig)
+        // After setup is complete, we can reload the the deep dive manager's data
+        DeepDiveReportManager.shared.reloadData()
     }
 }
 
@@ -155,4 +160,5 @@ public struct DeepDiveList {
 public struct DeepDiveSortedTask: Decodable {
     public var identifier: String
     public var title: String
+    public var detail: String?
 }

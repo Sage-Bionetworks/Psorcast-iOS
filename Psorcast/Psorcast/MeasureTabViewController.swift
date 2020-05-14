@@ -60,6 +60,7 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
     /// The current scheduled activities, these are maintianed separately from
     /// the master schedule manager for performance reasons
     var currentActivityState = [ActivityState]()
+    var lastDeepDiveItem: DeepDiveItem?
     
     /// The activities collection view
     @IBOutlet weak var collectionView: UICollectionView!
@@ -90,6 +91,22 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
     
     let showInsightTaskId = "showInsight"
     
+    open var measureTabItemCount: Int {
+        let deepDiveCount = (self.currentDeepDiveSurvey == nil) ? 0 : 1
+        let scheduleCount = self.scheduleManager.sortedScheduleCount
+        return scheduleCount + deepDiveCount
+    }
+    
+    let deepDiveManager = DeepDiveReportManager.shared
+    
+    open var currentDeepDiveSurvey: DeepDiveItem? {
+        guard let setTreatmentsDate = self.profileManager?.treatmentsDate else {
+            return nil
+        }
+        let weeklyRange = self.weeklyRenewalDateRange(from: setTreatmentsDate, toNow: Date())
+        return DeepDiveReportManager.shared.currentDeepDiveSurvey(for: weeklyRange)
+    }
+    
     override open func viewDidLoad() {
         super.viewDidLoad()
         
@@ -102,16 +119,28 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
         
         // Reload the schedules and add an observer to observe changes.
         NotificationCenter.default.addObserver(forName: .SBAUpdatedScheduledActivities, object: scheduleManager, queue: OperationQueue.main) { (notification) in
-                                                            
+            debugPrint("MeasureTab scheduleManager changed \(self.measureTabItemCount)")
+            self.refreshUI()
+        }
+        
+        // Reload the schedules and add an observer to observe changes.
+        NotificationCenter.default.addObserver(forName: .SBAWillSendUpdatedScheduledActivities, object: scheduleManager, queue: OperationQueue.main) { (notification) in
+            debugPrint("MeasureTab scheduleManager changed \(self.measureTabItemCount)")
             self.refreshUI()
         }
         
         // Reload the schedules and add an observer to observe changes.
         if let manager = profileManager {
             NotificationCenter.default.addObserver(forName: .SBAUpdatedReports, object: manager, queue: OperationQueue.main) { (notification) in
-                                
+                debugPrint("MeasureTab profileManager reports changed \(manager.reports.count)")
                 self.refreshUI()
             }
+        }
+        
+        NotificationCenter.default.addObserver(forName: .SBAUpdatedReports, object: DeepDiveReportManager.shared, queue: OperationQueue.main) { (notification) in
+            debugPrint("MeasureTab deep dive reports changed \(self.deepDiveManager.reports.count)")
+            guard DeepDiveReportManager.shared.reports.count > 0 else { return }
+            self.refreshUI()
         }
         
         self.profileManager?.reloadData()
@@ -179,12 +208,34 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
         let treatmentDateChanged = self.currentTreatmentDate?.timeIntervalSince1970 != treatmentDate?.timeIntervalSince1970
         self.currentTreatmentDate = treatmentDate
         
-        let newItemCount = newActivities.count
+        var deepDiveChanged = false
+        // If the deep dive item chagned, or has become complete
+        if let newDeepDive = self.currentDeepDiveSurvey {
+            if let lastItem = self.lastDeepDiveItem {
+                if lastItem.task.identifier != newDeepDive.task.identifier  {
+                    // Deep-dive survey changed
+                    deepDiveChanged = true
+                } else if self.deepDiveManager.isDeepDiveComplete(for: lastItem.task.identifier) !=
+                   self.deepDiveManager.isDeepDiveComplete(for: newDeepDive.task.identifier) {
+                    // Deep-dive survey was completed
+                    deepDiveChanged = true
+                }
+            } else { // The first time showing the deep dive
+                deepDiveChanged = true
+            }
+            self.lastDeepDiveItem = newDeepDive
+        }
+        
+        let newItemCount = self.scheduleManager.sortedScheduleCount
+        let activityCountChanged = self.currentActivityState.count != newItemCount
+        debugPrint("MeasureTab deep dive changed \(deepDiveChanged)")
+        debugPrint("MeasureTab activity count changed \(activityCountChanged)")
+        debugPrint("MeasureTab treatment date changed \(treatmentDateChanged)")
         // Check for a change in the number of activity items
-        if self.currentActivityState.count != newItemCount || treatmentDateChanged {
-            debugPrint("Collection view item count has changed")
+        if activityCountChanged || treatmentDateChanged || deepDiveChanged {
+            debugPrint("MeasureTab Collection view item count has changed")
             self.refreshActivityState(to: newActivities)
-            self.gridLayout.itemCount = newItemCount
+            self.gridLayout.itemCount = self.measureTabItemCount
             self.collectionView.reloadData()
             return
         }
@@ -200,7 +251,7 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
             }
         }
         
-        debugPrint("Collection view index paths to update \(indexPathsToUpdate)")
+        debugPrint("MeasureTab Collection view index paths to update \(indexPathsToUpdate)")
         if !indexPathsToUpdate.isEmpty {
             self.collectionView.reloadItems(at: indexPathsToUpdate)
         }
@@ -303,7 +354,7 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
     }
     
     func updateInsightProgress() {
-        let totalSchedules = self.scheduleManager.sortedScheduleCount
+        let totalSchedules = self.measureTabItemCount
         
         // Make sure pre-conditions are mets
         guard totalSchedules != 0 else {
@@ -312,7 +363,11 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
             return
         }
         
-        let activitiesCompletedThisWeek = self.scheduleManager.completedActivitiesCount()
+        var activitiesCompletedThisWeek = self.scheduleManager.completedActivitiesCount()
+        if let currentDeepDive = self.currentDeepDiveSurvey,
+            DeepDiveReportManager.shared.isDeepDiveComplete(for: currentDeepDive.task.identifier) {
+            activitiesCompletedThisWeek = activitiesCompletedThisWeek + 1
+        }
                         
         let newProgress = Float(activitiesCompletedThisWeek) / Float(totalSchedules)
         // to trigger completion of the activities and surfacing of insight, comment/uncomment below
@@ -525,20 +580,26 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
             
             measureCell.delegate = self
             
-            let title = self.scheduleManager.detail(for: itemIndex)
-            let buttonTitle = self.scheduleManager.title(for: itemIndex)
-            let image = self.scheduleManager.image(for: itemIndex)
-            
-            if self.scheduleManager.sortActivities(self.scheduleManager.scheduledActivities)?[itemIndex].activityIdentifier == RSDIdentifier.walkingTask.rawValue {
-            }
-            
-            var isComplete = false
-            if let setTreatmentsDate = self.profileManager?.treatmentsDate,
-                let finishedOn = self.scheduleManager.sortedScheduledActivity(for: itemIndex)?.finishedOn {
-                isComplete = self.weeklyRenewalDateRange(from: setTreatmentsDate, toNow: Date()).contains(finishedOn)
-            }
+            if itemIndex < self.scheduleManager.sortedScheduleCount {
+                let title = self.scheduleManager.detail(for: itemIndex)
+                let buttonTitle = self.scheduleManager.title(for: itemIndex)
+                let image = self.scheduleManager.image(for: itemIndex)
+                
+                var isComplete = false
+                if let setTreatmentsDate = self.profileManager?.treatmentsDate,
+                    let finishedOn = self.scheduleManager.sortedScheduledActivity(for: itemIndex)?.finishedOn {
+                    isComplete = self.weeklyRenewalDateRange(from: setTreatmentsDate, toNow: Date()).contains(finishedOn)
+                }
 
-            measureCell.setItemIndex(itemIndex: translatedIndexPath.item, title: title, buttonTitle: buttonTitle, image: image, isComplete: isComplete)
+                measureCell.setItemIndex(itemIndex: translatedIndexPath.item, title: title, buttonTitle: buttonTitle, image: image, isComplete: isComplete)
+                
+            } else if let deepDiveSurvey = self.currentDeepDiveSurvey {
+                measureCell.setItemIndex(itemIndex: translatedIndexPath.item,
+                                         title: deepDiveSurvey.detail,
+                                         buttonTitle: deepDiveSurvey.title,
+                                         image: UIImage(named: "MeasureDeepDive"),
+                                         isComplete: DeepDiveReportManager.shared.isDeepDiveComplete(for: deepDiveSurvey.task.identifier))
+            }
         }
 
         return cell
@@ -547,7 +608,13 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
     // MARK: MeasureTabCollectionViewCell delegate
     
     func didTapItem(for itemIndex: Int) {
-        self.runTask(for: itemIndex)
+        if itemIndex < self.scheduleManager.sortedScheduleCount {
+            self.runTask(for: itemIndex)
+        } else if let item = self.currentDeepDiveSurvey {
+            let vc = RSDTaskViewController(task: item.task)
+            vc.delegate = self
+            self.show(vc, sender: self)
+        }
     }
     
     // MARK: RSDTaskViewControllerDelegate

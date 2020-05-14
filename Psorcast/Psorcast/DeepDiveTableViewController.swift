@@ -86,6 +86,7 @@ open class DeepDiveTableViewController: UITableViewController, RSDTaskViewContro
         }
         let item = self.deepDiveItems[indexPath.row]
         customCell.titleLabel?.text = item.title ?? item.task.identifier
+        customCell.detailLabel?.text = item.detail
         return customCell
     }
     

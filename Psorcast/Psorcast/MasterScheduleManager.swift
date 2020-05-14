@@ -286,44 +286,6 @@ open class MasterScheduleManager : SBAScheduleManager {
     open func diagnosis() -> String? {
         return self.profileManager?.diagnosis
     }
-            
-    /// THe list of profile deep dive tasks
-    open var deepDiveList: DeepDiveList? {
-        guard let studyConfig = SBABridgeConfiguration.shared as? StudyBridgeConfiguration else { return nil }
-        return studyConfig.deepDiveList
-    }
-    
-    open func deepDiveTask(for identifier: String) -> RSDTask? {
-        return SBABridgeConfiguration.shared.task(for: identifier)
-    }
-    
-    open var deepDiveTaskList: [RSDTask] {
-        guard let list = self.deepDiveList?.sortOrder else { return [] }
-        var taskList = [RSDTask]()
-        for item in list {
-            if let task = self.deepDiveTask(for: item.identifier) {
-                taskList.append(task)
-            }
-        }
-        return taskList
-    }
-    
-    open var deepDiveTaskItems: [DeepDiveItem] {
-        guard let sortOrder = self.deepDiveList?.sortOrder else { return [] }
-        let taskList = self.deepDiveTaskList
-        var items = [DeepDiveItem]()
-        for item in sortOrder {
-            if let matchingTask = taskList.first(where: { $0.identifier == item.identifier }) {
-                items.append(DeepDiveItem(title: item.title, task: matchingTask))
-            }
-        }
-        return items
-    }
-}
-
-public struct DeepDiveItem {
-    public var title: String?
-    public var task: RSDTask
 }
 
 public enum StudyScheduleFrequency {
