@@ -142,6 +142,10 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate {
         self.transition(to: vc, state: .consent, animated: true)
     }
     
+    override open func instantiateBridgeConfiguration() -> SBABridgeConfiguration {
+        return StudyBridgeConfiguration()
+    }
+    
     func showTryItFirstIntroScreens(animated: Bool) {
         guard self.rootViewController?.state != .main else { return }
         

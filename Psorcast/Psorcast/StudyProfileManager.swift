@@ -70,7 +70,9 @@ open class StudyProfileManager: SBAProfileManagerObject {
     public static let diagnosisNoneAnswer = "I do not have psoriasis"
     public static let diagnosisPsoriasisAnswer = "Psoriasis"
     public static let diagnosisArthritisAnswer = "Psoriatic Arthritis"
-    public static let diagnosisBothAnswer = "Psoriasis, Psoriatic Arthritis"    
+    public static let diagnosisBothAnswer = "Psoriasis, Psoriatic Arthritis"
+    
+    public static let deepDiveProfileIdentifier = "DeepDive"
     
     /// The date formatter for when you want to encode/decode answer dates in the profile
     public static func profileDateFormatter() -> DateFormatter {
