@@ -41,7 +41,7 @@ open class DeepDiveTableViewController: UITableViewController, RSDTaskViewContro
     let headerHeight = CGFloat(82)
     let headerPadding = CGFloat(16)
     
-    open var profileManager = (AppDelegate.shared as? AppDelegate)?.profileManager
+    open var deepDiveManager = DeepDiveReportManager.shared
     
     let design = AppDelegate.designSystem
     let white = RSDColorTile(RSDColor.white, usesLightStyle: false)
@@ -86,6 +86,7 @@ open class DeepDiveTableViewController: UITableViewController, RSDTaskViewContro
         }
         let item = self.deepDiveItems[indexPath.row]
         customCell.titleLabel?.text = item.title ?? item.task.identifier
+        customCell.detailLabel?.text = item.detail
         return customCell
     }
     
@@ -98,11 +99,11 @@ open class DeepDiveTableViewController: UITableViewController, RSDTaskViewContro
     }
     
     public func taskController(_ taskController: RSDTaskController, didFinishWith reason: RSDTaskFinishReason, error: Error?) {
-//        self.profileManager?.taskController(taskController, didFinishWith: reason, error: error)
+        MasterScheduleManager.shared.taskController(taskController, didFinishWith: reason, error: error)
         self.dismiss(animated: true, completion: nil)
     }
     
     public func taskController(_ taskController: RSDTaskController, readyToSave taskViewModel: RSDTaskViewModel) {
-        //self.profileManager?.taskController(taskController, readyToSave: taskViewModel)
+        MasterScheduleManager.shared.taskController(taskController, readyToSave: taskViewModel)
     }
 }
