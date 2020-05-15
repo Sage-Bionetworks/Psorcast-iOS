@@ -202,6 +202,8 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
     }
     
     /// Due to a performance hit of updating the collection view, let's only do it when necessary
+    /// There is an open bug on SBAUpdatedReports being called too many times and not updating quick enough here
+    /// https://sagebionetworks.jira.com/browse/IA-852
     func updateCollectionView(newActivities: [SBBScheduledActivity]) {
         
         // Check for a change in treatment selection date, which should refresh the whole list
