@@ -49,6 +49,12 @@ class ProfileTabViewController: UIViewController, UITableViewDelegate, UITableVi
     var didRegisterObserver = false
     var previousReportCount = 0
     
+    override open func viewDidLoad() {
+        super.viewDidLoad()
+        self.setupTableView()
+    }
+
+    
     override open func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
@@ -64,7 +70,10 @@ class ProfileTabViewController: UIViewController, UITableViewDelegate, UITableVi
             NotificationCenter.default.addObserver(forName: .SBAUpdatedReports, object: manager, queue: OperationQueue.main) { (notification) in
                 let newReportCount = self.profileManager?.reports.count ?? 0
                 if newReportCount != self.previousReportCount {
+                    debugPrint("ProfileTab SBAUpdatedReports report count changed")
                     self.tableView.reloadData()
+                } else {
+                    debugPrint("ProfileTab SBAUpdatedReports but report count did not change")
                 }
                 self.previousReportCount = newReportCount
             }

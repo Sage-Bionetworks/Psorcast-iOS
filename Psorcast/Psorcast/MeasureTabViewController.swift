@@ -61,6 +61,7 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
     /// the master schedule manager for performance reasons
     var currentActivityState = [ActivityState]()
     var lastDeepDiveItem: DeepDiveItem?
+    var lastDeepDiveComplete = false
     
     /// The activities collection view
     @IBOutlet weak var collectionView: UICollectionView!
@@ -209,20 +210,25 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
         self.currentTreatmentDate = treatmentDate
         
         var deepDiveChanged = false
+        var deepDiveUpdated = false
         // If the deep dive item chagned, or has become complete
         if let newDeepDive = self.currentDeepDiveSurvey {
             if let lastItem = self.lastDeepDiveItem {
                 if lastItem.task.identifier != newDeepDive.task.identifier  {
                     // Deep-dive survey changed
                     deepDiveChanged = true
-                } else if self.deepDiveManager.isDeepDiveComplete(for: lastItem.task.identifier) !=
-                   self.deepDiveManager.isDeepDiveComplete(for: newDeepDive.task.identifier) {
-                    // Deep-dive survey was completed
-                    deepDiveChanged = true
                 }
             } else { // The first time showing the deep dive
                 deepDiveChanged = true
             }
+            
+            let newDeepDiveComplete = self.deepDiveManager.isDeepDiveComplete(for: newDeepDive.task.identifier)
+            if self.lastDeepDiveComplete != newDeepDiveComplete  {
+                // Deep-dive survey was completed
+                deepDiveUpdated = true
+            }
+            self.lastDeepDiveComplete = newDeepDiveComplete
+            
             self.lastDeepDiveItem = newDeepDive
         }
         
@@ -254,6 +260,11 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
         debugPrint("MeasureTab Collection view index paths to update \(indexPathsToUpdate)")
         if !indexPathsToUpdate.isEmpty {
             self.collectionView.reloadItems(at: indexPathsToUpdate)
+        }
+        
+        if deepDiveUpdated && !deepDiveChanged && (self.measureTabItemCount > 0),
+            let indexPath = self.collectionViewIndexPath(for: self.measureTabItemCount - 1) {
+            self.collectionView.reloadItems(at: [indexPath])
         }
         
         // Refresh to current activity states

@@ -104,6 +104,16 @@ extension SBAProfileDataSourceType {
 
 open class StudyBridgeConfiguration: SBABridgeConfiguration {
     
+    override open func schemaInfo(for activityIdentifier: String) -> RSDSchemaInfo? {
+        // TODO: mdephillips 5/14/20 remove after deep dive surveys are real and not fake
+        if activityIdentifier == "DeepDiveTest1" ||
+            activityIdentifier == "DeepDiveTest2" ||
+            activityIdentifier == "DeepDiveTest3" {
+            return RSDSchemaInfoObject(identifier: activityIdentifier, revision: 1)
+        }
+        return super.schemaInfo(for: activityIdentifier)
+    }
+    
     override open func addConfigElementMapping(for key: String, with json: SBBJSONValue) throws {
         
         do {
