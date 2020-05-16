@@ -156,39 +156,39 @@ OCT 2020 to Today</string>
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="701"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                         <prototypes>
-                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="ReviewTableViewCell" rowHeight="280" id="tjC-bb-3mr" customClass="ReviewTableViewCell" customModule="Psorcast" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="55.5" width="414" height="280"/>
+                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="ReviewTableViewCell" rowHeight="800" id="tjC-bb-3mr" customClass="ReviewTableViewCell" customModule="Psorcast" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="55.5" width="414" height="800"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="tjC-bb-3mr" id="pRG-y3-Ja3">
-                                                    <rect key="frame" x="0.0" y="0.0" width="414" height="280"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="414" height="800"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
                                                         <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="k8i-qm-a06">
-                                                            <rect key="frame" x="16" y="0.0" width="382" height="280"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="414" height="800"/>
                                                             <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                                             <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="16" minimumInteritemSpacing="16" id="Smn-xR-3AF">
-                                                                <size key="itemSize" width="224" height="205"/>
+                                                                <size key="itemSize" width="381" height="248"/>
                                                                 <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                                                 <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                                                 <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                                             </collectionViewFlowLayout>
                                                             <cells>
                                                                 <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ReviewImageCollectionView" id="LrK-q2-M3U" customClass="ReviewImageCollectionView" customModule="Psorcast" customModuleProvider="target">
-                                                                    <rect key="frame" x="0.0" y="37.5" width="224" height="205"/>
+                                                                    <rect key="frame" x="0.0" y="0.0" width="381" height="248"/>
                                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                                     <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="LK6-SB-uTj">
-                                                                        <rect key="frame" x="0.0" y="0.0" width="224" height="205"/>
+                                                                        <rect key="frame" x="0.0" y="0.0" width="381" height="248"/>
                                                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                                         <subviews>
                                                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="kzt-gc-t9k">
-                                                                                <rect key="frame" x="0.0" y="0.0" width="224" height="141"/>
+                                                                                <rect key="frame" x="0.0" y="0.0" width="381" height="184"/>
                                                                             </imageView>
                                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Qup-aP-iD5" userLabel="Circular Progress" customClass="RSDCountdownDial" customModule="ResearchUI">
-                                                                                <rect key="frame" x="64" y="22.5" width="96" height="96"/>
+                                                                                <rect key="frame" x="142.5" y="44" width="96" height="96"/>
                                                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                             </view>
                                                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EzX-Aj-qXN">
-                                                                                <rect key="frame" x="72" y="30.5" width="80" height="80"/>
+                                                                                <rect key="frame" x="150.5" y="52" width="80" height="80"/>
                                                                                 <constraints>
                                                                                     <constraint firstAttribute="height" constant="80" id="cXY-oy-nl6"/>
                                                                                     <constraint firstAttribute="width" constant="80" id="dcq-xa-WRc"/>
@@ -199,26 +199,26 @@ OCT 2020 to Today</string>
                                                                                 </connections>
                                                                             </button>
                                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cT5-M1-1Ta">
-                                                                                <rect key="frame" x="0.0" y="141" width="224" height="64"/>
+                                                                                <rect key="frame" x="0.0" y="184" width="381" height="64"/>
                                                                                 <subviews>
                                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="1H7-cQ-zmt">
-                                                                                        <rect key="frame" x="16" y="32" width="192" height="0.0"/>
+                                                                                        <rect key="frame" x="16" y="32" width="349" height="0.0"/>
                                                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                                         <nil key="textColor"/>
                                                                                         <nil key="highlightedColor"/>
                                                                                     </label>
                                                                                     <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Checkmark" translatesAutoresizingMaskIntoConstraints="NO" id="QQb-AO-WUP">
-                                                                                        <rect key="frame" x="136" y="20" width="72" height="24"/>
+                                                                                        <rect key="frame" x="293" y="20" width="72" height="24"/>
                                                                                     </imageView>
                                                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XdZ-hy-h7V">
-                                                                                        <rect key="frame" x="184" y="20" width="24" height="24"/>
+                                                                                        <rect key="frame" x="341" y="20" width="24" height="24"/>
                                                                                         <state key="normal" image="ExportButton"/>
                                                                                         <connections>
                                                                                             <action selector="exportTapped" destination="LrK-q2-M3U" eventType="touchUpInside" id="FFE-Bp-Djf"/>
                                                                                         </connections>
                                                                                     </button>
                                                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cpr-6J-n4P" customClass="RSDShadowGradient" customModule="ResearchUI">
-                                                                                        <rect key="frame" x="0.0" y="0.0" width="224" height="4"/>
+                                                                                        <rect key="frame" x="0.0" y="0.0" width="381" height="4"/>
                                                                                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                                                                         <constraints>
                                                                                             <constraint firstAttribute="height" constant="4" id="8oc-TJ-yON"/>
@@ -262,7 +262,7 @@ OCT 2020 to Today</string>
                                                                             <constraint firstItem="kzt-gc-t9k" firstAttribute="top" secondItem="LK6-SB-uTj" secondAttribute="top" id="zbu-qX-Bbo"/>
                                                                         </constraints>
                                                                     </collectionViewCellContentView>
-                                                                    <size key="customSize" width="224" height="205"/>
+                                                                    <size key="customSize" width="381" height="248"/>
                                                                     <connections>
                                                                         <outlet property="checkMarkImage" destination="QQb-AO-WUP" id="dug-3O-aYP"/>
                                                                         <outlet property="dateLabel" destination="1H7-cQ-zmt" id="Xhu-wN-dIr"/>
@@ -270,6 +270,67 @@ OCT 2020 to Today</string>
                                                                         <outlet property="imageView" destination="kzt-gc-t9k" id="CkM-Oo-1w9"/>
                                                                         <outlet property="loadProgress" destination="Qup-aP-iD5" id="NIE-X4-w88"/>
                                                                         <outlet property="playButton" destination="EzX-Aj-qXN" id="DAq-UU-M6I"/>
+                                                                    </connections>
+                                                                </collectionViewCell>
+                                                                <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ReviewNotEnoughDataCollectionView" id="SkY-Tz-cJk" customClass="ReviewNotEnoughDataCollectionView" customModule="Psorcast" customModuleProvider="target">
+                                                                    <rect key="frame" x="0.0" y="264" width="381" height="332"/>
+                                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                                    <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="WAZ-pn-e47">
+                                                                        <rect key="frame" x="0.0" y="0.0" width="381" height="332"/>
+                                                                        <autoresizingMask key="autoresizingMask"/>
+                                                                        <subviews>
+                                                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EKf-xY-2cc">
+                                                                                <rect key="frame" x="0.0" y="32" width="381" height="216"/>
+                                                                                <subviews>
+                                                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ReviewVideoIcon" translatesAutoresizingMaskIntoConstraints="NO" id="EFh-2A-tt6">
+                                                                                        <rect key="frame" x="141.5" y="10" width="98.000000000000028" height="98.000000000000028"/>
+                                                                                        <constraints>
+                                                                                            <constraint firstAttribute="width" secondItem="EFh-2A-tt6" secondAttribute="height" multiplier="1:1" id="4jU-Oc-jaU"/>
+                                                                                            <constraint firstAttribute="height" relation="lessThanOrEqual" constant="98" id="oAD-Ts-gQd"/>
+                                                                                        </constraints>
+                                                                                    </imageView>
+                                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You need to complete 2 measurements to unlock your video." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bn9-rI-qzG">
+                                                                                        <rect key="frame" x="36" y="124" width="309" height="61"/>
+                                                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                                        <nil key="textColor"/>
+                                                                                        <nil key="highlightedColor"/>
+                                                                                    </label>
+                                                                                </subviews>
+                                                                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                                                                <constraints>
+                                                                                    <constraint firstItem="bn9-rI-qzG" firstAttribute="leading" secondItem="EKf-xY-2cc" secondAttribute="leading" constant="36" id="5jR-KO-Rvd"/>
+                                                                                    <constraint firstItem="bn9-rI-qzG" firstAttribute="top" secondItem="EFh-2A-tt6" secondAttribute="bottom" constant="16" id="97K-g9-0cP"/>
+                                                                                    <constraint firstAttribute="trailing" secondItem="bn9-rI-qzG" secondAttribute="trailing" constant="36" id="EA2-XY-ssl"/>
+                                                                                    <constraint firstItem="EFh-2A-tt6" firstAttribute="centerX" secondItem="EKf-xY-2cc" secondAttribute="centerX" id="Xqv-Jx-yXi"/>
+                                                                                    <constraint firstItem="EFh-2A-tt6" firstAttribute="centerY" secondItem="EKf-xY-2cc" secondAttribute="centerY" constant="-49" id="pSG-cf-HqA"/>
+                                                                                </constraints>
+                                                                            </view>
+                                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CxB-DG-SQx" customClass="RSDRoundedButton" customModule="ResearchUI">
+                                                                                <rect key="frame" x="32" y="248" width="317" height="52"/>
+                                                                                <state key="normal" title="Add measurement"/>
+                                                                                <connections>
+                                                                                    <action selector="addMeasurementTapped" destination="SkY-Tz-cJk" eventType="touchUpInside" id="mSO-19-BIn"/>
+                                                                                </connections>
+                                                                            </button>
+                                                                        </subviews>
+                                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                        <constraints>
+                                                                            <constraint firstAttribute="trailing" secondItem="CxB-DG-SQx" secondAttribute="trailing" constant="32" id="5KT-Iz-ST3"/>
+                                                                            <constraint firstItem="EKf-xY-2cc" firstAttribute="top" secondItem="WAZ-pn-e47" secondAttribute="top" constant="32" id="6I4-nn-FTb"/>
+                                                                            <constraint firstAttribute="trailing" secondItem="EKf-xY-2cc" secondAttribute="trailing" id="I3v-CD-D47"/>
+                                                                            <constraint firstAttribute="bottom" secondItem="CxB-DG-SQx" secondAttribute="bottom" constant="32" id="JDv-WE-urn"/>
+                                                                            <constraint firstItem="CxB-DG-SQx" firstAttribute="leading" secondItem="WAZ-pn-e47" secondAttribute="leading" constant="32" id="JSc-06-TQo"/>
+                                                                            <constraint firstItem="EKf-xY-2cc" firstAttribute="leading" secondItem="WAZ-pn-e47" secondAttribute="leading" id="RYk-rT-7hB"/>
+                                                                            <constraint firstAttribute="bottom" secondItem="EKf-xY-2cc" secondAttribute="bottom" constant="84" id="bsP-mY-u4F"/>
+                                                                        </constraints>
+                                                                    </collectionViewCellContentView>
+                                                                    <size key="customSize" width="381" height="332"/>
+                                                                    <connections>
+                                                                        <outlet property="addMeasurementButton" destination="CxB-DG-SQx" id="SgR-Rb-dMT"/>
+                                                                        <outlet property="imageTextContainerBottom" destination="bsP-mY-u4F" id="vLm-MF-fvC"/>
+                                                                        <outlet property="imageTextContainerTop" destination="6I4-nn-FTb" id="bH6-Ft-2pO"/>
+                                                                        <outlet property="imageView" destination="EFh-2A-tt6" id="uRn-rC-DmQ"/>
+                                                                        <outlet property="titleLabel" destination="bn9-rI-qzG" id="MpN-hy-hmK"/>
                                                                     </connections>
                                                                 </collectionViewCell>
                                                             </cells>
@@ -282,8 +343,8 @@ OCT 2020 to Today</string>
                                                     <constraints>
                                                         <constraint firstItem="k8i-qm-a06" firstAttribute="top" secondItem="pRG-y3-Ja3" secondAttribute="top" id="7c4-XQ-Qfs"/>
                                                         <constraint firstAttribute="bottom" secondItem="k8i-qm-a06" secondAttribute="bottom" id="LPY-q0-Xpj"/>
-                                                        <constraint firstItem="k8i-qm-a06" firstAttribute="leading" secondItem="pRG-y3-Ja3" secondAttribute="leading" constant="16" id="WmS-1p-IU0"/>
-                                                        <constraint firstAttribute="trailing" secondItem="k8i-qm-a06" secondAttribute="trailing" constant="16" id="rxq-fy-gLZ"/>
+                                                        <constraint firstItem="k8i-qm-a06" firstAttribute="leading" secondItem="pRG-y3-Ja3" secondAttribute="leading" id="WmS-1p-IU0"/>
+                                                        <constraint firstAttribute="trailing" secondItem="k8i-qm-a06" secondAttribute="trailing" id="rxq-fy-gLZ"/>
                                                     </constraints>
                                                 </tableViewCellContentView>
                                                 <connections>
@@ -915,6 +976,7 @@ OCT 2020 to Today</string>
         <image name="PsoriasisDrawMeasureIcon" width="72" height="72"/>
         <image name="ResearchTabIcon" width="24" height="25"/>
         <image name="ReviewTabIcon" width="31" height="23"/>
+        <image name="ReviewVideoIcon" width="98" height="98"/>
         <image name="RightChevron" width="11" height="20"/>
     </resources>
 </document>

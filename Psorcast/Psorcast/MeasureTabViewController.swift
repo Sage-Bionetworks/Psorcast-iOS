@@ -331,18 +331,7 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
     }
     
     func runTask(for itemIndex: Int) {
-        // Work-around fix for permission bug
-        // This will force the overview screen to check permission state every time
-        // Usually research framework caches it and the state becomes invalid
-        UserDefaults.standard.removeObject(forKey: "rsd_MotionAuthorizationStatus")
-        
-        // This is an activity
-        guard let activity = self.scheduleManager.sortedScheduledActivity(for: itemIndex) else {
-                return
-        }
-        let taskViewModel = scheduleManager.instantiateTaskViewModel(for: activity)
-        let taskVc = RSDTaskViewController(taskViewModel: taskViewModel)
-        taskVc.modalPresentationStyle = .fullScreen
+        guard let taskVc = self.scheduleManager.createTaskViewController(for: itemIndex) else { return }
         taskVc.delegate = self
         self.present(taskVc, animated: true, completion: nil)
     }

@@ -164,6 +164,37 @@ open class MasterScheduleManager : SBAScheduleManager {
     }
     
     ///
+    /// - parameter identifier: the identifier of the task schedule
+    ///
+    /// - returns: the scheduled activity item if the index points at one, nil otherwise
+    ///
+    open func sortedScheduledActivity(for identifier: RSDIdentifier) -> SBBScheduledActivity? {
+        return self.sortActivities(self.scheduledActivities)?.first(where: { $0.activityIdentifier == identifier.rawValue })
+    }
+    
+    open func createTaskViewController(for itemIndex: Int) -> RSDTaskViewController? {
+        guard let activity = self.sortedScheduledActivity(for: itemIndex) else { return nil }
+        return self.createTaskViewController(for: activity)
+    }
+    
+    open func createTaskViewController(for identifier: RSDIdentifier) -> RSDTaskViewController? {
+        guard let activity = self.sortedScheduledActivity(for: identifier) else { return nil }
+        return self.createTaskViewController(for: activity)
+    }
+    
+    open func createTaskViewController(for activity: SBBScheduledActivity) -> RSDTaskViewController? {
+        // Work-around fix for permission bug
+        // This will force the overview screen to check permission state every time
+        // Usually research framework caches it and the state becomes invalid
+        UserDefaults.standard.removeObject(forKey: "rsd_MotionAuthorizationStatus")
+                
+        let taskViewModel = self.instantiateTaskViewModel(for: activity)
+        let taskVc = RSDTaskViewController(taskViewModel: taskViewModel)
+        taskVc.modalPresentationStyle = .fullScreen
+        return taskVc
+    }
+    
+    ///
     /// - parameter itemIndex: pointing to an item in the list of sorted schedule items
     ///
     /// - returns: the scheduled activity task identifier if the index points at one, nil otherwise
