@@ -315,7 +315,7 @@ open class ReviewTabViewController: UIViewController, UITableViewDataSource, UIT
         let taskId = self.taskRows[indexPath.section]
         
         cell.setDesignSystem(AppDelegate.designSystem, with: tableViewBackground)
-                
+        
         cell.collectionCellWidth = self.tableViewCellWidth
         cell.collectionCellHeight = self.tableViewCellHeight
                 
@@ -330,6 +330,9 @@ open class ReviewTabViewController: UIViewController, UITableViewDataSource, UIT
         cell.delegate = self
 
         cell.collectionView.reloadData()
+        
+        // Hide scroll bar for single cell views
+        cell.collectionView.showsHorizontalScrollIndicator = frameCount > 0
 
         // This waits until the collection view has finished updating before scrolling to the end
         cell.collectionView.performBatchUpdates(nil, completion: { (result) in
@@ -337,12 +340,16 @@ open class ReviewTabViewController: UIViewController, UITableViewDataSource, UIT
                 debugPrint("Ignoring scroll position set for changed cell")
                 return
             }
+            
+            let horizontalInset = (cell.collectionView.bounds.width - cell.collectionCellWidth) * 0.5
+            cell.collectionView.contentInset = UIEdgeInsets(top: 0, left: horizontalInset, bottom: 0, right: horizontalInset)
+            
             // Because these collection views are re-used, we need to
             // save the scroll position for each and re-load them as they are passed around
             var scrollPos = self.taskRowState[taskId]?.scrollPosition ?? TaskRowState.unassignedScollPosition
             
             if scrollPos == TaskRowState.unassignedScollPosition {
-                scrollPos = (cell.collectionView.contentSize.width - cell.collectionView.bounds.width)
+                scrollPos = (cell.collectionView.contentSize.width - cell.collectionView.bounds.width) + horizontalInset
                 
                 if frameCount == 0 {  // No need to scroll a single cell
                     // But we do need to center the look of it using content offset
