@@ -178,7 +178,7 @@ open class MasterScheduleManager : SBAScheduleManager {
     }
     
     open func createTaskViewController(for identifier: RSDIdentifier) -> RSDTaskViewController? {
-        guard let activity = self.sortedScheduledActivity(for: identifier) else { return nil }
+        guard let activity = self.scheduledActivities.first(where: { $0.activityIdentifier == identifier.rawValue }) else { return nil }
         return self.createTaskViewController(for: activity)
     }
     
