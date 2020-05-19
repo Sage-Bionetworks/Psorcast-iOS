@@ -38,7 +38,7 @@ import AVKit
 import AVFoundation
 import Photos
 
-open class ReviewTabViewController: UIViewController, UITableViewDataSource, UITableViewDelegate,  ReviewTableViewCellDelegate, FilterTreatmentViewControllerDelegate {
+open class ReviewTabViewController: UIViewController, UITableViewDataSource, UITableViewDelegate,  ReviewTableViewCellDelegate, FilterTreatmentViewControllerDelegate, RSDTaskViewControllerDelegate {
     
     @IBOutlet weak var tableView: UITableView!
     
@@ -88,6 +88,9 @@ open class ReviewTabViewController: UIViewController, UITableViewDataSource, UIT
     let tableViewBackground = AppDelegate.designSystem.colorRules.backgroundPrimary
     
     public var reloadOnViewWillAppear = true
+    
+    /// Master schedule manager for all tasks
+    let scheduleManager = MasterScheduleManager.shared
     
     override open func viewDidLoad() {
         super.viewDidLoad()
@@ -235,8 +238,11 @@ open class ReviewTabViewController: UIViewController, UITableViewDataSource, UIT
                 let filename = frame.url.lastPathComponent
                 self.taskRowState[taskId]?.exportStatusList[filename] = self.imageManager.exportState(for: frame.url)
             }
+            
+            // Always add a row for each task
+            self.taskRows.append(taskId)
+            
             if (self.taskRowImageMap[taskId]?.count ?? 0) > 0 {
-                self.taskRows.append(taskId)
                 self.imageManager.createTreatmentVideo(for: taskId.rawValue, with: selectedRange)
                 
                 // Add export state of video as well
@@ -309,15 +315,24 @@ open class ReviewTabViewController: UIViewController, UITableViewDataSource, UIT
         let taskId = self.taskRows[indexPath.section]
         
         cell.setDesignSystem(AppDelegate.designSystem, with: tableViewBackground)
-                
+        
         cell.collectionCellWidth = self.tableViewCellWidth
         cell.collectionCellHeight = self.tableViewCellHeight
                 
-        cell.frames = self.taskRowImageMap[taskId] ?? []
+        cell.isCurrentTreatmentSelected = false
+        if let current = self.currentTreatmentRange {
+            cell.isCurrentTreatmentSelected = self.selectedTreatmentRange?.isEqual(to: current) ?? false
+        }
+        let frames = self.taskRowImageMap[taskId] ?? []
+        let frameCount = frames.count
+        cell.frames = frames
         cell.taskIdentifier = taskId
         cell.delegate = self
 
         cell.collectionView.reloadData()
+        
+        // Hide scroll bar for single cell views
+        cell.collectionView.showsHorizontalScrollIndicator = frameCount > 0
 
         // This waits until the collection view has finished updating before scrolling to the end
         cell.collectionView.performBatchUpdates(nil, completion: { (result) in
@@ -325,12 +340,23 @@ open class ReviewTabViewController: UIViewController, UITableViewDataSource, UIT
                 debugPrint("Ignoring scroll position set for changed cell")
                 return
             }
+            
+            let horizontalInset = (cell.collectionView.bounds.width - cell.collectionCellWidth) * 0.5
+            cell.collectionView.contentInset = UIEdgeInsets(top: 0, left: horizontalInset, bottom: 0, right: horizontalInset)
+            
             // Because these collection views are re-used, we need to
             // save the scroll position for each and re-load them as they are passed around
             var scrollPos = self.taskRowState[taskId]?.scrollPosition ?? TaskRowState.unassignedScollPosition
+            
             if scrollPos == TaskRowState.unassignedScollPosition {
-                scrollPos = (cell.collectionView.contentSize.width - cell.collectionView.bounds.width)
+                scrollPos = (cell.collectionView.contentSize.width - cell.collectionView.bounds.width) + horizontalInset
+                
+                if frameCount == 0 {  // No need to scroll a single cell
+                    // But we do need to center the look of it using content offset
+                    scrollPos = (cell.collectionView.contentSize.width - cell.collectionView.bounds.width) * 0.5
+                }
             }
+            
             cell.collectionView.setContentOffset(CGPoint(x: scrollPos, y: cell.collectionView.contentOffset.y), animated: false)
             self.taskRowState[taskId]?.scrollPosition = scrollPos
         })
@@ -339,6 +365,7 @@ open class ReviewTabViewController: UIViewController, UITableViewDataSource, UIT
     }
     
     func collectionViewScrolled(with taskIdentifier: RSDIdentifier, to contentOffsetX: CGFloat) {
+        debugPrint("New scroll position \(contentOffsetX) for \(taskIdentifier)")
         self.taskRowState[taskIdentifier]?.scrollPosition = contentOffsetX
     }
 
@@ -387,6 +414,13 @@ open class ReviewTabViewController: UIViewController, UITableViewDataSource, UIT
         }
         
         return false
+    }
+    
+    func addMeasurementTapped(taskIdentifier: RSDIdentifier) {
+        debugPrint("Add measurement tapped for \(taskIdentifier)")
+        guard let taskVc = self.scheduleManager.createTaskViewController(for: taskIdentifier) else { return }
+        taskVc.delegate = self
+        self.present(taskVc, animated: true, completion: nil)
     }
     
     func exportTapped(with renderFrame: VideoCreator.RenderFrameUrl?, taskIdentifier: RSDIdentifier, cellIdx: Int) {
@@ -478,9 +512,22 @@ open class ReviewTabViewController: UIViewController, UITableViewDataSource, UIT
         // URL.lastPathSegment : if_asset_has_been_exported
         var exportStatusList = [String: Bool]()
     }
+    
+    // MARK: RSDTaskViewControllerDelegate
+    
+    public func taskController(_ taskController: RSDTaskController, readyToSave taskViewModel: RSDTaskViewModel) {
+        self.scheduleManager.taskController(taskController, readyToSave: taskViewModel)
+    }
+    
+    public func taskController(_ taskController: RSDTaskController, didFinishWith reason: RSDTaskFinishReason, error: Error?) {
+        
+        self.scheduleManager.taskController(taskController, didFinishWith: reason, error: error)
+        self.dismiss(animated: true, completion: nil)
+    }
 }
 
-public class ReviewTableViewCell: RSDDesignableTableViewCell, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UIScrollViewDelegate, ReviewImageCollectionViewDelegate {
+public class ReviewTableViewCell: RSDDesignableTableViewCell, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UIScrollViewDelegate, ReviewImageCollectionViewDelegate, ReviewNotEnoughDataCollectionViewDelegate {
+    
     @IBOutlet weak var collectionView: UICollectionView!
     
     weak var delegate: ReviewTableViewCellDelegate?
@@ -488,6 +535,7 @@ public class ReviewTableViewCell: RSDDesignableTableViewCell, UICollectionViewDe
     var collectionCellWidth = CGFloat(0)
     var collectionCellHeight = CGFloat(0)
     
+    var isCurrentTreatmentSelected = false
     var taskIdentifier: RSDIdentifier?
     var frames = [VideoCreator.RenderFrameUrl]()
     
@@ -507,6 +555,26 @@ public class ReviewTableViewCell: RSDDesignableTableViewCell, UICollectionViewDe
     }
     
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
+        // Not enough data for video cell
+        if self.frames.count <= 1,
+            indexPath.row == 0,
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: ReviewNotEnoughDataCollectionView.self), for: indexPath) as? ReviewNotEnoughDataCollectionView {
+            
+            if let design = designSystem, let colorTile = backgroundColorTile {
+                cell.setDesignSystem(design, with: colorTile)
+            }
+            
+            cell.delegate = self
+            cell.taskIdentifier = self.taskIdentifier
+            if let taskId = self.taskIdentifier {
+                cell.setTaskIdentifier(taskId, isCurrentTreatmentSelected: self.isCurrentTreatmentSelected, frameCount: self.frames.count)
+            }
+            
+            return cell
+        }
+        
+        // Otherwise show our usual image/video cell
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: ReviewImageCollectionView.self), for: indexPath) as? ReviewImageCollectionView else {
             return UICollectionViewCell()
         }
@@ -526,7 +594,7 @@ public class ReviewTableViewCell: RSDDesignableTableViewCell, UICollectionViewDe
         cell.imageView?.image = imageFrame?.image
         cell.dateLabel.text = imageFrame?.text
         
-        let isVideoCell = (indexPath.row == self.frames.count)
+        let isVideoCell = (indexPath.row == self.frames.count) && (self.frames.count > 1)
         cell.isVideoFrame = isVideoCell
         cell.playButton.isHidden = !isVideoCell
         cell.loadProgress.isHidden = !isVideoCell
@@ -560,6 +628,10 @@ public class ReviewTableViewCell: RSDDesignableTableViewCell, UICollectionViewDe
         return CGSize(width: collectionCellWidth, height: collectionCellHeight)
     }
     
+    func addMeasurementTapped(taskIdentifier: RSDIdentifier) {
+        self.delegate?.addMeasurementTapped(taskIdentifier: taskIdentifier)
+    }
+    
     @IBAction func playButtonTapped() {
         guard let taskId = self.taskIdentifier else { return }
         self.delegate?.playButtonTapped(with: taskId)
@@ -577,6 +649,7 @@ protocol ReviewTableViewCellDelegate: class {
     func exportStatus(with taskIdentifier: RSDIdentifier, url: URL?) -> Bool
     func collectionViewScrolled(with taskIdentifier: RSDIdentifier, to contentOffsetX: CGFloat)
     func exportTapped(with renderFrame: VideoCreator.RenderFrameUrl?, taskIdentifier: RSDIdentifier, cellIdx: Int)
+    func addMeasurementTapped(taskIdentifier: RSDIdentifier)
 }
 
 public class ReviewImageCollectionView: RSDCollectionViewCell {
@@ -612,6 +685,58 @@ public class ReviewImageCollectionView: RSDCollectionViewCell {
             self.delegate?.exportTapped(renderFrame: renderFrame, cellIdx: cellIdxUnwrapped)
         }
     }
+}
+
+public class ReviewNotEnoughDataCollectionView: RSDCollectionViewCell {
+    @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet weak var addMeasurementButton: UIButton!
+    @IBOutlet weak var titleLabel: UILabel!
+    
+    @IBOutlet weak var imageTextContainerTop: NSLayoutConstraint!
+    var originalContainerBottom: CGFloat?
+    @IBOutlet weak var imageTextContainerBottom: NSLayoutConstraint!
+    
+    weak var delegate: ReviewNotEnoughDataCollectionViewDelegate?
+    
+    var taskIdentifier: RSDIdentifier?
+    
+    func setTaskIdentifier(_ taskId: RSDIdentifier, isCurrentTreatmentSelected: Bool, frameCount: Int) {
+        
+        let originalBottom = self.originalContainerBottom ?? imageTextContainerBottom.constant
+        self.originalContainerBottom = originalBottom
+        
+        self.taskIdentifier = taskId
+        
+        self.addMeasurementButton.isHidden = !isCurrentTreatmentSelected
+        
+        let moreFramesNeeded = (frameCount == 0) ? 2 : 1
+        if isCurrentTreatmentSelected {
+            self.imageTextContainerBottom.constant = originalBottom
+            self.titleLabel.text = String(format: Localization.localizedString("REVIEW_VIDEO_DATA_TITLE_%d"), moreFramesNeeded)
+        } else {
+            self.imageTextContainerBottom.constant = self.imageTextContainerTop.constant
+            self.titleLabel.text = Localization.localizedString("REVIEW_VIDEO_DATA_TITLE_PAST")
+        }
+    }
+    
+    override open func setDesignSystem(_ designSystem: RSDDesignSystem, with background: RSDColorTile) {
+        super.setDesignSystem(designSystem, with: background)
+        
+        let titleColor = RSDGrayScale.Shade.darkGray.defaultColorTile
+        self.titleLabel.textColor = titleColor.color
+        self.titleLabel.font = designSystem.fontRules.font(for: .body)
+        
+        self.addMeasurementButton.recursiveSetDesignSystem(designSystem, with: background)
+    }
+    
+    @IBAction func addMeasurementTapped() {
+        guard let taskIdentifierUnwrapped = self.taskIdentifier else { return }
+        self.delegate?.addMeasurementTapped(taskIdentifier: taskIdentifierUnwrapped)
+    }
+}
+
+protocol ReviewNotEnoughDataCollectionViewDelegate: class {
+    func addMeasurementTapped(taskIdentifier: RSDIdentifier)
 }
 
 protocol ReviewImageCollectionViewDelegate: class {
