@@ -136,20 +136,27 @@ public class ShowInsightStepViewController: RSDStepViewController {
     
     open func finish(useful: Bool) {
         // Store the answer selected
-        let usefulAnswer = RSDAnswerResultObject(identifier: ProfileIdentifier.insightUsefulAnswer.rawValue.rawValue, answerType: .string, value: useful ? "Yes" : "No")
+        let usefulAnswer = RSDAnswerResultObject(identifier: InsightResultIdentifier.insightUsefulAnswer.rawValue.rawValue, answerType: .string, value: useful ? "Yes" : "No")
         _ = self.stepViewModel.parent?.taskResult.appendStepHistory(with: usefulAnswer)
         
-        // Store the date the answer was selected
-        let dateAnswer = RSDAnswerResultObject(identifier: ProfileIdentifier.insightViewedDate.rawValue.rawValue, answerType: StudyProfileManager.profileDateAnswerType(), value: Date())
-        _ = self.stepViewModel.parent?.taskResult.appendStepHistory(with: dateAnswer)
-        
         let currentInsightStep = self.step as? ShowInsightStepObject
-        let identifierAnswer = RSDAnswerResultObject(identifier: ProfileIdentifier.insightViewedIdentifier.rawValue.rawValue, answerType: .string, value: currentInsightStep?.currentStepIdentifier)
+        let identifierAnswer = RSDAnswerResultObject(identifier: InsightResultIdentifier.insightViewedIdentifier.rawValue.rawValue, answerType: .string, value: currentInsightStep?.currentStepIdentifier)
         _ = self.stepViewModel.parent?.taskResult.appendStepHistory(with: identifierAnswer)
 
         super.goForward()
     }
     
+}
+
+public enum InsightResultIdentifier: RSDIdentifier {
+    case insights = "Insights"
+    case insightViewedDate = "insightViewedDate"
+    case insightUsefulAnswer = "insightUsefulAnswer"
+    case insightViewedIdentifier = "insightViewedIdentifier"
+    
+    public var id: String {
+        return self.rawValue.rawValue
+    }
 }
 
 public struct InsightItem: Codable {

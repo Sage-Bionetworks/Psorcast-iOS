@@ -552,14 +552,17 @@ public class TreatmentSelectionStepViewController: RSDStepViewController, UITabl
         _ = self.stepViewModel.parent?.taskResult.appendStepHistory(with: treatmentJsonResult)
         
         // Save when the user has changed their treatments for reports and profile
-        let dateAnswer = RSDAnswerResultObject(identifier: "\(self.step.identifier)Date", answerType: StudyProfileManager.profileDateAnswerType(), value: Date())
+        let dateAnswer = RSDAnswerResultObject(identifier: "\(self.step.identifier)Date", answerType: .date, value: Date())
         _ = self.stepViewModel.parent?.taskResult.appendStepHistory(with: dateAnswer)
         
         // Save a string list of the multi-choice answer identifiers that works best for reports and profile
-        let answer = Array(self.currentTreatmentsIds)
-        let stringArrayType = RSDAnswerResultType(baseType: .string, sequenceType: .array, formDataType: .collection(.multipleChoice, .string), dateFormat: nil, unit: nil, sequenceSeparator: nil)
-        let result = RSDAnswerResultObject(identifier: self.step.identifier, answerType: stringArrayType, value: answer)
+        let result = TreatmentSelectionStepViewController.createStringArrAnswerResult(identifier: self.step.identifier, answer: Array(self.currentTreatmentsIds))
         _ = self.stepViewModel.parent?.taskResult.appendStepHistory(with: result)
         super.goForward()
+    }
+    
+    public static func createStringArrAnswerResult(identifier: String, answer: [String]) -> RSDAnswerResultObject {
+        let stringArrayType = RSDAnswerResultType(baseType: .string, sequenceType: .array, formDataType: .collection(.multipleChoice, .string), dateFormat: nil, unit: nil, sequenceSeparator: nil)
+        return RSDAnswerResultObject(identifier: identifier, answerType: stringArrayType, value: answer)
     }
 }

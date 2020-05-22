@@ -41,21 +41,15 @@ class ProfileTabViewController: UIViewController, UITableViewDelegate, UITableVi
     @IBOutlet weak var tableView: UITableView!
     
     /// The profile manager
-    let profileManager = (AppDelegate.shared as? AppDelegate)?.profileManager
     let profileDataSource = (AppDelegate.shared as? AppDelegate)?.profileDataSource
+    let historyData = HistoryDataManager.shared
     
     open var design = AppDelegate.designSystem
     
+    
     override open func viewDidLoad() {
-        super.viewDidLoad()
-                
+        super.viewDidLoad()                
         self.setupTableView()
-        
-        if let manager = profileManager {
-            NotificationCenter.default.addObserver(forName: .SBAUpdatedReports, object: manager, queue: OperationQueue.main) { (notification) in
-                self.tableView.reloadData()
-            }
-        }
     }
     
     override open func viewWillAppear(_ animated: Bool) {
@@ -70,8 +64,7 @@ class ProfileTabViewController: UIViewController, UITableViewDelegate, UITableVi
         self.tableView.register(ProfileTableHeaderView.self, forHeaderFooterViewReuseIdentifier: ProfileTableHeaderView.className)
         
         self.tableView.register(ProfileTableViewCell.self, forCellReuseIdentifier: String(describing: ProfileTableViewCell.self))
-        
-        
+                
         let header = UIView(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: 112))
         header.backgroundColor = design.colorRules.backgroundPrimary.color
         let title = UILabel()
@@ -87,15 +80,15 @@ class ProfileTabViewController: UIViewController, UITableViewDelegate, UITableVi
         self.tableView.tableHeaderView = header
     }
     
-    func reminderProfileItemValue() -> String {
+    func reminderProfileItemValue() -> String {        
         // Get time string, day of week int, and "do not remind me" state
-        if self.profileManager?.haveWeeklyRemindersBeenSet ?? false {
-            if self.profileManager?.weeklyReminderDoNotRemind ?? false {
+        if self.historyData.haveWeeklyRemindersBeenSet {
+            if self.historyData.reminderItem?.reminderDoNotRemindMe ?? false {
                 return Localization.localizedString("NO_REMINDERS_PLEASE")
-            } else if let time = self.profileManager?.weeklyReminderTime,
-                let day = self.profileManager?.weeklyReminderDay {
+            } else if let time = self.historyData.reminderItem?.reminderTime,
+                let day = self.historyData.reminderItem?.reminderWeekday {
                 return "\(day.text ?? "") at \(time)"
-            } else if let time = self.profileManager?.weeklyReminderTime {
+            } else if let time = self.historyData.reminderItem?.reminderTime {
                 return "At \(time)"
             }
         }
@@ -125,11 +118,20 @@ class ProfileTabViewController: UIViewController, UITableViewDelegate, UITableVi
         // Configure the cell...
         cell.titleLabel?.text = titleText
         
-        if (tableItem as? SBAProfileItemProfileTableItem)?.profileItemKey == RSDIdentifier.remindersTask.rawValue {
-            // Check for reminders edge case, where it is not a basic report form type
-            cell.detailLabel?.text = self.reminderProfileItemValue()
-        } else {
-            cell.detailLabel?.text = detailText
+        if let itemKey = (tableItem as? SBAProfileItemProfileTableItem)?.profileItemKey {
+            switch itemKey {
+            case RSDIdentifier.remindersTask.rawValue:
+                // Check for reminders edge case, where it is not a basic report form type
+                cell.detailLabel?.text = self.reminderProfileItemValue()
+            case TreatmentResultIdentifier.treatments.rawValue:
+                cell.detailLabel?.text = (self.historyData.currentTreatmentRange?.treatments ?? []).joined(separator: ", ")
+            case TreatmentResultIdentifier.symptoms.rawValue:
+                cell.detailLabel?.text = self.historyData.psoriasisSymptoms
+            case TreatmentResultIdentifier.status.rawValue:
+                cell.detailLabel?.text = self.historyData.psoriasisStatus
+            default:
+                cell.detailLabel?.text = detailText
+            }
         }
         
         cell.setDesignSystem(self.design, with: RSDColorTile(RSDColor.white, usesLightStyle: true))
@@ -182,16 +184,16 @@ class ProfileTabViewController: UIViewController, UITableViewDelegate, UITableVi
         
         if let profileItem = item as? SBAProfileItemProfileTableItem {
             if profileItem.profileItemKey == RSDIdentifier.remindersTask.rawValue {
-                let vc = ReminderType.weekly.createReminderTaskViewController(defaultTime: self.profileManager?.weeklyReminderTime, defaultDay: self.profileManager?.weeklyReminderDay, doNotRemind: self.profileManager?.weeklyReminderDoNotRemind)
+                let vc = ReminderType.weekly.createReminderTaskViewController(defaultTime: self.historyData.reminderItem?.reminderTime, defaultDay: self.historyData.reminderItem?.reminderWeekday, doNotRemind: self.historyData.reminderItem?.reminderDoNotRemindMe)
                 vc.delegate = self
                 self.show(vc, sender: self)
             } else if profileItem.profileItemKey == RSDIdentifier.insightsTask.rawValue {
                 let vc = PastInsightsViewController()
-                vc.insightItems = self.profileManager?.pastInsightItems ?? []
+                vc.insightItems = self.historyData.pastInsightItemsViewed
                 self.show(vc, sender: self)
-            } else if profileItem.profileItemKey == StudyProfileManager.deepDiveProfileIdentifier {
+            } else if profileItem.profileItemKey == "DeepDive" {
                 self.showDeepDiveViewController()
-            } else if let vc = self.profileManager?.instantiateSingleQuestionTreatmentTaskController(for: profileItem.profileItemKey) {
+            } else if let vc = MasterScheduleManager.shared.instantiateSingleQuestionTreatmentTaskController(for: profileItem.profileItemKey) {
                 vc.delegate = self
                 self.show(vc, sender: self)
             }
@@ -223,12 +225,12 @@ class ProfileTabViewController: UIViewController, UITableViewDelegate, UITableVi
     // MARK: - Task view controller delegate
     
     func taskController(_ taskController: RSDTaskController, didFinishWith reason: RSDTaskFinishReason, error: Error?) {
-        self.profileManager?.taskController(taskController, didFinishWith: reason, error: error)
+        MasterScheduleManager.shared.taskController(taskController, didFinishWith: reason, error: error)
         self.dismiss(animated: true, completion: nil)
     }
     
     func taskController(_ taskController: RSDTaskController, readyToSave taskViewModel: RSDTaskViewModel) {
-        self.profileManager?.taskController(taskController, readyToSave: taskViewModel)
+        MasterScheduleManager.shared.taskController(taskController, readyToSave: taskViewModel)
     }
 }
 

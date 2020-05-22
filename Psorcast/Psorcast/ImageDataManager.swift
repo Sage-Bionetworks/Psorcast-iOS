@@ -1,5 +1,5 @@
 //
-//  ImageReportManager.swift
+//  ImageDataManager.swift
 //  Psorcast
 //
 //  Copyright © 2019 Sage Bionetworks. All rights reserved.
@@ -37,14 +37,14 @@ import Research
 import MotorControl
 
 /// Subclass the schedule manager to set up a predicate to filter the schedules.
-open class ImageReportManager : SBAReportManager {
+open class ImageDataManager {
     
     /// List of keys used in the notifications sent by this manager.
     public enum NotificationKey : String {
         case url, videoLoadProgress, taskId, exportStatusChange, imageFrameAdded
     }
     
-    /// Notification name posted by the `ImageReportManager` before the manager will send an update
+    /// Notification name posted by the `ImageDataManager` before the manager will send an update
     /// the url of the new video that was just created
     public static let newVideoCreated = Notification.Name(rawValue: "newVideoCreated")
     public static let videoProgress = Notification.Name(rawValue: "videoProgress")
@@ -52,10 +52,10 @@ open class ImageReportManager : SBAReportManager {
     public static let imageFrameAdded = Notification.Name(rawValue: "imageFrameAdded")
     
     /// The shared access to the video report manager
-    public static let shared = ImageReportManager()
+    public static let shared = ImageDataManager()
     
     /// When a user saves an  export, it will store the state here
-    public let exportUserDefaults = UserDefaults(suiteName: "ImageReportManagerExportStatus")
+    public let exportUserDefaults = UserDefaults(suiteName: "ImageDataManagerExportStatus")
     public func imageExported(photoUrl: URL) {
         exportUserDefaults?.set(true, forKey: photoUrl.lastPathComponent)
     }
@@ -70,13 +70,16 @@ open class ImageReportManager : SBAReportManager {
     }
     
     // The date formatter for storing image files
-    public let dateFormatter = StudyProfileManager.profileDateFormatter()
+    public let dateFormatter = HistoryDataManager.dateFormatter()
     
     /// Where we store the images
     public let storageDir = FileManager.SearchPathDirectory.documentDirectory
     
     // The tasks that are currently operating
     public var videoCreatorTasks = [VideoCreator.Task]()
+    
+    // THe history data manager for adding extra data to the videos
+    public var historyData = HistoryDataManager.shared
     
     // The path extension for image files
     public let imagePathExtension = "jpg"
@@ -89,21 +92,20 @@ open class ImageReportManager : SBAReportManager {
         "summaryImage",
     ]
 
-    public func processTaskResult(_ taskController: RSDTaskController, profileManager: StudyProfileManager?) {
+    public func processTaskResult(_ taskResult: RSDTaskResult) -> String? {
         
-        let taskIdentifier = taskController.task.identifier
-        let result = taskController.taskViewModel.taskResult
+        let taskIdentifier = taskResult.identifier
         
         // Filter through all the results and find the image results we care about
         let summaryImageResult =
-            result.stepHistory.filter({ $0 is RSDFileResult })
+            taskResult.stepHistory.filter({ $0 is RSDFileResult })
                 .map({ $0 as? RSDFileResult })
                 .filter({
                     summaryImagesIdentifiers.contains($0?.identifier ?? "") &&
                     $0?.contentType == "image/jpeg" }).first as? RSDFileResult
         
         guard let summaryImageUrl = summaryImageResult?.url else {
-            return
+            return nil
         }
         
         // Create the image filename from
@@ -114,13 +116,10 @@ open class ImageReportManager : SBAReportManager {
         // Copy the result file url into a the local cache so it persists upload complete
         if let newImageUrl = FileManager.default.copyFile(at: summaryImageUrl, to: storageDir, filename: "\(imageFileName).\(imagePathExtension)") {
             
-            guard let treatments = profileManager?.treatments?.map({ $0.identifier }),
-                let treatmentStartDate = profileManager?.treatmentsDate else {
+            guard let treatmentRange = self.historyData.currentTreatmentRange else {
                 print("Error creating new video because treatmentStartDate is invalid")
-                return
+                return imageFileName
             }
-            
-            let treatmentRange = TreatmentRange(treatments: treatments, startDate: treatmentStartDate, endDate: Date())
             
             // We should re-export the most recent treatment task video if we have a new frame
             self.recreateCurrentTreatmentVideo(for: taskIdentifier, with: treatmentRange)
@@ -128,21 +127,16 @@ open class ImageReportManager : SBAReportManager {
             // Let the app know about the new image so it can update the UI
             self.postImageFrameAddedNotification(url: newImageUrl)
             
+            return imageFileName
         } else { // Not successful
             debugPrint("Error copying file from \(summaryImageUrl.absoluteURL)" +
                 "to \(storageDir) with filename \(imageFileName)")
+            return nil
         }
     }
     
-    public func createCurrentTreatmentVideo(for taskIdentifier: String, using profileManager: StudyProfileManager?) {
-        
-        guard let treatmentStartDate = profileManager?.treatmentsDate,
-            let treatments = profileManager?.treatments?.map({ $0.identifier }) else {
-            return
-        }
-        
-        let treatmentRange = TreatmentRange(treatments: treatments, startDate: treatmentStartDate, endDate: Date())
-        
+    public func createCurrentTreatmentVideo(for taskIdentifier: String) {
+        guard let treatmentRange = self.historyData.currentTreatmentRange else { return }
         self.createTreatmentVideo(for: taskIdentifier, with: treatmentRange)
     }
     
@@ -207,14 +201,14 @@ open class ImageReportManager : SBAReportManager {
     
     /// Notify about a completed video
     fileprivate func postVideoCreatedNotification(url: URL) {
-        NotificationCenter.default.post(name: ImageReportManager.newVideoCreated,
+        NotificationCenter.default.post(name: ImageDataManager.newVideoCreated,
                                         object: self,
                                         userInfo: [NotificationKey.url : url,
                                         NotificationKey.taskId: (self.taskIdentifier(from: url) ?? "") as Any])
     }
     
     fileprivate func postVideoProgressUpdatedNotification(url: URL, progress: Float) {
-        NotificationCenter.default.post(name: ImageReportManager.videoProgress,
+        NotificationCenter.default.post(name: ImageDataManager.videoProgress,
                                         object: self,
                                         userInfo: [NotificationKey.url : url,
                                                    NotificationKey.videoLoadProgress: progress,
@@ -222,7 +216,7 @@ open class ImageReportManager : SBAReportManager {
     }
     
     fileprivate func postExportStatusChangedNotification(url: URL, newState: Bool) {
-        NotificationCenter.default.post(name: ImageReportManager.videoExportStatusChanged,
+        NotificationCenter.default.post(name: ImageDataManager.videoExportStatusChanged,
                                         object: self,
                                         userInfo: [NotificationKey.url : url,
                                                    NotificationKey.taskId: (self.taskIdentifier(from: url) ?? "") as Any,
@@ -230,7 +224,7 @@ open class ImageReportManager : SBAReportManager {
     }
     
     fileprivate func postImageFrameAddedNotification(url: URL) {
-        NotificationCenter.default.post(name: ImageReportManager.imageFrameAdded,
+        NotificationCenter.default.post(name: ImageDataManager.imageFrameAdded,
                                         object: self,
                                         userInfo: [NotificationKey.url : url,
                                                    NotificationKey.taskId: (self.taskIdentifier(from: url) ?? "") as Any])

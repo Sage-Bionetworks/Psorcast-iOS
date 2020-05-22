@@ -99,7 +99,7 @@ public enum DigitalJarOpenHand: String, Codable {
 open class DigitalJarOpenStepViewController: RSDActiveStepViewController, RSDAsyncActionDelegate {
     
     /// The suffix attached to the step identifier for the rotation answer result.
-    static let rotationResultSuffix = "_rotation"
+    static let rotationResultSuffix = "Rotation"
     static let motionResultSuffix = "_motion"
     
     /// The additional amount on each border side of size for rotation image view compared to the countdown dial

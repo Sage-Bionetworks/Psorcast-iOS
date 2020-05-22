@@ -58,10 +58,6 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate {
     // The app's image and data store
     public let imageDefaults = ImageDefaults()
     
-    open var profileManager: StudyProfileManager? {
-        return SBAProfileManagerObject.shared as? StudyProfileManager
-    }
-    
     open var profileDataSource: StudyProfileDataSource? {
         return SBAProfileDataSourceObject.shared as? StudyProfileDataSource
     }
@@ -78,7 +74,7 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate {
     func showAppropriateViewController(animated: Bool) {
         let participantID = UserDefaults.standard.string(forKey: "participantID")
         let isAuthenticated = BridgeSDK.authManager.isAuthenticated()
-        let hasSetTreatments = StudyProfileManager.hasTreatmentData(profileManager: self.profileManager)
+        let hasSetTreatments = HistoryDataManager.shared.hasSetTreatment
         
         if isAuthenticated && participantID != nil && hasSetTreatments {
             self.showMainViewController(animated: animated)
@@ -107,8 +103,14 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate {
     
     override func applicationDidBecomeActive(_ application: UIApplication) {
         super.applicationDidBecomeActive(application)
-        
-        self.showAppropriateViewController(animated: true)
+    }
+    
+    func showCoreDataLaunchScreen() {
+        guard let storyboard = openStoryboard("Main"),
+            let vc = storyboard.instantiateInitialViewController() else {
+            fatalError("Failed to instantiate initial view controller in the main storyboard.")
+        }
+        self.transition(to: vc, state: .custom("CoreDataLaunch"), animated: true)
     }
     
     func showMainViewController(animated: Bool) {
@@ -120,17 +122,16 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate {
     
     func showWelcomeViewController(animated: Bool) {
         guard let storyboard = openStoryboard("Main"),
-            let vc = storyboard.instantiateInitialViewController()
-            else {
-                fatalError("Failed to instantiate initial view controller in the main storyboard.")
-        }
+            let vc = storyboard.instantiateInitialViewController() else {
+            fatalError("Failed to instantiate initial view controller in the main storyboard.")
+        }        
         self.transition(to: vc, state: .launch, animated: true)
     }
     
     func showTreatmentSelectionScreens(animated: Bool) {
         guard self.rootViewController?.state != .main else { return }
         
-        guard let vc = self.profileManager?.instantiateTreatmentTaskController() else {
+        guard let vc = MasterScheduleManager.shared.instantiateTreatmentTaskController() else {
             debugPrint("WARNING! Failed to create treatment task from profile manager app config")
             let alert = UIAlertController(title: "Connectivity issue", message: "We had trouble loading information from our server.  Please close the app and then try again.", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "Okay", style: .default, handler: nil))
@@ -211,14 +212,18 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate {
             }
             return
         }
-        
-        // If we finish the treatment screen by cancelling, show the sign in screen again
-        if taskController.task.identifier == RSDIdentifier.treatmentTask.rawValue &&
-            reason != .completed {
-            self.showSignInViewController(animated: true)
-            return
+                
+        if taskController.task.identifier == RSDIdentifier.treatmentTask.rawValue {
+            // If we finish the treatment screen by cancelling, show the sign in screen again
+            if reason == .completed {
+                self.showMainViewController(animated: true)
+                return
+            } else { // Otherwise we are ready to enter the app
+                self.showSignInViewController(animated: true)
+                return
+            }
         }
-        
+                    
         if taskController.task.identifier == self.signInTaskId && reason != .completed {
             self.showWelcomeViewController(animated: true)
             return
@@ -230,11 +235,11 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate {
     
     func taskController(_ taskController: RSDTaskController, readyToSave taskViewModel: RSDTaskViewModel) {
         
-        // If we finish the onboarding screens, send the user to sign in
-        if taskController.task.identifier == RSDIdentifier.treatmentTask.rawValue,
-            let profileManager = StudyProfileManager.shared as? StudyProfileManager {
-            profileManager.taskController(taskController, readyToSave: taskViewModel)
+        if taskController.task.identifier == self.signInTaskId {
+            return  // Do not complete sign in as a regular task
         }
+        
+        MasterScheduleManager.shared.taskController(taskController, readyToSave: taskViewModel)
     }
     
     func updateGlobalColors() {
@@ -279,3 +284,32 @@ open class TryItFirstInstructionStepObject: RSDUIStepObject, RSDStepViewControll
         return vc
     }
 }
+
+extension SBAProfileSectionType {
+    /// Creates a `StudyProfileSection`.
+    public static let studySection: SBAProfileSectionType = "studySection"
+}
+
+class StudyProfileDataSource: SBAProfileDataSourceObject {
+
+    override open func decodeSection(from decoder:Decoder, with type:SBAProfileSectionType) throws -> SBAProfileSection? {
+        switch type {
+        case .studySection:
+            return try StudyProfileSection(from: decoder)
+        default:
+            return try super.decodeSection(from: decoder, with: type)
+        }
+    }
+}
+
+class StudyProfileSection: SBAProfileSectionObject {
+
+    override open func decodeItem(from decoder:Decoder, with type:SBAProfileTableItemType) throws -> SBAProfileTableItem? {
+        
+        switch type {
+        default:
+            return try super.decodeItem(from: decoder, with: type)
+        }
+    }
+}
+

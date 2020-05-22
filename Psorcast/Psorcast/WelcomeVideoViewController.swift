@@ -45,6 +45,9 @@ class WelcomeVideoViewController: UIViewController {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var textLabel: UILabel!
     
+    /// The same view as the launch screen, used to hide when we are loading CoreData
+    @IBOutlet weak var launchView: UIView!
+    
     /// Video player variables
     var playerLayer: AVPlayerLayer?
     var player: AVPlayer?
@@ -55,6 +58,8 @@ class WelcomeVideoViewController: UIViewController {
     
     override open func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.setupData()
         
         let designSystem = AppDelegate.designSystem
         let primaryColor = designSystem.colorRules.backgroundPrimary
@@ -72,6 +77,32 @@ class WelcomeVideoViewController: UIViewController {
         self.tryItFirstButton.recursiveSetDesignSystem(designSystem, with: primaryColor)
                 
         self.videoView.backgroundColor = primaryColor.color
+    }
+    
+    fileprivate func setupData() {
+        self.launchView.isHidden = false
+        HistoryDataManager.shared.loadStore { (errorMsg) in  // Make sure CoreData is loaded
+            
+            DispatchQueue.main.async {
+                if let error = errorMsg {
+                    self.showCoreDataCriticalErrorAlert(error)
+                    return
+                } else {
+                    if HistoryDataManager.shared.hasSetTreatment {
+                        // Reload data in background
+                        HistoryDataManager.shared.forceReloadData()
+                        // With our database setup, we are ready to proceed into the app
+                        (AppDelegate.shared as? AppDelegate)?.showAppropriateViewController(animated: true)
+                    } else {
+                        UIView.transition(with: self.launchView, duration: 0.5,
+                            options: .transitionCrossDissolve,
+                            animations: {
+                           self.launchView.isHidden = true
+                        })
+                    }
+                }
+            }
+        }
     }
     
     override open func viewWillAppear(_ animated: Bool) {
@@ -141,5 +172,11 @@ class WelcomeVideoViewController: UIViewController {
     @IBAction func loginTapped() {
         guard let appDelegate = AppDelegate.shared as? AppDelegate else { return }
         appDelegate.showSignInViewController(animated: true)
+    }
+    
+    func showCoreDataCriticalErrorAlert(_ error: String) {
+        let alert = UIAlertController(title: "Critical Error", message: "Please try restarting the app.  If that does not work, contact customer support. \(error)", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Okay", style: .default, handler: nil))
+        self.present(alert, animated: true)
     }
 }

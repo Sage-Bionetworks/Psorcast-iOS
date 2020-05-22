@@ -42,9 +42,18 @@ class ReminderStepObject : RSDUIStepObject, RSDStepViewControllerVendor {
         case hideDayOfWeek, defaultTime, defaultDayOfWeek, defaultDoNotRemind, doNotRemindMeTitle, reminderType
     }
     
+    public static func timeResultId(for type: ReminderType) -> String {
+        return "\(type.rawValue)\(timeResultIdentifier)"
+    }
     public static let timeResultIdentifier = "Time"
+    public static func dayResultId(for type: ReminderType) -> String {
+        return "\(type.rawValue)\(dayResultIdentifier)"
+    }
     public static let dayResultIdentifier = "Day"
     public static let dayOfWeekResultIdentifier = "DayOfWeek"
+    public static func doNotRemindMeResultId(for type: ReminderType) -> String {
+        return "\(type.rawValue)\(doNotRemindResultIdentifier)"
+    }
     public static let doNotRemindResultIdentifier = "DoNotRemind"
     
     /// If true, only the time of day field will show
@@ -431,15 +440,15 @@ class ReminderStepViewController: RSDStepViewController, UIScrollViewDelegate, U
     }
     
     func createTimeReseult(timeStr: String, for type: ReminderType) -> RSDAnswerResult {
-        return RSDAnswerResultObject(identifier: "\(type.rawValue)\(ReminderStepObject.timeResultIdentifier)", answerType: .string, value: timeStr)
+        return RSDAnswerResultObject(identifier: ReminderStepObject.timeResultId(for: type), answerType: .string, value: timeStr)
     }
     
     func createDoNotRemindResult(doNotRemind: Bool, for type: ReminderType) -> RSDAnswerResult {
-        return RSDAnswerResultObject(identifier: "\(type.rawValue)\(ReminderStepObject.doNotRemindResultIdentifier)", answerType: .boolean, value: doNotRemind)
+        return RSDAnswerResultObject(identifier: ReminderStepObject.doNotRemindMeResultId(for: type), answerType: .boolean, value: doNotRemind)
     }
     
     func createDayResult(day: RSDWeekday, for type: ReminderType) -> RSDAnswerResult {
-        return RSDAnswerResultObject(identifier: "\(type.rawValue)\(ReminderStepObject.dayResultIdentifier)", answerType: .integer, value: day.rawValue)
+        return RSDAnswerResultObject(identifier: ReminderStepObject.dayResultId(for: type), answerType: .integer, value: day.rawValue)
     }
     
     func createDayOfWeekResult(day: RSDWeekday, for type: ReminderType) -> RSDAnswerResult {

@@ -60,7 +60,7 @@ open class ReviewTabViewController: UIViewController, UITableViewDataSource, UIT
         return self.tableView.bounds.height - CGFloat(4 * self.sectionHeaderHeight)
     }
     
-    var imageManager = ImageReportManager.shared
+    var imageManager = ImageDataManager.shared
     
     /// This is the current treatment the user is doing
     var currentTreatmentRange: TreatmentRange?
@@ -91,6 +91,8 @@ open class ReviewTabViewController: UIViewController, UITableViewDataSource, UIT
     
     /// Master schedule manager for all tasks
     let scheduleManager = MasterScheduleManager.shared
+    /// The history data manager
+    let historyData = HistoryDataManager.shared
     
     override open func viewDidLoad() {
         super.viewDidLoad()
@@ -104,26 +106,26 @@ open class ReviewTabViewController: UIViewController, UITableViewDataSource, UIT
     
     func setupVideoCreatorNotifications() {
         // Check for when new videos are created
-        NotificationCenter.default.addObserver(forName: ImageReportManager.newVideoCreated, object: self.imageManager, queue: OperationQueue.main) { (notification) in
+        NotificationCenter.default.addObserver(forName: ImageDataManager.newVideoCreated, object: self.imageManager, queue: OperationQueue.main) { (notification) in
             self.processVideoUpdated(notification: notification, progress: Float(1))
         }
         // Check for when new videos are created
-        NotificationCenter.default.addObserver(forName: ImageReportManager.videoProgress, object: self.imageManager, queue: OperationQueue.main) { (notification) in
+        NotificationCenter.default.addObserver(forName: ImageDataManager.videoProgress, object: self.imageManager, queue: OperationQueue.main) { (notification) in
             self.processVideoUpdated(notification: notification)
         }
         // Check for new export status updates
-        NotificationCenter.default.addObserver(forName: ImageReportManager.videoExportStatusChanged, object: self.imageManager, queue: OperationQueue.main) { (notification) in
+        NotificationCenter.default.addObserver(forName: ImageDataManager.videoExportStatusChanged, object: self.imageManager, queue: OperationQueue.main) { (notification) in
             self.processExportStatusChanged(notification: notification)
         }
         // Check for new images
-        NotificationCenter.default.addObserver(forName: ImageReportManager.imageFrameAdded, object: self.imageManager, queue: OperationQueue.main) { (notification) in
+        NotificationCenter.default.addObserver(forName: ImageDataManager.imageFrameAdded, object: self.imageManager, queue: OperationQueue.main) { (notification) in
             self.reloadOnViewWillAppear = true
         }
     }
     
     func processVideoUpdated(notification: Notification, progress: Float? = nil) {
-        guard let loadingProgrss = progress ?? notification.userInfo?[ImageReportManager.NotificationKey.videoLoadProgress] as? Float,
-            let taskId = notification.userInfo?[ImageReportManager.NotificationKey.taskId] as? String else {
+        guard let loadingProgrss = progress ?? notification.userInfo?[ImageDataManager.NotificationKey.videoLoadProgress] as? Float,
+            let taskId = notification.userInfo?[ImageDataManager.NotificationKey.taskId] as? String else {
             print("Video update notification user info invalid")
             return
         }
@@ -137,9 +139,9 @@ open class ReviewTabViewController: UIViewController, UITableViewDataSource, UIT
     }
     
     func processExportStatusChanged(notification: Notification) {
-        guard let exportStatus = notification.userInfo?[ImageReportManager.NotificationKey.exportStatusChange] as? Bool,
-            let taskId = notification.userInfo?[ImageReportManager.NotificationKey.taskId] as? String,
-            let videoUrl = notification.userInfo?[ImageReportManager.NotificationKey.url] as? URL else {
+        guard let exportStatus = notification.userInfo?[ImageDataManager.NotificationKey.exportStatusChange] as? Bool,
+            let taskId = notification.userInfo?[ImageDataManager.NotificationKey.taskId] as? String,
+            let videoUrl = notification.userInfo?[ImageDataManager.NotificationKey.url] as? URL else {
             print("Video update notification user info invalid")
             return
         }
@@ -179,10 +181,8 @@ open class ReviewTabViewController: UIViewController, UITableViewDataSource, UIT
     override open func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        guard let profileManager = (AppDelegate.shared as? AppDelegate)?.profileManager else { return }
-        
-        self.allTreatmentRanges = profileManager.allTreatmentRanges
-        guard let currentRange = self.allTreatmentRanges.last else { return }
+        self.allTreatmentRanges = self.historyData.allTreatments
+        guard let currentRange = self.historyData.currentTreatmentRange else { return }
         
         var shouldRefreshUi = false
         
@@ -233,7 +233,7 @@ open class ReviewTabViewController: UIViewController, UITableViewDataSource, UIT
         dateTextFormatter.dateFormat = "MMM dd, yyyy"
         
         for taskId in self.allTaskRows {
-            for frame in ImageReportManager.shared.findFrames(for: taskId.rawValue, with: selectedRange, dateTextFormatter: dateTextFormatter) {
+            for frame in ImageDataManager.shared.findFrames(for: taskId.rawValue, with: selectedRange, dateTextFormatter: dateTextFormatter) {
                 self.taskRowImageMap[taskId]?.append(frame)
                 let filename = frame.url.lastPathComponent
                 self.taskRowState[taskId]?.exportStatusList[filename] = self.imageManager.exportState(for: frame.url)
@@ -282,7 +282,7 @@ open class ReviewTabViewController: UIViewController, UITableViewDataSource, UIT
     
     func playButtonTapped(with taskIdentifier: RSDIdentifier) {
         guard let selectedRange = self.selectedTreatmentRange,
-            let videoURL = ImageReportManager.shared.findVideoUrl(for: taskIdentifier.rawValue, with: selectedRange.startDate) else {
+            let videoURL = ImageDataManager.shared.findVideoUrl(for: taskIdentifier.rawValue, with: selectedRange.startDate) else {
             return
         }
         
@@ -409,7 +409,7 @@ open class ReviewTabViewController: UIViewController, UITableViewDataSource, UIT
         }
         
         if let selectedRange = self.selectedTreatmentRange,
-            let videoURL = ImageReportManager.shared.findVideoUrl(for: taskIdentifier.rawValue, with: selectedRange.startDate) {
+            let videoURL = ImageDataManager.shared.findVideoUrl(for: taskIdentifier.rawValue, with: selectedRange.startDate) {
             return self.taskRowState[taskIdentifier]?.exportStatusList[videoURL.lastPathComponent] ?? false
         }
         

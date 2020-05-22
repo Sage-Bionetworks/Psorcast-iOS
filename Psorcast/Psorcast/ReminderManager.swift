@@ -116,7 +116,7 @@ open class ReminderManager : NSObject, UNUserNotificationCenterDelegate {
         return [defaultCategory]
     }
     
-    public func updateNotifications(profileManager: StudyProfileManager) {
+    public func updateNotifications() {
         ReminderType.allCases.forEach { (type) in
             
             // We have the do not remind answer, which means this reminder
@@ -124,10 +124,10 @@ open class ReminderManager : NSObject, UNUserNotificationCenterDelegate {
             // Cancel any existing notifications
             self.cancelNotification(for: type)
             
-            if !(type.doNotRemindSetting(profileManager: profileManager) ?? false),
-                let time = type.timeSetting(profileManager: profileManager) {
+            if !(type.doNotRemindSetting() ?? false),
+                let time = type.timeSetting() {
                 
-                if let day = type.daySetting(profileManager: profileManager) {
+                if let day = type.daySetting() {
                     if let weekly = self.weeklyDateComponents(with: time, on: day) {
                         self.scheduleReminderNotification(for: type, dateComponents: weekly, identifier: type.rawValue)
                     }
@@ -189,51 +189,51 @@ open class ReminderManager : NSObject, UNUserNotificationCenterDelegate {
         return dateComponents
     }
     
-    open func hasReminderBeenScheduled(profileManager: StudyProfileManager, type: ReminderType) -> Bool {
-        return type.hasBeenScheduled(profileManager: profileManager)
+    open func hasReminderBeenScheduled(type: ReminderType) -> Bool {
+        return type.hasBeenScheduled()
     }
     
-    open func doNotRemindSetting(profileManager: StudyProfileManager, for type: ReminderType) -> Bool? {
-        return type.doNotRemindSetting(profileManager: profileManager)
+    open func doNotRemindSetting(for type: ReminderType) -> Bool? {
+        return type.doNotRemindSetting()
     }
     
-    open func timeSetting(profileManager: StudyProfileManager, for type: ReminderType) -> String? {
-        return type.timeSetting(profileManager: profileManager)
+    open func timeSetting(for type: ReminderType) -> String? {
+        return type.timeSetting()
     }
     
-    open func daySetting(profileManager: StudyProfileManager, for type: ReminderType) -> RSDWeekday? {
-        return type.daySetting(profileManager: profileManager)
+    open func daySetting(for type: ReminderType) -> RSDWeekday? {
+        return type.daySetting()
     }
 }
 
 public enum ReminderType: String, CaseIterable, Decodable {
     case weekly = "weekly"
     
-    fileprivate func hasBeenScheduled(profileManager: StudyProfileManager) -> Bool {
+    fileprivate func hasBeenScheduled() -> Bool {
         switch self {
         case .weekly:
-            return profileManager.haveWeeklyRemindersBeenSet
+            return HistoryDataManager.shared.haveWeeklyRemindersBeenSet
         }
     }
     
-    fileprivate func doNotRemindSetting(profileManager: StudyProfileManager) -> Bool? {
+    fileprivate func doNotRemindSetting() -> Bool? {
         switch self {
         case .weekly:
-            return profileManager.weeklyReminderDoNotRemind
+            return HistoryDataManager.shared.reminderItem?.reminderDoNotRemindMe
         }
     }
     
-    fileprivate func timeSetting(profileManager: StudyProfileManager) -> String? {
+    fileprivate func timeSetting() -> String? {
         switch self {
         case .weekly:
-            return profileManager.weeklyReminderTime
+            return HistoryDataManager.shared.reminderItem?.reminderTime
         }
     }
     
-    fileprivate func daySetting(profileManager: StudyProfileManager) -> RSDWeekday? {
+    fileprivate func daySetting() -> RSDWeekday? {
         switch self {
         case .weekly:
-            return profileManager.weeklyReminderDay
+            return HistoryDataManager.shared.reminderItem?.reminderWeekday
         }
     }
     

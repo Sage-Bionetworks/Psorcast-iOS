@@ -36,7 +36,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8Oi-Gn-n4p" userLabel="Get started button" customClass="RSDRoundedButton" customModule="ResearchUI">
-                                        <rect key="frame" x="4" y="766" width="406" height="30"/>
+                                        <rect key="frame" x="4" y="718.5" width="406" height="52"/>
                                         <state key="normal" title="Join the research study"/>
                                         <connections>
                                             <action selector="getStartedTapped" destination="VJ3-hJ-g4d" eventType="touchUpInside" id="5K4-ae-Pkm"/>
@@ -50,7 +50,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lJG-3B-rEz" userLabel="Login Button" customClass="RSDUnderlinedButton" customModule="ResearchUI">
-                                        <rect key="frame" x="8" y="850" width="398" height="30"/>
+                                        <rect key="frame" x="8" y="846.5" width="398" height="33.5"/>
                                         <state key="normal" title="Login">
                                             <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
                                         </state>
@@ -58,15 +58,36 @@
                                             <action selector="loginTapped" destination="VJ3-hJ-g4d" eventType="touchUpInside" id="RCE-ai-C4z"/>
                                         </connections>
                                     </button>
+                                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EIV-ng-WnP" userLabel="Launch Screen">
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                        <subviews>
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Logo" translatesAutoresizingMaskIntoConstraints="NO" id="s72-lK-tyu">
+                                                <rect key="frame" x="88" y="424.5" width="238" height="47"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" secondItem="s72-lK-tyu" secondAttribute="height" multiplier="240:47" id="Mc6-9j-pKd"/>
+                                                </constraints>
+                                            </imageView>
+                                        </subviews>
+                                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                        <constraints>
+                                            <constraint firstAttribute="trailing" secondItem="s72-lK-tyu" secondAttribute="trailing" constant="88" id="4mO-rY-IRo"/>
+                                            <constraint firstItem="s72-lK-tyu" firstAttribute="leading" secondItem="EIV-ng-WnP" secondAttribute="leading" constant="88" id="cZm-EL-Xfz"/>
+                                            <constraint firstItem="s72-lK-tyu" firstAttribute="centerY" secondItem="EIV-ng-WnP" secondAttribute="centerY" id="jGa-Hs-ehC"/>
+                                        </constraints>
+                                    </view>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="bottom" secondItem="Q8p-Lc-Z7m" secondAttribute="bottom" constant="220" id="1uX-6X-FE4"/>
+                                    <constraint firstAttribute="trailing" secondItem="EIV-ng-WnP" secondAttribute="trailing" id="3VZ-uw-eXS"/>
                                     <constraint firstItem="fZ4-xJ-Sfz" firstAttribute="top" secondItem="8Oi-Gn-n4p" secondAttribute="bottom" constant="16" id="3uE-LM-C66"/>
                                     <constraint firstItem="Q8p-Lc-Z7m" firstAttribute="leading" secondItem="3Sp-Jq-mwa" secondAttribute="leading" constant="8" id="7FC-37-soq"/>
                                     <constraint firstAttribute="trailing" secondItem="DNP-n3-rC3" secondAttribute="trailing" id="Ebz-Am-8My"/>
+                                    <constraint firstItem="EIV-ng-WnP" firstAttribute="top" secondItem="3Sp-Jq-mwa" secondAttribute="top" id="GZD-Zd-8gD"/>
+                                    <constraint firstAttribute="bottom" secondItem="EIV-ng-WnP" secondAttribute="bottom" id="IaL-OP-sO6"/>
                                     <constraint firstItem="DNP-n3-rC3" firstAttribute="top" secondItem="3Sp-Jq-mwa" secondAttribute="top" id="JeT-mk-WXK"/>
                                     <constraint firstItem="DNP-n3-rC3" firstAttribute="leading" secondItem="3Sp-Jq-mwa" secondAttribute="leading" id="Kdf-yh-PXw"/>
+                                    <constraint firstItem="EIV-ng-WnP" firstAttribute="leading" secondItem="3Sp-Jq-mwa" secondAttribute="leading" id="Oj0-pp-hTT"/>
                                     <constraint firstAttribute="bottom" secondItem="lJG-3B-rEz" secondAttribute="bottom" constant="16" id="YPe-3Z-Wmj"/>
                                     <constraint firstAttribute="trailing" secondItem="8Oi-Gn-n4p" secondAttribute="trailing" constant="4" id="cYt-ej-16J"/>
                                     <constraint firstAttribute="trailing" secondItem="eE4-TP-pcQ" secondAttribute="trailing" constant="4" id="gaa-Bg-Ivv"/>
@@ -94,16 +115,17 @@
                     </view>
                     <connections>
                         <outlet property="getStartedButton" destination="8Oi-Gn-n4p" id="f38-eK-W9q"/>
+                        <outlet property="launchView" destination="EIV-ng-WnP" id="4nx-LJ-Yyc"/>
                         <outlet property="loginButton" destination="lJG-3B-rEz" id="9jg-0b-MZw"/>
                         <outlet property="textLabel" destination="Q8p-Lc-Z7m" id="vH0-KV-YeD"/>
                         <outlet property="titleLabel" destination="eE4-TP-pcQ" id="oyZ-Wc-pOF"/>
                         <outlet property="tryItFirstButton" destination="fZ4-xJ-Sfz" id="wTk-46-C14"/>
-                        <outlet property="videoView" destination="DNP-n3-rC3" id="PsI-na-GEy"/>
+                        <outlet property="videoView" destination="DNP-n3-rC3" id="Gvq-Oy-9gf"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wZD-Cc-4Y1" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1235" y="-56"/>
+            <point key="canvasLocation" x="-1223.1884057971015" y="-83.035714285714278"/>
         </scene>
         <!--Review-->
         <scene sceneID="v3Q-kP-JZy">
@@ -208,10 +230,10 @@ OCT 2020 to Today</string>
                                                                                         <nil key="highlightedColor"/>
                                                                                     </label>
                                                                                     <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Checkmark" translatesAutoresizingMaskIntoConstraints="NO" id="QQb-AO-WUP">
-                                                                                        <rect key="frame" x="293" y="20" width="72" height="24"/>
+                                                                                        <rect key="frame" x="269" y="8" width="96" height="48"/>
                                                                                     </imageView>
                                                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XdZ-hy-h7V">
-                                                                                        <rect key="frame" x="341" y="20" width="24" height="24"/>
+                                                                                        <rect key="frame" x="317" y="8" width="48" height="48"/>
                                                                                         <state key="normal" image="ExportButton"/>
                                                                                         <connections>
                                                                                             <action selector="exportTapped" destination="LrK-q2-M3U" eventType="touchUpInside" id="FFE-Bp-Djf"/>
@@ -306,7 +328,7 @@ OCT 2020 to Today</string>
                                                                                 </constraints>
                                                                             </view>
                                                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CxB-DG-SQx" customClass="RSDRoundedButton" customModule="ResearchUI">
-                                                                                <rect key="frame" x="32" y="270" width="317" height="30"/>
+                                                                                <rect key="frame" x="32" y="248" width="317" height="52"/>
                                                                                 <state key="normal" title="Add measurement"/>
                                                                                 <connections>
                                                                                     <action selector="addMeasurementTapped" destination="SkY-Tz-cJk" eventType="touchUpInside" id="mSO-19-BIn"/>
@@ -970,6 +992,7 @@ OCT 2020 to Today</string>
         <image name="FilterUpArrow" width="14" height="8"/>
         <image name="InsightBulb" width="41" height="59"/>
         <image name="InsightIcon" width="34" height="34"/>
+        <image name="Logo" width="436" height="74"/>
         <image name="MeasureTabIcon" width="31" height="16"/>
         <image name="PlayButton" width="80" height="80"/>
         <image name="ProfileTabIcon" width="27" height="27"/>

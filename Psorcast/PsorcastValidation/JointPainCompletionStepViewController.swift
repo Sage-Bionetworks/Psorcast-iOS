@@ -103,6 +103,12 @@ open class JointPainCompletionStepViewController: RSDStepViewController, JointPa
     /// The result identifier for the summary image
     public let summaryImageResultIdentifier = "summaryImage"
     
+    /// The result identifier for the joint count total
+    public static let jointCountResultIdentifier = "jointCount"
+    
+    /// THe total joints that were selected
+    public var jointCountTotal = 0
+    
     /// The step for this view controller
     open var jointPainCompletionStep: JointPainCompletionStepObject? {
         return self.step as? JointPainCompletionStepObject
@@ -156,7 +162,7 @@ open class JointPainCompletionStepViewController: RSDStepViewController, JointPa
         self.setupJointImageView()
         
         // Reflect the joint counts in text
-        let count = self.allJointResults.filter({ $0.isSelected ?? false }).count
+        self.jointCountTotal = self.allJointResults.filter({ $0.isSelected ?? false }).count
         
         // Text has unique formatting of large number and normal text after
         let backgroundLight = self.designSystem.colorRules.backgroundLight
@@ -169,7 +175,7 @@ open class JointPainCompletionStepViewController: RSDStepViewController, JointPa
         // Here will assign different fonts to the selected joint number and the text following
         // We will also adjust the baseline of the joint number to be centered with the text follow
         // Lastly, we will increase spacing between the number and the following text
-        if let text = self.selectedJointText(count: count),
+        if let text = self.selectedJointText(count: self.jointCountTotal),
             let firstSpaceIdx = text.firstIndex(of: " ") {
             let attributedText = NSMutableAttributedString(string: text, attributes: [NSAttributedString.Key.font: textFont])
             let textRange = NSMakeRange(0, firstSpaceIdx.utf16Offset(in: text))
@@ -259,6 +265,10 @@ open class JointPainCompletionStepViewController: RSDStepViewController, JointPa
     }
     
     override open func goForward() {
+        
+        /// Save the total count
+        let countResult = RSDAnswerResultObject(identifier: JointPainCompletionStepViewController.jointCountResultIdentifier, answerType: .integer, value: jointCountTotal)
+        _ = self.stepViewModel.parent?.taskResult.appendStepHistory(with: countResult)
         
         /// Save a final simple JSON list of selected joints
         let startDate = self.taskController?.taskViewModel.taskResult.startDate ?? Date()

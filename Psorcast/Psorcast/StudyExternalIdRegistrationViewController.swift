@@ -45,19 +45,15 @@ open class StudyExternalIdRegistrationStepObject: ExternalIDRegistrationStep {
 
 open class StudyExternalIdRegistrationViewController: ExternalIDRegistrationViewController {
     
-    open var profileManager: StudyProfileManager? {
-        return SBAProfileManagerObject.shared as? StudyProfileManager
-    }
-    
     override open var nibName: String? {
         return String(describing: ExternalIDRegistrationViewController.self)
     }
-    
+
     override open func goForward() {
         
-        // At this point the user is signed in, and we should update their profile
+        // At this point the user is signed in, and we should update their treatments
         // so we know if we should transition them to treatment selection
-        self.profileManager?.reloadData()    
+        HistoryDataManager.shared.forceReloadData()
         
         super.goForward()
     }

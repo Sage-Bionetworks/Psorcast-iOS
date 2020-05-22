@@ -43,15 +43,18 @@ open class MasterScheduleManager : SBAScheduleManager {
     public static let shared = MasterScheduleManager()
     
     /// The schedules will be sorted in this order
-    public let sortOrder: [RSDIdentifier] = [.psoriasisDrawTask, .psoriasisAreaPhotoTask, .digitalJarOpenTask, .handImagingTask, .footImagingTask, .walkingTask, .jointCountingTask]
+    public static let sortOrder: [RSDIdentifier] = [.psoriasisDrawTask, .psoriasisAreaPhotoTask, .digitalJarOpenTask, .handImagingTask, .footImagingTask, .walkingTask, .jointCountingTask]
     
     /// The schedules will filter to only have these tasks
-    public var filterAll: [RSDIdentifier] = [.psoriasisDrawTask, .psoriasisAreaPhotoTask, .digitalJarOpenTask, .handImagingTask, .footImagingTask, .walkingTask, .jointCountingTask]
+    public static let filterAll: [RSDIdentifier] = [.psoriasisDrawTask, .psoriasisAreaPhotoTask, .digitalJarOpenTask, .handImagingTask, .footImagingTask, .walkingTask, .jointCountingTask]
     
-    /// The profile manager for the app, could also be a standard variable, but lets keep it connected to the one source of truth
-    open weak var profileManager: StudyProfileManager? {
-        return (AppDelegate.shared as? AppDelegate)?.profileManager
-    }        
+    open var insightStepIdentifiers: [InsightResultIdentifier] {
+        return [.insightViewedIdentifier, .insightViewedDate, .insightUsefulAnswer]
+    }
+    
+    open var insightsTask: RSDTask? {
+        return SBABridgeConfiguration.shared.task(for: RSDIdentifier.insightsTask.rawValue)
+    }
     
     /// The date available for unit test override
     open func nowDate() -> Date {
@@ -76,12 +79,11 @@ open class MasterScheduleManager : SBAScheduleManager {
     }
     
     public func isComplete(schedule: SBBScheduledActivity) -> Bool {
-        
-        guard let treatmentDate = self.profileManager?.treatmentsDate else {
+        guard let treatmentDate = HistoryDataManager.shared.currentTreatmentRange?.startDate else {
             return false
         }
-        
-        let range = self.completionRange(treatmentDate: treatmentDate, treatmentWeek: self.treatmentWeek())
+        let treatmentWeek = self.treatmentWeek()
+        let range = self.completionRange(treatmentDate: treatmentDate, treatmentWeek: treatmentWeek)
         if let finishedOn = schedule.finishedOn {
             return range.contains(finishedOn)
         }
@@ -119,8 +121,8 @@ open class MasterScheduleManager : SBAScheduleManager {
         }
         
         return filtered.sorted(by: { (scheduleA, scheduleB) -> Bool in
-            let idxA = sortOrder.firstIndex(of: RSDIdentifier(rawValue: scheduleA.activityIdentifier ?? "")) ?? sortOrder.count
-            let idxB = sortOrder.firstIndex(of: RSDIdentifier(rawValue: scheduleB.activityIdentifier ?? "")) ?? sortOrder.count
+            let idxA = MasterScheduleManager.sortOrder.firstIndex(of: RSDIdentifier(rawValue: scheduleA.activityIdentifier ?? "")) ?? MasterScheduleManager.sortOrder.count
+            let idxB = MasterScheduleManager.sortOrder.firstIndex(of: RSDIdentifier(rawValue: scheduleB.activityIdentifier ?? "")) ?? MasterScheduleManager.sortOrder.count
             
             return idxA < idxB
         })
@@ -130,7 +132,7 @@ open class MasterScheduleManager : SBAScheduleManager {
     open var filterList: [RSDIdentifier] {
         let treatmentWeek = self.treatmentWeek()
         var includeList = [RSDIdentifier]()
-        for rsdIdentifier in self.filterAll {
+        for rsdIdentifier in MasterScheduleManager.filterAll {
             let timingInfo = self.scheduleFrequency(for: rsdIdentifier)
             if timingInfo.freq == .weekly {
                 // All weekly activities are included
@@ -253,27 +255,148 @@ open class MasterScheduleManager : SBAScheduleManager {
             taskController.taskViewModel.taskResult.stepHistory.append(RSDAnswerResultObject(identifier: "participantID", answerType: .string, value: participantID))
         }
         
-        // Allow the image report manager to process a potential video frame
-        ImageReportManager.shared.processTaskResult(taskController, profileManager: self.profileManager)
+        let taskResult = taskController.taskViewModel.taskResult
+        HistoryDataManager.shared.uploadReports(from: taskResult)
         
         super.saveResults(from: taskViewModel)
+    }
+    
+    // Seperated out for unit tests
+    public func treatmentWeek() -> Int {
+        guard let currentTreatmentStart = HistoryDataManager.shared.currentTreatmentRange?.startDate else { return 1 }
+        return (Calendar.current.dateComponents([.weekOfYear], from: currentTreatmentStart.startOfDay(), to: Date()).weekOfYear ?? 0) + 1
+    }
+    
+    open var selectedTreatmentItems: [TreatmentItem]? {
+        guard let treatmentIds = HistoryDataManager.shared.currentTreatmentRange?.treatments else { return nil }
+        let selectedTreatments = self.treatmentsAvailable
+        return treatmentIds.map { (id) -> TreatmentItem in
+            if let treatment = selectedTreatments?.first(where: { $0.identifier == id }) {
+                return treatment
+            } else {
+                return TreatmentItem(identifier: id, detail: nil, sectionIdentifier: nil)
+            }
+        }
+    }
+    
+    open var treatmentsAvailable: [TreatmentItem]? {
+        return (self.treatmentTask?.stepNavigator.step(with: TreatmentResultIdentifier.treatments.rawValue) as? TreatmentSelectionStepObject)?.items
+    }
+    
+    open var treatmentTask: RSDTask? {
+        return SBABridgeConfiguration.shared.task(for: RSDIdentifier.treatmentTask.rawValue)
+    }
+    
+    open func instantiateTreatmentTaskController() -> RSDTaskViewController? {
+        guard let task = self.treatmentTask else { return nil }
+        return RSDTaskViewController(task: task)
+    }
+    
+    open func instantiateSingleQuestionTreatmentTaskController(for stepIdentifier: String) -> RSDTaskViewController? {
+        
+        // This task viewcontroller has all the treament questions
+        var vc = self.instantiateTreatmentTaskController()
+        
+        // Re-crate the task as a single question
+        if let step = vc?.task.stepNavigator.step(with: stepIdentifier) {
+            var navigator = RSDConditionalStepNavigatorObject(with: [step])
+            
+            // The treatment selection step vc, when shown as a single step,
+            // Should not allow the same treatments as a new treatment selection
+            if let treatmentSelectionStep = step as? TreatmentSelectionStepObject {
+                treatmentSelectionStep.goBackOnSameTreatments = true
+            }
+            
+            navigator.progressMarkers = []
+            let task = RSDTaskObject(identifier: RSDIdentifier.treatmentTask.rawValue, stepNavigator: navigator)
+            vc = RSDTaskViewController(task: task)
+                                                
+            // Set the initial state of the question answer
+            if let prevTreatments = HistoryDataManager.shared.currentTreatmentRange?.treatments {
+                let prevAnswer = TreatmentSelectionStepViewController.createStringArrAnswerResult(identifier: TreatmentResultIdentifier.treatments.rawValue, answer: prevTreatments)
+                vc?.taskViewModel.append(previousResult: prevAnswer)
+            }
+            if let prevStatus = HistoryDataManager.shared.psoriasisStatus {
+                vc?.taskViewModel.append(previousResult: RSDAnswerResultObject(identifier: TreatmentResultIdentifier.status.rawValue, answerType: .string, value: prevStatus))
+            }
+            if let prevSymptoms = HistoryDataManager.shared.psoriasisSymptoms {
+                vc?.taskViewModel.append(previousResult: RSDAnswerResultObject(identifier: TreatmentResultIdentifier.symptoms.rawValue, answerType: .string, value: prevSymptoms))
+            }
+        }
+
+        return vc
+    }
+    
+    open func insightItems() -> [InsightItem] {
+        guard let task = self.insightsTask,
+            let step = task.stepNavigator.step(with: "insightStep") as? ShowInsightStepObject else {
+            return []
+        }
+        return step.items
+    }
+    
+    open func nextInsightItem() -> InsightItem? {
+        var items = insightItems()
+        items.sort(by: { (insightItem1, insightItem2) -> Bool in
+            if let sortValue1 = insightItem1.sortValue, let sortValue2 = insightItem2.sortValue {
+               return sortValue1 < sortValue2
+            } else {
+                if (insightItem1.sortValue != nil) {
+                    return true
+                } else {
+                    return false
+                }
+            }
+        })
+        let pastInsights = HistoryDataManager.shared.pastInsightItemsViewed.map({ $0.insightIdentifier })
+        return items.first(where: { !pastInsights.contains($0.identifier) })
+    }
+    
+    open func instantiateInsightsTaskController() -> RSDTaskViewController? {
+        guard let insightItem = self.nextInsightItem() else { return nil }
+        return self.instantiateInsightsTaskController(for: insightItem)
+    }
+    
+    open func instantiateInsightsTaskController(for insightItem: InsightItem) -> RSDTaskViewController? {
+        guard let task = self.insightsTask else { return nil }
+        let step = task.stepNavigator.step(with: "insightStep") as? ShowInsightStepObject
+        step?.currentStepIdentifier = insightItem.identifier
+        step?.title = insightItem.title
+        step?.text = insightItem.text
+        return RSDTaskViewController(task: task)
+    }
+    
+    /// Let the HistoryDataManager determine which reports to buil
+    override open func buildReports(from topLevelResult: RSDTaskResult) -> [SBAReport]? {
+        let taskId = topLevelResult.identifier
+        // Only keep the deep dive reports going for now
+        if DeepDiveReportManager.shared.deepDiveList?.sortOrder.contains(where: { $0.identifier == taskId }) ?? false {
+            return super.buildReports(from: topLevelResult)
+        }
+        // Do not have this build any reports
+        return nil
+    }
+    
+    override open func reportQueries() -> [SBAReportManager.ReportQuery] {
+        // No report queries either
+        return []
     }
     
     /// Based on study requirements to make the schedules apply more to users
     /// that have certain diagnosis and symptom requirements, set frequency per scheduled activity
     public func scheduleFrequency(for identifier: RSDIdentifier) -> (freq: StudyScheduleFrequency, startWeek: Int) {
-        guard let symptoms = self.symptoms(),
-            let diagnosis = self.diagnosis() else {
+        guard let symptoms = HistoryDataManager.shared.psoriasisSymptoms,
+            let diagnosis = HistoryDataManager.shared.psoriasisStatus else {
             return (.weekly, 1)
         }
         
         let userHasJointIssues =
-            symptoms == StudyProfileManager.symptomsJointsAnswer ||
-            diagnosis == StudyProfileManager.diagnosisArthritisAnswer
+            symptoms == HistoryDataManager.symptomsJointsAnswer ||
+            diagnosis == HistoryDataManager.diagnosisArthritisAnswer
         
         let userHasSkinIssues =
-            symptoms == StudyProfileManager.symptomsSkinAnswer ||
-            diagnosis == StudyProfileManager.diagnosisPsoriasisAnswer
+            symptoms == HistoryDataManager.symptomsSkinAnswer ||
+            diagnosis == HistoryDataManager.diagnosisPsoriasisAnswer
                 
         if userHasJointIssues && !userHasSkinIssues {
             // User has joint issues but no skin issues
@@ -299,23 +422,6 @@ open class MasterScheduleManager : SBAScheduleManager {
         }
         
         return (.weekly, 1)
-    }
-    
-    /// Exposed for unit testing
-    open func treatmentDate() -> Date? {
-        return self.profileManager?.treatmentsDate
-    }
-    /// Exposed for unit testing
-    open func treatmentWeek() -> Int {
-        return self.profileManager?.treatmentWeek(toNow: self.nowDate()) ?? 1
-    }
-    // Exposed for unit testing
-    open func symptoms() -> String? {
-        return self.profileManager?.symptoms
-    }
-    // Exposed for unit testing
-    open func diagnosis() -> String? {
-        return self.profileManager?.diagnosis
     }
 }
 
