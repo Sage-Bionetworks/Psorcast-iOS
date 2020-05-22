@@ -53,7 +53,8 @@ open class StudyExternalIdRegistrationViewController: ExternalIDRegistrationView
         
         // At this point the user is signed in, and we should update their treatments
         // so we know if we should transition them to treatment selection
-        HistoryDataManager.shared.forceReloadData()
+        HistoryDataManager.shared.forceReloadSingletonData()
+        HistoryDataManager.shared.forceReloadHistory()
         
         super.goForward()
     }

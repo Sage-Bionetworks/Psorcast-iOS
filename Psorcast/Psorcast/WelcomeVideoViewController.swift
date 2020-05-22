@@ -89,17 +89,16 @@ class WelcomeVideoViewController: UIViewController {
                     return
                 } else {
                     if HistoryDataManager.shared.hasSetTreatment {
-                        // Reload data in background
-                        HistoryDataManager.shared.forceReloadData()
+                        // Reload singleton data in background, not the full history
+                        HistoryDataManager.shared.forceReloadSingletonData()
                         // With our database setup, we are ready to proceed into the app
                         (AppDelegate.shared as? AppDelegate)?.showAppropriateViewController(animated: true)
-                    } else {
-                        UIView.transition(with: self.launchView, duration: 0.5,
-                            options: .transitionCrossDissolve,
-                            animations: {
-                           self.launchView.isHidden = true
-                        })
                     }
+                    UIView.transition(with: self.launchView, duration: 0.5,
+                        options: .transitionCrossDissolve,
+                        animations: {
+                       self.launchView.isHidden = true
+                    })
                 }
             }
         }

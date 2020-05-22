@@ -110,11 +110,11 @@ open class ImageDataManager {
         
         // Create the image filename from
         let imageCreatedOnDateStr = self.dateFormatter.string(from: Date())
-        let imageFileName = "\(taskIdentifier)\(fileNameSeperator)\(imageCreatedOnDateStr)"
+        let imageFileName = "\(taskIdentifier)\(fileNameSeperator)\(imageCreatedOnDateStr).\(imagePathExtension)"
         
         // Copy new video frames into the documents directory
         // Copy the result file url into a the local cache so it persists upload complete
-        if let newImageUrl = FileManager.default.copyFile(at: summaryImageUrl, to: storageDir, filename: "\(imageFileName).\(imagePathExtension)") {
+        if let newImageUrl = FileManager.default.copyFile(at: summaryImageUrl, to: storageDir, filename: imageFileName) {
             
             guard let treatmentRange = self.historyData.currentTreatmentRange else {
                 print("Error creating new video because treatmentStartDate is invalid")
@@ -133,6 +133,10 @@ open class ImageDataManager {
                 "to \(storageDir) with filename \(imageFileName)")
             return nil
         }
+    }
+    
+    public func findFrame(with imageName: String) -> URL? {
+        return FileManager.default.url(for: self.storageDir, fileName: imageName)
     }
     
     public func createCurrentTreatmentVideo(for taskIdentifier: String) {
@@ -273,7 +277,9 @@ open class ImageDataManager {
             let filename = videoFile.lastPathComponent
             if let components = self.filenameComponents(filename),
                 taskIdentifier == components.taskId,
-                treatmentStartDate == components.date {
+                // Only the second preceision, no need to compare ms
+                Int(treatmentStartDate.timeIntervalSinceNow) ==
+                    Int(components.date.timeIntervalSinceNow) {
                 return videoFile
             }
         }

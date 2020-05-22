@@ -120,6 +120,8 @@ open class PsoriasisDrawCompletionStepViewController: RSDStepViewController, Pro
     open var completionStep: PsoriasisDrawCompletionStepObject? {
         return self.step as? PsoriasisDrawCompletionStepObject
     }
+    
+    var coverage: Float = 0
 
     override open func setupHeader(_ header: RSDStepNavigationView) {
         super.setupHeader(header)
@@ -184,7 +186,7 @@ open class PsoriasisDrawCompletionStepViewController: RSDStepViewController, Pro
             "\(belowTheWaistFrontImageIdentifier)\(coverageResult)",
             "\(aboveTheWaistBackImageIdentifier)\(coverageResult)",
             "\(belowTheWaistBackImageIdentifier)\(coverageResult)"]
-        let coverage = self.psoriasisDrawCoverage(from: psoriasisDrawIdentifiers)
+        self.coverage = self.psoriasisDrawCoverage(from: psoriasisDrawIdentifiers)
         let coverageString = String(format: "%.1f", coverage)
         
         if let title = self.completionStep?.title,
@@ -315,6 +317,8 @@ open class PsoriasisDrawCompletionStepViewController: RSDStepViewController, Pro
             } catch let error {
                 debugPrint("Failed to save the image: \(error)")
             }
+            
+            _ = self.stepViewModel.parent?.taskResult.appendStepHistory(with: RSDAnswerResultObject(identifier: PsoriasisDrawStepViewController.percentCoverageResultId.lowercased(), answerType: .decimal, value: self.coverage))
 
             // Create the result and set it as the result for this step
             var result = RSDFileResultObject(identifier: summaryImageResultIdentifier)

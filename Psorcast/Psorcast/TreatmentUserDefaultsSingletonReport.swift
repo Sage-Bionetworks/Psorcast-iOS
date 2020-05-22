@@ -147,11 +147,12 @@ open class TreatmentUserDefaultsSingletonReport: UserDefaultsSingletonReport {
         self.syncToBridge()
     }
     
+    // TODO: mdephillips unit test this
     open func mergeTreatments(currentTreatments:  [TreatmentBridgeItem], newTreatments: [TreatmentBridgeItem]) -> [TreatmentBridgeItem] {
         var merged = [TreatmentBridgeItem]()
         merged.append(contentsOf: currentTreatments)
         merged.append(contentsOf: newTreatments.filter({ (item) -> Bool in
-            return merged.contains(where: { $0.startDate.timeIntervalSince1970 != item.startDate.timeIntervalSince1970 })
+            return !merged.contains(where: { $0.startDate.timeIntervalSince1970 == item.startDate.timeIntervalSince1970 })
         }))
         return merged
     }

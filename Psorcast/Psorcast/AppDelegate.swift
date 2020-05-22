@@ -78,6 +78,8 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate {
         
         if isAuthenticated && participantID != nil && hasSetTreatments {
             self.showMainViewController(animated: animated)
+        } else if isAuthenticated && participantID == nil {
+            self.showSignInViewController(animated: animated)
         } else if isAuthenticated && participantID != nil {
             self.showTreatmentSelectionScreens(animated: true)
         } else {
