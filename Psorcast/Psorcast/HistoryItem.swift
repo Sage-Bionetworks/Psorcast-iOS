@@ -81,6 +81,10 @@ public extension JointCountingHistoryItem {
         }
         return item
     }
+    
+    func title() -> String? {
+        return "\(self.jointCount) Joints"
+    }
 }
 
 extension PsoriasisDrawHistoryItem {
@@ -93,6 +97,11 @@ extension PsoriasisDrawHistoryItem {
             item.coverage = coverageUnwrapped
         }
         return item
+    }
+    
+    func title() -> String? {
+        let floatStr = String(format: "%.2f", self.coverage)
+        return "\(floatStr)% Coverage"
     }
 }
 
@@ -116,5 +125,14 @@ extension HistoryItem {
         }
         
         return clientDataDict
+    }
+    
+    public func itemTitle() -> String? {
+        if let subItem = self as? PsoriasisDrawHistoryItem {
+            return subItem.title()
+        } else if let subItem = self as? JointCountingHistoryItem {
+            return subItem.title()
+        }
+        return nil
     }
 }

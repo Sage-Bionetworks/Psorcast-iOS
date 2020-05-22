@@ -261,7 +261,15 @@ open class MasterScheduleManager : SBAScheduleManager {
         super.saveResults(from: taskViewModel)
     }
     
-    // Seperated out for unit tests
+    public func treatmentDurationInWeeks(treatmentRange: TreatmentRange) -> Int {
+        return (Calendar.current.dateComponents([.weekOfYear], from: treatmentRange.startDate, to: treatmentRange.endDate ?? Date()).weekOfYear ?? 0) + 1
+    }
+    
+    public func treatmentWeek(for date: Date) -> Int {
+        guard let currentTreatmentStart = HistoryDataManager.shared.currentTreatmentRange?.startDate else { return 1 }
+        return (Calendar.current.dateComponents([.weekOfYear], from: currentTreatmentStart.startOfDay(), to: date).weekOfYear ?? 0) + 1
+    }
+
     public func treatmentWeek() -> Int {
         guard let currentTreatmentStart = HistoryDataManager.shared.currentTreatmentRange?.startDate else { return 1 }
         return (Calendar.current.dateComponents([.weekOfYear], from: currentTreatmentStart.startOfDay(), to: Date()).weekOfYear ?? 0) + 1

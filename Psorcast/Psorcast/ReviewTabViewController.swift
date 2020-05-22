@@ -504,6 +504,16 @@ open class ReviewTabViewController: UIViewController, UITableViewDataSource, UIT
         self.presentAlertWithActions(title: title, message: message, preferredStyle: .alert, actions: actions)
     }
     
+    func selectedTreatmentDurationStr() -> String {
+        guard let selectedTreatment = self.selectedTreatmentRange else { return "1 week" }
+        let weeks = MasterScheduleManager.shared.treatmentDurationInWeeks(treatmentRange: selectedTreatment)
+        if weeks == 1 {
+            return "1 week of treatment"
+        } else {
+            return "\(weeks) weeks of treatment"
+        }
+    }
+    
     fileprivate struct TaskRowState {
         public static let unassignedScollPosition = CGFloat(-65000)
         var scrollPosition: CGFloat = unassignedScollPosition
@@ -587,7 +597,8 @@ public class ReviewTableViewCell: RSDDesignableTableViewCell, UICollectionViewDe
         
         let item = self.historyItems[imageFrameIdx]
         let itemDate = item.date ?? Date()
-        let dateText = ReviewTabViewController.dateFormatter.string(from: itemDate)
+
+        let dateText = "Week \(MasterScheduleManager.shared.treatmentWeek(for: itemDate)) - \(ReviewTabViewController.dateFormatter.string(from: itemDate))"
         
         var renderFrameUrl: VideoCreator.RenderFrameUrl?
         var imageFrame: VideoCreator.RenderFrameImage?
@@ -605,9 +616,16 @@ public class ReviewTableViewCell: RSDDesignableTableViewCell, UICollectionViewDe
             cell.imageView?.image = UIImage(named: "ImageLoadFailed")
         }
         
-        cell.dateLabel.text = imageFrame?.text
-        
         let isVideoCell = (indexPath.row == self.historyItems.count) && (self.historyItems.count > 1)
+        
+        if !isVideoCell {
+            cell.dateLabel.text = dateText
+            cell.infoLabel.text = item.itemTitle()
+        } else {
+            cell.dateLabel.text = self.delegate?.selectedTreatmentDurationStr()
+            cell.infoLabel.text = nil
+        }
+        
         cell.isVideoFrame = isVideoCell
         cell.playButton.isHidden = !isVideoCell
         cell.loadProgress.isHidden = !isVideoCell
@@ -667,6 +685,7 @@ protocol ReviewTableViewCellDelegate: class {
     func collectionViewScrolled(with taskIdentifier: RSDIdentifier, to contentOffsetX: CGFloat)
     func exportTapped(with renderFrame: VideoCreator.RenderFrameUrl?, taskIdentifier: RSDIdentifier, cellIdx: Int)
     func addMeasurementTapped(taskIdentifier: RSDIdentifier)
+    func selectedTreatmentDurationStr() -> String
 }
 
 public class ReviewImageCollectionView: RSDCollectionViewCell {
@@ -674,6 +693,7 @@ public class ReviewImageCollectionView: RSDCollectionViewCell {
     @IBOutlet weak var playButton: UIButton!
     @IBOutlet weak var loadProgress: RSDCountdownDial!
     @IBOutlet weak var dateLabel: UILabel!
+    @IBOutlet weak var infoLabel: UILabel!
     @IBOutlet weak var exportButton: UIButton!
     @IBOutlet weak var checkMarkImage: UIImageView!
     
@@ -690,8 +710,11 @@ public class ReviewImageCollectionView: RSDCollectionViewCell {
         
         self.imageView.backgroundColor = UIColor.white
         
-        self.dateLabel.textColor = designSystem.colorRules.textColor(on: background, for: .body)
-        self.dateLabel.font = designSystem.fontRules.font(for: .body)
+        self.dateLabel.textColor = designSystem.colorRules.textColor(on: background, for: .mediumHeader)
+        self.dateLabel.font = designSystem.fontRules.font(for: .mediumHeader)
+        
+        self.infoLabel.textColor = designSystem.colorRules.textColor(on: background, for: .body)
+        self.infoLabel.font = designSystem.fontRules.font(for: .body)
     }
     
     @IBAction func exportTapped() {
