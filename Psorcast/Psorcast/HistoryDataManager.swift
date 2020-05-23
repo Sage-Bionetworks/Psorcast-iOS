@@ -198,7 +198,7 @@ open class HistoryDataManager {
             }
             
             DispatchQueue.main.async {
-                self?.deleteAllEntities("HistoryItem")
+                self?.deleteAllHistoryEntities()
                 self?.addHistoryItemToCoredData(reports: reports)
             }
         }
@@ -352,17 +352,20 @@ open class HistoryDataManager {
         }
     }
 
-    func deleteAllEntities(_ entity : String) {
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entity)
-        fetchRequest.returnsObjectsAsFaults = false
-        do {
-            let results = try self.currentContext?.fetch(fetchRequest) ?? []
-            for object in results {
-                guard let objectData = object as? NSManagedObject else { continue }
-                self.currentContext?.delete(objectData)
+    func deleteAllHistoryEntities() {
+        guard let context = self.currentContext else { return }
+        context.perform {
+            let fetchRequest: NSFetchRequest<HistoryItem> = HistoryItem.fetchRequest()
+            fetchRequest.returnsObjectsAsFaults = false
+            do {
+                let results = try context.fetch(fetchRequest)
+                for object in results {
+                    context.delete(object)
+                }
+                try context.save()
+            } catch let error {
+                print("Detele all history items encountered error :", error)
             }
-        } catch let error {
-            print("Detele all data in \(entity) error :", error)
         }
     }
     

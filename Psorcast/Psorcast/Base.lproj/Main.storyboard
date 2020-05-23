@@ -258,10 +258,10 @@ OCT 2020 to Today</string>
                                                                                 <rect key="frame" x="0.0" y="318" width="381" height="64"/>
                                                                                 <subviews>
                                                                                     <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Checkmark" translatesAutoresizingMaskIntoConstraints="NO" id="QQb-AO-WUP">
-                                                                                        <rect key="frame" x="293" y="20" width="72" height="24"/>
+                                                                                        <rect key="frame" x="269" y="8" width="96" height="48"/>
                                                                                     </imageView>
                                                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XdZ-hy-h7V">
-                                                                                        <rect key="frame" x="341" y="20" width="24" height="24"/>
+                                                                                        <rect key="frame" x="317" y="8" width="48" height="48"/>
                                                                                         <state key="normal" image="ExportButton"/>
                                                                                         <connections>
                                                                                             <action selector="exportTapped" destination="LrK-q2-M3U" eventType="touchUpInside" id="FFE-Bp-Djf"/>
@@ -327,14 +327,14 @@ OCT 2020 to Today</string>
                                                                                 <rect key="frame" x="0.0" y="32" width="381" height="216"/>
                                                                                 <subviews>
                                                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ReviewVideoIcon" translatesAutoresizingMaskIntoConstraints="NO" id="EFh-2A-tt6">
-                                                                                        <rect key="frame" x="141.5" y="10" width="98.000000000000028" height="98.000000000000028"/>
+                                                                                        <rect key="frame" x="141.5" y="10" width="98" height="98"/>
                                                                                         <constraints>
                                                                                             <constraint firstAttribute="width" secondItem="EFh-2A-tt6" secondAttribute="height" multiplier="1:1" id="4jU-Oc-jaU"/>
                                                                                             <constraint firstAttribute="height" relation="lessThanOrEqual" constant="98" id="oAD-Ts-gQd"/>
                                                                                         </constraints>
                                                                                     </imageView>
                                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You need to complete 2 measurements to unlock your video." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bn9-rI-qzG">
-                                                                                        <rect key="frame" x="36" y="124" width="309" height="61"/>
+                                                                                        <rect key="frame" x="16" y="124" width="349" height="61"/>
                                                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                                         <nil key="textColor"/>
                                                                                         <nil key="highlightedColor"/>
@@ -342,9 +342,9 @@ OCT 2020 to Today</string>
                                                                                 </subviews>
                                                                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                                                                 <constraints>
-                                                                                    <constraint firstItem="bn9-rI-qzG" firstAttribute="leading" secondItem="EKf-xY-2cc" secondAttribute="leading" constant="36" id="5jR-KO-Rvd"/>
+                                                                                    <constraint firstItem="bn9-rI-qzG" firstAttribute="leading" secondItem="EKf-xY-2cc" secondAttribute="leading" constant="16" id="5jR-KO-Rvd"/>
                                                                                     <constraint firstItem="bn9-rI-qzG" firstAttribute="top" secondItem="EFh-2A-tt6" secondAttribute="bottom" constant="16" id="97K-g9-0cP"/>
-                                                                                    <constraint firstAttribute="trailing" secondItem="bn9-rI-qzG" secondAttribute="trailing" constant="36" id="EA2-XY-ssl"/>
+                                                                                    <constraint firstAttribute="trailing" secondItem="bn9-rI-qzG" secondAttribute="trailing" constant="16" id="EA2-XY-ssl"/>
                                                                                     <constraint firstItem="EFh-2A-tt6" firstAttribute="centerX" secondItem="EKf-xY-2cc" secondAttribute="centerX" id="Xqv-Jx-yXi"/>
                                                                                     <constraint firstItem="EFh-2A-tt6" firstAttribute="centerY" secondItem="EKf-xY-2cc" secondAttribute="centerY" constant="-49" id="pSG-cf-HqA"/>
                                                                                 </constraints>

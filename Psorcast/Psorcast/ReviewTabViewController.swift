@@ -55,7 +55,7 @@ open class ReviewTabViewController: UIViewController, UITableViewDataSource, UIT
         self.tableView.bounds.width * CGFloat(0.85)
     }
     var tableViewCellHeight: CGFloat {
-        return self.tableView.bounds.height - CGFloat(4 * self.sectionHeaderHeight)
+        return self.tableView.bounds.height - CGFloat(2 * self.sectionHeaderHeight)
     }
     
     // The image manager for the review tab
