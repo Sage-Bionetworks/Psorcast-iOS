@@ -98,12 +98,12 @@ class MasterScheduleManagerTests: XCTestCase {
     func testScheduleFrequency() {
         var timingInfo = mockManager.scheduleFrequency(for: .digitalJarOpenTask)
         
-        var weeklyIdentifiers = Array(mockManager.filterAll)
+        var weeklyIdentifiers = Array(MasterScheduleManager.filterAll)
         var monthlyIdentifiers = [RSDIdentifier]()
         
         // All schedules should be weekly when user is in the control group
-        mockManager.mockSymptoms = StudyProfileManager.symptomsNoneAnswer
-        mockManager.mockDiagnosis = StudyProfileManager.diagnosisNoneAnswer
+        mockManager.mockSymptoms = HistoryDataManager.symptomsNoneAnswer
+        mockManager.mockDiagnosis = HistoryDataManager.diagnosisNoneAnswer
         for rsdIdentifier in weeklyIdentifiers {
             timingInfo = mockManager.scheduleFrequency(for: rsdIdentifier)
             XCTAssertEqual(timingInfo.freq, .weekly)
@@ -116,8 +116,8 @@ class MasterScheduleManagerTests: XCTestCase {
         }
         
         // All schedules should be weekly when user has both symptoms and diagnoisis
-        mockManager.mockSymptoms = StudyProfileManager.symptomsBothAnswer
-        mockManager.mockDiagnosis = StudyProfileManager.diagnosisBothAnswer
+        mockManager.mockSymptoms = HistoryDataManager.symptomsBothAnswer
+        mockManager.mockDiagnosis = HistoryDataManager.diagnosisBothAnswer
         for rsdIdentifier in weeklyIdentifiers {
             timingInfo = mockManager.scheduleFrequency(for: rsdIdentifier)
             XCTAssertEqual(timingInfo.freq, .weekly)
@@ -130,8 +130,8 @@ class MasterScheduleManagerTests: XCTestCase {
         }
         
         // All schedules should be weekly when user has any symptoms and diagnoisis
-        mockManager.mockSymptoms = StudyProfileManager.symptomsSkinAnswer
-        mockManager.mockDiagnosis = StudyProfileManager.diagnosisArthritisAnswer
+        mockManager.mockSymptoms = HistoryDataManager.symptomsSkinAnswer
+        mockManager.mockDiagnosis = HistoryDataManager.diagnosisArthritisAnswer
         for rsdIdentifier in weeklyIdentifiers {
             timingInfo = mockManager.scheduleFrequency(for: rsdIdentifier)
             XCTAssertEqual(timingInfo.freq, .weekly)
@@ -144,11 +144,11 @@ class MasterScheduleManagerTests: XCTestCase {
         }
         
         weeklyIdentifiers = [.psoriasisDrawTask, .psoriasisAreaPhotoTask]
-        monthlyIdentifiers = Array(mockManager.filterAll).filter({ !weeklyIdentifiers.contains($0) })
+        monthlyIdentifiers = Array(MasterScheduleManager.filterAll).filter({ !weeklyIdentifiers.contains($0) })
         
         // If user has skin issues but no joint issue, only do skin tasks weekly
-        mockManager.mockSymptoms = StudyProfileManager.symptomsSkinAnswer
-        mockManager.mockDiagnosis = StudyProfileManager.diagnosisPsoriasisAnswer
+        mockManager.mockSymptoms = HistoryDataManager.symptomsSkinAnswer
+        mockManager.mockDiagnosis = HistoryDataManager.diagnosisPsoriasisAnswer
         for rsdIdentifier in weeklyIdentifiers {
             timingInfo = mockManager.scheduleFrequency(for: rsdIdentifier)
             XCTAssertEqual(timingInfo.freq, .weekly)
@@ -159,8 +159,8 @@ class MasterScheduleManagerTests: XCTestCase {
             XCTAssertEqual(timingInfo.freq, .monthly)
             XCTAssertEqual(timingInfo.startWeek, 2)
         }
-        mockManager.mockSymptoms = StudyProfileManager.symptomsSkinAnswer
-        mockManager.mockDiagnosis = StudyProfileManager.diagnosisNoneAnswer
+        mockManager.mockSymptoms = HistoryDataManager.symptomsSkinAnswer
+        mockManager.mockDiagnosis = HistoryDataManager.diagnosisNoneAnswer
         for rsdIdentifier in weeklyIdentifiers {
             timingInfo = mockManager.scheduleFrequency(for: rsdIdentifier)
             XCTAssertEqual(timingInfo.freq, .weekly)
@@ -171,8 +171,8 @@ class MasterScheduleManagerTests: XCTestCase {
             XCTAssertEqual(timingInfo.freq, .monthly)
             XCTAssertEqual(timingInfo.startWeek, 2)
         }
-        mockManager.mockSymptoms = StudyProfileManager.symptomsNoneAnswer
-        mockManager.mockDiagnosis = StudyProfileManager.diagnosisPsoriasisAnswer
+        mockManager.mockSymptoms = HistoryDataManager.symptomsNoneAnswer
+        mockManager.mockDiagnosis = HistoryDataManager.diagnosisPsoriasisAnswer
         for rsdIdentifier in weeklyIdentifiers {
             timingInfo = mockManager.scheduleFrequency(for: rsdIdentifier)
             XCTAssertEqual(timingInfo.freq, .weekly)
@@ -185,11 +185,11 @@ class MasterScheduleManagerTests: XCTestCase {
         }
 
         weeklyIdentifiers = [.jointCountingTask, .handImagingTask, .footImagingTask, .walkingTask, .digitalJarOpenTask]
-        monthlyIdentifiers = Array(mockManager.filterAll).filter({ !weeklyIdentifiers.contains($0) })
+        monthlyIdentifiers = Array(MasterScheduleManager.filterAll).filter({ !weeklyIdentifiers.contains($0) })
         
         // If user has joint issues but no skin issue, only do joint tasks weekly
-        mockManager.mockSymptoms = StudyProfileManager.symptomsJointsAnswer
-        mockManager.mockDiagnosis = StudyProfileManager.diagnosisArthritisAnswer
+        mockManager.mockSymptoms = HistoryDataManager.symptomsJointsAnswer
+        mockManager.mockDiagnosis = HistoryDataManager.diagnosisArthritisAnswer
         for rsdIdentifier in weeklyIdentifiers {
             timingInfo = mockManager.scheduleFrequency(for: rsdIdentifier)
             XCTAssertEqual(timingInfo.freq, .weekly)
@@ -200,8 +200,8 @@ class MasterScheduleManagerTests: XCTestCase {
             XCTAssertEqual(timingInfo.freq, .monthly)
             XCTAssertEqual(timingInfo.startWeek, 2)
         }
-        mockManager.mockSymptoms = StudyProfileManager.symptomsJointsAnswer
-        mockManager.mockDiagnosis = StudyProfileManager.diagnosisNoneAnswer
+        mockManager.mockSymptoms = HistoryDataManager.symptomsJointsAnswer
+        mockManager.mockDiagnosis = HistoryDataManager.diagnosisNoneAnswer
         for rsdIdentifier in weeklyIdentifiers {
             timingInfo = mockManager.scheduleFrequency(for: rsdIdentifier)
             XCTAssertEqual(timingInfo.freq, .weekly)
@@ -212,8 +212,8 @@ class MasterScheduleManagerTests: XCTestCase {
             XCTAssertEqual(timingInfo.freq, .monthly)
             XCTAssertEqual(timingInfo.startWeek, 2)
         }
-        mockManager.mockSymptoms = StudyProfileManager.symptomsNoneAnswer
-        mockManager.mockDiagnosis = StudyProfileManager.diagnosisArthritisAnswer
+        mockManager.mockSymptoms = HistoryDataManager.symptomsNoneAnswer
+        mockManager.mockDiagnosis = HistoryDataManager.diagnosisArthritisAnswer
         for rsdIdentifier in weeklyIdentifiers {
             timingInfo = mockManager.scheduleFrequency(for: rsdIdentifier)
             XCTAssertEqual(timingInfo.freq, .weekly)
@@ -235,39 +235,39 @@ class MasterScheduleManagerTests: XCTestCase {
         mockManager.mockTreatmentDate = date(25, 5, 0, 0)
 
         // Both show all tasks always
-        mockManager.mockSymptoms = StudyProfileManager.symptomsBothAnswer
-        mockManager.mockDiagnosis = StudyProfileManager.diagnosisBothAnswer
+        mockManager.mockSymptoms = HistoryDataManager.symptomsBothAnswer
+        mockManager.mockDiagnosis = HistoryDataManager.diagnosisBothAnswer
         for i in 1...10 { // Weeks 1-10
             mockManager.mockNow = date(28 + ((i-1) * 7), 5, 12, 0)
-            XCTAssertEqual(mockManager.filterList, mockManager.filterAll)
+            XCTAssertEqual(mockManager.filterList, MasterScheduleManager.filterAll)
         }
         // None show all tasks always
-        mockManager.mockSymptoms = StudyProfileManager.symptomsNoneAnswer
-        mockManager.mockDiagnosis = StudyProfileManager.diagnosisNoneAnswer
+        mockManager.mockSymptoms = HistoryDataManager.symptomsNoneAnswer
+        mockManager.mockDiagnosis = HistoryDataManager.diagnosisNoneAnswer
         for i in 1...10 { // Weeks 1-10
             mockManager.mockNow = date(28 + ((i-1) * 7), 5, 12, 0)
-            XCTAssertEqual(mockManager.filterList, mockManager.filterAll)
+            XCTAssertEqual(mockManager.filterList, MasterScheduleManager.filterAll)
         }
         
         // Only joint tasks show weekly
-        mockManager.mockSymptoms = StudyProfileManager.symptomsJointsAnswer
-        mockManager.mockDiagnosis = StudyProfileManager.diagnosisArthritisAnswer
+        mockManager.mockSymptoms = HistoryDataManager.symptomsJointsAnswer
+        mockManager.mockDiagnosis = HistoryDataManager.diagnosisArthritisAnswer
         for i in 1...10 { // Weeks 1-10
             mockManager.mockNow = date(28 + ((i-1) * 7), 5, 12, 0)
             if i == 2 || i == 6 || i == 10 {
-                XCTAssertEqual(mockManager.filterList, mockManager.filterAll)
+                XCTAssertEqual(mockManager.filterList, MasterScheduleManager.filterAll)
             } else {
                 XCTAssertEqual(mockManager.filterList, jointTaks)
             }
         }
         
         // Only skin tasks show weekly
-        mockManager.mockSymptoms = StudyProfileManager.symptomsSkinAnswer
-        mockManager.mockDiagnosis = StudyProfileManager.diagnosisPsoriasisAnswer
+        mockManager.mockSymptoms = HistoryDataManager.symptomsSkinAnswer
+        mockManager.mockDiagnosis = HistoryDataManager.diagnosisPsoriasisAnswer
         for i in 1...10 { // Weeks 1-10
             mockManager.mockNow = date(28 + ((i-1) * 7), 5, 12, 0)
             if i == 2 || i == 6 || i == 10 {
-                XCTAssertEqual(mockManager.filterList, mockManager.filterAll)
+                XCTAssertEqual(mockManager.filterList, MasterScheduleManager.filterAll)
             } else {
                 XCTAssertEqual(mockManager.filterList, skinTasks)
             }
@@ -291,10 +291,6 @@ open class MockMasterScheduleManager: MasterScheduleManager {
         return mockTreatmentDate
     }
 
-    override open func treatmentWeek() -> Int {
-        return StudyProfileManager.treatmentWeek(from: mockTreatmentDate, toNow: mockNow)
-    }
-    
     var mockSymptoms: String?
     override open func symptoms() -> String? {
         return mockSymptoms

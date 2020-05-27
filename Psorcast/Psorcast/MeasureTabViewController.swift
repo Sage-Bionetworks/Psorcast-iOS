@@ -89,6 +89,11 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
     
     let showInsightTaskId = "showInsight"
     
+    // Open for unit testing
+    open func treatmentWeek() -> Int {
+        return self.scheduleManager.treatmentWeek()
+    }
+    
     open var measureTabItemCount: Int {
         let deepDiveCount = (self.currentDeepDiveSurvey == nil) ? 0 : 1
         let scheduleCount = self.scheduleManager.sortedScheduleCount
@@ -350,7 +355,7 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
         guard let treatmentDate = self.currentTreatment?.startDate else {
             return false // We don't have valid data
         }
-        let treatmentWeek = self.scheduleManager.treatmentWeek()
+        let treatmentWeek = self.treatmentWeek()
         let insightViewedRange = self.scheduleManager.completionRange(treatmentDate: treatmentDate, treatmentWeek: treatmentWeek)
         return !insightViewedRange.contains(insightDate) &&
             self.scheduleManager.nextInsightItem() != nil
@@ -447,7 +452,7 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
         }
         
         let now = Date()
-        let week = self.scheduleManager.treatmentWeek()
+        let week = self.treatmentWeek()
         
         // Update the time sensitive text
         self.weekActivitiesTitleLabel.text = self.treatmentWeekLabelText(for: week)
@@ -505,7 +510,7 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
     }
     
     public func weeklyRenewalDate(from treatmentSetDate: Date, toNow: Date) -> Date {
-        let week = self.scheduleManager.treatmentWeek()
+        let week = self.treatmentWeek()
         let weeklyRenewalDate = treatmentSetDate.startOfDay().addingNumberOfDays(7 * week)
         return weeklyRenewalDate
     }

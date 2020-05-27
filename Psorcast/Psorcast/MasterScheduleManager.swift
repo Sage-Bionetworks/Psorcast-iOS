@@ -55,6 +55,20 @@ open class MasterScheduleManager : SBAScheduleManager {
     open var insightsTask: RSDTask? {
         return SBABridgeConfiguration.shared.task(for: RSDIdentifier.insightsTask.rawValue)
     }
+
+    fileprivate let historyData = HistoryDataManager.shared
+    
+    open func treatmentDate() -> Date? {
+        return self.historyData.currentTreatmentRange?.startDate
+    }
+    
+    open func symptoms() -> String? {
+        return self.historyData.psoriasisSymptoms
+    }
+    
+    open func diagnosis() -> String? {
+        return self.historyData.psoriasisStatus
+    }
     
     /// The date available for unit test override
     open func nowDate() -> Date {
@@ -256,27 +270,27 @@ open class MasterScheduleManager : SBAScheduleManager {
         }
         
         let taskResult = taskController.taskViewModel.taskResult
-        HistoryDataManager.shared.uploadReports(from: taskResult)
+        self.historyData.uploadReports(from: taskResult)
         
         super.saveResults(from: taskViewModel)
     }
     
     public func treatmentDurationInWeeks(treatmentRange: TreatmentRange) -> Int {
-        return (Calendar.current.dateComponents([.weekOfYear], from: treatmentRange.startDate, to: treatmentRange.endDate ?? Date()).weekOfYear ?? 0) + 1
+        return (Calendar.current.dateComponents([.weekOfYear], from: treatmentRange.startDate, to: treatmentRange.endDate ?? nowDate()).weekOfYear ?? 0) + 1
     }
     
     public func treatmentWeek(for date: Date) -> Int {
-        guard let currentTreatmentStart = HistoryDataManager.shared.currentTreatmentRange?.startDate else { return 1 }
+        guard let currentTreatmentStart = self.treatmentDate() else { return 1 }
         return (Calendar.current.dateComponents([.weekOfYear], from: currentTreatmentStart.startOfDay(), to: date).weekOfYear ?? 0) + 1
     }
 
     public func treatmentWeek() -> Int {
-        guard let currentTreatmentStart = HistoryDataManager.shared.currentTreatmentRange?.startDate else { return 1 }
-        return (Calendar.current.dateComponents([.weekOfYear], from: currentTreatmentStart.startOfDay(), to: Date()).weekOfYear ?? 0) + 1
+        guard let currentTreatmentStart = self.treatmentDate() else { return 1 }
+        return (Calendar.current.dateComponents([.weekOfYear], from: currentTreatmentStart.startOfDay(), to: nowDate()).weekOfYear ?? 0) + 1
     }
     
     open var selectedTreatmentItems: [TreatmentItem]? {
-        guard let treatmentIds = HistoryDataManager.shared.currentTreatmentRange?.treatments else { return nil }
+        guard let treatmentIds = self.historyData.currentTreatmentRange?.treatments else { return nil }
         let selectedTreatments = self.treatmentsAvailable
         return treatmentIds.map { (id) -> TreatmentItem in
             if let treatment = selectedTreatments?.first(where: { $0.identifier == id }) {
@@ -320,14 +334,14 @@ open class MasterScheduleManager : SBAScheduleManager {
             vc = RSDTaskViewController(task: task)
                                                 
             // Set the initial state of the question answer
-            if let prevTreatments = HistoryDataManager.shared.currentTreatmentRange?.treatments {
+            if let prevTreatments = self.historyData.currentTreatmentRange?.treatments {
                 let prevAnswer = TreatmentSelectionStepViewController.createStringArrAnswerResult(identifier: TreatmentResultIdentifier.treatments.rawValue, answer: prevTreatments)
                 vc?.taskViewModel.append(previousResult: prevAnswer)
             }
-            if let prevStatus = HistoryDataManager.shared.psoriasisStatus {
+            if let prevStatus = self.historyData.psoriasisStatus {
                 vc?.taskViewModel.append(previousResult: RSDAnswerResultObject(identifier: TreatmentResultIdentifier.status.rawValue, answerType: .string, value: prevStatus))
             }
-            if let prevSymptoms = HistoryDataManager.shared.psoriasisSymptoms {
+            if let prevSymptoms = self.historyData.psoriasisSymptoms {
                 vc?.taskViewModel.append(previousResult: RSDAnswerResultObject(identifier: TreatmentResultIdentifier.symptoms.rawValue, answerType: .string, value: prevSymptoms))
             }
         }
@@ -356,7 +370,7 @@ open class MasterScheduleManager : SBAScheduleManager {
                 }
             }
         })
-        let pastInsights = HistoryDataManager.shared.pastInsightItemsViewed.map({ $0.insightIdentifier })
+        let pastInsights = self.historyData.pastInsightItemsViewed.map({ $0.insightIdentifier })
         return items.first(where: { !pastInsights.contains($0.identifier) })
     }
     
@@ -393,8 +407,8 @@ open class MasterScheduleManager : SBAScheduleManager {
     /// Based on study requirements to make the schedules apply more to users
     /// that have certain diagnosis and symptom requirements, set frequency per scheduled activity
     public func scheduleFrequency(for identifier: RSDIdentifier) -> (freq: StudyScheduleFrequency, startWeek: Int) {
-        guard let symptoms = HistoryDataManager.shared.psoriasisSymptoms,
-            let diagnosis = HistoryDataManager.shared.psoriasisStatus else {
+        guard let symptoms = self.symptoms(),
+            let diagnosis = self.diagnosis() else {
             return (.weekly, 1)
         }
         
