@@ -35,14 +35,12 @@
 import Foundation
 import AVFoundation
 import UIKit
+import VideoToolbox
 
 open class VideoCreator {
  
     public struct RenderSettings {
         public var processingQueue = DispatchQueue(label: "org.sagebase.Psorcast.video.exporter.processing")
-        
-        var width: CGFloat = 1125
-        var height: CGFloat = 1383
         
         var fps: Int32 = 15   // 30 frames per second
         
@@ -52,14 +50,16 @@ open class VideoCreator {
         var fileDirectory: FileManager.SearchPathDirectory = .documentDirectory
         var tmpDirectoryForUnitTests: String?
         
+        var textFont: UIFont = UIFont.systemFont(ofSize: 18)
+        var textColor: UIColor = UIColor.black
+        var footerText: String?
+        var footerLogo: UIImage?
+        var textPadding = CGFloat(24)
+        
         var numOfFramesPerImage = 30
         
         var numOfFramesPerTransition = 5
         var transition: FrameTransition = .crossFade
-
-        var size: CGSize {
-            return CGSize(width: width, height: height)
-        }
 
         var outputURL: URL? {
             let fullFilename = "\(videoFilename)\(videoFilenameExt)"
@@ -76,6 +76,12 @@ open class VideoCreator {
             }
             
             return nil
+        }
+        
+        func createAdditionalDetails() -> RenderFrameAdditionalDetails {
+            return RenderFrameAdditionalDetails(
+                footerImage: self.footerLogo, footerText: self.footerText,
+                textFont: self.textFont, textColor: self.textColor, textPadding: self.textPadding)
         }
     }
     
@@ -122,7 +128,7 @@ open class VideoCreator {
             if let url = settings.outputURL {
                 Task.removeFileAtURL(fileURL: url)
                 
-                videoWriter.start()
+                videoWriter.start(frames: self.frames)
                 videoWriter.render(appendPixelBuffers: appendPixelBuffers, completion: {
                     DispatchQueue.main.async {
                         completion()
@@ -228,6 +234,8 @@ open class VideoCreator {
         
         /// Processing queue for exporting video
         let renderSettings: RenderSettings
+        public var videoSize: CGSize = CGSize(width: 0, height: 0)
+        fileprivate var additionalDetails = RenderFrameAdditionalDetails(footerImage: nil, footerText: nil, textFont: UIFont.systemFont(ofSize: 18), textColor: UIColor.black, textPadding: 0)
 
         var videoWriter: AVAssetWriter!
         var videoWriterInput: AVAssetWriterInput!
@@ -236,8 +244,47 @@ open class VideoCreator {
         var isReadyForData: Bool {
             return videoWriterInput?.isReadyForMoreMediaData ?? false
         }
+        
+        class func pixellBufferFromImage(frame: RenderFrameImage, pixelBufferPool: CVPixelBufferPool, size: CGSize, details: RenderFrameAdditionalDetails) -> CVPixelBuffer? {
+            return pixelBufferFromCrossFadeImage(frame: frame, pixelBufferPool: pixelBufferPool, size: size, details: details)
+        }
+        
+        class func exportedImage(frame: RenderFrameImage, details: RenderFrameAdditionalDetails) -> CGImage? {
+            
+            var width = frame.image.size.width
+            let headerHeight = VideoWriter.headerHeight(videoWidth: width, text: frame.text, details: details)
+            let footerHeight = VideoWriter.footerHeight(videoWidth: width, details: details)
+            let height = headerHeight + footerHeight + frame.image.size.height
+            
+            // CGContext needs its bytes per row to be a multiple of 4, so round up
+            let remainder = Int(width) % 4
+            if remainder != 0 {
+                width = width + CGFloat(4 - remainder)
+            }
+            
+            let bitmapBytesPerRow = Int(width) * 4  // 4 bytes per pixel (RGBA)
+            let bitmapByteCount = Int(bitmapBytesPerRow * Int(height))
 
-        class func pixelBufferFromImage(frame: RenderFrameImage, pixelBufferPool: CVPixelBufferPool, size: CGSize) -> CVPixelBuffer? {
+            let pixelData = UnsafeMutablePointer<UInt8>.allocate(capacity: bitmapByteCount)
+
+            let contextSize = CGSize(width: width, height: height)
+            guard let context = CGContext(data: pixelData,
+                                    width: Int(width),
+                                    height: Int(height),
+                                    bitsPerComponent: 8,
+                                    bytesPerRow: bitmapBytesPerRow,
+                                    space: CGColorSpaceCreateDeviceRGB(),
+                                    bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue) else {
+                print("Error creating CGContext with size \(contextSize)")
+                return nil
+            }
+            
+            renderCrossFadeImage(context: context, contextSize: contextSize, frame: frame, details: details)
+            
+            return context.makeImage()            
+        }
+        
+        class func pixelBufferFromCrossFadeImage(frame: RenderFrameImage, pixelBufferPool: CVPixelBufferPool, size: CGSize, details: RenderFrameAdditionalDetails, transitioningIntoFrame: RenderFrameImage? = nil, transitioningIntoFrameAlpha: CGFloat = 0) -> CVPixelBuffer? {
 
             var pixelBufferOut: CVPixelBuffer?
 
@@ -250,163 +297,196 @@ open class VideoCreator {
             let pixelBuffer = pixelBufferOut!
 
             CVPixelBufferLockBaseAddress(pixelBuffer, CVPixelBufferLockFlags(rawValue: 0))
-
             let data = CVPixelBufferGetBaseAddress(pixelBuffer)
-            let rgbColorSpace = CGColorSpaceCreateDeviceRGB()
             
+            let rgbColorSpace = CGColorSpaceCreateDeviceRGB()
             guard let context = CGContext(data: data, width: Int(size.width), height: Int(size.height),
                                           bitsPerComponent: 8, bytesPerRow: CVPixelBufferGetBytesPerRow(pixelBuffer), space: rgbColorSpace, bitmapInfo: CGImageAlphaInfo.premultipliedFirst.rawValue) else {
                 return nil
             }
-            
-            UIGraphicsPushContext(context)
 
-            UIColor.white.set()
-            context.fill(CGRect(x: 0, y: 0, width: size.width, height: size.height))
-
-            let horizontalRatio = size.width / frame.image.size.width
-            let verticalRatio = size.height / frame.image.size.height
-            
-            //aspectRatio = max(horizontalRatio, verticalRatio) // ScaleAspectFill
-            let aspectRatio = min(horizontalRatio, verticalRatio) // ScaleAspectFit
-
-            let newSize = CGSize(width: frame.image.size.width * aspectRatio, height: frame.image.size.height * aspectRatio)
-
-            let x = newSize.width < size.width ? (size.width - newSize.width) / 2 : 0
-            let y = newSize.height < size.height ? (size.height - newSize.height) / 2 : 0
-
-            if let cgImage = frame.image.cgImage {
-                context.draw(cgImage, in: CGRect(x: x, y: y, width: newSize.width, height: newSize.height))
-            }
-            
-            // Expirement with drawing text
-            let paragraphStyle = NSMutableParagraphStyle()
-            paragraphStyle.alignment = .left
-
-            let attrs =
-                [NSAttributedString.Key.font: AppDelegate.designSystem.fontRules.font(for: .xLargeHeader), NSAttributedString.Key.paragraphStyle: paragraphStyle,
-                 NSAttributedString.Key.foregroundColor: UIColor.black]
-
-            let attrString = NSAttributedString(string: frame.text, attributes: attrs)
-                        
-            let rect = CGRect(x: 24, y: 24, width: 200, height: 100)
-            context.translateBy(x: rect.origin.x, y: size.height)
-            context.scaleBy(x: 1, y: -1)
-            attrString.draw(in: rect)
-            UIGraphicsPopContext()
+            renderCrossFadeImage(context: context, contextSize: size, frame: frame, details: details, transitioningIntoFrame: transitioningIntoFrame, transitioningIntoFrameAlpha: transitioningIntoFrameAlpha)
             
             CVPixelBufferUnlockBaseAddress(pixelBuffer, CVPixelBufferLockFlags(rawValue: 0))
 
             return pixelBuffer
         }
         
-        class func pixelBufferFromCrossFadeImage(frame: RenderFrameImage, transitioningIntoFrame: RenderFrameImage, transitioningIntoFrameAlpha: CGFloat, pixelBufferPool: CVPixelBufferPool, size: CGSize) -> CVPixelBuffer? {
-
-            var pixelBufferOut: CVPixelBuffer?
-
-            let status = CVPixelBufferPoolCreatePixelBuffer(kCFAllocatorDefault, pixelBufferPool, &pixelBufferOut)
-            if status != kCVReturnSuccess {
-                debugPrint("CVPixelBufferPoolCreatePixelBuffer() failed")
-                return nil
-            }
-
-            let pixelBuffer = pixelBufferOut!
-
-            CVPixelBufferLockBaseAddress(pixelBuffer, CVPixelBufferLockFlags(rawValue: 0))
-
-            let data = CVPixelBufferGetBaseAddress(pixelBuffer)
-            let rgbColorSpace = CGColorSpaceCreateDeviceRGB()
+        class func renderCrossFadeImage(context: CGContext, contextSize: CGSize, frame: RenderFrameImage, details: RenderFrameAdditionalDetails, transitioningIntoFrame: RenderFrameImage? = nil, transitioningIntoFrameAlpha: CGFloat = 0) {
             
-            guard let context = CGContext(data: data, width: Int(size.width), height: Int(size.height),
-                                          bitsPerComponent: 8, bytesPerRow: CVPixelBufferGetBytesPerRow(pixelBuffer), space: rgbColorSpace, bitmapInfo: CGImageAlphaInfo.premultipliedFirst.rawValue) else {
-                return nil
-            }
-
             UIGraphicsPushContext(context)
-
             UIColor.white.set()
-            context.fill(CGRect(x: 0, y: 0, width: size.width, height: size.height))
-
+            context.fill(CGRect(x: 0, y: 0, width: contextSize.width, height: contextSize.height))
+                        
+            // Calculate base text info
+            let padding = details.textPadding
+            let textWidth = contextSize.width - (2 * padding)
+            
+            // Calculate the header, image body, and footer regions
+            let headerHeight = VideoWriter.headerHeight(videoWidth: contextSize.width, text: frame.text, details: details)
+            let headerFrame = CGRect(x: 0, y: 0, width: contextSize.width, height: headerHeight)
+            
+            let footerHeight = VideoWriter.footerHeight(videoWidth: contextSize.width, details: details)
+            let footerY = contextSize.height - footerHeight
+            let footerFrame = CGRect(x: padding, y: footerY, width: textWidth, height: footerHeight)
+            
+            let imageHeight = contextSize.height - (headerHeight + footerHeight)
+            let imageRect = CGRect(x: 0, y: footerHeight, width: contextSize.width, height: imageHeight)
+            
+            // Render the video frame images
             func renderImage(image: UIImage, alpha: CGFloat) {
-                let horizontalRatio = size.width / image.size.width
-                let verticalRatio = size.height / image.size.height
-                
-                //aspectRatio = max(horizontalRatio, verticalRatio) // ScaleAspectFill
-                let aspectRatio = min(horizontalRatio, verticalRatio) // ScaleAspectFit
-
-                let newSize = CGSize(width: image.size.width * aspectRatio, height: image.size.height * aspectRatio)
-
-                let x = newSize.width < size.width ? (size.width - newSize.width) / 2 : 0
-                let y = newSize.height < size.height ? (size.height - newSize.height) / 2 : 0
-
                 if let cgImage = image.cgImage {
                     context.setBlendMode(.multiply)
                     context.setAlpha(alpha)
-                    context.draw(cgImage, in: CGRect(x: x, y: y, width: newSize.width, height: newSize.height))
+                    context.draw(cgImage, in: imageRect)
                 }
             }
-                                     
-            renderImage(image: transitioningIntoFrame.image, alpha: transitioningIntoFrameAlpha)
+ 
+            // Draw the image frames
+            if let frameUnwrapped = transitioningIntoFrame {
+                renderImage(image: frameUnwrapped.image, alpha: transitioningIntoFrameAlpha)
+            }
             renderImage(image: frame.image, alpha: CGFloat(1.0 - transitioningIntoFrameAlpha))
             context.setAlpha(CGFloat(1.0))
             
-            // Expirement with drawing text
-            let paragraphStyle = NSMutableParagraphStyle()
-            paragraphStyle.alignment = .left
+            // Draw the centered header text
+            if frame.text.count > 0 {
+                let paragraphStyle = NSMutableParagraphStyle()
+                paragraphStyle.alignment = .center
 
-            let attrs =
-                [NSAttributedString.Key.font: AppDelegate.designSystem.fontRules.font(for: .xLargeHeader), NSAttributedString.Key.paragraphStyle: paragraphStyle,
-                 NSAttributedString.Key.foregroundColor: UIColor.black]
+                let attrs =
+                    [NSAttributedString.Key.paragraphStyle: paragraphStyle,
+                     NSAttributedString.Key.font: details.textFont,
+                     NSAttributedString.Key.foregroundColor: details.textColor] as [NSAttributedString.Key : Any]
 
-            let attrString = NSAttributedString(string: frame.text, attributes: attrs)
-                        
-            let rect = CGRect(x: 24, y: 24, width: 200, height: 100)
-            context.translateBy(x: rect.origin.x, y: size.height)
-            context.scaleBy(x: 1, y: -1)
-            attrString.draw(in: rect)
-            UIGraphicsPopContext()
+                let attrString = NSAttributedString(string: frame.text, attributes: attrs)
+                
+                // You must translate to draw text properly
+                context.saveGState()
+                context.translateBy(x: 0, y: contextSize.height - padding)
+                context.scaleBy(x: 1, y: -1)
+                
+                // Draw text
+                attrString.draw(in: headerFrame)
+                
+                // Return the context to normal
+                context.restoreGState()
+            }
             
-            CVPixelBufferUnlockBaseAddress(pixelBuffer, CVPixelBufferLockFlags(rawValue: 0))
+            if let footerText = details.footerText {
+                let paragraphStyle = NSMutableParagraphStyle()
+                paragraphStyle.alignment = .left
 
-            return pixelBuffer
+                let attrs =
+                    [NSAttributedString.Key.paragraphStyle: paragraphStyle,
+                     NSAttributedString.Key.font: details.textFont,
+                     NSAttributedString.Key.foregroundColor: details.textColor] as [NSAttributedString.Key : Any]
+
+                let attrString = NSAttributedString(string: footerText, attributes: attrs)
+                
+                // You must translate to draw text properly
+                context.saveGState()
+                context.translateBy(x: footerFrame.origin.x, y: footerFrame.height - padding)
+                context.scaleBy(x: 1, y: -1)
+                
+                // Draw text
+                attrString.draw(in: CGRect(x: 0, y: 0, width: footerFrame.width, height: footerFrame.height))
+                
+                // Return the context to normal
+                context.restoreGState()
+            }
+            
+            // Draw the Psorcast logo
+            if let footerImage = details.footerImage,
+                let footerCgImage = footerImage.cgImage {
+                let footerImageFrame = CGRect(x: padding, y: footerImage.size.height, width: footerImage.size.width, height: footerImage.size.height)
+                context.draw(footerCgImage, in: footerImageFrame)
+            }
+                        
+            UIGraphicsPopContext()
         }
 
         init(renderSettings: RenderSettings) {
             self.renderSettings = renderSettings
         }
+        
+        class func calculateTextHeight(text: String, width: CGFloat, heightFont: UIFont) -> CGFloat {
+            return text.height(withConstrainedWidth: width, font: heightFont)
+        }
 
-        func start() {
+        func frameSize(frames: [RenderFrameUrl]) -> CGSize {
+            for frame in frames {
+                if let size = frame.asFrameImage()?.image.size {
+                    return size
+                }
+            }
+            return CGSize(width: 0, height: 0)
+        }
+        
+        class func footerHeight(videoWidth: CGFloat, details: RenderFrameAdditionalDetails) -> CGFloat {
+            let width = videoWidth - (2 * details.textPadding)
+            var height = details.footerImage?.size.height ?? 0
+            if let footerTextUnwrapped = details.footerText {
+                let textHeight = calculateTextHeight(text: footerTextUnwrapped, width: width, heightFont: details.textFont)
+                height = height + textHeight
+            }
+            return height + (3 * details.textPadding)
+        }
+        
+        class func headerHeight(videoWidth: CGFloat, text: String, details: RenderFrameAdditionalDetails) -> CGFloat {
+            return details.textPadding + calculateTextHeight(text: text, width: videoWidth, heightFont: details.textFont)
+        }
+        
+        func start(frames: [RenderFrameUrl]) {
+            
+            let details = renderSettings.createAdditionalDetails()
+            self.additionalDetails = details
+            
+            let imageSize = self.frameSize(frames: frames)
+            let videoWidth = imageSize.width
+            let headerHeight = VideoWriter.headerHeight(videoWidth: videoWidth, text: frames.first?.text ?? "", details: details)
+            let footerHeight = VideoWriter.footerHeight(videoWidth: videoWidth, details: details)
+            let videoHeight = headerHeight + imageSize.height + footerHeight
+            self.videoSize = CGSize(width: videoWidth, height: videoHeight)
 
             let avOutputSettings: [String: AnyObject] = [
                 AVVideoCodecKey: renderSettings.avCodecKey as AnyObject,
-                AVVideoWidthKey: NSNumber(value: Float(renderSettings.width)),
-                AVVideoHeightKey: NSNumber(value: Float(renderSettings.height))
+                AVVideoWidthKey: NSNumber(value: Float(videoWidth)),
+                AVVideoHeightKey: NSNumber(value: Float(videoHeight))
             ]
 
             func createPixelBufferAdaptor() {
                 let sourcePixelBufferAttributesDictionary = [
                     kCVPixelBufferPixelFormatTypeKey as String: NSNumber(value: kCVPixelFormatType_32ARGB),
-                    kCVPixelBufferWidthKey as String: NSNumber(value: Float(renderSettings.width)),
-                    kCVPixelBufferHeightKey as String: NSNumber(value: Float(renderSettings.height))
+                    kCVPixelBufferWidthKey as String: NSNumber(value: Float(videoWidth)),
+                    kCVPixelBufferHeightKey as String: NSNumber(value: Float(videoHeight))
                 ]
                 pixelBufferAdaptor = AVAssetWriterInputPixelBufferAdaptor(assetWriterInput: videoWriterInput,
                     sourcePixelBufferAttributes: sourcePixelBufferAttributesDictionary)
             }
 
-            func createAssetWriter(outputURL: URL) -> AVAssetWriter {
-                guard let assetWriter = try? AVAssetWriter(outputURL: outputURL, fileType: AVFileType.mp4) else {
-                    fatalError("AVAssetWriter() failed")
-                }
+            func createAssetWriter(outputURL: URL) -> AVAssetWriter? {
+                do {
+                    let assetWriter = try AVAssetWriter(outputURL: outputURL, fileType: AVFileType.mp4)
+                    
+                    guard assetWriter.canApply(outputSettings: avOutputSettings, forMediaType: AVMediaType.video) else {
+                        print("canApplyOutputSettings() failed")
+                        return nil
+                    }
 
-                guard assetWriter.canApply(outputSettings: avOutputSettings, forMediaType: AVMediaType.video) else {
-                    fatalError("canApplyOutputSettings() failed")
+                    return assetWriter
+                } catch {
+                    print("AVAssetWriter() failed \(error)")
                 }
-
-                return assetWriter
+                return nil
             }
 
             if let url = renderSettings.outputURL {
                 videoWriter = createAssetWriter(outputURL: url)
+            }
+            
+            guard videoWriter != nil else {
+                return
             }
             
             videoWriterInput = AVAssetWriterInput(mediaType: AVMediaType.video, outputSettings: avOutputSettings)
@@ -415,20 +495,19 @@ open class VideoCreator {
                 videoWriter.add(videoWriterInput)
             }
             else {
-                fatalError("canAddInput() returned false")
+                print("Critical error: canAddInput() returned false")
+                return
             }
 
             // The pixel buffer adaptor must be created before we start writing.
             createPixelBufferAdaptor()
 
             if videoWriter.startWriting() == false {
-                debugPrint("startWriting() failed")
+                print("Critical error: startWriting() failed")
                 return
             }
 
             videoWriter.startSession(atSourceTime: CMTime.zero)
-
-            precondition(pixelBufferAdaptor.pixelBufferPool != nil, "nil pixelBufferPool")
         }
 
         func render(appendPixelBuffers: @escaping (VideoWriter, @escaping (Float) -> Void)-> Bool, completion: @escaping () -> Void, progress: @escaping (Float) -> Void) {
@@ -453,7 +532,7 @@ open class VideoCreator {
 
             precondition(pixelBufferAdaptor != nil, "Call start() to initialze the writer")
 
-            guard let pixelBuffer = VideoWriter.pixelBufferFromImage(frame: frame, pixelBufferPool: pixelBufferAdaptor.pixelBufferPool!, size: renderSettings.size) else {
+            guard let pixelBuffer = VideoWriter.pixelBufferFromCrossFadeImage(frame: frame, pixelBufferPool: pixelBufferAdaptor.pixelBufferPool!, size: self.videoSize, details: self.additionalDetails) else {
                 return false
             }
                         
@@ -466,7 +545,7 @@ open class VideoCreator {
 
             precondition(pixelBufferAdaptor != nil, "Call start() to initialze the writer")
 
-            guard let pixelBuffer = VideoWriter.pixelBufferFromCrossFadeImage(frame: frame, transitioningIntoFrame: transitioningIntoFrame, transitioningIntoFrameAlpha: transitioningIntoFrameAlpha, pixelBufferPool: pixelBufferAdaptor.pixelBufferPool!, size: renderSettings.size) else {
+            guard let pixelBuffer = VideoWriter.pixelBufferFromCrossFadeImage(frame: frame, pixelBufferPool: pixelBufferAdaptor.pixelBufferPool!, size: self.videoSize, details: self.additionalDetails, transitioningIntoFrame: transitioningIntoFrame, transitioningIntoFrameAlpha: transitioningIntoFrameAlpha) else {
                 return false
             }
                         
@@ -496,5 +575,21 @@ open class VideoCreator {
     struct RenderFrameImage {
         var image: UIImage
         var text: String
+    }
+    
+    struct RenderFrameAdditionalDetails {
+        var footerImage: UIImage?
+        var footerText: String?
+        var textFont: UIFont
+        var textColor: UIColor
+        var textPadding: CGFloat
+    }
+}
+
+extension String {
+    func height(withConstrainedWidth width: CGFloat, font: UIFont) -> CGFloat {
+        let constraintRect = CGSize(width: width, height: .greatestFiniteMagnitude)
+        let boundingBox = self.boundingRect(with: constraintRect, options: .usesLineFragmentOrigin, attributes: [NSAttributedString.Key.font: font], context: nil)
+        return ceil(boundingBox.height)
     }
 }

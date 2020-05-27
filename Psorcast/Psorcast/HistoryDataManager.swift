@@ -164,13 +164,36 @@ open class HistoryDataManager {
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: HistoryDataManager.historySortKey, ascending: true)]
         
         if let endDate = treatmentRange.endDate { // start through end
-            fetchRequest.predicate = NSPredicate(format: "date > %@ && date < %@", treatmentRange.startDate as NSDate, endDate as NSDate)
+            fetchRequest.predicate = NSPredicate(format: "date > %@ && date < %@",
+                                                 treatmentRange.startDate as NSDate, endDate as NSDate)
         } else { // start through today
-            fetchRequest.predicate = NSPredicate(format: "date > %@", treatmentRange.startDate as NSDate)
+            fetchRequest.predicate = NSPredicate(format: "date > %@",
+                                                 treatmentRange.startDate as NSDate)
         }
                 
         let controller = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
         return controller
+    }
+    
+    public func runHistoryItemFetchRequest(for taskIdentifier: String, during treatmentRange: TreatmentRange) -> [HistoryItem] {
+        guard let context = self.currentContext else { return [] }
+        let fetchRequest: NSFetchRequest<HistoryItem> = HistoryItem.fetchRequest()
+        fetchRequest.shouldRefreshRefetchedObjects = true // force to fetch newest
+        // Configure the request's entity, and optionally its predicate
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: HistoryDataManager.historySortKey, ascending: true)]
+        if let endDate = treatmentRange.endDate { // start through end
+            fetchRequest.predicate = NSPredicate(format: "taskIdentifier == %@ && date > %@ && date < %@",
+                                                 taskIdentifier, treatmentRange.startDate as NSDate, endDate as NSDate)
+        } else { // start through today
+            fetchRequest.predicate = NSPredicate(format: "taskIdentifier == %@ && date > %@",
+                                                 taskIdentifier, treatmentRange.startDate as NSDate)
+        }
+        do {
+            return try context.fetch(fetchRequest)
+        } catch {
+            print("Error reading history from CoreData \(error)")
+        }
+        return []
     }
     
     fileprivate func loadHistoryFromBridge() {
@@ -235,11 +258,20 @@ open class HistoryDataManager {
     
     open func uploadReports(from taskResult: RSDTaskResult) {
         let taskId = RSDIdentifier(rawValue: taskResult.identifier)
+        
         if HistoryDataManager.historyTasks.contains(taskId) {
             let report = self.createHistoryReport(from: taskResult)
             self.addHistoryItemToCoredData(reports: [report])
             self.saveReport(report)
+            
+            // After the new report is saved, we should re-create its treatment video
+            if let treatmentRange = self.currentTreatmentRange {
+                // We should re-export the most recent treatment task video if we have a new frame
+                ImageDataManager.shared.recreateCurrentTreatmentVideo(for: taskResult.identifier, with: treatmentRange)
+            }
         }
+        
+        // Update the local storage of the singleton data
         self.singletonData[taskId]?.append(taskResult: taskResult)
     }
     
@@ -272,7 +304,7 @@ open class HistoryDataManager {
     
     open func addHistoryItemToCoredData(reports: [SBAReport]) {
         guard let context = currentContext else { return }
-        context.perform {
+        context.performAndWait {
             var itemsToAdd = [HistoryItem]()
             reports.forEach { (report) in
                 

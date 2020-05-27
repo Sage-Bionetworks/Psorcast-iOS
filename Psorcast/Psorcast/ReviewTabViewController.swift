@@ -423,17 +423,18 @@ open class ReviewTabViewController: UIViewController, UITableViewDataSource, UIT
     }
     
     func exportTapped(with renderFrame: VideoCreator.RenderFrameUrl?, taskIdentifier: RSDIdentifier, cellIdx: Int) {
-        if let renderFrameUnwrapped = renderFrame {
-            // This is an image
-            self.saveToLibrary(videoURL: nil, photoUrl: renderFrameUnwrapped.url, taskId: taskIdentifier, cellIdx: cellIdx)
-        } else if let filteredStartDate = self.selectedTreatmentRange?.startDate,
-            let videoUrl = self.imageManager.findVideoUrl(for: taskIdentifier.rawValue, with: filteredStartDate) {
-            self.saveToLibrary(videoURL: videoUrl, photoUrl: nil, taskId: taskIdentifier, cellIdx: cellIdx)
+
+        self.requestPermission {
+            if let frame = renderFrame {
+                self.userHasPermissionToSaveToLibary(renderFrame: frame, taskId: taskIdentifier, cellIdx: cellIdx)
+            } else if let filteredStartDate = self.selectedTreatmentRange?.startDate,
+                let videoUrl = self.imageManager.findVideoUrl(for: taskIdentifier.rawValue, with: filteredStartDate) {
+                self.userHasPermissionToSaveToLibary(video: videoUrl, taskId: taskIdentifier, cellIdx: cellIdx)
+            }
         }
     }
-        
-    func saveToLibrary(videoURL: URL?, photoUrl: URL?, taskId: RSDIdentifier, cellIdx: Int) {
-        
+    
+    func requestPermission(completion: @escaping () -> Void) {
         func requestAuth() {
             PHPhotoLibrary.requestAuthorization { (status) in
                 DispatchQueue.main.async {
@@ -441,8 +442,7 @@ open class ReviewTabViewController: UIViewController, UITableViewDataSource, UIT
                         self.showPhotoPermissionAlert()
                         return
                     }
-                    
-                    self.userHasPermissionToSaveToLibary(videoURL: videoURL, photoUrl: photoUrl, taskId: taskId, cellIdx: cellIdx)
+                    completion()
                 }
             }
         }
@@ -465,25 +465,47 @@ open class ReviewTabViewController: UIViewController, UITableViewDataSource, UIT
         self.present(alert, animated: true)
     }
     
-    func userHasPermissionToSaveToLibary(videoURL: URL?, photoUrl: URL?, taskId: RSDIdentifier, cellIdx: Int) {
-        if let video = videoURL {
-            self.imageManager.videoExported(videoUrl: video)
-            self.taskRowState[taskId]?.exportStatusList[video.lastPathComponent] = true
-        } else if let photo = photoUrl {
-            self.imageManager.imageExported(photoUrl: photo)
-            self.taskRowState[taskId]?.exportStatusList[photo.lastPathComponent] = true
-        }
+    func userHasPermissionToSaveToLibary(video: URL, taskId: RSDIdentifier, cellIdx: Int) {
+        self.imageManager.videoExported(videoUrl: video)
+        self.taskRowState[taskId]?.exportStatusList[video.lastPathComponent] = true
+
         if let taskIdx = self.allTaskRows.map({ $0.rawValue }).firstIndex(of: taskId.rawValue) {
             self.reloadCell(taskIdx: taskIdx, imageCelIdx: cellIdx)
         }
-
+        
         PHPhotoLibrary.shared().performChanges({
-            if let video = videoURL {
-                PHAssetChangeRequest.creationRequestForAssetFromVideo(atFileURL: video)
-            } else if let photo = photoUrl {
-                PHAssetChangeRequest.creationRequestForAssetFromImage(atFileURL: photo)
-            }
+            PHAssetChangeRequest.creationRequestForAssetFromVideo(atFileURL: video)
         })
+    }
+    
+    func userHasPermissionToSaveToLibary(renderFrame: VideoCreator.RenderFrameUrl?,taskId: RSDIdentifier, cellIdx: Int) {
+                
+        guard let frame = renderFrame,
+            let frameImage = frame.asFrameImage() else {
+            return
+        }
+        
+        self.imageManager.imageExported(photoUrl: frame.url)
+        self.taskRowState[taskId]?.exportStatusList[frame.url.lastPathComponent] = true
+            
+        let footerText = self.selectedTreatmentRange?.treatments.joined(separator: ", ") ?? ""
+        let renderFrameDetails = ImageDataManager.shared.createRenderSettings(videoFilename: "Doesnt matter", footerText: footerText).createAdditionalDetails()
+                    
+        DispatchQueue.global(qos: .userInitiated).async {
+            guard let cgImage = VideoCreator.VideoWriter.exportedImage(frame: frameImage, details: renderFrameDetails) else {
+                return
+            }
+            let image = UIImage(cgImage: cgImage)
+            DispatchQueue.main.async {
+                PHPhotoLibrary.shared().performChanges({
+                    PHAssetChangeRequest.creationRequestForAsset(from: image)
+                })
+            }
+        }
+        
+        if let taskIdx = self.allTaskRows.map({ $0.rawValue }).firstIndex(of: taskId.rawValue) {
+            self.reloadCell(taskIdx: taskIdx, imageCelIdx: cellIdx)
+        }
     }
     
     func showPhotoPermissionAlert() {
@@ -598,12 +620,16 @@ public class ReviewTableViewCell: RSDDesignableTableViewCell, UICollectionViewDe
         let item = self.historyItems[imageFrameIdx]
         let itemDate = item.date ?? Date()
 
-        let dateText = "Week \(MasterScheduleManager.shared.treatmentWeek(for: itemDate)) - \(ReviewTabViewController.dateFormatter.string(from: itemDate))"
+        let dateText = "\(ReviewTabViewController.dateFormatter.string(from: itemDate)) | Week \(MasterScheduleManager.shared.treatmentWeek(for: itemDate))"
         
         var renderFrameUrl: VideoCreator.RenderFrameUrl?
         var imageFrame: VideoCreator.RenderFrameImage?
         if let imageUrl = ImageDataManager.shared.findFrame(with: item.imageName ?? "") {
-            renderFrameUrl = VideoCreator.RenderFrameUrl(url: imageUrl, text: dateText)
+            var fullText = dateText
+            if let title = item.itemTitle() {
+                fullText = "\(fullText)\n\(title)"
+            }
+            renderFrameUrl = VideoCreator.RenderFrameUrl(url: imageUrl, text: fullText)
             imageFrame = renderFrameUrl?.asFrameImage()
         }
         cell.delegate = self
@@ -710,11 +736,11 @@ public class ReviewImageCollectionView: RSDCollectionViewCell {
         
         self.imageView.backgroundColor = UIColor.white
         
-        self.dateLabel.textColor = designSystem.colorRules.textColor(on: background, for: .mediumHeader)
-        self.dateLabel.font = designSystem.fontRules.font(for: .mediumHeader)
+        self.dateLabel.textColor = designSystem.colorRules.textColor(on: background, for: .body)
+        self.dateLabel.font = designSystem.fontRules.font(for: .body)
         
-        self.infoLabel.textColor = designSystem.colorRules.textColor(on: background, for: .body)
-        self.infoLabel.font = designSystem.fontRules.font(for: .body)
+        self.infoLabel.textColor = designSystem.colorRules.textColor(on: background, for: .mediumHeader)
+        self.infoLabel.font = designSystem.fontRules.font(for: .mediumHeader)
     }
     
     @IBAction func exportTapped() {
