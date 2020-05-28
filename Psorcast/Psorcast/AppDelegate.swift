@@ -71,6 +71,10 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate {
         return AppDelegate.colorPalette
     }
     
+    override open var defaultOrientationLock: UIInterfaceOrientationMask {
+        return .portrait
+    }
+    
     func showAppropriateViewController(animated: Bool) {
         let participantID = UserDefaults.standard.string(forKey: "participantID")
         let isAuthenticated = BridgeSDK.authManager.isAuthenticated()
