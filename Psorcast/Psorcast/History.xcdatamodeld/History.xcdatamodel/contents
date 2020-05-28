@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="15702" systemVersion="18F132" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="DigitalJarOpenHistoryItem" representedClassName="DigitalJarOpenHistoryItem" parentEntity="HistoryItem" syncable="YES" codeGenerationType="class">
+        <attribute name="leftClockwiseRotation" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="leftCounterRotation" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="rightClockwiseRotation" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="rightCounterRotation" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+    </entity>
+    <entity name="HistoryItem" representedClassName="HistoryItem" syncable="YES" codeGenerationType="class">
+        <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="imageName" optional="YES" attributeType="String"/>
+        <attribute name="synced" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="taskIdentifier" optional="YES" attributeType="String"/>
+    </entity>
+    <entity name="JointCountingHistoryItem" representedClassName="JointCountingHistoryItem" parentEntity="HistoryItem" syncable="YES" codeGenerationType="class">
+        <attribute name="jointCount" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+    </entity>
+    <entity name="PsoriasisAreaPhotoHistoryItem" representedClassName="PsoriasisAreaPhotoHistoryItem" parentEntity="HistoryItem" syncable="YES" codeGenerationType="class">
+        <attribute name="selectedZoneIdentifier" optional="YES" attributeType="String"/>
+    </entity>
+    <entity name="PsoriasisDrawHistoryItem" representedClassName="PsoriasisDrawHistoryItem" parentEntity="HistoryItem" syncable="YES" codeGenerationType="class">
+        <attribute name="coverage" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
+    </entity>
+    <elements>
+        <element name="DigitalJarOpenHistoryItem" positionX="-62.7421875" positionY="113.85546875" width="128" height="103"/>
+        <element name="HistoryItem" positionX="-239.22265625" positionY="48.17578125" width="128" height="103"/>
+        <element name="JointCountingHistoryItem" positionX="-60.44140625" positionY="-50.8203125" width="128" height="58"/>
+        <element name="PsoriasisAreaPhotoHistoryItem" positionX="-63.61328125" positionY="68.984375" width="128" height="58"/>
+        <element name="PsoriasisDrawHistoryItem" positionX="-62.5390625" positionY="-5.7578125" width="128" height="58"/>
+    </elements>
+</model>

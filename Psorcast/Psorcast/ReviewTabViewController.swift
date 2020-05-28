@@ -38,14 +38,12 @@ import AVKit
 import AVFoundation
 import Photos
 
-open class ReviewTabViewController: UIViewController, UITableViewDataSource, UITableViewDelegate,  ReviewTableViewCellDelegate, FilterTreatmentViewControllerDelegate, RSDTaskViewControllerDelegate {
+open class ReviewTabViewController: UIViewController, UITableViewDataSource, UITableViewDelegate,  ReviewTableViewCellDelegate, FilterTreatmentViewControllerDelegate, RSDTaskViewControllerDelegate, NSFetchedResultsControllerDelegate {
     
     @IBOutlet weak var tableView: UITableView!
     
     @IBOutlet weak var treatmentHeaderView: UIView!
     @IBOutlet weak var contentBelowHeaderView: UIView!
-    
-    @IBOutlet weak var noResultsView: UIView!
     
     @IBOutlet weak var treatmentButton: UIButton!
     @IBOutlet weak var treatmentIndicator: UIButton!
@@ -57,19 +55,28 @@ open class ReviewTabViewController: UIViewController, UITableViewDataSource, UIT
         self.tableView.bounds.width * CGFloat(0.85)
     }
     var tableViewCellHeight: CGFloat {
-        return self.tableView.bounds.height - CGFloat(4 * self.sectionHeaderHeight)
+        return self.tableView.bounds.height - CGFloat(2 * self.sectionHeaderHeight)
     }
     
-    var imageManager = ImageReportManager.shared
+    // The image manager for the review tab
+    var imageManager = ImageDataManager.shared
     
     /// This is the current treatment the user is doing
     var currentTreatmentRange: TreatmentRange?
     /// This is the treatment range the user has selected as the filter
     var selectedTreatmentRange: TreatmentRange?
-    /// This is the full history of treatments the user has done
-    var allTreatmentRanges = [TreatmentRange]()
+    
+    // The handle to CoreData for viewing the history per treatment range
+    var coreDataController: NSFetchedResultsController<HistoryItem>?
     
     let designSystem = AppDelegate.designSystem
+    
+    // For displaying dates on the cells
+    static let dateFormatter: DateFormatter = {
+        let dateTextFormatter = DateFormatter()
+        dateTextFormatter.dateFormat = "MMM dd, yyyy"
+        return dateTextFormatter
+    }()
     
     public let allTaskRows: [RSDIdentifier] = [
         .psoriasisDrawTask,
@@ -79,24 +86,22 @@ open class ReviewTabViewController: UIViewController, UITableViewDataSource, UIT
         .digitalJarOpenTask,
         .jointCountingTask
     ]
-    
-    public var taskRows = [RSDIdentifier]()
+
     fileprivate var taskRowState = [RSDIdentifier : TaskRowState]()
-    
-    public var taskRowImageMap = [RSDIdentifier : [VideoCreator.RenderFrameUrl]]()
-    
+    fileprivate var taskRowItemMap = [RSDIdentifier : [HistoryItem]]()
     let tableViewBackground = AppDelegate.designSystem.colorRules.backgroundPrimary
     
     public var reloadOnViewWillAppear = true
     
     /// Master schedule manager for all tasks
     let scheduleManager = MasterScheduleManager.shared
+    /// The history data manager
+    let historyData = HistoryDataManager.shared
     
     override open func viewDidLoad() {
         super.viewDidLoad()
         
         self.setupVideoCreatorNotifications()
-        self.noResultsView.isHidden = true
         self.treatmentButton.setTitle("", for: .normal)
         self.treatmentIndicator.isHidden = true
         self.updateDesignSystem()
@@ -104,61 +109,61 @@ open class ReviewTabViewController: UIViewController, UITableViewDataSource, UIT
     
     func setupVideoCreatorNotifications() {
         // Check for when new videos are created
-        NotificationCenter.default.addObserver(forName: ImageReportManager.newVideoCreated, object: self.imageManager, queue: OperationQueue.main) { (notification) in
+        NotificationCenter.default.addObserver(forName: ImageDataManager.newVideoCreated, object: self.imageManager, queue: OperationQueue.main) { (notification) in
             self.processVideoUpdated(notification: notification, progress: Float(1))
         }
         // Check for when new videos are created
-        NotificationCenter.default.addObserver(forName: ImageReportManager.videoProgress, object: self.imageManager, queue: OperationQueue.main) { (notification) in
+        NotificationCenter.default.addObserver(forName: ImageDataManager.videoProgress, object: self.imageManager, queue: OperationQueue.main) { (notification) in
             self.processVideoUpdated(notification: notification)
         }
         // Check for new export status updates
-        NotificationCenter.default.addObserver(forName: ImageReportManager.videoExportStatusChanged, object: self.imageManager, queue: OperationQueue.main) { (notification) in
+        NotificationCenter.default.addObserver(forName: ImageDataManager.videoExportStatusChanged, object: self.imageManager, queue: OperationQueue.main) { (notification) in
             self.processExportStatusChanged(notification: notification)
         }
         // Check for new images
-        NotificationCenter.default.addObserver(forName: ImageReportManager.imageFrameAdded, object: self.imageManager, queue: OperationQueue.main) { (notification) in
+        NotificationCenter.default.addObserver(forName: ImageDataManager.imageFrameAdded, object: self.imageManager, queue: OperationQueue.main) { (notification) in
             self.reloadOnViewWillAppear = true
         }
     }
     
     func processVideoUpdated(notification: Notification, progress: Float? = nil) {
-        guard let loadingProgrss = progress ?? notification.userInfo?[ImageReportManager.NotificationKey.videoLoadProgress] as? Float,
-            let taskId = notification.userInfo?[ImageReportManager.NotificationKey.taskId] as? String else {
+        guard let loadingProgrss = progress ?? notification.userInfo?[ImageDataManager.NotificationKey.videoLoadProgress] as? Float,
+            let taskId = notification.userInfo?[ImageDataManager.NotificationKey.taskId] as? String else {
             print("Video update notification user info invalid")
             return
         }
-        guard let taskIdx = self.taskRows.map({ $0.rawValue }).firstIndex(of: taskId) else {
+        guard let taskIdx = self.allTaskRows.map({ $0.rawValue }).firstIndex(of: taskId) else {
             print("Notification ignored as it is not about a valid task row")
             return
         }
         print("Process video update for taskId \(taskId) - \((loadingProgrss) * 100)%")
-        self.taskRowState[self.taskRows[taskIdx]]?.videoLoadProgress = loadingProgrss
+        self.taskRowState[self.allTaskRows[taskIdx]]?.videoLoadProgress = loadingProgrss
         self.reloadCell(taskIdx: taskIdx)
     }
     
     func processExportStatusChanged(notification: Notification) {
-        guard let exportStatus = notification.userInfo?[ImageReportManager.NotificationKey.exportStatusChange] as? Bool,
-            let taskId = notification.userInfo?[ImageReportManager.NotificationKey.taskId] as? String,
-            let videoUrl = notification.userInfo?[ImageReportManager.NotificationKey.url] as? URL else {
+        guard let exportStatus = notification.userInfo?[ImageDataManager.NotificationKey.exportStatusChange] as? Bool,
+            let taskId = notification.userInfo?[ImageDataManager.NotificationKey.taskId] as? String,
+            let videoUrl = notification.userInfo?[ImageDataManager.NotificationKey.url] as? URL else {
             print("Video update notification user info invalid")
             return
         }
-        guard let taskIdx = self.taskRows.map({ $0.rawValue }).firstIndex(of: taskId) else {
+        guard let taskIdx = self.allTaskRows.map({ $0.rawValue }).firstIndex(of: taskId) else {
             print("Notification ignored as it is not about a valid task row")
             return
         }
         let filename = videoUrl.lastPathComponent
         print("Process export status update for taskId \(taskId) - \(filename) to \(exportStatus)")
-        self.taskRowState[self.taskRows[taskIdx]]?.exportStatusList[filename] = exportStatus
+        self.taskRowState[self.allTaskRows[taskIdx]]?.exportStatusList[filename] = exportStatus
         self.reloadCell(taskIdx: taskIdx)
     }
     
     func reloadCell(taskIdx: Int, imageCelIdx: Int? = nil) {
         let indexPathOfTaskToUpdate = IndexPath(row: 0, section: taskIdx)
         if let cell = self.tableView.cellForRow(at: indexPathOfTaskToUpdate) as? ReviewTableViewCell,
-            !cell.frames.isEmpty {
+            !cell.historyItems.isEmpty {
             
-            let cellIdx = imageCelIdx ?? (cell.frames.count) // video cell
+            let cellIdx = imageCelIdx ?? (cell.historyItems.count) // video cell
             let collectionCellIndexPath = IndexPath(row: cellIdx, section: 0)
             cell.collectionView.reloadItems(at: [collectionCellIndexPath])
         }
@@ -179,10 +184,7 @@ open class ReviewTabViewController: UIViewController, UITableViewDataSource, UIT
     override open func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        guard let profileManager = (AppDelegate.shared as? AppDelegate)?.profileManager else { return }
-        
-        self.allTreatmentRanges = profileManager.allTreatmentRanges
-        guard let currentRange = self.allTreatmentRanges.last else { return }
+        guard let currentRange = self.historyData.currentTreatmentRange else { return }
         
         var shouldRefreshUi = false
         
@@ -222,27 +224,28 @@ open class ReviewTabViewController: UIViewController, UITableViewDataSource, UIT
         self.treatmentIndicator.isHidden = false
         
         // Rebuild image map
-        self.taskRows.removeAll()
         self.taskRowState.removeAll()
         for taskId in self.allTaskRows {
-            self.taskRowImageMap[taskId] = []
+            self.taskRowItemMap[taskId] = []
             self.taskRowState[taskId] = TaskRowState()
         }
         
-        let dateTextFormatter = DateFormatter()
-        dateTextFormatter.dateFormat = "MMM dd, yyyy"
+        // Refresh the core data controller
+        self.coreDataController = self.historyData.createHistoryController(for: selectedRange)
+        do {
+            try self.coreDataController?.performFetch()
+        } catch {
+            print("Error loading core data")
+        }
+        
+        let historyItems = self.coreDataController?.fetchedObjects
+        historyItems?.forEach({ (item) in
+            let taskId = RSDIdentifier(rawValue: item.taskIdentifier ?? "")
+            self.taskRowItemMap[taskId]?.append(item)
+        })
         
         for taskId in self.allTaskRows {
-            for frame in ImageReportManager.shared.findFrames(for: taskId.rawValue, with: selectedRange, dateTextFormatter: dateTextFormatter) {
-                self.taskRowImageMap[taskId]?.append(frame)
-                let filename = frame.url.lastPathComponent
-                self.taskRowState[taskId]?.exportStatusList[filename] = self.imageManager.exportState(for: frame.url)
-            }
-            
-            // Always add a row for each task
-            self.taskRows.append(taskId)
-            
-            if (self.taskRowImageMap[taskId]?.count ?? 0) > 0 {
+            if (self.taskRowItemMap[taskId]?.count ?? 0) > 0 {
                 self.imageManager.createTreatmentVideo(for: taskId.rawValue, with: selectedRange)
                 
                 // Add export state of video as well
@@ -255,16 +258,13 @@ open class ReviewTabViewController: UIViewController, UITableViewDataSource, UIT
         
         // Reload table view with the newest data
         self.tableView.reloadData()
-        
-        self.noResultsView.isHidden = !self.taskRows.isEmpty
-        self.tableView.isHidden = self.taskRows.isEmpty
     }
     
     @IBAction func filterTapped() {
         guard let treatmentRange = self.selectedTreatmentRange else { return }
         
         let filterVc = FilterTreatmentViewController(nibName: String(describing: FilterTreatmentViewController.self), bundle: nil)
-        filterVc.allTreatmentRanges = self.allTreatmentRanges.reversed()
+        filterVc.allTreatmentRanges = self.historyData.allTreatments.reversed()
         filterVc.selectedTreatment = treatmentRange
         filterVc.delegate = self
         self.show(filterVc, sender: self)
@@ -282,7 +282,7 @@ open class ReviewTabViewController: UIViewController, UITableViewDataSource, UIT
     
     func playButtonTapped(with taskIdentifier: RSDIdentifier) {
         guard let selectedRange = self.selectedTreatmentRange,
-            let videoURL = ImageReportManager.shared.findVideoUrl(for: taskIdentifier.rawValue, with: selectedRange.startDate) else {
+            let videoURL = ImageDataManager.shared.findVideoUrl(for: taskIdentifier.rawValue, with: selectedRange.startDate) else {
             return
         }
         
@@ -300,7 +300,7 @@ open class ReviewTabViewController: UIViewController, UITableViewDataSource, UIT
     }
     
     public func numberOfSections(in tableView: UITableView) -> Int {
-        return self.taskRows.count
+        return self.allTaskRows.count
     }
     
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -312,7 +312,7 @@ open class ReviewTabViewController: UIViewController, UITableViewDataSource, UIT
         guard let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: ReviewTableViewCell.self)) as? ReviewTableViewCell else {
             return UITableViewCell()
         }
-        let taskId = self.taskRows[indexPath.section]
+        let taskId = self.allTaskRows[indexPath.section]
         
         cell.setDesignSystem(AppDelegate.designSystem, with: tableViewBackground)
         
@@ -323,16 +323,16 @@ open class ReviewTabViewController: UIViewController, UITableViewDataSource, UIT
         if let current = self.currentTreatmentRange {
             cell.isCurrentTreatmentSelected = self.selectedTreatmentRange?.isEqual(to: current) ?? false
         }
-        let frames = self.taskRowImageMap[taskId] ?? []
-        let frameCount = frames.count
-        cell.frames = frames
+        let items = self.taskRowItemMap[taskId] ?? []
+        let itemCount = items.count
+        cell.historyItems = items
         cell.taskIdentifier = taskId
         cell.delegate = self
 
         cell.collectionView.reloadData()
         
         // Hide scroll bar for single cell views
-        cell.collectionView.showsHorizontalScrollIndicator = frameCount > 0
+        cell.collectionView.showsHorizontalScrollIndicator = itemCount > 0
 
         // This waits until the collection view has finished updating before scrolling to the end
         cell.collectionView.performBatchUpdates(nil, completion: { (result) in
@@ -351,7 +351,7 @@ open class ReviewTabViewController: UIViewController, UITableViewDataSource, UIT
             if scrollPos == TaskRowState.unassignedScollPosition {
                 scrollPos = (cell.collectionView.contentSize.width - cell.collectionView.bounds.width) + horizontalInset
                 
-                if frameCount == 0 {  // No need to scroll a single cell
+                if itemCount == 0 {  // No need to scroll a single cell
                     // But we do need to center the look of it using content offset
                     scrollPos = (cell.collectionView.contentSize.width - cell.collectionView.bounds.width) * 0.5
                 }
@@ -365,12 +365,11 @@ open class ReviewTabViewController: UIViewController, UITableViewDataSource, UIT
     }
     
     func collectionViewScrolled(with taskIdentifier: RSDIdentifier, to contentOffsetX: CGFloat) {
-        debugPrint("New scroll position \(contentOffsetX) for \(taskIdentifier)")
         self.taskRowState[taskIdentifier]?.scrollPosition = contentOffsetX
     }
 
     public func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        guard self.taskRows.count > section else {
+        guard self.allTaskRows.count > section else {
             return nil
         }
         let header = UIView()
@@ -379,7 +378,7 @@ open class ReviewTabViewController: UIViewController, UITableViewDataSource, UIT
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         header.addSubview(titleLabel)
         
-        let taskId = self.taskRows[section].rawValue
+        let taskId = self.allTaskRows[section].rawValue
         let title = MasterScheduleManager.shared.scheduledActivities.first(where: { $0.activityIdentifier == taskId })?.activity.label
         
         titleLabel.text = title?.uppercased()
@@ -409,7 +408,7 @@ open class ReviewTabViewController: UIViewController, UITableViewDataSource, UIT
         }
         
         if let selectedRange = self.selectedTreatmentRange,
-            let videoURL = ImageReportManager.shared.findVideoUrl(for: taskIdentifier.rawValue, with: selectedRange.startDate) {
+            let videoURL = ImageDataManager.shared.findVideoUrl(for: taskIdentifier.rawValue, with: selectedRange.startDate) {
             return self.taskRowState[taskIdentifier]?.exportStatusList[videoURL.lastPathComponent] ?? false
         }
         
@@ -424,17 +423,18 @@ open class ReviewTabViewController: UIViewController, UITableViewDataSource, UIT
     }
     
     func exportTapped(with renderFrame: VideoCreator.RenderFrameUrl?, taskIdentifier: RSDIdentifier, cellIdx: Int) {
-        if let renderFrameUnwrapped = renderFrame {
-            // This is an image
-            self.saveToLibrary(videoURL: nil, photoUrl: renderFrameUnwrapped.url, taskId: taskIdentifier, cellIdx: cellIdx)
-        } else if let filteredStartDate = self.selectedTreatmentRange?.startDate,
-            let videoUrl = self.imageManager.findVideoUrl(for: taskIdentifier.rawValue, with: filteredStartDate) {
-            self.saveToLibrary(videoURL: videoUrl, photoUrl: nil, taskId: taskIdentifier, cellIdx: cellIdx)
+
+        self.requestPermission {
+            if let frame = renderFrame {
+                self.userHasPermissionToSaveToLibary(renderFrame: frame, taskId: taskIdentifier, cellIdx: cellIdx)
+            } else if let filteredStartDate = self.selectedTreatmentRange?.startDate,
+                let videoUrl = self.imageManager.findVideoUrl(for: taskIdentifier.rawValue, with: filteredStartDate) {
+                self.userHasPermissionToSaveToLibary(video: videoUrl, taskId: taskIdentifier, cellIdx: cellIdx)
+            }
         }
     }
-        
-    func saveToLibrary(videoURL: URL?, photoUrl: URL?, taskId: RSDIdentifier, cellIdx: Int) {
-        
+    
+    func requestPermission(completion: @escaping () -> Void) {
         func requestAuth() {
             PHPhotoLibrary.requestAuthorization { (status) in
                 DispatchQueue.main.async {
@@ -442,8 +442,7 @@ open class ReviewTabViewController: UIViewController, UITableViewDataSource, UIT
                         self.showPhotoPermissionAlert()
                         return
                     }
-                    
-                    self.userHasPermissionToSaveToLibary(videoURL: videoURL, photoUrl: photoUrl, taskId: taskId, cellIdx: cellIdx)
+                    completion()
                 }
             }
         }
@@ -466,25 +465,47 @@ open class ReviewTabViewController: UIViewController, UITableViewDataSource, UIT
         self.present(alert, animated: true)
     }
     
-    func userHasPermissionToSaveToLibary(videoURL: URL?, photoUrl: URL?, taskId: RSDIdentifier, cellIdx: Int) {
-        if let video = videoURL {
-            self.imageManager.videoExported(videoUrl: video)
-            self.taskRowState[taskId]?.exportStatusList[video.lastPathComponent] = true
-        } else if let photo = photoUrl {
-            self.imageManager.imageExported(photoUrl: photo)
-            self.taskRowState[taskId]?.exportStatusList[photo.lastPathComponent] = true
-        }
-        if let taskIdx = self.taskRows.map({ $0.rawValue }).firstIndex(of: taskId.rawValue) {
+    func userHasPermissionToSaveToLibary(video: URL, taskId: RSDIdentifier, cellIdx: Int) {
+        self.imageManager.videoExported(videoUrl: video)
+        self.taskRowState[taskId]?.exportStatusList[video.lastPathComponent] = true
+
+        if let taskIdx = self.allTaskRows.map({ $0.rawValue }).firstIndex(of: taskId.rawValue) {
             self.reloadCell(taskIdx: taskIdx, imageCelIdx: cellIdx)
         }
-
+        
         PHPhotoLibrary.shared().performChanges({
-            if let video = videoURL {
-                PHAssetChangeRequest.creationRequestForAssetFromVideo(atFileURL: video)
-            } else if let photo = photoUrl {
-                PHAssetChangeRequest.creationRequestForAssetFromImage(atFileURL: photo)
-            }
+            PHAssetChangeRequest.creationRequestForAssetFromVideo(atFileURL: video)
         })
+    }
+    
+    func userHasPermissionToSaveToLibary(renderFrame: VideoCreator.RenderFrameUrl?,taskId: RSDIdentifier, cellIdx: Int) {
+                
+        guard let frame = renderFrame,
+            let frameImage = frame.asFrameImage() else {
+            return
+        }
+        
+        self.imageManager.imageExported(photoUrl: frame.url)
+        self.taskRowState[taskId]?.exportStatusList[frame.url.lastPathComponent] = true
+            
+        let footerText = self.selectedTreatmentRange?.treatments.joined(separator: ", ") ?? ""
+        let renderFrameDetails = ImageDataManager.shared.createRenderSettings(videoFilename: "Doesnt matter", footerText: footerText).createAdditionalDetails()
+                    
+        DispatchQueue.global(qos: .userInitiated).async {
+            guard let cgImage = VideoCreator.VideoWriter.exportedImage(frame: frameImage, details: renderFrameDetails) else {
+                return
+            }
+            let image = UIImage(cgImage: cgImage)
+            DispatchQueue.main.async {
+                PHPhotoLibrary.shared().performChanges({
+                    PHAssetChangeRequest.creationRequestForAsset(from: image)
+                })
+            }
+        }
+        
+        if let taskIdx = self.allTaskRows.map({ $0.rawValue }).firstIndex(of: taskId.rawValue) {
+            self.reloadCell(taskIdx: taskIdx, imageCelIdx: cellIdx)
+        }
     }
     
     func showPhotoPermissionAlert() {
@@ -503,6 +524,16 @@ open class ReviewTabViewController: UIViewController, UITableViewDataSource, UIT
         let okAction = UIAlertAction(title: Localization.buttonOK(), style: .default, handler: nil)
         actions.append(okAction)
         self.presentAlertWithActions(title: title, message: message, preferredStyle: .alert, actions: actions)
+    }
+    
+    func selectedTreatmentDurationStr() -> String {
+        guard let selectedTreatment = self.selectedTreatmentRange else { return "1 week" }
+        let weeks = MasterScheduleManager.shared.treatmentDurationInWeeks(treatmentRange: selectedTreatment)
+        if weeks == 1 {
+            return "1 week of treatment"
+        } else {
+            return "\(weeks) weeks of treatment"
+        }
     }
     
     fileprivate struct TaskRowState {
@@ -537,7 +568,7 @@ public class ReviewTableViewCell: RSDDesignableTableViewCell, UICollectionViewDe
     
     var isCurrentTreatmentSelected = false
     var taskIdentifier: RSDIdentifier?
-    var frames = [VideoCreator.RenderFrameUrl]()
+    var historyItems = [HistoryItem]()
     
     public func scrollViewDidScroll(_ scrollView: UIScrollView) {
         guard let taskId = self.taskIdentifier else { return }
@@ -551,13 +582,13 @@ public class ReviewTableViewCell: RSDDesignableTableViewCell, UICollectionViewDe
     }
     
     public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return self.frames.count + 1
+        return self.historyItems.count + 1
     }
     
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         // Not enough data for video cell
-        if self.frames.count <= 1,
+        if self.historyItems.count <= 1,
             indexPath.row == 0,
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: ReviewNotEnoughDataCollectionView.self), for: indexPath) as? ReviewNotEnoughDataCollectionView {
             
@@ -568,7 +599,7 @@ public class ReviewTableViewCell: RSDDesignableTableViewCell, UICollectionViewDe
             cell.delegate = self
             cell.taskIdentifier = self.taskIdentifier
             if let taskId = self.taskIdentifier {
-                cell.setTaskIdentifier(taskId, isCurrentTreatmentSelected: self.isCurrentTreatmentSelected, frameCount: self.frames.count)
+                cell.setTaskIdentifier(taskId, isCurrentTreatmentSelected: self.isCurrentTreatmentSelected, frameCount: self.historyItems.count)
             }
             
             return cell
@@ -583,18 +614,44 @@ public class ReviewTableViewCell: RSDDesignableTableViewCell, UICollectionViewDe
             cell.setDesignSystem(design, with: colorTile)
         }
         
-        let isLastCell = self.frames.count == indexPath.row
+        let isLastCell = self.historyItems.count == indexPath.row
         let imageFrameIdx = isLastCell ? (indexPath.row - 1) : indexPath.row
-        let renderFrameUrl = self.frames[imageFrameIdx]
-        let imageFrame = renderFrameUrl.asFrameImage()
         
+        let item = self.historyItems[imageFrameIdx]
+        let itemDate = item.date ?? Date()
+
+        let dateText = "\(ReviewTabViewController.dateFormatter.string(from: itemDate)) | Week \(MasterScheduleManager.shared.treatmentWeek(for: itemDate))"
+        
+        var renderFrameUrl: VideoCreator.RenderFrameUrl?
+        var imageFrame: VideoCreator.RenderFrameImage?
+        if let imageUrl = ImageDataManager.shared.findFrame(with: item.imageName ?? "") {
+            var fullText = dateText
+            if let title = item.itemTitle() {
+                fullText = "\(fullText)\n\(title)"
+            }
+            renderFrameUrl = VideoCreator.RenderFrameUrl(url: imageUrl, text: fullText)
+            imageFrame = renderFrameUrl?.asFrameImage()
+        }
         cell.delegate = self
         cell.cellIdx = indexPath.row
         cell.renderFrame = renderFrameUrl
-        cell.imageView?.image = imageFrame?.image
-        cell.dateLabel.text = imageFrame?.text
         
-        let isVideoCell = (indexPath.row == self.frames.count) && (self.frames.count > 1)
+        if let imageUnwrapped = imageFrame?.image {
+            cell.imageView?.image = imageUnwrapped
+        } else {
+            cell.imageView?.image = UIImage(named: "ImageLoadFailed")
+        }
+        
+        let isVideoCell = (indexPath.row == self.historyItems.count) && (self.historyItems.count > 1)
+        
+        if !isVideoCell {
+            cell.dateLabel.text = dateText
+            cell.infoLabel.text = item.itemTitle()
+        } else {
+            cell.dateLabel.text = self.delegate?.selectedTreatmentDurationStr()
+            cell.infoLabel.text = nil
+        }
+        
         cell.isVideoFrame = isVideoCell
         cell.playButton.isHidden = !isVideoCell
         cell.loadProgress.isHidden = !isVideoCell
@@ -607,8 +664,12 @@ public class ReviewTableViewCell: RSDDesignableTableViewCell, UICollectionViewDe
             let exportStatus = self.delegate?.exportStatus(with: taskIdUnwrapped, url: nil) ?? false
             cell.checkMarkImage.isHidden = !exportStatus
         } else {
-            let exportStatus = self.delegate?.exportStatus(with: taskIdUnwrapped, url: renderFrameUrl.url) ?? false
-            cell.checkMarkImage.isHidden = !exportStatus
+            if let frameUrl = renderFrameUrl?.url {
+                let exportStatus = self.delegate?.exportStatus(with: taskIdUnwrapped, url: frameUrl) ?? false
+                cell.checkMarkImage.isHidden = !exportStatus
+            } else {
+                cell.checkMarkImage.isHidden = true
+            }
         }
         
         if isVideoCell {
@@ -650,6 +711,7 @@ protocol ReviewTableViewCellDelegate: class {
     func collectionViewScrolled(with taskIdentifier: RSDIdentifier, to contentOffsetX: CGFloat)
     func exportTapped(with renderFrame: VideoCreator.RenderFrameUrl?, taskIdentifier: RSDIdentifier, cellIdx: Int)
     func addMeasurementTapped(taskIdentifier: RSDIdentifier)
+    func selectedTreatmentDurationStr() -> String
 }
 
 public class ReviewImageCollectionView: RSDCollectionViewCell {
@@ -657,6 +719,7 @@ public class ReviewImageCollectionView: RSDCollectionViewCell {
     @IBOutlet weak var playButton: UIButton!
     @IBOutlet weak var loadProgress: RSDCountdownDial!
     @IBOutlet weak var dateLabel: UILabel!
+    @IBOutlet weak var infoLabel: UILabel!
     @IBOutlet weak var exportButton: UIButton!
     @IBOutlet weak var checkMarkImage: UIImageView!
     
@@ -675,6 +738,9 @@ public class ReviewImageCollectionView: RSDCollectionViewCell {
         
         self.dateLabel.textColor = designSystem.colorRules.textColor(on: background, for: .body)
         self.dateLabel.font = designSystem.fontRules.font(for: .body)
+        
+        self.infoLabel.textColor = designSystem.colorRules.textColor(on: background, for: .mediumHeader)
+        self.infoLabel.font = designSystem.fontRules.font(for: .mediumHeader)
     }
     
     @IBAction func exportTapped() {

@@ -1,5 +1,5 @@
 //
-//  ImageReportManager.swift
+//  ImageDataManager.swift
 //  Psorcast
 //
 //  Copyright © 2019 Sage Bionetworks. All rights reserved.
@@ -37,14 +37,14 @@ import Research
 import MotorControl
 
 /// Subclass the schedule manager to set up a predicate to filter the schedules.
-open class ImageReportManager : SBAReportManager {
+open class ImageDataManager {
     
     /// List of keys used in the notifications sent by this manager.
     public enum NotificationKey : String {
         case url, videoLoadProgress, taskId, exportStatusChange, imageFrameAdded
     }
     
-    /// Notification name posted by the `ImageReportManager` before the manager will send an update
+    /// Notification name posted by the `ImageDataManager` before the manager will send an update
     /// the url of the new video that was just created
     public static let newVideoCreated = Notification.Name(rawValue: "newVideoCreated")
     public static let videoProgress = Notification.Name(rawValue: "videoProgress")
@@ -52,10 +52,10 @@ open class ImageReportManager : SBAReportManager {
     public static let imageFrameAdded = Notification.Name(rawValue: "imageFrameAdded")
     
     /// The shared access to the video report manager
-    public static let shared = ImageReportManager()
+    public static let shared = ImageDataManager()
     
     /// When a user saves an  export, it will store the state here
-    public let exportUserDefaults = UserDefaults(suiteName: "ImageReportManagerExportStatus")
+    public let exportUserDefaults = UserDefaults(suiteName: "ImageDataManagerExportStatus")
     public func imageExported(photoUrl: URL) {
         exportUserDefaults?.set(true, forKey: photoUrl.lastPathComponent)
     }
@@ -70,13 +70,16 @@ open class ImageReportManager : SBAReportManager {
     }
     
     // The date formatter for storing image files
-    public let dateFormatter = StudyProfileManager.profileDateFormatter()
+    public let dateFormatter = HistoryDataManager.dateFormatter()
     
     /// Where we store the images
     public let storageDir = FileManager.SearchPathDirectory.documentDirectory
     
     // The tasks that are currently operating
     public var videoCreatorTasks = [VideoCreator.Task]()
+    
+    // THe history data manager for adding extra data to the videos
+    public var historyData = HistoryDataManager.shared
     
     // The path extension for image files
     public let imagePathExtension = "jpg"
@@ -89,60 +92,47 @@ open class ImageReportManager : SBAReportManager {
         "summaryImage",
     ]
 
-    public func processTaskResult(_ taskController: RSDTaskController, profileManager: StudyProfileManager?) {
+    public func processTaskResult(_ taskResult: RSDTaskResult) -> String? {
         
-        let taskIdentifier = taskController.task.identifier
-        let result = taskController.taskViewModel.taskResult
+        let taskIdentifier = taskResult.identifier
         
         // Filter through all the results and find the image results we care about
         let summaryImageResult =
-            result.stepHistory.filter({ $0 is RSDFileResult })
+            taskResult.stepHistory.filter({ $0 is RSDFileResult })
                 .map({ $0 as? RSDFileResult })
                 .filter({
                     summaryImagesIdentifiers.contains($0?.identifier ?? "") &&
                     $0?.contentType == "image/jpeg" }).first as? RSDFileResult
         
         guard let summaryImageUrl = summaryImageResult?.url else {
-            return
+            return nil
         }
         
         // Create the image filename from
         let imageCreatedOnDateStr = self.dateFormatter.string(from: Date())
-        let imageFileName = "\(taskIdentifier)\(fileNameSeperator)\(imageCreatedOnDateStr)"
+        let imageFileName = "\(taskIdentifier)\(fileNameSeperator)\(imageCreatedOnDateStr).\(imagePathExtension)"
         
         // Copy new video frames into the documents directory
         // Copy the result file url into a the local cache so it persists upload complete
-        if let newImageUrl = FileManager.default.copyFile(at: summaryImageUrl, to: storageDir, filename: "\(imageFileName).\(imagePathExtension)") {
-            
-            guard let treatments = profileManager?.treatments?.map({ $0.identifier }),
-                let treatmentStartDate = profileManager?.treatmentsDate else {
-                print("Error creating new video because treatmentStartDate is invalid")
-                return
-            }
-            
-            let treatmentRange = TreatmentRange(treatments: treatments, startDate: treatmentStartDate, endDate: Date())
-            
-            // We should re-export the most recent treatment task video if we have a new frame
-            self.recreateCurrentTreatmentVideo(for: taskIdentifier, with: treatmentRange)
+        if let newImageUrl = FileManager.default.copyFile(at: summaryImageUrl, to: storageDir, filename: imageFileName) {
             
             // Let the app know about the new image so it can update the UI
             self.postImageFrameAddedNotification(url: newImageUrl)
             
+            return imageFileName
         } else { // Not successful
             debugPrint("Error copying file from \(summaryImageUrl.absoluteURL)" +
                 "to \(storageDir) with filename \(imageFileName)")
+            return nil
         }
     }
     
-    public func createCurrentTreatmentVideo(for taskIdentifier: String, using profileManager: StudyProfileManager?) {
-        
-        guard let treatmentStartDate = profileManager?.treatmentsDate,
-            let treatments = profileManager?.treatments?.map({ $0.identifier }) else {
-            return
-        }
-        
-        let treatmentRange = TreatmentRange(treatments: treatments, startDate: treatmentStartDate, endDate: Date())
-        
+    public func findFrame(with imageName: String) -> URL? {
+        return FileManager.default.url(for: self.storageDir, fileName: imageName)
+    }
+    
+    public func createCurrentTreatmentVideo(for taskIdentifier: String) {
+        guard let treatmentRange = self.historyData.currentTreatmentRange else { return }
         self.createTreatmentVideo(for: taskIdentifier, with: treatmentRange)
     }
     
@@ -167,17 +157,23 @@ open class ImageReportManager : SBAReportManager {
         self.recreateCurrentTreatmentVideo(for: taskIdentifier, with: treatmentRange)
     }
     
-    fileprivate func recreateCurrentTreatmentVideo(for taskIdentifier: String, with treatmentRange: TreatmentRange) {
+    func recreateCurrentTreatmentVideo(for taskIdentifier: String, with treatmentRange: TreatmentRange) {
         guard let videoFilename = self.videoFilename(for: taskIdentifier, with: treatmentRange) else { return }
-                
+                        
         // Cancel all identical tasks that would have different frames
         self.cancelVideoCreatorTask(videoFileName: videoFilename)
         
-        let renderSettings = self.createRenderSettings(videoFilename: videoFilename)
+        let footerText = treatmentRange.treatments.joined(separator: ", ")
+        let renderSettings = self.createRenderSettings(videoFilename: videoFilename, footerText: footerText)
         let task = VideoCreator.Task(renderSettings: renderSettings)
-                
+        
         // Create the new video in the background
         let frames = self.findFrames(for: taskIdentifier, with: treatmentRange)
+        
+        guard frames.count > 0 else {
+            print("Cannot create video with 0 frames")
+            return
+        }
         task.frames = frames
         
         // Update export state
@@ -207,14 +203,14 @@ open class ImageReportManager : SBAReportManager {
     
     /// Notify about a completed video
     fileprivate func postVideoCreatedNotification(url: URL) {
-        NotificationCenter.default.post(name: ImageReportManager.newVideoCreated,
+        NotificationCenter.default.post(name: ImageDataManager.newVideoCreated,
                                         object: self,
                                         userInfo: [NotificationKey.url : url,
                                         NotificationKey.taskId: (self.taskIdentifier(from: url) ?? "") as Any])
     }
     
     fileprivate func postVideoProgressUpdatedNotification(url: URL, progress: Float) {
-        NotificationCenter.default.post(name: ImageReportManager.videoProgress,
+        NotificationCenter.default.post(name: ImageDataManager.videoProgress,
                                         object: self,
                                         userInfo: [NotificationKey.url : url,
                                                    NotificationKey.videoLoadProgress: progress,
@@ -222,7 +218,7 @@ open class ImageReportManager : SBAReportManager {
     }
     
     fileprivate func postExportStatusChangedNotification(url: URL, newState: Bool) {
-        NotificationCenter.default.post(name: ImageReportManager.videoExportStatusChanged,
+        NotificationCenter.default.post(name: ImageDataManager.videoExportStatusChanged,
                                         object: self,
                                         userInfo: [NotificationKey.url : url,
                                                    NotificationKey.taskId: (self.taskIdentifier(from: url) ?? "") as Any,
@@ -230,40 +226,28 @@ open class ImageReportManager : SBAReportManager {
     }
     
     fileprivate func postImageFrameAddedNotification(url: URL) {
-        NotificationCenter.default.post(name: ImageReportManager.imageFrameAdded,
+        NotificationCenter.default.post(name: ImageDataManager.imageFrameAdded,
                                         object: self,
                                         userInfo: [NotificationKey.url : url,
                                                    NotificationKey.taskId: (self.taskIdentifier(from: url) ?? "") as Any])
     }
     
-    // TODO: mdephillips 5/1/20 unit test after we decide this is how we want dates
-    public func findFrames(for taskIdentifier: String, with treatmentRange: TreatmentRange, dateTextFormatter: DateFormatter? = nil) -> [VideoCreator.RenderFrameUrl] {
+    public func findFrames(for taskIdentifier: String, with treatmentRange: TreatmentRange) -> [VideoCreator.RenderFrameUrl] {
         var frames = [VideoCreator.RenderFrameUrl]()
-        
-        var allPossibleImageFiles = FileManager.default.urls(for: storageDir)?
-            .filter({ $0.pathExtension == imagePathExtension }) ?? []
-        
-        // Sort the files by oldest first
-        allPossibleImageFiles = allPossibleImageFiles.sorted(by: { (url1, url2) -> Bool in
-            guard let date1 = self.filenameComponents(url1.lastPathComponent)?.date,
-                let date2 = self.filenameComponents(url2.lastPathComponent)?.date else {
-                return false
-            }
-            return date1 < date2
-        })
-        
-        let formatter = dateTextFormatter ?? self.dateFormatter
-        
-        let endDate = treatmentRange.endDate ?? Date()
-        let within = ClosedRange<Date>(uncheckedBounds: (treatmentRange.startDate, endDate))
-        
-        for imageFile in allPossibleImageFiles {
-            let filename = imageFile.lastPathComponent
-            if let components = self.filenameComponents(filename),
-                taskIdentifier == components.taskId,
-                within.contains(components.date) {
-                let dateStr = formatter.string(from: components.date)
-                frames.append(VideoCreator.RenderFrameUrl(url: imageFile, text: dateStr))
+        let history = self.historyData.runHistoryItemFetchRequest(for: taskIdentifier, during: treatmentRange)
+        for item in history {
+            if let itemDate = item.date,
+                let imageName = item.imageName,
+                let imageUrl = ImageDataManager.shared.findFrame(with: imageName) {
+                let dateText = "\(ReviewTabViewController.dateFormatter.string(from: itemDate)) | Week \(MasterScheduleManager.shared.treatmentWeek(for: itemDate))"
+                var headerText = dateText
+                if let title = item.itemTitle() {
+                    headerText = "\(headerText)\n\(title)"
+                }
+                let frame = VideoCreator.RenderFrameUrl(url: imageUrl, text: headerText)
+                frames.append(frame)
+            } else {
+                print("Error: Not enough info to create render from \(item)")
             }
         }
         
@@ -279,7 +263,9 @@ open class ImageReportManager : SBAReportManager {
             let filename = videoFile.lastPathComponent
             if let components = self.filenameComponents(filename),
                 taskIdentifier == components.taskId,
-                treatmentStartDate == components.date {
+                // Only the second preceision, no need to compare ms
+                Int(treatmentStartDate.timeIntervalSinceNow) ==
+                    Int(components.date.timeIntervalSinceNow) {
                 return videoFile
             }
         }
@@ -308,7 +294,7 @@ open class ImageReportManager : SBAReportManager {
         return (taskId, date)
     }
     
-    open func createRenderSettings(videoFilename: String) -> VideoCreator.RenderSettings {
+    open func createRenderSettings(videoFilename: String, footerText: String) -> VideoCreator.RenderSettings {
         var settings = VideoCreator.RenderSettings()
         settings.fileDirectory = storageDir
         settings.videoFilename = videoFilename
@@ -318,6 +304,13 @@ open class ImageReportManager : SBAReportManager {
         settings.numOfFramesPerImage = 30
         settings.numOfFramesPerTransition = 10
         settings.transition = .crossFade
+        
+        settings.footerLogo = UIImage(named: "VideoLogo")
+        let whiteColor = RSDColorTile(RSDColor.white, usesLightStyle: false)
+        settings.textColor = AppDelegate.designSystem.colorRules.textColor(on: whiteColor, for: .largeBody)
+        settings.textFont = AppDelegate.designSystem.fontRules.font(for: .largeBody)
+        settings.footerText = footerText
+        
         return settings
     }
     

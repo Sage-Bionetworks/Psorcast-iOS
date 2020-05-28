@@ -168,7 +168,7 @@ open class ExternalIDRegistrationViewController: RSDStepViewController, UITextFi
                 self.loadingSpinner.isHidden = true
                 self.submitButton.isEnabled = true
                 if error == nil {
-                   super.goForward()
+                   self.goForward()
                 } else {
                     self.presentAlertWithOk(title: "Error attempting sign in", message: error!.localizedDescription, actionHandler: nil)
                     // TODO: emm 2018-04-25 handle error from Bridge

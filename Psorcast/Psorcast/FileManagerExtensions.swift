@@ -71,4 +71,15 @@ extension FileManager {
         }
         return nil
     }
+    
+    public func url(for directory: FileManager.SearchPathDirectory, fileName: String) -> URL? {
+        guard let documentsPath = self.urls(for: directory, in: .userDomainMask).first else {
+            return nil
+        }
+        let url = documentsPath.appendingPathComponent(fileName)
+        if !self.fileExists(atPath: url.path) {
+            return nil
+        }        
+        return url
+    }
 }

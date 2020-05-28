@@ -99,9 +99,12 @@ class ParticipantIDRegistrationViewController: RSDStepViewController, UITextFiel
                 self.logoutButton.isEnabled = true
                 self.logoutButton.alpha = CGFloat(1.0)
                 self.submitButton.isEnabled = true
-                self.resetDefaults()
                 
-                // TODO: mdephillips 5/4/20 delete sd web image cache?
+                self.resetDefaults(defaults: UserDefaults.standard)
+                self.resetDefaults(defaults: BridgeSDK.sharedUserDefaults())
+                HistoryDataManager.shared.flushStore()
+                
+                // TODO: mdephillips 5/4/20 delete sd web image cache and core data?                
                 // SDImageCache.shared().clearMemory()
                 // SDImageCache.shared().clearDisk()
                 
@@ -114,8 +117,7 @@ class ParticipantIDRegistrationViewController: RSDStepViewController, UITextFiel
         })
     }
     
-    func resetDefaults() {
-        let defaults = UserDefaults.standard
+    func resetDefaults(defaults: UserDefaults) {
         let dictionary = defaults.dictionaryRepresentation()
         dictionary.keys.forEach { key in
             defaults.removeObject(forKey: key)

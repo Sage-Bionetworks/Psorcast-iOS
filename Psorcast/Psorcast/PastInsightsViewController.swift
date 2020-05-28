@@ -36,12 +36,11 @@ import ResearchUI
 
 open class PastInsightsViewController: UITableViewController, RSDTaskViewControllerDelegate {
         
-    open var insightItems = [InsightItem]()
+    open var insightItems = [InsightItemViewed]()
+    open var fullInsightItems = MasterScheduleManager.shared.insightItems()
     
     let headerHeight = CGFloat(82)
     let headerPadding = CGFloat(16)
-    
-    open var profileManager = (AppDelegate.shared as? AppDelegate)?.profileManager
     
     let design = AppDelegate.designSystem
     let white = RSDColorTile(RSDColor.white, usesLightStyle: false)
@@ -95,25 +94,27 @@ open class PastInsightsViewController: UITableViewController, RSDTaskViewControl
         guard let customCell = cell as? RSDSelectionTableViewCell else {
             return cell
         }
-        customCell.titleLabel?.text = self.insightItems[indexPath.row].title
+        let insightId = self.insightItems[indexPath.row].insightIdentifier
+        let title = self.fullInsightItems.first(where: { $0.identifier == insightId })?.title
+        customCell.titleLabel?.text = title
         return customCell
     }
     
     public override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        
-        let insightItem = self.insightItems[indexPath.row]
-        guard let vc = self.profileManager?.instantiateInsightsTaskController(for: insightItem) else { return }
+        let insightId = self.insightItems[indexPath.row].insightIdentifier
+        guard let insightItem = self.fullInsightItems.first(where: { $0.identifier == insightId }),
+            let vc = MasterScheduleManager.shared.instantiateInsightsTaskController(for: insightItem) else { return }
         vc.delegate = self
         self.show(vc, sender: self)
     }
     
     public func taskController(_ taskController: RSDTaskController, didFinishWith reason: RSDTaskFinishReason, error: Error?) {
-        self.profileManager?.taskController(taskController, didFinishWith: reason, error: error)
+        MasterScheduleManager.shared.taskController(taskController, didFinishWith: reason, error: error)
         self.dismiss(animated: true, completion: nil)
     }
     
     public func taskController(_ taskController: RSDTaskController, readyToSave taskViewModel: RSDTaskViewModel) {
-        self.profileManager?.taskController(taskController, readyToSave: taskViewModel)
+        MasterScheduleManager.shared.taskController(taskController, readyToSave: taskViewModel)
     }
 }

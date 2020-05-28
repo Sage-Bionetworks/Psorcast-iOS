@@ -36,7 +36,7 @@ import BridgeApp
 import BridgeSDK
 import MotorControl
 
-open class MeasureTabViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, MeasureTabCollectionViewCellDelegate, RSDTaskViewControllerDelegate {
+open class MeasureTabViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, MeasureTabCollectionViewCellDelegate, RSDTaskViewControllerDelegate, NSFetchedResultsControllerDelegate {
         
     /// Header views
     @IBOutlet weak var topHeader: UIView!
@@ -81,16 +81,18 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
     /// Normal range is 0.5 (fast) to 2.0 (slow)
     let insightAnimationSpeed = 1.0
     var isInsightAnimating = false
-    
-    /// The profile manager
-    let profileManager = (AppDelegate.shared as? AppDelegate)?.profileManager
-    var currentTreatmentDate: Date? = nil
-    open func treatmentWeek() -> Int {
-        let now = Date()
-        return self.profileManager?.treatmentWeek(toNow: now) ?? 1
-    }
+
+    // The current treatment for the user
+    var currentTreatment: TreatmentRange?
+    var currentSymptoms: String?
+    var currentStatus: String?
     
     let showInsightTaskId = "showInsight"
+    
+    // Open for unit testing
+    open func treatmentWeek() -> Int {
+        return self.scheduleManager.treatmentWeek()
+    }
     
     open var measureTabItemCount: Int {
         let deepDiveCount = (self.currentDeepDiveSurvey == nil) ? 0 : 1
@@ -99,12 +101,11 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
     }
     
     let deepDiveManager = DeepDiveReportManager.shared
+    let historyData = HistoryDataManager.shared
     
     open var currentDeepDiveSurvey: DeepDiveItem? {
-        guard let setTreatmentsDate = self.profileManager?.treatmentsDate else {
-            return nil
-        }
-        let weeklyRange = self.weeklyRenewalDateRange(from: setTreatmentsDate, toNow: Date())
+        guard let treatmentStart = self.currentTreatment?.startDate else { return nil }
+        let weeklyRange = self.weeklyRenewalDateRange(from: treatmentStart, toNow: Date())
         return DeepDiveReportManager.shared.currentDeepDiveSurvey(for: weeklyRange)
     }
     
@@ -114,7 +115,7 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
         self.setupDefaultBlankUiState()
         self.updateDesignSystem()
         self.setupCollectionView()
-        
+
         // Register the 30 second walking task with the motor control framework
         SBABridgeConfiguration.shared.addMapping(with: MCTTaskInfo(.walk30Seconds).task)
         
@@ -129,26 +130,21 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
             debugPrint("MeasureTab scheduleManager changed \(self.measureTabItemCount)")
             self.refreshUI()
         }
-        
-        // Reload the schedules and add an observer to observe changes.
-        if let manager = profileManager {
-            NotificationCenter.default.addObserver(forName: .SBAUpdatedReports, object: manager, queue: OperationQueue.main) { (notification) in
-                debugPrint("MeasureTab profileManager reports changed \(manager.reports.count)")
-                self.refreshUI()
-            }
-        }
-        
+
         NotificationCenter.default.addObserver(forName: .SBAUpdatedReports, object: DeepDiveReportManager.shared, queue: OperationQueue.main) { (notification) in
             debugPrint("MeasureTab deep dive reports changed \(self.deepDiveManager.reports.count)")
             guard DeepDiveReportManager.shared.reports.count > 0 else { return }
             self.refreshUI()
         }
         
-        self.profileManager?.reloadData()
         self.scheduleManager.reloadData()
         
         // We have seen the measure screen, remove any badge numbers from notifications
         UIApplication.shared.applicationIconBadgeNumber = 0
+    }
+    
+    public func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        // No-op needed, viewWillAppear will handle any changes
     }
     
     fileprivate func updateScheduledActivities() {
@@ -206,10 +202,20 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
     /// https://sagebionetworks.jira.com/browse/IA-852
     func updateCollectionView(newActivities: [SBBScheduledActivity]) {
         
-        // Check for a change in treatment selection date, which should refresh the whole list
-        let treatmentDate = self.profileManager?.treatmentsDate
-        let treatmentDateChanged = self.currentTreatmentDate?.timeIntervalSince1970 != treatmentDate?.timeIntervalSince1970
-        self.currentTreatmentDate = treatmentDate
+        // Check for a change in treatment, symptoms, or status,
+        // which should refresh the whole list as schedule may have changed
+        var treatmentChanged = false
+        if let treatment = self.historyData.currentTreatmentRange,
+            let status = self.historyData.psoriasisStatus,
+            let symptoms = self.historyData.psoriasisSymptoms {
+            treatmentChanged = (self.currentTreatment?.startDate.timeIntervalSince1970 != treatment.startDate.timeIntervalSince1970) ||
+                (status != self.currentStatus) ||
+                (symptoms != self.currentSymptoms)
+            
+            self.currentTreatment = treatment
+            self.currentStatus = status
+            self.currentSymptoms = symptoms
+        }
         
         var deepDiveChanged = false
         var deepDiveUpdated = false
@@ -238,9 +244,9 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
         let activityCountChanged = self.currentActivityState.count != newItemCount
         debugPrint("MeasureTab deep dive changed \(deepDiveChanged)")
         debugPrint("MeasureTab activity count changed \(activityCountChanged)")
-        debugPrint("MeasureTab treatment date changed \(treatmentDateChanged)")
+        debugPrint("MeasureTab treatment date changed \(treatmentChanged)")
         // Check for a change in the number of activity items
-        if activityCountChanged || treatmentDateChanged || deepDiveChanged {
+        if activityCountChanged || treatmentChanged || deepDiveChanged {
             debugPrint("MeasureTab Collection view item count has changed")
             self.refreshActivityState(to: newActivities)
             self.gridLayout.itemCount = self.measureTabItemCount
@@ -337,22 +343,22 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
     }
     
     @IBAction func insightTapped() {
-        guard let vc = self.profileManager?.instantiateInsightsTaskController() else { return }
+        guard let vc = self.scheduleManager.instantiateInsightsTaskController() else { return }
         vc.delegate = self
         self.present(vc, animated: true, completion: nil)
     }
     
     func shouldShowInsight() -> Bool {
-        guard let insightDate = self.profileManager?.insightViewedDate else {
+        guard let insightDate = self.historyData.mostRecentInsightViewed?.date else {
             return true // We've never viewed an insight, so they should all be available
         }
-        guard let treatmentDate = self.profileManager?.treatmentsDate,
-            let treatmentWeek = self.profileManager?.treatmentWeek(toNow: Date()) else {
+        guard let treatmentDate = self.currentTreatment?.startDate else {
             return false // We don't have valid data
         }
+        let treatmentWeek = self.treatmentWeek()
         let insightViewedRange = self.scheduleManager.completionRange(treatmentDate: treatmentDate, treatmentWeek: treatmentWeek)
         return !insightViewedRange.contains(insightDate) &&
-               self.profileManager?.nextInsightItem() != nil
+            self.scheduleManager.nextInsightItem() != nil
     }
     
     func updateInsightProgress() {
@@ -404,7 +410,7 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
     }
     
     @IBAction func treatmentTapped() {
-        if let vc = self.profileManager?.instantiateSingleQuestionTreatmentTaskController(for: ProfileIdentifier.treatments.id) {
+        if let vc = self.scheduleManager.instantiateSingleQuestionTreatmentTaskController(for: TreatmentResultIdentifier.treatments.rawValue) {
             vc.delegate = self
             self.show(vc, sender: self)
         }
@@ -433,7 +439,7 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
     }
     
     func updateCurrentTreatmentsText() {
-        guard let treatments = self.profileManager?.treatmentIdentifiers else { return }
+        guard let treatments = self.currentTreatment?.treatments else { return }
         let attributedText = NSAttributedString(string: treatments.joined(separator: ", "), attributes: [NSAttributedString.Key.underlineStyle: true])
         self.treatmentButton.setAttributedTitle(attributedText, for: .normal)
     }
@@ -441,7 +447,7 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
     @objc func updateTimeFormattedText() {
         self.updateCurrentTreatmentsText()
         
-        guard let setTreatmentsDate = self.profileManager?.treatmentsDate else {
+        guard let setTreatmentsDate = self.historyData.currentTreatmentRange?.startDate else {
             return 
         }
         
@@ -588,7 +594,7 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
                 let image = self.scheduleManager.image(for: itemIndex)
                 
                 var isComplete = false
-                if let setTreatmentsDate = self.profileManager?.treatmentsDate,
+                if let setTreatmentsDate = self.currentTreatment?.startDate,
                     let finishedOn = self.scheduleManager.sortedScheduledActivity(for: itemIndex)?.finishedOn {
                     isComplete = self.weeklyRenewalDateRange(from: setTreatmentsDate, toNow: Date()).contains(finishedOn)
                 }
@@ -622,29 +628,18 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
     // MARK: RSDTaskViewControllerDelegate
     
     public func taskController(_ taskController: RSDTaskController, readyToSave taskViewModel: RSDTaskViewModel) {
-        
-        if taskController.task.identifier == RSDIdentifier.treatmentTask.rawValue ||
-            taskController.task.identifier == RSDIdentifier.insightsTask.rawValue {
-            self.profileManager?.taskController(taskController, readyToSave: taskViewModel)
-        } else {
-            self.scheduleManager.taskController(taskController, readyToSave: taskViewModel)
-        }
+        self.scheduleManager.taskController(taskController, readyToSave: taskViewModel)
     }
     
     public func taskController(_ taskController: RSDTaskController, didFinishWith reason: RSDTaskFinishReason, error: Error?) {
 
-        if taskController.task.identifier == RSDIdentifier.treatmentTask.rawValue ||
-            taskController.task.identifier == RSDIdentifier.insightsTask.rawValue {
-            self.profileManager?.taskController(taskController, didFinishWith: reason, error: error)
-        } else {
-            // Let the schedule manager handle the cleanup.
-            self.scheduleManager.taskController(taskController, didFinishWith: reason, error: error)
-        }
+        // Let the schedule manager handle the cleanup.
+        self.scheduleManager.taskController(taskController, didFinishWith: reason, error: error)
         
         self.dismiss(animated: true, completion: {
             // If the user has not set their reminders yet, we should show them
             if taskController.task.identifier == RSDIdentifier.insightsTask.rawValue &&
-                !(self.profileManager?.haveWeeklyRemindersBeenSet ?? false) {
+                !self.historyData.haveWeeklyRemindersBeenSet {
                 let vc = ReminderType.weekly.createReminderTaskViewController()
                 vc.delegate = self
                 self.show(vc, sender: self)

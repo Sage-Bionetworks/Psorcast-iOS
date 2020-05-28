@@ -55,6 +55,8 @@ open class DigitalJarOpenCompletionStepViewController: RSDStepViewController, UI
     
     /// The result identifier for the summary data
     public let summaryResultIdentifier = "summary"
+    public let inwardResultIdentifier = "inwardRatio"
+    public let outwardResultIdentifier = "outwardRatio"
         
     /// The collection view associated with this view controller.
     @IBOutlet open var collectionView: UICollectionView!
@@ -93,13 +95,6 @@ open class DigitalJarOpenCompletionStepViewController: RSDStepViewController, UI
 
         // Invalidating the layout is necessary to get the cell size correct.
         collectionView.collectionViewLayout.invalidateLayout()
-    }
-    
-    override open func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        
-        let image = PSRImageHelper.convertToImage(self.collectionView)
-        self.saveSummaryImageResult(image: image)
     }
     
     /// Override the set up of the header to set the background color for the table view and adjust the
@@ -175,6 +170,31 @@ open class DigitalJarOpenCompletionStepViewController: RSDStepViewController, UI
                 debugPrint("Failed to save the camera image: \(error)")
             }
         }
+    }
+    
+    override open func goForward() {
+        
+        let image = PSRImageHelper.convertToImage(self.collectionView)
+        self.saveSummaryImageResult(image: image)
+        
+        let inwardRatio = self.calculateRatio(leftRotation: self.rotation(for: .leftClockwise), rightRotation: self.rotation(for: .rightCounterClockwise))
+        _ = self.stepViewModel.parent?.taskResult.appendStepHistory(with: RSDAnswerResultObject(identifier: inwardResultIdentifier, answerType: .decimal, value: inwardRatio))
+        
+        let outwardRatio = self.calculateRatio(leftRotation: self.rotation(for: .leftCounterClockwise), rightRotation: self.rotation(for: .rightClockwise))
+        _ = self.stepViewModel.parent?.taskResult.appendStepHistory(with: RSDAnswerResultObject(identifier: outwardResultIdentifier, answerType: .decimal, value: outwardRatio))
+        
+        super.goForward()
+    }
+    
+    public func calculateRatio(leftRotation: Int, rightRotation: Int) -> Float {
+        var ratio = Float(0)
+        if leftRotation != 0 && rightRotation != 0 {
+            ratio = Float(leftRotation) / Float(rightRotation)
+            if ratio < Float(1) {
+                ratio = Float(1) / ratio
+            }
+        }
+        return ratio
     }
 }
 

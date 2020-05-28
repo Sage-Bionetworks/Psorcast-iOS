@@ -46,11 +46,6 @@ open class StudyTaskFactory: TaskFactory {
         let typeName: String = try decoder.factory.typeName(from: decoder) ?? SBAProfileManagerType.profileManager.rawValue
         let type = SBAProfileManagerType(rawValue: typeName)
         
-        // Inject our own custom profile manager
-        if type == .profileManager {
-            return try StudyProfileManager(from: decoder)
-        }
-        
         return try super.decodeProfileManager(from: decoder)
     }
     
