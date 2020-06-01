@@ -81,7 +81,18 @@ open class PsoriasisDrawStepViewController: RSDStepViewController, ProcessorFini
     
     /// The line width is proportional to the screen width
     open var lineWidth: CGFloat {
-        return (CGFloat(5) / CGFloat(375)) * self.view.frame.width
+        // We need to make sure that the line width is the same for all participants
+        // Calculate how much the image was scaled from the original
+        
+        guard let srcImageWidth = self.imageView.image?.size.width, srcImageWidth > 0,
+            let scaledImageWidth = self.imageView.lastAspectFitRect?.width else {
+            return 0
+        }
+        
+        let lineWidthRatio = scaledImageWidth / srcImageWidth
+        let penSize = CGFloat(5) * lineWidthRatio
+        
+        return penSize
     }
     
     /// Processing queue for saving camera
@@ -119,6 +130,11 @@ open class PsoriasisDrawStepViewController: RSDStepViewController, ProcessorFini
         self.initializeImages()
         self.imageView.debuggingZones = self.debuggingZones
         self.imageView?.regionZonesForDebugging = self.drawStep?.regionMap?.zones ?? []
+    }
+    
+    override open func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        self.imageView.touchDrawableView?.lineWidth = self.lineWidth
     }
     
     func initializeImages() {
