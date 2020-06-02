@@ -813,6 +813,61 @@ OCT 2020 to Today</string>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" contentInsetAdjustmentBehavior="never" dataMode="prototypes" style="grouped" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="1" sectionFooterHeight="1" contentViewInsetsToSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="o7h-wX-f13">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="813"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="DeepDiveProfileTableItem" rowHeight="186" id="SuI-Ye-y6r" customClass="DeepDiveProfileTableItem" customModule="Psorcast" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="55.5" width="414" height="186"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="SuI-Ye-y6r" id="lqb-Uw-uN1">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="186"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nv6-wj-4pP">
+                                                    <rect key="frame" x="24" y="24" width="366" height="20.5"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progressViewStyle="bar" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="nkg-Hh-11I">
+                                                    <rect key="frame" x="24" y="66.5" width="309.5" height="9"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="8" id="f3L-Sx-lVV"/>
+                                                    </constraints>
+                                                </progressView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="20%" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="joN-6u-01s">
+                                                    <rect key="frame" x="355.5" y="60" width="34.5" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WUj-w9-wjc" customClass="RSDRoundedButton" customModule="ResearchUI">
+                                                    <rect key="frame" x="44" y="107" width="326" height="52"/>
+                                                    <state key="normal" title="Button"/>
+                                                </button>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="WUj-w9-wjc" firstAttribute="leading" secondItem="lqb-Uw-uN1" secondAttribute="leadingMargin" constant="24" id="9WF-rK-fYv"/>
+                                                <constraint firstItem="nkg-Hh-11I" firstAttribute="centerY" secondItem="joN-6u-01s" secondAttribute="centerY" id="CVr-vW-WMM"/>
+                                                <constraint firstItem="nv6-wj-4pP" firstAttribute="trailing" secondItem="lqb-Uw-uN1" secondAttribute="trailing" constant="-24" id="EN0-lO-YQE"/>
+                                                <constraint firstItem="nkg-Hh-11I" firstAttribute="leading" secondItem="lqb-Uw-uN1" secondAttribute="leading" constant="24" id="F8p-Ip-v3U"/>
+                                                <constraint firstItem="nv6-wj-4pP" firstAttribute="leading" secondItem="lqb-Uw-uN1" secondAttribute="leading" constant="24" id="Hgq-2E-rpM"/>
+                                                <constraint firstItem="joN-6u-01s" firstAttribute="leading" secondItem="nkg-Hh-11I" secondAttribute="trailing" constant="22" id="R83-Hz-pwK"/>
+                                                <constraint firstAttribute="trailing" secondItem="joN-6u-01s" secondAttribute="trailing" constant="24" id="XhY-Ok-Qru"/>
+                                                <constraint firstItem="WUj-w9-wjc" firstAttribute="top" secondItem="joN-6u-01s" secondAttribute="bottom" constant="26" id="Z5i-6G-3tq"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="WUj-w9-wjc" secondAttribute="trailing" constant="24" id="tnG-Ad-Uxb"/>
+                                                <constraint firstItem="nv6-wj-4pP" firstAttribute="top" secondItem="lqb-Uw-uN1" secondAttribute="top" constant="24" id="u9M-so-yQp"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="WUj-w9-wjc" secondAttribute="bottom" constant="16" id="x32-FY-bjF"/>
+                                                <constraint firstItem="joN-6u-01s" firstAttribute="top" secondItem="nv6-wj-4pP" secondAttribute="bottom" constant="15.5" id="xqP-zB-tsE"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="actionButton" destination="WUj-w9-wjc" id="eph-eC-WoL"/>
+                                            <outlet property="progressBar" destination="nkg-Hh-11I" id="QMB-xl-jVR"/>
+                                            <outlet property="progressBarHeight" destination="f3L-Sx-lVV" id="wYA-6m-NaF"/>
+                                            <outlet property="progressLabel" destination="joN-6u-01s" id="FG8-9A-5IF"/>
+                                            <outlet property="titleLabel" destination="nv6-wj-4pP" id="Ufm-56-5qJ"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
                                 <connections>
                                     <outlet property="dataSource" destination="JFy-Dv-RJk" id="gsi-s5-Bn1"/>
                                     <outlet property="delegate" destination="JFy-Dv-RJk" id="lWM-9F-sGx"/>

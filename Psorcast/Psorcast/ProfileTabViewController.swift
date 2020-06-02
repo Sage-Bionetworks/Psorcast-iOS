@@ -36,16 +36,18 @@ import BridgeApp
 import BridgeSDK
 import MotorControl
 
-class ProfileTabViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, RSDTaskViewControllerDelegate {
-    
+class ProfileTabViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, RSDTaskViewControllerDelegate, RSDButtonCellDelegate {
+            
     @IBOutlet weak var tableView: UITableView!
     
     /// The profile manager
     let profileDataSource = (AppDelegate.shared as? AppDelegate)?.profileDataSource
     let historyData = HistoryDataManager.shared
+    let deepDiveManager = DeepDiveReportManager.shared
     
     open var design = AppDelegate.designSystem
     
+    public static let deepDiveProfileKey = "DeepDive"
     
     override open func viewDidLoad() {
         super.viewDidLoad()                
@@ -59,6 +61,7 @@ class ProfileTabViewController: UIViewController, UITableViewDelegate, UITableVi
     }
     
     func setupTableView() {
+        self.tableView.sectionFooterHeight = 8
         self.tableView.estimatedSectionHeaderHeight = 40
         
         self.tableView.register(ProfileTableHeaderView.self, forHeaderFooterViewReuseIdentifier: ProfileTableHeaderView.className)
@@ -108,11 +111,49 @@ class ProfileTabViewController: UIViewController, UITableViewDelegate, UITableVi
     func itemForRow(at indexPath: IndexPath) -> SBAProfileTableItem? {
         return self.profileDataSource?.profileTableItem(at: indexPath)
     }
+    
+    func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
+        let tableItem = itemForRow(at: indexPath)
+        guard let itemKey = (tableItem as? SBAProfileItemProfileTableItem)?.profileItemKey else { return indexPath }
+        if itemKey == ProfileTabViewController.deepDiveProfileKey {
+            return nil
+        }
+        return indexPath
+    }
+    
+    func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
+        let tableItem = itemForRow(at: indexPath)
+        guard let itemKey = (tableItem as? SBAProfileItemProfileTableItem)?.profileItemKey else { return true }
+        return itemKey != ProfileTabViewController.deepDiveProfileKey
+    }
    
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let tableItem = itemForRow(at: indexPath)
         let titleText = tableItem?.title
         let detailText = tableItem?.detail
+        
+        let profileItemKey = (tableItem as? SBAProfileItemProfileTableItem)?.profileItemKey
+        
+        guard profileItemKey != ProfileTabViewController.deepDiveProfileKey else {
+            let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: DeepDiveProfileTableItem.self), for: indexPath) as! DeepDiveProfileTableItem
+            
+            cell.delegate = self
+            cell.setDesignSystem(self.design, with: RSDColorTile(RSDColor.white, usesLightStyle: false))
+            
+            let deepDiveProgress = self.deepDiveManager.deepDiveProgress
+            cell.titleLabel?.text = nil
+            if deepDiveProgress <= 0 {                cell.actionButton?.setTitle(Localization.localizedString("PROFILE_DEEP_DIVE_NO_ITEMS_BUTTON_TITLE"), for: .normal)
+                cell.titleLabel?.text = Localization.localizedString("PROFILE_DEEP_DIVE_NO_ITEMS_TITLE")
+            } else if deepDiveProgress < 0.5 {                cell.actionButton?.setTitle(Localization.localizedString("PROFILE_DEEP_DIVE_SOME_ITEMS_BUTTON_TITLE"), for: .normal)
+            } else {                cell.actionButton?.setTitle(Localization.localizedString("PROFILE_DEEP_DIVE_MOST_ITEMS_BUTTON_TITLE"), for: .normal)
+            }
+                        
+            cell.progressBar?.progress = deepDiveProgress
+            cell.progressLabel?.text = "\(round(deepDiveProgress))%"
+            
+            return cell
+        }
+                
         let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: ProfileTableViewCell.self), for: indexPath) as! ProfileTableViewCell
        
         // Configure the cell...
@@ -134,7 +175,7 @@ class ProfileTabViewController: UIViewController, UITableViewDelegate, UITableVi
             }
         }
         
-        cell.setDesignSystem(self.design, with: RSDColorTile(RSDColor.white, usesLightStyle: true))
+        cell.setDesignSystem(self.design, with: RSDColorTile(RSDColor.white, usesLightStyle: false))
        
         return cell
     }
@@ -191,7 +232,7 @@ class ProfileTabViewController: UIViewController, UITableViewDelegate, UITableVi
                 let vc = PastInsightsViewController()
                 vc.insightItems = self.historyData.pastInsightItemsViewed
                 self.show(vc, sender: self)
-            } else if profileItem.profileItemKey == "DeepDive" {
+            } else if profileItem.profileItemKey == ProfileTabViewController.deepDiveProfileKey {
                 self.showDeepDiveViewController()
             } else if let vc = MasterScheduleManager.shared.instantiateSingleQuestionTreatmentTaskController(for: profileItem.profileItemKey) {
                 vc.delegate = self
@@ -220,6 +261,12 @@ class ProfileTabViewController: UIViewController, UITableViewDelegate, UITableVi
         if let cell = tableView.cellForRow(at: indexPath) {
             cell.contentView.backgroundColor = RSDColor.white
         }
+    }
+    // MARK - RSDButtonCellDelegate
+    
+    /// This is called when deep dive profile cell is tapped
+    func didTapButton(on cell: RSDButtonCell) {
+        self.showDeepDiveViewController()
     }
     
     // MARK: - Task view controller delegate
@@ -285,5 +332,39 @@ open class ProfileTableViewCell: RSDSelectionTableViewCell {
         chevron?.image = chevron?.image?.rsd_applyColor(designSystem.colorRules.palette.secondary.normal.color)
         
         titleLabel?.font = designSystem.fontRules.font(for: .mediumHeader)
+    }
+}
+
+open class DeepDiveProfileTableItem: RSDButtonCell {
+    
+    @IBOutlet public weak var titleLabel: UILabel?
+    @IBOutlet public weak var progressBar: UIProgressView?
+    @IBOutlet public weak var progressLabel: UILabel?
+    
+    @IBOutlet public weak var progressBarHeight: NSLayoutConstraint?
+    
+    override open func awakeFromNib() {
+        super.awakeFromNib()
+        
+        // Make progress bar rounded
+        let radius = (self.progressBarHeight?.constant ?? 0) / 2
+        self.progressBar?.layer.cornerRadius = radius
+        self.progressBar?.clipsToBounds = true
+        self.progressBar?.layer.sublayers![1].cornerRadius = radius
+        self.progressBar?.subviews[1].clipsToBounds = true
+    }
+    
+    override open func setDesignSystem(_ designSystem: RSDDesignSystem, with background: RSDColorTile) {
+        super.setDesignSystem(designSystem, with: background)
+        
+        self.progressBar?.progressViewStyle = .bar
+        self.progressBar?.tintColor = designSystem.colorRules.palette.accent.normal.color
+        self.progressBar?.backgroundColor = RSDColorMatrix.shared.colorKey(for: .palette(.cloud)).colorTiles.first?.color ?? UIColor.white
+        
+        self.titleLabel?.font = self.designSystem?.fontRules.font(for: .body)
+        self.titleLabel?.textColor = self.designSystem?.colorRules.textColor(on: background, for: .body)
+        
+        self.progressLabel?.font = self.designSystem?.fontRules.font(for: .body)
+        self.progressLabel?.textColor = self.designSystem?.colorRules.textColor(on: background, for: .body)
     }
 }

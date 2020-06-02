@@ -66,6 +66,15 @@ open class DeepDiveReportManager: SBAReportManager {
         return nil
     }
     
+    /// A value from 0.0 to 1.0 (0% to 100%) of the progress the user has made of
+    /// completing all of the deep dive surveys.
+    open var deepDiveProgress: Float {
+        let items = self.deepDiveTaskList
+        guard items.count > 0 else { return 0 }
+        let completedItems = items.filter({ self.isDeepDiveComplete(for: $0.identifier) })
+        return Float(completedItems.count) / Float(items.count)
+    }
+    
     open func isDeepDiveComplete(for deepDiveIdentifier: String) -> Bool {
         return self.mostRecentDeepDiveReport(for: deepDiveIdentifier) != nil
     }
