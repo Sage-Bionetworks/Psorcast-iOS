@@ -66,6 +66,15 @@ open class DeepDiveReportManager: SBAReportManager {
         return nil
     }
     
+    /// A value from 0.0 to 1.0 (0% to 100%) of the progress the user has made of
+    /// completing all of the deep dive surveys.
+    open var deepDiveProgress: Float {
+        let items = self.deepDiveTaskList
+        guard items.count > 0 else { return 0 }
+        let completedItems = items.filter({ self.isDeepDiveComplete(for: $0.identifier) })
+        return Float(completedItems.count) / Float(items.count)
+    }
+    
     open func isDeepDiveComplete(for deepDiveIdentifier: String) -> Bool {
         return self.mostRecentDeepDiveReport(for: deepDiveIdentifier) != nil
     }
@@ -95,7 +104,7 @@ open class DeepDiveReportManager: SBAReportManager {
         var items = [DeepDiveItem]()
         for item in sortOrder {
             if let matchingTask = taskList.first(where: { $0.identifier == item.identifier }) {
-                items.append(DeepDiveItem(title: item.title, detail: item.detail, task: matchingTask))
+                items.append(DeepDiveItem(title: item.title, detail: item.detail, imageUrl: item.imageUrl, task: matchingTask))
             }
         }
         return items
@@ -105,6 +114,7 @@ open class DeepDiveReportManager: SBAReportManager {
 public struct DeepDiveItem {
     public var title: String?
     public var detail: String?
+    public var imageUrl: String?
     public var task: RSDTask
 }
 

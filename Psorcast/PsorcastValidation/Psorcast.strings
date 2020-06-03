@@ -133,3 +133,11 @@
 
 "REVIEW_VIDEO_DATA_TITLE_%d" = "You will need to complete %d more measurement to unlock your video.";
 "REVIEW_VIDEO_DATA_TITLE_PAST" = "You did not complete enough measurements to unlock your video.";
+
+"PROFILE_DEEP_DIVE_NO_ITEMS_TITLE" = "Complete short surveys to help us research how to make forecasts about your psoriasis.";
+"PROFILE_DEEP_DIVE_SOME_ITEMS_TITLE" = "Nice work! Complete short surveys to help us research how to make forecasts about your psoriasis.";
+"PROFILE_DEEP_DIVE_ALL_ITEMS_TITLE" = "Thank you! Your time and effort is helping us research how to make forecasts about your psoriasis. ";
+"PROFILE_DEEP_DIVE_NO_ITEMS_BUTTON_TITLE" = "Get started!";
+"PROFILE_DEEP_DIVE_SOME_ITEMS_BUTTON_TITLE" = "Keep going!";
+"PROFILE_DEEP_DIVE_ALL_ITEMS_BUTTON_TITLE" = "Update my answers";
+"PROFILE_PSORCAST_DEEP_DIVE" = "Psorcast Deep Dive";

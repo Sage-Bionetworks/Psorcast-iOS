@@ -252,10 +252,10 @@ OCT 2020 to Today</string>
                                                                                 <rect key="frame" x="0.0" y="346" width="381" height="36"/>
                                                                                 <subviews>
                                                                                     <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Checkmark" translatesAutoresizingMaskIntoConstraints="NO" id="QQb-AO-WUP">
-                                                                                        <rect key="frame" x="283" y="-6" width="82" height="48"/>
+                                                                                        <rect key="frame" x="300" y="6" width="65" height="24"/>
                                                                                     </imageView>
                                                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XdZ-hy-h7V">
-                                                                                        <rect key="frame" x="331" y="-6" width="34" height="48"/>
+                                                                                        <rect key="frame" x="348" y="6" width="17" height="24"/>
                                                                                         <state key="normal" image="ExportButton"/>
                                                                                         <connections>
                                                                                             <action selector="exportTapped" destination="LrK-q2-M3U" eventType="touchUpInside" id="FFE-Bp-Djf"/>
@@ -339,7 +339,7 @@ OCT 2020 to Today</string>
                                                                                 <rect key="frame" x="0.0" y="32" width="381" height="216"/>
                                                                                 <subviews>
                                                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ReviewVideoIcon" translatesAutoresizingMaskIntoConstraints="NO" id="EFh-2A-tt6">
-                                                                                        <rect key="frame" x="141.5" y="10" width="98" height="98"/>
+                                                                                        <rect key="frame" x="141.5" y="10" width="98.000000000000028" height="98.000000000000028"/>
                                                                                         <constraints>
                                                                                             <constraint firstAttribute="width" secondItem="EFh-2A-tt6" secondAttribute="height" multiplier="1:1" id="4jU-Oc-jaU"/>
                                                                                             <constraint firstAttribute="height" relation="lessThanOrEqual" constant="98" id="oAD-Ts-gQd"/>
@@ -560,7 +560,7 @@ OCT 2020 to Today</string>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progressViewStyle="bar" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="9ep-Kk-VrL">
+                                                    <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progressViewStyle="bar" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="9ep-Kk-VrL" customClass="StudyProgressView" customModule="Psorcast" customModuleProvider="target">
                                                         <rect key="frame" x="48" y="81" width="304" height="11"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="10" id="Hhi-on-1wr"/>
@@ -625,7 +625,7 @@ OCT 2020 to Today</string>
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="MeasureTabCollectionViewCell" id="3kZ-Nh-GsX" customClass="MeasureTabCollectionViewCell" customModule="Psorcast" customModuleProvider="target">
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="MeasureTabCollectionViewCell" id="3kZ-Nh-GsX" customClass="TaskCollectionViewCell" customModule="Psorcast" customModuleProvider="target">
                                         <rect key="frame" x="101" y="0.0" width="212" height="120"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="iIn-TJ-Zy0">
@@ -724,8 +724,7 @@ OCT 2020 to Today</string>
                         <outlet property="insightAchievedImage" destination="Ezf-2F-0rZ" id="02K-Em-zUm"/>
                         <outlet property="insightAchievedView" destination="xGK-zQ-hyz" id="VNG-W4-Jcp"/>
                         <outlet property="insightNotAchievedView" destination="00y-Iu-hAE" id="hc5-ow-72y"/>
-                        <outlet property="insightProgressBar" destination="9ep-Kk-VrL" id="wsj-Fz-Kbh"/>
-                        <outlet property="insightProgressBarHeight" destination="Hhi-on-1wr" id="xs6-nS-GFV"/>
+                        <outlet property="insightProgressBar" destination="9ep-Kk-VrL" id="NHU-RP-vQ2"/>
                         <outlet property="insightUnlockedText" destination="aAc-rB-VXi" id="Gts-6G-SJ3"/>
                         <outlet property="insightUnlockedTitle" destination="fYI-pt-hiU" id="QuI-ZQ-3Zv"/>
                         <outlet property="topHeader" destination="D8m-la-ykO" id="HJe-MY-9kB"/>
@@ -813,6 +812,60 @@ OCT 2020 to Today</string>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" contentInsetAdjustmentBehavior="never" dataMode="prototypes" style="grouped" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="1" sectionFooterHeight="1" contentViewInsetsToSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="o7h-wX-f13">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="813"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="DeepDiveProfileTableItem" rowHeight="186" id="SuI-Ye-y6r" customClass="DeepDiveProfileTableItem" customModule="Psorcast" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="55.5" width="414" height="186"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="SuI-Ye-y6r" id="lqb-Uw-uN1">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="186"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nv6-wj-4pP">
+                                                    <rect key="frame" x="24" y="24" width="366" height="20.5"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progressViewStyle="bar" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="nkg-Hh-11I" customClass="StudyProgressView" customModule="Psorcast" customModuleProvider="target">
+                                                    <rect key="frame" x="24" y="66.5" width="309.5" height="9"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="8" id="f3L-Sx-lVV"/>
+                                                    </constraints>
+                                                </progressView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="20%" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="joN-6u-01s">
+                                                    <rect key="frame" x="355.5" y="60" width="34.5" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WUj-w9-wjc" customClass="RSDRoundedButton" customModule="ResearchUI">
+                                                    <rect key="frame" x="44" y="107" width="326" height="52"/>
+                                                    <state key="normal" title="Button"/>
+                                                </button>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="WUj-w9-wjc" firstAttribute="leading" secondItem="lqb-Uw-uN1" secondAttribute="leadingMargin" constant="24" id="9WF-rK-fYv"/>
+                                                <constraint firstItem="nkg-Hh-11I" firstAttribute="centerY" secondItem="joN-6u-01s" secondAttribute="centerY" id="CVr-vW-WMM"/>
+                                                <constraint firstItem="nv6-wj-4pP" firstAttribute="trailing" secondItem="lqb-Uw-uN1" secondAttribute="trailing" constant="-24" id="EN0-lO-YQE"/>
+                                                <constraint firstItem="nkg-Hh-11I" firstAttribute="leading" secondItem="lqb-Uw-uN1" secondAttribute="leading" constant="24" id="F8p-Ip-v3U"/>
+                                                <constraint firstItem="nv6-wj-4pP" firstAttribute="leading" secondItem="lqb-Uw-uN1" secondAttribute="leading" constant="24" id="Hgq-2E-rpM"/>
+                                                <constraint firstItem="joN-6u-01s" firstAttribute="leading" secondItem="nkg-Hh-11I" secondAttribute="trailing" constant="22" id="R83-Hz-pwK"/>
+                                                <constraint firstAttribute="trailing" secondItem="joN-6u-01s" secondAttribute="trailing" constant="24" id="XhY-Ok-Qru"/>
+                                                <constraint firstItem="WUj-w9-wjc" firstAttribute="top" secondItem="joN-6u-01s" secondAttribute="bottom" constant="26" id="Z5i-6G-3tq"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="WUj-w9-wjc" secondAttribute="trailing" constant="24" id="tnG-Ad-Uxb"/>
+                                                <constraint firstItem="nv6-wj-4pP" firstAttribute="top" secondItem="lqb-Uw-uN1" secondAttribute="top" constant="24" id="u9M-so-yQp"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="WUj-w9-wjc" secondAttribute="bottom" constant="16" id="x32-FY-bjF"/>
+                                                <constraint firstItem="joN-6u-01s" firstAttribute="top" secondItem="nv6-wj-4pP" secondAttribute="bottom" constant="15.5" id="xqP-zB-tsE"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="actionButton" destination="WUj-w9-wjc" id="eph-eC-WoL"/>
+                                            <outlet property="progressBar" destination="nkg-Hh-11I" id="QMB-xl-jVR"/>
+                                            <outlet property="progressLabel" destination="joN-6u-01s" id="jnh-7C-r80"/>
+                                            <outlet property="titleLabel" destination="nv6-wj-4pP" id="Ufm-56-5qJ"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
                                 <connections>
                                     <outlet property="dataSource" destination="JFy-Dv-RJk" id="gsi-s5-Bn1"/>
                                     <outlet property="delegate" destination="JFy-Dv-RJk" id="lWM-9F-sGx"/>
@@ -869,7 +922,7 @@ OCT 2020 to Today</string>
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="MeasureTabCollectionViewCell" id="1M1-QK-S1f" customClass="MeasureTabCollectionViewCell" customModule="Psorcast" customModuleProvider="target">
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="MeasureTabCollectionViewCell" id="1M1-QK-S1f" customClass="TaskCollectionViewCell" customModule="Psorcast" customModuleProvider="target">
                                         <rect key="frame" x="101" y="0.0" width="212" height="120"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="tsO-pu-Zhx">
@@ -994,9 +1047,196 @@ OCT 2020 to Today</string>
             </objects>
             <point key="canvasLocation" x="1266.6666666666667" y="-2563.3928571428569"/>
         </scene>
+        <!--Deep Dive-->
+        <scene sceneID="BJ5-eG-1UL">
+            <objects>
+                <viewController storyboardIdentifier="DeepDiveCollectionViewController" id="Jgx-GD-ZuC" userLabel="Deep Dive" customClass="DeepDiveCollectionViewController" customModule="Psorcast" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="6qo-tU-Cbf">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iP9-dD-0B3" userLabel="Top Header">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="100"/>
+                                <color key="backgroundColor" systemColor="systemGreenColor" red="0.20392156859999999" green="0.78039215689999997" blue="0.34901960780000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KwO-hj-zWk" userLabel="BackButton">
+                                <rect key="frame" x="12" y="35.5" width="60" height="60"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="60" id="2NO-Qb-RFX"/>
+                                    <constraint firstAttribute="width" constant="60" id="G5E-On-bRf"/>
+                                </constraints>
+                                <state key="normal" image="BackDark"/>
+                                <connections>
+                                    <action selector="backButtonTapped" destination="Jgx-GD-ZuC" eventType="touchUpInside" id="RmP-Ql-gci"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="94q-2R-y1L">
+                                <rect key="frame" x="24" y="55" width="366" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xRo-zd-GdG" userLabel="Bottom Header">
+                                <rect key="frame" x="0.0" y="100" width="414" height="96.5"/>
+                                <color key="backgroundColor" red="0.20392156859999999" green="0.78039215689999997" blue="0.34901960780000002" alpha="0.22076882649999999" colorSpace="custom" customColorSpace="sRGB"/>
+                            </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You're almost there!" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YNE-5g-PYs">
+                                <rect key="frame" x="24" y="120" width="366" height="20.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progressViewStyle="bar" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="dNh-ju-AcT" customClass="StudyProgressView" customModule="Psorcast" customModuleProvider="target">
+                                <rect key="frame" x="24" y="164.5" width="307.5" height="9"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="8" id="HlC-P9-2mg"/>
+                                </constraints>
+                            </progressView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="20%" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lc4-yd-epR">
+                                <rect key="frame" x="355.5" y="158" width="34.5" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="Az5-IQ-ofS">
+                                <rect key="frame" x="0.0" y="196.5" width="414" height="665.5"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Ozj-7x-OGO">
+                                    <size key="itemSize" width="212" height="120"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="DeepDiveCollectionViewCell" id="B4x-9k-Dlx" customClass="DeepDiveCollectionViewCell" customModule="Psorcast" customModuleProvider="target">
+                                        <rect key="frame" x="101" y="0.0" width="212" height="120"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="C9m-mX-bVg">
+                                            <rect key="frame" x="0.0" y="0.0" width="212" height="120"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <subviews>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7GE-eE-gdO" userLabel="Left">
+                                                    <rect key="frame" x="0.0" y="0.0" width="212" height="120"/>
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1 minute" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="byx-C4-wWF">
+                                                            <rect key="frame" x="0.0" y="87" width="212" height="33"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="33" id="86z-4p-kD5"/>
+                                                            </constraints>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                                            <nil key="textColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="PsoriasisDrawMeasureIcon" translatesAutoresizingMaskIntoConstraints="NO" id="BAp-DC-pyV" userLabel="Activity Icon">
+                                                            <rect key="frame" x="71.5" y="0.0" width="69" height="69"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" secondItem="BAp-DC-pyV" secondAttribute="height" id="0Fj-IR-iPU"/>
+                                                            </constraints>
+                                                        </imageView>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2cQ-xo-4xc" customClass="RSDUnderlinedButton" customModule="ResearchUI">
+                                                            <rect key="frame" x="0.0" y="0.0" width="212" height="120"/>
+                                                            <inset key="titleEdgeInsets" minX="0.0" minY="43" maxX="0.0" maxY="0.0"/>
+                                                            <state key="normal" title="Sleep Check-In"/>
+                                                            <connections>
+                                                                <action selector="cellSelected" destination="B4x-9k-Dlx" eventType="touchUpInside" id="bSZ-bf-kfv"/>
+                                                            </connections>
+                                                        </button>
+                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Checkmark" translatesAutoresizingMaskIntoConstraints="NO" id="fZQ-T2-a3I" userLabel="Checkmark">
+                                                            <rect key="frame" x="116.5" y="0.0" width="24" height="22"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" secondItem="fZQ-T2-a3I" secondAttribute="height" multiplier="12:11" id="DUC-p5-GRj"/>
+                                                                <constraint firstAttribute="width" constant="24" id="FyH-6j-BpK"/>
+                                                            </constraints>
+                                                        </imageView>
+                                                    </subviews>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <constraints>
+                                                        <constraint firstItem="byx-C4-wWF" firstAttribute="top" secondItem="BAp-DC-pyV" secondAttribute="bottom" constant="18" id="1nO-DA-Ge7"/>
+                                                        <constraint firstItem="2cQ-xo-4xc" firstAttribute="leading" secondItem="7GE-eE-gdO" secondAttribute="leading" id="7Ea-sT-i8y"/>
+                                                        <constraint firstItem="BAp-DC-pyV" firstAttribute="centerX" secondItem="7GE-eE-gdO" secondAttribute="centerX" id="B74-M3-m9J"/>
+                                                        <constraint firstAttribute="trailing" secondItem="2cQ-xo-4xc" secondAttribute="trailing" id="D04-ue-lDW"/>
+                                                        <constraint firstItem="byx-C4-wWF" firstAttribute="leading" secondItem="7GE-eE-gdO" secondAttribute="leading" id="In9-2N-AzA"/>
+                                                        <constraint firstItem="fZQ-T2-a3I" firstAttribute="trailing" secondItem="BAp-DC-pyV" secondAttribute="trailing" id="OYN-6x-7hn"/>
+                                                        <constraint firstAttribute="bottom" secondItem="byx-C4-wWF" secondAttribute="bottom" id="SR5-rt-3Dk"/>
+                                                        <constraint firstItem="2cQ-xo-4xc" firstAttribute="top" secondItem="7GE-eE-gdO" secondAttribute="top" id="Uzi-wP-g0e"/>
+                                                        <constraint firstItem="BAp-DC-pyV" firstAttribute="top" secondItem="7GE-eE-gdO" secondAttribute="top" id="nXr-Y8-E98"/>
+                                                        <constraint firstAttribute="trailing" secondItem="byx-C4-wWF" secondAttribute="trailing" id="u1p-0x-TOx"/>
+                                                        <constraint firstAttribute="bottom" secondItem="2cQ-xo-4xc" secondAttribute="bottom" id="u9V-kB-B8j"/>
+                                                        <constraint firstItem="fZQ-T2-a3I" firstAttribute="top" secondItem="BAp-DC-pyV" secondAttribute="top" id="vQK-cM-XHR"/>
+                                                    </constraints>
+                                                </view>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="trailing" secondItem="7GE-eE-gdO" secondAttribute="trailing" id="ijy-7P-U77"/>
+                                                <constraint firstAttribute="bottom" secondItem="7GE-eE-gdO" secondAttribute="bottom" id="mKk-a9-JcH"/>
+                                                <constraint firstItem="7GE-eE-gdO" firstAttribute="top" secondItem="C9m-mX-bVg" secondAttribute="top" id="s7D-dw-xdC"/>
+                                                <constraint firstItem="7GE-eE-gdO" firstAttribute="leading" secondItem="C9m-mX-bVg" secondAttribute="leading" id="y25-Eh-5Tz"/>
+                                            </constraints>
+                                        </collectionViewCellContentView>
+                                        <size key="customSize" width="212" height="120"/>
+                                        <connections>
+                                            <outlet property="checkMarkView" destination="fZQ-T2-a3I" id="PcL-P8-sUy"/>
+                                            <outlet property="imageView" destination="BAp-DC-pyV" id="wp0-L4-p51"/>
+                                            <outlet property="titleButton" destination="2cQ-xo-4xc" id="1dS-x6-0qu"/>
+                                            <outlet property="titleLabel" destination="byx-C4-wWF" id="Fjs-Ox-abW"/>
+                                        </connections>
+                                    </collectionViewCell>
+                                </cells>
+                                <connections>
+                                    <outlet property="dataSource" destination="Jgx-GD-ZuC" id="Xad-c0-sFH"/>
+                                    <outlet property="delegate" destination="Jgx-GD-ZuC" id="3HA-ys-tkG"/>
+                                </connections>
+                            </collectionView>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="d79-X5-KjE" firstAttribute="bottom" secondItem="Az5-IQ-ofS" secondAttribute="bottom" id="1tf-au-2ew"/>
+                            <constraint firstItem="94q-2R-y1L" firstAttribute="leading" secondItem="d79-X5-KjE" secondAttribute="leading" constant="24" id="2Cd-Js-cOJ"/>
+                            <constraint firstItem="YNE-5g-PYs" firstAttribute="top" secondItem="iP9-dD-0B3" secondAttribute="bottom" constant="20" id="3Lz-97-OFa"/>
+                            <constraint firstItem="Az5-IQ-ofS" firstAttribute="top" secondItem="xRo-zd-GdG" secondAttribute="bottom" id="3UX-qi-Wd4"/>
+                            <constraint firstItem="Lc4-yd-epR" firstAttribute="leading" secondItem="dNh-ju-AcT" secondAttribute="trailing" constant="24" id="3cT-uJ-ZxZ"/>
+                            <constraint firstItem="KwO-hj-zWk" firstAttribute="leading" secondItem="d79-X5-KjE" secondAttribute="leading" constant="12" id="6kW-aF-3D5"/>
+                            <constraint firstItem="xRo-zd-GdG" firstAttribute="leading" secondItem="d79-X5-KjE" secondAttribute="leading" id="6pH-WQ-IdY"/>
+                            <constraint firstItem="xRo-zd-GdG" firstAttribute="top" secondItem="iP9-dD-0B3" secondAttribute="bottom" id="89x-ci-tb5"/>
+                            <constraint firstItem="d79-X5-KjE" firstAttribute="trailing" secondItem="Lc4-yd-epR" secondAttribute="trailing" constant="24" id="Czy-Hb-Dyg"/>
+                            <constraint firstItem="iP9-dD-0B3" firstAttribute="bottom" secondItem="94q-2R-y1L" secondAttribute="bottom" constant="24" id="D7T-ZA-TRO"/>
+                            <constraint firstItem="xRo-zd-GdG" firstAttribute="trailing" secondItem="d79-X5-KjE" secondAttribute="trailing" id="H1c-nM-qg6"/>
+                            <constraint firstItem="d79-X5-KjE" firstAttribute="trailing" secondItem="94q-2R-y1L" secondAttribute="trailing" constant="24" id="MDh-bS-NRN"/>
+                            <constraint firstItem="Az5-IQ-ofS" firstAttribute="leading" secondItem="d79-X5-KjE" secondAttribute="leading" id="RyG-Ir-iAr"/>
+                            <constraint firstItem="Lc4-yd-epR" firstAttribute="centerY" secondItem="dNh-ju-AcT" secondAttribute="centerY" id="SPt-dX-Rhr"/>
+                            <constraint firstItem="iP9-dD-0B3" firstAttribute="leading" secondItem="d79-X5-KjE" secondAttribute="leading" id="TUW-b3-fi6"/>
+                            <constraint firstItem="xRo-zd-GdG" firstAttribute="bottom" secondItem="dNh-ju-AcT" secondAttribute="bottom" constant="24" id="UOa-dK-VRR"/>
+                            <constraint firstItem="d79-X5-KjE" firstAttribute="trailing" secondItem="YNE-5g-PYs" secondAttribute="trailing" constant="24" id="X5n-YO-MDV"/>
+                            <constraint firstItem="94q-2R-y1L" firstAttribute="top" secondItem="d79-X5-KjE" secondAttribute="top" constant="11" id="cXJ-Xv-lLS"/>
+                            <constraint firstItem="YNE-5g-PYs" firstAttribute="leading" secondItem="d79-X5-KjE" secondAttribute="leading" constant="24" id="fU7-JU-Asv"/>
+                            <constraint firstItem="dNh-ju-AcT" firstAttribute="top" secondItem="YNE-5g-PYs" secondAttribute="bottom" constant="24" id="gMG-u7-XS7"/>
+                            <constraint firstItem="KwO-hj-zWk" firstAttribute="centerY" secondItem="94q-2R-y1L" secondAttribute="centerY" id="hac-15-ZUW"/>
+                            <constraint firstItem="dNh-ju-AcT" firstAttribute="leading" secondItem="YNE-5g-PYs" secondAttribute="leading" id="nrp-SW-yyi"/>
+                            <constraint firstItem="iP9-dD-0B3" firstAttribute="top" secondItem="6qo-tU-Cbf" secondAttribute="top" id="oSh-RD-dUp"/>
+                            <constraint firstItem="iP9-dD-0B3" firstAttribute="trailing" secondItem="d79-X5-KjE" secondAttribute="trailing" id="pSV-Ii-DXD"/>
+                            <constraint firstItem="d79-X5-KjE" firstAttribute="trailing" secondItem="Az5-IQ-ofS" secondAttribute="trailing" id="qrh-Gz-YmW"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="d79-X5-KjE"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="Measure" image="MeasureTabIcon" id="wK5-iR-Rty"/>
+                    <connections>
+                        <outlet property="bottomHeader" destination="xRo-zd-GdG" id="mh9-Xv-6G8"/>
+                        <outlet property="collectionView" destination="Az5-IQ-ofS" id="Tkh-jZ-tpv"/>
+                        <outlet property="headerTitleLabel" destination="94q-2R-y1L" id="Mry-D0-p8y"/>
+                        <outlet property="progressBar" destination="dNh-ju-AcT" id="sKy-0K-XQj"/>
+                        <outlet property="progressPercentageLabel" destination="Lc4-yd-epR" id="TrR-ll-5SY"/>
+                        <outlet property="progressTitleLabel" destination="YNE-5g-PYs" id="hmc-bD-wgK"/>
+                        <outlet property="topHeader" destination="iP9-dD-0B3" id="79M-MQ-Kkd"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Lra-hA-EeB" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3124.6376811594205" y="-877.23214285714278"/>
+        </scene>
     </scenes>
     <resources>
         <image name="AppHeader" width="241" height="41"/>
+        <image name="BackDark" width="30" height="31"/>
         <image name="Checkmark" width="24" height="24"/>
         <image name="DemoResearchTabBody" width="1210" height="780"/>
         <image name="DemoResearchTabHeader" width="1392" height="358"/>
