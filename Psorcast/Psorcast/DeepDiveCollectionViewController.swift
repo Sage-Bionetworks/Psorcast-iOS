@@ -215,8 +215,14 @@ open class DeepDiveCollectionViewController: UIViewController, UICollectionViewD
         self.itemIndex = itemIndex
         self.titleLabel?.text = detail
         self.titleButton?.setTitle(taskTitle, for: .normal)
-        self.imageView?.sd_imageIndicator = SDWebImageActivityIndicator.gray
-        self.imageView?.sd_setImage(with: imageUrl, completed: nil)
+        
+        if let url = imageUrl {
+            self.imageView?.sd_imageIndicator = SDWebImageActivityIndicator.gray
+            self.imageView?.sd_setImage(with: url, completed: nil)
+        } else {
+            self.imageView?.image = UIImage(named: "MeasureDeepDive")
+        }
+        
         self.checkMarkView?.isHidden = !isComplete
     };
 }
