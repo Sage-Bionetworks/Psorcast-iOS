@@ -166,4 +166,5 @@ public struct DeepDiveSortedTask: Decodable {
     public var identifier: String
     public var title: String
     public var detail: String?
+    public var imageUrl: String?
 }

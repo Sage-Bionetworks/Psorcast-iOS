@@ -36,7 +36,7 @@ import BridgeApp
 import BridgeSDK
 import MotorControl
 
-open class MeasureTabViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, MeasureTabCollectionViewCellDelegate, RSDTaskViewControllerDelegate, NSFetchedResultsControllerDelegate {
+open class MeasureTabViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, TaskCollectionViewCellDelegate, RSDTaskViewControllerDelegate, NSFetchedResultsControllerDelegate {
         
     /// Header views
     @IBOutlet weak var topHeader: UIView!
@@ -53,8 +53,7 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
     
     /// Before you unlocked your insight, it will show this view
     @IBOutlet weak var insightNotAchievedView: UIView!
-    @IBOutlet weak var insightProgressBar: UIProgressView!
-    @IBOutlet weak var insightProgressBarHeight: NSLayoutConstraint!
+    @IBOutlet weak var insightProgressBar: StudyProgressView!
     @IBOutlet weak var insightAchievedImage: UIImageView!
         
     /// The current scheduled activities, these are maintianed separately from
@@ -176,13 +175,6 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
         self.gridLayout.collectionViewWidth = self.collectionView.bounds.width
         // Refresh collection view sizes
         self.setupCollectionViewSizes()
-        
-        // Make progress bar rounded
-        let radius = self.insightProgressBarHeight.constant / 2
-        self.insightProgressBar.layer.cornerRadius = radius
-        self.insightProgressBar.clipsToBounds = true
-        self.insightProgressBar.layer.sublayers![1].cornerRadius = radius
-        self.insightProgressBar.subviews[1].clipsToBounds = true
     }
     
     func refreshUI() {
@@ -305,7 +297,6 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
     func updateDesignSystem() {
         let design = AppDelegate.designSystem
         let primary = design.colorRules.backgroundPrimary
-        let accent = design.colorRules.palette.accent.normal
         
         self.topHeader.backgroundColor = primary.color
         self.bottomHeader.backgroundColor = primary.color.withAlphaComponent(0.15)
@@ -323,9 +314,10 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
         self.weekActivitiesTimerLabel.textColor = design.colorRules.textColor(on: primary, for: .body)
         self.weekActivitiesTimerLabel.font = design.fontRules.font(for: .body)
         
-        self.insightProgressBar.progressViewStyle = .bar
-        self.insightProgressBar.tintColor = accent.color
-        self.insightProgressBar.backgroundColor = RSDColor.white
+        let background = RSDColorTile(RSDColor.white, usesLightStyle: false)
+        self.insightProgressBar.setDesignSystem(design, with: background)
+        // Override the background color that defaults to light gray
+        self.insightProgressBar.backgroundColor = UIColor.white
         
         self.insightUnlockedTitle.textColor = design.colorRules.textColor(on: primary, for: .mediumHeader)
         self.insightUnlockedTitle.font = design.fontRules.font(for: .mediumHeader)
@@ -583,7 +575,7 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
         let itemIndex = self.gridLayout.itemIndex(for: indexPath)
         let translatedIndexPath = IndexPath(item: itemIndex, section: 0)
 
-        if let measureCell = cell as? MeasureTabCollectionViewCell {
+        if let measureCell = cell as? TaskCollectionViewCell {
             measureCell.setDesignSystem(AppDelegate.designSystem, with: RSDColorTile(RSDColor.white, usesLightStyle: true))
             
             measureCell.delegate = self
@@ -648,10 +640,10 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
     }
 }
 
-/// `MeasureTabCollectionViewCell` shows a vertically stacked image icon, title button, and title label.
-@IBDesignable open class MeasureTabCollectionViewCell: RSDDesignableCollectionViewCell {
+/// `TaskCollectionViewCell` shows a vertically stacked image icon, title button, and title label.
+@IBDesignable open class TaskCollectionViewCell: RSDDesignableCollectionViewCell {
 
-    weak var delegate: MeasureTabCollectionViewCellDelegate?
+    weak var delegate: TaskCollectionViewCellDelegate?
     
     let kCollectionCellVerticalItemSpacing = CGFloat(6)
     
@@ -667,7 +659,6 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
         
         if self.titleLabel?.text != title {
             // Check for same title, to avoid UILabel flash update animation
-            // TODO: mdephillips 3/11/20 this still didn't fix the flash
             self.titleLabel?.text = title
         }
         
@@ -689,6 +680,9 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
         titleLabel?.textColor = designSystem.colorRules.textColor(on: contentTile, for: .microDetail)
         titleLabel?.font = designSystem.fontRules.baseFont(for: .microDetail)
         titleButton?.setDesignSystem(designSystem, with: contentTile)
+        titleButton?.titleLabel?.numberOfLines = 1
+        titleButton?.titleLabel?.minimumScaleFactor = 0.5
+        titleButton?.titleLabel?.adjustsFontSizeToFitWidth = true
     }
 
     override open func setDesignSystem(_ designSystem: RSDDesignSystem, with background: RSDColorTile) {
@@ -701,7 +695,7 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
     }
 }
 
-protocol MeasureTabCollectionViewCellDelegate: class {
+protocol TaskCollectionViewCellDelegate: class {
     func didTapItem(for itemIndex: Int)
 }
 

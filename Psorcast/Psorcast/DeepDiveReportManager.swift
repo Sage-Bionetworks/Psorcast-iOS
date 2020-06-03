@@ -104,7 +104,7 @@ open class DeepDiveReportManager: SBAReportManager {
         var items = [DeepDiveItem]()
         for item in sortOrder {
             if let matchingTask = taskList.first(where: { $0.identifier == item.identifier }) {
-                items.append(DeepDiveItem(title: item.title, detail: item.detail, task: matchingTask))
+                items.append(DeepDiveItem(title: item.title, detail: item.detail, imageUrl: item.imageUrl, task: matchingTask))
             }
         }
         return items
@@ -114,6 +114,7 @@ open class DeepDiveReportManager: SBAReportManager {
 public struct DeepDiveItem {
     public var title: String?
     public var detail: String?
+    public var imageUrl: String?
     public var task: RSDTask
 }
 

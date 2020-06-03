@@ -36,7 +36,7 @@ import BridgeApp
 import BridgeSDK
 import MotorControl
 
-class TryItFirstTaskTableViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, MeasureTabCollectionViewCellDelegate, RSDTaskViewControllerDelegate {
+class TryItFirstTaskTableViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, TaskCollectionViewCellDelegate, RSDTaskViewControllerDelegate {
     
 
     let scheduleManager = TryItFirstTaskScheduleManager()
@@ -130,7 +130,7 @@ class TryItFirstTaskTableViewController: UIViewController, UICollectionViewDataS
         let itemIndex = self.gridLayout.itemIndex(for: indexPath)
         let translatedIndexPath = IndexPath(item: itemIndex, section: 0)
 
-        if let measureCell = cell as? MeasureTabCollectionViewCell {
+        if let measureCell = cell as? TaskCollectionViewCell {
             measureCell.setDesignSystem(AppDelegate.designSystem, with: RSDColorTile(RSDColor.white, usesLightStyle: true))
             
             measureCell.delegate = self

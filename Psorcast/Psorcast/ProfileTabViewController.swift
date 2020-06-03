@@ -141,15 +141,11 @@ class ProfileTabViewController: UIViewController, UITableViewDelegate, UITableVi
             cell.setDesignSystem(self.design, with: RSDColorTile(RSDColor.white, usesLightStyle: false))
             
             let deepDiveProgress = self.deepDiveManager.deepDiveProgress
-            cell.titleLabel?.text = nil
-            if deepDiveProgress <= 0 {                cell.actionButton?.setTitle(Localization.localizedString("PROFILE_DEEP_DIVE_NO_ITEMS_BUTTON_TITLE"), for: .normal)
-                cell.titleLabel?.text = Localization.localizedString("PROFILE_DEEP_DIVE_NO_ITEMS_TITLE")
-            } else if deepDiveProgress < 0.5 {                cell.actionButton?.setTitle(Localization.localizedString("PROFILE_DEEP_DIVE_SOME_ITEMS_BUTTON_TITLE"), for: .normal)
-            } else {                cell.actionButton?.setTitle(Localization.localizedString("PROFILE_DEEP_DIVE_MOST_ITEMS_BUTTON_TITLE"), for: .normal)
-            }
+            cell.titleLabel?.text = self.deepDiveTitle(for: deepDiveProgress)
+            cell.actionButton?.setTitle(self.deepDiveButtonTitle(for: deepDiveProgress), for: .normal)
                         
             cell.progressBar?.progress = deepDiveProgress
-            cell.progressLabel?.text = "\(round(deepDiveProgress))%"
+            cell.progressLabel?.text = "\(Int(round(deepDiveProgress * 100)))%"
             
             return cell
         }
@@ -180,10 +176,31 @@ class ProfileTabViewController: UIViewController, UITableViewDelegate, UITableVi
         return cell
     }
     
+    func deepDiveButtonTitle(for progress: Float) -> String {
+        if progress <= 0 {
+            return Localization.localizedString("PROFILE_DEEP_DIVE_NO_ITEMS_BUTTON_TITLE")
+        } else if progress < 1 {
+            return Localization.localizedString("PROFILE_DEEP_DIVE_SOME_ITEMS_BUTTON_TITLE")
+        } else {
+            return Localization.localizedString("PROFILE_DEEP_DIVE_ALL_ITEMS_BUTTON_TITLE")
+        }
+    }
+    
+    func deepDiveTitle(for progress: Float) -> String {
+        if progress <= 0 {
+            return Localization.localizedString("PROFILE_DEEP_DIVE_NO_ITEMS_TITLE")
+        } else if progress < 1 {
+            return Localization.localizedString("PROFILE_DEEP_DIVE_SOME_ITEMS_TITLE")
+        } else {
+            return Localization.localizedString("PROFILE_DEEP_DIVE_ALL_ITEMS_TITLE")
+        }
+    }
+    
     func showDeepDiveViewController() {
-        let vc = DeepDiveTableViewController()
-        vc.deepDiveItems = DeepDiveReportManager.shared.deepDiveTaskItems
-        self.present(vc, animated: true, completion: nil)
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let vc = storyboard.instantiateViewController(withIdentifier: String(describing: DeepDiveCollectionViewController.self))
+        vc.modalPresentationStyle = .fullScreen
+        self.show(vc, sender: self)
     }
     
     public func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -252,7 +269,7 @@ class ProfileTabViewController: UIViewController, UITableViewDelegate, UITableVi
     
     public func tableView(_ tableView: UITableView, didHighlightRowAt indexPath: IndexPath) {
         if let cell = tableView.cellForRow(at: indexPath) {
-            let background = RSDColorTile(RSDColor.white, usesLightStyle: true)
+            let background = RSDColorTile(RSDColor.white, usesLightStyle: false)
             cell.contentView.backgroundColor = self.design.colorRules.tableCellBackground(on: background, isSelected: true).color
         }
     }
@@ -338,28 +355,13 @@ open class ProfileTableViewCell: RSDSelectionTableViewCell {
 open class DeepDiveProfileTableItem: RSDButtonCell {
     
     @IBOutlet public weak var titleLabel: UILabel?
-    @IBOutlet public weak var progressBar: UIProgressView?
+    @IBOutlet public weak var progressBar: StudyProgressView?
     @IBOutlet public weak var progressLabel: UILabel?
-    
-    @IBOutlet public weak var progressBarHeight: NSLayoutConstraint?
-    
-    override open func awakeFromNib() {
-        super.awakeFromNib()
-        
-        // Make progress bar rounded
-        let radius = (self.progressBarHeight?.constant ?? 0) / 2
-        self.progressBar?.layer.cornerRadius = radius
-        self.progressBar?.clipsToBounds = true
-        self.progressBar?.layer.sublayers![1].cornerRadius = radius
-        self.progressBar?.subviews[1].clipsToBounds = true
-    }
     
     override open func setDesignSystem(_ designSystem: RSDDesignSystem, with background: RSDColorTile) {
         super.setDesignSystem(designSystem, with: background)
         
-        self.progressBar?.progressViewStyle = .bar
-        self.progressBar?.tintColor = designSystem.colorRules.palette.accent.normal.color
-        self.progressBar?.backgroundColor = RSDColorMatrix.shared.colorKey(for: .palette(.cloud)).colorTiles.first?.color ?? UIColor.white
+        self.progressBar?.setDesignSystem(designSystem, with: background)
         
         self.titleLabel?.font = self.designSystem?.fontRules.font(for: .body)
         self.titleLabel?.textColor = self.designSystem?.colorRules.textColor(on: background, for: .body)
