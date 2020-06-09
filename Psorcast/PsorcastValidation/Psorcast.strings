@@ -141,3 +141,6 @@
 "PROFILE_DEEP_DIVE_SOME_ITEMS_BUTTON_TITLE" = "Keep going!";
 "PROFILE_DEEP_DIVE_ALL_ITEMS_BUTTON_TITLE" = "Update my answers";
 "PROFILE_PSORCAST_DEEP_DIVE" = "Psorcast Deep Dive";
+
+"DIGITAL_JAR_OPEN_INWARD_SCORE" = "Inward\nSymmetry\nScore";
+"DIGITAL_JAR_OPEN_OUTWARD_SCORE" = "Outward\nSymmetry\nScore";
