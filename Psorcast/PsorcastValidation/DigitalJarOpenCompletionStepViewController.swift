@@ -58,15 +58,14 @@ open class DigitalJarOpenCompletionStepViewController: RSDStepViewController, UI
     public let inwardResultIdentifier = "inwardRatio"
     public let outwardResultIdentifier = "outwardRatio"
     
-    public let sectionDividerHeight = CGFloat(4)
+    public let sectionDividerHeight = CGFloat(12)
+    public let sectionArmTitleHeight = CGFloat(36)
         
     /// The collection view associated with this view controller.
     @IBOutlet open var collectionView: UICollectionView!
-    
-    @IBOutlet open var leftArmLabel: UILabel!
-    @IBOutlet open var rightArmLabel: UILabel!
-    @IBOutlet open var leftArmLeading: NSLayoutConstraint!
-    @IBOutlet open var rightArmLeading: NSLayoutConstraint!
+        
+    @IBOutlet open var collectionViewBottom: NSLayoutConstraint!
+    @IBOutlet open var collectionViewTop: NSLayoutConstraint!
     
     open var completionStep: DigitalJarOpenCompletionStepObject? {
         return self.step as? DigitalJarOpenCompletionStepObject
@@ -74,18 +73,46 @@ open class DigitalJarOpenCompletionStepViewController: RSDStepViewController, UI
     
     let collectionViewColumns = 3
     let collectionViewRows = 2
-    let collectionViewCellSpacing: CGFloat = 16
     
     let design = AppDelegate.designSystem
     
+    open var cellWidth: CGFloat {
+        return collectionView.bounds.width / CGFloat(collectionViewColumns)
+    }
+    
+    open var cellHeight: CGFloat {
+        // Since the collectionview size can be dynamic, let's measure it
+        // based on the space between the header and the footer
+        guard let footerY = self.navigationFooter?.frame.origin.y,
+            let headerY = self.navigationHeader?.frame.origin.y,
+            let headerHeight = self.navigationHeader?.bounds.height else {
+            return 0
+        }
+        let collectionViewHeight = footerY - (headerY + headerHeight)
+        
+        let width = self.cellWidth
+        let aspectRatio = CGFloat(4.0 / 3.0)
+        let aspectHeight = width * aspectRatio
+        let fullHeight = (collectionViewHeight - sectionDividerHeight - sectionArmTitleHeight) / CGFloat(collectionViewRows)
+        
+        var height = fullHeight
+        if aspectHeight < fullHeight {
+            height = aspectHeight
+            
+            let contentHeight = self.sectionDividerHeight + self.sectionArmTitleHeight + (2 * height)
+            let margin = CGFloat(0.5 * (collectionViewHeight - contentHeight))
+            // Vertical center of the collectionview
+            self.collectionViewTop.constant = margin
+            self.collectionViewBottom.constant = margin
+        } else {
+            self.collectionViewTop.constant = 0
+            self.collectionViewBottom.constant = 0
+        }
+        return height
+    }
+    
     open var collectionCellSize: CGSize {
-        let width = ((collectionView.bounds.width - (CGFloat(collectionViewColumns + 1) * collectionViewCellSpacing)) / CGFloat(collectionViewColumns))
-        
-        let height = (((collectionView.bounds.height - sectionDividerHeight) - (CGFloat(collectionViewColumns + 1) * collectionViewCellSpacing)) / CGFloat(collectionViewRows))
-        
-        
-        
-        return CGSize(width: CGFloat(Int(width)), height: CGFloat(Int(height)))
+        return CGSize(width: CGFloat(Int(self.cellWidth)), height: CGFloat(Int(self.cellHeight)))
     }
     
     override open func viewDidLoad() {
@@ -93,15 +120,16 @@ open class DigitalJarOpenCompletionStepViewController: RSDStepViewController, UI
         
         if let flowLayout = self.collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
             flowLayout.headerReferenceSize = CGSize(width: 0, height: 0)
-            flowLayout.sectionInset = UIEdgeInsets(top: collectionViewCellSpacing, left: collectionViewCellSpacing, bottom: 0, right: collectionViewCellSpacing)
-            flowLayout.minimumInteritemSpacing = collectionViewCellSpacing
-            flowLayout.minimumLineSpacing = collectionViewCellSpacing
+            flowLayout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+            flowLayout.minimumInteritemSpacing = 0
+            flowLayout.minimumLineSpacing = 0
             flowLayout.itemSize = self.collectionCellSize
         }
         
         self.collectionView.register(RotationImageCollectionViewCell.self, forCellWithReuseIdentifier: String(describing: RotationImageCollectionViewCell.self))
         self.collectionView.register(RotationScoreCollectionViewCell.self, forCellWithReuseIdentifier: String(describing: RotationScoreCollectionViewCell.self))
         self.collectionView.register(SectionHeaderDividerView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: String(describing: SectionHeaderDividerView.self))
+        self.collectionView.register(LeftRightArmHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: String(describing: LeftRightArmHeaderView.self))
     }
     
     override open func viewWillLayoutSubviews() {
@@ -109,30 +137,16 @@ open class DigitalJarOpenCompletionStepViewController: RSDStepViewController, UI
 
         // Invalidating the layout is necessary to get the cell size correct.
         collectionView.collectionViewLayout.invalidateLayout()
-        
-        // Adjust arm text to show over top designated column
-        self.leftArmLeading.constant = collectionViewCellSpacing
-        self.rightArmLeading.constant = self.collectionCellSize.width + (2 * collectionViewCellSpacing)
     }
     
     /// Override the set up of the header to set the background color for the table view and adjust the
     /// minimum height.
     open override func setupHeader(_ header: RSDStepNavigationView) {
         super.setupHeader(header)
-        
+
         self.collectionView.reloadData()
         // Invalidating the layout is necessary to get the cell size correct.
         self.collectionView.collectionViewLayout.invalidateLayout()
-        
-        let armTextColor = (RSDColorMatrix.shared.colorKey(for: .palette(.cloud)).colorTiles.last?.color ?? UIColor.gray)
-        
-        self.leftArmLabel.font = designSystem.fontRules.font(for: .microHeader)
-        self.leftArmLabel.textColor = armTextColor
-        self.leftArmLabel.text = Localization.localizedString("LEFT_ARM").uppercased()
-        
-        self.rightArmLabel.font = designSystem.fontRules.font(for: .microHeader)
-        self.rightArmLabel.textColor = armTextColor
-        self.rightArmLabel.text = Localization.localizedString("RIGHT_ARM").uppercased()
     }
     
     /// The rotation amount for the specified step.
@@ -153,15 +167,31 @@ open class DigitalJarOpenCompletionStepViewController: RSDStepViewController, UI
     }
     
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        if section == 1 {
+        if section == 0 {
+            return CGSize(width: collectionView.bounds.width, height: self.sectionArmTitleHeight)
+        } else if section == 1 {
             return CGSize(width: collectionView.bounds.width, height: self.sectionDividerHeight)
         }
         return CGSize.zero
     }
     
     public func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        
+        if indexPath.section == 0,
+            let sectionHeader = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: String(describing: LeftRightArmHeaderView.self), for: indexPath) as? LeftRightArmHeaderView {
+            
+            sectionHeader.setDesignSystem(designSystem, with: self.defaultBackgroundColorTile(for: .body))
+            sectionHeader.setArmCellWidth(cellWidth: self.cellWidth, cellSpacing: RotationImageCollectionViewCell.cellSpacing)
+        
+            return sectionHeader
+        }
+       
         let sectionHeader = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: String(describing: SectionHeaderDividerView.self), for: indexPath)
-        sectionHeader.backgroundColor = (RSDColorMatrix.shared.colorKey(for: .palette(.cloud)).colorTiles.first?.color ?? UIColor.white).withAlphaComponent(0.5)
+        
+        if let dividerHeader = sectionHeader as? SectionHeaderDividerView {
+            dividerHeader.dividerView?.backgroundColor = (RSDColorMatrix.shared.colorKey(for: .palette(.cloud)).colorTiles.first?.color ?? UIColor.white).withAlphaComponent(0.5)
+        }
+        
         return sectionHeader
     }
     
@@ -330,6 +360,8 @@ public enum RotationImageItem: Int {
 
 open class RotationScoreCollectionViewCell: RSDCollectionViewCell {
     
+    let kCellSpacing = CGFloat(16)
+    
     @IBOutlet public var titleLabel: UILabel?
     @IBOutlet public var scoreLabel: UILabel?
     
@@ -345,26 +377,30 @@ open class RotationScoreCollectionViewCell: RSDCollectionViewCell {
     
     private func commonInit() {
         titleLabel = UILabel()
-        titleLabel?.numberOfLines = 0
         contentView.addSubview(titleLabel!)
         titleLabel?.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel?.rsd_alignToSuperview([.leading, .trailing], padding: 0.0)
-        titleLabel?.rsd_alignCenterVertical(padding: -20) // 20 is estimated height of score label
+        titleLabel?.rsd_alignToSuperview([.leading, .trailing], padding: kCellSpacing)
+        titleLabel?.rsd_alignCenterVertical(padding: -12) // 20 is estimated height of score label
         
         scoreLabel = UILabel()
         contentView.addSubview(scoreLabel!)
         scoreLabel?.translatesAutoresizingMaskIntoConstraints = false
-        scoreLabel?.rsd_alignToSuperview([.leading, .trailing], padding: 0.0)
-        scoreLabel?.rsd_alignBelow(view: titleLabel!, padding: 8)
+        scoreLabel?.rsd_alignToSuperview([.leading, .trailing], padding: kCellSpacing)
+        scoreLabel?.rsd_alignBelow(view: titleLabel!, padding: 0)
     }
     
     override open func setDesignSystem(_ designSystem: RSDDesignSystem, with background: RSDColorTile) {
         super.setDesignSystem(designSystem, with: background)
         
-        titleLabel?.font = designSystem.fontRules.font(for: .microHeader)
-        titleLabel?.textColor = designSystem.colorRules.textColor(on: background, for: .microHeader)
+        // We should make this larger than the biggest size we want, as it will auto-shrink to fit
+        titleLabel?.font = RSDFont.latoFont(ofSize: 22.0, weight: .regular)
+        titleLabel?.textColor = designSystem.colorRules.textColor(on: background, for: .body)
+        titleLabel?.adjustsFontSizeToFitWidth = true
+        titleLabel?.numberOfLines = 3
+        titleLabel?.minimumScaleFactor = 0.2
+        titleLabel?.lineBreakMode = .byTruncatingTail
         
-        scoreLabel?.font = designSystem.fontRules.font(for: .xSmallNumber)
+        scoreLabel?.font = RSDFont.latoFont(ofSize: 24.0, weight: .light)
         scoreLabel?.textColor = designSystem.colorRules.palette.accent.normal.color
     }
 }
@@ -372,7 +408,8 @@ open class RotationScoreCollectionViewCell: RSDCollectionViewCell {
 open class RotationImageCollectionViewCell: RSDCollectionViewCell {
     
     /// The additional amount on each border side of size for rotation image view compared to the countdown dial.
-    let kRotationImageViewSpacing = CGFloat(8)
+    public static let cellSpacing = CGFloat(16)
+    let kRotationDialSpacing = CGFloat(8)
     let kRotationDialWidth = CGFloat(8)
     
     let clockwiseImage = UIImage(named: "JarOpenClockwise")?.withRenderingMode(.alwaysTemplate)
@@ -417,14 +454,16 @@ open class RotationImageCollectionViewCell: RSDCollectionViewCell {
         rotationDirectionImageView = UIImageView()
         contentView.addSubview(rotationDirectionImageView!)
         rotationDirectionImageView?.translatesAutoresizingMaskIntoConstraints = false
-        rotationDirectionImageView?.rsd_alignAllToSuperview(padding: 0.0)
+        rotationDirectionImageView?.rsd_alignToSuperview([.leading, .top, .bottom], padding: RotationImageCollectionViewCell.cellSpacing)
+        rotationDirectionImageView?.rsd_alignToSuperview([.trailing], padding: 0)
                      
         rotationDial = RSDCountdownDial()
         contentView.addSubview(rotationDial!)
         rotationDial?.dialWidth = kRotationDialWidth
         rotationDial?.ringWidth = kRotationDialWidth
         rotationDial?.translatesAutoresizingMaskIntoConstraints = false
-        rotationDial?.rsd_alignAllToSuperview(padding: kRotationImageViewSpacing)
+        rotationDial?.rsd_alignToSuperview([.leading, .top, .bottom], padding: RotationImageCollectionViewCell.cellSpacing + kRotationDialSpacing)
+        rotationDial?.rsd_alignToSuperview([.trailing], padding: kRotationDialSpacing)
         
         rotationLabel = UILabel()
         rotationLabel?.numberOfLines = 1
@@ -434,7 +473,7 @@ open class RotationImageCollectionViewCell: RSDCollectionViewCell {
         contentView.addSubview(rotationLabel!)
         rotationLabel?.translatesAutoresizingMaskIntoConstraints = false
         rotationLabel?.rsd_alignCenterVertical(padding: 0.0)
-        rotationLabel?.rsd_alignCenterHorizontal(padding: 0.0)
+        rotationLabel?.rsd_alignCenterHorizontal(padding: RotationImageCollectionViewCell.cellSpacing / 2)
     }
     
     override open func setDesignSystem(_ designSystem: RSDDesignSystem, with background: RSDColorTile) {
@@ -448,8 +487,115 @@ open class RotationImageCollectionViewCell: RSDCollectionViewCell {
         let textColor = designSystem.colorRules.textColor(on: background, for: .smallNumber)
         
         rotationDirectionImageView?.tintColor = textColor
+        
+        rotationLabel?.textColor = textColor
+        rotationLabel?.font = RSDFont.latoFont(ofSize: 24.0, weight: .light)
     }
 }
 
 class SectionHeaderDividerView: UICollectionReusableView {
+    
+    @IBOutlet public var dividerView: UIView?
+    
+    public override init(frame: CGRect) {
+        super.init(frame:frame)
+        commonInit()
+    }
+
+    public required init?(coder aDecoder: NSCoder) {
+        super.init(coder:aDecoder)
+        commonInit()
+    }
+    
+    private func commonInit() {
+        // Add the title label.
+        self.dividerView = UIView()
+        self.addSubview(self.dividerView!)
+
+        self.dividerView?.rsd_alignToSuperview([.leading, .trailing], padding: 0)
+        self.dividerView?.rsd_alignToSuperview([.top, .bottom], padding: 4)
+        
+        setNeedsUpdateConstraints()
+    }
+}
+
+class LeftRightArmHeaderView: UICollectionReusableView, RSDViewDesignable {
+    
+    let kVerticalMargin: CGFloat = 8.0
+    
+    var leftArmLeading: NSLayoutConstraint?
+    var leftArmWidth: NSLayoutConstraint?
+    @IBOutlet public var leftArmLabel: UILabel?
+    var rightArmLeading: NSLayoutConstraint?
+    var rightArmWidth: NSLayoutConstraint?
+    @IBOutlet public var rightArmLabel: UILabel?
+    
+    var backgroundColorTile: RSDColorTile?
+    var designSystem: RSDDesignSystem?
+
+    public override init(frame: CGRect) {
+        super.init(frame:frame)
+        commonInit()
+    }
+
+    public required init?(coder aDecoder: NSCoder) {
+        super.init(coder:aDecoder)
+        commonInit()
+    }
+    
+    fileprivate static func titleLabelFont(for designSystem: RSDDesignSystem) -> UIFont {
+        return designSystem.fontRules.font(for: .mediumHeader)
+    }
+    
+    open func setArmCellWidth(cellWidth: CGFloat, cellSpacing: CGFloat) {
+        self.leftArmLeading?.constant = cellSpacing
+        self.leftArmWidth?.constant = cellWidth - cellSpacing
+        self.rightArmLeading?.constant = cellWidth + cellSpacing
+        self.rightArmWidth?.constant = cellWidth - cellSpacing
+    }
+
+    open func setDesignSystem(_ designSystem: RSDDesignSystem, with background: RSDColorTile) {
+        self.designSystem = designSystem
+        self.backgroundColorTile = background
+                
+        let armTextColor = (RSDColorMatrix.shared.colorKey(for: .palette(.cloud)).colorTiles.last?.color ?? UIColor.gray)
+        
+        self.leftArmLabel?.font = designSystem.fontRules.font(for: .mediumHeader)
+        self.leftArmLabel?.textColor = armTextColor
+        self.leftArmLabel?.text = Localization.localizedString("LEFT_ARM").uppercased()
+        
+        self.rightArmLabel?.font = designSystem.fontRules.font(for: .mediumHeader)
+        self.rightArmLabel?.textColor = armTextColor
+        self.rightArmLabel?.text = Localization.localizedString("RIGHT_ARM").uppercased()
+    }
+
+    private func commonInit() {
+        // Add the title label.
+        self.leftArmLabel = UILabel()
+        self.leftArmLabel?.numberOfLines = 1
+        self.leftArmLabel?.textAlignment = .center
+        self.leftArmLabel?.minimumScaleFactor = 0.2
+        self.leftArmLabel?.adjustsFontSizeToFitWidth = true
+        self.addSubview(self.leftArmLabel!)
+
+        self.leftArmLabel?.translatesAutoresizingMaskIntoConstraints = false
+        self.leftArmLabel?.rsd_alignToSuperview([.top, .bottom], padding: kVerticalMargin)
+        self.leftArmLeading = self.leftArmLabel?.rsd_alignToSuperview([.leading], padding: 0).first
+        self.leftArmWidth = self.leftArmLabel?.rsd_makeWidth(.equal, 0).first
+        
+        // Add the title label.
+        self.rightArmLabel = UILabel()
+        self.rightArmLabel?.numberOfLines = 1
+        self.rightArmLabel?.textAlignment = .center
+        self.rightArmLabel?.minimumScaleFactor = 0.2
+        self.rightArmLabel?.adjustsFontSizeToFitWidth = true
+        self.addSubview(self.rightArmLabel!)
+
+        self.rightArmLabel?.translatesAutoresizingMaskIntoConstraints = false
+        self.rightArmLabel?.rsd_alignToSuperview([.top, .bottom], padding: kVerticalMargin)
+        self.rightArmLeading = self.rightArmLabel?.rsd_alignToSuperview([.leading], padding: 0).first
+        self.rightArmWidth = self.rightArmLabel?.rsd_makeWidth(.equal, 0).first
+        
+        setNeedsUpdateConstraints()
+    }
 }
