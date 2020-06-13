@@ -299,7 +299,7 @@ open class PsoriasisDrawStepViewController: RSDStepViewController, ProcessorFini
   
             if let coverageResult = self.stepViewModel.parent?.taskResult.findResult(with: self.coverageResultId) as? RSDAnswerResultObject,
                 let percentCoverage = coverageResult.value as? Float {
-                self.navigationHeader?.titleLabel?.text = String(format: "%.2f%% Coverage", Float(truncating: (100*percentCoverage) as NSNumber))
+                self.navigationHeader?.titleLabel?.text = String(format: "%.1f%% Coverage", Float(truncating: (100*percentCoverage) as NSNumber))
             }
             
             if let zoneResult = self.stepViewModel.parent?.taskResult.findResult(with: self.selectedZonesResultId) as? SelectedIdentifiersResultObject {
