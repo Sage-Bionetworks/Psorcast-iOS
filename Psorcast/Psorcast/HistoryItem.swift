@@ -100,7 +100,7 @@ extension PsoriasisDrawHistoryItem {
     }
     
     func title() -> String? {
-        let floatStr = String(format: "%.2f", self.coverage)
+        let floatStr = String(format: "%.1f", self.coverage)
         return "\(floatStr)% Coverage"
     }
 }
