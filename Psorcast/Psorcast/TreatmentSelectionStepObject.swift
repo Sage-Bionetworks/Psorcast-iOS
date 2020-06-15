@@ -38,7 +38,7 @@ import BridgeAppUI
 public class TreatmentSelectionStepObject: RSDUIStepObject, RSDStepViewControllerVendor {
         
     private enum CodingKeys: String, CodingKey, CaseIterable {
-        case items, goBackOnSameTreatments
+        case items, goBackOnSameTreatments, sections
     }
     
     public var items = [TreatmentItem]() {
@@ -58,14 +58,13 @@ public class TreatmentSelectionStepObject: RSDUIStepObject, RSDStepViewControlle
     
     private func refreshSorting() {
         let otherSectionId = self.otherSectionIdentifier
-        // Sort the items grouped by sectionIdentifier
-        // First, get the sorted unique set of sectionIdentifiers
-        let sectionArray = self.items.map({ $0.sectionIdentifier ?? otherSectionId })
-        let sectionSet = Set(sectionArray).sorted(by: { $0 < $1 })
+        if self.items.contains(where: { !self.sortedSections.contains($0.sectionIdentifier ?? "") }),
+            !self.sortedSections.contains(otherSectionId) {
+            self.sortedSections.append(otherSectionId)
+        }
         self.sortedItems = [String: [TreatmentItem]]()
-        self.sortedSections = Array(sectionSet)
         // Then, build the sorted map
-        for sectionIdentifier in sectionSet {
+        for sectionIdentifier in self.sortedSections {
             self.sortedItems[sectionIdentifier] = self.items.filter({ ($0.sectionIdentifier ?? otherSectionId) == sectionIdentifier })
         }
     }
@@ -83,6 +82,9 @@ public class TreatmentSelectionStepObject: RSDUIStepObject, RSDStepViewControlle
         if container.contains(.goBackOnSameTreatments) {
             self.goBackOnSameTreatments = try container.decode(Bool.self, forKey: .goBackOnSameTreatments)
         }
+        
+        let sections = try container.decode([TreatmentSectionItem].self, forKey: .sections)
+        self.sortedSections = sections.map({ $0.identifier })
         
         try super.init(from: decoder)
         
@@ -103,6 +105,7 @@ public class TreatmentSelectionStepObject: RSDUIStepObject, RSDStepViewControlle
         }
         subclassCopy.items = self.items
         subclassCopy.goBackOnSameTreatments = self.goBackOnSameTreatments
+        subclassCopy.sortedSections = self.sortedSections
     }
     
     public func instantiateViewController(with parent: RSDPathComponent?) -> (UIViewController & RSDStepController)? {
@@ -114,4 +117,8 @@ public struct TreatmentItem: Codable {
     public var identifier: String
     public var detail: String?
     public var sectionIdentifier: String?
+}
+
+public struct TreatmentSectionItem: Codable {
+    public var identifier: String
 }

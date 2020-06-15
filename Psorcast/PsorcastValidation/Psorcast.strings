@@ -100,7 +100,7 @@
 "TryItFirstInstruction2Text" = "You can track your treatments to see how and when they are working. You'll also have a record of how treatments worked in the past.";
 "TryItFirstInstruction3Text" = "You can view, export and share your Psorcast data however you would like. Your data is yours.";
 
-"OTHER_TREATMENT_SECTION_TITLE" = "Other treatments";
+"OTHER_TREATMENT_SECTION_TITLE" = "Other";
 "CURRENT_TREATMENTS_SECTION_TITLE" = "Current treatments";
 
 "TREATMENT_RENEWAL_TITLE_NO_BOLD" = "Activities renew in ";
