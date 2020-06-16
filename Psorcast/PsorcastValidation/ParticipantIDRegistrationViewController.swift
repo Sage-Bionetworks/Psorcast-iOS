@@ -102,7 +102,6 @@ class ParticipantIDRegistrationViewController: RSDStepViewController, UITextFiel
                 
                 self.resetDefaults(defaults: UserDefaults.standard)
                 self.resetDefaults(defaults: BridgeSDK.sharedUserDefaults())
-                HistoryDataManager.shared.flushStore()
                 
                 // TODO: mdephillips 5/4/20 delete sd web image cache and core data?                
                 // SDImageCache.shared().clearMemory()
@@ -111,6 +110,7 @@ class ParticipantIDRegistrationViewController: RSDStepViewController, UITextFiel
                 #if VALIDATION
                     self.goBack()
                 #else
+                    HistoryDataManager.shared.flushStore()
                     self.cancelTask(shouldSave: false)
                 #endif
             }
