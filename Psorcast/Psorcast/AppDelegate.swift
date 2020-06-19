@@ -104,7 +104,17 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate {
         ReminderManager.shared.setupNotifications()
         UNUserNotificationCenter.current().delegate = ReminderManager.shared
         
-        return super.application(application, willFinishLaunchingWithOptions: launchOptions)
+        guard super.application(application, willFinishLaunchingWithOptions: launchOptions) else {
+            return false
+        }
+        
+        // The SBAAppDelegate does not refresh the app config if we already have it
+        // To make sure it stays up to date, load it from web every time
+        if let _ = BridgeSDK.appConfig() {
+            SBABridgeConfiguration.shared.refreshAppConfig()
+        }
+        
+        return true
     }
     
     override func applicationDidBecomeActive(_ application: UIApplication) {
