@@ -233,11 +233,11 @@ OCT 2020 to Today</string>
                                                                                 <rect key="frame" x="0.0" y="57" width="381" height="289"/>
                                                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                             </imageView>
-                                                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Qup-aP-iD5" userLabel="Circular Progress" customClass="RSDCountdownDial" customModule="ResearchUI">
+                                                                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Qup-aP-iD5" userLabel="Circular Progress" customClass="RSDCountdownDial" customModule="ResearchUI">
                                                                                 <rect key="frame" x="142.5" y="153.5" width="96" height="96"/>
                                                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                             </view>
-                                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EzX-Aj-qXN">
+                                                                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EzX-Aj-qXN">
                                                                                 <rect key="frame" x="150.5" y="161.5" width="80" height="80"/>
                                                                                 <constraints>
                                                                                     <constraint firstAttribute="height" constant="80" id="cXY-oy-nl6"/>
@@ -1246,7 +1246,7 @@ OCT 2020 to Today</string>
         <image name="InsightIcon" width="34" height="34"/>
         <image name="Logo" width="436" height="74"/>
         <image name="MeasureTabIcon" width="31" height="16"/>
-        <image name="PlayButton" width="80" height="80"/>
+        <image name="PlayButton" width="10" height="11"/>
         <image name="ProfileTabIcon" width="27" height="27"/>
         <image name="PsoriasisDrawMeasureIcon" width="72" height="72"/>
         <image name="ResearchTabIcon" width="24" height="25"/>
