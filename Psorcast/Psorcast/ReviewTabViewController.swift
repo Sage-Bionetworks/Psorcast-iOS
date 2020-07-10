@@ -414,6 +414,7 @@ open class ReviewTabViewController: UIViewController, UITableViewDataSource, UIT
         
         reviewHeader.videoLoadingProgress?.isHidden = playButtonIsHidden || videoIsLoaded
         reviewHeader.videoLoadingProgress?.progress = CGFloat(videoProgress)
+        reviewHeader.exportVideoButton?.isHidden = !videoIsLoaded || playButtonIsHidden
         
         let title = MasterScheduleManager.shared.scheduledActivities.first(where: { $0.activityIdentifier == taskId })?.activity.label
         reviewHeader.headerTitleLabel?.text = title?.uppercased()
@@ -850,7 +851,7 @@ public class ReviewNotEnoughDataCollectionView: RSDCollectionViewCell {
 
 public class ReviewSectionHeader: UITableViewHeaderFooterView, RSDViewDesignable {
     
-    public static let headerHeight = CGFloat(48)
+    public static let headerHeight = CGFloat(64)
     
     public var backgroundColorTile: RSDColorTile?
     public var designSystem: RSDDesignSystem?
