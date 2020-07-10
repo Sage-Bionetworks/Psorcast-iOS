@@ -308,7 +308,7 @@ open class ImageDataManager {
         settings.footerLogo = UIImage(named: "VideoLogo")
         let whiteColor = RSDColorTile(RSDColor.white, usesLightStyle: false)
         settings.textColor = AppDelegate.designSystem.colorRules.textColor(on: whiteColor, for: .largeBody)
-        settings.textFont = AppDelegate.designSystem.fontRules.font(for: .largeBody)
+        settings.textFont = AppDelegate.designSystem.fontRules.font(for: .xLargeHeader)
         settings.footerText = footerText
         
         return settings
