@@ -48,14 +48,12 @@ open class ReviewTabViewController: UIViewController, UITableViewDataSource, UIT
     @IBOutlet weak var treatmentButton: UIButton!
     @IBOutlet weak var treatmentIndicator: UIButton!
     
-    let sectionHeaderHeight = CGFloat(48)
-    let sectionHeaderPadding = CGFloat(8)
     // 80% of screen width you can see about 10% of the next image cell
     var tableViewCellWidth: CGFloat {
         self.tableView.bounds.width * CGFloat(0.85)
     }
     var tableViewCellHeight: CGFloat {
-        return self.tableView.bounds.height - CGFloat(2 * self.sectionHeaderHeight)
+        return self.tableView.bounds.height - CGFloat(2 * ReviewSectionHeader.headerHeight)
     }
     
     // The image manager for the review tab
@@ -105,6 +103,8 @@ open class ReviewTabViewController: UIViewController, UITableViewDataSource, UIT
         self.treatmentButton.setTitle("", for: .normal)
         self.treatmentIndicator.isHidden = true
         self.updateDesignSystem()
+        
+        self.tableView.register(ReviewSectionHeader.self, forHeaderFooterViewReuseIdentifier: String(describing: ReviewSectionHeader.self))
     }
     
     func setupVideoCreatorNotifications() {
@@ -138,7 +138,8 @@ open class ReviewTabViewController: UIViewController, UITableViewDataSource, UIT
         }
         print("Process video update for taskId \(taskId) - \((loadingProgrss) * 100)%")
         self.taskRowState[self.allTaskRows[taskIdx]]?.videoLoadProgress = loadingProgrss
-        self.reloadCell(taskIdx: taskIdx)
+        guard let header = self.tableView?.headerView(forSection: taskIdx) as? ReviewSectionHeader else { return }
+        self.refreshHeader(reviewHeader: header, section: taskIdx)
     }
     
     func processExportStatusChanged(notification: Notification) {
@@ -155,7 +156,8 @@ open class ReviewTabViewController: UIViewController, UITableViewDataSource, UIT
         let filename = videoUrl.lastPathComponent
         print("Process export status update for taskId \(taskId) - \(filename) to \(exportStatus)")
         self.taskRowState[self.allTaskRows[taskIdx]]?.exportStatusList[filename] = exportStatus
-        self.reloadCell(taskIdx: taskIdx)
+        guard let header = self.tableView?.headerView(forSection: taskIdx) as? ReviewSectionHeader else { return }
+        self.refreshHeader(reviewHeader: header, section: taskIdx)
     }
     
     func reloadCell(taskIdx: Int, imageCelIdx: Int? = nil) {
@@ -280,6 +282,11 @@ open class ReviewTabViewController: UIViewController, UITableViewDataSource, UIT
         })
     }
     
+    @objc func playVideoButtonTapped(sender: UIButton) {
+        guard !self.allTaskRows.isEmpty && sender.tag < self.allTaskRows.count else { return }
+        self.playButtonTapped(with: self.allTaskRows[sender.tag])
+    }
+    
     func playButtonTapped(with taskIdentifier: RSDIdentifier) {
         guard let selectedRange = self.selectedTreatmentRange,
             let videoURL = ImageDataManager.shared.findVideoUrl(for: taskIdentifier.rawValue, with: selectedRange.startDate) else {
@@ -372,30 +379,51 @@ open class ReviewTabViewController: UIViewController, UITableViewDataSource, UIT
         guard self.allTaskRows.count > section else {
             return nil
         }
-        let header = UIView()
+        let header = self.tableView.dequeueReusableHeaderFooterView(withIdentifier: String(describing: ReviewSectionHeader.self))
         
-        let titleLabel = UILabel()
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        header.addSubview(titleLabel)
+        guard let reviewHeader = header as? ReviewSectionHeader else { return header }
         
-        let taskId = self.allTaskRows[section].rawValue
-        let title = MasterScheduleManager.shared.scheduledActivities.first(where: { $0.activityIdentifier == taskId })?.activity.label
-        
-        titleLabel.text = title?.uppercased()
-        titleLabel.textAlignment = .center
-        titleLabel.numberOfLines = 1
-        titleLabel.minimumScaleFactor = 0.5
-        titleLabel.adjustsFontSizeToFitWidth = true
-        titleLabel.textColor = designSystem.colorRules.textColor(on: designSystem.colorRules.backgroundPrimary, for: .microHeader)
-        titleLabel.font = designSystem.fontRules.font(for: .microHeader)
-        titleLabel.rsd_alignToSuperview([.leading, .trailing], padding: self.sectionHeaderPadding)
-        titleLabel.rsd_alignToSuperview([.top, .bottom], padding: self.sectionHeaderPadding)
+        self.refreshHeader(reviewHeader: reviewHeader, section: section)
         
         return header
     }
     
+    func refreshHeader(reviewHeader: ReviewSectionHeader, section: Int) {
+        reviewHeader.setDesignSystem(self.designSystem, with: self.designSystem.colorRules.backgroundPrimary)
+        
+        reviewHeader.exportVideoButton?.removeTarget(self, action: #selector(self.exportVideoCellTapped(sender:)), for: .touchUpInside)
+        reviewHeader.exportVideoButton?.addTarget(self, action: #selector(self.exportVideoCellTapped(sender:)), for: .touchUpInside)
+        
+        reviewHeader.playVideoButton?.removeTarget(self, action: #selector(self.playVideoButtonTapped(sender:)), for: .touchUpInside)
+        reviewHeader.playVideoButton?.addTarget(self, action: #selector(self.playVideoButtonTapped(sender:)), for: .touchUpInside)
+        
+        let taskRsdId = self.allTaskRows[section]
+        let taskId = taskRsdId.rawValue
+        let items = self.taskRowItemMap[taskRsdId]
+        
+        reviewHeader.exportVideoButton?.tag = section
+        reviewHeader.playVideoButton?.tag = section
+        
+        let playButtonIsHidden = (items?.count ?? 0) < 2
+        reviewHeader.playVideoButton?.isHidden = playButtonIsHidden
+
+        let videoProgress = self.videoProgress(with: taskRsdId)
+        let videoIsLoaded = !(videoProgress < Float(1))
+        reviewHeader.playVideoButton?.isEnabled = videoIsLoaded
+        reviewHeader.playVideoButton?.setTitle(Localization.localizedString("REVIEW_PLAY_VIDEO_BTN"), for: .normal)
+        
+        reviewHeader.videoLoadingProgress?.isHidden = playButtonIsHidden || videoIsLoaded
+        reviewHeader.videoLoadingProgress?.progress = CGFloat(videoProgress)
+        reviewHeader.exportVideoButton?.isHidden = !videoIsLoaded || playButtonIsHidden
+        
+        let title = MasterScheduleManager.shared.scheduledActivities.first(where: { $0.activityIdentifier == taskId })?.activity.label
+        reviewHeader.headerTitleLabel?.text = title?.uppercased()
+        
+        reviewHeader.refreshPlayButtonWidth()
+    }
+    
     public func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return self.sectionHeaderHeight
+        return ReviewSectionHeader.headerHeight
     }
     
     public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -420,6 +448,15 @@ open class ReviewTabViewController: UIViewController, UITableViewDataSource, UIT
         guard let taskVc = self.scheduleManager.createTaskViewController(for: taskIdentifier) else { return }
         taskVc.delegate = self
         self.present(taskVc, animated: true, completion: nil)
+    }
+    
+    @objc func exportVideoCellTapped(sender: UIButton) {
+        guard !self.allTaskRows.isEmpty && sender.tag < self.allTaskRows.count else { return }
+        self.exportTapped(with: nil, taskIdentifier: self.allTaskRows[sender.tag], cellIdx: 0)
+    }
+    
+    @objc func exportVideoTapped(taskId: String) {
+        self.exportTapped(with: nil, taskIdentifier: RSDIdentifier(rawValue: taskId), cellIdx: 0)
     }
     
     func exportTapped(with renderFrame: VideoCreator.RenderFrameUrl?, taskIdentifier: RSDIdentifier, cellIdx: Int) {
@@ -475,6 +512,10 @@ open class ReviewTabViewController: UIViewController, UITableViewDataSource, UIT
         
         PHPhotoLibrary.shared().performChanges({
             PHAssetChangeRequest.creationRequestForAssetFromVideo(atFileURL: video)
+            
+            DispatchQueue.main.async {
+                self.presentAlertWithOk(title: nil, message: Localization.localizedString("REVIEW_VIDEO_EXPORTED"), actionHandler: nil)
+            }
         })
     }
     
@@ -570,6 +611,9 @@ public class ReviewTableViewCell: RSDDesignableTableViewCell, UICollectionViewDe
     var taskIdentifier: RSDIdentifier?
     var historyItems = [HistoryItem]()
     
+    // This is a deprecated way of showing the video as the last cell
+    let showVideoCellsInCollectionView = false
+    
     public func scrollViewDidScroll(_ scrollView: UIScrollView) {
         guard let taskId = self.taskIdentifier else { return }
         self.delegate?.collectionViewScrolled(with: taskId, to: scrollView.contentOffset.x)
@@ -582,7 +626,10 @@ public class ReviewTableViewCell: RSDDesignableTableViewCell, UICollectionViewDe
     }
     
     public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return self.historyItems.count + 1
+        if self.historyItems.count <= 1 || showVideoCellsInCollectionView {
+            return self.historyItems.count + 1
+        }
+        return self.historyItems.count
     }
     
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -641,8 +688,9 @@ public class ReviewTableViewCell: RSDDesignableTableViewCell, UICollectionViewDe
         } else {
             cell.imageView?.image = UIImage(named: "ImageLoadFailed")
         }
-        
-        let isVideoCell = (indexPath.row == self.historyItems.count) && (self.historyItems.count > 1)
+
+        // Cells are now only image cells with video cell at the top
+        let isVideoCell = self.showVideoCellsInCollectionView // (indexPath.row == self.historyItems.count) && (self.historyItems.count > 1)
         
         if !isVideoCell {
             cell.dateLabel.text = dateText
@@ -798,6 +846,143 @@ public class ReviewNotEnoughDataCollectionView: RSDCollectionViewCell {
     @IBAction func addMeasurementTapped() {
         guard let taskIdentifierUnwrapped = self.taskIdentifier else { return }
         self.delegate?.addMeasurementTapped(taskIdentifier: taskIdentifierUnwrapped)
+    }
+}
+
+public class ReviewSectionHeader: UITableViewHeaderFooterView, RSDViewDesignable {
+    
+    public static let headerHeight = CGFloat(64)
+    
+    public var backgroundColorTile: RSDColorTile?
+    public var designSystem: RSDDesignSystem?
+    
+    public weak var exportVideoButton: UIButton?
+    public weak var playVideoButton: UIButton?
+    public var playButtonWidth: NSLayoutConstraint?
+    
+    public weak var videoLoadingProgress: RSDCountdownDial?
+    public weak var headerTitleLabel: UILabel?
+    
+    let verticalPadding = CGFloat(8)
+    let horizontalPadding = CGFloat(32)
+    let buttonContentSpacing = CGFloat(8)
+    
+    var playButtonHeight: CGFloat {
+        return ReviewSectionHeader.headerHeight - (2 * verticalPadding)
+    }
+    
+    override public init(reuseIdentifier: String?) {
+        super.init(reuseIdentifier: reuseIdentifier)
+        self.commonInit()
+    }
+    
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        self.commonInit()
+    }
+    
+    private func setPlayButtonWidth(width: CGFloat) {
+        self.playButtonWidth?.constant = width
+        self.playVideoButton?.layoutIfNeeded()
+        self.videoLoadingProgress?.layoutIfNeeded()
+    }
+
+    /// Because title and image insets are not taken into consideration for width calculation, must do it ourselves
+    func refreshPlayButtonWidth() {
+        guard let playButtonFont = self.playVideoButton?.titleLabel?.font,
+            let text = self.playVideoButton?.titleLabel?.text else {
+            self.setPlayButtonWidth(width: self.playButtonHeight)
+            return
+        }
+        
+        let fontAttributes = [NSAttributedString.Key.font: playButtonFont]
+        let size = (text as NSString).size(withAttributes: fontAttributes)
+        let titleWidth = (size.width + (2 * buttonContentSpacing))
+        
+        self.setPlayButtonWidth(width: self.playButtonHeight + titleWidth)
+    }
+    
+    private func commonInit() {
+        
+        // The export button
+        
+        let exportButton = UIButton(type: .custom)
+        exportButton.translatesAutoresizingMaskIntoConstraints = false
+        self.addSubview(exportButton)
+
+        exportButton.setImage(UIImage(named: "ExportButtonWhite"), for: .normal)
+        exportButton.rsd_alignToSuperview([.trailing], padding: self.horizontalPadding)
+        exportButton.rsd_alignToSuperview([.top, .bottom], padding: self.verticalPadding)
+        exportButton.widthAnchor.constraint(equalTo: exportButton.heightAnchor, multiplier: 1.0).isActive = true
+        self.exportVideoButton = exportButton
+        
+        // Play button
+        
+        let playButton = UIButton(type: .custom)
+        playButton.translatesAutoresizingMaskIntoConstraints = false
+        self.addSubview(playButton)
+        
+        // The padding for the play button, and the width of the loading progress dial
+        let loadingWidth = CGFloat(2)
+        let verticalPadding = CGFloat(8)
+        
+        playButton.setImage(UIImage(named: "PlayButton"), for: .normal)
+        playButton.rsd_alignLeftOf(view: exportButton, padding: CGFloat(0.5 * loadingWidth))
+        playButton.rsd_alignToSuperview([.top, .bottom], padding: verticalPadding)
+        
+        // Save the play button width to edit later
+        self.playButtonWidth = playButton.rsd_makeWidth(.equal, self.playButtonHeight).first
+        
+        playButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: -(1.5 * buttonContentSpacing), bottom: 0, right: 0)
+        playButton.titleEdgeInsets = UIEdgeInsets(top: 0, left: (1.5 * buttonContentSpacing), bottom: 0, right: 0)
+        
+        playButton.layer.cornerRadius = self.playButtonHeight / 2
+        playButton.layer.masksToBounds = true
+                
+        self.playVideoButton = playButton
+                
+        // Loading dial
+        
+        let loadingProgress = RSDCountdownDial()
+        loadingProgress.translatesAutoresizingMaskIntoConstraints = false
+        self.addSubview(loadingProgress)
+                
+        loadingProgress.ringWidth = loadingWidth
+        loadingProgress.dialWidth = loadingWidth
+        loadingProgress.rsd_align([.leading, .top, .bottom], .equal, to: playButton, [.leading, .top, .bottom], padding: 0)
+        loadingProgress.rsd_makeWidth(.equal, self.playButtonHeight)
+                
+        self.videoLoadingProgress = loadingProgress
+        
+        // Title label
+        
+        let titleLabel = UILabel()
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        self.addSubview(titleLabel)
+                
+        titleLabel.numberOfLines = 1
+        titleLabel.minimumScaleFactor = 0.5
+        titleLabel.adjustsFontSizeToFitWidth = true
+        titleLabel.rsd_alignToSuperview([.leading], padding: self.horizontalPadding)
+        titleLabel.rsd_alignToSuperview([.top, .bottom], padding: self.verticalPadding)
+        titleLabel.rsd_alignLeftOf(view: loadingProgress, padding: self.horizontalPadding)
+        
+        self.headerTitleLabel = titleLabel
+    }
+    
+    public func setDesignSystem(_ designSystem: RSDDesignSystem, with background: RSDColorTile) {
+        self.designSystem = designSystem
+        self.backgroundColorTile = background
+        
+        self.videoLoadingProgress?.recursiveSetDesignSystem(designSystem, with: background)
+        
+        self.headerTitleLabel?.textColor = designSystem.colorRules.textColor(on: designSystem.colorRules.backgroundPrimary, for: .microHeader)
+        self.headerTitleLabel?.font = designSystem.fontRules.font(for: .microHeader)
+        
+        self.playVideoButton?.backgroundColor = RSDColor.white
+        self.playVideoButton?.setTitleColor(designSystem.colorRules.textColor(on: background, for: .smallHeader), for: .normal)
+        self.playVideoButton?.setTitleColor(designSystem.colorRules.palette.grayScale.lightGray.color, for: .disabled)
+        self.playVideoButton?.titleLabel?.font = designSystem.fontRules.font(for: .smallHeader)
     }
 }
 

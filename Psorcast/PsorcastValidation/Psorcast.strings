@@ -133,6 +133,8 @@
 
 "REVIEW_VIDEO_DATA_TITLE_%d" = "You will need to complete %d more measurement to unlock your video.";
 "REVIEW_VIDEO_DATA_TITLE_PAST" = "You did not complete enough measurements to unlock your video.";
+"REVIEW_PLAY_VIDEO_BTN" = "Play video";
+"REVIEW_VIDEO_EXPORTED" = "Video has been exported to your Photos Library";
 
 "PROFILE_DEEP_DIVE_NO_ITEMS_TITLE" = "Complete short surveys to help us research how to make forecasts about your psoriasis.";
 "PROFILE_DEEP_DIVE_SOME_ITEMS_TITLE" = "Nice work! Complete short surveys to help us research how to make forecasts about your psoriasis.";
