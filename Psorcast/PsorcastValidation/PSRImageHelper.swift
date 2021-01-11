@@ -303,7 +303,7 @@ extension UIImage {
                     let hsv = RGB.hsv(r: r, g: g, b: b)
                     
                     // Check for selected pixel
-                    if (targetHsv.s - hsv.s) < Float(varianceThreshold) {
+                    if abs(targetHsv.s - hsv.s) < Float(varianceThreshold) {
                         selectedCount = selectedCount + 1
                     }
                 }

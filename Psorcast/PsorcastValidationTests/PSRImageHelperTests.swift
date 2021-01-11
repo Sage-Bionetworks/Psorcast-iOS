@@ -248,6 +248,13 @@ class PSRImageHelperTests: XCTestCase {
         let percentageAccountedFor = Float(selectedPixels.selected) / Float(selectedPixels.total)
         XCTAssertTrue(percentageAccountedFor > 0.985) // account for more than 98.5% of pixels
     }
+    
+    func testAllSelected_Performance() {
+        measure {
+            let selectedPixels = self.testAllBelowTheWaistFront.selectedPixelCounts(psoriasisColor: selectedColor)
+            let percentageAccountedFor = Float(selectedPixels.selected) / Float(selectedPixels.total)
+        }
+    }
         
     /// This is a debugging function where you can visualize what the algorithm determined to be
     /// a "selected" pixel using a normalized black & "keep pixel color if selected" image output
