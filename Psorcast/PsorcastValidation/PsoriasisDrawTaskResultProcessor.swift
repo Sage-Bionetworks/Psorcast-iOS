@@ -47,11 +47,17 @@ public final class PsoriasisDrawTaskResultProcessor {
     /// calculates the psoriasis coverage on a background thread
     public func addBackgroundProcessCoverage(stepViewModel: RSDStepViewPathComponent, identifier: String, image: UIImage, selectedColor: UIColor) {
         
+        debugPrint("Width/Height of coverage image")
+        debugPrint(String(format: "( %f, %f )", image.size.width, image.size.height))
+        
         self.processingIdentifiers.append(identifier)
+        
+        let targetWidth = CGFloat(420.0)
+        let downscaledImage = image.resizeImageAspectFit(toTargetWidthInPixels: targetWidth)
         
         DispatchQueue.global(qos: .background).async {
             // Perform heavy lifting on background thread
-            let percentCoverage = image.psoriasisCoverage(psoriasisColor: selectedColor)
+            let percentCoverage = downscaledImage.psoriasisCoverage(psoriasisColor: selectedColor)
             
             DispatchQueue.main.async {
                 // Add the percent coverage result

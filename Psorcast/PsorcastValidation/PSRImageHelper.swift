@@ -228,6 +228,22 @@ extension UIImage {
         return newImage!
     }
     
+    func resizeImageAspectFit(toTargetWidthInPixels: CGFloat) -> UIImage {
+        guard let cgImage = self.cgImage else {
+            return self
+        }
+        
+        // Target width is in pixels, not points, so calculate density
+        let density = CGFloat(self.size.width) / CGFloat(cgImage.width)
+        // And apply that density to the target pixels to make all images the same true width
+        let targetWidthInPts = toTargetWidthInPixels * density
+        // Compute the aspect ratio of the image
+        let aspectRatio = CGFloat(cgImage.height) / CGFloat(cgImage.width)
+        let targetSizeInPts = CGSize(width: targetWidthInPts, height: aspectRatio * targetWidthInPts)
+                
+        return self.resizeImage(targetSize: targetSizeInPts)
+    }
+    
     func cropImage(rect: CGRect) -> UIImage {
         var rect = rect
         rect.origin.x *= self.scale
@@ -303,7 +319,7 @@ extension UIImage {
                     let hsv = RGB.hsv(r: r, g: g, b: b)
                     
                     // Check for selected pixel
-                    if (targetHsv.s - hsv.s) < Float(varianceThreshold) {
+                    if abs(targetHsv.s - hsv.s) < Float(varianceThreshold) {
                         selectedCount = selectedCount + 1
                     }
                 }

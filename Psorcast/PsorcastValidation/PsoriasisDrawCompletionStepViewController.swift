@@ -360,6 +360,7 @@ open class PsoriasisDrawCompletionStepViewController: RSDStepViewController, Pro
     }
     
     public func finishedProcessing() {
+        debugPrint("Finished calculating coverage in background task")
         self.loadingSpinner.isHidden = true
         self.navigationFooter?.nextButton?.isEnabled = true
         self.refreshPsoriasisDrawCoverage()
