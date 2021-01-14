@@ -45,6 +45,8 @@ class PSRImageHelperTests: XCTestCase {
     let testAllBelowTheWaistBack = UIImage(named: "TestAllBelowTheWaistBack", in: Bundle(for: PSRImageHelperTests.self), compatibleWith: nil)!
     let testAllBelowTheWaistFront = UIImage(named: "TestAllBelowTheWaistFront", in: Bundle(for: PSRImageHelperTests.self), compatibleWith: nil)!
     
+    let testIPhoneXAboveTheWaistFront = UIImage(named: "iPhoneXAboveTheWaistFront", in: Bundle(for: PSRImageHelperTests.self), compatibleWith: nil)!
+    
     let testNoneAboveTheWaistBack = UIImage(named: "PsoriasisDrawAboveTheWaistBack", in: Bundle(for: PSRImageHelperTests.self), compatibleWith: nil)!
     let testNoneAboveTheWaistFront = UIImage(named: "PsoriasisDrawAboveTheWaistFront", in: Bundle(for: PSRImageHelperTests.self), compatibleWith: nil)!
     let testNoneBelowTheWaistBack = UIImage(named: "PsoriasisDrawBelowTheWaistBack", in: Bundle(for: PSRImageHelperTests.self), compatibleWith: nil)!
@@ -247,6 +249,140 @@ class PSRImageHelperTests: XCTestCase {
         
         let percentageAccountedFor = Float(selectedPixels.selected) / Float(selectedPixels.total)
         XCTAssertTrue(percentageAccountedFor > 0.985) // account for more than 98.5% of pixels
+    }
+    
+    func testAllSelected_Performance() {
+        measure {
+            let _ = self.testAllBelowTheWaistFront.selectedPixelCounts(psoriasisColor: selectedColor)
+        }
+    }
+    
+    func testAllImageDownscaledCoverage() {
+        
+        // When no pixels are selected,
+        // the accuracy should be perfect for 0% coverage
+        let accuracyForNoneSelected = 0.0
+        
+        // In a normal case scenario, the user will only
+        // have 1-2% of total selected,
+        // so require a tight accuracy of that
+        let accuracyForNormalUseCase = 0.0001
+        
+        // In the case of full coverage testing,
+        // All pixels will be nearly red will be +/- %2
+        let accuracyFor100PercentCoverage = 0.02
+        
+        // Down-scaled image algorithm should run at least 2.5x faster
+        // Than the it's non-scaled partner
+        let speedImprovementFactor = 3.0
+        
+        // Down-scaled image algorithm should run at least 2.5x faster
+        // Than the it's non-scaled partner
+        let targetWidthInPixels = CGFloat(420.0)
+        
+        assertTheDownscaledCoverage(
+            self.testAllAboveTheWaistBack,
+            "testAllAboveTheWaistBack",
+            accuracyFor100PercentCoverage,
+            targetWidthInPixels,
+            speedImprovementFactor)
+        
+        assertTheDownscaledCoverage(
+            self.testAllAboveTheWaistFront,
+            "testAllAboveTheWaistFront",
+            accuracyFor100PercentCoverage,
+            targetWidthInPixels,
+            speedImprovementFactor)
+        
+        assertTheDownscaledCoverage(
+            self.testAllBelowTheWaistBack,
+            "testAllBelowTheWaistBack",
+            accuracyFor100PercentCoverage,
+            targetWidthInPixels,
+            speedImprovementFactor)
+        
+        assertTheDownscaledCoverage(
+            self.testAllBelowTheWaistFront,
+            "testAllBelowTheWaistFront",
+            accuracyFor100PercentCoverage,
+            targetWidthInPixels,
+            speedImprovementFactor)
+        
+        assertTheDownscaledCoverage(
+            self.testIPhoneXAboveTheWaistFront,
+            "testIPhoneXAboveTheWaistFront",
+            accuracyFor100PercentCoverage,
+            targetWidthInPixels,
+            speedImprovementFactor)
+        
+        assertTheDownscaledCoverage(
+            self.testNoneAboveTheWaistBack,
+            "testNoneAboveTheWaistBack",
+            accuracyFor100PercentCoverage,
+            targetWidthInPixels,
+            speedImprovementFactor)
+        
+        assertTheDownscaledCoverage(
+            self.testNoneAboveTheWaistFront,
+            "testNoneAboveTheWaistFront",
+            accuracyForNoneSelected,
+            targetWidthInPixels,
+            speedImprovementFactor)
+        
+        assertTheDownscaledCoverage(
+            self.testNoneBelowTheWaistBack,
+            "testNoneBelowTheWaistBack",
+            accuracyForNoneSelected,
+            targetWidthInPixels,
+            speedImprovementFactor)
+        
+        assertTheDownscaledCoverage(
+            self.testNoneBelowTheWaistFront,
+            "testNoneBelowTheWaistFront",
+            accuracyForNoneSelected,
+            targetWidthInPixels,
+            speedImprovementFactor)
+        
+        assertTheDownscaledCoverage(
+            self.testToes,
+            "testToes",
+            accuracyForNormalUseCase,
+            targetWidthInPixels,
+            speedImprovementFactor)
+    }
+    
+    func assertTheDownscaledCoverage(_ image: UIImage,
+                                     _ testName: String,
+                                     _ accuracyTolerence: Double,
+                                     _ targetWidthInPixels: CGFloat,
+                                     _ speedImprovementFacotr: Double) {
+        
+        debugPrint(testName)
+        
+        var debugNow = Date().timeIntervalSince1970
+        
+        let pngSelected = image.selectedPixelCounts(psoriasisColor: selectedColor)
+                
+        let pngCoverage = Double(pngSelected.selected) / Double(pngSelected.total)
+        let rawImgSpeed = (Date().timeIntervalSince1970 - debugNow) * 1000.0
+        debugPrint(String(format: "%f normal img speed", rawImgSpeed))
+        
+        debugNow = Date().timeIntervalSince1970
+        let downscaledImg = image.resizeImageAspectFit(toTargetWidthInPixels: targetWidthInPixels)
+        
+        let downscaledSelected = downscaledImg.selectedPixelCounts(psoriasisColor: selectedColor)
+                
+        let downscaledCoverage = Double(downscaledSelected.selected) / Double(downscaledSelected.total)
+        
+        let downscaledImgSpeed = (Date().timeIntervalSince1970 - debugNow) * 1000.0
+        debugPrint(String(format: "%f downscaled img speed", downscaledImgSpeed))
+                
+        debugPrint(String(format: "%f normal coverage", pngCoverage))
+        debugPrint(String(format: "%f downscaled coverage", downscaledCoverage))
+        
+        // Accuracy tolerence is different per scenario
+        XCTAssertEqual(pngCoverage, downscaledCoverage, accuracy: accuracyTolerence)
+        XCTAssertLessThan(downscaledImgSpeed * speedImprovementFacotr, rawImgSpeed)
     }
         
     /// This is a debugging function where you can visualize what the algorithm determined to be
