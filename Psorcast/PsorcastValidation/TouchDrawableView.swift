@@ -150,10 +150,9 @@ open class TouchDrawableView: UIView, RSDViewDesignable {
     
     /**
      *  Add touch point to the drawing
-     *
-     * @param touchEvent from touchesBegan, touchesEnd, or touchesMoved
-     * @param newPath true if this is the start of a new Path
-     * @param needsDisplay true if you want to update the view after completing, false if we should wait
+     * - Parameter touchEvent from touchesBegan, touchesEnd, or touchesMoved
+     * - Parameter newPath true if this is the start of a new Path
+     * - Parameter needsDisplay true if you want to update the view after completing, false if we should wait
      */
     private func addTouchPoint(_ touches: Set<UITouch>, newPath: Bool, needsDisplay: Bool = true) {
         
