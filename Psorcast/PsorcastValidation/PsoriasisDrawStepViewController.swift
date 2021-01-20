@@ -38,7 +38,7 @@ import BridgeAppUI
 /// The 'JointPainStepViewController' displays a joint pain image that has
 /// buttons overlayed at specific parts of the images to represent joints
 /// The user selects the joints that are causing them pain
-open class PsoriasisDrawStepViewController: RSDStepViewController, ProcessorFinishedDelegate {
+open class PsoriasisDrawStepViewController: RSDStepViewController, ProcessorFinishedDelegate, TouchDrawableViewListener {
     
     static let percentCoverageResultId = "Coverage"
     static let selectedZonesResultId = "SelectedZones"
@@ -70,6 +70,9 @@ open class PsoriasisDrawStepViewController: RSDStepViewController, ProcessorFini
     
     /// The initial result of the step if the user navigated back to this step
     open var hasInitialResult = false
+    
+    /// Tap the undo button to remove a plaque line from the PsoriasisDrawImageView
+    @IBOutlet public var undoButton: RSDUnderlinedButton!
     
     /// The image view container that adds the users drawing and masks it
     @IBOutlet public var imageView: PsoriasisDrawImageView!
@@ -182,9 +185,40 @@ open class PsoriasisDrawStepViewController: RSDStepViewController, ProcessorFini
     
     override open func setupHeader(_ header: RSDStepNavigationView) {
         super.setupHeader(header)
+        
         self.imageView.setDesignSystem(self.designSystem, with: self.background)
         self.imageView.touchDrawableView?.lineWidth = self.lineWidth
+        self.imageView.touchDrawableView?.listener = self
         self.initialBezierPaths()
+                        
+        let designSystem = AppDelegate.designSystem
+        let whiteColor = RSDColorTile(RSDColor.white, usesLightStyle: false)
+        let enabledTextColor = designSystem.colorRules.textColor(on: whiteColor, for: .body)
+        let disabledTextColor = enabledTextColor.withAlphaComponent(0.25)
+        self.undoButton.setTitleColor(enabledTextColor, for: .normal)
+        self.undoButton.setTitleColor(disabledTextColor, for: .disabled)
+        
+        refreshUndoButtonEnabled()
+    }
+    
+    /// Called when undo button is tapped
+    @IBAction func undoButtonTapped() {
+        self.imageView.touchDrawableView?.undo()
+        refreshUndoButtonEnabled()
+    }
+    
+    private func refreshUndoButtonEnabled() {
+        self.undoButton.isEnabled = hasUserDrawn()
+    }
+    
+    /// - Returns true if user has drawn on the touch drawable view
+    private func hasUserDrawn() -> Bool {
+        return (self.imageView.touchDrawableView?.drawPointsFlat() ?? []).count != 0
+    }
+    
+    /// Called by TouchDrawableView when it finished a touch event
+    public func onDrawComplete() {
+        refreshUndoButtonEnabled()
     }
     
     override open func setupFooter(_ footer: RSDNavigationFooterView) {
@@ -249,7 +283,7 @@ open class PsoriasisDrawStepViewController: RSDStepViewController, ProcessorFini
         }
         
         let lineWidth = self.lineWidth
-        let drawPoints = self.imageView.touchDrawableView?.drawPoints ?? []
+        let drawPoints = self.imageView.touchDrawableView?.drawPointsFlat() ?? []
         
         DispatchQueue.main.async {
             let processor = PsoriasisDrawTaskResultProcessor.shared

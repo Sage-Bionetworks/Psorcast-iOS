@@ -34,6 +34,10 @@
 import UIKit
 import BridgeAppUI
 
+public protocol TouchDrawableViewListener: class {
+    func onDrawComplete()
+}
+
 open class TouchDrawableView: UIView, RSDViewDesignable {
     
     /// The background tile this view is shown over top of
@@ -56,6 +60,9 @@ open class TouchDrawableView: UIView, RSDViewDesignable {
             self.setNeedsDisplay()
         }
     }
+    
+    /// The listener for touch drawable events
+    public weak var listener: TouchDrawableViewListener? = nil
         
     fileprivate let maskLayer = CALayer()
     public func setMaskImage(mask: UIImage, frame: CGRect) {
@@ -78,12 +85,41 @@ open class TouchDrawableView: UIView, RSDViewDesignable {
     
     /// The paths that the user has drawn
     var bezierPaths = [UIBezierPath]()
-    var drawPoints = [CGPoint]()
+    private var drawPoints = [[CGPoint]]()
     
+    /**
+     * - Returns the drawPoints reduced to a single array of points
+     */
+    public func drawPointsFlat() -> [CGPoint] {
+        return self.drawPoints.flatMap({ $0 })
+    }
+    
+    /**
+     * Clears all lines drawn by the user and refereshes the View
+     */
     public func clear() {
         bezierPaths = [UIBezierPath]()
-        drawPoints = [CGPoint]()
+        drawPoints = [[CGPoint]]()
         self.layer.sublayers?.removeAll()
+        
+        self.setNeedsDisplay()
+    }
+    
+    /**
+     * Undos the user's last line drawn, and refreshed the View
+     * Lines are grouped by touchesBegin to touchesEnd
+     */
+    public func undo() {
+        guard bezierPaths.count > 0 &&
+                drawPoints.count > 0 &&
+                (self.layer.sublayers?.count ?? 0) > 0 else {
+            return
+        }
+        
+        _ = bezierPaths.removeLast()
+        _ = drawPoints.removeLast()
+        _ = self.layer.sublayers?.removeLast()
+        
         self.setNeedsDisplay()
     }
     
@@ -96,46 +132,75 @@ open class TouchDrawableView: UIView, RSDViewDesignable {
         self.setNeedsDisplay()
     }
     
-    override open func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        super.touchesMoved(touches, with: event)
-        
-        guard let xy = touches.first?.location(in: self),
-            let mostRecentPath = bezierPaths.last,
-            let mostRecentShapeLayer = self.layer.sublayers?.last as? CAShapeLayer else {
-            return
-        }
-        
-        let point = CGPoint(x: xy.x, y: xy.y)
-        mostRecentPath.addLine(to: point)
-        mostRecentShapeLayer.path = mostRecentPath.cgPath
-        
-        drawPoints.append(point)
-        
-        self.setNeedsDisplay()
-    }
-    
     override open func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesBegan(touches, with: event)
+        addTouchPoint(touches, newPath: true)
+    }
+    
+    override open func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesEnded(touches, with: event)
+        addTouchPoint(touches, newPath: false)
+        listener?.onDrawComplete()
+    }
+    
+    override open func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesMoved(touches, with: event)
+        addTouchPoint(touches, newPath: false)
+    }
+    
+    /**
+     *  Add touch point to the drawing
+     *
+     * @param touchEvent from touchesBegan, touchesEnd, or touchesMoved
+     * @param newPath true if this is the start of a new Path
+     * @param needsDisplay true if you want to update the view after completing, false if we should wait
+     */
+    private func addTouchPoint(_ touches: Set<UITouch>, newPath: Bool, needsDisplay: Bool = true) {
         
-        guard let xy = touches.first?.location(in: self) else {
+        // We do not support any multi-finger gestures in this view
+        // so just grab the first touch event and assume its the user's primary
+        guard let touch = touches.first else { return }
+        
+        let touchLoc = touch.location(in: self)
+        let point = CGPoint(x: touchLoc.x, y: touchLoc.y)
+        
+        // Create a new line and path to store the user's touch events
+        if (newPath) {
+            
+            let newPath = UIBezierPath()
+            newPath.move(to: point)
+            bezierPaths.append(newPath)
+            
+            var newPoints = [CGPoint]()
+            newPoints.append(point)
+            drawPoints.append(newPoints)
+            
+            let shapeLayer = self.createBezierShapeLayer(path: newPath)
+            self.layer.addSublayer(shapeLayer)
+            
+            if (needsDisplay) {
+                self.setNeedsDisplay()
+            }
+            
             return
         }
         
-        let newPath = UIBezierPath()
+        // Check for invalid state
+        guard drawPoints.count > 0,
+            let mostRecentPath = bezierPaths.last,
+            let mostRecentShapeLayer = self.layer.sublayers?.last as? CAShapeLayer else {
+                
+            return
+        }
         
-        let point = CGPoint(x: xy.x, y: xy.y)
+        // Draw a curved line from the last touch point to this new touch point
+        mostRecentPath.addLine(to: point)
+        mostRecentShapeLayer.path = mostRecentPath.cgPath
+        drawPoints[drawPoints.count - 1].append(point)
         
-        // Move to new spot in bezierpath
-        newPath.move(to: point)
-        bezierPaths.append(newPath)
-        
-        // Add to total list of point
-        drawPoints.append(point)
-        
-        let shapeLayer = self.createBezierShapeLayer(path: newPath)
-        self.layer.addSublayer(shapeLayer)
-        
-        self.setNeedsDisplay()
+        if (needsDisplay) {
+            self.setNeedsDisplay()
+        }
     }
     
     open func createBezierShapeLayer(path: UIBezierPath) -> CAShapeLayer {
