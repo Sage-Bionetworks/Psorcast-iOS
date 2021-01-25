@@ -187,7 +187,12 @@ open class PsoriasisDrawCompletionStepViewController: RSDStepViewController, Pro
             "\(aboveTheWaistBackImageIdentifier)\(coverageResult)",
             "\(belowTheWaistBackImageIdentifier)\(coverageResult)"]
         self.coverage = self.psoriasisDrawCoverage(from: psoriasisDrawIdentifiers)
-        let coverageString = String(format: "%.1f", coverage)
+        
+        var coverageString = String(format: "%.1f", coverage)
+        // Show more decimals when coverage is very small
+        if (coverage > 0.0 && coverage < 0.1) {
+            coverageString = String(format: "%.2f", coverage)
+        }
         
         if let title = self.completionStep?.title,
             title.contains("%@") {

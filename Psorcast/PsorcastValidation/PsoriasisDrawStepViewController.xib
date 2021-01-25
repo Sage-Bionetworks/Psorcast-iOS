@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina5_9" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -15,6 +15,7 @@
                 <outlet property="loadingView" destination="z66-Jr-KeT" id="Yn5-NY-nhb"/>
                 <outlet property="navigationFooter" destination="Ncg-SY-6dE" id="SLP-DO-Xlo"/>
                 <outlet property="navigationHeader" destination="kjp-vl-acf" id="7ON-iy-iGV"/>
+                <outlet property="undoButton" destination="Jm9-aj-hWs" id="wkK-rZ-dWR"/>
                 <outlet property="view" destination="Be1-UX-e65" id="BEo-OJ-8Gt"/>
             </connections>
         </placeholder>
@@ -29,7 +30,7 @@
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kjp-vl-acf" userLabel="Header" customClass="RSDNavigationHeaderView" customModule="ResearchUI">
                             <rect key="frame" x="0.0" y="0.0" width="375" height="111"/>
                             <subviews>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gYt-76-z57" userLabel="Cancel Button">
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gYt-76-z57" userLabel="Cancel Button">
                                     <rect key="frame" x="8" y="24" width="50" height="50"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="50" id="9F6-uL-2Gg"/>
@@ -43,12 +44,28 @@
                                     <fontDescription key="fontDescription" type="system" pointSize="30"/>
                                     <nil key="highlightedColor"/>
                                 </label>
+                                <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Jm9-aj-hWs" customClass="RSDUnderlinedButton" customModule="ResearchUI">
+                                    <rect key="frame" x="274" y="0.0" width="101" height="74"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="101" id="Da7-Ub-h8v"/>
+                                    </constraints>
+                                    <inset key="contentEdgeInsets" minX="0.0" minY="15" maxX="0.0" maxY="0.0"/>
+                                    <state key="normal" title="Undo">
+                                        <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </state>
+                                    <connections>
+                                        <action selector="undoButtonTapped" destination="-1" eventType="touchUpInside" id="ZGz-TL-Pg4"/>
+                                    </connections>
+                                </button>
                             </subviews>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstItem="gYt-76-z57" firstAttribute="top" secondItem="kjp-vl-acf" secondAttribute="top" constant="24" id="8YB-N8-KmZ"/>
+                                <constraint firstItem="Jm9-aj-hWs" firstAttribute="top" secondItem="kjp-vl-acf" secondAttribute="top" id="9b8-wa-4Yw"/>
                                 <constraint firstItem="gYt-76-z57" firstAttribute="leading" secondItem="kjp-vl-acf" secondAttribute="leading" constant="8" id="9q4-Ke-8ah"/>
+                                <constraint firstAttribute="trailing" secondItem="Jm9-aj-hWs" secondAttribute="trailing" id="ZCY-B1-2f0"/>
                                 <constraint firstAttribute="trailing" secondItem="eMZ-8x-koe" secondAttribute="trailing" constant="12" id="czX-Vj-TkN"/>
+                                <constraint firstItem="eMZ-8x-koe" firstAttribute="top" secondItem="Jm9-aj-hWs" secondAttribute="bottom" constant="-6" id="e3D-Xj-0aL"/>
                                 <constraint firstItem="eMZ-8x-koe" firstAttribute="leading" secondItem="kjp-vl-acf" secondAttribute="leading" constant="12" id="eBj-G6-Zdd"/>
                                 <constraint firstItem="eMZ-8x-koe" firstAttribute="top" secondItem="kjp-vl-acf" secondAttribute="top" constant="68" id="iCD-Xi-zTN"/>
                                 <constraint firstAttribute="height" constant="111" id="tjs-nc-zcO"/>
@@ -98,6 +115,7 @@
                     </constraints>
                 </view>
             </subviews>
+            <viewLayoutGuide key="safeArea" id="W8i-xX-fUy"/>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
@@ -107,10 +125,14 @@
                 <constraint firstItem="nCy-4g-nIJ" firstAttribute="trailing" secondItem="W8i-xX-fUy" secondAttribute="trailing" id="Xje-i7-OTa"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <viewLayoutGuide key="safeArea" id="W8i-xX-fUy"/>
             <point key="canvasLocation" x="645.60000000000002" y="487.6847290640394"/>
         </view>
     </objects>
+    <designables>
+        <designable name="Jm9-aj-hWs">
+            <size key="intrinsicContentSize" width="37" height="33"/>
+        </designable>
+    </designables>
     <resources>
         <image name="AboveTheWaist" width="375" height="423"/>
         <image name="closeActivity" width="50" height="50"/>
