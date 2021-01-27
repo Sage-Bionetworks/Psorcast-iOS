@@ -198,10 +198,10 @@ open class PsoriasisDrawCompletionStepViewController: RSDStepViewController, Pro
     func refreshPsoriasisDrawCoverage() {
         self.coverage = self.psoriasisDrawCoverage()
         
-        var coverageString = String(format: "%.1f", coverage)
+        var coverageString = String(format: "%.1f", self.coverage)
         // Show more decimals when coverage is very small
         if (coverage > 0.0 && coverage < 0.1) {
-            coverageString = String(format: "%.2f", coverage)
+            coverageString = String(format: "%.2f", self.coverage)
         }
         
         if let title = self.completionStep?.title,

@@ -146,14 +146,13 @@ open class TouchDrawableView: UIView, RSDViewDesignable {
      * As well as set the line width equal to 200
      */
     public func fillAll200(_ completion: (() -> Void)?) {
-        let oldLineWidth = self.lineWidth
         self.lineWidth = 200
         let width = self.maskImage?.cgImage?.width ?? 0
         let height = self.maskImage?.cgImage?.height ?? 0
         
         // Select all pixels by horizontally shading
         self.addPoint(CGPoint(x: 0, y: 0), newPath: true, needsDisplay: true)
-        for y in stride(from: 0, to: height, by: 75) {
+        for y in stride(from: 0, to: height + 75, by: 75) {
             self.addPoint(CGPoint(x: 0, y: y), newPath: false, needsDisplay: false)
             self.addPoint(CGPoint(x: width, y: y), newPath: false, needsDisplay: false)
         }
