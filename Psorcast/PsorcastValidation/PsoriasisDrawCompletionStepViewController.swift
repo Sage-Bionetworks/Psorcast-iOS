@@ -238,7 +238,7 @@ open class PsoriasisDrawCompletionStepViewController: RSDStepViewController, Pro
             }
             
             var percentCoverage = Float.zero
-            if (coverageCount >= 0 && totalCount >= 0) {
+            if (coverageCount >= 0 && totalCount > 0) {
                 // Ignore any body sections without results
                 let scaleFactor =  self.coverageScaleFactor(for: identifier)
                 percentCoverage = (Float(coverageCount) / Float(totalCount)) * 100.0  // 0-100% scale

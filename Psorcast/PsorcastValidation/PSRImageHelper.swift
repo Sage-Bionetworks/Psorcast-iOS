@@ -58,8 +58,9 @@ public class PSRImageHelper {
             print("Error finding background image")
             return nil
         }
-        UIGraphicsBeginImageContextWithOptions(backgroundImage.size, false, 1.0)
-                        
+        UIGraphicsBeginImageContextWithOptions(backgroundImage.size, false, 1.0)                        
+        backgroundImage.draw(at: CGPoint(x: 0, y: 0))
+        
         // Resize and draw all the body coverage areas over the background image
         if let aboveFrontUnwrapped = aboveFront {
             aboveFrontUnwrapped.resizeImage(targetSize: size).draw(in: aboveFrontRect)
