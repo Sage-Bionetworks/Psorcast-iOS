@@ -142,12 +142,13 @@ class ParticipantIDRegistrationViewController: RSDStepViewController, UITextFiel
         self.textField.font = self.designSystem.fontRules.font(for: .largeBody, compatibleWith: traitCollection)
         self.textField.textColor = UIColor.white
         self.textField.delegate = self
+        self.textField.text = "mdp"
         
         self.ruleView.backgroundColor = UIColor.white
         
         self.submitButton.setDesignSystem(self.designSystem, with: self.designSystem.colorRules.backgroundLight)
         self.submitButton.setTitle(Localization.localizedString("BUTTON_SUBMIT"), for: .normal)
-        self.submitButton.isEnabled = false
+        self.submitButton.isEnabled = true
         
         self.errorLabel.text = nil
         self.errorLabel.font = self.designSystem.fontRules.font(for: .mediumHeader)
@@ -212,7 +213,7 @@ class ParticipantIDRegistrationViewController: RSDStepViewController, UITextFiel
     }
     
     func clearParticipantIDTextField() {
-        textField.text = nil
+        //textField.text = nil
     }
     
     func participantID() -> String? {

@@ -48,6 +48,11 @@ class ImageDefaults {
     public func convertToJpegData(pngData: Data) -> Data? {
         return (UIImage(data: pngData)?.jpegData(compressionQuality: jpegCompressionQuality))
     }
+    
+    /// Converts UIImage to jpeg data with global compression quality
+    public func convertToJpegData(image: UIImage) -> Data? {
+        return image.jpegData(compressionQuality: jpegCompressionQuality)
+    }
 
     /// Saves both the raw image and the sobel edge detection result
     func filterImageAndSave(with identifier: String, pngData: Data) {

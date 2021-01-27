@@ -89,12 +89,19 @@ open class PsoriasisDrawCompletionStepViewController: RSDStepViewController, Pro
     let aboveTheWaistBackImageIdentifier = "aboveTheWaistBack"
     let belowTheWaistBackImageIdentifier = "belowTheWaistBack"
     
-    let coverageResult = PsoriasisDrawStepViewController.percentCoverageResultId
+    lazy var psoriasisDrawIdentifiers: [String] = [
+        self.aboveTheWaistFrontImageIdentifier,
+        self.belowTheWaistFrontImageIdentifier,
+        self.aboveTheWaistBackImageIdentifier,
+        self.belowTheWaistBackImageIdentifier]
     
-    // Set a max attempts to load images to avoid infinite attempts
-    var imageLoadAttempt = 0
-    let maxImageLoadAttempt = 8
-    let imageLoadAttemptDelay = 0.25
+    func percentCoverageResultId(identifier: String) -> String {
+        return "\(identifier)\(PsoriasisDrawStepViewController.percentCoverageResultId)"
+    }
+    
+    func coverageImageResultId(identifier: String) -> String {
+        return "\(identifier)\(PsoriasisDrawStepViewController.coverageImageResultId)"
+    }
     
     /// The container for the body images
     @IBOutlet public var bodyImageContainer: UIView!
@@ -116,6 +123,9 @@ open class PsoriasisDrawCompletionStepViewController: RSDStepViewController, Pro
     /// Processing queue for saving camera
     private let processingQueue = DispatchQueue(label: "org.sagebase.ResearchSuite.camera.processing")
     
+    /// The body summary image
+    public var bodySummaryImage: UIImage? = nil
+    
     /// The step for this view controller
     open var completionStep: PsoriasisDrawCompletionStepObject? {
         return self.step as? PsoriasisDrawCompletionStepObject
@@ -127,17 +137,19 @@ open class PsoriasisDrawCompletionStepViewController: RSDStepViewController, Pro
         super.setupHeader(header)
         
         self.bodySummaryImageView?.contentMode = .scaleAspectFit
-        self.loadImageAndDelayIfNecessary()
+        self.loadBodySummaryImage()
         
         self.navigationHeader?.titleLabel?.textAlignment = .center
         self.navigationHeader?.textLabel?.textAlignment = .center
         
+        let processor = PsorcastDrawTaskResultProcessor.shared
+        
         // If we have finished processing then show coverage, otherwise wait until delegate fires
-        if PsoriasisDrawTaskResultProcessor.shared.processingIdentifiers.count == 0 {
+        if !processor.isProcessing {
             self.refreshPsoriasisDrawCoverage()
             self.loadingSpinner.isHidden = true
         } else {
-            PsoriasisDrawTaskResultProcessor.shared.processingFinishedDelegate = self
+            processor.processingFinishedDelegate = self
             self.navigationHeader?.titleLabel?.text = Localization.localizedString("CALCULATING_COVERAGE")
             self.navigationHeader?.textLabel?.text = ""
         }
@@ -152,11 +164,14 @@ open class PsoriasisDrawCompletionStepViewController: RSDStepViewController, Pro
         super.setupFooter(footer)
         
         // Wait until result processing finishes before allowing user to finish the task
-        if PsoriasisDrawTaskResultProcessor.shared.processingIdentifiers.count == 0 {
+        if PsorcastDrawTaskResultProcessor.shared.processingIdentifiers.count == 0 {
             self.navigationFooter?.nextButton?.isEnabled = true
         } else {
             self.navigationFooter?.nextButton?.isEnabled = false
         }
+        
+        self.navigationFooter?.nextButton?.isEnabled = true
+        finishedProcessing()
     }
     
     override open func showLearnMore() {
@@ -181,12 +196,7 @@ open class PsoriasisDrawCompletionStepViewController: RSDStepViewController, Pro
     }
     
     func refreshPsoriasisDrawCoverage() {
-        let psoriasisDrawIdentifiers = [
-            "\(aboveTheWaistFrontImageIdentifier)\(coverageResult)",
-            "\(belowTheWaistFrontImageIdentifier)\(coverageResult)",
-            "\(aboveTheWaistBackImageIdentifier)\(coverageResult)",
-            "\(belowTheWaistBackImageIdentifier)\(coverageResult)"]
-        self.coverage = self.psoriasisDrawCoverage(from: psoriasisDrawIdentifiers)
+        self.coverage = self.psoriasisDrawCoverage()
         
         var coverageString = String(format: "%.1f", coverage)
         // Show more decimals when coverage is very small
@@ -206,16 +216,37 @@ open class PsoriasisDrawCompletionStepViewController: RSDStepViewController, Pro
     }
     
     /// Total coverage is calculated by adding up each body sections coverage.
-    open func psoriasisDrawCoverage(from identifiers: [String]) -> Float {
+    open func psoriasisDrawCoverage() -> Float {
         var sum = Float(0)
-        for result in self.taskController?.taskViewModel.taskResult.stepHistory ?? [] {
-            if identifiers.contains(result.identifier),
-                let answerResult = result as? RSDAnswerResultObject,
-                answerResult.answerType == .decimal,
-                let decimalAnswer = answerResult.value as? Float {
-                let scaleFactor = self.coverageScaleFactor(for: result.identifier)
-                sum += ((decimalAnswer * scaleFactor) * 100)
+        for identifier in psoriasisDrawIdentifiers {
+            var coverageCount = 0
+            var totalCount = 0
+            
+            let totalResultId = "\(identifier)\(PsoriasisDrawStepViewController.totalPixelCountResultId)"
+            let coverageResultId = "\(identifier)\(PsoriasisDrawStepViewController.selectedPixelCountResultId)"
+            
+            // Try to set total pixel count
+            if let totalResult = self.taskController?.taskViewModel.taskResult.stepHistory
+                .first(where: {$0.identifier == totalResultId}) as? RSDAnswerResult {
+                totalCount = totalResult.value as? Int ?? 0
             }
+            
+            // Try to set the coverage pixel count
+            if let coverageResult = self.taskController?.taskViewModel.taskResult.stepHistory
+                .first(where: {$0.identifier == coverageResultId}) as? RSDAnswerResult {
+                coverageCount = coverageResult.value as? Int ?? 0
+            }
+            
+            var percentCoverage = Float.zero
+            if (coverageCount >= 0 && totalCount >= 0) {
+                // Ignore any body sections without results
+                let scaleFactor =  self.coverageScaleFactor(for: identifier)
+                percentCoverage = (Float(coverageCount) / Float(totalCount))
+                sum += (percentCoverage * scaleFactor)
+            }
+            
+            // Save as step result for easy processing
+            _ = self.stepViewModel.parent?.taskResult.appendStepHistory(with: RSDAnswerResultObject(identifier: self.percentCoverageResultId(identifier: identifier), answerType: .decimal, value: percentCoverage))
         }
         return sum
     }
@@ -225,71 +256,45 @@ open class PsoriasisDrawCompletionStepViewController: RSDStepViewController, Pro
     /// the log output of PSRImageHelper.psoriasisCoverage for each section.
     func coverageScaleFactor(for identifier: String) -> Float {
         
-        let aboveTheWaistFrontTotalPixels = Float(198404)
-        let aboveTheWaistBackTotalPixels = Float(198837)
-        let belowTheWaistFrontTotalPixels = Float(194598)
-        let belowTheWaistBackTotalPixels = Float(214906)
+        let aboveTheWaistFrontTotalPixels = Float(122252)
+        let aboveTheWaistBackTotalPixels = Float(122509)
+        let belowTheWaistFrontTotalPixels = Float(121867)
+        let belowTheWaistBackTotalPixels = Float(135039)
         
         let total = Float(aboveTheWaistFrontTotalPixels + aboveTheWaistBackTotalPixels + belowTheWaistFrontTotalPixels + belowTheWaistBackTotalPixels)
                     
         switch identifier {
-        case "\(aboveTheWaistFrontImageIdentifier)\(coverageResult)":
+        case aboveTheWaistFrontImageIdentifier:
             return aboveTheWaistFrontTotalPixels / total
-        case "\(aboveTheWaistBackImageIdentifier)\(coverageResult)":
+        case aboveTheWaistBackImageIdentifier:
             return aboveTheWaistBackTotalPixels / total
-        case "\(belowTheWaistFrontImageIdentifier)\(coverageResult)":
+        case belowTheWaistFrontImageIdentifier:
             return belowTheWaistFrontTotalPixels / total
-        case "\(belowTheWaistBackImageIdentifier)\(coverageResult)":
+        case belowTheWaistBackImageIdentifier:
             return belowTheWaistBackTotalPixels / total
         default:
             return 0
         }
     }
     
-    func loadImageAndDelayIfNecessary() {
+    func loadBodySummaryImage() {
         var allSuccessful = true
+        var images = [UIImage?]()
         
-        let aboveTheWaistFrontImageRet = self.image(from: aboveTheWaistFrontImageIdentifier)
-        allSuccessful = allSuccessful && aboveTheWaistFrontImageRet.success
-        
-        let belowTheWaistFrontImageRet = self.image(from: belowTheWaistFrontImageIdentifier)
-        allSuccessful = allSuccessful && belowTheWaistFrontImageRet.success
-        
-        let aboveTheWaistBackImageRet = self.image(from: aboveTheWaistBackImageIdentifier)
-        allSuccessful = allSuccessful && aboveTheWaistBackImageRet.success
-        
-        let belowTheWaistBackImageRet = self.image(from: belowTheWaistBackImageIdentifier)
-        allSuccessful = allSuccessful && belowTheWaistBackImageRet.success
-        
-        self.imageLoadAttempt += 1
-        
-        if !allSuccessful &&
-            self.imageLoadAttempt < self.maxImageLoadAttempt {
-            
-            debugPrint("All images not available immediately, trying again in \(imageLoadAttemptDelay) sec")
-            // Because the user has taken the picture only moments before this
-            // step view controller is loaded, it may not be immediately
-            // available.  If the image is nil, keep trying to load it
-            // until we have a successful image
-            DispatchQueue.main.asyncAfter(deadline: .now() + imageLoadAttemptDelay) { [weak self] in
-                self?.loadImageAndDelayIfNecessary()
-            }
-        } else {
-            if let aboveFrontImage = (aboveTheWaistFrontImageRet.image ?? UIImage(named: "PsoriasisDrawAboveTheWaistFront")),
-                let belowFrontImage = (belowTheWaistFrontImageRet.image ??
-                UIImage(named: "PsoriasisDrawBelowTheWaistFront")),
-                let aboveBackImage = (aboveTheWaistBackImageRet.image ??
-                UIImage(named: "PsoriasisDrawAboveTheWaistBack")),
-                let belowBackImage = (belowTheWaistBackImageRet.image ??
-                    UIImage(named: "PsoriasisDrawBelowTheWaistBack")) {
-                
-                let bodySummaryImage = PSRImageHelper.createPsoriasisDrawSummaryImage(aboveFront: aboveFrontImage, belowFront: belowFrontImage, aboveBack: aboveBackImage, belowBack: belowBackImage)
-                self.bodySummaryImageView.image = bodySummaryImage
-            }
+        // Loop through the body sections and grab each image of the coverage drawn
+        for identifier in self.psoriasisDrawIdentifiers {
+            let coverageId = self.coverageImageResultId(identifier: identifier)
+            images.append(self.image(from: coverageId))
+        }
+
+        // Always create a body summary image, even if some images are nil
+        if images.count >= 4 {
+            self.bodySummaryImage = PSRImageHelper.createPsoriasisDrawSummaryImage(aboveFront: images[0], belowFront: images[1], aboveBack: images[2], belowBack: images[3])
+            self.bodySummaryImageView.image = self.bodySummaryImage
         }
     }
     
-    open func image(from identifier: String) -> (success: Bool, image: UIImage?) {
+    open func image(from identifier: String) -> UIImage? {
         for result in self.taskController?.taskViewModel.taskResult.stepHistory ?? [] {
             if let fileResult = result as? RSDFileResultObject,
                 let fileUrl = fileResult.url,
@@ -297,24 +302,22 @@ open class PsoriasisDrawCompletionStepViewController: RSDStepViewController, Pro
                 do {
                     let image = try UIImage(data: Data(contentsOf: fileUrl))
                     debugPrint("Successfully created image for \(fileResult.identifier)")
-                    return (true, image)
+                    return image
                 } catch let error {
                     debugPrint("Error creating image from url \(error)")
-                    // Continue looking
-                    return (false, nil)
+                    return nil
                 }
             }
         }
-        return (true, nil)
+        return nil
     }
     
     override open func goForward() {
-        if let image = self.bodySummaryImageView.image {
+        if let imageDefaults = (UIApplication.shared.delegate as? AppDelegate)?.imageDefaults,
+            let image = self.bodySummaryImage {
             var url: URL?
             do {
-                if let pngDataUnwrapped = image.pngData(),
-                    let appDelegate = (AppDelegate.shared as? AppDelegate),
-                    let jpegData = appDelegate.imageDefaults.convertToJpegData(pngData: pngDataUnwrapped),
+                if let jpegData = imageDefaults.convertToJpegData(image: image),
                     let outputDir = self.stepViewModel.parentTaskPath?.outputDirectory {
                     url = try RSDFileResultUtility.createFileURL(identifier: summaryImageResultIdentifier, ext: "jpg", outputDirectory: outputDir)
                     self.save(jpegData, to: url!)
@@ -323,7 +326,7 @@ open class PsoriasisDrawCompletionStepViewController: RSDStepViewController, Pro
                 debugPrint("Failed to save the image: \(error)")
             }
             
-            _ = self.stepViewModel.parent?.taskResult.appendStepHistory(with: RSDAnswerResultObject(identifier: PsoriasisDrawStepViewController.percentCoverageResultId.lowercased(), answerType: .decimal, value: self.coverage))
+            _ = self.stepViewModel.parent?.taskResult.appendStepHistory(with: RSDAnswerResultObject(identifier: PsoriasisDrawStepViewController.totalPercentCoverageResultId, answerType: .decimal, value: self.coverage))
 
             // Create the result and set it as the result for this step
             var result = RSDFileResultObject(identifier: summaryImageResultIdentifier)
@@ -369,6 +372,7 @@ open class PsoriasisDrawCompletionStepViewController: RSDStepViewController, Pro
         self.loadingSpinner.isHidden = true
         self.navigationFooter?.nextButton?.isEnabled = true
         self.refreshPsoriasisDrawCoverage()
+        self.loadBodySummaryImage()
     }
 }
 
