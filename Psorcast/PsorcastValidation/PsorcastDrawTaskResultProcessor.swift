@@ -83,7 +83,7 @@ public final class PsorcastDrawTaskResultProcessor {
         var url: URL?
         do {
             if let outputDir = stepViewModel.parentTaskPath?.outputDirectory {
-                let ext = useJpeg ? "jpeg" : "png"
+                let ext = useJpeg ? "jpg" : "png"
                 url = try RSDFileResultUtility.createFileURL(identifier: identifier, ext: ext, outputDirectory: outputDir, shouldDeletePrevious: true)
                 self.save(dataUnwrapped, to: url!)
             }

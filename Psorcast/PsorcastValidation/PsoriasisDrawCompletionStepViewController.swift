@@ -119,12 +119,19 @@ open class PsoriasisDrawCompletionStepViewController: RSDStepViewController, Pro
     public let summaryResultIdentifier = "summary"
     /// The result identifier for the summary image
     public let summaryImageResultIdentifier = "summaryImage"
+    /// The result identifier for only the selected summary image
+    public let selectedOnlySummaryImageResultIdentifier = "selectedOnlySummaryImage"
     
     /// Processing queue for saving camera
     private let processingQueue = DispatchQueue(label: "org.sagebase.ResearchSuite.camera.processing")
     
     /// The body summary image
     public var bodySummaryImage: UIImage? = nil
+    /// The selected body summary image
+    public var selectedBodySummaryImage: UIImage? = nil
+    
+    /// True if the user has tapped the done button and we are saving the final results
+    public var savingFinalResults = false
     
     /// The step for this view controller
     open var completionStep: PsoriasisDrawCompletionStepObject? {
@@ -288,7 +295,9 @@ open class PsoriasisDrawCompletionStepViewController: RSDStepViewController, Pro
 
         // Always create a body summary image, even if some images are nil
         if images.count >= 4 {
-            self.bodySummaryImage = PSRImageHelper.createPsoriasisDrawSummaryImage(aboveFront: images[0], belowFront: images[1], aboveBack: images[2], belowBack: images[3])
+            let summaryImages = PSRImageHelper.createPsoriasisDrawSummaryImage(aboveFront: images[0], belowFront: images[1], aboveBack: images[2], belowBack: images[3])
+            self.selectedBodySummaryImage = summaryImages?.selectedOnly
+            self.bodySummaryImage = summaryImages?.bodySummary
             self.bodySummaryImageView.image = self.bodySummaryImage
         }
     }
@@ -312,34 +321,39 @@ open class PsoriasisDrawCompletionStepViewController: RSDStepViewController, Pro
     }
     
     override open func goForward() {
-        if let imageDefaults = (UIApplication.shared.delegate as? AppDelegate)?.imageDefaults,
-            let image = self.bodySummaryImage {
-            var url: URL?
-            do {
-                if let jpegData = imageDefaults.convertToJpegData(image: image),
-                    let outputDir = self.stepViewModel.parentTaskPath?.outputDirectory {
-                    url = try RSDFileResultUtility.createFileURL(identifier: summaryImageResultIdentifier, ext: "jpg", outputDirectory: outputDir)
-                    self.save(jpegData, to: url!)
-                }
-            } catch let error {
-                debugPrint("Failed to save the image: \(error)")
-            }
-            
-            _ = self.stepViewModel.parent?.taskResult.appendStepHistory(with: RSDAnswerResultObject(identifier: PsoriasisDrawStepViewController.totalPercentCoverageResultId, answerType: .decimal, value: self.coverage))
-
-            // Create the result and set it as the result for this step
-            var result = RSDFileResultObject(identifier: summaryImageResultIdentifier)
-            result.url = url
-            result.contentType = "image/jpeg"
-            _ = self.stepViewModel.parent?.taskResult.appendStepHistory(with: result)
-            
-            // Create the selected zones result for the summary
-            let selectedZonesResult = self.selectedZonesResult()
-            _ = self.stepViewModel.parent?.taskResult.appendStepHistory(with: selectedZonesResult)
-            
+        let processor = PsorcastDrawTaskResultProcessor.shared
+        
+        guard let image = self.bodySummaryImage,
+              let selectedImage = self.selectedBodySummaryImage else {
+            debugPrint("Not ready to move forward yet, still reading body summary images")
+            return
+        }
+        
+        // Attached the rasterized body summary image
+        processor.attachImageResult(image,
+                                    stepViewModel: self.stepViewModel,
+                                    to: self.summaryImageResultIdentifier,
+                                    useJpeg: true)
+        
+        // Attach the summary image with only the selected pixels
+        processor.attachImageResult(selectedImage,
+                                    stepViewModel: self.stepViewModel,
+                                    to: self.selectedOnlySummaryImageResultIdentifier,
+                                    useJpeg: false)
+        
+        // Create the selected zones result for the summary
+        let selectedZonesResult = self.selectedZonesResult()
+        _ = self.stepViewModel.parent?.taskResult.appendStepHistory(with: selectedZonesResult)
+        
+        _ = self.stepViewModel.parent?.taskResult.appendStepHistory(with: RSDAnswerResultObject(identifier: PsoriasisDrawStepViewController.totalPercentCoverageResultId, answerType: .decimal, value: self.coverage))
+        
+        if !processor.isProcessing {
+            self.savingFinalResults = false
             super.goForward()
         } else {
-            debugPrint("Not ready to move forward yet, still reading body summary images")
+            // Signal that we are saving the final results when processing finishes
+            self.savingFinalResults = true
+            self.navigationFooter?.nextButton?.isEnabled = false
         }
     }
     
@@ -357,17 +371,23 @@ open class PsoriasisDrawCompletionStepViewController: RSDStepViewController, Pro
     }
     
     private func save(_ imageData: Data, to url: URL) {
-        processingQueue.async {
-            do {
-                try imageData.write(to: url)
-            } catch let error {
-                debugPrint("Failed to save the camera image: \(error)")
-            }
+        do {
+            try imageData.write(to: url)
+        } catch let error {
+            debugPrint("Failed to save the image: \(error)")
         }
     }
     
     public func finishedProcessing() {
         debugPrint("Finished calculating coverage in background task")
+        
+        if self.savingFinalResults {
+            self.savingFinalResults = false
+            self.navigationFooter?.nextButton?.isEnabled = true
+            super.goForward()
+            return
+        }
+        
         self.loadingSpinner.isHidden = true
         self.navigationFooter?.nextButton?.isEnabled = true
         self.refreshPsoriasisDrawCoverage()
