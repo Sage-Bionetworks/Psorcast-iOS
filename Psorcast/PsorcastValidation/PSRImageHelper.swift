@@ -50,7 +50,7 @@ public class PSRImageHelper {
         
         // See Figma frame Completion Result for x, y, width, height values
         let aboveFrontRect = CGRect(x: 24, y: 9, width: width, height: height)
-        let belowFrontRect = CGRect(x: 25, y: 272, width: width, height: height)
+        let belowFrontRect = CGRect(x: 25, y: 270, width: width, height: height)
         let aboveBackRect = CGRect(x: 403, y: 9, width: width, height: height)
         let belowBackRect = CGRect(x: 402, y: 273, width: width, height: height)
         

@@ -241,7 +241,7 @@ open class PsoriasisDrawCompletionStepViewController: RSDStepViewController, Pro
             if (coverageCount >= 0 && totalCount >= 0) {
                 // Ignore any body sections without results
                 let scaleFactor =  self.coverageScaleFactor(for: identifier)
-                percentCoverage = (Float(coverageCount) / Float(totalCount))
+                percentCoverage = (Float(coverageCount) / Float(totalCount)) * 100.0  // 0-100% scale
                 sum += (percentCoverage * scaleFactor)
             }
             
@@ -278,7 +278,6 @@ open class PsoriasisDrawCompletionStepViewController: RSDStepViewController, Pro
     }
     
     func loadBodySummaryImage() {
-        var allSuccessful = true
         var images = [UIImage?]()
         
         // Loop through the body sections and grab each image of the coverage drawn

@@ -92,6 +92,7 @@ open class PsoriasisDrawImageView: UIView, RSDViewDesignable {
     public weak var delegate: PsoriasisDrawImageViewDelegate? = nil
     
     fileprivate var didLayoutSubviews: Bool = false
+    fileprivate var didAdjustConstraints: Bool = false
     
     /// The aspect sized image
     open var aspectScaledImage: UIImage? {
@@ -174,13 +175,22 @@ open class PsoriasisDrawImageView: UIView, RSDViewDesignable {
     }
     
     func recreateMask(force: Bool) {
+        
         if !self.didLayoutSubviews {
+            // Wait until we have finished laying out the subviews
             return
         }
+        
+        guard self.touchDrawableView?.maskImage == nil else {
+            // We have already calculated and done the aspect fit
+            return
+        }
+        
         let imageViewSize = self.frame.size
         if let imageSize = self.imageView?.image?.size,
             imageViewSize.width > 0, imageViewSize.height > 0,
             let maskImage = self.image {
+            
             // The aspect fit size of the image within the image view
             // will be used to translate the relative x,y
             // of the buttons so that they are visually correct
@@ -194,54 +204,67 @@ open class PsoriasisDrawImageView: UIView, RSDViewDesignable {
                 return
             }
             self.lastAspectFitRect = aspectFitRect
-            
-            // Resize mask to aspect fit scaled
-            guard let aspectFitRectScaled = self.aspectFitRectScaled else {
-                return
-            }
-            let maskImageResized: UIImage? = maskImage.resizeImage(targetSize: aspectFitRectScaled.size)
-            
-            // Remove all edge blurring, for a more accuracte selection algorithm
-            guard let pixelizedMaskImage = maskImageResized?.transformPixels(pixelTransformer: { (pixel, row, col) -> RGBA32 in
-                if (pixel != bodyUnselected) {
-                    return clearBlack
+                        
+            if !didAdjustConstraints {
+                // Resize the views to match the image's aspect fit
+                // Thi will allow screenshots of the view to be at the correct aspect ratio
+                self.findConstraint(layoutAttribute: .leading)?.constant = aspectFitRect.minX
+                self.findConstraint(layoutAttribute: .top)?.constant = aspectFitRect.minY
+                self.findConstraint(layoutAttribute: .trailing)?.constant = aspectFitRect.minX
+                self.findConstraint(layoutAttribute: .bottom)?.constant = aspectFitRect.minY
+                self.didAdjustConstraints = true
+            } else {
+                // Resize mask to aspect fit scaled
+                guard let aspectFitRectScaled = self.aspectFitRectScaled else {
+                    return
                 }
-                return pixel
-            }) else {
-                print("Error pixelizing mask image")
-                return
-            }
-            
-            self.imageView?.image = maskImage
-            
-            // Re-calculate the mask size and re-apply it to the touch drawable view
-            self.touchDrawableView?.setMaskImage(mask: pixelizedMaskImage, frame: aspectFitRect)
-            
-            // Let the delegate know we have finished setting up the view
-            self.delegate?.onViewSetupComplete()
-            
-            // Draw the zones if debuggin is enabled
-            if self.debuggingZones {
-                self.debuggingButtonContainer?.subviews.forEach { $0.removeFromSuperview() }
+                let maskImageResized: UIImage? = maskImage.resizeImage(targetSize: aspectFitRectScaled.size)
                 
-                for zone in regionZonesForDebugging {
-                    let button = UIView()
-                    button.layer.borderColor = UIColor.red.cgColor
-                    button.layer.borderWidth = 2
-                    button.translatesAutoresizingMaskIntoConstraints = false
+                // Remove all edge blurring, for a more accuracte selection algorithm
+                guard let pixelizedMaskImage = maskImageResized?.transformPixels(pixelTransformer: { (pixel, row, col) -> RGBA32 in
+                    if (pixel != bodyUnselected) {
+                        return clearBlack
+                    }
+                    return pixel
+                }) else {
+                    print("Error pixelizing mask image")
+                    return
+                }
+                
+                self.imageView?.image = maskImage
+                
+                // Re-calculate the mask size and re-apply it to the touch drawable view
+                //let maskFrame = CGRect(x: 0, y: 0, width: aspectFitRect.width, height: aspectFitRect.height)
+                self.touchDrawableView?.setMaskImage(mask: pixelizedMaskImage, frame: aspectFitRect)
+                
+                // Because we changed the constraints of the subviews, we need to
+                // wait for them to resize before we tell the delegate the view setup is complete
+                // By calling animate, we can get a notification once the view heirarchy has been updated
+                self.delegate?.onViewSetupComplete()
+                
+                // Draw the zones if debuggin is enabled
+                if self.debuggingZones {
+                    self.debuggingButtonContainer?.subviews.forEach { $0.removeFromSuperview() }
                     
-                    let zoneSize = zone.dimensions.size
-                    let centerPoint = CGPoint(x: zone.origin.point.x + (zone.dimensions.width * 0.5),
-                                              y: zone.origin.point.y + (zone.dimensions.height * 0.5))
-                    
-                    // Translate the zone position to aspect fit coordinates
-                    let translated = PSRImageHelper.translateCenterPointToAspectFitCoordinateSpace(imageSize: imageSize, aspectFitRect: aspectFitRect, centerToTranslate: centerPoint, sizeToTranslate: zoneSize)
-                    
-                    self.debuggingButtonContainer?.addSubview(button)
-                    button.rsd_makeWidth(.equal, translated.size.width)
-                    button.rsd_makeHeight(.equal, translated.size.height)
-                    button.rsd_alignToSuperview([.leading], padding: translated.leadingTop.x)
-                    button.rsd_alignToSuperview([.top], padding: translated.leadingTop.y)
+                    for zone in regionZonesForDebugging {
+                        let button = UIView()
+                        button.layer.borderColor = UIColor.red.cgColor
+                        button.layer.borderWidth = 2
+                        button.translatesAutoresizingMaskIntoConstraints = false
+                        
+                        let zoneSize = zone.dimensions.size
+                        let centerPoint = CGPoint(x: zone.origin.point.x + (zone.dimensions.width * 0.5),
+                                                  y: zone.origin.point.y + (zone.dimensions.height * 0.5))
+                        
+                        // Translate the zone position to aspect fit coordinates
+                        let translated = PSRImageHelper.translateCenterPointToAspectFitCoordinateSpace(imageSize: imageSize, aspectFitRect: aspectFitRect, centerToTranslate: centerPoint, sizeToTranslate: zoneSize)
+                        
+                        self.debuggingButtonContainer?.addSubview(button)
+                        button.rsd_makeWidth(.equal, translated.size.width)
+                        button.rsd_makeHeight(.equal, translated.size.height)
+                        button.rsd_alignToSuperview([.leading], padding: translated.leadingTop.x)
+                        button.rsd_alignToSuperview([.top], padding: translated.leadingTop.y)
+                    }
                 }
             }
         }
@@ -254,23 +277,37 @@ open class PsoriasisDrawImageView: UIView, RSDViewDesignable {
     }
     
     func createTouchDrawableImage() -> UIImage? {
-        guard let touchDrawable = self.touchDrawableView,
-              let aspectRectScaled = self.aspectFitRectScaled else {
+        guard let touchDrawable = self.touchDrawableView else {
             return nil
         }
-        let touchDrawableImage = UIImage.imageWithView(touchDrawable)
-        return touchDrawableImage.cropImage(rect: aspectRectScaled)
+        return UIImage.imageWithView(touchDrawable)
     }
     
     func createPsoriasisDrawImage() -> UIImage? {
-        guard let aspectRectScaled = self.aspectFitRectScaled else {
-            return nil
-        }
-        let image = UIImage.imageWithView(self)
-        return image.cropImage(rect: aspectRectScaled)
+        return UIImage.imageWithView(self)
     }
 }
 
 public protocol PsoriasisDrawImageViewDelegate: class {
     func onViewSetupComplete()
+}
+
+extension UIView {
+    func findConstraint(layoutAttribute: NSLayoutConstraint.Attribute) -> NSLayoutConstraint? {
+        if let constraints = superview?.constraints {
+            for constraint in constraints where itemMatch(constraint: constraint, layoutAttribute: layoutAttribute) {
+                return constraint
+            }
+        }
+        return nil
+    }
+
+    func itemMatch(constraint: NSLayoutConstraint, layoutAttribute: NSLayoutConstraint.Attribute) -> Bool {
+        if let firstItem = constraint.firstItem as? UIView, let secondItem = constraint.secondItem as? UIView {
+            let firstItemMatch = firstItem == self && constraint.firstAttribute == layoutAttribute
+            let secondItemMatch = secondItem == self && constraint.secondAttribute == layoutAttribute
+            return firstItemMatch || secondItemMatch
+        }
+        return false
+    }
 }
