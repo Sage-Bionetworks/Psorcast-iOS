@@ -65,7 +65,7 @@ public final class PsorcastDrawTaskResultProcessor {
     private func finishProcessingIdentifier(identifier: String) {
         if let startTime = processingIdentifiers[identifier] {
             let processingTime = Date().timeIntervalSince1970 - startTime
-            print("Processing took \(processingTime) sec for id \(identifier)")
+            print(String(format: "Processing took %4f sec for id \(identifier)", processingTime))
         }
         processingIdentifiers.removeValue(forKey: identifier)
         if !self.isProcessing {
@@ -120,9 +120,6 @@ public final class PsorcastDrawTaskResultProcessor {
     /// calculates the psoriasis coverage on a background thread
     public func addBackgroundProcessCoverage(stepViewModel: RSDStepViewPathComponent, resultIdentifier: String, image: UIImage, selectedColor: UIColor) {
         
-        debugPrint("Width/Height of coverage image")
-        debugPrint(String(format: "( %d, %d )", image.cgImage?.width ?? 0, image.cgImage?.height ?? 0))
-        
         startProcessingIdentifier(identifier: resultIdentifier)
 
         // Perform heavy lifting on background thread
@@ -135,6 +132,7 @@ public final class PsorcastDrawTaskResultProcessor {
                 }
             }
             DispatchQueue.main.async {
+                debugPrint("Selected coverage Process found \(selectedCount) pixels for identifier \(resultIdentifier)")
                 self.writeSelectedCount(selectedCount: selectedCount, resultIdentifier: resultIdentifier, stepViewModel: stepViewModel)
             }
         }
@@ -158,8 +156,7 @@ public final class PsorcastDrawTaskResultProcessor {
         let defaultsFullCoverageIdentifier = String(format: "%@%@%d%d", resultIdentifier, PsoriasisDrawStepViewController.totalPixelCountResultId, width, height)
         let precalculatedSelectedCount = defaults.integer(forKey: defaultsFullCoverageIdentifier)
         if precalculatedSelectedCount > 0 {
-            debugPrint("Pre-calculated total selectable pixels \(precalculatedSelectedCount) for identifier \(resultIdentifier)")
-            
+            debugPrint("Defaults Full coverage Process found \(precalculatedSelectedCount) pixels for identifier \(resultIdentifier)")
             // Return the previously calculated total coverage for this width/height
             self.writeSelectedCount(selectedCount: precalculatedSelectedCount,
                                     resultIdentifier: resultIdentifier,
@@ -198,6 +195,7 @@ public final class PsorcastDrawTaskResultProcessor {
                 })
                 
                 DispatchQueue.main.async {
+                    debugPrint("Full coverage Process found \(selectedCount) pixels for identifier \(resultIdentifier)")
                     UserDefaults.standard.set(selectedCount, forKey: defaultsFullCoverageIdentifier)
                     self.writeSelectedCount(selectedCount: selectedCount,
                                             resultIdentifier: resultIdentifier,
