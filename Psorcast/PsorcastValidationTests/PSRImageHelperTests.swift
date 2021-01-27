@@ -251,11 +251,11 @@ class PSRImageHelperTests: XCTestCase {
         XCTAssertTrue(percentageAccountedFor > 0.985) // account for more than 98.5% of pixels
     }
     
-    func testAllSelected_Performance() {
-        measure {
-            let _ = self.testAllBelowTheWaistFront.selectedPixelCounts(psoriasisColor: selectedColor)
-        }
-    }
+//    func testAllSelected_Performance() {
+//        measure {
+//            let _ = self.testAllBelowTheWaistFront.selectedPixelCounts(psoriasisColor: selectedColor)
+//        }
+//    }
     
     func testAllImageDownscaledCoverage() {
         
