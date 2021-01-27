@@ -84,7 +84,7 @@ open class PsoriasisDrawImageView: UIView, RSDViewDesignable {
         didSet {
             self.imageView?.image = image
             // Only reset the mask after subviews have been layed out
-            self.recreateMask(force: true)
+            self.recreateMask()
         }
     }
     
@@ -110,7 +110,11 @@ open class PsoriasisDrawImageView: UIView, RSDViewDesignable {
     public weak var touchDrawableView: TouchDrawableView?
         
     /// The zones will be drawn on the image for debuggin purposes to ease in QA
-    public var regionZonesForDebugging = [RegionZone]()
+    public var regionZonesForDebugging = [RegionZone]() {
+        didSet {
+            self.drawDebugZones()
+        }
+    }
     
     /// This should be turned off when deploying the app, but is useful
     /// for QA to know if the zones and coverage algorithms are working correctly
@@ -149,14 +153,6 @@ open class PsoriasisDrawImageView: UIView, RSDViewDesignable {
         foregroundImageViewStrong.translatesAutoresizingMaskIntoConstraints = false
         self.foregroundImageView = foregroundImageViewStrong
         
-        if self.debuggingZones {
-            let buttonContainerStrong = UIView()
-            self.addSubview(buttonContainerStrong)
-            buttonContainerStrong.rsd_alignAllToSuperview(padding: 0)
-            buttonContainerStrong.translatesAutoresizingMaskIntoConstraints = false
-            self.debuggingButtonContainer = buttonContainerStrong
-        }
-        
         let touchDrawableStrong = TouchDrawableView()
         self.addSubview(touchDrawableStrong)
         touchDrawableStrong.rsd_alignAllToSuperview(padding: 0)
@@ -171,10 +167,13 @@ open class PsoriasisDrawImageView: UIView, RSDViewDesignable {
     override open func layoutSubviews() {
         super.layoutSubviews()
         self.didLayoutSubviews = true
-        self.recreateMask(force: false)
+        self.recreateMask()
     }
     
-    func recreateMask(force: Bool) {
+    /**
+     * Re-create the mask at the correct scale, and re-size views to fit
+     */
+    private func recreateMask() {
         
         if !self.didLayoutSubviews {
             // Wait until we have finished laying out the subviews
@@ -198,8 +197,8 @@ open class PsoriasisDrawImageView: UIView, RSDViewDesignable {
                 imageWidth: imageSize.width, imageHeight: imageSize.height,
                 imageViewWidth: imageViewSize.width, imageViewHeight: imageViewSize.height)
             
-            // Make sure we only re-add the buttons if the view dimensions changed
-            if !force && self.lastAspectFitRect != nil &&
+            // No need to re-calculate if dimensions haven't changed
+            if self.lastAspectFitRect != nil &&
                 self.lastAspectFitRect == aspectFitRect {
                 return
             }
@@ -207,7 +206,7 @@ open class PsoriasisDrawImageView: UIView, RSDViewDesignable {
                         
             if !didAdjustConstraints {
                 // Resize the views to match the image's aspect fit
-                // Thi will allow screenshots of the view to be at the correct aspect ratio
+                // This will allow screenshots of the view to be at the correct aspect ratio
                 self.findConstraint(layoutAttribute: .leading)?.constant = aspectFitRect.minX
                 self.findConstraint(layoutAttribute: .top)?.constant = aspectFitRect.minY
                 self.findConstraint(layoutAttribute: .trailing)?.constant = aspectFitRect.minX
@@ -241,31 +240,6 @@ open class PsoriasisDrawImageView: UIView, RSDViewDesignable {
                 // wait for them to resize before we tell the delegate the view setup is complete
                 // By calling animate, we can get a notification once the view heirarchy has been updated
                 self.delegate?.onViewSetupComplete()
-                
-                // Draw the zones if debuggin is enabled
-                if self.debuggingZones {
-                    self.debuggingButtonContainer?.subviews.forEach { $0.removeFromSuperview() }
-                    
-                    for zone in regionZonesForDebugging {
-                        let button = UIView()
-                        button.layer.borderColor = UIColor.red.cgColor
-                        button.layer.borderWidth = 2
-                        button.translatesAutoresizingMaskIntoConstraints = false
-                        
-                        let zoneSize = zone.dimensions.size
-                        let centerPoint = CGPoint(x: zone.origin.point.x + (zone.dimensions.width * 0.5),
-                                                  y: zone.origin.point.y + (zone.dimensions.height * 0.5))
-                        
-                        // Translate the zone position to aspect fit coordinates
-                        let translated = PSRImageHelper.translateCenterPointToAspectFitCoordinateSpace(imageSize: imageSize, aspectFitRect: aspectFitRect, centerToTranslate: centerPoint, sizeToTranslate: zoneSize)
-                        
-                        self.debuggingButtonContainer?.addSubview(button)
-                        button.rsd_makeWidth(.equal, translated.size.width)
-                        button.rsd_makeHeight(.equal, translated.size.height)
-                        button.rsd_alignToSuperview([.leading], padding: translated.leadingTop.x)
-                        button.rsd_alignToSuperview([.top], padding: translated.leadingTop.y)
-                    }
-                }
             }
         }
     }
@@ -285,6 +259,53 @@ open class PsoriasisDrawImageView: UIView, RSDViewDesignable {
     
     func createPsoriasisDrawImage() -> UIImage? {
         return UIImage.imageWithView(self)
+    }
+    
+    /**
+     * Draw the debugging selected zones when the view loads
+     * Can also call them when the view
+     */
+    private func drawDebugZones() {
+        guard self.debuggingZones else {
+            return
+        }
+        
+        guard let imageSize = self.image?.size,
+              let aspectFitRect = self.lastAspectFitRect else {
+            return
+        }
+        
+        if self.debuggingButtonContainer == nil {
+            let buttonContainerStrong = UIView()
+            self.addSubview(buttonContainerStrong)
+            buttonContainerStrong.rsd_alignAllToSuperview(padding: 0)
+            buttonContainerStrong.translatesAutoresizingMaskIntoConstraints = false
+            buttonContainerStrong.isUserInteractionEnabled = false
+            self.debuggingButtonContainer = buttonContainerStrong
+        }
+                
+        // Draw the zones if debuggin is enabled
+        self.debuggingButtonContainer?.subviews.forEach { $0.removeFromSuperview() }
+        
+        for zone in regionZonesForDebugging {
+            let button = UIView()
+            button.layer.borderColor = UIColor.red.cgColor
+            button.layer.borderWidth = 2
+            button.translatesAutoresizingMaskIntoConstraints = false
+            
+            let zoneSize = zone.dimensions.size
+            let centerPoint = CGPoint(x: zone.origin.point.x + (zone.dimensions.width * 0.5),
+                                      y: zone.origin.point.y + (zone.dimensions.height * 0.5))
+            
+            // Translate the zone position to aspect fit coordinates
+            let translated = PSRImageHelper.translateCenterPointToAspectFitCoordinateSpace(imageSize: imageSize, aspectFitRect: aspectFitRect, centerToTranslate: centerPoint, sizeToTranslate: zoneSize)
+            
+            self.debuggingButtonContainer?.addSubview(button)
+            button.rsd_makeWidth(.equal, translated.size.width)
+            button.rsd_makeHeight(.equal, translated.size.height)
+            button.rsd_alignToSuperview([.leading], padding: translated.leadingTop.x)
+            button.rsd_alignToSuperview([.top], padding: translated.leadingTop.y)
+        }
     }
 }
 

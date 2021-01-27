@@ -142,11 +142,13 @@ open class PsoriasisDrawStepViewController: RSDStepViewController, ProcessorFini
         super.viewDidLoad()
         
         self.initializeImages()
-        self.imageView.debuggingZones = self.debuggingZones
-        self.imageView?.regionZonesForDebugging = self.drawStep?.regionMap?.zones ?? []
         self.imageView?.delegate = self
         
-        self.longHoldDebugView?.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: #selector(handleLongHoldDebug(_:))))
+        if self.debuggingZones {
+            self.longHoldDebugView?.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: #selector(handleLongHoldDebug(_:))))
+        } else {
+            self.longHoldDebugView?.isHidden = true
+        }
     }
     
     /// Long hold this invisible view to fill the draw coverage to 100%
@@ -168,6 +170,11 @@ open class PsoriasisDrawStepViewController: RSDStepViewController, ProcessorFini
         // Add the percent coverage result, it will be processed in the background
         // If this has been calculated before, it will be stored as a result immediately
         processor.addBackgroundProcessFullCoverage(stepViewModel: self.stepViewModel, resultIdentifier: self.fullCoverageResultId, psoDrawImageView: self.imageView, selectedColor: lineColorUnwrapped)
+        
+        self.imageView.debuggingZones = self.debuggingZones
+        if self.debuggingZones {
+            self.imageView?.regionZonesForDebugging = self.drawStep?.regionMap?.zones ?? []
+        }
     }
     
     func initializeImages() {
@@ -363,24 +370,24 @@ open class PsoriasisDrawStepViewController: RSDStepViewController, ProcessorFini
         if self.debuggingZones {
             self.loadingView.isHidden = true
             self.isProcessing = false
-  
-            if let coverageResult = self.stepViewModel.parent?.taskResult.findResult(with: self.coverageResultId) as? RSDAnswerResultObject,
-                let percentCoverage = coverageResult.value as? Float {
-                self.navigationHeader?.titleLabel?.text = String(format: "%.1f%% Coverage", Float(truncating: (100*percentCoverage) as NSNumber))
-            }
             
-            if let zoneResult = self.stepViewModel.parent?.taskResult.findResult(with: self.selectedZonesResultId) as? SelectedIdentifiersResultObject {
-                
-                let zones = zoneResult.selectedIdentifiers.filter({$0.isSelected})
-                    .map { (selected) -> RegionZone in
-                    let existing = self.drawStep?.regionMap?.zones.first(where: {$0.identifier == selected.identifier})
-                    return RegionZone(identifier: selected.identifier, label: existing!.label, origin: existing!.origin, dimensions: existing!.dimensions)
+            // Check if we were debugging the long-hold everything shader,
+            // In which case the selected zones don't work correctly
+            if (self.imageView?.touchDrawableView?.lineWidth ?? 0) == 200 {
+                self.imageView.regionZonesForDebugging = self.imageView.regionZonesForDebugging
+            } else {
+                if let zoneResult = self.stepViewModel.parent?.taskResult
+                    .findResult(with: self.selectedZonesResultId) as? SelectedIdentifiersResultObject {
+                    let zones = zoneResult.selectedIdentifiers.filter({$0.isSelected})
+                        .map { (selected) -> RegionZone in
+                        let existing = self.drawStep?.regionMap?.zones.first(where: {$0.identifier == selected.identifier})
+                        return RegionZone(identifier: selected.identifier, label: existing!.label, origin: existing!.origin, dimensions: existing!.dimensions)
+                    }
+                    self.imageView.regionZonesForDebugging = zones
                 }
-                self.imageView.regionZonesForDebugging = zones
             }
             
             self.imageView.debuggingButtonContainer?.isHidden = false
-            self.imageView.recreateMask(force: true)
             self.readyToGoNext = true
         }
     }
