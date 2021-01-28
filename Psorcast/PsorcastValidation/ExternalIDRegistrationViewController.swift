@@ -88,13 +88,11 @@ open class ExternalIDRegistrationViewController: RSDStepViewController, UITextFi
         self.textField.font = self.designSystem.fontRules.font(for: .largeBody, compatibleWith: traitCollection)
         self.textField.textColor = self.designSystem.colorRules.textColor(on: background, for: .largeBody)
         self.textField.delegate = self
-        self.textField.text = "MD0506A"
         
         self.ruleView.backgroundColor = self.designSystem.colorRules.textColor(on: background, for: .largeBody)
         
         self.submitButton.setDesignSystem(self.designSystem, with: self.designSystem.colorRules.backgroundLight)
         self.submitButton.setTitle(Localization.localizedString("BUTTON_SUBMIT"), for: .normal)
-        self.submitButton.isEnabled = true
         
         self.titleLabel.text = Localization.localizedString("WELCOME_STUDY")
         self.titleLabel.font = self.designSystem.fontRules.font(for: .xLargeHeader)
