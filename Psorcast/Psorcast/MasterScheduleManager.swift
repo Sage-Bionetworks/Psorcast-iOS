@@ -48,6 +48,13 @@ open class MasterScheduleManager : SBAScheduleManager {
     /// The schedules will filter to only have these tasks
     public static let filterAll: [RSDIdentifier] = [.psoriasisDrawTask, .psoriasisAreaPhotoTask, .digitalJarOpenTask, .handImagingTask, .footImagingTask, .walkingTask, .jointCountingTask]
     
+    /// Task result identifiers when uploading each task
+    public static let resultIdCurrentTreatment  = "currentTreatment"
+    public static let resultIdTreatmentWeek     = "treatmentWeek"
+    public static let resultIdDiagnosis         = "diagnosis"
+    public static let resultIdSymptoms          = "symptoms"
+    public static let resultIdParticipantID     = "participantID"
+    
     open var insightStepIdentifiers: [InsightResultIdentifier] {
         return [.insightViewedIdentifier, .insightViewedDate, .insightUsefulAnswer]
     }
@@ -265,10 +272,40 @@ open class MasterScheduleManager : SBAScheduleManager {
     override open func taskController(_ taskController: RSDTaskController, readyToSave taskViewModel: RSDTaskViewModel) {
         
         // It is a requirement for our app to always upload the participantID with an upload
-        if let participantID = UserDefaults.standard.string(forKey: "participantID") {
-            taskController.taskViewModel.taskResult.stepHistory.append(RSDAnswerResultObject(identifier: "participantID", answerType: .string, value: participantID))
+        if let participantID = UserDefaults.standard.string(forKey: MasterScheduleManager.resultIdParticipantID) {
+            taskController.taskViewModel.taskResult.stepHistory.append(RSDAnswerResultObject(identifier: MasterScheduleManager.resultIdParticipantID, answerType: .string, value: participantID))
         }
         
+        // For ease of data analysis, we should always upload
+        // Treatments, treatment week, diagnosis, and symptoms.
+        // Unless it is the treatment task itself, where this would be redundant.
+        if RSDIdentifier.treatmentTask.rawValue != taskViewModel.task?.identifier {
+            
+            if let currentTreatments = self.selectedTreatmentItems?.map({ $0.identifier }) {
+                taskController.taskViewModel.taskResult.stepHistory.append(RSDAnswerResultObject(identifier: MasterScheduleManager.resultIdCurrentTreatment, answerType: .string, value: currentTreatments.joined(separator: ", ")))
+            } else {
+                debugPrint("Invalid current treatments, cannot attach to task result.")
+            }
+            
+            if (self.treatmentWeek() >= 0) {
+                taskController.taskViewModel.taskResult.stepHistory.append(RSDAnswerResultObject(identifier: MasterScheduleManager.resultIdTreatmentWeek, answerType: .integer, value: self.treatmentWeek()))
+            } else {
+                debugPrint("Invalid treatment week, cannot attach to task result.")
+            }
+            
+            if let diagnosis = self.diagnosis() {
+                taskController.taskViewModel.taskResult.stepHistory.append(RSDAnswerResultObject(identifier: MasterScheduleManager.resultIdDiagnosis, answerType: .string, value: diagnosis))
+            } else {
+                debugPrint("Invalid diagnosis, cannot attach to task result.")
+            }
+            
+            if let symptoms = self.symptoms() {
+                taskController.taskViewModel.taskResult.stepHistory.append(RSDAnswerResultObject(identifier: MasterScheduleManager.resultIdSymptoms, answerType: .string, value: symptoms))
+            } else {
+                debugPrint("Invalid symptoms, cannot attach to task result.")
+            }
+        }
+    
         let taskResult = taskController.taskViewModel.taskResult
         self.historyData.uploadReports(from: taskResult)
         
