@@ -99,153 +99,73 @@ class PsoriasisDrawImageTests: XCTestCase {
     }
     
     func testGenerateFullCoverageImages() {
-                
+        // There should be no variance in calculating full coverage
+        let targetVariance = Float(0.0000000000001)
+        
         let ids = PsoriasisDrawCompletionStepViewController.psoriasisDrawIdentifiers
         let sizeTests = [maskSize326x412, maskSize2x652x824, maskSize3x978x1236, maskSizeIpod2x584x738]
         
-        var selectedImages = [[UIImage]]()
-        var pixelCounts = [[Int]]()
-        
-        // Iterate size first, so export attachments are grouped by screen density
-        for (i, size) in sizeTests.enumerated() {
-            
-            pixelCounts.append([Int]())
-            selectedImages.append([UIImage]())
-            
-            for (j, identifier) in ids.enumerated() {
-                pixelCounts[i].append(0)
-
-                let psoDrawIv = createTouchDrawableView(identifier: identifier, size: size)
-                                 
-                // Wait for layout and render to be done
-                self.waitForRenderPsoriasisDrawImageView(psoDrawView: psoDrawIv)
-                
-                XCTAssertNotNil(psoDrawIv.touchDrawableView)
-                let touchDrawable = psoDrawIv.touchDrawableView!
-                
-                var startTime = Date().timeIntervalSince1970
-                
-                // Draw full coverage selecting all selectable pixels
-                touchDrawable.fillAll200(nil, skipViewAnimate: true)
-                
-                // Wait for layout and render to be done
-                self.waitForRenderPsoriasisDrawImageView(psoDrawView: psoDrawIv)
-                
-                // Create the two images of interest
-                // true = force screen to do a layout and draw
-                let detailedImage = psoDrawIv.createPsoriasisDrawImage(true)
-                let image = psoDrawIv.createTouchDrawableImage(true)
-                
-                XCTAssertNotNil(image)
-                XCTAssertNotNil(detailedImage)
-                
-                selectedImages[i].append(image!)
-                
-                var debugTime = Date().timeIntervalSince1970 - startTime
-                
-                let imageIdentifier = "\(identifier) - \(size)"
-                debugPrint("Took \(debugTime) sec to make \(imageIdentifier)")
-                
-                var export = XCTAttachment(image: image!)
-                export.name = imageIdentifier
-                export.lifetime = .keepAlways
-                self.add(export)
-                
-                export = XCTAttachment(image: detailedImage!)
-                export.name = imageIdentifier + "Background"
-                export.lifetime = .keepAlways
-                self.add(export)
-                
-                startTime = Date().timeIntervalSince1970
-                
-                image!.iteratePixels { (pixel, row, col) in
-                    if PsorcastTaskResultProcessor.isSelectedPixel(pixel: pixel) {
-                        pixelCounts[i][j] += 1
-                    }
-                }
-                
-                debugTime = Date().timeIntervalSince1970 - startTime
-                debugPrint("Took \(debugTime) sec to count selected pixels of \(imageIdentifier)")
-            }
-        }
-        
-        var percentCovWithinFullBody = [[Float]]()
-        
-        for (i, size) in sizeTests.enumerated() {
-            
-            // Calculate the body coverage percent for each individual body section
-            percentCovWithinFullBody.append([Float]())
-            let totalPixels = pixelCounts[i].reduce(0, +)  // sum
-            
-            for j in 0..<ids.count {
-                percentCovWithinFullBody[i].append(0.0)
-                percentCovWithinFullBody[i][j] = (Float(pixelCounts[i][j]) / Float(totalPixels)) * 100.0
-            }
-            
-            debugPrint("% within full body \(percentCovWithinFullBody[i]) for scale \(self.scaleStr(for: size))")
-        }
-        
-        // More out of curiosity, below we check that
-        // the percent coverage for each body section within the total is.
-        // And how that changes across screen size and density
-        // I believe this variance calculation would only apply
-        // if we want to compare one user's upper body coverage percent to another user's.
-        // Full coverage and comparing a user to themselves,
-        // will always be the same, as it's a sum total of the
-        // selectable pixels each user is presented with.
-        
-        // After running it, I found that due to the amount of
-        // rounded edges on the body, it's impossible
-        // to avoid some degree of variation in the percentages.
-        // This is because scaling the image to different resolutions
-        // from Figma and within a screen size itself,
-        // produce slight difference in selectable pixel counts as they relate
-        // a body section to the total number of selectable pixels.
-        var maxVariance = Float.zero
-        // Two tenth of a percent of variance seems to be the max
-        let targetVariance = Float(0.2)
-        for i in 0..<sizeTests.count {
-            for j in 0..<ids.count {
-                for k in 0..<sizeTests.count {
-                    let diff = abs(percentCovWithinFullBody[i][j] - percentCovWithinFullBody[k][j])
-                    XCTAssertTrue(diff < targetVariance)
-                    maxVariance = max(maxVariance, diff)
-                }
-            }
-        }
-        
-        debugPrint("Max variance is \(maxVariance)")
-        
-        // Now let's create the psoriasis draw completion images
-        for (i, imageGroup) in selectedImages.enumerated() {
-            XCTAssertEqual(4, imageGroup.count)
-            let completionImage = PSRImageHelper.createPsoriasisDrawSummaryImage(aboveFront: imageGroup[0],
-                                                                                 belowFront: imageGroup[1],
-                                                                                 aboveBack:  imageGroup[2],
-                                                                                 belowBack:  imageGroup[3])
-            
-            XCTAssertNotNil(completionImage)
-            XCTAssertNotNil(completionImage?.selectedOnly)
-            XCTAssertNotNil(completionImage?.bodySummary)
-            
-            // Although all these groups are different screen sizes/densities
-            // All the completion screen images should look the same, since it's full coverage
-            var export = XCTAttachment(image: completionImage!.bodySummary!)
-            export.name = "Full Detailed Completion \(sizeTests[i])"
-            export.lifetime = .keepAlways
-            self.add(export)
-            
-            export = XCTAttachment(image: completionImage!.selectedOnly!)
-            export.name = "Selected Only Completion \(sizeTests[i])"
-            export.lifetime = .keepAlways
-            self.add(export)
+        doTestsForPsoDrawImageView(ids: ids, sizeTests: sizeTests, targetVariance) { (touchDrawable, identifier, size) in
+            // Draw full coverage selecting all selectable pixels
+            touchDrawable.fillAll200(nil, skipViewAnimate: true)
         }
     }
     
     func testDrawOnToesAndHandsImage() {
+        // There will be some slight variance because of how I am drawing
+        // on the fingers and toes, and total pixel variance
+        let targetVariance = Float(0.015)
         let ids = PsoriasisDrawCompletionStepViewController.psoriasisDrawIdentifiers
-        let sizeTests = [maskSize326x412, maskSize2x652x824, maskSize3x978x1236, maskSizeIpod2x584x738]
-        
+        let sizeTests = [maskSize326x412] // skip others, takes too long, not valuable
+        doTestsForPsoDrawImageView(ids: ids, sizeTests: sizeTests, targetVariance) { (touchDrawable, identifier, size) in
+            self.drawOnFingers(touchDrawable: touchDrawable, size: size, identifier: identifier)
+            self.drawOnToesHeels(touchDrawable: touchDrawable, size: size, identifier: identifier)
+        }
+    }
+    
+    func testDrawOnEarsAndScalpImage() {
+        // There will be some slight variance because of how I am drawing
+        // on the fingers and toes, and total pixel variance
+        let targetVariance = Float(0.015)
+        let ids = PsoriasisDrawCompletionStepViewController.psoriasisDrawIdentifiers
+        let sizeTests = [maskSize326x412] // skip others, takes too long, not valuable
+        doTestsForPsoDrawImageView(ids: ids, sizeTests: sizeTests, targetVariance) { (touchDrawable, identifier, size) in
+            self.drawOnEars(touchDrawable: touchDrawable, size: size, identifier: identifier)
+            self.drawOnScalp(touchDrawable: touchDrawable, size: size, identifier: identifier)
+        }
+    }
+    
+    func testDrawOnElbowsAndKneesImage() {
+        // There will be some slight variance because of how I am drawing
+        // on the fingers and toes, and total pixel variance
+        let targetVariance = Float(0.015)
+        let ids = PsoriasisDrawCompletionStepViewController.psoriasisDrawIdentifiers
+        let sizeTests = [maskSize326x412] // skip others, takes too long, not valuable
+        doTestsForPsoDrawImageView(ids: ids, sizeTests: sizeTests, targetVariance) { (touchDrawable, identifier, size) in
+            self.drawOnElbows(touchDrawable: touchDrawable, size: size, identifier: identifier)
+            self.drawOnKnees(touchDrawable: touchDrawable, size: size, identifier: identifier)
+        }
+    }
+    
+    func testDrawOnAllTheAboveImage() {
+        // There will be some slight variance because of how I am drawing
+        // on the fingers and toes, and total pixel variance
+        let targetVariance = Float(0.015)
+        let ids = PsoriasisDrawCompletionStepViewController.psoriasisDrawIdentifiers
+        let sizeTests = [maskSize326x412] // skip others, takes too long, not valuable
+        doTestsForPsoDrawImageView(ids: ids, sizeTests: sizeTests, targetVariance) { (touchDrawable, identifier, size) in
+            self.drawOnFingers(touchDrawable: touchDrawable, size: size, identifier: identifier)
+            self.drawOnToesHeels(touchDrawable: touchDrawable, size: size, identifier: identifier)
+            self.drawOnEars(touchDrawable: touchDrawable, size: size, identifier: identifier)
+            self.drawOnScalp(touchDrawable: touchDrawable, size: size, identifier: identifier)
+            self.drawOnElbows(touchDrawable: touchDrawable, size: size, identifier: identifier)
+            self.drawOnKnees(touchDrawable: touchDrawable, size: size, identifier: identifier)
+        }
+    }
+    
+    typealias drawOnTouchDrawable = (_ touchDrawable : TouchDrawableView, _ idneitifer: String, _ size: CGSize) -> Void
+    
+    func doTestsForPsoDrawImageView(ids: [String], sizeTests: [CGSize], _ targetVariance: Float, drawFunc: drawOnTouchDrawable) {
         var selectedImages = [[UIImage]]()
         var percentCov = [[Float]]()
         
@@ -255,7 +175,8 @@ class PsoriasisDrawImageTests: XCTestCase {
             percentCov.append([Float]())
             selectedImages.append([UIImage]())
             
-            for (j, identifier) in ids.enumerated() {
+            for identifier in ids {
+                let imageIdentifier = "\(identifier) - \(size)"
                 percentCov[i].append(Float.zero)
                 
                 let psoDrawIv = createTouchDrawableView(identifier: identifier, size: size)
@@ -266,6 +187,8 @@ class PsoriasisDrawImageTests: XCTestCase {
                 XCTAssertNotNil(psoDrawIv.touchDrawableView)
                 let touchDrawable = psoDrawIv.touchDrawableView!
                 
+                var startTime = Date().timeIntervalSince1970
+                
                 // Draw full coverage selecting all selectable pixels
                 touchDrawable.fillAll200(nil, skipViewAnimate: true)
                 
@@ -273,30 +196,26 @@ class PsoriasisDrawImageTests: XCTestCase {
                 self.waitForRenderPsoriasisDrawImageView(psoDrawView: psoDrawIv)
                 
                 var image = psoDrawIv.createTouchDrawableImage(true)
-                
+                                
                 var pixelCount = 0
                 image!.iteratePixels { (pixel, row, col) in
                     if PsorcastTaskResultProcessor.isSelectedPixel(pixel: pixel) {
                         pixelCount += 1
                     }
                 }
+                var debugTime = Date().timeIntervalSince1970 - startTime
+                debugPrint("Took \(debugTime) sec to make and select all pixels \(imageIdentifier)")
                 
                 let totalPixels = pixelCount
                 touchDrawable.undo() // undo the fill all to clear the touches
-                                
-                switch identifier {
-                case PsoriasisDrawCompletionStepViewController.belowTheWaistFrontImageIdentifier:
-                    self.drawOnToesFront(touchDrawable: touchDrawable, size: size)
-                case PsoriasisDrawCompletionStepViewController.belowTheWaistBackImageIdentifier:
-                    self.drawOnToesBack(touchDrawable: touchDrawable, size: size)
-                default: // Draw above the waist
-                    self.drawOnFingers(touchDrawable: touchDrawable, size: size)
-                }
+                
+                startTime = Date().timeIntervalSince1970
+                
+                // Have the individual test functions draw the selection
+                drawFunc(touchDrawable, identifier, size)
                 
                 // Wait for layout and render to be done
                 self.waitForRenderPsoriasisDrawImageView(psoDrawView: psoDrawIv)
-                
-                var startTime = Date().timeIntervalSince1970
                 
                 // Create the two images of interest
                 // true = force screen to do a layout and draw
@@ -308,10 +227,8 @@ class PsoriasisDrawImageTests: XCTestCase {
                 
                 selectedImages[i].append(image!)
                 
-                var debugTime = Date().timeIntervalSince1970 - startTime
-                
-                let imageIdentifier = "\(identifier) - \(size)"
-                debugPrint("Took \(debugTime) sec to make \(imageIdentifier)")
+                debugTime = Date().timeIntervalSince1970 - startTime
+                debugPrint("Took \(debugTime) sec to make images \(imageIdentifier)")
                 
                 var export = XCTAttachment(image: image!)
                 export.name = imageIdentifier
@@ -324,7 +241,6 @@ class PsoriasisDrawImageTests: XCTestCase {
                 self.add(export)
                 
                 startTime = Date().timeIntervalSince1970
-                
                 pixelCount = 0
                 image!.iteratePixels { (pixel, row, col) in
                     if PsorcastTaskResultProcessor.isSelectedPixel(pixel: pixel) {
@@ -355,8 +271,6 @@ class PsoriasisDrawImageTests: XCTestCase {
         // produce slight difference in selectable pixel counts as they relate
         // a body section to the total number of selectable pixels.
         var maxVariance = Float.zero
-        // Two tenth of a percent of variance seems to be the max
-        let targetVariance = Float(0.2)
         for i in 0..<sizeTests.count {
             for j in 0..<ids.count {
                 for k in 0..<sizeTests.count {
@@ -395,7 +309,11 @@ class PsoriasisDrawImageTests: XCTestCase {
         }
     }
     
-    func drawOnFingers(touchDrawable: TouchDrawableView, size: CGSize) {
+    func drawOnFingers(touchDrawable: TouchDrawableView, size: CGSize, identifier: String) {
+        guard identifier == PsoriasisDrawCompletionStepViewController.aboveTheWaistFrontImageIdentifier ||
+            identifier == PsoriasisDrawCompletionStepViewController.aboveTheWaistBackImageIdentifier else {
+            return
+        }
         
         // These were made in Figma based on the 1x size
         let leftThumbRect = CGRect(x: 0, y: 356, width: 12, height: 12)
@@ -407,23 +325,79 @@ class PsoriasisDrawImageTests: XCTestCase {
                        touchDrawable: touchDrawable, size: size)
     }
     
-    func drawOnToesFront(touchDrawable: TouchDrawableView, size: CGSize) {
+    func drawOnToesHeels(touchDrawable: TouchDrawableView, size: CGSize, identifier: String) {
+        guard identifier == PsoriasisDrawCompletionStepViewController.belowTheWaistFrontImageIdentifier ||
+            identifier == PsoriasisDrawCompletionStepViewController.belowTheWaistBackImageIdentifier else {
+            return
+        }
+        
+        var rects = [CGRect]()
+        if identifier == PsoriasisDrawCompletionStepViewController.belowTheWaistFrontImageIdentifier {
+            // These were made in Figma based on the 1x size
+            let toesRect = CGRect(x: 90, y: 389, width: 140, height: 24)
+            rects = [toesRect]
+        } else {
+            // These were made in Figma based on the 1x size
+            let leftToesRect = CGRect(x: 82, y: 344, width: 15, height: 48)
+            let rightToesRect = CGRect(x: 232, y: 343, width: 16, height: 49)
+            let heels = CGRect(x: 110, y: 401, width: 117, height: 6)
+            rects = [leftToesRect, rightToesRect, heels]
+        }
+        
+        self.drawRects(rects: rects,
+                       touchDrawable: touchDrawable, size: size)
+    }
+    
+    func drawOnScalp(touchDrawable: TouchDrawableView, size: CGSize, identifier: String) {
+        guard identifier == PsoriasisDrawCompletionStepViewController.aboveTheWaistFrontImageIdentifier ||
+            identifier == PsoriasisDrawCompletionStepViewController.aboveTheWaistBackImageIdentifier else {
+            return
+        }
         
         // These were made in Figma based on the 1x size
-        let toesRect = CGRect(x: 90, y: 389, width: 140, height: 24)
+        let toesRect = CGRect(x: 116, y: 0, width: 90, height: 24)
         
         self.drawRects(rects: [toesRect],
                        touchDrawable: touchDrawable, size: size)
     }
     
-    func drawOnToesBack(touchDrawable: TouchDrawableView, size: CGSize) {
+    func drawOnEars(touchDrawable: TouchDrawableView, size: CGSize, identifier: String) {
+        guard identifier == PsoriasisDrawCompletionStepViewController.aboveTheWaistFrontImageIdentifier ||
+            identifier == PsoriasisDrawCompletionStepViewController.aboveTheWaistBackImageIdentifier else {
+            return
+        }
         
         // These were made in Figma based on the 1x size
-        let leftToesRect = CGRect(x: 82, y: 344, width: 15, height: 48)
-        let rightToesRect = CGRect(x: 232, y: 343, width: 16, height: 49)
-        let heels = CGRect(x: 110, y: 401, width: 117, height: 6)
+        let leftEarRect = CGRect(x: 119, y: 50, width: 10, height: 26)
+        let rigthEarRect = CGRect(x: 198, y: 50, width: 10, height: 26)
         
-        self.drawRects(rects: [leftToesRect, rightToesRect, heels],
+        self.drawRects(rects: [leftEarRect, rigthEarRect],
+                       touchDrawable: touchDrawable, size: size)
+    }
+    
+    func drawOnElbows(touchDrawable: TouchDrawableView, size: CGSize, identifier: String) {
+        guard identifier == PsoriasisDrawCompletionStepViewController.aboveTheWaistBackImageIdentifier else {
+            return
+        }
+        
+        // These were made in Figma based on the 1x size
+        let leftElbowRect = CGRect(x: 70, y: 246, width: 21, height: 18)
+        let rigthElbowRect = CGRect(x: 235, y: 246, width: 21, height: 18)
+        
+        self.drawRects(rects: [leftElbowRect, rigthElbowRect],
+                       touchDrawable: touchDrawable, size: size)
+    }
+    
+    func drawOnKnees(touchDrawable: TouchDrawableView, size: CGSize, identifier: String) {
+        guard identifier == PsoriasisDrawCompletionStepViewController.belowTheWaistFrontImageIdentifier else {
+            return
+        }
+        
+        // These were made in Figma based on the 1x size
+        let leftKneeRect = CGRect(x: 189, y: 206, width: 28, height: 19)
+        let rigthKneeRect = CGRect(x: 108, y: 206, width: 28, height: 19)
+        
+        self.drawRects(rects: [leftKneeRect, rigthKneeRect],
                        touchDrawable: touchDrawable, size: size)
     }
     
