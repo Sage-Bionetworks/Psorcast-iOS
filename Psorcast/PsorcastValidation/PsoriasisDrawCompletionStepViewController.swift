@@ -84,16 +84,16 @@ open class PsoriasisDrawCompletionStepViewController: RSDStepViewController, Pro
     /// The result identifier for the summary data
     public let summarySelectedZonesResultIdentifier = "selectedZones"
     
-    let aboveTheWaistFrontImageIdentifier = "aboveTheWaistFront"
-    let belowTheWaistFrontImageIdentifier = "belowTheWaistFront"
-    let aboveTheWaistBackImageIdentifier = "aboveTheWaistBack"
-    let belowTheWaistBackImageIdentifier = "belowTheWaistBack"
+    public static let aboveTheWaistFrontImageIdentifier = "aboveTheWaistFront"
+    public static let belowTheWaistFrontImageIdentifier = "belowTheWaistFront"
+    public static let aboveTheWaistBackImageIdentifier = "aboveTheWaistBack"
+    public static let belowTheWaistBackImageIdentifier = "belowTheWaistBack"
     
-    lazy var psoriasisDrawIdentifiers: [String] = [
-        self.aboveTheWaistFrontImageIdentifier,
-        self.belowTheWaistFrontImageIdentifier,
-        self.aboveTheWaistBackImageIdentifier,
-        self.belowTheWaistBackImageIdentifier]
+    public static let psoriasisDrawIdentifiers: [String] = [
+        PsoriasisDrawCompletionStepViewController.aboveTheWaistFrontImageIdentifier,
+        PsoriasisDrawCompletionStepViewController.belowTheWaistFrontImageIdentifier,
+        PsoriasisDrawCompletionStepViewController.aboveTheWaistBackImageIdentifier,
+        PsoriasisDrawCompletionStepViewController.belowTheWaistBackImageIdentifier]
     
     func percentCoverageResultId(identifier: String) -> String {
         return "\(identifier)\(PsoriasisDrawStepViewController.percentCoverageResultId)"
@@ -149,7 +149,7 @@ open class PsoriasisDrawCompletionStepViewController: RSDStepViewController, Pro
         self.navigationHeader?.titleLabel?.textAlignment = .center
         self.navigationHeader?.textLabel?.textAlignment = .center
         
-        let processor = PsorcastDrawTaskResultProcessor.shared
+        let processor = PsorcastTaskResultProcessor.shared
         
         // If we have finished processing then show coverage, otherwise wait until delegate fires
         if !processor.isProcessing {
@@ -171,7 +171,7 @@ open class PsoriasisDrawCompletionStepViewController: RSDStepViewController, Pro
         super.setupFooter(footer)
         
         // Wait until result processing finishes before allowing user to finish the task
-        if PsorcastDrawTaskResultProcessor.shared.processingIdentifiers.count == 0 {
+        if PsorcastTaskResultProcessor.shared.processingIdentifiers.count == 0 {
             self.navigationFooter?.nextButton?.isEnabled = true
         } else {
             self.navigationFooter?.nextButton?.isEnabled = false
@@ -225,7 +225,7 @@ open class PsoriasisDrawCompletionStepViewController: RSDStepViewController, Pro
     /// Total coverage is calculated by adding up each body sections coverage.
     open func psoriasisDrawCoverage() -> Float {
         var sum = Float(0)
-        for identifier in psoriasisDrawIdentifiers {
+        for identifier in PsoriasisDrawCompletionStepViewController.psoriasisDrawIdentifiers {
             var coverageCount = 0
             var totalCount = 0
             
@@ -263,21 +263,24 @@ open class PsoriasisDrawCompletionStepViewController: RSDStepViewController, Pro
     /// the log output of PSRImageHelper.psoriasisCoverage for each section.
     func coverageScaleFactor(for identifier: String) -> Float {
         
-        let aboveTheWaistFrontTotalPixels = Float(122252)
-        let aboveTheWaistBackTotalPixels = Float(122509)
-        let belowTheWaistFrontTotalPixels = Float(121867)
-        let belowTheWaistBackTotalPixels = Float(135039)
+        // These values were taken from the PsorcastTaskResultProcessor
+        // when filtering log output "Full coverage" and
+        // running through the PsoriasisDraw task for each body section        
+        let aboveTheWaistFrontTotalPixels = Float(132008)
+        let aboveTheWaistBackTotalPixels = Float(129356)
+        let belowTheWaistFrontTotalPixels = Float(132192)
+        let belowTheWaistBackTotalPixels = Float(142477)
         
         let total = Float(aboveTheWaistFrontTotalPixels + aboveTheWaistBackTotalPixels + belowTheWaistFrontTotalPixels + belowTheWaistBackTotalPixels)
                     
         switch identifier {
-        case aboveTheWaistFrontImageIdentifier:
+        case PsoriasisDrawCompletionStepViewController.aboveTheWaistFrontImageIdentifier:
             return aboveTheWaistFrontTotalPixels / total
-        case aboveTheWaistBackImageIdentifier:
+        case PsoriasisDrawCompletionStepViewController.aboveTheWaistBackImageIdentifier:
             return aboveTheWaistBackTotalPixels / total
-        case belowTheWaistFrontImageIdentifier:
+        case PsoriasisDrawCompletionStepViewController.belowTheWaistFrontImageIdentifier:
             return belowTheWaistFrontTotalPixels / total
-        case belowTheWaistBackImageIdentifier:
+        case PsoriasisDrawCompletionStepViewController.belowTheWaistBackImageIdentifier:
             return belowTheWaistBackTotalPixels / total
         default:
             return 0
@@ -288,7 +291,7 @@ open class PsoriasisDrawCompletionStepViewController: RSDStepViewController, Pro
         var images = [UIImage?]()
         
         // Loop through the body sections and grab each image of the coverage drawn
-        for identifier in self.psoriasisDrawIdentifiers {
+        for identifier in PsoriasisDrawCompletionStepViewController.psoriasisDrawIdentifiers {
             let coverageId = self.coverageImageResultId(identifier: identifier)
             images.append(self.image(from: coverageId))
         }
@@ -321,7 +324,7 @@ open class PsoriasisDrawCompletionStepViewController: RSDStepViewController, Pro
     }
     
     override open func goForward() {
-        let processor = PsorcastDrawTaskResultProcessor.shared
+        let processor = PsorcastTaskResultProcessor.shared
         
         guard let image = self.bodySummaryImage,
               let selectedImage = self.selectedBodySummaryImage else {

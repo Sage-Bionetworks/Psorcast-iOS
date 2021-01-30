@@ -38,8 +38,12 @@ public final class PsorcastTaskResultProcessor {
     public static let shared = PsorcastTaskResultProcessor()
     
     // Clear black pixel
-    let clearBlack = RGBA32(red: 0, green: 0, blue: 0, alpha: 0)
-    let bodyColorGray = CGFloat(209) / CGFloat(255)
+    public static let clearBlack = RGBA32(red: 0, green: 0, blue: 0, alpha: 0)
+    public static let bodyGray = RGBA32(red: 209, green: 209, blue: 209, alpha: 255)
+    public static let bodyGrayColor = CGFloat(209) / CGFloat(255)
+    public static let bodyGrayUIColor = UIColor(red: PsorcastTaskResultProcessor.bodyGrayColor,
+                                              green: PsorcastTaskResultProcessor.bodyGrayColor,
+                                               blue: PsorcastTaskResultProcessor.bodyGrayColor, alpha: 1.0)
     
     /// Processing queue for doing background work
     private let processingQueue = DispatchQueue(label: "org.sagebase.PsorcastDrawTaskResultProcessor")
@@ -127,7 +131,7 @@ public final class PsorcastTaskResultProcessor {
             var selectedCount = 0
             // Any pixel that isn't clear is a pixel the user drew
             image.iteratePixels { (pixel, row, col) in
-                if (pixel != self.clearBlack) {
+                if PsorcastTaskResultProcessor.isSelectedPixel(pixel: pixel) {
                     selectedCount += 1
                 }
             }
@@ -169,7 +173,7 @@ public final class PsorcastTaskResultProcessor {
         // This grey is the same as the body map color
         // so when we do full coverage, it will not be visually erratic
         // if it shows up for a frame.
-        touchView.overrideLineColor = UIColor(red: bodyColorGray, green: bodyColorGray, blue: bodyColorGray, alpha: 1.0)
+        touchView.overrideLineColor = PsorcastTaskResultProcessor.bodyGrayUIColor
         let oldLineWidth = touchView.lineWidth
         
         startProcessingIdentifier(identifier: resultIdentifier)
@@ -189,7 +193,7 @@ public final class PsorcastTaskResultProcessor {
                 var selectedCount: Int = 0
                 // Any pixel that isn't clear is a pixel the user drew
                 fullCoverageImage.iteratePixels(pixelIterator: { (pixel, row, col) -> Void in
-                    if (pixel != self.clearBlack) {
+                    if PsorcastTaskResultProcessor.isSelectedPixel(pixel: pixel) {
                         selectedCount += 1
                     }
                 })
@@ -203,6 +207,13 @@ public final class PsorcastTaskResultProcessor {
                 }
             }
         }
+    }
+    
+    /**
+     * - Returns true if the pixel is not clear black, false if any other color or alpha
+     */
+    public static func isSelectedPixel(pixel: RGBA32) -> Bool {
+        return pixel != self.clearBlack
     }
     
     private func writeSelectedCount(selectedCount: Int, resultIdentifier: String, stepViewModel: RSDStepViewPathComponent) {

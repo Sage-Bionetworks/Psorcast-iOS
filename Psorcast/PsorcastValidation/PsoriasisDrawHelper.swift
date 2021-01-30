@@ -1,9 +1,34 @@
 //
-//  PsoriasisDrawHelper.swift
-//  PsorcastValidation
+// PsoriasisDrawHelper.swift
+// PsorcastValidation
 //
-//  Created by Michael L DePhillips on 1/23/21.
-//  Copyright © 2021 Sage Bionetworks. All rights reserved.
+// Copyright © 2019 Sage Bionetworks. All rights reserved.
+//
+// Redistribution and use in source and binary forms, with or without modification,
+// are permitted provided that the following conditions are met:
+//
+// 1.  Redistributions of source code must retain the above copyright notice, this
+// list of conditions and the following disclaimer.
+//
+// 2.  Redistributions in binary form must reproduce the above copyright notice,
+// this list of conditions and the following disclaimer in the documentation and/or
+// other materials provided with the distribution.
+//
+// 3.  Neither the name of the copyright holder(s) nor the names of any contributors
+// may be used to endorse or promote products derived from this software without
+// specific prior written permission. No license is granted to the trademarks of
+// the copyright holders even if such marks are included in this software.
+//
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+// AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+// IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+// ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE
+// FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+// DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+// SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+// CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+// OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+// OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
 
 import UIKit
@@ -11,7 +36,7 @@ import UIKit
 extension UIImage {
     typealias iteratePixel = (_ pixel : RGBA32, _ row: Int, _ col: Int) -> Void
     typealias transformPixel = (_ pixel : RGBA32, _ row: Int, _ col: Int)  -> RGBA32
-    
+     
     /**
      * Converts an image to another image based on individual pixel transformations
      * - Parameter pixelTransformer called on each pixel
@@ -110,39 +135,39 @@ extension UIImage {
     }
 }
 
-struct RGBA32: Hashable {
+public struct RGBA32: Hashable {
     public var color: UInt32
 
-    var redComponent: UInt8 {
+    public var redComponent: UInt8 {
         return UInt8((color >> 24) & 255)
     }
 
-    var greenComponent: UInt8 {
+    public var greenComponent: UInt8 {
         return UInt8((color >> 16) & 255)
     }
 
-    var blueComponent: UInt8 {
+    public var blueComponent: UInt8 {
         return UInt8((color >> 8) & 255)
     }
 
-    var alphaComponent: UInt8 {
+    public var alphaComponent: UInt8 {
         return UInt8((color >> 0) & 255)
     }
 
-    init(red: UInt8, green: UInt8, blue: UInt8, alpha: UInt8) {
+    public init(red: UInt8, green: UInt8, blue: UInt8, alpha: UInt8) {
         color = (UInt32(red) << 24) | (UInt32(green) << 16) | (UInt32(blue) << 8) | (UInt32(alpha) << 0)
     }
 
-    static let bitmapInfo = CGImageAlphaInfo.premultipliedLast.rawValue | CGBitmapInfo.byteOrder32Little.rawValue
+    public static let bitmapInfo = CGImageAlphaInfo.premultipliedLast.rawValue | CGBitmapInfo.byteOrder32Little.rawValue
 
-    static func ==(lhs: RGBA32, rhs: RGBA32) -> Bool {
+    public static func ==(lhs: RGBA32, rhs: RGBA32) -> Bool {
         return lhs.color == rhs.color
     }
 
-    static let black = RGBA32(red: 0, green: 0, blue: 0, alpha: 255)
-    static let red   = RGBA32(red: 255, green: 0, blue: 0, alpha: 255)
-    static let green = RGBA32(red: 0, green: 255, blue: 0, alpha: 255)
-    static let blue  = RGBA32(red: 0, green: 0, blue: 255, alpha: 255)
+    public static let black = RGBA32(red: 0, green: 0, blue: 0, alpha: 255)
+    public static let red   = RGBA32(red: 255, green: 0, blue: 0, alpha: 255)
+    public static let green = RGBA32(red: 0, green: 255, blue: 0, alpha: 255)
+    public static let blue  = RGBA32(red: 0, green: 0, blue: 255, alpha: 255)
 }
 
 // https://www.cs.rit.edu/~ncs/color/t_convert.html

@@ -49,7 +49,7 @@ open class PsoriasisDrawStepViewController: RSDStepViewController, ProcessorFini
     
     /// This should be turned off when deploying the app, but is useful
     /// for QA to know if the zones and coverage algorithms are working correctly
-    let debuggingZones = false
+    let debuggingZones = true
     
     /// The step for this view controller
     open var drawStep: PsoriasisDrawStepObject? {
@@ -166,7 +166,7 @@ open class PsoriasisDrawStepViewController: RSDStepViewController, ProcessorFini
         // Set to custom line width after view setup complete
         self.imageView.touchDrawableView?.lineWidth = self.lineWidth
         
-        let processor = PsorcastDrawTaskResultProcessor.shared
+        let processor = PsorcastTaskResultProcessor.shared
         // Add the percent coverage result, it will be processed in the background
         // If this has been calculated before, it will be stored as a result immediately
         processor.addBackgroundProcessFullCoverage(stepViewModel: self.stepViewModel, resultIdentifier: self.fullCoverageResultId, psoDrawImageView: self.imageView, selectedColor: lineColorUnwrapped)
@@ -211,16 +211,16 @@ open class PsoriasisDrawStepViewController: RSDStepViewController, ProcessorFini
             return
         }
         
-        guard let foregroundImageView = self.imageView?.foregroundImageView else {
+        guard let backgroundImageView = self.imageView?.backgroundImageView else {
             debugPrint("Cannot find foreground image view")
             return
         }
         
         if let assetLoader = backgroundTheme as? RSDAssetImageThemeElement {
-            foregroundImageView.image = assetLoader.embeddedImage()
+            backgroundImageView.image = assetLoader.embeddedImage()
         } else if let fetchLoader = backgroundTheme as? RSDFetchableImageThemeElement {
             fetchLoader.fetchImage(for: size, callback: { (_, img) in
-                foregroundImageView.image = img
+                backgroundImageView.image = img
             })
         }
     }
@@ -294,7 +294,7 @@ open class PsoriasisDrawStepViewController: RSDStepViewController, ProcessorFini
             // Hide our debugging features first before creating the image
             if self.debuggingZones {
                 self.imageView.debuggingButtonContainer?.isHidden = true
-                PsorcastDrawTaskResultProcessor.shared.processingFinishedDelegate = self
+                PsorcastTaskResultProcessor.shared.processingFinishedDelegate = self
                 self.loadingView.isHidden = false
             }
             
@@ -322,7 +322,7 @@ open class PsoriasisDrawStepViewController: RSDStepViewController, ProcessorFini
         let drawPoints = self.imageView.touchDrawableView?.drawPointsFlat() ?? []
         
         DispatchQueue.main.async {
-            let processor = PsorcastDrawTaskResultProcessor.shared
+            let processor = PsorcastTaskResultProcessor.shared
             
             // Attach a rasterized image of only the user's drawing
             guard let touchDrawableImage = self.imageView.createTouchDrawableImage() else {

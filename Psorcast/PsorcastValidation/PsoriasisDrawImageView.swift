@@ -82,7 +82,6 @@ open class PsoriasisDrawImageView: UIView, RSDViewDesignable {
     /// This can be set from interface builder like this was an image view
     @IBInspectable var image: UIImage? {
         didSet {
-            self.imageView?.image = image
             // Only reset the mask after subviews have been layed out
             self.recreateMask()
         }
@@ -100,10 +99,8 @@ open class PsoriasisDrawImageView: UIView, RSDViewDesignable {
         return image?.resizeImage(targetSize: size)
     }
     
-    /// The image view that holds the base image
-    public weak var imageView: UIImageView?
-    /// The image view that holds overlaid image info, like shadows
-    public weak var foregroundImageView: UIImageView?
+    /// The image view that holds the full overlaid image info, like shadows
+    public weak var backgroundImageView: UIImageView?
     /// The container that holds the joint buttons
     /// Unfortunately you cannot add subviews to a UIImageView
     /// and have them show up over the image, so we must have a container
@@ -121,42 +118,42 @@ open class PsoriasisDrawImageView: UIView, RSDViewDesignable {
     var debuggingZones = false
     public weak var debuggingButtonContainer: UIView?
     
+    /// True if the view was setup with a frame, false otherwise
+    private var isFrameSetup = false
+    
     // InitWithFrame to init view from code
     override init(frame: CGRect) {
         super.init(frame: frame)
-        setupView()
+        setupView(frame)
     }
     
     // InitWithCode to init view from xib or storyboard
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        setupView()
+        setupView(nil)
     }
     
     /// Common func to init our view
-    private func setupView() {
+    private func setupView(_ frame: CGRect?) {
         self.removeSubviews()
         
-        let imageViewStrong = UIImageView()
-        imageViewStrong.image = self.image
-        imageViewStrong.contentMode = .scaleAspectFit
-        self.addSubview(imageViewStrong)
-        imageViewStrong.rsd_alignAllToSuperview(padding: 0)
-        imageViewStrong.translatesAutoresizingMaskIntoConstraints = false
-        self.imageView = imageViewStrong
-        
-        let foregroundImageViewStrong = UIImageView()
+        self.isFrameSetup = (frame != nil)
+        let foregroundImageViewStrong = self.isFrameSetup ? UIImageView(frame: frame!) : UIImageView()
         foregroundImageViewStrong.image = self.image
         foregroundImageViewStrong.contentMode = .scaleAspectFit
         self.addSubview(foregroundImageViewStrong)
-        foregroundImageViewStrong.rsd_alignAllToSuperview(padding: 0)
-        foregroundImageViewStrong.translatesAutoresizingMaskIntoConstraints = false
-        self.foregroundImageView = foregroundImageViewStrong
+        if (!self.isFrameSetup) {
+            foregroundImageViewStrong.rsd_alignAllToSuperview(padding: 0)
+            foregroundImageViewStrong.translatesAutoresizingMaskIntoConstraints = false
+        }
+        self.backgroundImageView = foregroundImageViewStrong
         
-        let touchDrawableStrong = TouchDrawableView()
+        let touchDrawableStrong = self.isFrameSetup ? TouchDrawableView(frame: frame!) : TouchDrawableView()
         self.addSubview(touchDrawableStrong)
-        touchDrawableStrong.rsd_alignAllToSuperview(padding: 0)
-        touchDrawableStrong.translatesAutoresizingMaskIntoConstraints = false
+        if (!self.isFrameSetup) {
+            touchDrawableStrong.rsd_alignAllToSuperview(padding: 0)
+            touchDrawableStrong.translatesAutoresizingMaskIntoConstraints = false
+        }
         self.touchDrawableView = touchDrawableStrong
     }
     
@@ -185,9 +182,9 @@ open class PsoriasisDrawImageView: UIView, RSDViewDesignable {
             return
         }
         
-        let imageViewSize = self.frame.size
-        if let imageSize = self.imageView?.image?.size,
-            imageViewSize.width > 0, imageViewSize.height > 0,
+        let selfSize = self.frame.size
+        if let imageSize = self.image?.size,
+           selfSize.width > 0, selfSize.height > 0,
             let maskImage = self.image {
             
             // The aspect fit size of the image within the image view
@@ -195,7 +192,7 @@ open class PsoriasisDrawImageView: UIView, RSDViewDesignable {
             // of the buttons so that they are visually correct
             let aspectFitRect = PSRImageHelper.calculateAspectFit(
                 imageWidth: imageSize.width, imageHeight: imageSize.height,
-                imageViewWidth: imageViewSize.width, imageViewHeight: imageViewSize.height)
+                imageViewWidth: selfSize.width, imageViewHeight: selfSize.height)
             
             // No need to re-calculate if dimensions haven't changed
             if self.lastAspectFitRect != nil &&
@@ -204,37 +201,36 @@ open class PsoriasisDrawImageView: UIView, RSDViewDesignable {
             }
             self.lastAspectFitRect = aspectFitRect
                         
+            var shouldFinishViewSetup = didAdjustConstraints
+            
             if !didAdjustConstraints {
                 // Resize the views to match the image's aspect fit
                 // This will allow screenshots of the view to be at the correct aspect ratio
-                self.findConstraint(layoutAttribute: .leading)?.constant = aspectFitRect.minX
-                self.findConstraint(layoutAttribute: .top)?.constant = aspectFitRect.minY
-                self.findConstraint(layoutAttribute: .trailing)?.constant = aspectFitRect.minX
-                self.findConstraint(layoutAttribute: .bottom)?.constant = aspectFitRect.minY
+                if (!self.isFrameSetup) {
+                    self.findConstraint(layoutAttribute: .leading)?.constant = aspectFitRect.minX
+                    self.findConstraint(layoutAttribute: .top)?.constant = aspectFitRect.minY
+                    self.findConstraint(layoutAttribute: .trailing)?.constant = aspectFitRect.minX
+                    self.findConstraint(layoutAttribute: .bottom)?.constant = aspectFitRect.minY
+                } else {
+                    self.touchDrawableView?.frame = CGRect(x: aspectFitRect.minX,
+                                                           y: aspectFitRect.minY,
+                                                           width: aspectFitRect.width,
+                                                           height: aspectFitRect.height)
+                    // Frame work here doesn't require a re-draw for view setup to be complete
+                    shouldFinishViewSetup = true
+                }
                 self.didAdjustConstraints = true
-            } else {
+            }
+            
+            if shouldFinishViewSetup {
                 // Resize mask to aspect fit scaled
                 guard let aspectFitRectScaled = self.aspectFitRectScaled else {
                     return
                 }
-                let maskImageResized: UIImage? = maskImage.resizeImage(targetSize: aspectFitRectScaled.size)
-                
-                // Remove all edge blurring, for a more accuracte selection algorithm
-                guard let pixelizedMaskImage = maskImageResized?.transformPixels(pixelTransformer: { (pixel, row, col) -> RGBA32 in
-                    if (pixel != bodyUnselected) {
-                        return clearBlack
-                    }
-                    return pixel
-                }) else {
-                    print("Error pixelizing mask image")
-                    return
-                }
-                
-                self.imageView?.image = maskImage
                 
                 // Re-calculate the mask size and re-apply it to the touch drawable view
-                //let maskFrame = CGRect(x: 0, y: 0, width: aspectFitRect.width, height: aspectFitRect.height)
-                self.touchDrawableView?.setMaskImage(mask: pixelizedMaskImage, frame: aspectFitRect)
+                let maskImageResized = maskImage.resizeImage(targetSize: aspectFitRectScaled.size)
+                self.touchDrawableView?.setMaskImage(mask: maskImageResized, frame: aspectFitRect)
                 
                 // Because we changed the constraints of the subviews, we need to
                 // wait for them to resize before we tell the delegate the view setup is complete
@@ -250,15 +246,25 @@ open class PsoriasisDrawImageView: UIView, RSDViewDesignable {
         self.touchDrawableView?.setDesignSystem(designSystem, with: background)
     }
     
-    func createTouchDrawableImage() -> UIImage? {
+    /**
+     * Creates an image showing the drawn mask portion over top
+     * - Parameter forceDraw only make true if view has not been drawn before (usually in unit test setting)
+     * - Returns an image showing the drawn mask portion
+     */
+    func createTouchDrawableImage(_ forceDraw: Bool = false) -> UIImage? {
         guard let touchDrawable = self.touchDrawableView else {
             return nil
         }
-        return UIImage.imageWithView(touchDrawable)
+        return UIImage.imageWithView(touchDrawable, drawAfterScreenUpdates: forceDraw)
     }
     
-    func createPsoriasisDrawImage() -> UIImage? {
-        return UIImage.imageWithView(self)
+    /**
+     * Creates the psoriasis draw image
+     * - Parameter forceDraw only make true if view has not been drawn before (usually in unit test setting)
+     * - Returns an image showing the drawn mask portion over top the detailed background image below
+     */
+    func createPsoriasisDrawImage(_ forceDraw: Bool = false) -> UIImage? {
+        return UIImage.imageWithView(self, drawAfterScreenUpdates: forceDraw)
     }
     
     /**

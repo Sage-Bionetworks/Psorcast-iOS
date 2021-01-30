@@ -83,7 +83,7 @@
 		CB7CF2422400BF10003E02A5 /* WelcomeVideoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB7CF2412400BF10003E02A5 /* WelcomeVideoViewController.swift */; };
 		CB7CF2482400CFAA003E02A5 /* WelcomeVideo.mov in Resources */ = {isa = PBXBuildFile; fileRef = CB7CF2472400CFAA003E02A5 /* WelcomeVideo.mov */; };
 		CB81C92E242D3AB100A84886 /* MeasureTabViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB81C92D242D3AB100A84886 /* MeasureTabViewControllerTests.swift */; };
-		CB85FB52235F505300FDC59B /* PsorcastDrawTaskResultProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB85FB51235F505300FDC59B /* PsorcastDrawTaskResultProcessor.swift */; };
+		CB85FB52235F505300FDC59B /* PsorcastTaskResultProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB85FB51235F505300FDC59B /* PsorcastTaskResultProcessor.swift */; };
 		CB85FB56235F5C5500FDC59B /* SelectedIdentifiersResultObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB85FB55235F5C5500FDC59B /* SelectedIdentifiersResultObject.swift */; };
 		CB89B895246C7B3200567345 /* DeepDiveCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB89B88C246C7B3200567345 /* DeepDiveCollectionViewController.swift */; };
 		CB89B897246C825A00567345 /* WebImageInstructionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB89B896246C825A00567345 /* WebImageInstructionViewController.swift */; };
@@ -215,7 +215,7 @@
 		CBDCDCB623F3849E00E5CEB8 /* DigitalJarOpenInstructionStepViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB09F00023D644A8009D344E /* DigitalJarOpenInstructionStepViewController.xib */; };
 		CBDCDCB723F384A400E5CEB8 /* TaskFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBD67D9222DFC71E00998516 /* TaskFactory.swift */; };
 		CBDCDCB823F384A400E5CEB8 /* MotorControl+Bridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBD67D8C22DFC5EE00998516 /* MotorControl+Bridge.swift */; };
-		CBDCDCBA23F384A400E5CEB8 /* PsorcastDrawTaskResultProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB85FB51235F505300FDC59B /* PsorcastDrawTaskResultProcessor.swift */; };
+		CBDCDCBA23F384A400E5CEB8 /* PsorcastTaskResultProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB85FB51235F505300FDC59B /* PsorcastTaskResultProcessor.swift */; };
 		CBDCDCBB23F384A400E5CEB8 /* ImageDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB704AC023EF8C4D00CC9D13 /* ImageDefaults.swift */; };
 		CBDCDCBC23F384A800E5CEB8 /* PSRImageHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBB93CB0233FFA7500321A4D /* PSRImageHelper.swift */; };
 		CBDCDCBE23F384D400E5CEB8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FFABCBEE22DD1F2800D11109 /* Assets.xcassets */; };
@@ -449,7 +449,7 @@
 		CB7CF2412400BF10003E02A5 /* WelcomeVideoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeVideoViewController.swift; sourceTree = "<group>"; };
 		CB7CF2472400CFAA003E02A5 /* WelcomeVideo.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = WelcomeVideo.mov; sourceTree = "<group>"; };
 		CB81C92D242D3AB100A84886 /* MeasureTabViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MeasureTabViewControllerTests.swift; sourceTree = "<group>"; };
-		CB85FB51235F505300FDC59B /* PsorcastDrawTaskResultProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PsorcastDrawTaskResultProcessor.swift; sourceTree = "<group>"; };
+		CB85FB51235F505300FDC59B /* PsorcastTaskResultProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PsorcastTaskResultProcessor.swift; sourceTree = "<group>"; };
 		CB85FB55235F5C5500FDC59B /* SelectedIdentifiersResultObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedIdentifiersResultObject.swift; sourceTree = "<group>"; };
 		CB89B88C246C7B3200567345 /* DeepDiveCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeepDiveCollectionViewController.swift; sourceTree = "<group>"; };
 		CB89B896246C825A00567345 /* WebImageInstructionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebImageInstructionViewController.swift; sourceTree = "<group>"; };
@@ -848,7 +848,7 @@
 				CBD67D9222DFC71E00998516 /* TaskFactory.swift */,
 				CBD67D8C22DFC5EE00998516 /* MotorControl+Bridge.swift */,
 				CB8DC7B324189E31001B7982 /* TaskListScheduleManager.swift */,
-				CB85FB51235F505300FDC59B /* PsorcastDrawTaskResultProcessor.swift */,
+				CB85FB51235F505300FDC59B /* PsorcastTaskResultProcessor.swift */,
 				CB704AC023EF8C4D00CC9D13 /* ImageDefaults.swift */,
 			);
 			name = Model;
@@ -1396,7 +1396,7 @@
 				CBDCDC8D23F3849E00E5CEB8 /* SelectionCollectionStepViewController.swift in Sources */,
 				CBDCDC8B23F3849E00E5CEB8 /* RSDCollectionViewCell.swift in Sources */,
 				CBDCDCA523F3849E00E5CEB8 /* PsoriasisAreaPhotoResultObject.swift in Sources */,
-				CBDCDCBA23F384A400E5CEB8 /* PsorcastDrawTaskResultProcessor.swift in Sources */,
+				CBDCDCBA23F384A400E5CEB8 /* PsorcastTaskResultProcessor.swift in Sources */,
 				CB16C38C24465BC20046E200 /* ReminderStepViewController.swift in Sources */,
 				CBDCDCB323F3849E00E5CEB8 /* DigitalJarOpenCompletionStepViewController.swift in Sources */,
 				CB1535E024395410007D0307 /* ProfileTabViewController.swift in Sources */,
@@ -1455,7 +1455,7 @@
 				CB8AE701233FBA5E00F5F8AC /* PsoriasisDrawStepViewController.swift in Sources */,
 				CB55C7382319718D00EA0C19 /* JointPainStepObject.swift in Sources */,
 				CBE908A82333BB2A00F88A9A /* PsoriasisAreaPhotoStepObject.swift in Sources */,
-				CB85FB52235F505300FDC59B /* PsorcastDrawTaskResultProcessor.swift in Sources */,
+				CB85FB52235F505300FDC59B /* PsorcastTaskResultProcessor.swift in Sources */,
 				CBD67D9A22DFDC4E00998516 /* ImageCaptureStepViewController.swift in Sources */,
 				CB5424D123721FFD0036DB6B /* RSDCollectionViewCell.swift in Sources */,
 				CB704AC123EF8C4D00CC9D13 /* ImageDefaults.swift in Sources */,

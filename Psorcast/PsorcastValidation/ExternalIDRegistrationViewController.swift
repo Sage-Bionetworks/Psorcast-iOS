@@ -93,6 +93,7 @@ open class ExternalIDRegistrationViewController: RSDStepViewController, UITextFi
         
         self.submitButton.setDesignSystem(self.designSystem, with: self.designSystem.colorRules.backgroundLight)
         self.submitButton.setTitle(Localization.localizedString("BUTTON_SUBMIT"), for: .normal)
+        self.submitButton.isEnabled = false
         
         self.titleLabel.text = Localization.localizedString("WELCOME_STUDY")
         self.titleLabel.font = self.designSystem.fontRules.font(for: .xLargeHeader)

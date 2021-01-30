@@ -144,8 +144,10 @@ open class TouchDrawableView: UIView, RSDViewDesignable {
     /**
      * Fill all will draw over every possible pixel available
      * As well as set the line width equal to 200
+     * - Parameter completion to be called when view is done animating
+     * - Parameter skipViewAnimate only useful in unit tests when you want to control the drawing synchronously
      */
-    public func fillAll200(_ completion: (() -> Void)?) {
+    public func fillAll200(_ completion: (() -> Void)?, skipViewAnimate: Bool = false) {
         self.lineWidth = 200
         let width = self.maskImage?.cgImage?.width ?? 0
         let height = self.maskImage?.cgImage?.height ?? 0
@@ -159,9 +161,11 @@ open class TouchDrawableView: UIView, RSDViewDesignable {
         self.addPoint(CGPoint(x: 0, y: 0), newPath: false, needsDisplay: true)
         
         // By calling animate, we can get a notification once the view heirarchy has been updated
-        UIView.animate(withDuration: 0, animations: {}, completion: { _ in
-            completion?()
-        })
+        if skipViewAnimate {
+            UIView.animate(withDuration: 0, animations: {}, completion: { _ in
+                completion?()
+            })
+        }
     }
     
     public func setBezierPaths(paths: [UIBezierPath]) {

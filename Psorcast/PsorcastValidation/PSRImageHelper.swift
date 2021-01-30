@@ -166,9 +166,13 @@ public class PSRImageHelper {
 
 extension UIImage {
     class func imageWithView(_ view: UIView) -> UIImage {
+        return imageWithView(view, drawAfterScreenUpdates: false)
+    }
+    
+    class func imageWithView(_ view: UIView, drawAfterScreenUpdates: Bool) -> UIImage {
         UIGraphicsBeginImageContextWithOptions(view.bounds.size, false, 0)
         defer { UIGraphicsEndImageContext() }
-        view.drawHierarchy(in: view.bounds, afterScreenUpdates: false)
+        view.drawHierarchy(in: view.bounds, afterScreenUpdates: drawAfterScreenUpdates)
         return UIGraphicsGetImageFromCurrentImageContext() ?? UIImage()
     }
 }
