@@ -150,6 +150,7 @@ class ParticipantIDRegistrationViewController: RSDStepViewController, UITextFiel
         
         self.submitButton.setDesignSystem(self.designSystem, with: self.designSystem.colorRules.backgroundLight)
         self.submitButton.setTitle(Localization.localizedString("BUTTON_SUBMIT"), for: .normal)
+        self.submitButton.isEnabled = false
         
         self.errorLabel.text = nil
         self.errorLabel.font = self.designSystem.fontRules.font(for: .mediumHeader)

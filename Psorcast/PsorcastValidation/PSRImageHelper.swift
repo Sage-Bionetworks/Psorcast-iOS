@@ -51,6 +51,8 @@ public class PSRImageHelper {
         let height = CGFloat(412)
         let size = CGSize(width: width, height: height)
         
+        // These values are all grabbed from page on Psorcast Figma
+        // called "Psoriasis Draw Dev Assets v2"
         // See Figma frame Completion Result for x, y, width, height values
         let aboveFrontRect = CGRect(x: 24, y: 9, width: width, height: height)
         let belowFrontRect = CGRect(x: 25, y: 270, width: width, height: height)
