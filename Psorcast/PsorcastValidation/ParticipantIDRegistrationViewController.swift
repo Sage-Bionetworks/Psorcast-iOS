@@ -86,6 +86,9 @@ class ParticipantIDRegistrationViewController: RSDStepViewController, UITextFiel
     /// The loading spinner when logout is tapped
     @IBOutlet public var loadingSpinner: UIActivityIndicatorView!
     
+    /// This is helpful for dev, when set, it will auto-set your participant ID to this
+    let autoLoginParticipantId: String? = nil
+    
     @IBAction func logoutTapped() {
         DispatchQueue.main.async {
             self.logoutButton.isEnabled = false
@@ -154,6 +157,18 @@ class ParticipantIDRegistrationViewController: RSDStepViewController, UITextFiel
         self.loadingSpinner.isHidden = true
         
         self.setFirstEntryTitle()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        // Useful for dev, but should never run in prod
+        if let autoLogin = autoLoginParticipantId {
+            self.textField.text = autoLogin
+            self.submitTapped()
+            self.textField.text = autoLogin
+            self.submitTapped()
+        }
     }
     
     func getOriginalSubmitButtonBottom() -> CGFloat {
