@@ -50,7 +50,7 @@ open class PsoriasisDrawStepViewController: RSDStepViewController, ProcessorFini
     /// This should be turned off when deploying the app, but is useful
     /// for QA to know if the zones and coverage algorithms are working correctly
     let debuggingZones = false
-    let debuggingFullCoverage = true
+    let debuggingFullCoverage = false
     
     /// The step for this view controller
     open var drawStep: PsoriasisDrawStepObject? {
