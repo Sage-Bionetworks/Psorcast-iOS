@@ -137,76 +137,138 @@ public final class PsorcastTaskResultProcessor {
             }
             DispatchQueue.main.async {
                 debugPrint("Selected coverage Process found \(selectedCount) pixels for identifier \(resultIdentifier)")
-                self.writeSelectedCount(selectedCount: selectedCount, resultIdentifier: resultIdentifier, stepViewModel: stepViewModel)
+                // Add the percent coverage result
+                let coverageResult = RSDAnswerResultObject(identifier: resultIdentifier, answerType: .integer, value: selectedCount)
+                stepViewModel.parent?.taskResult.appendStepHistory(with: coverageResult)
+                self.finishProcessingIdentifier(identifier: resultIdentifier)
             }
         }
+    }
+    
+    private func fullCoverageResultId(identifier: String) -> String {
+        return "\(identifier)\(PsoriasisDrawStepViewController.totalPixelCountResultId)"
+    }
+    
+    private func fullCoverageDefaultsIdentifier(for size: CGSize) -> String {
+        let identifier = PsoriasisDrawCompletionStepViewController.fullCoverageIdentifier
+        return String(format: "%@%d%d", identifier, size.width, size.height)
     }
     
     /// Must be called from the main thread DispatchQueue.main.async
     /// Creates the answer result object and returns it as the function
     /// calculates the psoriasis coverage on a background thread
-    public func addBackgroundProcessFullCoverage(stepViewModel: RSDStepViewPathComponent, resultIdentifier: String, psoDrawImageView: PsoriasisDrawImageView, selectedColor: UIColor) {
+    /// - Parameter stepViewModel the current task's stepviewmodel
+    /// - Parameter size the size of the PsoDrawImageView's frame
+    public func addBackgroundProcessFullCoverage(stepViewModel: RSDStepViewPathComponent, size: CGSize) {
         
-        guard let touchView = psoDrawImageView.touchDrawableView,
-              let width = touchView.maskImage?.cgImage?.width,
-              let height = touchView.maskImage?.cgImage?.height else {
-            print("Touch drawable view not ready")
-            return
+        let identifier = PsoriasisDrawCompletionStepViewController.fullCoverageIdentifier
+        if processingIdentifiers.contains(where: { $0.key == identifier }) {
+            return // already processing this, exit
         }
-                
-        // Check to make sure we haven't already done this calculation before
-        // If we have, just grab the pre-calculated total pixels
+        
+        // Check if we have already attached the full coverage to the step result
+        if stepViewModel.taskResult.stepHistory.contains(where: { $0.identifier == identifier }) {
+            return // already attached it
+        }
+        
+        // Check if we have it saved to user defaults for this size
         let defaults = UserDefaults.standard
-        let defaultsFullCoverageIdentifier = String(format: "%@%@%d%d", resultIdentifier, PsoriasisDrawStepViewController.totalPixelCountResultId, width, height)
-        let precalculatedSelectedCount = defaults.integer(forKey: defaultsFullCoverageIdentifier)
-        if precalculatedSelectedCount > 0 {
-            debugPrint("Defaults Full coverage Process found \(precalculatedSelectedCount) pixels for identifier \(resultIdentifier)")
-            // Return the previously calculated total coverage for this width/height
-            self.writeSelectedCount(selectedCount: precalculatedSelectedCount,
-                                    resultIdentifier: resultIdentifier,
-                                    stepViewModel: stepViewModel)
+        let defaultsIdentifier = self.fullCoverageDefaultsIdentifier(for: size)
+        if let saved = defaults.array(forKey: defaultsIdentifier) as? [Int] {
+            // We already calculated it in a previous run, write the saved value and exit
+            self.writeFullCoverageCounts(selectedCounts: saved, resultIdentifier: identifier, stepViewModel: stepViewModel)
             return
         }
         
-        // Save settings so that we can revert after shading every possible pixel        
-        let oldLineColor = touchView.overrideLineColor
-        // This grey is the same as the body map color
-        // so when we do full coverage, it will not be visually erratic
-        // if it shows up for a frame.
-        touchView.overrideLineColor = PsorcastTaskResultProcessor.bodyGrayUIColor
-        let oldLineWidth = touchView.lineWidth
+        // Start the process for computing the full coverage pixel counts
+        startProcessingIdentifier(identifier: identifier)
+                
+        let ids = PsoriasisDrawCompletionStepViewController.psoriasisDrawIdentifiers
+        self.calculateFullPixelCountRecursive(stepViewModel: stepViewModel,
+                                              size: size, pixelCounts: [],
+                                              idsRemaining: ids)
+    }
+    
+    typealias calculateTotalPixels = (Int) -> Void
+    /**
+     * Recursive function to calculate the total pixel counts for each image ID
+     */
+    private func calculateFullPixelCountRecursive(stepViewModel: RSDStepViewPathComponent, size: CGSize, pixelCounts: [Int], idsRemaining: [String]) {
         
-        startProcessingIdentifier(identifier: resultIdentifier)
+        let fullCovIdentifier = PsoriasisDrawCompletionStepViewController.fullCoverageIdentifier
         
-        touchView.fillAll200 {
+        if idsRemaining.count == 0 {
+            let defaults = UserDefaults.standard
+            let defaultsIdentifier = self.fullCoverageDefaultsIdentifier(for: size)
+            self.writeFullCoverageCounts(selectedCounts: pixelCounts, resultIdentifier: fullCovIdentifier, stepViewModel: stepViewModel)
+            defaults.set(pixelCounts, forKey: defaultsIdentifier)
+            self.finishProcessingIdentifier(identifier: fullCovIdentifier)
+            return
+        }
+                                
+        let identifier = idsRemaining.first!
+        let touchDrawable = self.createTouchDrawable(for: identifier, size: size)
+        touchDrawable.fillAll200(nil, skipViewAnimate: true)
+        
+        // This will give the PsoriasisDrawImageView time to render
+        UIView.animate(withDuration: 0, animations: {
+            touchDrawable.layoutIfNeeded()
+            touchDrawable.setNeedsDisplay()
+        }, completion: { success in
+            // Get a snapshot of the full coverages,
+            // see equivalent in PsoriasisDrawImageView.createTouchDrawableImage()
+            let fullCoverageImage = UIImage.imageWithView(touchDrawable, drawAfterScreenUpdates: true)
             
-            // Get a snapshot of the full coverages
-            let fullCoverageImage = UIImage.imageWithView(touchView)
-            
-            // This will undo the full coverage operation we just did
-            touchView.overrideLineColor = oldLineColor
-            touchView.lineWidth = oldLineWidth
-            touchView.undo()
-            
-            // Perform heavy lifting on background thread
-            DispatchQueue.global(qos: .background).async {
-                var selectedCount: Int = 0
-                // Any pixel that isn't clear is a pixel the user drew
-                fullCoverageImage.iteratePixels(pixelIterator: { (pixel, row, col) -> Void in
+            // Perform pixel counting
+            self.processingQueue.async {
+                var pixelCount = 0
+                var colorsCount = [RGBA32 : Int]()
+                fullCoverageImage.iteratePixels { (pixel, row, col) in
                     if PsorcastTaskResultProcessor.isSelectedPixel(pixel: pixel) {
-                        selectedCount += 1
+                        pixelCount += 1
                     }
-                })
+                    if colorsCount[pixel] == nil {
+                        colorsCount[pixel] = 0
+                    }
+                    colorsCount[pixel]! += 1
+                }
                 
                 DispatchQueue.main.async {
-                    debugPrint("Full coverage Process found \(selectedCount) pixels for identifier \(resultIdentifier)")
-                    UserDefaults.standard.set(selectedCount, forKey: defaultsFullCoverageIdentifier)
-                    self.writeSelectedCount(selectedCount: selectedCount,
-                                            resultIdentifier: resultIdentifier,
-                                            stepViewModel: stepViewModel)
+                    debugPrint("Calculated \(pixelCount) pixels in full coverage \(identifier)")
+                    var newPixelCount = [Int]()
+                    newPixelCount.append(contentsOf: pixelCounts)
+                    newPixelCount.append(pixelCount)
+                    
+                    var newIds = [String]()
+                    // Make a copy with the first element removed
+                    for i in 1..<idsRemaining.count {
+                        newIds.append(idsRemaining[i])
+                    }
+                    
+                    // Continue to next image
+                    self.calculateFullPixelCountRecursive(stepViewModel: stepViewModel, size: size, pixelCounts: newPixelCount, idsRemaining: newIds)
                 }
             }
+        })
+    }
+    
+    /**
+     * Creates a touch drawable view from the specified identifier image at desired size
+     */
+    private func createTouchDrawable(for identifier: String, size: CGSize) -> TouchDrawableView {
+        // The size passed in is not scaled for pixel density, which our image will be
+        let sizeScaled = CGSize(width: size.width * UIScreen.main.scale,
+                                height: size.height * UIScreen.main.scale)
+        let touchDrawableView = TouchDrawableView(frame: CGRect(x: 0, y: 0, width: size.width, height: size.height))
+        let imageIdentifier = "PsoriasisDraw\(identifier.capitalizingFirstLetter())"
+        let image = UIImage(named: imageIdentifier)
+        if let maskImage = image?.resizeImage(targetSize: sizeScaled) {
+            let frame = CGRect(x: 0, y: 0, width: size.width, height: size.height)
+            touchDrawableView.setMaskImage(mask: maskImage, frame: frame)
         }
+        let whiteColorTile = RSDColorTile(RSDColor.white, usesLightStyle: false)
+        touchDrawableView.setDesignSystem(AppDelegate.designSystem, with: whiteColorTile)
+        return touchDrawableView
     }
     
     /**
@@ -216,11 +278,10 @@ public final class PsorcastTaskResultProcessor {
         return pixel != self.clearBlack
     }
     
-    private func writeSelectedCount(selectedCount: Int, resultIdentifier: String, stepViewModel: RSDStepViewPathComponent) {
+    private func writeFullCoverageCounts(selectedCounts: [Int], resultIdentifier: String, stepViewModel: RSDStepViewPathComponent) {
         // Add the percent coverage result
-        let coverageResult = RSDAnswerResultObject(identifier: resultIdentifier, answerType: .integer, value: selectedCount)
+        let coverageResult = RSDAnswerResultObject(identifier: resultIdentifier, answerType: .init(baseType: .integer, sequenceType: .array, formDataType: nil, dateFormat: nil, unit: nil, sequenceSeparator: nil), value: selectedCounts)
         stepViewModel.parent?.taskResult.appendStepHistory(with: coverageResult)
-        self.finishProcessingIdentifier(identifier: resultIdentifier)
     }
     
     /// Must be called from the main thread DispatchQueue.main.async
@@ -230,7 +291,7 @@ public final class PsorcastTaskResultProcessor {
 
         startProcessingIdentifier(identifier: identifier)
         
-        DispatchQueue.global(qos: .background).async {
+        processingQueue.async {
             // Perform heavy lifting on background thread
             var selectedZoneIdentifiers = [String]()
                     
@@ -268,6 +329,8 @@ public final class PsorcastTaskResultProcessor {
             }
         }
     }
+    
+    
 }
 
 public protocol ProcessorFinishedDelegate: class {

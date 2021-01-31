@@ -173,7 +173,7 @@ extension UIImage {
         UIGraphicsBeginImageContextWithOptions(view.bounds.size, false, 0)
         defer { UIGraphicsEndImageContext() }
         view.drawHierarchy(in: view.bounds, afterScreenUpdates: drawAfterScreenUpdates)
-        return UIGraphicsGetImageFromCurrentImageContext() ?? UIImage()
+        return UIGraphicsGetImageFromCurrentImageContext()!
     }
 }
 

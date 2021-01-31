@@ -268,3 +268,13 @@ struct HSV {
         return CGPoint(x: CGFloat(h/360), y: CGFloat(v))
     }
 }
+
+extension String {
+    func capitalizingFirstLetter() -> String {
+      return prefix(1).uppercased() + dropFirst()
+    }
+
+    mutating func capitalizeFirstLetter() {
+      self = self.capitalizingFirstLetter()
+    }
+}

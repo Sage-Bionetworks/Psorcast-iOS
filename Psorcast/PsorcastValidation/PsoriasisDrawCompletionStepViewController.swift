@@ -81,6 +81,9 @@ open class PsoriasisDrawCompletionStepObject: RSDUIStepObject, RSDStepViewContro
 /// to indicate their psoriasis coverage, along with their average psoriasis coverage percent.
 open class PsoriasisDrawCompletionStepViewController: RSDStepViewController, ProcessorFinishedDelegate, RSDTaskViewControllerDelegate {
     
+    /// Full coverage total pixel counts result identifier
+    public static let fullCoverageIdentifier = "FullCoveragePixelCounts"
+    
     /// The result identifier for the summary data
     public let summarySelectedZonesResultIdentifier = "selectedZones"
     
@@ -97,6 +100,10 @@ open class PsoriasisDrawCompletionStepViewController: RSDStepViewController, Pro
     
     func percentCoverageResultId(identifier: String) -> String {
         return "\(identifier)\(PsoriasisDrawStepViewController.percentCoverageResultId)"
+    }
+    
+    func selectedPixelCountResultId(identifier: String) -> String {
+        return "\(identifier)\(PsoriasisDrawStepViewController.selectedPixelCountResultId)"
     }
     
     func coverageImageResultId(identifier: String) -> String {
@@ -176,9 +183,6 @@ open class PsoriasisDrawCompletionStepViewController: RSDStepViewController, Pro
         } else {
             self.navigationFooter?.nextButton?.isEnabled = false
         }
-        
-        self.navigationFooter?.nextButton?.isEnabled = true
-        finishedProcessing()
     }
     
     override open func showLearnMore() {
@@ -224,67 +228,67 @@ open class PsoriasisDrawCompletionStepViewController: RSDStepViewController, Pro
     
     /// Total coverage is calculated by adding up each body sections coverage.
     open func psoriasisDrawCoverage() -> Float {
-        var sum = Float(0)
+        
+        let ids = PsoriasisDrawCompletionStepViewController.psoriasisDrawIdentifiers
+        
+        guard let total = self.totalPixelCount(),
+              let totals = self.totalPixelCounts(),
+              totals.count == ids.count else {
+            print("Error: Could not find all total pixel counts")
+            return Float.zero
+        }
+        
+        var selectedTotal = 0
         for identifier in PsoriasisDrawCompletionStepViewController.psoriasisDrawIdentifiers {
-            var coverageCount = 0
-            var totalCount = 0
-            
-            let totalResultId = "\(identifier)\(PsoriasisDrawStepViewController.totalPixelCountResultId)"
-            let coverageResultId = "\(identifier)\(PsoriasisDrawStepViewController.selectedPixelCountResultId)"
-            
-            // Try to set total pixel count
-            if let totalResult = self.taskController?.taskViewModel.taskResult.stepHistory
-                .first(where: {$0.identifier == totalResultId}) as? RSDAnswerResult {
-                totalCount = totalResult.value as? Int ?? 0
-            }
-            
-            // Try to set the coverage pixel count
-            if let coverageResult = self.taskController?.taskViewModel.taskResult.stepHistory
-                .first(where: {$0.identifier == coverageResultId}) as? RSDAnswerResult {
-                coverageCount = coverageResult.value as? Int ?? 0
-            }
             
             var percentCoverage = Float.zero
-            if (coverageCount >= 0 && totalCount > 0) {
-                // Ignore any body sections without results
-                let scaleFactor =  self.coverageScaleFactor(for: identifier)
-                percentCoverage = (Float(coverageCount) / Float(totalCount)) * 100.0  // 0-100% scale
-                sum += (percentCoverage * scaleFactor)
+            
+            // Try to set the coverage pixel count
+            if let selectedCount = self.selectedPixelCount(for: identifier),
+               let totalCount = self.totalPixelCount(for: identifier) {
+                selectedTotal += selectedCount
+                percentCoverage = (Float(selectedCount) / Float(totalCount)) * Float(100)
             }
             
             // Save as step result for easy processing
             _ = self.stepViewModel.parent?.taskResult.appendStepHistory(with: RSDAnswerResultObject(identifier: self.percentCoverageResultId(identifier: identifier), answerType: .decimal, value: percentCoverage))
         }
-        return sum
+        return (Float(selectedTotal) / Float(total)) * Float(100)
+    }
+    
+    func selectedPixelCount(for identifier: String) -> Int? {
+        let selectedResultId = self.selectedPixelCountResultId(identifier: identifier)
+        guard let result = self.taskController?.taskViewModel.taskResult.stepHistory
+                .first(where: {$0.identifier == selectedResultId}) as? RSDAnswerResultObject,
+              let intAnswer = result.value as? Int else {
+            return nil
+        }
+        return intAnswer
+    }
+        
+    func totalPixelCount(for identifier: String) -> Int? {
+        let ids = PsoriasisDrawCompletionStepViewController.psoriasisDrawIdentifiers
+        guard let intArrValue = totalPixelCounts(),
+              let idIdx = ids.firstIndex(of: identifier),
+              idIdx < intArrValue.count else {
+            return nil
+        }
+        return intArrValue[idIdx]
     }
     
     /// Not every body section contains the same amount of selectable pixels.
-    /// These scale factors were computed by running the app and checking
-    /// the log output of PSRImageHelper.psoriasisCoverage for each section.
-    func coverageScaleFactor(for identifier: String) -> Float {
-        
-        // These values were taken from the PsorcastTaskResultProcessor
-        // when filtering log output "Full coverage" and
-        // running through the PsoriasisDraw task for each body section        
-        let aboveTheWaistFrontTotalPixels = Float(132008)
-        let aboveTheWaistBackTotalPixels = Float(129356)
-        let belowTheWaistFrontTotalPixels = Float(132192)
-        let belowTheWaistBackTotalPixels = Float(142477)
-        
-        let total = Float(aboveTheWaistFrontTotalPixels + aboveTheWaistBackTotalPixels + belowTheWaistFrontTotalPixels + belowTheWaistBackTotalPixels)
-                    
-        switch identifier {
-        case PsoriasisDrawCompletionStepViewController.aboveTheWaistFrontImageIdentifier:
-            return aboveTheWaistFrontTotalPixels / total
-        case PsoriasisDrawCompletionStepViewController.aboveTheWaistBackImageIdentifier:
-            return aboveTheWaistBackTotalPixels / total
-        case PsoriasisDrawCompletionStepViewController.belowTheWaistFrontImageIdentifier:
-            return belowTheWaistFrontTotalPixels / total
-        case PsoriasisDrawCompletionStepViewController.belowTheWaistBackImageIdentifier:
-            return belowTheWaistBackTotalPixels / total
-        default:
-            return 0
+    /// These scale factors were computed the first time you run the psoriasis draw
+    /// task, and will remain pre-calculated until screen size or view size changes
+    func totalPixelCounts() -> [Int]? {
+        guard let fullCoverageAnswerResult = self.stepViewModel.taskResult.stepHistory.first(where: { $0.identifier == PsoriasisDrawCompletionStepViewController.fullCoverageIdentifier }) as? RSDAnswerResultObject,
+              let intArrValue = fullCoverageAnswerResult.value as? [Int] else {
+            return nil
         }
+        return intArrValue
+    }
+    
+    func totalPixelCount() -> Int? {
+        return self.totalPixelCounts()?.reduce(0, +)
     }
     
     func loadBodySummaryImage() {

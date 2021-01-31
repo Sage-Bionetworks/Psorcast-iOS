@@ -230,12 +230,14 @@ open class PsoriasisDrawImageView: UIView, RSDViewDesignable {
                 
                 // Re-calculate the mask size and re-apply it to the touch drawable view
                 let maskImageResized = maskImage.resizeImage(targetSize: aspectFitRectScaled.size)
-                self.touchDrawableView?.setMaskImage(mask: maskImageResized, frame: aspectFitRect)
+                let maskFrame = CGRect(x: 0, y: 0, width: aspectFitRect.width, height: aspectFitRect.height)
+                self.touchDrawableView?.setMaskImage(mask: maskImageResized, frame: maskFrame)
                 
                 // Because we changed the constraints of the subviews, we need to
                 // wait for them to resize before we tell the delegate the view setup is complete
                 // By calling animate, we can get a notification once the view heirarchy has been updated
-                self.delegate?.onViewSetupComplete()
+                let aspectFitSize = CGSize(width: aspectFitRect.width,height: aspectFitRect.height)
+                self.delegate?.onViewSetupComplete(aspectFitSize: aspectFitSize)
             }
         }
     }
@@ -316,7 +318,7 @@ open class PsoriasisDrawImageView: UIView, RSDViewDesignable {
 }
 
 public protocol PsoriasisDrawImageViewDelegate: class {
-    func onViewSetupComplete()
+    func onViewSetupComplete(aspectFitSize: CGSize)
 }
 
 extension UIView {

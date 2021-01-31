@@ -50,6 +50,7 @@ open class PsoriasisDrawStepViewController: RSDStepViewController, ProcessorFini
     /// This should be turned off when deploying the app, but is useful
     /// for QA to know if the zones and coverage algorithms are working correctly
     let debuggingZones = false
+    let debuggingFullCoverage = true
     
     /// The step for this view controller
     open var drawStep: PsoriasisDrawStepObject? {
@@ -144,7 +145,7 @@ open class PsoriasisDrawStepViewController: RSDStepViewController, ProcessorFini
         self.initializeImages()
         self.imageView?.delegate = self
         
-        if self.debuggingZones {
+        if self.debuggingFullCoverage {
             self.longHoldDebugView?.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: #selector(handleLongHoldDebug(_:))))
         } else {
             self.longHoldDebugView?.isHidden = true
@@ -156,20 +157,14 @@ open class PsoriasisDrawStepViewController: RSDStepViewController, ProcessorFini
         self.imageView?.touchDrawableView?.fillAll200(nil)
     }
 
-    public func onViewSetupComplete() {
-        // Prepare variables for background thread
-        guard let lineColorUnwrapped = imageView.touchDrawableView?.lineColor else {
-            print("Cant compute coverage without selected color")
-            return
-        }
-        
+    public func onViewSetupComplete(aspectFitSize: CGSize) {
         // Set to custom line width after view setup complete
         self.imageView.touchDrawableView?.lineWidth = self.lineWidth
         
         let processor = PsorcastTaskResultProcessor.shared
         // Add the percent coverage result, it will be processed in the background
         // If this has been calculated before, it will be stored as a result immediately
-        processor.addBackgroundProcessFullCoverage(stepViewModel: self.stepViewModel, resultIdentifier: self.fullCoverageResultId, psoDrawImageView: self.imageView, selectedColor: lineColorUnwrapped)
+        processor.addBackgroundProcessFullCoverage(stepViewModel: self.stepViewModel, size: aspectFitSize)
         
         self.imageView.debuggingZones = self.debuggingZones
         if self.debuggingZones {

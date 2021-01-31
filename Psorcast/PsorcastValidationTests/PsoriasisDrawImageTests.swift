@@ -61,10 +61,6 @@ class PsoriasisDrawImageTests: XCTestCase {
         psoDrawView.backgroundImageView?.image = backgroundImage
         psoDrawView.image = maskImage
         
-//        let touchDrawable = TouchDrawableView(frame: frame)
-//        touchDrawable.lineWidth = self.lineWidth
-//        touchDrawable.overrideLineColor = self.selectionColor
-//        touchDrawable.setMaskImage(mask: maskImage, frame: frame)
         return psoDrawView
     }
     
@@ -429,8 +425,9 @@ class PsoriasisDrawImageTests: XCTestCase {
         let waitForViewDraw = expectation(description: "Wait for pso draw")
         
         // This will give the PsoriasisDrawImageView time to render
-        UIView.animate(withDuration: 0.1, animations: {
+        UIView.animate(withDuration: 0, animations: {
             psoDrawView.layoutIfNeeded()
+            psoDrawView.touchDrawableView?.setNeedsDisplay()
         }, completion: { success in
             waitForViewDraw.fulfill()
         })

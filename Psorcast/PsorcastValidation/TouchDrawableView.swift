@@ -162,7 +162,9 @@ open class TouchDrawableView: UIView, RSDViewDesignable {
         
         // By calling animate, we can get a notification once the view heirarchy has been updated
         if skipViewAnimate {
-            UIView.animate(withDuration: 0, animations: {}, completion: { _ in
+            UIView.animate(withDuration: 0, animations: {
+                self.setNeedsDisplay()
+            }, completion: { _ in
                 completion?()
             })
         }
