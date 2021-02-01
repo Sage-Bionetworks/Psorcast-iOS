@@ -222,19 +222,16 @@ open class SelectionCollectionStepViewController: RSDStepViewController, UIColle
     
     override open func goForward() {
         
-        // Add the percent coverage result
-        var collectionResult = RSDCollectionResultObject(identifier: self.step.identifier)
+        // Add the selected identifiers in the collection
         var answers = [String]()
         for indexPath in self.collectionView.indexPathsForSelectedItems ?? [] {
             if let answer = self.choices?[indexPath.row].answerValue as? String {
                 answers.append(answer)
             }
         }
-        if answers.count > 0 {
-            collectionResult.appendInputResults(with: RSDAnswerResultObject(identifier: self.step.identifier, answerType: .string, value: answers))
-        }
+        let result = RSDAnswerResultObject(identifier: self.step.identifier, answerType: .init(baseType: .string, sequenceType: .array, formDataType: nil, dateFormat: nil, unit: nil, sequenceSeparator: nil), value: answers)
         
-        self.stepViewModel.parent?.taskResult.appendStepHistory(with: collectionResult)
+        self.stepViewModel.parent?.taskResult.appendStepHistory(with: result)
         
         super.goForward()
     }

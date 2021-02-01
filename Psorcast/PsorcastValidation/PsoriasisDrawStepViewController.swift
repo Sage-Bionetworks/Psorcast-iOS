@@ -38,14 +38,19 @@ import BridgeAppUI
 /// The 'JointPainStepViewController' displays a joint pain image that has
 /// buttons overlayed at specific parts of the images to represent joints
 /// The user selects the joints that are causing them pain
-open class PsoriasisDrawStepViewController: RSDStepViewController, ProcessorFinishedDelegate, TouchDrawableViewListener {
+open class PsoriasisDrawStepViewController: RSDStepViewController, ProcessorFinishedDelegate, TouchDrawableViewListener, PsoriasisDrawImageViewDelegate {
     
+    static let coverageImageResultId = "Cov"
+    static let totalPixelCountResultId = "TotalPixelCount"
+    static let selectedPixelCountResultId = "SelectedPixelCount"
     static let percentCoverageResultId = "Coverage"
+    static let totalPercentCoverageResultId = "coverage"
     static let selectedZonesResultId = "SelectedZones"
     
     /// This should be turned off when deploying the app, but is useful
     /// for QA to know if the zones and coverage algorithms are working correctly
     let debuggingZones = false
+    let debuggingFullCoverage = false
     
     /// The step for this view controller
     open var drawStep: PsoriasisDrawStepObject? {
@@ -77,16 +82,18 @@ open class PsoriasisDrawStepViewController: RSDStepViewController, ProcessorFini
     /// The image view container that adds the users drawing and masks it
     @IBOutlet public var imageView: PsoriasisDrawImageView!
     /// The background image view container that shows supplemental images that can't be drawn on
-    @IBOutlet public var backgroundImageView: UIImageView!
+    //@IBOutlet public var backgroundImageView: UIImageView!
     
     /// The loading view over the next button
     @IBOutlet public var loadingView: UIActivityIndicatorView!
+    
+    /// The an invisible view that draws full coverage when long-held
+    @IBOutlet public var longHoldDebugView: UIView!
     
     /// The line width is proportional to the screen width
     open var lineWidth: CGFloat {
         // We need to make sure that the line width is the same for all participants
         // Calculate how much the image was scaled from the original
-        
         guard let srcImageWidth = self.imageView.image?.size.width, srcImageWidth > 0,
             let scaledImageWidth = self.imageView.lastAspectFitRect?.width else {
             return 0
@@ -96,13 +103,18 @@ open class PsoriasisDrawStepViewController: RSDStepViewController, ProcessorFini
         let penSize = CGFloat(5) * lineWidthRatio
         
         return penSize
+    }        
+    
+    var coverageImageResultId: String {
+        return "\(self.step.identifier)\(PsoriasisDrawStepViewController.coverageImageResultId)"
     }
     
-    /// Processing queue for saving camera
-    private let processingQueue = DispatchQueue(label: "org.sagebase.ResearchSuite.camera.processing")
-    
     var coverageResultId: String {
-        return "\(self.step.identifier)\(PsoriasisDrawStepViewController.percentCoverageResultId)"
+        return "\(self.step.identifier)\(PsoriasisDrawStepViewController.selectedPixelCountResultId)"
+    }
+    
+    var fullCoverageResultId: String {
+        return "\(self.step.identifier)\(PsoriasisDrawStepViewController.totalPixelCountResultId)"
     }
     
     var selectedZonesResultId: String {
@@ -131,13 +143,33 @@ open class PsoriasisDrawStepViewController: RSDStepViewController, ProcessorFini
         super.viewDidLoad()
         
         self.initializeImages()
-        self.imageView.debuggingZones = self.debuggingZones
-        self.imageView?.regionZonesForDebugging = self.drawStep?.regionMap?.zones ?? []
+        self.imageView?.delegate = self
+        
+        if self.debuggingFullCoverage {
+            self.longHoldDebugView?.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: #selector(handleLongHoldDebug(_:))))
+        } else {
+            self.longHoldDebugView?.isHidden = true
+        }
     }
     
-    override open func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
+    /// Long hold this invisible view to fill the draw coverage to 100%
+    @objc func handleLongHoldDebug(_ sender: UITapGestureRecognizer? = nil) {
+        self.imageView?.touchDrawableView?.fillAll200(nil)
+    }
+
+    public func onViewSetupComplete(aspectFitSize: CGSize) {
+        // Set to custom line width after view setup complete
         self.imageView.touchDrawableView?.lineWidth = self.lineWidth
+        
+        let processor = PsorcastTaskResultProcessor.shared
+        // Add the percent coverage result, it will be processed in the background
+        // If this has been calculated before, it will be stored as a result immediately
+        processor.addBackgroundProcessFullCoverage(stepViewModel: self.stepViewModel, size: aspectFitSize)
+        
+        self.imageView.debuggingZones = self.debuggingZones
+        if self.debuggingZones {
+            self.imageView?.regionZonesForDebugging = self.drawStep?.regionMap?.zones ?? []
+        }
     }
     
     func initializeImages() {
@@ -174,11 +206,16 @@ open class PsoriasisDrawStepViewController: RSDStepViewController, ProcessorFini
             return
         }
         
+        guard let backgroundImageView = self.imageView?.backgroundImageView else {
+            debugPrint("Cannot find foreground image view")
+            return
+        }
+        
         if let assetLoader = backgroundTheme as? RSDAssetImageThemeElement {
-            self.backgroundImageView?.image = assetLoader.embeddedImage()
+            backgroundImageView.image = assetLoader.embeddedImage()
         } else if let fetchLoader = backgroundTheme as? RSDFetchableImageThemeElement {
-            fetchLoader.fetchImage(for: size, callback: { [weak backgroundImageView] (_, img) in
-                backgroundImageView?.image = img
+            fetchLoader.fetchImage(for: size, callback: { (_, img) in
+                backgroundImageView.image = img
             })
         }
     }
@@ -252,15 +289,9 @@ open class PsoriasisDrawStepViewController: RSDStepViewController, ProcessorFini
             // Hide our debugging features first before creating the image
             if self.debuggingZones {
                 self.imageView.debuggingButtonContainer?.isHidden = true
-                PsoriasisDrawTaskResultProcessor.shared.processingFinishedDelegate = self
+                PsorcastTaskResultProcessor.shared.processingFinishedDelegate = self
                 self.loadingView.isHidden = false
             }
-        
-            guard let imageView = self.imageView else {
-                return
-            }
-       
-            let image = imageView.convertToImage()
             
             do {
                 if let bezierPaths = self.imageView.touchDrawableView?.bezierPaths {
@@ -271,11 +302,11 @@ open class PsoriasisDrawStepViewController: RSDStepViewController, ProcessorFini
                 debugPrint("Error reading old drawing \(error)")
             }
             
-            self.performBackgroundTasksAndGoForward(image: image)
+            self.performBackgroundTasksAndGoForward()
         }
     }
     
-    func performBackgroundTasksAndGoForward(image: UIImage) {
+    func performBackgroundTasksAndGoForward() {
         // Prepare variables for background thread
         var lineColor = UIColor.black
         if let lineColorUnwrapped = imageView.touchDrawableView?.lineColor {
@@ -286,36 +317,40 @@ open class PsoriasisDrawStepViewController: RSDStepViewController, ProcessorFini
         let drawPoints = self.imageView.touchDrawableView?.drawPointsFlat() ?? []
         
         DispatchQueue.main.async {
-            let processor = PsoriasisDrawTaskResultProcessor.shared
+            let processor = PsorcastTaskResultProcessor.shared
+            
+            // Attach a rasterized image of only the user's drawing
+            guard let touchDrawableImage = self.imageView.createTouchDrawableImage() else {
+                return
+            }
+            processor.attachImageResult(touchDrawableImage, stepViewModel: self.stepViewModel, to: self.coverageImageResultId)
+            
+            // Attach rasterized image of user's drawing and full-detail background image
+            guard let imageView = self.imageView,
+                  let image = imageView.createPsoriasisDrawImage() else {
+                return
+            }
+            processor.attachImageResult(image, stepViewModel: self.stepViewModel, to: self.step.identifier, useJpeg: true)
             
             // Add the percent coverage result, it will be processed in the background
-            processor.addBackgroundProcessCoverage(stepViewModel: self.stepViewModel, identifier: self.coverageResultId, image: image, selectedColor: lineColor)
+            processor.addBackgroundProcessCoverage(stepViewModel: self.stepViewModel,
+                                                   resultIdentifier: self.coverageResultId,
+                                                   image: touchDrawableImage,
+                                                   selectedColor: lineColor)
                         
             // Add the selected identifiers result, it will be process in the background
             if let regionMap = self.drawStep?.regionMap,
                 let aspectRect = self.imageView.lastAspectFitRect,
                 let imageSizeUnwrapped = self.imageView?.image?.size {
                 
-                processor.addBackgroundProcessSelectedZones(stepViewModel: self.stepViewModel, identifier: self.selectedZonesResultId, regionMap: regionMap, lastAspectFitRect: aspectRect, imageSize: imageSizeUnwrapped, drawPoints: drawPoints, lineWidth: lineWidth)
+                processor.addBackgroundProcessSelectedZones(stepViewModel: self.stepViewModel,
+                                                            identifier: self.selectedZonesResultId,
+                                                            regionMap: regionMap,
+                                                            lastAspectFitRect: aspectRect,
+                                                            imageSize: imageSizeUnwrapped,
+                                                            drawPoints: drawPoints,
+                                                            lineWidth: lineWidth)
             }
-
-            var url: URL?
-            do {
-               if let pngDataUnwrapped = image.pngData(),
-                   let outputDir = self.stepViewModel.parentTaskPath?.outputDirectory {
-                   url = try RSDFileResultUtility.createFileURL(identifier: self.step.identifier, ext: "png", outputDirectory: outputDir, shouldDeletePrevious: true)
-                   self.save(pngDataUnwrapped, to: url!)
-               }
-            } catch let error {
-               debugPrint("Failed to save the image: \(error)")
-            }
-
-            // The step identifier result needs to go last so it is not overwritten
-            // Create the result and set it as the result for this step
-            var result = RSDFileResultObject(identifier: self.step.identifier)
-            result.url = url
-            result.contentType = "image/jpeg"
-            _ = self.stepViewModel.parent?.taskResult.appendStepHistory(with: result)
             
             if !self.debuggingZones {
                super.goForward()
@@ -330,35 +365,25 @@ open class PsoriasisDrawStepViewController: RSDStepViewController, ProcessorFini
         if self.debuggingZones {
             self.loadingView.isHidden = true
             self.isProcessing = false
-  
-            if let coverageResult = self.stepViewModel.parent?.taskResult.findResult(with: self.coverageResultId) as? RSDAnswerResultObject,
-                let percentCoverage = coverageResult.value as? Float {
-                self.navigationHeader?.titleLabel?.text = String(format: "%.1f%% Coverage", Float(truncating: (100*percentCoverage) as NSNumber))
-            }
             
-            if let zoneResult = self.stepViewModel.parent?.taskResult.findResult(with: self.selectedZonesResultId) as? SelectedIdentifiersResultObject {
-                
-                let zones = zoneResult.selectedIdentifiers.filter({$0.isSelected})
-                    .map { (selected) -> RegionZone in
-                    let existing = self.drawStep?.regionMap?.zones.first(where: {$0.identifier == selected.identifier})
-                    return RegionZone(identifier: selected.identifier, label: existing!.label, origin: existing!.origin, dimensions: existing!.dimensions)
+            // Check if we were debugging the long-hold everything shader,
+            // In which case the selected zones don't work correctly
+            if (self.imageView?.touchDrawableView?.lineWidth ?? 0) == 200 {
+                self.imageView.regionZonesForDebugging = self.imageView.regionZonesForDebugging
+            } else {
+                if let zoneResult = self.stepViewModel.parent?.taskResult
+                    .findResult(with: self.selectedZonesResultId) as? SelectedIdentifiersResultObject {
+                    let zones = zoneResult.selectedIdentifiers.filter({$0.isSelected})
+                        .map { (selected) -> RegionZone in
+                        let existing = self.drawStep?.regionMap?.zones.first(where: {$0.identifier == selected.identifier})
+                        return RegionZone(identifier: selected.identifier, label: existing!.label, origin: existing!.origin, dimensions: existing!.dimensions)
+                    }
+                    self.imageView.regionZonesForDebugging = zones
                 }
-                self.imageView.regionZonesForDebugging = zones
             }
             
             self.imageView.debuggingButtonContainer?.isHidden = false
-            self.imageView.recreateMask(force: true)
             self.readyToGoNext = true
-        }
-    }
-    
-    private func save(_ imageData: Data, to url: URL) {
-        processingQueue.async {
-            do {
-                try imageData.write(to: url)
-            } catch let error {
-                debugPrint("Failed to save the camera image: \(error)")
-            }
         }
     }
     
