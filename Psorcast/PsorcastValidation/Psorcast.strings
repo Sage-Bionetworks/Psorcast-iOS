@@ -146,3 +146,6 @@
 
 "DIGITAL_JAR_OPEN_INWARD_SCORE" = "Inward\nSymmetry\nScore";
 "DIGITAL_JAR_OPEN_OUTWARD_SCORE" = "Outward\nSymmetry\nScore";
+
+"RESET_TASKS_ALERT_TITLE" = "Reset Tasks: ";
+"RESET_TASKS_ALERT_MESSAGE" = "This will reset the status of all tasks to Begin. Proceed?";

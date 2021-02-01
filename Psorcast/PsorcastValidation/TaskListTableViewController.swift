@@ -72,6 +72,7 @@ class TaskListTableViewController: UITableViewController, RSDTaskViewControllerD
         tableFooter?.titleLabel?.textColor = designSystem.colorRules.textColor(on: designSystem.colorRules.backgroundPrimary, for: .smallHeader)
         tableFooter?.titleLabel?.font = designSystem.fontRules.font(for: .small)
         tableFooter?.doneButton?.setDesignSystem(designSystem, with: designSystem.colorRules.backgroundLight)
+        tableFooter?.resetTasksButton?.setDesignSystem(designSystem, with: designSystem.colorRules.backgroundLight)
     }
     
     func updateHeaderFooterText() {
@@ -90,6 +91,10 @@ class TaskListTableViewController: UITableViewController, RSDTaskViewControllerD
         } else { // For the study app, don't show the external ID
             tableFooter?.titleLabel?.text = String(format: "%@\n%@", versionStr, releaseDateStr)
         }
+        
+        // Reset tasks button is always enabled
+        tableFooter?.resetTasksButton?.isEnabled = true
+        
     }
 
     // MARK: - Table view data source
@@ -163,6 +168,18 @@ class TaskListTableViewController: UITableViewController, RSDTaskViewControllerD
         taskViewController.delegate = self
         self.present(taskViewController, animated: true, completion: nil)
     }
+    
+    @IBAction func resetTasksTapped(_ sender: Any) {
+        let title = Localization.localizedString("RESET_TASKS_ALERT_TITLE")
+        let alert = UIAlertController(title: title, message: Localization.localizedString("RESET_TASKS_ALERT_MESSAGE"), preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: Localization.buttonNo(), style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: Localization.buttonYes(), style: .default, handler: { action in
+            self.scheduleManager.clearIsCompleteStatus()
+            self.tableView.reloadData()
+        }))
+        self.present(alert, animated: true)
+    }
+    
 
     func taskController(_ taskController: RSDTaskController, didFinishWith reason: RSDTaskFinishReason, error: Error?) {
         
@@ -258,4 +275,6 @@ open class TaskTableFooterView: UIView {
     @IBOutlet open var titleLabel: UILabel?
     // Done button for switch participant IDs
     @IBOutlet open var doneButton: RSDRoundedButton?
+    // Allows the user to reset status of tasks
+    @IBOutlet open var resetTasksButton: RSDUnderlinedButton?
 }
