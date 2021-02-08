@@ -566,7 +566,10 @@ open class ReviewTabViewController: UIViewController, UITableViewDataSource, UIT
     
     func showPhotoPermissionAlert() {
         let title = Localization.localizedString("NOT_AUTHORIZED")
-        let message = Localization.localizedString("PHOTO_LIBRARY_PERMISSION_ERROR")
+        var message = Localization.localizedString("PHOTO_LIBRARY_PERMISSION_ERROR")
+        if #available(iOS 14, *) {
+            message = Localization.localizedString("PHOTO_LIBRARY_PERMISSION_ERROR_IOS_14")
+        }
         
         var actions = [UIAlertAction]()
         if let url = URL(string : UIApplication.openSettingsURLString),
