@@ -107,28 +107,28 @@
             "regionMap": {
                 "identifier": "Above the Waist (Front)",
                 "imageSize": {
-                    "width": 375,
-                    "height": 444
+                    "width": 326,
+                    "height": 412
                 },
                 "zones": [
                     {
                         "identifier": "scalp_front",
                         "label": "Scalp (Front)",
                         "origin": {
-                            "x": 143,
+                            "x": 119,
                             "y": 0
                         },
                         "dimensions": {
                             "width": 90,
-                            "height": 41
+                            "height": 40
                         }
                     },
                     {
                         "identifier": "right_ear_front",
                         "label": "Right Ear",
                         "origin": {
-                            "x": 125,
-                            "y": 40
+                            "x": 101,
+                            "y": 39
                         },
                         "dimensions": {
                             "width": 40,
@@ -139,8 +139,8 @@
                         "identifier": "face_front",
                         "label": "Face",
                         "origin": {
-                            "x": 164,
-                            "y": 40
+                            "x": 140,
+                            "y": 39
                         },
                         "dimensions": {
                             "width": 49,
@@ -151,8 +151,8 @@
                         "identifier": "left_ear_front",
                         "label": "Left Ear",
                         "origin": {
-                            "x": 212,
-                            "y": 40
+                            "x": 188,
+                            "y": 39
                         },
                         "dimensions": {
                             "width": 40,
@@ -163,8 +163,8 @@
                         "identifier": "right_shoulder_front",
                         "label": "Right Shoulder",
                         "origin": {
-                            "x": 92,
-                            "y": 103
+                            "x": 68,
+                            "y": 102
                         },
                         "dimensions": {
                             "width": 62,
@@ -175,8 +175,8 @@
                         "identifier": "neck_upper_chest_front",
                         "label": "Neck/Upper Chest",
                         "origin": {
-                            "x": 153,
-                            "y": 103
+                            "x": 129,
+                            "y": 102
                         },
                         "dimensions": {
                             "width": 69,
@@ -187,8 +187,8 @@
                         "identifier": "left_shoulder_front",
                         "label": "Left Shoulder",
                         "origin": {
-                            "x": 221,
-                            "y": 103
+                            "x": 197,
+                            "y": 102
                         },
                         "dimensions": {
                             "width": 62,
@@ -199,8 +199,8 @@
                         "identifier": "right_upper_arm_armpit_front",
                         "label": "Right Upper Arm",
                         "origin": {
-                            "x": 88,
-                            "y": 159
+                            "x": 64,
+                            "y": 158
                         },
                         "dimensions": {
                             "width": 55,
@@ -211,8 +211,8 @@
                         "identifier": "left_upper_arm_armpit_front",
                         "label": "Left Upper Arm",
                         "origin": {
-                            "x": 230,
-                            "y": 159
+                            "x": 206,
+                            "y": 158
                         },
                         "dimensions": {
                             "width": 55,
@@ -223,8 +223,8 @@
                         "identifier": "right_chest_front",
                         "label": "Right Chest",
                         "origin": {
-                            "x": 142,
-                            "y": 159
+                            "x": 118,
+                            "y": 158
                         },
                         "dimensions": {
                             "width": 45,
@@ -235,8 +235,8 @@
                         "identifier": "left_chest_front",
                         "label": "Left Chest",
                         "origin": {
-                            "x": 186,
-                            "y": 159
+                            "x": 162,
+                            "y": 158
                         },
                         "dimensions": {
                             "width": 45,
@@ -247,8 +247,8 @@
                         "identifier": "right_elbow_front",
                         "label": "Right Elbow",
                         "origin": {
-                            "x": 78,
-                            "y": 228
+                            "x": 54,
+                            "y": 227
                         },
                         "dimensions": {
                             "width": 50,
@@ -259,8 +259,8 @@
                         "identifier": "right_abdomen_front",
                         "label": "Right Stomach",
                         "origin": {
-                            "x": 127,
-                            "y": 228
+                            "x": 103,
+                            "y": 227
                         },
                         "dimensions": {
                             "width": 60,
@@ -271,8 +271,8 @@
                         "identifier": "left_abdomen_front",
                         "label": "Left Stomach",
                         "origin": {
-                            "x": 186,
-                            "y": 228
+                            "x": 162,
+                            "y": 227
                         },
                         "dimensions": {
                             "width": 61,
@@ -283,8 +283,8 @@
                         "identifier": "left_elbow_front",
                         "label": "Left Elbow",
                         "origin": {
-                            "x": 246,
-                            "y": 228
+                            "x": 222,
+                            "y": 227
                         },
                         "dimensions": {
                             "width": 50,
@@ -295,8 +295,8 @@
                         "identifier": "right_forearm_front",
                         "label": "Right Forearm",
                         "origin": {
-                            "x": 51,
-                            "y": 277
+                            "x": 27,
+                            "y": 276
                         },
                         "dimensions": {
                             "width": 68,
@@ -307,8 +307,8 @@
                         "identifier": "left_forearm_front",
                         "label": "Left Forearm",
                         "origin": {
-                            "x": 261,
-                            "y": 277
+                            "x": 237,
+                            "y": 276
                         },
                         "dimensions": {
                             "width": 68,
@@ -319,11 +319,11 @@
                         "identifier": "right_hand_front",
                         "label": "Right Hand",
                         "origin": {
-                            "x": 20,
-                            "y": 334
+                            "x": 0,
+                            "y": 333
                         },
                         "dimensions": {
-                            "width": 68,
+                            "width": 64,
                             "height": 73
                         }
                     },
@@ -331,11 +331,11 @@
                         "identifier": "left_hand_front",
                         "label": "Left Hand",
                         "origin": {
-                            "x": 287,
-                            "y": 334
+                            "x": 263,
+                            "y": 333
                         },
                         "dimensions": {
-                            "width": 68,
+                            "width": 63,
                             "height": 73
                         }
                     }
@@ -359,16 +359,16 @@
             "regionMap": {
                 "identifier": "Below the Waist (Front)",
                 "imageSize": {
-                    "width": 375,
-                    "height": 438
+                    "width": 326,
+                    "height": 412
                 },
                 "zones": [
                     {
                         "identifier": "right_hip_front",
                         "label": "Right Hip",
                         "origin": {
-                            "x": 113,
-                            "y": 26
+                            "x": 89,
+                            "y": 0
                         },
                         "dimensions": {
                             "width": 41,
@@ -379,8 +379,8 @@
                         "identifier": "groin_front",
                         "label": "Groin",
                         "origin": {
-                            "x": 153,
-                            "y": 26
+                            "x": 129,
+                            "y": 0
                         },
                         "dimensions": {
                             "width": 69,
@@ -391,8 +391,8 @@
                         "identifier": "left_hip_front",
                         "label": "Left Hip",
                         "origin": {
-                            "x": 221,
-                            "y": 26
+                            "x": 197,
+                            "y": 0
                         },
                         "dimensions": {
                             "width": 41,
@@ -403,8 +403,8 @@
                         "identifier": "right_thigh_front",
                         "label": "Right Thigh",
                         "origin": {
-                            "x": 113,
-                            "y": 137
+                            "x": 89,
+                            "y": 111
                         },
                         "dimensions": {
                             "width": 75,
@@ -415,8 +415,8 @@
                         "identifier": "left_thigh_front",
                         "label": "Left Thigh",
                         "origin": {
-                            "x": 187,
-                            "y": 137
+                            "x": 163,
+                            "y": 111
                         },
                         "dimensions": {
                             "width": 75,
@@ -427,8 +427,8 @@
                         "identifier": "right_knee_front",
                         "label": "Right Knee",
                         "origin": {
-                            "x": 113,
-                            "y": 200
+                            "x": 89,
+                            "y": 174
                         },
                         "dimensions": {
                             "width": 75,
@@ -439,8 +439,8 @@
                         "identifier": "left_knee_front",
                         "label": "Left Knee",
                         "origin": {
-                            "x": 187,
-                            "y": 200
+                            "x": 163,
+                            "y": 174
                         },
                         "dimensions": {
                             "width": 75,
@@ -451,8 +451,8 @@
                         "identifier": "right_shin_front",
                         "label": "Right Shin",
                         "origin": {
-                            "x": 113,
-                            "y": 267
+                            "x": 89,
+                            "y": 241
                         },
                         "dimensions": {
                             "width": 75,
@@ -463,8 +463,8 @@
                         "identifier": "left_shin_front",
                         "label": "Left Shin",
                         "origin": {
-                            "x": 187,
-                            "y": 267
+                            "x": 163,
+                            "y": 241
                         },
                         "dimensions": {
                             "width": 75,
@@ -475,8 +475,8 @@
                         "identifier": "right_foot_front",
                         "label": "Right Foot",
                         "origin": {
-                            "x": 113,
-                            "y": 348
+                            "x": 89,
+                            "y": 322
                         },
                         "dimensions": {
                             "width": 75,
@@ -487,8 +487,8 @@
                         "identifier": "left_foot_front",
                         "label": "Left Foot",
                         "origin": {
-                            "x": 187,
-                            "y": 348
+                            "x": 163,
+                            "y": 322
                         },
                         "dimensions": {
                             "width": 75,
@@ -515,15 +515,15 @@
             "regionMap": {
                 "identifier": "Above the Waist (Back)",
                 "imageSize": {
-                    "width": 375,
-                    "height": 444
+                    "width": 326,
+                    "height": 412
                 },
                 "zones": [
                     {
                         "identifier": "scalp_back",
                         "label": "Scalp (Back)",
                         "origin": {
-                            "x": 143,
+                            "x": 119,
                             "y": 0
                         },
                         "dimensions": {
@@ -535,7 +535,7 @@
                         "identifier": "left_ear_back",
                         "label": "Left Ear (Back)",
                         "origin": {
-                            "x": 125,
+                            "x": 101,
                             "y": 40
                         },
                         "dimensions": {
@@ -547,7 +547,7 @@
                         "identifier": "head_back",
                         "label": "Back of Head",
                         "origin": {
-                            "x": 164,
+                            "x": 140,
                             "y": 40
                         },
                         "dimensions": {
@@ -559,7 +559,7 @@
                         "identifier": "right_ear_back",
                         "label": "Right Ear (Back)",
                         "origin": {
-                            "x": 212,
+                            "x": 188,
                             "y": 40
                         },
                         "dimensions": {
@@ -571,7 +571,7 @@
                         "identifier": "left_shoulder_back",
                         "label": "Left Shoulder (Back)",
                         "origin": {
-                            "x": 92,
+                            "x": 68,
                             "y": 103
                         },
                         "dimensions": {
@@ -583,7 +583,7 @@
                         "identifier": "neck_back",
                         "label": "Back of Neck",
                         "origin": {
-                            "x": 153,
+                            "x": 129,
                             "y": 103
                         },
                         "dimensions": {
@@ -595,7 +595,7 @@
                         "identifier": "right_shoulder_back",
                         "label": "Right Shoulder (Back)",
                         "origin": {
-                            "x": 221,
+                            "x": 197,
                             "y": 103
                         },
                         "dimensions": {
@@ -607,7 +607,7 @@
                         "identifier": "left_upper_arm_armpit_back",
                         "label": "Left Upper Arm (Back)",
                         "origin": {
-                            "x": 88,
+                            "x": 65,
                             "y": 159
                         },
                         "dimensions": {
@@ -619,7 +619,7 @@
                         "identifier": "left_lat_back",
                         "label": "Left Upper Back",
                         "origin": {
-                            "x": 128,
+                            "x": 104,
                             "y": 159
                         },
                         "dimensions": {
@@ -631,7 +631,7 @@
                         "identifier": "right_lat_back",
                         "label": "Right Upper Back",
                         "origin": {
-                            "x": 186,
+                            "x": 162,
                             "y": 159
                         },
                         "dimensions": {
@@ -643,7 +643,7 @@
                         "identifier": "right_upper_arm_armpit_back",
                         "label": "Right Uppper Arm (Back)",
                         "origin": {
-                            "x": 246,
+                            "x": 221,
                             "y": 159
                         },
                         "dimensions": {
@@ -655,7 +655,7 @@
                         "identifier": "left_elbow_back",
                         "label": "Left Elbow (Back)",
                         "origin": {
-                            "x": 78,
+                            "x": 55,
                             "y": 228
                         },
                         "dimensions": {
@@ -667,7 +667,7 @@
                         "identifier": "right_elbow_back",
                         "label": "Right Elbow (Back)",
                         "origin": {
-                            "x": 246,
+                            "x": 221,
                             "y": 228
                         },
                         "dimensions": {
@@ -679,7 +679,7 @@
                         "identifier": "left_forearm_back",
                         "label": "Left Forearm (Back)",
                         "origin": {
-                            "x": 51,
+                            "x": 27,
                             "y": 277
                         },
                         "dimensions": {
@@ -691,7 +691,7 @@
                         "identifier": "right_forearm_back",
                         "label": "Right Forearm (Back)",
                         "origin": {
-                            "x": 261,
+                            "x": 237,
                             "y": 277
                         },
                         "dimensions": {
@@ -703,11 +703,11 @@
                         "identifier": "left_hand_back",
                         "label": "Left Hand (Back)",
                         "origin": {
-                            "x": 20,
+                            "x": 0,
                             "y": 334
                         },
                         "dimensions": {
-                            "width": 68,
+                            "width": 64,
                             "height": 73
                         }
                     },
@@ -715,11 +715,11 @@
                         "identifier": "right_hand_back",
                         "label": "Right Hand (Back)",
                         "origin": {
-                            "x": 287,
+                            "x": 263,
                             "y": 334
                         },
                         "dimensions": {
-                            "width": 68,
+                            "width": 63,
                             "height": 73
                         }
                     }
@@ -743,16 +743,16 @@
             "regionMap": {
                 "identifier": "Below the Waist (Back)",
                 "imageSize": {
-                    "width": 375,
-                    "height": 438
+                    "width": 326,
+                    "height": 412
                 },
                 "zones": [
                     {
                         "identifier": "left_abdomen_back",
                         "label": "Left Lower Back",
                         "origin": {
-                            "x": 114,
-                            "y": 30
+                            "x": 90,
+                            "y": 0
                         },
                         "dimensions": {
                             "width": 74,
@@ -763,8 +763,8 @@
                         "identifier": "right_abdomen_back",
                         "label": "Right Lower Back",
                         "origin": {
-                            "x": 187,
-                            "y": 30
+                            "x": 163,
+                            "y": 0
                         },
                         "dimensions": {
                             "width": 74,
@@ -775,8 +775,8 @@
                         "identifier": "left_glute_back",
                         "label": "Left Glute",
                         "origin": {
-                            "x": 114,
-                            "y": 98
+                            "x": 90,
+                            "y": 68
                         },
                         "dimensions": {
                             "width": 52,
@@ -787,8 +787,8 @@
                         "identifier": "gluteal_cleft_back",
                         "label": "Gluteal Cleft",
                         "origin": {
-                            "x": 165,
-                            "y": 98
+                            "x": 141,
+                            "y": 68
                         },
                         "dimensions": {
                             "width": 44,
@@ -799,8 +799,8 @@
                         "identifier": "right_glute_back",
                         "label": "Right Glute",
                         "origin": {
-                            "x": 208,
-                            "y": 98
+                            "x": 184,
+                            "y": 68
                         },
                         "dimensions": {
                             "width": 53,
@@ -812,8 +812,8 @@
                         "identifier": "left_thigh_back",
                         "label": "Left Thigh (Back)",
                         "origin": {
-                            "x": 114,
-                            "y": 182
+                            "x": 90,
+                            "y": 152
                         },
                         "dimensions": {
                             "width": 74,
@@ -824,8 +824,8 @@
                         "identifier": "right_thigh_back",
                         "label": "Right Thigh (Back)",
                         "origin": {
-                            "x": 187,
-                            "y": 182
+                            "x": 163,
+                            "y": 152
                         },
                         "dimensions": {
                             "width": 74,
@@ -837,8 +837,8 @@
                         "identifier": "left_knee_back",
                         "label": "Left Knee (Back)",
                         "origin": {
-                            "x": 114,
-                            "y": 239
+                            "x": 90,
+                            "y": 209
                         },
                         "dimensions": {
                             "width": 74,
@@ -849,8 +849,8 @@
                         "identifier": "right_knee_back",
                         "label": "Right Knee (Back)",
                         "origin": {
-                            "x": 187,
-                            "y": 239
+                            "x": 163,
+                            "y": 209
                         },
                         "dimensions": {
                             "width": 74,
@@ -861,8 +861,8 @@
                         "identifier": "left_calf_back",
                         "label": "Left Calf (Back)",
                         "origin": {
-                            "x": 114,
-                            "y": 301
+                            "x": 90,
+                            "y": 271
                         },
                         "dimensions": {
                             "width": 74,
@@ -873,8 +873,8 @@
                         "identifier": "right_calf_back",
                         "label": "Right Calf (Back)",
                         "origin": {
-                            "x": 187,
-                            "y": 301
+                            "x": 163,
+                            "y": 271
                         },
                         "dimensions": {
                             "width": 74,
@@ -885,8 +885,8 @@
                         "identifier": "left_foot_back",
                         "label": "Left Foot (Back)",
                         "origin": {
-                            "x": 104,
-                            "y": 374
+                            "x": 80,
+                            "y": 344
                         },
                         "dimensions": {
                             "width": 84,
@@ -897,8 +897,8 @@
                         "identifier": "right_foot_back",
                         "label": "Right Foot (Back)",
                         "origin": {
-                            "x": 187,
-                            "y": 374
+                            "x": 163,
+                            "y": 344
                         },
                         "dimensions": {
                             "width": 84,

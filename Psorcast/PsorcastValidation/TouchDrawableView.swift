@@ -57,6 +57,12 @@ open class TouchDrawableView: UIView, RSDViewDesignable {
     /// This will override the design system's default color
     public var overrideLineColor: RSDColor? {
         didSet {
+            // Reset colors of shape layers
+            for layer in self.layer.sublayers ?? [] {
+                if let layerShape = layer as? CAShapeLayer {
+                    layerShape.strokeColor = self.lineColor.cgColor
+                }
+            }
             self.setNeedsDisplay()
         }
     }
@@ -66,12 +72,24 @@ open class TouchDrawableView: UIView, RSDViewDesignable {
         
     fileprivate let maskLayer = CALayer()
     public func setMaskImage(mask: UIImage, frame: CGRect) {
-        self.maskLayer.contents = mask.resizeImage(targetSize: frame.size).cgImage
+        self.maskImage = mask
+        self.maskLayer.contents = mask.cgImage
         self.maskLayer.frame = frame
         self.layer.mask = self.maskLayer
     }
+    public var maskImage: UIImage? = nil
     
-    public var lineWidth: CGFloat = 5
+    public var lineWidth: CGFloat = 5 {
+        didSet {
+            // Reset colors of shape layers
+            for layer in self.layer.sublayers ?? [] {
+                if let layerShape = layer as? CAShapeLayer {
+                    layerShape.lineWidth = self.lineWidth
+                }
+            }
+            self.setNeedsDisplay()
+        }
+    }
     
     open var lineColor: UIColor {
         if let color = self.overrideLineColor {
@@ -123,6 +141,35 @@ open class TouchDrawableView: UIView, RSDViewDesignable {
         self.setNeedsDisplay()
     }
     
+    /**
+     * Fill all will draw over every possible pixel available
+     * As well as set the line width equal to 200
+     * - Parameter completion to be called when view is done animating
+     * - Parameter skipViewAnimate only useful in unit tests when you want to control the drawing synchronously
+     */
+    public func fillAll200(_ completion: (() -> Void)?, skipViewAnimate: Bool = false) {
+        self.lineWidth = 200
+        let width = self.maskImage?.cgImage?.width ?? 0
+        let height = self.maskImage?.cgImage?.height ?? 0
+        
+        // Select all pixels by horizontally shading
+        self.addPoint(CGPoint(x: 0, y: 0), newPath: true, needsDisplay: true)
+        for y in stride(from: 0, to: height + 75, by: 75) {
+            self.addPoint(CGPoint(x: 0, y: y), newPath: false, needsDisplay: false)
+            self.addPoint(CGPoint(x: width, y: y), newPath: false, needsDisplay: false)
+        }
+        self.addPoint(CGPoint(x: 0, y: 0), newPath: false, needsDisplay: true)
+        
+        // By calling animate, we can get a notification once the view heirarchy has been updated
+        if skipViewAnimate {
+            UIView.animate(withDuration: 0, animations: {
+                self.setNeedsDisplay()
+            }, completion: { _ in
+                completion?()
+            })
+        }
+    }
+    
     public func setBezierPaths(paths: [UIBezierPath]) {
         self.clear()
         for path in paths {
@@ -162,7 +209,16 @@ open class TouchDrawableView: UIView, RSDViewDesignable {
         
         let touchLoc = touch.location(in: self)
         let point = CGPoint(x: touchLoc.x, y: touchLoc.y)
-        
+        addPoint(point, newPath: newPath, needsDisplay: needsDisplay)
+    }
+    
+    /**
+     *  Add touch point to the drawing
+     * - Parameter touchEvent from touchesBegan, touchesEnd, or touchesMoved
+     * - Parameter newPath true if this is the start of a new Path
+     * - Parameter needsDisplay true if you want to update the view after completing, false if we should wait
+     */
+    public func addPoint(_ point: CGPoint, newPath: Bool, needsDisplay: Bool = true) {
         // Create a new line and path to store the user's touch events
         if (newPath) {
             

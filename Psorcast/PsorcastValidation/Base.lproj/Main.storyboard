@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14868" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="8VH-3N-L74">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="8VH-3N-L74">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14824"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -57,17 +58,26 @@
                             </constraints>
                         </view>
                         <view key="tableFooterView" contentMode="scaleToFill" id="gn5-IW-Ds6" customClass="TaskTableFooterView" customModule="PsorcastValidation" customModuleProvider="target">
-                            <rect key="frame" x="0.0" y="308" width="414" height="200"/>
+                            <rect key="frame" x="0.0" y="308" width="414" height="250"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Psorcast Version 0.1 Released on 02/02/19" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="df5-in-c8F" userLabel="Version">
-                                    <rect key="frame" x="139" y="119" width="136" height="34"/>
+                                    <rect key="frame" x="139" y="194" width="136" height="34"/>
                                     <fontDescription key="fontDescription" name="Lato-Regular" family="Lato" pointSize="14"/>
                                     <nil key="textColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="au4-Pd-fQr" customClass="RSDRoundedButton" customModule="ResearchUI">
-                                    <rect key="frame" x="16" y="35" width="382" height="58"/>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8jy-CI-Rvk" customClass="RSDUnderlinedButton" customModule="ResearchUI">
+                                    <rect key="frame" x="120.5" y="38.5" width="173" height="33.5"/>
+                                    <state key="normal" title="Reset Status of Tasks">
+                                        <color key="titleColor" systemColor="systemIndigoColor"/>
+                                    </state>
+                                    <connections>
+                                        <action selector="resetTasksTapped:" destination="8VH-3N-L74" eventType="touchUpInside" id="Zaa-i9-5cJ"/>
+                                    </connections>
+                                </button>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="au4-Pd-fQr" customClass="RSDRoundedButton" customModule="ResearchUI">
+                                    <rect key="frame" x="16" y="110" width="382" height="58"/>
                                     <color key="backgroundColor" red="0.25490196079999999" green="0.40784313729999999" blue="0.79215686269999996" alpha="1" colorSpace="calibratedRGB"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="58" id="mRT-tr-02y"/>
@@ -83,14 +93,17 @@
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
-                                <constraint firstItem="au4-Pd-fQr" firstAttribute="centerY" secondItem="gn5-IW-Ds6" secondAttribute="centerY" constant="-36" id="9B0-hf-2fP"/>
+                                <constraint firstItem="au4-Pd-fQr" firstAttribute="centerY" secondItem="gn5-IW-Ds6" secondAttribute="centerY" constant="14" id="9B0-hf-2fP"/>
                                 <constraint firstAttribute="trailing" secondItem="au4-Pd-fQr" secondAttribute="trailing" constant="16" id="Per-bj-Ba4"/>
-                                <constraint firstItem="df5-in-c8F" firstAttribute="centerY" secondItem="gn5-IW-Ds6" secondAttribute="centerY" constant="36" id="RNk-Jm-ooZ"/>
+                                <constraint firstItem="df5-in-c8F" firstAttribute="centerY" secondItem="gn5-IW-Ds6" secondAttribute="centerY" constant="86" id="RNk-Jm-ooZ"/>
                                 <constraint firstItem="au4-Pd-fQr" firstAttribute="leading" secondItem="gn5-IW-Ds6" secondAttribute="leading" constant="16" id="UBj-Gn-paq"/>
                                 <constraint firstItem="df5-in-c8F" firstAttribute="centerX" secondItem="gn5-IW-Ds6" secondAttribute="centerX" id="ZB0-ul-wre"/>
+                                <constraint firstItem="8jy-CI-Rvk" firstAttribute="centerX" secondItem="gn5-IW-Ds6" secondAttribute="centerX" id="jFX-QE-wot"/>
+                                <constraint firstItem="8jy-CI-Rvk" firstAttribute="centerY" secondItem="gn5-IW-Ds6" secondAttribute="centerY" constant="-70" id="qfW-Wl-TA7"/>
                             </constraints>
                             <connections>
                                 <outlet property="doneButton" destination="au4-Pd-fQr" id="pi9-B7-2fO"/>
+                                <outlet property="resetTasksButton" destination="8jy-CI-Rvk" id="fas-Sg-zlf"/>
                                 <outlet property="titleLabel" destination="df5-in-c8F" id="YI6-v9-vNg"/>
                             </connections>
                         </view>
@@ -144,7 +157,7 @@
                                                         <constraint firstItem="SSC-lA-7og" firstAttribute="centerY" secondItem="dPq-ax-6FN" secondAttribute="centerY" id="p5N-5b-lYX"/>
                                                     </constraints>
                                                 </view>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qNg-di-5ca" customClass="RSDRoundedButton" customModule="ResearchUI">
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qNg-di-5ca" customClass="RSDRoundedButton" customModule="ResearchUI">
                                                     <rect key="frame" x="276" y="30" width="120" height="52"/>
                                                     <color key="backgroundColor" red="0.25490196079999999" green="0.40784313729999999" blue="0.79215686269999996" alpha="1" colorSpace="calibratedRGB"/>
                                                     <constraints>
@@ -214,8 +227,22 @@
             <point key="canvasLocation" x="447.82608695652175" y="90.401785714285708"/>
         </scene>
     </scenes>
+    <designables>
+        <designable name="8jy-CI-Rvk">
+            <size key="intrinsicContentSize" width="173" height="33.5"/>
+        </designable>
+        <designable name="au4-Pd-fQr">
+            <size key="intrinsicContentSize" width="49" height="36"/>
+        </designable>
+        <designable name="qNg-di-5ca">
+            <size key="intrinsicContentSize" width="51" height="36"/>
+        </designable>
+    </designables>
     <resources>
         <image name="AppHeader" width="241" height="41"/>
         <image name="DoneSmall" width="28" height="28"/>
+        <systemColor name="systemIndigoColor">
+            <color red="0.34509803921568627" green="0.33725490196078434" blue="0.83921568627450982" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
     </resources>
 </document>

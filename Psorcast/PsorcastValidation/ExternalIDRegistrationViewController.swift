@@ -66,7 +66,10 @@ open class ExternalIDRegistrationViewController: RSDStepViewController, UITextFi
     @IBOutlet public var submitButton: RSDRoundedButton!
     
     /// The loading spinner
-    @IBOutlet public var loadingSpinner: UIActivityIndicatorView!        
+    @IBOutlet public var loadingSpinner: UIActivityIndicatorView!
+    
+    /// This is helpful for dev, when set, it will auto-login with w/e external id you set here
+    let autoLoginExternalId: String? = nil
     
     override open func viewDidLoad() {
         super.viewDidLoad()
@@ -88,6 +91,12 @@ open class ExternalIDRegistrationViewController: RSDStepViewController, UITextFi
         self.textField.font = self.designSystem.fontRules.font(for: .largeBody, compatibleWith: traitCollection)
         self.textField.textColor = self.designSystem.colorRules.textColor(on: background, for: .largeBody)
         self.textField.delegate = self
+        
+        // Useful for dev, but should never run in prod
+        if let autoLogin = autoLoginExternalId {
+            self.textField.text = autoLogin
+            self.submitTapped()
+        }
         
         self.ruleView.backgroundColor = self.designSystem.colorRules.textColor(on: background, for: .largeBody)
         

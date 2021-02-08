@@ -127,6 +127,7 @@
 "REMINDER_PERMISSION_ERROR" = "This app needs the notification permission to schedule a reminder.\n\nYou can enable the notification permission by turning on 'Allow notifications' in the app's settings.";
 
 "PHOTO_LIBRARY_PERMISSION_ERROR" = "This app needs the photo permission to export data to your photo library.\n\nYou can enable this permission by turning on 'Read and Write' in the app's settings.";
+"PHOTO_LIBRARY_PERMISSION_ERROR_IOS_14" = "This app needs the photo permission to export data to your photo library.\n\nYou can enable this permission by turning on 'Add Photos Only' in the app's settings.";
 
 "PHOTO_LIBRARY_FIRST_ASK_TITLE" = "Would you like to export to your Photo Library?";
 "NO_PAST_INSIGHTS" = "No insights yet";
@@ -146,3 +147,6 @@
 
 "DIGITAL_JAR_OPEN_INWARD_SCORE" = "Inward\nSymmetry\nScore";
 "DIGITAL_JAR_OPEN_OUTWARD_SCORE" = "Outward\nSymmetry\nScore";
+
+"RESET_TASKS_ALERT_TITLE" = "Reset Tasks: ";
+"RESET_TASKS_ALERT_MESSAGE" = "This will reset the status of all tasks to Begin. Proceed?";

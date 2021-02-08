@@ -473,13 +473,28 @@ open class ReviewTabViewController: UIViewController, UITableViewDataSource, UIT
     
     func requestPermission(completion: @escaping () -> Void) {
         func requestAuth() {
-            PHPhotoLibrary.requestAuthorization { (status) in
-                DispatchQueue.main.async {
-                    guard status == .authorized else {
-                        self.showPhotoPermissionAlert()
-                        return
+            if #available(iOS 14, *) {
+                // Starting in iOS 14, we can request just write access to photo lib
+                // This is better than before where we had to request both read/write
+                PHPhotoLibrary.requestAuthorization(for: .addOnly) { (status) in
+                    DispatchQueue.main.async {
+                        guard status == .authorized else {
+                            self.showPhotoPermissionAlert()
+                            return
+                        }
+                        completion()
                     }
-                    completion()
+                }
+            } else {
+                // Fallback on earlier versions where we have to request read/write
+                PHPhotoLibrary.requestAuthorization { (status) in
+                    DispatchQueue.main.async {
+                        guard status == .authorized else {
+                            self.showPhotoPermissionAlert()
+                            return
+                        }
+                        completion()
+                    }
                 }
             }
         }
@@ -551,7 +566,10 @@ open class ReviewTabViewController: UIViewController, UITableViewDataSource, UIT
     
     func showPhotoPermissionAlert() {
         let title = Localization.localizedString("NOT_AUTHORIZED")
-        let message = Localization.localizedString("PHOTO_LIBRARY_PERMISSION_ERROR")
+        var message = Localization.localizedString("PHOTO_LIBRARY_PERMISSION_ERROR")
+        if #available(iOS 14, *) {
+            message = Localization.localizedString("PHOTO_LIBRARY_PERMISSION_ERROR_IOS_14")
+        }
         
         var actions = [UIAlertAction]()
         if let url = URL(string : UIApplication.openSettingsURLString),
