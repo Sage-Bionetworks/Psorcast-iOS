@@ -563,8 +563,14 @@ open class VideoCreator {
         
         func asFrameImage() -> RenderFrameImage? {
             do {
+                var scaleFactor = CGFloat(1)
+                if let imageSize = PSRImageHelper.sizeOfImageAt(url: url),
+                   imageSize.width > 1280 {
+                    // Do not allow a width greater than 720p (1280px width)
+                    scaleFactor = CGFloat(imageSize.width / 1280.0)
+                }
                 let imageData = try Data(contentsOf: url)
-                if let image = UIImage(data: imageData) {
+                if let image = UIImage(data: imageData, scale: scaleFactor) {
                     return RenderFrameImage(image: image, text: self.text)
                 }
             } catch {

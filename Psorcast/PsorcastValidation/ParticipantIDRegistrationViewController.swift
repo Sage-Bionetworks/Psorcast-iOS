@@ -87,7 +87,7 @@ class ParticipantIDRegistrationViewController: RSDStepViewController, UITextFiel
     @IBOutlet public var loadingSpinner: UIActivityIndicatorView!
     
     /// This is helpful for dev, when set, it will auto-set your participant ID to this
-    let autoLoginParticipantId: String? = nil
+    let autoLoginParticipantId: String? = "mdp"
     
     @IBAction func logoutTapped() {
         DispatchQueue.main.async {

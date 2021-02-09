@@ -69,7 +69,7 @@ open class ExternalIDRegistrationViewController: RSDStepViewController, UITextFi
     @IBOutlet public var loadingSpinner: UIActivityIndicatorView!
     
     /// This is helpful for dev, when set, it will auto-login with w/e external id you set here
-    let autoLoginExternalId: String? = nil
+    let autoLoginExternalId: String? = "MD0506A"
     
     override open func viewDidLoad() {
         super.viewDidLoad()
