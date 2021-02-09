@@ -21,8 +21,6 @@
 		CB144C8E24760D5800DF0F6B /* ImageDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB144C8D24760D5700DF0F6B /* ImageDataManager.swift */; };
 		CB1481B925BCAE7400865BAC /* PsoriasisDrawImageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB1481B025BCAE7400865BAC /* PsoriasisDrawImageTests.swift */; };
 		CB1535E024395410007D0307 /* ProfileTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB1535DF24395410007D0307 /* ProfileTabViewController.swift */; };
-		CB16BF5623E4B9140099FD08 /* GPUImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB16BF5323E4B90B0099FD08 /* GPUImage.framework */; };
-		CB16BF5723E4B9140099FD08 /* GPUImage.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CB16BF5323E4B90B0099FD08 /* GPUImage.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		CB16C38924465BB80046E200 /* ReminderManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB16C38424465BB80046E200 /* ReminderManager.swift */; };
 		CB16C38C24465BC20046E200 /* ReminderStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB16C38A24465BC20046E200 /* ReminderStepViewController.swift */; };
 		CB16C38D24465BC20046E200 /* ReminderStepViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB16C38B24465BC20046E200 /* ReminderStepViewController.xib */; };
@@ -226,8 +224,6 @@
 		CBDCDCCA23F385B800E5CEB8 /* BridgeAppUI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CBDCDCC823F385B800E5CEB8 /* BridgeAppUI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		CBDCDCCC23F385C200E5CEB8 /* BridgeSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBDCDCCB23F385C200E5CEB8 /* BridgeSDK.framework */; };
 		CBDCDCCD23F385C200E5CEB8 /* BridgeSDK.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CBDCDCCB23F385C200E5CEB8 /* BridgeSDK.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		CBDCDCCE23F385CB00E5CEB8 /* GPUImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB16BF5323E4B90B0099FD08 /* GPUImage.framework */; };
-		CBDCDCCF23F385CB00E5CEB8 /* GPUImage.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CB16BF5323E4B90B0099FD08 /* GPUImage.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		CBDCDCD123F385D400E5CEB8 /* MotorControl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBDCDCD023F385D400E5CEB8 /* MotorControl.framework */; };
 		CBDCDCD223F385D400E5CEB8 /* MotorControl.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CBDCDCD023F385D400E5CEB8 /* MotorControl.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		CBDCDCD423F385DA00E5CEB8 /* Research.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBDCDCD323F385DA00E5CEB8 /* Research.framework */; };
@@ -272,34 +268,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		CB16BF4E23E4B90B0099FD08 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = CB16BF4723E4B90B0099FD08 /* GPUImage.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = BC6E7CAB1C39A9D8006DF678;
-			remoteInfo = GPUImage_macOS;
-		};
-		CB16BF5023E4B90B0099FD08 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = CB16BF4723E4B90B0099FD08 /* GPUImage.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = BC6E7CB51C39A9D8006DF678;
-			remoteInfo = GPUImageTests_macOS;
-		};
-		CB16BF5223E4B90B0099FD08 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = CB16BF4723E4B90B0099FD08 /* GPUImage.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = BC9E34E91E524A2200B8604F;
-			remoteInfo = GPUImage_iOS;
-		};
-		CB16BF5423E4B90B0099FD08 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = CB16BF4723E4B90B0099FD08 /* GPUImage.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = BC9E34F11E524A2200B8604F;
-			remoteInfo = GPUImageTests_iOS;
-		};
 		CB2219AE24611FC4007546CD /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = CB2219A324611FC4007546CD /* SDWebImage.xcodeproj */;
@@ -346,7 +314,6 @@
 			files = (
 				CBDCDCC623F385AF00E5CEB8 /* BridgeApp.framework in Embed Frameworks */,
 				CBDCDCD523F385DA00E5CEB8 /* Research.framework in Embed Frameworks */,
-				CBDCDCCF23F385CB00E5CEB8 /* GPUImage.framework in Embed Frameworks */,
 				CBDCDCDB23F385EC00E5CEB8 /* ResearchUI.framework in Embed Frameworks */,
 				CBDCDCD823F385E600E5CEB8 /* ResearchMotion.framework in Embed Frameworks */,
 				CBDCDCCA23F385B800E5CEB8 /* BridgeAppUI.framework in Embed Frameworks */,
@@ -368,7 +335,6 @@
 				FFABCC0922DD1FDB00D11109 /* BridgeSDK.framework in Embed Frameworks */,
 				FFABCC0022DD1FBC00D11109 /* ResearchMotion.framework in Embed Frameworks */,
 				FFABCBF922DD1FAB00D11109 /* Research.framework in Embed Frameworks */,
-				CB16BF5723E4B9140099FD08 /* GPUImage.framework in Embed Frameworks */,
 				CB422D2C23316EB700787FEE /* BridgeAppUI.framework in Embed Frameworks */,
 				FFABCBFD22DD1FB500D11109 /* ResearchUI.framework in Embed Frameworks */,
 			);
@@ -392,7 +358,6 @@
 		CB144C8D24760D5700DF0F6B /* ImageDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageDataManager.swift; sourceTree = "<group>"; };
 		CB1481B025BCAE7400865BAC /* PsoriasisDrawImageTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PsoriasisDrawImageTests.swift; sourceTree = "<group>"; };
 		CB1535DF24395410007D0307 /* ProfileTabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileTabViewController.swift; sourceTree = "<group>"; };
-		CB16BF4723E4B90B0099FD08 /* GPUImage.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = GPUImage.xcodeproj; path = ../gpuimage/GPUImage.xcodeproj; sourceTree = "<group>"; };
 		CB16C38424465BB80046E200 /* ReminderManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReminderManager.swift; sourceTree = "<group>"; };
 		CB16C38A24465BC20046E200 /* ReminderStepViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReminderStepViewController.swift; sourceTree = "<group>"; };
 		CB16C38B24465BC20046E200 /* ReminderStepViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReminderStepViewController.xib; sourceTree = "<group>"; };
@@ -584,7 +549,6 @@
 			files = (
 				CBDCDCC523F385AF00E5CEB8 /* BridgeApp.framework in Frameworks */,
 				CBDCDCD423F385DA00E5CEB8 /* Research.framework in Frameworks */,
-				CBDCDCCE23F385CB00E5CEB8 /* GPUImage.framework in Frameworks */,
 				CBDCDCDA23F385EC00E5CEB8 /* ResearchUI.framework in Frameworks */,
 				CBDCDCD723F385E600E5CEB8 /* ResearchMotion.framework in Frameworks */,
 				CBDCDCC923F385B800E5CEB8 /* BridgeAppUI.framework in Frameworks */,
@@ -603,7 +567,6 @@
 				FFABCC0222DD1FC900D11109 /* MotorControl.framework in Frameworks */,
 				FFABCC0822DD1FDB00D11109 /* BridgeSDK.framework in Frameworks */,
 				FFABCBFF22DD1FBC00D11109 /* ResearchMotion.framework in Frameworks */,
-				CB16BF5623E4B9140099FD08 /* GPUImage.framework in Frameworks */,
 				CB422D2B23316EB700787FEE /* BridgeAppUI.framework in Frameworks */,
 				FFABCBF822DD1FAB00D11109 /* Research.framework in Frameworks */,
 				FFABCBFC22DD1FB500D11109 /* ResearchUI.framework in Frameworks */,
@@ -624,17 +587,6 @@
 				CBBC8770239F028300AC9D8E /* PsoriasisDraw.mov */,
 			);
 			name = MP4;
-			sourceTree = "<group>";
-		};
-		CB16BF4823E4B90B0099FD08 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				CB16BF4F23E4B90B0099FD08 /* GPUImage.framework */,
-				CB16BF5123E4B90B0099FD08 /* GPUImageTests_macOS.xctest */,
-				CB16BF5323E4B90B0099FD08 /* GPUImage.framework */,
-				CB16BF5523E4B90B0099FD08 /* GPUImageTests_iOS.xctest */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		CB2219A424611FC4007546CD /* Products */ = {
@@ -1011,7 +963,6 @@
 				CBDCDCCB23F385C200E5CEB8 /* BridgeSDK.framework */,
 				CBDCDCC823F385B800E5CEB8 /* BridgeAppUI.framework */,
 				CBDCDCC423F385AF00E5CEB8 /* BridgeApp.framework */,
-				CB16BF4723E4B90B0099FD08 /* GPUImage.xcodeproj */,
 				CB422D2923316EB700787FEE /* BridgeAppUI.framework */,
 				FFABCC0722DD1FDB00D11109 /* BridgeSDK.framework */,
 				FFABCC0422DD1FCF00D11109 /* BridgeApp.framework */,
@@ -1146,10 +1097,6 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = CB16BF4823E4B90B0099FD08 /* Products */;
-					ProjectRef = CB16BF4723E4B90B0099FD08 /* GPUImage.xcodeproj */;
-				},
-				{
 					ProductGroup = CB2219A424611FC4007546CD /* Products */;
 					ProjectRef = CB2219A324611FC4007546CD /* SDWebImage.xcodeproj */;
 				},
@@ -1165,34 +1112,6 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		CB16BF4F23E4B90B0099FD08 /* GPUImage.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = GPUImage.framework;
-			remoteRef = CB16BF4E23E4B90B0099FD08 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		CB16BF5123E4B90B0099FD08 /* GPUImageTests_macOS.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = GPUImageTests_macOS.xctest;
-			remoteRef = CB16BF5023E4B90B0099FD08 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		CB16BF5323E4B90B0099FD08 /* GPUImage.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = GPUImage.framework;
-			remoteRef = CB16BF5223E4B90B0099FD08 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		CB16BF5523E4B90B0099FD08 /* GPUImageTests_iOS.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = GPUImageTests_iOS.xctest;
-			remoteRef = CB16BF5423E4B90B0099FD08 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		CB2219AF24611FC4007546CD /* libSDWebImage.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
