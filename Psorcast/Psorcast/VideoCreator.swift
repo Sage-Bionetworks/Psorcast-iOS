@@ -530,9 +530,8 @@ open class VideoCreator {
 
         func addImage(frame: RenderFrameImage, withPresentationTime presentationTime: CMTime) -> Bool {
 
-            precondition(pixelBufferAdaptor != nil, "Call start() to initialze the writer")
-
-            guard let pixelBuffer = VideoWriter.pixelBufferFromCrossFadeImage(frame: frame, pixelBufferPool: pixelBufferAdaptor.pixelBufferPool!, size: self.videoSize, details: self.additionalDetails) else {
+            guard let pixelBufferAdapterPool = pixelBufferAdaptor.pixelBufferPool,
+                  let pixelBuffer = VideoWriter.pixelBufferFromCrossFadeImage(frame: frame, pixelBufferPool: pixelBufferAdapterPool, size: self.videoSize, details: self.additionalDetails) else {
                 return false
             }
                         
@@ -543,9 +542,12 @@ open class VideoCreator {
         
         func addCrossFadeImages(frame: RenderFrameImage, transitioningIntoFrame: RenderFrameImage, transitioningIntoFrameAlpha: CGFloat, withPresentationTime presentationTime: CMTime) -> Bool {
 
-            precondition(pixelBufferAdaptor != nil, "Call start() to initialze the writer")
-
-            guard let pixelBuffer = VideoWriter.pixelBufferFromCrossFadeImage(frame: frame, pixelBufferPool: pixelBufferAdaptor.pixelBufferPool!, size: self.videoSize, details: self.additionalDetails, transitioningIntoFrame: transitioningIntoFrame, transitioningIntoFrameAlpha: transitioningIntoFrameAlpha) else {
+            guard pixelBufferAdaptor != nil,
+                  let pixelBufferAdapterPool = pixelBufferAdaptor.pixelBufferPool else {
+                return false
+            }
+            
+            guard let pixelBuffer = VideoWriter.pixelBufferFromCrossFadeImage(frame: frame, pixelBufferPool: pixelBufferAdapterPool, size: self.videoSize, details: self.additionalDetails, transitioningIntoFrame: transitioningIntoFrame, transitioningIntoFrameAlpha: transitioningIntoFrameAlpha) else {
                 return false
             }
                         

@@ -37,6 +37,28 @@ import UIKit
 public class PSRImageHelper {
     
     /**
+     * - Returns size of image without actually loading the file url
+     */
+    public static func sizeOfImageAt(url: URL) -> CGSize? {
+         // with CGImageSource we avoid loading the whole image into memory
+         guard let source = CGImageSourceCreateWithURL(url as CFURL, nil) else {
+             return nil
+         }
+
+         let propertiesOptions = [kCGImageSourceShouldCache: false] as CFDictionary
+         guard let properties = CGImageSourceCopyPropertiesAtIndex(source, 0, propertiesOptions) as? [CFString: Any] else {
+             return nil
+         }
+
+         if let width = properties[kCGImagePropertyPixelWidth] as? CGFloat,
+             let height = properties[kCGImagePropertyPixelHeight] as? CGFloat {
+             return CGSize(width: width, height: height)
+         } else {
+             return nil
+         }
+     }
+    
+    /**
      * Creates the body summary image from the selected images
      */
     public static func createPsoriasisDrawSummaryImage(

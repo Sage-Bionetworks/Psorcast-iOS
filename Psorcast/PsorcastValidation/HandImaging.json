@@ -75,12 +75,7 @@
         {
             "identifier"    : "leftHand",
             "type"          : "imageCapture",
-            "title"         : "Fit your LEFT hand to the outline if you can",
-            "image":{
-                "type":"fetchable",
-                "imageName": "CameraOverlayLeftHand",
-                "placementType":"topBackground"
-            }
+            "title"         : "Fit your LEFT hand to the outline if you can"
         },
         {
             "identifier":"reviewLeftHand",
@@ -119,12 +114,7 @@
         {
             "identifier"    : "rightHand",
             "type"          : "imageCapture",
-            "title"         : "Fit your RIGHT hand to the outline if you can",
-            "image":{
-                "type":"fetchable",
-                "imageName": "CameraOverlayRightHand",
-                "placementType":"topBackground"
-            }
+            "title"         : "Fit your RIGHT hand to the outline if you can"
         },
         {
             "identifier":"reviewRightHand",

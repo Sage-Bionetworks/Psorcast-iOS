@@ -65,6 +65,8 @@
 		CB5E960A22EE920D0001AAFE /* ExternalIDRegistrationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB5E960922EE920D0001AAFE /* ExternalIDRegistrationViewController.xib */; };
 		CB5F3777237EFA2B003648DB /* LearnMoreStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB5F3775237EFA2A003648DB /* LearnMoreStepViewController.swift */; };
 		CB5F377C237EFFD5003648DB /* LearnMoreStepViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB5F377B237EFFD5003648DB /* LearnMoreStepViewController.xib */; };
+		CB64AA1225D20FA10040FC90 /* Black2Clear.metal in Sources */ = {isa = PBXBuildFile; fileRef = CB64AA1125D20FA10040FC90 /* Black2Clear.metal */; };
+		CB64AA1425D21F190040FC90 /* MetalHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB64AA1325D21F190040FC90 /* MetalHelper.swift */; };
 		CB67C29723F390AB005B6BCD /* DigitalJarOpenStepViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB67C28D23F390AA005B6BCD /* DigitalJarOpenStepViewControllerTests.swift */; };
 		CB67C29823F390AB005B6BCD /* PSRImageHelperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB67C28E23F390AA005B6BCD /* PSRImageHelperTests.swift */; };
 		CB67C29923F390AB005B6BCD /* JointPainImageViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB67C28F23F390AA005B6BCD /* JointPainImageViewTests.swift */; };
@@ -74,7 +76,6 @@
 		CB67C29E23F390AB005B6BCD /* CopyStepTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB67C29423F390AB005B6BCD /* CopyStepTests.swift */; };
 		CB6C16DB2477BD5500819FCE /* HistoryItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6C16DA2477BD5500819FCE /* HistoryItem.swift */; };
 		CB6F54F022E25C5B0073BFE9 /* ParticipantIDRegistrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6F54EF22E25C5B0073BFE9 /* ParticipantIDRegistrationViewController.swift */; };
-		CB704AC123EF8C4D00CC9D13 /* ImageDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB704AC023EF8C4D00CC9D13 /* ImageDefaults.swift */; };
 		CB737FEC231B100600FA1D3A /* MDJointSwelling.json in Resources */ = {isa = PBXBuildFile; fileRef = CB737FEB231B100600FA1D3A /* MDJointSwelling.json */; };
 		CB77866C238984790009ECF9 /* DigitalJarOpenStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB77866B238984790009ECF9 /* DigitalJarOpenStepViewController.swift */; };
 		CB778670238B3F4D0009ECF9 /* DigitalJarOpenStepViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB77866F238B3F4D0009ECF9 /* DigitalJarOpenStepViewControllerTests.swift */; };
@@ -216,7 +217,6 @@
 		CBDCDCB723F384A400E5CEB8 /* TaskFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBD67D9222DFC71E00998516 /* TaskFactory.swift */; };
 		CBDCDCB823F384A400E5CEB8 /* MotorControl+Bridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBD67D8C22DFC5EE00998516 /* MotorControl+Bridge.swift */; };
 		CBDCDCBA23F384A400E5CEB8 /* PsorcastTaskResultProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB85FB51235F505300FDC59B /* PsorcastTaskResultProcessor.swift */; };
-		CBDCDCBB23F384A400E5CEB8 /* ImageDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB704AC023EF8C4D00CC9D13 /* ImageDefaults.swift */; };
 		CBDCDCBC23F384A800E5CEB8 /* PSRImageHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBB93CB0233FFA7500321A4D /* PSRImageHelper.swift */; };
 		CBDCDCBE23F384D400E5CEB8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FFABCBEE22DD1F2800D11109 /* Assets.xcassets */; };
 		CBDCDCC223F3855300E5CEB8 /* BuildDateUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = CBDCDCC123F3855300E5CEB8 /* BuildDateUtil.m */; };
@@ -431,6 +431,8 @@
 		CB5E960922EE920D0001AAFE /* ExternalIDRegistrationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExternalIDRegistrationViewController.xib; sourceTree = "<group>"; };
 		CB5F3775237EFA2A003648DB /* LearnMoreStepViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LearnMoreStepViewController.swift; sourceTree = "<group>"; };
 		CB5F377B237EFFD5003648DB /* LearnMoreStepViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LearnMoreStepViewController.xib; sourceTree = "<group>"; };
+		CB64AA1125D20FA10040FC90 /* Black2Clear.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Black2Clear.metal; sourceTree = "<group>"; };
+		CB64AA1325D21F190040FC90 /* MetalHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalHelper.swift; sourceTree = "<group>"; };
 		CB67C28D23F390AA005B6BCD /* DigitalJarOpenStepViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DigitalJarOpenStepViewControllerTests.swift; sourceTree = "<group>"; };
 		CB67C28E23F390AA005B6BCD /* PSRImageHelperTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PSRImageHelperTests.swift; sourceTree = "<group>"; };
 		CB67C28F23F390AA005B6BCD /* JointPainImageViewTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JointPainImageViewTests.swift; sourceTree = "<group>"; };
@@ -440,7 +442,6 @@
 		CB67C29423F390AB005B6BCD /* CopyStepTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CopyStepTests.swift; sourceTree = "<group>"; };
 		CB6C16DA2477BD5500819FCE /* HistoryItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryItem.swift; sourceTree = "<group>"; };
 		CB6F54EF22E25C5B0073BFE9 /* ParticipantIDRegistrationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParticipantIDRegistrationViewController.swift; sourceTree = "<group>"; };
-		CB704AC023EF8C4D00CC9D13 /* ImageDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDefaults.swift; sourceTree = "<group>"; };
 		CB737FEB231B100600FA1D3A /* MDJointSwelling.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = MDJointSwelling.json; sourceTree = "<group>"; };
 		CB77866B238984790009ECF9 /* DigitalJarOpenStepViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DigitalJarOpenStepViewController.swift; sourceTree = "<group>"; };
 		CB77866F238B3F4D0009ECF9 /* DigitalJarOpenStepViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DigitalJarOpenStepViewControllerTests.swift; sourceTree = "<group>"; };
@@ -666,6 +667,15 @@
 			name = Utils;
 			sourceTree = "<group>";
 		};
+		CB64AA0825D20F860040FC90 /* Metal */ = {
+			isa = PBXGroup;
+			children = (
+				CB64AA1325D21F190040FC90 /* MetalHelper.swift */,
+				CB64AA1125D20FA10040FC90 /* Black2Clear.metal */,
+			);
+			name = Metal;
+			sourceTree = "<group>";
+		};
 		CB7CF23C2400BE84003E02A5 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
@@ -849,7 +859,6 @@
 				CBD67D8C22DFC5EE00998516 /* MotorControl+Bridge.swift */,
 				CB8DC7B324189E31001B7982 /* TaskListScheduleManager.swift */,
 				CB85FB51235F505300FDC59B /* PsorcastTaskResultProcessor.swift */,
-				CB704AC023EF8C4D00CC9D13 /* ImageDefaults.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -945,6 +954,7 @@
 				CBBE0F6024039A4F0072452C /* Model */,
 				CB7CF23C2400BE84003E02A5 /* ViewControllers */,
 				CB305C6E24870FD200E379B8 /* Views */,
+				CB64AA0825D20F860040FC90 /* Metal */,
 				CB4794EB2426B31D00D5A7E6 /* Utils */,
 				CB7CF2432400C627003E02A5 /* Resources */,
 				FF50109C22DD20DE0035E83C /* Support Files */,
@@ -1369,6 +1379,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CB64AA1225D20FA10040FC90 /* Black2Clear.metal in Sources */,
 				CBDCDCB523F3849E00E5CEB8 /* DigitalJarOpenInstructionStepViewController.swift in Sources */,
 				CBDCDCAB23F3849E00E5CEB8 /* PsoriasisDrawImageView.swift in Sources */,
 				CB305C7824870FE900E379B8 /* StudyProgressView.swift in Sources */,
@@ -1381,7 +1392,6 @@
 				CBDCDC9A23F3849E00E5CEB8 /* JointPainStepObject.swift in Sources */,
 				CB8F7D562422D73A00F77D62 /* StudyTaskFactory.swift in Sources */,
 				CB1F7BD025BCBFC3001985D2 /* PsoriasisDrawHelper.swift in Sources */,
-				CBDCDCBB23F384A400E5CEB8 /* ImageDefaults.swift in Sources */,
 				CB144C7A2473346600DF0F6B /* HistoryDataManager.swift in Sources */,
 				CBDCDCAE23F3849E00E5CEB8 /* TouchDrawableView.swift in Sources */,
 				CB144C8E24760D5800DF0F6B /* ImageDataManager.swift in Sources */,
@@ -1407,6 +1417,7 @@
 				CBDCDCA323F3849E00E5CEB8 /* PsoriasisAreaPhotoStepViewController.swift in Sources */,
 				CB4794F52426B39900D5A7E6 /* TreatmentSelectionStepObject.swift in Sources */,
 				CBDCDCB823F384A400E5CEB8 /* MotorControl+Bridge.swift in Sources */,
+				CB64AA1425D21F190040FC90 /* MetalHelper.swift in Sources */,
 				CBBDC3992477A3350017A304 /* InsightsUserDefaultsSingletonReport.swift in Sources */,
 				CBBDC38A247785550017A304 /* TreatmentRange.swift in Sources */,
 				CBDCDC8C23F3849E00E5CEB8 /* RSDSelectionCollectionViewCell.swift in Sources */,
@@ -1458,7 +1469,6 @@
 				CB85FB52235F505300FDC59B /* PsorcastTaskResultProcessor.swift in Sources */,
 				CBD67D9A22DFDC4E00998516 /* ImageCaptureStepViewController.swift in Sources */,
 				CB5424D123721FFD0036DB6B /* RSDCollectionViewCell.swift in Sources */,
-				CB704AC123EF8C4D00CC9D13 /* ImageDefaults.swift in Sources */,
 				CBA8390E234A6B3F00408D81 /* EndOfValidationStepViewController.swift in Sources */,
 				CBD67D9322DFC71E00998516 /* TaskFactory.swift in Sources */,
 				FFABCBE822DD1F2800D11109 /* AppDelegate.swift in Sources */,
