@@ -55,9 +55,6 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate {
     let tryItFirstTaskId = "TryItFirstIntro"
     let signInTaskId = "signIn"
     
-    // The app's image and data store
-    public let imageDefaults = ImageDefaults()
-    
     open var profileDataSource: StudyProfileDataSource? {
         return SBAProfileDataSourceObject.shared as? StudyProfileDataSource
     }

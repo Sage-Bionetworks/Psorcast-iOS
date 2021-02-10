@@ -133,20 +133,4 @@ open class ReviewCaptureStepViewController: RSDStepViewController {
         }
         return nil
     }
-    
-    override open func goForward() {
-        
-        #if VALIDATION
-            // No-op on validation, as we do not need the edge detected overlay
-        #else
-            // If the user accepted the photo, we should save it for overlay use later
-            if let imageId = self.reviewCaptureStep?.imageIdentifier,
-                let imageData = self.navigationHeader?.imageView?.image?.pngData(),
-                let imageDefaults = (AppDelegate.shared as? AppDelegate)?.imageDefaults {
-                imageDefaults.filterImageAndSave(with: imageId, pngData: imageData)
-            }
-        #endif
-        
-        super.goForward()
-    }
 }

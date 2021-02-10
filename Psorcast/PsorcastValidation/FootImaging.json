@@ -79,12 +79,7 @@
         {
             "identifier"    : "leftFoot",
             "type"          : "imageCapture",
-            "title"         : "Fit in the lines if you can",
-            "image": {
-                "type":"fetchable",
-                "imageName": "CameraOverlayLeftFoot",
-                "placementType":"topBackground"
-            }
+            "title"         : "Fit in the lines if you can"
         },
         {
             "identifier":"reviewLeftFoot",
@@ -123,12 +118,7 @@
         {
             "identifier"    : "rightFoot",
             "type"          : "imageCapture",
-            "title"         : "Fit in the lines if you can",
-            "image": {
-                "type":"fetchable",
-                "imageName": "CameraOverlayRightFoot",
-                "placementType":"topBackground"
-            }
+            "title"         : "Fit in the lines if you can"
         },
         {
             "identifier":"reviewRightFoot",

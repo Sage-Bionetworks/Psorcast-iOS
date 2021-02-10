@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="VJ3-hJ-g4d">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="VJ3-hJ-g4d">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="collection view cell content view" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -22,7 +23,7 @@
                                 <subviews>
                                     <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DNP-n3-rC3">
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="564.5"/>
-                                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                     </view>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Research towards psoriasis forecasts" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="Q8p-Lc-Z7m" userLabel="Text Label">
                                         <rect key="frame" x="8" y="655" width="398" height="21"/>
@@ -35,24 +36,24 @@
                                         <fontDescription key="fontDescription" type="system" pointSize="30"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8Oi-Gn-n4p" userLabel="Get started button" customClass="RSDRoundedButton" customModule="ResearchUI">
-                                        <rect key="frame" x="4" y="766" width="406" height="30"/>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8Oi-Gn-n4p" userLabel="Get started button" customClass="RSDRoundedButton" customModule="ResearchUI">
+                                        <rect key="frame" x="4" y="718.5" width="406" height="52"/>
                                         <state key="normal" title="Join the research study"/>
                                         <connections>
                                             <action selector="getStartedTapped" destination="VJ3-hJ-g4d" eventType="touchUpInside" id="5K4-ae-Pkm"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fZ4-xJ-Sfz" userLabel="Try it first Button" customClass="RSDRoundedButton" customModule="ResearchUI">
+                                    <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fZ4-xJ-Sfz" userLabel="Try it first Button" customClass="RSDRoundedButton" customModule="ResearchUI">
                                         <rect key="frame" x="9" y="786.5" width="398" height="52"/>
                                         <state key="normal" title="Preview and try the app first"/>
                                         <connections>
                                             <action selector="tryItFirstTapped" destination="VJ3-hJ-g4d" eventType="touchUpInside" id="8nL-yG-Hf6"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lJG-3B-rEz" userLabel="Login Button" customClass="RSDUnderlinedButton" customModule="ResearchUI">
-                                        <rect key="frame" x="8" y="850" width="398" height="30"/>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lJG-3B-rEz" userLabel="Login Button" customClass="RSDUnderlinedButton" customModule="ResearchUI">
+                                        <rect key="frame" x="8" y="846.5" width="398" height="33.5"/>
                                         <state key="normal" title="Login">
-                                            <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <color key="titleColor" systemColor="darkTextColor"/>
                                         </state>
                                         <connections>
                                             <action selector="loginTapped" destination="VJ3-hJ-g4d" eventType="touchUpInside" id="RCE-ai-C4z"/>
@@ -68,7 +69,7 @@
                                                 </constraints>
                                             </imageView>
                                         </subviews>
-                                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <constraints>
                                             <constraint firstAttribute="trailing" secondItem="s72-lK-tyu" secondAttribute="trailing" constant="88" id="4mO-rY-IRo"/>
                                             <constraint firstItem="s72-lK-tyu" firstAttribute="leading" secondItem="EIV-ng-WnP" secondAttribute="leading" constant="88" id="cZm-EL-Xfz"/>
@@ -104,14 +105,14 @@
                                 </constraints>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <viewLayoutGuide key="safeArea" id="MDs-cU-4OB"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="3Sp-Jq-mwa" firstAttribute="trailing" secondItem="MDs-cU-4OB" secondAttribute="trailing" id="9sC-bf-Tku"/>
                             <constraint firstAttribute="bottom" secondItem="3Sp-Jq-mwa" secondAttribute="bottom" id="Jn9-td-v0x"/>
                             <constraint firstItem="3Sp-Jq-mwa" firstAttribute="top" secondItem="nKP-j9-IYb" secondAttribute="top" id="NPw-vT-9BE"/>
                             <constraint firstItem="3Sp-Jq-mwa" firstAttribute="leading" secondItem="MDs-cU-4OB" secondAttribute="leading" id="jKd-gU-62o"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="MDs-cU-4OB"/>
                     </view>
                     <connections>
                         <outlet property="getStartedButton" destination="8Oi-Gn-n4p" id="f38-eK-W9q"/>
@@ -138,7 +139,7 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KZW-mD-2Iu">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="112"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kOb-pN-qJH">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kOb-pN-qJH">
                                         <rect key="frame" x="140" y="36" width="134" height="76"/>
                                         <state key="normal">
                                             <string key="title">Treatments
@@ -161,7 +162,7 @@ OCT 2020 to Today</string>
                                         </connections>
                                     </button>
                                 </subviews>
-                                <color key="backgroundColor" systemColor="systemBlueColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" systemColor="systemBlueColor"/>
                                 <constraints>
                                     <constraint firstItem="kOb-pN-qJH" firstAttribute="top" secondItem="KZW-mD-2Iu" secondAttribute="top" constant="36" id="7BO-08-7hX"/>
                                     <constraint firstAttribute="bottom" secondItem="kOb-pN-qJH" secondAttribute="bottom" id="Bcy-fm-Hrj"/>
@@ -176,7 +177,7 @@ OCT 2020 to Today</string>
                                 <subviews>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="none" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="udd-L0-NzR">
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="701"/>
-                                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <prototypes>
                                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="ReviewTableViewCell" rowHeight="800" id="tjC-bb-3mr" customClass="ReviewTableViewCell" customModule="Psorcast" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="55.5" width="414" height="800"/>
@@ -187,7 +188,7 @@ OCT 2020 to Today</string>
                                                     <subviews>
                                                         <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="k8i-qm-a06">
                                                             <rect key="frame" x="0.0" y="0.0" width="414" height="800"/>
-                                                            <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                             <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="16" minimumInteritemSpacing="16" id="Smn-xR-3AF">
                                                                 <size key="itemSize" width="381" height="248"/>
                                                                 <size key="headerReferenceSize" width="0.0" height="0.0"/>
@@ -252,10 +253,10 @@ OCT 2020 to Today</string>
                                                                                 <rect key="frame" x="0.0" y="346" width="381" height="36"/>
                                                                                 <subviews>
                                                                                     <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Checkmark" translatesAutoresizingMaskIntoConstraints="NO" id="QQb-AO-WUP">
-                                                                                        <rect key="frame" x="283" y="-6" width="82" height="48"/>
+                                                                                        <rect key="frame" x="293" y="6" width="72" height="24"/>
                                                                                     </imageView>
                                                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XdZ-hy-h7V">
-                                                                                        <rect key="frame" x="331" y="-6" width="34" height="48"/>
+                                                                                        <rect key="frame" x="341" y="6" width="24" height="24"/>
                                                                                         <state key="normal" image="ExportButton"/>
                                                                                         <connections>
                                                                                             <action selector="exportTapped" destination="LrK-q2-M3U" eventType="touchUpInside" id="FFE-Bp-Djf"/>
@@ -275,7 +276,7 @@ OCT 2020 to Today</string>
                                                                             </view>
                                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cpr-6J-n4P" customClass="RSDShadowGradient" customModule="ResearchUI">
                                                                                 <rect key="frame" x="0.0" y="342" width="381" height="4"/>
-                                                                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                                                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                                                 <constraints>
                                                                                     <constraint firstAttribute="height" constant="4" id="8oc-TJ-yON"/>
                                                                                 </constraints>
@@ -352,7 +353,7 @@ OCT 2020 to Today</string>
                                                                                         <nil key="highlightedColor"/>
                                                                                     </label>
                                                                                 </subviews>
-                                                                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                                                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                                                 <constraints>
                                                                                     <constraint firstItem="bn9-rI-qzG" firstAttribute="leading" secondItem="EKf-xY-2cc" secondAttribute="leading" constant="16" id="5jR-KO-Rvd"/>
                                                                                     <constraint firstItem="bn9-rI-qzG" firstAttribute="top" secondItem="EFh-2A-tt6" secondAttribute="bottom" constant="16" id="97K-g9-0cP"/>
@@ -361,7 +362,7 @@ OCT 2020 to Today</string>
                                                                                     <constraint firstItem="EFh-2A-tt6" firstAttribute="centerY" secondItem="EKf-xY-2cc" secondAttribute="centerY" constant="-49" id="pSG-cf-HqA"/>
                                                                                 </constraints>
                                                                             </view>
-                                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CxB-DG-SQx" customClass="RSDRoundedButton" customModule="ResearchUI">
+                                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CxB-DG-SQx" customClass="RSDRoundedButton" customModule="ResearchUI">
                                                                                 <rect key="frame" x="32" y="248" width="317" height="52"/>
                                                                                 <state key="normal" title="Add measurement"/>
                                                                                 <connections>
@@ -414,7 +415,7 @@ OCT 2020 to Today</string>
                                         </connections>
                                     </tableView>
                                 </subviews>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
                                     <constraint firstAttribute="bottom" secondItem="udd-L0-NzR" secondAttribute="bottom" id="R2c-fn-YbC"/>
                                     <constraint firstItem="udd-L0-NzR" firstAttribute="leading" secondItem="f6y-22-A7T" secondAttribute="leading" id="Uz6-py-Dwi"/>
@@ -423,7 +424,8 @@ OCT 2020 to Today</string>
                                 </constraints>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <viewLayoutGuide key="safeArea" id="Nbs-X2-0YG"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="KZW-mD-2Iu" firstAttribute="trailing" secondItem="Nbs-X2-0YG" secondAttribute="trailing" id="P8l-gC-uhP"/>
                             <constraint firstItem="KZW-mD-2Iu" firstAttribute="leading" secondItem="Nbs-X2-0YG" secondAttribute="leading" id="U0l-NX-SJ7"/>
@@ -433,7 +435,6 @@ OCT 2020 to Today</string>
                             <constraint firstItem="f6y-22-A7T" firstAttribute="top" secondItem="KZW-mD-2Iu" secondAttribute="bottom" id="y8m-aB-SFZ"/>
                             <constraint firstItem="f6y-22-A7T" firstAttribute="trailing" secondItem="Nbs-X2-0YG" secondAttribute="trailing" id="ytj-nX-JZF"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="Nbs-X2-0YG"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="Review" image="ReviewTabIcon" id="o4N-IT-I9V"/>
                     <connections>
@@ -468,16 +469,16 @@ OCT 2020 to Today</string>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tBT-AP-VDb">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tBT-AP-VDb">
                                                 <rect key="frame" x="48" y="69" width="318" height="30"/>
-                                                <color key="tintColor" cocoaTouchSystemColor="viewFlipsideBackgroundColor"/>
+                                                <color key="tintColor" systemColor="viewFlipsideBackgroundColor"/>
                                                 <state key="normal" title="Enbrel, Hydrocorizone..."/>
                                                 <connections>
                                                     <action selector="treatmentTapped" destination="ehR-um-ksg" eventType="touchUpInside" id="PEI-WR-rSk"/>
                                                 </connections>
                                             </button>
                                         </subviews>
-                                        <color key="backgroundColor" systemColor="systemGreenColor" red="0.20392156859999999" green="0.78039215689999997" blue="0.34901960780000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <color key="backgroundColor" systemColor="systemGreenColor"/>
                                         <constraints>
                                             <constraint firstItem="tBT-AP-VDb" firstAttribute="leading" secondItem="D8m-la-ykO" secondAttribute="leading" constant="48" id="0Pf-ji-Ekm"/>
                                             <constraint firstItem="bHu-d3-yL1" firstAttribute="top" secondItem="D8m-la-ykO" secondAttribute="top" constant="48" id="IfX-9w-VSz"/>
@@ -520,7 +521,7 @@ OCT 2020 to Today</string>
                                                             <constraint firstAttribute="height" constant="20" id="C3D-oP-9y6"/>
                                                         </constraints>
                                                     </imageView>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vK4-Yh-hbn" userLabel="InsightButton">
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vK4-Yh-hbn" userLabel="InsightButton">
                                                         <rect key="frame" x="0.0" y="0.0" width="414" height="112"/>
                                                         <connections>
                                                             <action selector="insightTapped" destination="ehR-um-ksg" eventType="touchUpInside" id="fCQ-kZ-cs3"/>
@@ -603,7 +604,7 @@ OCT 2020 to Today</string>
                                         </constraints>
                                     </view>
                                 </subviews>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
                                     <constraint firstItem="D8m-la-ykO" firstAttribute="top" secondItem="Mjc-cg-3zo" secondAttribute="top" id="Jbv-bP-sWg"/>
                                     <constraint firstItem="D8m-la-ykO" firstAttribute="leading" secondItem="Mjc-cg-3zo" secondAttribute="leading" id="M3E-rR-Zql"/>
@@ -617,7 +618,7 @@ OCT 2020 to Today</string>
                             </view>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="OR1-ou-7G7">
                                 <rect key="frame" x="0.0" y="224" width="414" height="589"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="vi1-YY-mcr">
                                     <size key="itemSize" width="212" height="120"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
@@ -650,7 +651,7 @@ OCT 2020 to Today</string>
                                                                 <constraint firstAttribute="width" secondItem="NI9-Hc-kTq" secondAttribute="height" id="F5m-5U-tQ3"/>
                                                             </constraints>
                                                         </imageView>
-                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sS2-XF-vKD" customClass="RSDUnderlinedButton" customModule="ResearchUI">
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sS2-XF-vKD" customClass="RSDUnderlinedButton" customModule="ResearchUI">
                                                             <rect key="frame" x="0.0" y="0.0" width="212" height="120"/>
                                                             <inset key="titleEdgeInsets" minX="0.0" minY="43" maxX="0.0" maxY="0.0"/>
                                                             <state key="normal" title="Sleep Check-In"/>
@@ -705,7 +706,8 @@ OCT 2020 to Today</string>
                                 </connections>
                             </collectionView>
                         </subviews>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <viewLayoutGuide key="safeArea" id="Zt9-mw-fJC"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="Zt9-mw-fJC" firstAttribute="trailing" secondItem="Mjc-cg-3zo" secondAttribute="trailing" id="6gT-x6-vXf"/>
                             <constraint firstItem="Mjc-cg-3zo" firstAttribute="leading" secondItem="Zt9-mw-fJC" secondAttribute="leading" id="D2F-ct-B7n"/>
@@ -715,7 +717,6 @@ OCT 2020 to Today</string>
                             <constraint firstAttribute="top" secondItem="Mjc-cg-3zo" secondAttribute="top" id="lC1-8V-TMS"/>
                             <constraint firstItem="Zt9-mw-fJC" firstAttribute="trailing" secondItem="OR1-ou-7G7" secondAttribute="trailing" id="sdc-zZ-GXn"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="Zt9-mw-fJC"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="Measure" image="MeasureTabIcon" id="2Ld-Cl-BdW"/>
                     <connections>
@@ -780,7 +781,8 @@ OCT 2020 to Today</string>
                                 </constraints>
                             </imageView>
                         </subviews>
-                        <color key="backgroundColor" systemColor="systemGreenColor" red="0.20392156859999999" green="0.78039215689999997" blue="0.34901960780000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <viewLayoutGuide key="safeArea" id="TI1-tg-2iw"/>
+                        <color key="backgroundColor" systemColor="systemGreenColor"/>
                         <constraints>
                             <constraint firstItem="eCh-yz-RTX" firstAttribute="trailing" secondItem="TI1-tg-2iw" secondAttribute="trailing" id="Iq2-Zg-Omh"/>
                             <constraint firstItem="07f-DY-ORK" firstAttribute="top" secondItem="eCh-yz-RTX" secondAttribute="bottom" constant="23" id="N97-7j-Kz3"/>
@@ -789,7 +791,6 @@ OCT 2020 to Today</string>
                             <constraint firstItem="eCh-yz-RTX" firstAttribute="leading" secondItem="TI1-tg-2iw" secondAttribute="leading" id="xbU-aE-kkA"/>
                             <constraint firstItem="eCh-yz-RTX" firstAttribute="top" secondItem="aEA-Lq-LBx" secondAttribute="top" constant="36" id="yOm-Us-EZi"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="TI1-tg-2iw"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="Research" image="ResearchTabIcon" id="XIB-eJ-Sia"/>
                     <connections>
@@ -811,7 +812,7 @@ OCT 2020 to Today</string>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" contentInsetAdjustmentBehavior="never" dataMode="prototypes" style="grouped" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="1" sectionFooterHeight="1" contentViewInsetsToSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="o7h-wX-f13">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="813"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="DeepDiveProfileTableItem" rowHeight="186" id="SuI-Ye-y6r" customClass="DeepDiveProfileTableItem" customModule="Psorcast" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="55.5" width="414" height="186"/>
@@ -827,18 +828,18 @@ OCT 2020 to Today</string>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progressViewStyle="bar" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="nkg-Hh-11I" customClass="StudyProgressView" customModule="Psorcast" customModuleProvider="target">
-                                                    <rect key="frame" x="24" y="66.5" width="309.5" height="9"/>
+                                                    <rect key="frame" x="24" y="66.5" width="308.5" height="9"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="8" id="f3L-Sx-lVV"/>
                                                     </constraints>
                                                 </progressView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="20%" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="joN-6u-01s">
-                                                    <rect key="frame" x="355.5" y="60" width="34.5" height="21"/>
+                                                    <rect key="frame" x="354.5" y="60" width="35.5" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WUj-w9-wjc" customClass="RSDRoundedButton" customModule="ResearchUI">
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WUj-w9-wjc" customClass="RSDRoundedButton" customModule="ResearchUI">
                                                     <rect key="frame" x="44" y="107" width="326" height="52"/>
                                                     <state key="normal" title="Button"/>
                                                 </button>
@@ -872,14 +873,14 @@ OCT 2020 to Today</string>
                                 </connections>
                             </tableView>
                         </subviews>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <viewLayoutGuide key="safeArea" id="2OZ-XS-gfI"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="o7h-wX-f13" firstAttribute="top" secondItem="vKH-Bg-VCP" secondAttribute="top" id="8KB-g9-3hA"/>
                             <constraint firstItem="o7h-wX-f13" firstAttribute="bottom" secondItem="2OZ-XS-gfI" secondAttribute="bottom" id="9QT-aH-CSs"/>
                             <constraint firstItem="o7h-wX-f13" firstAttribute="leading" secondItem="2OZ-XS-gfI" secondAttribute="leading" id="keW-Lh-ntb"/>
                             <constraint firstItem="o7h-wX-f13" firstAttribute="trailing" secondItem="2OZ-XS-gfI" secondAttribute="trailing" id="v8d-wU-n24"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="2OZ-XS-gfI"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="Profile" image="ProfileTabIcon" id="oRO-0L-4nE"/>
                     <connections>
@@ -905,7 +906,7 @@ OCT 2020 to Today</string>
                                         <rect key="frame" x="-39" y="38" width="318" height="52"/>
                                     </imageView>
                                 </subviews>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="100" id="3tA-JI-KUo"/>
                                     <constraint firstItem="1cn-tv-fIQ" firstAttribute="centerX" secondItem="QAK-h8-L5Q" secondAttribute="centerX" id="ZmF-BL-lIQ"/>
@@ -914,7 +915,7 @@ OCT 2020 to Today</string>
                             </view>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="AzC-91-YPM">
                                 <rect key="frame" x="0.0" y="100" width="414" height="696"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="dBD-oR-5E1">
                                     <size key="itemSize" width="212" height="120"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
@@ -947,7 +948,7 @@ OCT 2020 to Today</string>
                                                                 <constraint firstAttribute="width" secondItem="yBz-Yu-Q7a" secondAttribute="height" id="u1w-ry-WZK"/>
                                                             </constraints>
                                                         </imageView>
-                                                        <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cTR-0f-j62" customClass="RSDUnderlinedButton" customModule="ResearchUI">
+                                                        <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cTR-0f-j62" customClass="RSDUnderlinedButton" customModule="ResearchUI">
                                                             <rect key="frame" x="3" y="12" width="212" height="120"/>
                                                             <inset key="titleEdgeInsets" minX="0.0" minY="43" maxX="0.0" maxY="0.0"/>
                                                             <state key="normal" title="Sleep Check-In"/>
@@ -996,12 +997,12 @@ OCT 2020 to Today</string>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="04Z-nD-hfL" customClass="RSDShadowGradient" customModule="ResearchUI">
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="8"/>
-                                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="8" id="52P-yl-88A"/>
                                         </constraints>
                                     </view>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Fqk-as-DfM" customClass="RSDRoundedButton" customModule="ResearchUI">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Fqk-as-DfM" customClass="RSDRoundedButton" customModule="ResearchUI">
                                         <rect key="frame" x="24" y="24" width="366" height="60"/>
                                         <state key="normal" title="I’m done trying them out"/>
                                         <connections>
@@ -1009,7 +1010,7 @@ OCT 2020 to Today</string>
                                         </connections>
                                     </button>
                                 </subviews>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
                                     <constraint firstItem="04Z-nD-hfL" firstAttribute="top" secondItem="7Cn-y3-yth" secondAttribute="top" id="65z-ug-mjx"/>
                                     <constraint firstAttribute="trailing" secondItem="Fqk-as-DfM" secondAttribute="trailing" constant="24" id="Aes-aC-fLO"/>
@@ -1022,7 +1023,8 @@ OCT 2020 to Today</string>
                                 </constraints>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <viewLayoutGuide key="safeArea" id="19H-ZU-ZeB"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="AzC-91-YPM" firstAttribute="trailing" secondItem="19H-ZU-ZeB" secondAttribute="trailing" id="5Ua-yE-oQI"/>
                             <constraint firstItem="7Cn-y3-yth" firstAttribute="top" secondItem="AzC-91-YPM" secondAttribute="bottom" id="Y1t-T0-WKi"/>
@@ -1035,7 +1037,6 @@ OCT 2020 to Today</string>
                             <constraint firstItem="AzC-91-YPM" firstAttribute="leading" secondItem="19H-ZU-ZeB" secondAttribute="leading" id="sPP-zI-1iz"/>
                             <constraint firstItem="7Cn-y3-yth" firstAttribute="trailing" secondItem="19H-ZU-ZeB" secondAttribute="trailing" id="vSn-Xw-LuN"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="19H-ZU-ZeB"/>
                     </view>
                     <connections>
                         <outlet property="collectionView" destination="AzC-91-YPM" id="Tjg-lU-jpU"/>
@@ -1057,7 +1058,7 @@ OCT 2020 to Today</string>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iP9-dD-0B3" userLabel="Top Header">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="100"/>
-                                <color key="backgroundColor" systemColor="systemGreenColor" red="0.20392156859999999" green="0.78039215689999997" blue="0.34901960780000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" systemColor="systemGreenColor"/>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KwO-hj-zWk" userLabel="BackButton">
                                 <rect key="frame" x="12" y="35.5" width="60" height="60"/>
@@ -1087,20 +1088,20 @@ OCT 2020 to Today</string>
                                 <nil key="highlightedColor"/>
                             </label>
                             <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progressViewStyle="bar" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="dNh-ju-AcT" customClass="StudyProgressView" customModule="Psorcast" customModuleProvider="target">
-                                <rect key="frame" x="24" y="164.5" width="307.5" height="9"/>
+                                <rect key="frame" x="24" y="164.5" width="306.5" height="9"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="8" id="HlC-P9-2mg"/>
                                 </constraints>
                             </progressView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="20%" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lc4-yd-epR">
-                                <rect key="frame" x="355.5" y="158" width="34.5" height="21"/>
+                                <rect key="frame" x="354.5" y="158" width="35.5" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="Az5-IQ-ofS">
                                 <rect key="frame" x="0.0" y="196.5" width="414" height="665.5"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Ozj-7x-OGO">
                                     <size key="itemSize" width="212" height="120"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
@@ -1133,7 +1134,7 @@ OCT 2020 to Today</string>
                                                                 <constraint firstAttribute="width" secondItem="BAp-DC-pyV" secondAttribute="height" id="0Fj-IR-iPU"/>
                                                             </constraints>
                                                         </imageView>
-                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2cQ-xo-4xc" customClass="RSDUnderlinedButton" customModule="ResearchUI">
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2cQ-xo-4xc" customClass="RSDUnderlinedButton" customModule="ResearchUI">
                                                             <rect key="frame" x="0.0" y="0.0" width="212" height="120"/>
                                                             <inset key="titleEdgeInsets" minX="0.0" minY="43" maxX="0.0" maxY="0.0"/>
                                                             <state key="normal" title="Sleep Check-In"/>
@@ -1188,7 +1189,8 @@ OCT 2020 to Today</string>
                                 </connections>
                             </collectionView>
                         </subviews>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <viewLayoutGuide key="safeArea" id="d79-X5-KjE"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="d79-X5-KjE" firstAttribute="bottom" secondItem="Az5-IQ-ofS" secondAttribute="bottom" id="1tf-au-2ew"/>
                             <constraint firstItem="94q-2R-y1L" firstAttribute="leading" secondItem="d79-X5-KjE" secondAttribute="leading" constant="24" id="2Cd-Js-cOJ"/>
@@ -1216,7 +1218,6 @@ OCT 2020 to Today</string>
                             <constraint firstItem="iP9-dD-0B3" firstAttribute="trailing" secondItem="d79-X5-KjE" secondAttribute="trailing" id="pSV-Ii-DXD"/>
                             <constraint firstItem="d79-X5-KjE" firstAttribute="trailing" secondItem="Az5-IQ-ofS" secondAttribute="trailing" id="qrh-Gz-YmW"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="d79-X5-KjE"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="Measure" image="MeasureTabIcon" id="wK5-iR-Rty"/>
                     <connections>
@@ -1234,13 +1235,42 @@ OCT 2020 to Today</string>
             <point key="canvasLocation" x="3124.6376811594205" y="-877.23214285714278"/>
         </scene>
     </scenes>
+    <designables>
+        <designable name="2cQ-xo-4xc">
+            <size key="intrinsicContentSize" width="123" height="33.5"/>
+        </designable>
+        <designable name="8Oi-Gn-n4p">
+            <size key="intrinsicContentSize" width="161" height="30"/>
+        </designable>
+        <designable name="CxB-DG-SQx">
+            <size key="intrinsicContentSize" width="126" height="30"/>
+        </designable>
+        <designable name="Fqk-as-DfM">
+            <size key="intrinsicContentSize" width="169" height="30"/>
+        </designable>
+        <designable name="WUj-w9-wjc">
+            <size key="intrinsicContentSize" width="46" height="30"/>
+        </designable>
+        <designable name="cTR-0f-j62">
+            <size key="intrinsicContentSize" width="123" height="33.5"/>
+        </designable>
+        <designable name="fZ4-xJ-Sfz">
+            <size key="intrinsicContentSize" width="193" height="30"/>
+        </designable>
+        <designable name="lJG-3B-rEz">
+            <size key="intrinsicContentSize" width="44" height="33.5"/>
+        </designable>
+        <designable name="sS2-XF-vKD">
+            <size key="intrinsicContentSize" width="123" height="33.5"/>
+        </designable>
+    </designables>
     <resources>
         <image name="AppHeader" width="241" height="41"/>
         <image name="BackDark" width="30" height="31"/>
         <image name="Checkmark" width="24" height="24"/>
         <image name="DemoResearchTabBody" width="1210" height="780"/>
         <image name="DemoResearchTabHeader" width="1392" height="358"/>
-        <image name="ExportButton" width="17" height="18"/>
+        <image name="ExportButton" width="24" height="24"/>
         <image name="FilterUpArrow" width="14" height="8"/>
         <image name="InsightBulb" width="41" height="59"/>
         <image name="InsightIcon" width="34" height="34"/>
@@ -1253,5 +1283,20 @@ OCT 2020 to Today</string>
         <image name="ReviewTabIcon" width="31" height="23"/>
         <image name="ReviewVideoIcon" width="98" height="98"/>
         <image name="RightChevron" width="11" height="20"/>
+        <systemColor name="darkTextColor">
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemBlueColor">
+            <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemGreenColor">
+            <color red="0.20392156862745098" green="0.7803921568627451" blue="0.34901960784313724" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="viewFlipsideBackgroundColor">
+            <color red="0.1215686274509804" green="0.12941176470588239" blue="0.14117647058823529" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
     </resources>
 </document>

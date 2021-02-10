@@ -51,6 +51,9 @@ open class ImageDataManager {
     public static let videoExportStatusChanged = Notification.Name(rawValue: "imageFrameAdded")
     public static let imageFrameAdded = Notification.Name(rawValue: "imageFrameAdded")
     
+    public static let contentTypeJpeg = "image/jpeg"
+    public static let contentTypePng = "image/png"
+    
     /// The shared access to the video report manager
     public static let shared = ImageDataManager()
     
@@ -92,19 +95,26 @@ open class ImageDataManager {
         "summaryImage",
     ]
 
+    /// The compression quality that all raw png images will be compressed to,
+    /// when app uploads to Synapse as JPEG images.
+    public let jpegCompressionQuality = CGFloat(0.5)
+    
     public func processTaskResult(_ taskResult: RSDTaskResult) -> String? {
+        
+        // Always process potential hand/feet images as well
+        self.processTaskResultHandFeet(taskResult)
         
         let taskIdentifier = taskResult.identifier
         
+        var url: URL? = nil
         // Filter through all the results and find the image results we care about
-        let summaryImageResult =
-            taskResult.stepHistory.filter({ $0 is RSDFileResult })
-                .map({ $0 as? RSDFileResult })
-                .filter({
-                    summaryImagesIdentifiers.contains($0?.identifier ?? "") &&
-                    $0?.contentType == "image/jpeg" }).first as? RSDFileResult
+        for summaryId in summaryImagesIdentifiers {
+            if let urlUnwrapped = self.lastJpg(with: summaryId, history: taskResult.stepHistory) {
+                url = urlUnwrapped
+            }
+        }
         
-        guard let summaryImageUrl = summaryImageResult?.url else {
+        guard let summaryImageUrl = url else {
             return nil
         }
         
@@ -115,7 +125,6 @@ open class ImageDataManager {
         // Copy new video frames into the documents directory
         // Copy the result file url into a the local cache so it persists upload complete
         if let newImageUrl = FileManager.default.copyFile(at: summaryImageUrl, to: storageDir, filename: imageFileName) {
-            
             // Let the app know about the new image so it can update the UI
             self.postImageFrameAddedNotification(url: newImageUrl)
             
@@ -125,6 +134,47 @@ open class ImageDataManager {
                 "to \(storageDir) with filename \(imageFileName)")
             return nil
         }
+    }
+    
+    private func processTaskResultHandFeet(_ taskResult: RSDTaskResult) {
+        let imageIds = ["leftFoot", "rightFoot", "leftHand", "rightHand"]
+        for id in imageIds {
+            if let url = self.lastJpg(with: id, history: taskResult.stepHistory) {
+                // Create the image filename from
+                let imageFileName = "mostRecent_\(id).\(imagePathExtension)"
+                // Copy the result file url into a the local cache
+                let imageUrl = FileManager.default.copyFile(at: url, to: storageDir, filename: imageFileName)
+                if imageUrl == nil {
+                    debugPrint("Error copying file from \(url.absoluteURL)" +
+                        "to \(storageDir) with filename \(imageFileName)")
+                }
+            }
+        }
+    }
+    
+    public func getMostRecentHandFootImage(identifier: String) -> UIImage? {
+        let imageFileName = "mostRecent_\(identifier).\(imagePathExtension)"
+        guard let imageUrl = FileManager.default.url(for: self.storageDir, fileName: imageFileName) else {
+            return nil
+        }
+        do {
+            return try UIImage(data: Data(contentsOf: imageUrl))
+        } catch {
+            debugPrint("Error loading most recent image for \(identifier)")
+        }
+        return nil
+    }
+    
+    private func lastJpg(with identifier: String, history: [Research.RSDResult]) -> URL? {
+        // Filter through all the results and find the image results we care about
+        let imageResult = history.last(where: {
+            guard $0.identifier == identifier,
+                let fileResult = $0 as? RSDFileResult else {
+                return false
+            }
+            return fileResult.contentType == ImageDataManager.contentTypeJpeg
+        })
+        return (imageResult as? RSDFileResult)?.url
     }
     
     public func findFrame(with imageName: String) -> URL? {
@@ -328,5 +378,15 @@ open class ImageDataManager {
         }
         
         self.videoCreatorTasks.removeAll(where: { $0.settings.videoFilename == videoFileName })
+    }
+    
+    /// Converts PNG data to scaled JPEG data for smaller file size.
+    public func convertToJpegData(pngData: Data) -> Data? {
+        return (UIImage(data: pngData)?.jpegData(compressionQuality: jpegCompressionQuality))
+    }
+
+    /// Converts UIImage to jpeg data with global compression quality
+    public func convertToJpegData(image: UIImage) -> Data? {
+        return image.jpegData(compressionQuality: jpegCompressionQuality)
     }
 }
