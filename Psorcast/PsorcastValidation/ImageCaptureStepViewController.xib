@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina5_9" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -38,7 +39,7 @@
                                     <nil key="textColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MAO-q7-fPw" userLabel="Cancel Button">
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MAO-q7-fPw" userLabel="Cancel Button">
                                     <rect key="frame" x="24" y="24" width="50" height="50"/>
                                     <constraints>
                                         <constraint firstAttribute="width" secondItem="MAO-q7-fPw" secondAttribute="height" multiplier="1:1" id="FQP-6M-XIU"/>
@@ -58,19 +59,18 @@
                             </constraints>
                             <connections>
                                 <outlet property="cancelButton" destination="MAO-q7-fPw" id="XfG-a0-FE9"/>
-                                <outlet property="imageView" destination="h8j-iD-5fl" id="bc8-FZ-ur2"/>
                                 <outlet property="titleLabel" destination="d3p-ES-nu8" id="LaJ-GO-IzF"/>
                             </connections>
                         </view>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Capture image" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Br6-tq-bnk">
-                            <rect key="frame" x="141" y="675" width="113" height="21"/>
+                            <rect key="frame" x="141.66666666666666" y="675" width="111.66666666666666" height="21"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7Iz-4x-dLZ">
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7Iz-4x-dLZ">
                             <rect key="frame" x="162" y="596" width="71" height="71"/>
-                            <color key="backgroundColor" systemColor="linkColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <color key="backgroundColor" systemColor="linkColor"/>
                             <constraints>
                                 <constraint firstAttribute="width" secondItem="7Iz-4x-dLZ" secondAttribute="height" multiplier="1:1" id="L9S-ju-td4"/>
                                 <constraint firstAttribute="width" constant="71" id="uGc-tD-AMV"/>
@@ -82,9 +82,6 @@
                                 <action selector="capturePhoto:" destination="-1" eventType="touchUpInside" id="nlE-wI-3dd"/>
                             </connections>
                         </button>
-                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="bottom" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="h8j-iD-5fl" userLabel="Overlay Image View">
-                            <rect key="frame" x="0.0" y="130" width="395" height="434"/>
-                        </imageView>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="z7Q-cL-s9u">
                             <rect key="frame" x="331" y="130" width="64" height="64"/>
                             <constraints>
@@ -99,7 +96,6 @@
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
-                        <constraint firstAttribute="trailing" secondItem="h8j-iD-5fl" secondAttribute="trailing" id="2T1-4Q-hXd"/>
                         <constraint firstAttribute="trailing" secondItem="fxA-Tz-ZiS" secondAttribute="trailing" id="3JV-je-hxC"/>
                         <constraint firstAttribute="trailing" secondItem="Bb7-gd-Spk" secondAttribute="trailing" id="Bd0-Lg-k57"/>
                         <constraint firstAttribute="bottom" secondItem="Br6-tq-bnk" secondAttribute="bottom" constant="24" id="Bnl-m2-DkF"/>
@@ -108,10 +104,7 @@
                         <constraint firstItem="7Iz-4x-dLZ" firstAttribute="centerX" secondItem="nCy-4g-nIJ" secondAttribute="centerX" id="Otr-xa-UAw"/>
                         <constraint firstItem="fxA-Tz-ZiS" firstAttribute="top" secondItem="nCy-4g-nIJ" secondAttribute="top" id="SC4-I8-O5N"/>
                         <constraint firstAttribute="trailing" secondItem="z7Q-cL-s9u" secondAttribute="trailing" id="cEu-Oj-CcG"/>
-                        <constraint firstItem="h8j-iD-5fl" firstAttribute="leading" secondItem="nCy-4g-nIJ" secondAttribute="leading" id="cNr-Hp-ibd"/>
-                        <constraint firstAttribute="bottom" secondItem="h8j-iD-5fl" secondAttribute="bottom" constant="156" id="mTR-4G-bom"/>
                         <constraint firstItem="Bb7-gd-Spk" firstAttribute="leading" secondItem="nCy-4g-nIJ" secondAttribute="leading" id="mgY-QI-c9q"/>
-                        <constraint firstItem="h8j-iD-5fl" firstAttribute="top" secondItem="fxA-Tz-ZiS" secondAttribute="bottom" id="pTW-G1-8MQ"/>
                         <constraint firstItem="Bb7-gd-Spk" firstAttribute="top" secondItem="fxA-Tz-ZiS" secondAttribute="bottom" id="pki-Yv-2aA"/>
                         <constraint firstItem="fxA-Tz-ZiS" firstAttribute="leading" secondItem="nCy-4g-nIJ" secondAttribute="leading" id="rEg-ZD-hZb"/>
                         <constraint firstAttribute="bottom" secondItem="Bb7-gd-Spk" secondAttribute="bottom" constant="156" id="t2M-kq-AFr"/>
@@ -119,6 +112,7 @@
                     </constraints>
                 </view>
             </subviews>
+            <viewLayoutGuide key="safeArea" id="W8i-xX-fUy"/>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
@@ -128,7 +122,6 @@
                 <constraint firstItem="nCy-4g-nIJ" firstAttribute="trailing" secondItem="W8i-xX-fUy" secondAttribute="trailing" id="Xje-i7-OTa"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <viewLayoutGuide key="safeArea" id="W8i-xX-fUy"/>
             <point key="canvasLocation" x="645.60000000000002" y="486.94581280788179"/>
         </view>
     </objects>
@@ -136,5 +129,8 @@
         <image name="Camera" width="48" height="48"/>
         <image name="CameraToggle" width="46" height="39.666667938232422"/>
         <image name="closeActivity" width="50" height="50"/>
+        <systemColor name="linkColor">
+            <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
     </resources>
 </document>

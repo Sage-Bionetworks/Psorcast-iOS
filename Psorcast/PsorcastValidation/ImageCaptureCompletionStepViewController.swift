@@ -155,9 +155,7 @@ open class ImageCaptureCompletionStepViewController: RSDInstructionStepViewContr
         // Add the image result of the header
         var url: URL?
         do {
-            if let pngDataUnwrapped = image.pngData(),
-                let appDelegate = (AppDelegate.shared as? AppDelegate),
-                let jpegData = appDelegate.imageDefaults.convertToJpegData(pngData: pngDataUnwrapped),
+            if let jpegData = ImageDataManager.shared.convertToJpegData(image: image),
                 let outputDir = self.stepViewModel.parentTaskPath?.outputDirectory {
                 url = try RSDFileResultUtility.createFileURL(identifier: self.summaryImageResultIdentifier, ext: "jpg", outputDirectory: outputDir, shouldDeletePrevious: true)
                 self.save(jpegData, to: url!)
@@ -169,7 +167,7 @@ open class ImageCaptureCompletionStepViewController: RSDInstructionStepViewContr
         // Create the result and set it as the result for this step
         var result = RSDFileResultObject(identifier: self.summaryImageResultIdentifier)
         result.url = url
-        result.contentType = "image/jpeg"
+        result.contentType = ImageDataManager.contentTypeJpeg
         _ = self.stepViewModel.parent?.taskResult.appendStepHistory(with: result)
     }
     

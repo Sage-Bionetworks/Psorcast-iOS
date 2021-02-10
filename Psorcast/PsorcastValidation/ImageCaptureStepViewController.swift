@@ -35,7 +35,8 @@ import AVFoundation
 import UIKit
 import BridgeApp
 import BridgeAppUI
-import GPUImage
+import MetalKit
+import MetalPerformanceShaders
 
 open class ImageCaptureStepObject: RSDUIStepObject, RSDStepViewControllerVendor {
     
@@ -87,7 +88,7 @@ open class ImageCaptureStepObject: RSDUIStepObject, RSDStepViewControllerVendor 
     }
 }
 
-open class ImageCaptureStepViewController: RSDStepViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+open class ImageCaptureStepViewController: RSDStepViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, MTKViewDelegate {
     
     // MARK: Session Management
     
@@ -130,6 +131,15 @@ open class ImageCaptureStepViewController: RSDStepViewController, UIImagePickerC
     
     private let videoDeviceDiscoverySession = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInWideAngleCamera, .builtInDualCamera, .builtInTrueDepthCamera],
                                                                                mediaType: .video, position: .unspecified)
+    /// Metal image overylay classes
+    public var device: MTLDevice!
+    var queue: MTLCommandQueue!
+    var sourceTextureSize = CGSize.zero
+    var overlayImageSize = CGSize.zero
+    var sourceTexture: MTLTexture!
+    var clear2BlackPipelineState: MTLComputePipelineState!
+    var metalImageError = false
+    var mtkView: MTKView? = nil
     
     var captureStep: ImageCaptureStepObject? {
         return self.step as? ImageCaptureStepObject
@@ -248,36 +258,115 @@ open class ImageCaptureStepViewController: RSDStepViewController, UIImagePickerC
         super.viewWillDisappear(animated)
     }
     
-    override open func setupHeader(_ header: RSDStepNavigationView) {
-        // Hide the image until we decide which type of overlay to show
-        self.navigationHeader?.imageView?.isHidden = true
+    func setupMetal(viewSize: CGSize) {
         
-        super.setupHeader(header)
-        self.navigationHeader?.imageView?.isHidden = false
-        
-        #if VALIDATION
-            // validation study will just always show the default overlay
-            self.navigationHeader?.imageView?.isHidden = false
-            self.navigationHeader?.imageView?.contentMode = UIView.ContentMode.scaleAspectFit
-        #else
-            // full study should show the custom overlay if available
-            if let imageDefaults = (AppDelegate.shared as? AppDelegate)?.imageDefaults,
-                let lastImageData = imageDefaults.getSavedFilteredImage(with: self.step.identifier),
-                let lastImage = UIImage(data: lastImageData) {
-
-                // Setting the navigation header here immediately was not taking effect
-                // Use a delay to go around Research framework
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
-                    self.navigationHeader?.imageView?.isHidden = false
-                    self.navigationHeader?.imageView?.image = lastImage
-                    self.navigationHeader?.imageView?.contentMode = UIView.ContentMode.scaleAspectFit;
-                }
-            } else {
-                self.navigationHeader?.imageView?.isHidden = false
-                self.navigationHeader?.imageView?.contentMode = UIView.ContentMode.scaleAspectFit;
-            }
+        // Metal is not available on simulator, needs > A7 chip
+        #if TARGET_OS_SIMULATOR
+            return
         #endif
+        
+        // Only init metal device once
+        if device == nil {
+            device = MTLCreateSystemDefaultDevice()!
+            queue = device.makeCommandQueue()
+        }
+        
+        var image: UIImage? = nil
+        let stepId = self.stepViewModel.step.identifier
+        
+        #if !VALIDATION
+            image = ImageDataManager.shared.getMostRecentHandFootImage(identifier: stepId)
+        #endif
+        
+        if image == nil { // try the backup, default overlay
+            image = UIImage(named: "CameraOverlay" + stepId.capitalizingFirstLetter())
+        }
+        
+        guard let imageSize = image?.size else {
+            self.metalImageError = true
+            debugPrint("Error creating overlay image")
+            return
+        }
+        
+        let aspectFitRect = PSRImageHelper.calculateAspectFit(
+            imageWidth: imageSize.width, imageHeight: imageSize.height,
+            imageViewWidth: viewSize.width, imageViewHeight: viewSize.height)
+        
+        let textureSizeScaled = CGSize(width: aspectFitRect.width * UIScreen.main.scale,
+                                       height: aspectFitRect.height * UIScreen.main.scale)
+        
+        if textureSizeScaled == self.sourceTextureSize {
+            // Already scaled to this size
+            return
+        }
+        
+        let mtkViewStrong = MTKView(frame: aspectFitRect)
+        mtkViewStrong.isPaused = true
+        mtkViewStrong.enableSetNeedsDisplay = true
+        mtkViewStrong.framebufferOnly = false
+        mtkViewStrong.isOpaque = false
+        mtkViewStrong.delegate = self
+        mtkViewStrong.device = self.device
+        self.mtkView?.removeFromSuperview()
+        self.previewView.addSubview(mtkViewStrong)
+        self.mtkView = mtkViewStrong
+        
+        guard let imageUnwraped = image?.resizeImage(targetSize: textureSizeScaled) else {
+            self.metalImageError = true
+            debugPrint("Error creating overlay image")
+            return
+        }
+        
+        // Create pipeline, expensive op, only do once
+        if self.clear2BlackPipelineState == nil {
+            self.clear2BlackPipelineState = self.device.createBlack2Clear()
+        }
+
+        self.sourceTexture = self.device.createMTLTexture(from: imageUnwraped)
+        
+        self.sourceTextureSize = textureSizeScaled
+    }
     
+    public func mtkView(_ view: MTKView, drawableSizeWillChange size: CGSize) {
+        self.mtkView?.setNeedsDisplay()
+    }
+    
+    public func draw(in view: MTKView) {
+        
+        #if TARGET_OS_SIMULATOR
+            return
+        #endif
+        
+        if self.metalImageError {
+            return
+        }
+        
+        guard let commandBuffer = queue.makeCommandBuffer(),
+              let drawable = view.currentDrawable,
+              let intermediateTexture = self.device.createEmptyMTLTexture(size: self.sourceTextureSize) else {
+            debugPrint("Could not create textures to perform draw")
+            return
+        }
+
+        // Encode the edge detection shader first in the command q
+        let edgeDetectionShader = MPSImageSobel(device: device)
+        edgeDetectionShader.encode(commandBuffer: commandBuffer, sourceTexture: sourceTexture,
+                      destinationTexture: intermediateTexture)
+
+        // Next we run a custom compute shader to transform black pixels to clear
+        guard let commandEncoder = commandBuffer.makeComputeCommandEncoder() else {
+            debugPrint("Could not create encoder to custom metal kernal func")
+            return
+        }
+        commandEncoder.setComputePipelineState(self.clear2BlackPipelineState)
+        commandEncoder.setTextures([drawable.texture, intermediateTexture], range: 0..<2)
+        let threadGroupSize = MTLSizeMake(Int(sourceTextureSize.width),
+                                          Int(sourceTextureSize.height), 1)
+        commandEncoder.dispatchThreadgroups(threadGroupSize, threadsPerThreadgroup: MTLSizeMake(1, 1, 1))
+        commandEncoder.endEncoding()
+
+        commandBuffer.present(drawable)
+        commandBuffer.commit()
     }
     
     private var keyValueObservations = [NSKeyValueObservation]()
@@ -463,6 +552,10 @@ open class ImageCaptureStepViewController: RSDStepViewController, UIImagePickerC
         super.viewDidLayoutSubviews()
         
         self.captureButton.layer.cornerRadius = self.captureButton.bounds.width / 2
+        
+        // At this point, we know the width/height of MTKView
+        // and we can setup metal so the texture matches
+        self.setupMetal(viewSize: previewView.bounds.size)
     }
     
     /// Set the color style for the given placement elements. This allows overriding by subclasses to
@@ -800,8 +893,7 @@ open class ImageCaptureStepViewController: RSDStepViewController, UIImagePickerC
         
         var url: URL?
         do {
-            if let appDelegate = (AppDelegate.shared as? AppDelegate),
-                let jpegData = appDelegate.imageDefaults.convertToJpegData(pngData: pngDataUnwrapped),
+            if let jpegData = ImageDataManager.shared.convertToJpegData(pngData: pngDataUnwrapped),
                 let outputDir = self.stepViewModel.parentTaskPath?.outputDirectory {
                 url = try RSDFileResultUtility.createFileURL(identifier: self.step.identifier, ext: "jpg", outputDirectory: outputDir, shouldDeletePrevious: true)
                 self.save(jpegData, to: url!)
@@ -813,7 +905,7 @@ open class ImageCaptureStepViewController: RSDStepViewController, UIImagePickerC
         // Create the result and set it as the result for this step
         var result = RSDFileResultObject(identifier: self.step.identifier)
         result.url = url
-        result.contentType = "image/jpeg"
+        result.contentType = ImageDataManager.contentTypeJpeg
         _ = self.stepViewModel.parent?.taskResult.appendStepHistory(with: result)
         
         // Go to the next step.
