@@ -893,7 +893,7 @@ open class ImageCaptureStepViewController: RSDStepViewController, UIImagePickerC
         
         var url: URL?
         do {
-            if let jpegData = ImageDataManager.shared.convertToJpegData(pngData: pngDataUnwrapped),
+            if let jpegData = PSRImageHelper.convertToJpegData(pngData: pngDataUnwrapped),
                 let outputDir = self.stepViewModel.parentTaskPath?.outputDirectory {
                 url = try RSDFileResultUtility.createFileURL(identifier: self.step.identifier, ext: "jpg", outputDirectory: outputDir, shouldDeletePrevious: true)
                 self.save(jpegData, to: url!)
@@ -905,7 +905,7 @@ open class ImageCaptureStepViewController: RSDStepViewController, UIImagePickerC
         // Create the result and set it as the result for this step
         var result = RSDFileResultObject(identifier: self.step.identifier)
         result.url = url
-        result.contentType = ImageDataManager.contentTypeJpeg
+        result.contentType = PSRImageHelper.contentTypeJpeg
         _ = self.stepViewModel.parent?.taskResult.appendStepHistory(with: result)
         
         // Go to the next step.
