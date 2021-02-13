@@ -235,7 +235,12 @@ open class PsoriasisDrawCompletionStepViewController: RSDStepViewController, Pro
               let totals = self.totalPixelCounts(),
               totals.count == ids.count else {
             print("Error: Could not find all total pixel counts")
-            return Float.zero
+            let percentCoverage = Float.zero
+            for identifier in PsoriasisDrawCompletionStepViewController.psoriasisDrawIdentifiers {
+                // Save as step result for easy processing
+                _ = self.stepViewModel.parent?.taskResult.appendStepHistory(with: RSDAnswerResultObject(identifier: self.percentCoverageResultId(identifier: identifier), answerType: .decimal, value: percentCoverage))
+            }
+            return percentCoverage
         }
         
         var selectedTotal = 0
