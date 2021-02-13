@@ -124,6 +124,8 @@
 		CBADD5372450C33A00422CE4 /* VideoExporterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBADD5362450C33A00422CE4 /* VideoExporterTests.swift */; };
 		CBADD53F2450ED1200422CE4 /* ResearchTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBADD53E2450ED1200422CE4 /* ResearchTabViewController.swift */; };
 		CBAF1DA92437CB2A00ECC699 /* StudyExternalIdRegistrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBAF1DA82437CB2A00ECC699 /* StudyExternalIdRegistrationViewController.swift */; };
+		CBB3F6CD25D7696700578A0F /* MetalHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB64AA1325D21F190040FC90 /* MetalHelper.swift */; };
+		CBB3F6CE25D7696900578A0F /* Black2Clear.metal in Sources */ = {isa = PBXBuildFile; fileRef = CB64AA1125D20FA10040FC90 /* Black2Clear.metal */; };
 		CBB78870246CB85F004385AF /* DeepDiveReportManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBB7886F246CB85F004385AF /* DeepDiveReportManager.swift */; };
 		CBB90AE82381FF8700F1DFA4 /* PsoriasisAreaPhoto.mov in Resources */ = {isa = PBXBuildFile; fileRef = CBB90AE52381FF8500F1DFA4 /* PsoriasisAreaPhoto.mov */; };
 		CBB90AE92381FF8700F1DFA4 /* FingersPhoto.mov in Resources */ = {isa = PBXBuildFile; fileRef = CBB90AE62381FF8600F1DFA4 /* FingersPhoto.mov */; };
@@ -396,8 +398,8 @@
 		CB5E960922EE920D0001AAFE /* ExternalIDRegistrationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExternalIDRegistrationViewController.xib; sourceTree = "<group>"; };
 		CB5F3775237EFA2A003648DB /* LearnMoreStepViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LearnMoreStepViewController.swift; sourceTree = "<group>"; };
 		CB5F377B237EFFD5003648DB /* LearnMoreStepViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LearnMoreStepViewController.xib; sourceTree = "<group>"; };
-		CB64AA1125D20FA10040FC90 /* Black2Clear.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Black2Clear.metal; sourceTree = "<group>"; };
-		CB64AA1325D21F190040FC90 /* MetalHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalHelper.swift; sourceTree = "<group>"; };
+		CB64AA1125D20FA10040FC90 /* Black2Clear.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; name = Black2Clear.metal; path = ../Psorcast/Black2Clear.metal; sourceTree = "<group>"; };
+		CB64AA1325D21F190040FC90 /* MetalHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MetalHelper.swift; path = ../Psorcast/MetalHelper.swift; sourceTree = "<group>"; };
 		CB67C28D23F390AA005B6BCD /* DigitalJarOpenStepViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DigitalJarOpenStepViewControllerTests.swift; sourceTree = "<group>"; };
 		CB67C28E23F390AA005B6BCD /* PSRImageHelperTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PSRImageHelperTests.swift; sourceTree = "<group>"; };
 		CB67C28F23F390AA005B6BCD /* JointPainImageViewTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JointPainImageViewTests.swift; sourceTree = "<group>"; };
@@ -619,15 +621,6 @@
 			name = Utils;
 			sourceTree = "<group>";
 		};
-		CB64AA0825D20F860040FC90 /* Metal */ = {
-			isa = PBXGroup;
-			children = (
-				CB64AA1325D21F190040FC90 /* MetalHelper.swift */,
-				CB64AA1125D20FA10040FC90 /* Black2Clear.metal */,
-			);
-			name = Metal;
-			sourceTree = "<group>";
-		};
 		CB7CF23C2400BE84003E02A5 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
@@ -702,6 +695,13 @@
 				CB9F5E4422E0C27D003FBCEF /* Info.plist */,
 			);
 			path = PsorcastValidationTests;
+			sourceTree = "<group>";
+		};
+		CBB3F6CC25D7695600578A0F /* Metal */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Metal;
 			sourceTree = "<group>";
 		};
 		CBB93CAF233FFA3600321A4D /* Helper */ = {
@@ -807,6 +807,8 @@
 		CBD67D8922DFC5B500998516 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				CB64AA1325D21F190040FC90 /* MetalHelper.swift */,
+				CB64AA1125D20FA10040FC90 /* Black2Clear.metal */,
 				CBD67D9222DFC71E00998516 /* TaskFactory.swift */,
 				CBD67D8C22DFC5EE00998516 /* MotorControl+Bridge.swift */,
 				CB8DC7B324189E31001B7982 /* TaskListScheduleManager.swift */,
@@ -906,7 +908,6 @@
 				CBBE0F6024039A4F0072452C /* Model */,
 				CB7CF23C2400BE84003E02A5 /* ViewControllers */,
 				CB305C6E24870FD200E379B8 /* Views */,
-				CB64AA0825D20F860040FC90 /* Metal */,
 				CB4794EB2426B31D00D5A7E6 /* Utils */,
 				CB7CF2432400C627003E02A5 /* Resources */,
 				FF50109C22DD20DE0035E83C /* Support Files */,
@@ -944,6 +945,7 @@
 				FFABCBF022DD1F2800D11109 /* LaunchScreen.storyboard */,
 				CBB93CAF233FFA3600321A4D /* Helper */,
 				CBD67D8922DFC5B500998516 /* Model */,
+				CBB3F6CC25D7695600578A0F /* Metal */,
 				CBD67D8222DFB8F600998516 /* ViewControllers */,
 				CBD67D8E22DFC69700998516 /* ObjC */,
 				CBD67D7F22DFB8C400998516 /* Resources */,
@@ -1394,6 +1396,7 @@
 				CB55C725231773FF00EA0C19 /* JointPainStepViewController.swift in Sources */,
 				CB85FB56235F5C5500FDC59B /* SelectedIdentifiersResultObject.swift in Sources */,
 				CB778672238D0E440009ECF9 /* DigitalJarOpenCompletionStepViewController.swift in Sources */,
+				CBB3F6CE25D7696900578A0F /* Black2Clear.metal in Sources */,
 				CB55C73E23198C1000EA0C19 /* JointPainCompletionStepViewController.swift in Sources */,
 				CBE908A42333BADA00F88A9A /* PsoriasisAreaPhotoStepViewController.swift in Sources */,
 				CB47E565233FC2EC00AE8501 /* PsoriasisDrawResultObject.swift in Sources */,
@@ -1411,6 +1414,7 @@
 				CB55C72F231848CD00EA0C19 /* JointPainResultObject.swift in Sources */,
 				CBD67D8D22DFC5EE00998516 /* MotorControl+Bridge.swift in Sources */,
 				CBB93CB1233FFA7500321A4D /* PSRImageHelper.swift in Sources */,
+				CBB3F6CD25D7696700578A0F /* MetalHelper.swift in Sources */,
 				CBE908AB2333BD3C00F88A9A /* PsoriasisAreaPhotoImageView.swift in Sources */,
 				CB8AE703233FBB9800F5F8AC /* TouchDrawableView.swift in Sources */,
 				CB8AE6FF233FBA1800F5F8AC /* PsoriasisDrawImageView.swift in Sources */,

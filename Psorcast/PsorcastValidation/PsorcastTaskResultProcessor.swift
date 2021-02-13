@@ -78,7 +78,7 @@ public final class PsorcastTaskResultProcessor {
     }
     
     public func attachImageResult(_ image: UIImage, stepViewModel: RSDStepViewPathComponent, to identifier: String, useJpeg: Bool = false) {
-        guard let dataUnwrapped = useJpeg ? ImageDataManager.shared.convertToJpegData(image: image) : image.pngData() else {
+        guard let dataUnwrapped = useJpeg ? PSRImageHelper.convertToJpegData(image: image) : image.pngData() else {
             debugPrint("Failed to convert UIImage to data")
             return
         }
@@ -98,7 +98,7 @@ public final class PsorcastTaskResultProcessor {
         // Create the result and set it as the result for this step
         var result = RSDFileResultObject(identifier: identifier)
         result.url = url
-        result.contentType = useJpeg ? ImageDataManager.contentTypeJpeg : ImageDataManager.contentTypePng
+        result.contentType = useJpeg ? PSRImageHelper.contentTypeJpeg : PSRImageHelper.contentTypePng
         _ = stepViewModel.parent?.taskResult.appendStepHistory(with: result)
     }
     

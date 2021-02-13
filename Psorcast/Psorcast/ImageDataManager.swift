@@ -51,9 +51,6 @@ open class ImageDataManager {
     public static let videoExportStatusChanged = Notification.Name(rawValue: "imageFrameAdded")
     public static let imageFrameAdded = Notification.Name(rawValue: "imageFrameAdded")
     
-    public static let contentTypeJpeg = "image/jpeg"
-    public static let contentTypePng = "image/png"
-    
     /// The shared access to the video report manager
     public static let shared = ImageDataManager()
     
@@ -94,10 +91,6 @@ open class ImageDataManager {
         "psorasisAreaPhoto",
         "summaryImage",
     ]
-
-    /// The compression quality that all raw png images will be compressed to,
-    /// when app uploads to Synapse as JPEG images.
-    public let jpegCompressionQuality = CGFloat(0.5)
     
     public func processTaskResult(_ taskResult: RSDTaskResult) -> String? {
         
@@ -172,7 +165,7 @@ open class ImageDataManager {
                 let fileResult = $0 as? RSDFileResult else {
                 return false
             }
-            return fileResult.contentType == ImageDataManager.contentTypeJpeg
+            return fileResult.contentType == PSRImageHelper.contentTypeJpeg
         })
         return (imageResult as? RSDFileResult)?.url
     }
@@ -378,15 +371,5 @@ open class ImageDataManager {
         }
         
         self.videoCreatorTasks.removeAll(where: { $0.settings.videoFilename == videoFileName })
-    }
-    
-    /// Converts PNG data to scaled JPEG data for smaller file size.
-    public func convertToJpegData(pngData: Data) -> Data? {
-        return (UIImage(data: pngData)?.jpegData(compressionQuality: jpegCompressionQuality))
-    }
-
-    /// Converts UIImage to jpeg data with global compression quality
-    public func convertToJpegData(image: UIImage) -> Data? {
-        return image.jpegData(compressionQuality: jpegCompressionQuality)
-    }
+    }    
 }

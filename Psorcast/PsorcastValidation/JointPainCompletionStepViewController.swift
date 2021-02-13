@@ -300,7 +300,7 @@ open class JointPainCompletionStepViewController: RSDStepViewController, JointPa
         let image = PSRImageHelper.convertToImage(self.jointImageView)
         var url: URL?
         do {
-            if let jpegData = ImageDataManager.shared.convertToJpegData(image: image),
+            if let jpegData = PSRImageHelper.convertToJpegData(image: image),
                 let outputDir = self.stepViewModel.parentTaskPath?.outputDirectory {
                 url = try RSDFileResultUtility.createFileURL(identifier: self.summaryImageResultIdentifier, ext: "jpg", outputDirectory: outputDir, shouldDeletePrevious: true)
                 self.save(jpegData, to: url!)
@@ -312,7 +312,7 @@ open class JointPainCompletionStepViewController: RSDStepViewController, JointPa
         // Create the result and set it as the result for this step
         var result = RSDFileResultObject(identifier: self.summaryImageResultIdentifier)
         result.url = url
-        result.contentType = ImageDataManager.contentTypeJpeg
+        result.contentType = PSRImageHelper.contentTypeJpeg
         _ = self.stepViewModel.parent?.taskResult.appendStepHistory(with: result)
     }
     

@@ -36,6 +36,23 @@ import UIKit
 
 public class PSRImageHelper {
     
+    public static let contentTypeJpeg = "image/jpeg"
+    public static let contentTypePng = "image/png"
+    
+    /// The compression quality that all raw png images will be compressed to,
+    /// when app uploads to Synapse as JPEG images.
+    public static let jpegCompressionQuality = CGFloat(0.5)
+        
+    /// Converts PNG data to scaled JPEG data for smaller file size.
+    public static func convertToJpegData(pngData: Data) -> Data? {
+        return (UIImage(data: pngData)?.jpegData(compressionQuality: PSRImageHelper.jpegCompressionQuality))
+    }
+
+    /// Converts UIImage to jpeg data with global compression quality
+    public static func convertToJpegData(image: UIImage) -> Data? {
+        return image.jpegData(compressionQuality: PSRImageHelper.jpegCompressionQuality)
+    }
+    
     /**
      * - Returns size of image without actually loading the file url
      */
