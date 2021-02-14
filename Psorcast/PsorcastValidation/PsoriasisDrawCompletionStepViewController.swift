@@ -157,13 +157,13 @@ open class PsoriasisDrawCompletionStepViewController: RSDStepViewController, Pro
         self.navigationHeader?.textLabel?.textAlignment = .center
         
         let processor = PsorcastTaskResultProcessor.shared
+        processor.processingFinishedDelegate = self
         
         // If we have finished processing then show coverage, otherwise wait until delegate fires
         if !processor.isProcessing {
             self.refreshPsoriasisDrawCoverage()
             self.loadingSpinner.isHidden = true
         } else {
-            processor.processingFinishedDelegate = self
             self.navigationHeader?.titleLabel?.text = Localization.localizedString("CALCULATING_COVERAGE")
             self.navigationHeader?.textLabel?.text = ""
         }
