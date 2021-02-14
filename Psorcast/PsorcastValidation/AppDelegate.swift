@@ -51,9 +51,6 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate {
                                               colorRules: PSRColorRules(palette: colorPalette, version: 1),
                                               fontRules: PSRFontRules(version: 1))
     
-    // The app's image data store
-    public let imageDefaults = ImageDefaults()
-    
     override func instantiateColorPalette() -> RSDColorPalette? {
         return AppDelegate.colorPalette
     }
