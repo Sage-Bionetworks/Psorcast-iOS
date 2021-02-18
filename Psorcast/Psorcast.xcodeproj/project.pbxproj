@@ -134,6 +134,7 @@
 		CBB93CB3233FFD6900321A4D /* PSRImageHelperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBB93CB2233FFD6900321A4D /* PSRImageHelperTests.swift */; };
 		CBB93CB5234252BC00321A4D /* PsoriasisDrawCompletionStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBB93CB4234252BC00321A4D /* PsoriasisDrawCompletionStepViewController.swift */; };
 		CBB93CB7234252D000321A4D /* PsoriasisDrawCompletionStepViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CBB93CB6234252D000321A4D /* PsoriasisDrawCompletionStepViewController.xib */; };
+		CBB988B225DF1AC1001B1D37 /* PsoriasisDrawBodySummaryImageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBB988AD25DF1AC1001B1D37 /* PsoriasisDrawBodySummaryImageTests.swift */; };
 		CBBC8771239F028300AC9D8E /* PsoriasisDraw.mov in Resources */ = {isa = PBXBuildFile; fileRef = CBBC8770239F028300AC9D8E /* PsoriasisDraw.mov */; };
 		CBBDC38A247785550017A304 /* TreatmentRange.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBBDC389247785550017A304 /* TreatmentRange.swift */; };
 		CBBDC394247787AA0017A304 /* TreatmentUserDefaultsSingletonReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBBDC393247787AA0017A304 /* TreatmentUserDefaultsSingletonReport.swift */; };
@@ -462,6 +463,7 @@
 		CBB93CB2233FFD6900321A4D /* PSRImageHelperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PSRImageHelperTests.swift; sourceTree = "<group>"; };
 		CBB93CB4234252BC00321A4D /* PsoriasisDrawCompletionStepViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PsoriasisDrawCompletionStepViewController.swift; sourceTree = "<group>"; };
 		CBB93CB6234252D000321A4D /* PsoriasisDrawCompletionStepViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PsoriasisDrawCompletionStepViewController.xib; sourceTree = "<group>"; };
+		CBB988AD25DF1AC1001B1D37 /* PsoriasisDrawBodySummaryImageTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PsoriasisDrawBodySummaryImageTests.swift; sourceTree = "<group>"; };
 		CBBC8770239F028300AC9D8E /* PsoriasisDraw.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = PsoriasisDraw.mov; sourceTree = "<group>"; };
 		CBBDC389247785550017A304 /* TreatmentRange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreatmentRange.swift; sourceTree = "<group>"; };
 		CBBDC393247787AA0017A304 /* TreatmentUserDefaultsSingletonReport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreatmentUserDefaultsSingletonReport.swift; sourceTree = "<group>"; };
@@ -682,6 +684,7 @@
 		CB9F5E4122E0C27D003FBCEF /* PsorcastValidationTests */ = {
 			isa = PBXGroup;
 			children = (
+				CBB988AD25DF1AC1001B1D37 /* PsoriasisDrawBodySummaryImageTests.swift */,
 				CB1481B025BCAE7400865BAC /* PsoriasisDrawImageTests.swift */,
 				CB55C73B23198A1F00EA0C19 /* JointPainStepViewControllerTests.swift */,
 				CB77866F238B3F4D0009ECF9 /* DigitalJarOpenStepViewControllerTests.swift */,
@@ -1273,6 +1276,7 @@
 				CB55C73C23198A1F00EA0C19 /* JointPainStepViewControllerTests.swift in Sources */,
 				CB9F5E5C22E0C531003FBCEF /* CodableStepObjectTests.swift in Sources */,
 				CBB93CB3233FFD6900321A4D /* PSRImageHelperTests.swift in Sources */,
+				CBB988B225DF1AC1001B1D37 /* PsoriasisDrawBodySummaryImageTests.swift in Sources */,
 				CB9F5E4A22E0C2AA003FBCEF /* TaskListScheduleManagerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -1,5 +1,5 @@
 //
-// JointPainImageViewTests.swift
+// PsoriasisDrawImageTests.swift
 // PsorcastValidationTests
 
 // Copyright © 2019 Sage Bionetworks. All rights reserved.
@@ -172,7 +172,7 @@ class PsoriasisDrawImageTests: XCTestCase {
             selectedImages.append([UIImage]())
             
             for identifier in ids {
-                let imageIdentifier = "\(identifier) - \(size)"
+                let imageIdentifier = "\(identifier)\(Int(size.width))x\(Int(size.height)).png"
                 percentCov[i].append(Float.zero)
                 
                 let psoDrawIv = createTouchDrawableView(identifier: identifier, size: size)
@@ -291,15 +291,17 @@ class PsoriasisDrawImageTests: XCTestCase {
             XCTAssertNotNil(completionImage?.selectedOnly)
             XCTAssertNotNil(completionImage?.bodySummary)
             
+            let sizeString = "\(Int(sizeTests[i].width))x\(Int(sizeTests[i].height))"
+            
             // Although all these groups are different screen sizes/densities
             // All the completion screen images should look the same, since it's full coverage
             var export = XCTAttachment(image: completionImage!.bodySummary!)
-            export.name = "Full Detailed Completion \(sizeTests[i])"
+            export.name = "Full_Detailed_Completion\(sizeString).png"
             export.lifetime = .keepAlways
             self.add(export)
             
             export = XCTAttachment(image: completionImage!.selectedOnly!)
-            export.name = "Selected Only Completion \(sizeTests[i])"
+            export.name = "SelectedOnly\(sizeString).png"
             export.lifetime = .keepAlways
             self.add(export)
         }

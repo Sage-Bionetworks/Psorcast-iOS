@@ -62,7 +62,7 @@
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Psorcast Version 0.1 Released on 02/02/19" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="df5-in-c8F" userLabel="Version">
-                                    <rect key="frame" x="139" y="194" width="136" height="34"/>
+                                    <rect key="frame" x="138" y="194.5" width="138" height="33"/>
                                     <fontDescription key="fontDescription" name="Lato-Regular" family="Lato" pointSize="14"/>
                                     <nil key="textColor"/>
                                     <nil key="highlightedColor"/>
@@ -119,13 +119,13 @@
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="104"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="lkB-86-JjD">
-                                                    <rect key="frame" x="18" y="31" width="250" height="22"/>
+                                                    <rect key="frame" x="18" y="31.5" width="250" height="21"/>
                                                     <fontDescription key="fontDescription" name="Lato-Bold" family="Lato" pointSize="18"/>
                                                     <color key="textColor" red="0.1647058824" green="0.1647058824" blue="0.1647058824" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Subtitle" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ycb-v3-zSd" userLabel="Subtitle Label">
-                                                    <rect key="frame" x="18" y="57.5" width="250" height="17"/>
+                                                    <rect key="frame" x="18" y="58" width="250" height="16.5"/>
                                                     <fontDescription key="fontDescription" name="Lato-Light" family="Lato" pointSize="14"/>
                                                     <color key="textColor" red="0.1647058824" green="0.1647058824" blue="0.1647058824" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -232,10 +232,10 @@
             <size key="intrinsicContentSize" width="173" height="33.5"/>
         </designable>
         <designable name="au4-Pd-fQr">
-            <size key="intrinsicContentSize" width="49" height="36"/>
+            <size key="intrinsicContentSize" width="48" height="36"/>
         </designable>
         <designable name="qNg-di-5ca">
-            <size key="intrinsicContentSize" width="51" height="36"/>
+            <size key="intrinsicContentSize" width="52" height="36"/>
         </designable>
     </designables>
     <resources>
