@@ -78,7 +78,7 @@ public class PSRImageHelper {
     /**
      * Creates the body summary image from the selected images
      */
-    public static func createPsoriasisDrawSummaryImageV2(
+    public static func createPsoriasisDrawSummaryImage(
         aboveFront: UIImage?, belowFront: UIImage?,
         aboveBack: UIImage?, belowBack: UIImage?) -> (selectedOnly: UIImage?, bodySummary: UIImage?)? {
         

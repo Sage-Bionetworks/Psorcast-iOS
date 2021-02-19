@@ -307,7 +307,7 @@ open class PsoriasisDrawCompletionStepViewController: RSDStepViewController, Pro
 
         // Always create a body summary image, even if some images are nil
         if images.count >= 4 {
-            let summaryImages = PSRImageHelper.createPsoriasisDrawSummaryImageV2(aboveFront: images[0], belowFront: images[1], aboveBack: images[2], belowBack: images[3])
+            let summaryImages = PSRImageHelper.createPsoriasisDrawSummaryImage(aboveFront: images[0], belowFront: images[1], aboveBack: images[2], belowBack: images[3])
             self.selectedBodySummaryImage = summaryImages?.selectedOnly
             self.bodySummaryImage = summaryImages?.bodySummary
             self.bodySummaryImageView.image = self.bodySummaryImage
