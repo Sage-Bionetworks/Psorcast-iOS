@@ -78,26 +78,25 @@ public class PSRImageHelper {
     /**
      * Creates the body summary image from the selected images
      */
-    public static func createPsoriasisDrawSummaryImage(
+    public static func createPsoriasisDrawSummaryImageV2(
         aboveFront: UIImage?, belowFront: UIImage?,
         aboveBack: UIImage?, belowBack: UIImage?) -> (selectedOnly: UIImage?, bodySummary: UIImage?)? {
-        
-        // The background image of the full front and back bodies
-        // is already scaled to the correct aspect ratio for the
-        // device's density.
-        // So all we need to do is draw them at the correct offset
-        let width = CGFloat(326)
-        let height = CGFloat(412)
-        let size = CGSize(width: width, height: height)
         
         // These values are all grabbed from page on Psorcast Figma
         // called "Psoriasis Draw Dev Assets v2"
         // See Figma frame Completion Result for x, y, width, height values
-        let aboveFrontRect = CGRect(x: 24, y: 9, width: width, height: height)
-        let belowFrontRect = CGRect(x: 25, y: 270, width: width, height: height)
-        let aboveBackRect = CGRect(x: 403, y: 9, width: width, height: height)
-        let belowBackRect = CGRect(x: 402, y: 273, width: width, height: height)
+        let aboveFrontSize = CGSize(width: 326.79, height: 413)
+        let aboveFrontRect = CGRect(x: 36, y: 49, width: aboveFrontSize.width, height: aboveFrontSize.height)
+        let belowFrontSize = CGSize(width: 322.04, height: 407)
+        let belowFrontRect = CGRect(x: 39.52, y: 309, width: belowFrontSize.width, height: belowFrontSize.height)
+        let aboveBackSize = CGSize(width: 325.81, height: 411.76)
+        let aboveBackRect = CGRect(x: 400.19, y: 48.62, width: aboveBackSize.width, height: aboveBackSize.height)
+        let belowBackSize = CGSize(width: 322.04, height: 407)
+        let belowBackRect = CGRect(x: 400.72, y: 309, width: belowBackSize.width, height: belowBackSize.height)
         
+        // The background image of the full front and back bodies
+        // is already scaled to the correct aspect ratio for the
+        // device's density.
         guard let backgroundImage = UIImage(named: "PsoriasisDrawCompletion") else {
             print("Error finding background image")
             return nil
@@ -107,16 +106,16 @@ public class PSRImageHelper {
         let drawSelectedSections: () -> () = {
             // Resize and draw all the body coverage areas over the background image
             if let aboveFrontUnwrapped = aboveFront {
-                aboveFrontUnwrapped.resizeImage(targetSize: size).draw(in: aboveFrontRect)
+                aboveFrontUnwrapped.resizeImage(targetSize: aboveFrontSize).draw(in: aboveFrontRect)
             }
             if let belowFrontUnwrapped = belowFront {
-                belowFrontUnwrapped.resizeImage(targetSize: size).draw(in: belowFrontRect)
+                belowFrontUnwrapped.resizeImage(targetSize: belowFrontSize).draw(in: belowFrontRect)
             }
             if let aboveBackUnwrapped = aboveBack {
-                aboveBackUnwrapped.resizeImage(targetSize: size).draw(in: aboveBackRect)
+                aboveBackUnwrapped.resizeImage(targetSize: aboveBackSize).draw(in: aboveBackRect)
             }
             if let belowBackUnwrapped = belowBack {
-                belowBackUnwrapped.resizeImage(targetSize: size).draw(in: belowBackRect)
+                belowBackUnwrapped.resizeImage(targetSize: belowBackSize).draw(in: belowBackRect)
             }
         }
         
