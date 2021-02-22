@@ -24,10 +24,6 @@
                     "imageName": "phonebook",
                     "placementType":"topBackground"
                 },
-                "colorMapping":{
-                    "type": "singleColor",
-                    "colorStyle": "primary"
-                },
                 "viewTheme":{
                     "viewIdentifier":"PhoneRegistration",
                     "storyboardIdentifier":"Registration"
