@@ -33,6 +33,7 @@
 
 import UIKit
 import ResearchUI
+import BridgeSDK
 import AVKit
 import AVFoundation
 
@@ -75,8 +76,19 @@ class WelcomeVideoViewController: UIViewController {
         self.getStartedButton.recursiveSetDesignSystem(designSystem, with: primaryColor)
         self.loginButton.recursiveSetDesignSystem(designSystem, with: primaryColor)
         self.tryItFirstButton.recursiveSetDesignSystem(designSystem, with: primaryColor)
+        
+        #if DEBUG
+            // Allow long hold on video player for external ID sign in
+        self.videoView.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: #selector(debugVideoViewLongHold)))
+        #endif
                 
         self.videoView.backgroundColor = primaryColor.color
+    }
+    
+    @objc func debugVideoViewLongHold(sender: UILongPressGestureRecognizer) {
+        BridgeSDK.authManager.signOut(completion: nil)
+        HistoryDataManager.shared.flushStore()
+        (AppDelegate.shared as? AppDelegate)?.showExternalIDSignInViewController(animated: true)
     }
     
     fileprivate func setupData() {
@@ -88,12 +100,6 @@ class WelcomeVideoViewController: UIViewController {
                     self.showCoreDataCriticalErrorAlert(error)
                     return
                 } else {
-                    if HistoryDataManager.shared.hasSetTreatment {
-                        // Reload singleton data in background, not the full history
-                        HistoryDataManager.shared.forceReloadSingletonData()
-                        // With our database setup, we are ready to proceed into the app
-                        (AppDelegate.shared as? AppDelegate)?.showAppropriateViewController(animated: true)
-                    }
                     UIView.transition(with: self.launchView, duration: 0.5,
                         options: .transitionCrossDissolve,
                         animations: {
@@ -157,6 +163,8 @@ class WelcomeVideoViewController: UIViewController {
     }
     
     @IBAction func getStartedTapped() {
+        BridgeSDK.authManager.signOut(completion: nil)
+        HistoryDataManager.shared.flushStore()
         guard let appDelegate = AppDelegate.shared as? AppDelegate else { return }
         appDelegate.showSignInViewController(animated: true)
     }
@@ -169,6 +177,8 @@ class WelcomeVideoViewController: UIViewController {
     }
     
     @IBAction func loginTapped() {
+        BridgeSDK.authManager.signOut(completion: nil)
+        HistoryDataManager.shared.flushStore()
         guard let appDelegate = AppDelegate.shared as? AppDelegate else { return }
         appDelegate.showSignInViewController(animated: true)
     }

@@ -1,0 +1,71 @@
+{
+    "identifier":"PhoneSignIn",
+    "shouldHideActions":["skip"],
+    "progressMarkers":[],
+    "steps":[
+             {
+                "identifier":"enterPhoneNumber",
+                "type":"form",
+                "title":"Let's get started",
+                "text":"Please enter your phone number so we can see if you have an existing account.\n\nWe will not use your phone number for anything else until you have completed the Consent step of this study.",
+                "inputFields": [{
+                                "type":"string",
+                                "textFieldOptions":{
+                                    "keyboardType":"phonePad",
+                                    "textValidator":"^\\d{10}$",
+                                    "invalidMessage":"Please enter your full 10-digit phone number."
+                                },
+                                "uiHint":"textfield",
+                                "placeholder":"Phone number"
+                                }
+                ],
+                "image":{
+                    "type": "fetchable",
+                    "imageName": "phonebook",
+                    "placementType":"topBackground"
+                },
+                "colorMapping":{
+                    "type": "singleColor",
+                    "colorStyle": "primary"
+                },
+                "viewTheme":{
+                    "viewIdentifier":"PhoneRegistration",
+                    "storyboardIdentifier":"Registration"
+                },
+                "actions":{
+                    "learnMore":{
+                        "type": "webView",
+                        "buttonTitle": "Learn more",
+                        "url" : "PhoneLearnMore.html"
+                    }
+                },
+                "nextStepIdentifier": "waiting"
+             },
+             {
+                 "identifier":"waiting",
+                 "type":"instruction",
+                 "title":"Your registration link is on its way!",
+                 "image":{
+                     "type": "fetchable",
+                     "imageName":"expectSMS",
+                     "placementType":"topBackground"
+                 },
+                 "viewTheme":{
+                     "viewIdentifier":"RegistrationVerification",
+                     "storyboardIdentifier":"Registration"
+                 },
+                 "nextStepIdentifier": "nextSection"
+             },
+             {
+                 "identifier":"completion",
+                 "type":"completion",
+                 "title":"Great job!",
+                 "text":"You just completed registration.",
+                 "image":{
+                     "type": "fetchable",
+                     "imageName":"Completion",
+                     "placementType":"topBackground"
+                 }
+             }
+        ]
+}

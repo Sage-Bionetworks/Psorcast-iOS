@@ -136,13 +136,21 @@ open class HistoryDataManager {
     }
     
     /// This should only be called by the sign-in controller or when the app loads
-    public func forceReloadSingletonData() {
-        self.singletonData.forEach({ $0.value.loadFromBridge() })
+    public func forceReloadSingletonData(treatmentCompletion: @escaping ((Bool) -> Void)) {
+        self.singletonData.forEach { (key: RSDIdentifier, value: UserDefaultsSingletonReport) in
+            
+            // Assign a completion status from treatments
+            if let treatmentSingleton = value as? TreatmentUserDefaultsSingletonReport {
+                treatmentSingleton.loadFromBridge(treatmentCompletion: treatmentCompletion)
+            } else {
+                value.loadFromBridge()
+            }
+        }
     }
     
     /// This should only be called when the user signs in
-    public func forceReloadHistory() {
-        self.loadHistoryFromBridge()
+    public func forceReloadHistory(historyCompleted: @escaping ((Bool) -> Void)) {
+        self.loadHistoryFromBridge(historyCompleted: historyCompleted)
     }
     
     open func reportCategory(for reportIdentifier: String) -> SBAReportCategory {
@@ -196,7 +204,7 @@ open class HistoryDataManager {
         return []
     }
     
-    fileprivate func loadHistoryFromBridge() {
+    fileprivate func loadHistoryFromBridge(historyCompleted: @escaping ((Bool) -> Void)) {
         let reportId = RSDIdentifier.historyReportIdentifier
         
         let startDate = SBAReportSingletonDate.addingNumberOfDays(-2)
@@ -206,10 +214,12 @@ open class HistoryDataManager {
             
             if error != nil {
                 print("Error reading history reports \(String(describing: error?.localizedDescription))")
+                historyCompleted(false)
                 return
             }
             
             guard let sbbReports = (obj as? [SBBReportData]) else {
+                historyCompleted(false)
                 return
             }
             
@@ -223,6 +233,7 @@ open class HistoryDataManager {
             DispatchQueue.main.async {
                 self?.deleteAllHistoryEntities()
                 self?.addHistoryItemToCoredData(reports: reports)
+                historyCompleted(true)
             }
         }
     }

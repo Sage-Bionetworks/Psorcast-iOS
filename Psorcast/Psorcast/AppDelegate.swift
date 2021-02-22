@@ -54,6 +54,7 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate {
     /// The task identifier of the try it first intro screens
     let tryItFirstTaskId = "TryItFirstIntro"
     let signInTaskId = "signIn"
+    weak var smsSignInDelegate: SignInDelegate? = nil
     
     open var profileDataSource: StudyProfileDataSource? {
         return SBAProfileDataSourceObject.shared as? StudyProfileDataSource
@@ -73,15 +74,12 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate {
     }
     
     func showAppropriateViewController(animated: Bool) {
-        let participantID = UserDefaults.standard.string(forKey: "participantID")
         let isAuthenticated = BridgeSDK.authManager.isAuthenticated()
         let hasSetTreatments = HistoryDataManager.shared.hasSetTreatment
         
-        if isAuthenticated && participantID != nil && hasSetTreatments {
+        if isAuthenticated && hasSetTreatments {
             self.showMainViewController(animated: animated)
-        } else if isAuthenticated && participantID == nil {
-            self.showSignInViewController(animated: animated)
-        } else if isAuthenticated && participantID != nil {
+        } else if isAuthenticated {
             self.showTreatmentSelectionScreens(animated: true)
         } else {
             self.showWelcomeViewController(animated: animated)
@@ -97,6 +95,8 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate {
         // Set up font rules.
         RSDStudyConfiguration.shared.fontRules = PSRFontRules(version: 0)
         
+        _ = HistoryDataManager.shared
+        
         // Setup reminder manager
         ReminderManager.shared.setupNotifications()
         UNUserNotificationCenter.current().delegate = ReminderManager.shared
@@ -110,6 +110,8 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate {
         if let _ = BridgeSDK.appConfig() {
             SBABridgeConfiguration.shared.refreshAppConfig()
         }
+        
+        self.showAppropriateViewController(animated: true)
         
         return true
     }
@@ -191,7 +193,7 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate {
         self.transition(to: vc, state: .main, animated: true)
     }
     
-    func showSignInViewController(animated: Bool) {
+    func showExternalIDSignInViewController(animated: Bool) {
         guard self.rootViewController?.state != .main else { return }
         
         let externalIDStep = StudyExternalIdRegistrationStepObject(identifier: "enterExternalID", type: "externalID")
@@ -206,11 +208,111 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate {
         vc.delegate = self
         self.transition(to: vc, state: .onboarding, animated: true)
     }
+
+    func showSignInViewController(animated: Bool) {
+        guard self.rootViewController?.state != .onboarding else { return }
+        let vc = SignInTaskViewController()
+        vc.delegate = self
+        self.transition(to: vc, state: .onboarding, animated: true)
+    }
     
     func openStoryboard(_ name: String) -> UIStoryboard? {
         return UIStoryboard(name: name, bundle: nil)
     }
     
+    /// https://psorcast.org/sage-psorcast/phoneSignIn
+    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+        let components = url.pathComponents
+        guard components.count >= 2,
+            components[1] == BridgeSDK.bridgeInfo.studyIdentifier
+            else {
+                debugPrint("Asked to open an unsupported URL, punting to Safari: \(String(describing:url))")
+                UIApplication.shared.open(url)
+                return true
+        }
+        
+        if components.count == 4,
+            components[2] == "phoneSignIn" {
+            let token = components[3]
+            
+            // pass the token to the SMS sign-in delegate, if any
+            if smsSignInDelegate != nil {
+                smsSignInDelegate?.signIn(token: token)
+                return true
+            } else {
+                // there's no SMS sign-in delegate so try to get the phone info from the participant record.
+                BridgeSDK.participantManager.getParticipantRecord { (record, error) in
+                    guard let participant = record as? SBBStudyParticipant, error == nil else { return }
+                    guard let phoneNumber = participant.phone?.number,
+                        let regionCode = participant.phone?.regionCode,
+                        !phoneNumber.isEmpty,
+                        !regionCode.isEmpty else {
+                            return
+                    }
+                    
+                    BridgeSDK.authManager.signIn(withPhoneNumber:phoneNumber, regionCode:regionCode, token:token, completion: { (task, result, error) in
+                        DispatchQueue.main.async {
+                            if (error == nil) || ((error as NSError?)?.code == SBBErrorCode.serverPreconditionNotMet.rawValue) {
+                                // TODO mdephillips 2/21/21 hook up to consent flow here
+                                //self.showConsentViewController(animated: true)
+                                self.loadUserHistoryAndProceedToMain()
+                            } else {
+                                #if DEBUG
+                                print("Error attempting to sign in with SMS link while not in registration flow:\n\(String(describing: error))\n\nResult:\n\(String(describing: result))")
+                                #endif
+                                let title = Localization.localizedString("SIGN_IN_ERROR_TITLE")
+                                var message = Localization.localizedString("SIGN_IN_ERROR_BODY_GENERIC_ERROR")
+                                if (error! as NSError).code == SBBErrorCode.serverNotAuthenticated.rawValue {
+                                    message = Localization.localizedString("SIGN_IN_ERROR_BODY_USED_TOKEN")
+                                }
+                                self.presentAlertWithOk(title: title, message: message, actionHandler: { (_) in
+                                    self.showSignInViewController(animated: true)
+                                })
+                            }
+                        }
+                    })
+                }
+            }
+        } else {
+            // if we don't specifically handle the URL, but the path starts with the study identifier, just bring them into the app
+            // wherever it would normally open to from closed.
+            self.showAppropriateViewController(animated: true)
+        }
+        
+        return true
+    }
+    
+    func loadUserHistoryAndProceedToMain() {
+        // At this point the user is signed in, and we should update their treatments
+        // so we know if we should transition them to treatment selection
+        HistoryDataManager.shared.forceReloadSingletonData { (success) in
+            if success {
+                HistoryDataManager.shared.forceReloadHistory { (success) in
+                    if (success) {
+                        // At this point we have history if user has it
+                        self.showAppropriateViewController(animated: true)
+                    } else {
+                        self.loadHistoryFailed()
+                    }
+                }
+            } else {
+                self.loadHistoryFailed()
+            }
+        }
+    }
+    
+    func loadHistoryFailed() {
+        let alert = UIAlertController(title: "Connectivity issue", message: "We had trouble loading information from our server.", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Try again", style: .default, handler: { (action) in
+            self.loadUserHistoryAndProceedToMain()
+        }))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (action) in
+            BridgeSDK.authManager.signOut(completion: nil)
+            HistoryDataManager.shared.flushStore()
+            self.showWelcomeViewController(animated: true)
+        }))
+        self.rootViewController?.present(alert, animated: true)
+    }
     
     // MARK: RSDTaskViewControllerDelegate
     
@@ -243,7 +345,13 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate {
         }
         
         guard BridgeSDK.authManager.isAuthenticated() else { return }
-        showAppropriateViewController(animated: true)
+        
+        if taskController.task.identifier == SignInTaskViewController.taskIdentifier {
+            self.loadUserHistoryAndProceedToMain()
+            return
+        }
+        
+        self.showAppropriateViewController(animated: true)
     }
     
     func taskController(_ taskController: RSDTaskController, readyToSave taskViewModel: RSDTaskViewModel) {

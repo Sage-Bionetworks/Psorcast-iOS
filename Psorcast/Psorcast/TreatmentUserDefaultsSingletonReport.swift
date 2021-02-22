@@ -157,7 +157,8 @@ open class TreatmentUserDefaultsSingletonReport: UserDefaultsSingletonReport {
         return merged
     }
     
-    override open func loadFromBridge() {
+    open func loadFromBridge(treatmentCompletion: @escaping ((Bool) -> Void)) {
+        
         guard !self.isSyncingWithBridge else { return }
         self.isSyncingWithBridge = true
         HistoryDataManager.shared.getSingletonReport(reportId: self.identifier) { (report, error) in
@@ -172,6 +173,7 @@ open class TreatmentUserDefaultsSingletonReport: UserDefaultsSingletonReport {
                     // User just signed in, set their treatments to bridge version
                     guard var cached = self.current else {
                         self.setCurrent(treatmentTask: bridgeItem)
+                        treatmentCompletion(true)
                         return
                     }
                     
@@ -194,10 +196,19 @@ open class TreatmentUserDefaultsSingletonReport: UserDefaultsSingletonReport {
                     if !self.isSyncedWithBridge {
                         self.syncToBridge()
                     }
+                    
+                    treatmentCompletion(true)
                 } catch {
+                    treatmentCompletion(false)
                     print("Error parsing clientData for treatment report \(error)")
                 }
             }
+        }
+    }
+    
+    override open func loadFromBridge() {
+        loadFromBridge { (success) in
+            // no-op needed
         }
     }
             

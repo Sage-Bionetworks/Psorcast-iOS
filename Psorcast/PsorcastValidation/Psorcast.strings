@@ -32,6 +32,11 @@
  // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  //
 
+// Sign-in error alerts
+"SIGN_IN_ERROR_TITLE" = "Oops";     // Title for alert that pops up when there's an error signing in
+"SIGN_IN_ERROR_BODY_GENERIC_ERROR" = "There was some kind of problem contacting the server to sign you in. Please try again later."; // Body for sign-in error alert in general case
+"SIGN_IN_ERROR_BODY_USED_TOKEN" = "Sign-in links can only be used once. Please wait at least one minute since the last link was sent, then enter your phone number again to get a new sign-in link to use.";  // Body for sign-in error alert when user taps an already-used sign-in link
+
 // Task Table View Controller
 "RELEASE_VERSION_%@" = "Psorcast Version %@";
 "RELEASE_DATE_%@" = "Released on %@";
