@@ -118,4 +118,18 @@ class PhoneRegistrationViewController: RSDTableStepViewController {
             debugPrint("Error attempting to sign up and request SMS link:\n\(String(describing: error))\n\nResult:\n\(String(describing: result))")
         }
     }
+    
+    override open func actionTapped(with actionType: RSDUIActionType) -> Bool {
+        guard let action = self.stepViewModel.action(for: actionType) else { return false }
+        // This is a work-around to a bug in ResearchUI on iOS 13
+        // where default actionTapped behavior is not allowing user to cancel
+        if let webAction = action as? RSDWebViewUIAction {
+            let (_, navVC) = RSDWebViewController.instantiateController(using: self.designSystem, action: webAction)
+            // This modal style allows user to slide to cancel modal
+            navVC.modalPresentationStyle = .formSheet
+            self.present(navVC, animated: true, completion: nil)
+            return true
+        }
+        return super.actionTapped(with: actionType)
+    }
 }

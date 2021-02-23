@@ -7,7 +7,7 @@
                 "identifier":"enterPhoneNumber",
                 "type":"form",
                 "title":"Let's get started",
-                "text":"Please enter your phone number so we can see if you have an existing account.\n\nWe will not use your phone number for anything else until you have completed the Consent step of this study.",
+                "text":"Please enter your phone number to create and verify your account with a text message.\n\nWe will NEVER sell, rent, or lease your contact information.",
                 "inputFields": [{
                                 "type":"string",
                                 "textFieldOptions":{
@@ -40,7 +40,7 @@
              {
                  "identifier":"waiting",
                  "type":"instruction",
-                 "title":"Your registration link is on its way!",
+                 "title":"Your sign-up link is on its way!",
                  "image":{
                      "type": "fetchable",
                      "imageName":"expectSMS",
