@@ -416,8 +416,7 @@ open class ReviewTabViewController: UIViewController, UITableViewDataSource, UIT
         reviewHeader.videoLoadingProgress?.progress = CGFloat(videoProgress)
         reviewHeader.exportVideoButton?.isHidden = !videoIsLoaded || playButtonIsHidden
         
-        let title = MasterScheduleManager.shared.scheduledActivities.first(where: { $0.activityIdentifier == taskId })?.activity.label
-        reviewHeader.headerTitleLabel?.text = title?.uppercased()
+        reviewHeader.headerImageView?.image = MasterScheduleManager.shared.image(for: taskId)
         
         reviewHeader.refreshPlayButtonWidth()
     }
@@ -879,7 +878,7 @@ public class ReviewSectionHeader: UITableViewHeaderFooterView, RSDViewDesignable
     public var playButtonWidth: NSLayoutConstraint?
     
     public weak var videoLoadingProgress: RSDCountdownDial?
-    public weak var headerTitleLabel: UILabel?
+    public weak var headerImageView: UIImageView?
     
     let verticalPadding = CGFloat(8)
     let horizontalPadding = CGFloat(32)
@@ -972,20 +971,21 @@ public class ReviewSectionHeader: UITableViewHeaderFooterView, RSDViewDesignable
                 
         self.videoLoadingProgress = loadingProgress
         
-        // Title label
+        // Task indicator image
+        let imageView = UIImageView()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        self.addSubview(imageView)
         
-        let titleLabel = UILabel()
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        self.addSubview(titleLabel)
-                
-        titleLabel.numberOfLines = 1
-        titleLabel.minimumScaleFactor = 0.5
-        titleLabel.adjustsFontSizeToFitWidth = true
-        titleLabel.rsd_alignToSuperview([.leading], padding: self.horizontalPadding)
-        titleLabel.rsd_alignToSuperview([.top, .bottom], padding: self.verticalPadding)
-        titleLabel.rsd_alignLeftOf(view: loadingProgress, padding: self.horizontalPadding)
+        imageView.contentMode = .scaleAspectFit
+        imageView.rsd_alignToSuperview([.leading], padding: self.horizontalPadding)
+        imageView.rsd_alignToSuperview([.top, .bottom], padding: self.verticalPadding)
         
-        self.headerTitleLabel = titleLabel
+        // Aspect ratio 1:1
+        imageView.addConstraint(NSLayoutConstraint(item: imageView,attribute:  NSLayoutConstraint.Attribute.width,
+                                                   relatedBy: NSLayoutConstraint.Relation.equal, toItem: imageView,
+                                                  attribute: NSLayoutConstraint.Attribute.height, multiplier: 1, constant: 0))
+        
+        self.headerImageView = imageView
     }
     
     public func setDesignSystem(_ designSystem: RSDDesignSystem, with background: RSDColorTile) {
@@ -993,9 +993,6 @@ public class ReviewSectionHeader: UITableViewHeaderFooterView, RSDViewDesignable
         self.backgroundColorTile = background
         
         self.videoLoadingProgress?.recursiveSetDesignSystem(designSystem, with: background)
-        
-        self.headerTitleLabel?.textColor = designSystem.colorRules.textColor(on: designSystem.colorRules.backgroundPrimary, for: .microHeader)
-        self.headerTitleLabel?.font = designSystem.fontRules.font(for: .microHeader)
         
         self.playVideoButton?.backgroundColor = RSDColor.white
         self.playVideoButton?.setTitleColor(designSystem.colorRules.textColor(on: background, for: .smallHeader), for: .normal)
