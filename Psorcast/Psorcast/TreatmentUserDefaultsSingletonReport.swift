@@ -165,43 +165,58 @@ open class TreatmentUserDefaultsSingletonReport: UserDefaultsSingletonReport {
             DispatchQueue.main.async {
                 self.isSyncingWithBridge = false
             }
-            if error == nil,
-                let bridgeJsonData = (report?.clientData as? String)?.data(using: .utf8) {
-                do {
-                    let bridgeItem = try HistoryDataManager.shared.jsonDecoder.decode(TreatmentTaskBridgeItem.self, from: bridgeJsonData)
-                    
-                    // User just signed in, set their treatments to bridge version
-                    guard var cached = self.current else {
-                        self.setCurrent(treatmentTask: bridgeItem)
-                        treatmentCompletion(true)
-                        return
-                    }
-                    
-                    // Favor the newer psoriasis status
-                    if bridgeItem.psoriasisStatus.startDate.timeIntervalSince1970 > cached.psoriasisStatus.startDate.timeIntervalSince1970  {
-                        cached.psoriasisStatus = bridgeItem.psoriasisStatus
-                    }
-                    
-                    // Favor the newer psoriasis symptoms
-                    if bridgeItem.psoriasisSymptoms.startDate.timeIntervalSince1970 > cached.psoriasisSymptoms.startDate.timeIntervalSince1970  {
-                        cached.psoriasisSymptoms = bridgeItem.psoriasisSymptoms
-                    }
-                    
-                    // Always merge the treatments
-                    cached.treatments = self.mergeTreatments(currentTreatments: cached.treatments, newTreatments: bridgeItem.treatments)
-                    
-                    self.setCurrent(treatmentTask: cached)
-                    
-                    // Let's sync our cached version with bridge if our local was out of sync
-                    if !self.isSyncedWithBridge {
-                        self.syncToBridge()
-                    }
-                    
+                                    
+            guard error == nil else {
+                treatmentCompletion(false)
+                return
+            }
+            
+            guard report != nil else {
+                debugPrint("Treatment data nil, assume first time user")
+                treatmentCompletion(true)
+                return
+            }
+            
+            guard let bridgeJsonData = (report?.clientData as? String)?.data(using: .utf8) else {
+                debugPrint("Treatment data invalid formatting")
+                treatmentCompletion(false)
+                return
+            }
+            
+            do {
+                let bridgeItem = try HistoryDataManager.shared.jsonDecoder.decode(TreatmentTaskBridgeItem.self, from: bridgeJsonData)
+                
+                // User just signed in, set their treatments to bridge version
+                guard var cached = self.current else {
+                    self.setCurrent(treatmentTask: bridgeItem)
                     treatmentCompletion(true)
-                } catch {
-                    treatmentCompletion(false)
-                    print("Error parsing clientData for treatment report \(error)")
+                    return
                 }
+                
+                // Favor the newer psoriasis status
+                if bridgeItem.psoriasisStatus.startDate.timeIntervalSince1970 > cached.psoriasisStatus.startDate.timeIntervalSince1970  {
+                    cached.psoriasisStatus = bridgeItem.psoriasisStatus
+                }
+                
+                // Favor the newer psoriasis symptoms
+                if bridgeItem.psoriasisSymptoms.startDate.timeIntervalSince1970 > cached.psoriasisSymptoms.startDate.timeIntervalSince1970  {
+                    cached.psoriasisSymptoms = bridgeItem.psoriasisSymptoms
+                }
+                
+                // Always merge the treatments
+                cached.treatments = self.mergeTreatments(currentTreatments: cached.treatments, newTreatments: bridgeItem.treatments)
+                
+                self.setCurrent(treatmentTask: cached)
+                
+                // Let's sync our cached version with bridge if our local was out of sync
+                if !self.isSyncedWithBridge {
+                    self.syncToBridge()
+                }
+                
+                treatmentCompletion(true)
+            } catch {
+                treatmentCompletion(false)
+                print("Error parsing clientData for treatment report \(error)")
             }
         }
     }
