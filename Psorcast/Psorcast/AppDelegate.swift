@@ -216,6 +216,14 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate {
         self.transition(to: vc, state: .onboarding, animated: true)
     }
     
+    func showSignUpViewController(animated: Bool) {
+        guard self.rootViewController?.state != .onboarding else { return }
+        let vc = SignInTaskViewController()
+        vc.shouldSignUpFirst = true // use must sign up as well
+        vc.delegate = self
+        self.transition(to: vc, state: .onboarding, animated: true)
+    }
+    
     func openStoryboard(_ name: String) -> UIStoryboard? {
         return UIStoryboard(name: name, bundle: nil)
     }
@@ -356,7 +364,8 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate {
     
     func taskController(_ taskController: RSDTaskController, readyToSave taskViewModel: RSDTaskViewModel) {
         
-        if taskController.task.identifier == self.signInTaskId {
+        if taskController.task.identifier == self.signInTaskId ||
+            taskController.task.identifier == SignInTaskViewController.taskIdentifier {
             return  // Do not complete sign in as a regular task
         }
         

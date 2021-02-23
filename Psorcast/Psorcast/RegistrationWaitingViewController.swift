@@ -166,7 +166,8 @@ class RegistrationWaitingViewController: RSDStepViewController, UITextFieldDeleg
             taskController.taskViewModel.taskResult.appendStepHistory(with: phoneResult!)
             
             taskController.showLoadingView()
-            taskController.signUpAndRequestSMSLink { (task, result, error) in
+            
+            func afterTextSignIn(task: URLSessionTask?, result: Any?, error: Error?) {
                 taskController.hideLoadingIfNeeded()
                 
                 guard let err = error as NSError?
@@ -185,6 +186,16 @@ class RegistrationWaitingViewController: RSDStepViewController, UITextFieldDeleg
                     })
                 }
                 debugPrint("Error attempting to sign up and request SMS link:\n\(String(describing: error))\n\nResult:\n\(String(describing: result))")
+            }
+            
+            if (taskController.shouldSignUpFirst) {
+                taskController.signUpAndRequestSMSLink { (task, result, error) in
+                    afterTextSignIn(task: task, result: result, error: error)
+                }
+            } else {
+                taskController.signInAndRequstSMSLink { (task, result, error) in
+                    afterTextSignIn(task: task, result: result, error: error)
+                }
             }
         })
 
@@ -224,12 +235,13 @@ class RegistrationWaitingViewController: RSDStepViewController, UITextFieldDeleg
         
         self.resendLinkButton.isHidden = true
         taskController.showLoadingView()
-        taskController.signUpAndRequestSMSLink { (task, result, error) in
-            taskController.hideLoadingIfNeeded()
-            
-            // Restart the resend link timer in case it still doesn't arrive soon-ish.
-            self.showResendLinkAfterDelay()
-            
+        
+        taskController.hideLoadingIfNeeded()
+        
+        // Restart the resend link timer in case it still doesn't arrive soon-ish.
+        self.showResendLinkAfterDelay()
+        
+        func afterTextSignIn(task: URLSessionTask?, result: Any?, error: Error?) {        
             guard let err = error as NSError?
                 else {
                     return
@@ -246,6 +258,16 @@ class RegistrationWaitingViewController: RSDStepViewController, UITextFieldDeleg
                 })
             }
             debugPrint("Error attempting to re-sign up and re-request SMS link:\n\(String(describing: error))\n\nResult:\n\(String(describing: result))")
+        }
+            
+        if (taskController.shouldSignUpFirst) {
+            taskController.signUpAndRequestSMSLink { (task, result, error) in
+                afterTextSignIn(task: task, result: result, error: error)
+            }
+        } else {
+            taskController.signInAndRequstSMSLink { (task, result, error) in
+                afterTextSignIn(task: task, result: result, error: error)
+            }
         }
     }
     

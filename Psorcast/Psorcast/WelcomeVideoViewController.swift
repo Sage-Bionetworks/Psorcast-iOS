@@ -166,7 +166,7 @@ class WelcomeVideoViewController: UIViewController {
         BridgeSDK.authManager.signOut(completion: nil)
         HistoryDataManager.shared.flushStore()
         guard let appDelegate = AppDelegate.shared as? AppDelegate else { return }
-        appDelegate.showSignInViewController(animated: true)
+        appDelegate.showSignUpViewController(animated: true)
     }
     
     @IBAction func tryItFirstTapped() {

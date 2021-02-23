@@ -94,9 +94,8 @@ class PhoneRegistrationViewController: RSDTableStepViewController {
             }
             return
         }
-
-        taskController.showLoadingView()
-        taskController.signUpAndRequestSMSLink { (task, result, error) in
+        
+        func afterTextSignIn(task: URLSessionTask?, result: Any?, error: Error?) {
             taskController.hideLoadingIfNeeded()
             
             guard let err = error as NSError?
@@ -116,6 +115,18 @@ class PhoneRegistrationViewController: RSDTableStepViewController {
                 })
             }
             debugPrint("Error attempting to sign up and request SMS link:\n\(String(describing: error))\n\nResult:\n\(String(describing: result))")
+        }
+
+        taskController.showLoadingView()
+        
+        if (taskController.shouldSignUpFirst) {
+            taskController.signUpAndRequestSMSLink { (task, result, error) in
+                afterTextSignIn(task: task, result: result, error: error)
+            }
+        } else {
+            taskController.signInAndRequstSMSLink { (task, result, error) in
+                afterTextSignIn(task: task, result: result, error: error)
+            }
         }
     }
     
