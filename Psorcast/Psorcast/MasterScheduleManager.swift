@@ -265,6 +265,15 @@ open class MasterScheduleManager : SBAScheduleManager {
         guard let taskId = self.taskId(for: itemIndex) else {
             return nil
         }
+        return self.image(for: taskId)
+    }
+    
+    ///
+    /// - parameter taskId: task id of the image
+    ///
+    /// - returns: the image associated with the scheduled activity
+    ///
+    open func image(for taskId: String) -> UIImage? {
         return UIImage(named: "\(taskId)MeasureIcon")
     }
     
