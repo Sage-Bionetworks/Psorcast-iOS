@@ -134,6 +134,7 @@
 		CBB93CB3233FFD6900321A4D /* PSRImageHelperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBB93CB2233FFD6900321A4D /* PSRImageHelperTests.swift */; };
 		CBB93CB5234252BC00321A4D /* PsoriasisDrawCompletionStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBB93CB4234252BC00321A4D /* PsoriasisDrawCompletionStepViewController.swift */; };
 		CBB93CB7234252D000321A4D /* PsoriasisDrawCompletionStepViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CBB93CB6234252D000321A4D /* PsoriasisDrawCompletionStepViewController.xib */; };
+		CBB988B225DF1AC1001B1D37 /* PsoriasisDrawBodySummaryImageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBB988AD25DF1AC1001B1D37 /* PsoriasisDrawBodySummaryImageTests.swift */; };
 		CBBC8771239F028300AC9D8E /* PsoriasisDraw.mov in Resources */ = {isa = PBXBuildFile; fileRef = CBBC8770239F028300AC9D8E /* PsoriasisDraw.mov */; };
 		CBBDC38A247785550017A304 /* TreatmentRange.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBBDC389247785550017A304 /* TreatmentRange.swift */; };
 		CBBDC394247787AA0017A304 /* TreatmentUserDefaultsSingletonReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBBDC393247787AA0017A304 /* TreatmentUserDefaultsSingletonReport.swift */; };
@@ -245,6 +246,13 @@
 		CBE908A82333BB2A00F88A9A /* PsoriasisAreaPhotoStepObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE908A62333BB2A00F88A9A /* PsoriasisAreaPhotoStepObject.swift */; };
 		CBE908A92333BB2A00F88A9A /* PsoriasisAreaPhotoResultObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE908A72333BB2A00F88A9A /* PsoriasisAreaPhotoResultObject.swift */; };
 		CBE908AB2333BD3C00F88A9A /* PsoriasisAreaPhotoImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE908AA2333BD3C00F88A9A /* PsoriasisAreaPhotoImageView.swift */; };
+		CBFF926C25E0749700EC34DB /* Registration.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CBFF926725E0749700EC34DB /* Registration.storyboard */; };
+		CBFF926E25E08C3D00EC34DB /* SignInTaskViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFF926D25E08C3D00EC34DB /* SignInTaskViewController.swift */; };
+		CBFF927225E08CA400EC34DB /* PhoneSignIn.json in Resources */ = {isa = PBXBuildFile; fileRef = CBFF927025E08CA400EC34DB /* PhoneSignIn.json */; };
+		CBFF927925E1783B00EC34DB /* PhoneRegistrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFF927625E1783B00EC34DB /* PhoneRegistrationViewController.swift */; };
+		CBFF927A25E1783B00EC34DB /* RegistrationWaitingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFF927725E1783B00EC34DB /* RegistrationWaitingViewController.swift */; };
+		CBFF927E25E19B6200EC34DB /* PhoneLearnMore.html in Resources */ = {isa = PBXBuildFile; fileRef = CBFF927D25E19B6200EC34DB /* PhoneLearnMore.html */; };
+		CBFF928025E19B7300EC34DB /* CSS_files in Resources */ = {isa = PBXBuildFile; fileRef = CBFF927F25E19B7300EC34DB /* CSS_files */; };
 		FF50109F22DD21420035E83C /* BridgeInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = FF50109E22DD21420035E83C /* BridgeInfo.plist */; };
 		FF5010A122DD214A0035E83C /* BridgeInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = FF5010A022DD214A0035E83C /* BridgeInfo.plist */; };
 		FF5010A822DD22A50035E83C /* psorcast-validation.pem in Resources */ = {isa = PBXBuildFile; fileRef = FF5010A622DD22A50035E83C /* psorcast-validation.pem */; };
@@ -462,6 +470,7 @@
 		CBB93CB2233FFD6900321A4D /* PSRImageHelperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PSRImageHelperTests.swift; sourceTree = "<group>"; };
 		CBB93CB4234252BC00321A4D /* PsoriasisDrawCompletionStepViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PsoriasisDrawCompletionStepViewController.swift; sourceTree = "<group>"; };
 		CBB93CB6234252D000321A4D /* PsoriasisDrawCompletionStepViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PsoriasisDrawCompletionStepViewController.xib; sourceTree = "<group>"; };
+		CBB988AD25DF1AC1001B1D37 /* PsoriasisDrawBodySummaryImageTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PsoriasisDrawBodySummaryImageTests.swift; sourceTree = "<group>"; };
 		CBBC8770239F028300AC9D8E /* PsoriasisDraw.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = PsoriasisDraw.mov; sourceTree = "<group>"; };
 		CBBDC389247785550017A304 /* TreatmentRange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreatmentRange.swift; sourceTree = "<group>"; };
 		CBBDC393247787AA0017A304 /* TreatmentUserDefaultsSingletonReport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreatmentUserDefaultsSingletonReport.swift; sourceTree = "<group>"; };
@@ -508,6 +517,13 @@
 		CBE908A62333BB2A00F88A9A /* PsoriasisAreaPhotoStepObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PsoriasisAreaPhotoStepObject.swift; sourceTree = "<group>"; };
 		CBE908A72333BB2A00F88A9A /* PsoriasisAreaPhotoResultObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PsoriasisAreaPhotoResultObject.swift; sourceTree = "<group>"; };
 		CBE908AA2333BD3C00F88A9A /* PsoriasisAreaPhotoImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PsoriasisAreaPhotoImageView.swift; sourceTree = "<group>"; };
+		CBFF926725E0749700EC34DB /* Registration.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Registration.storyboard; sourceTree = "<group>"; };
+		CBFF926D25E08C3D00EC34DB /* SignInTaskViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignInTaskViewController.swift; sourceTree = "<group>"; };
+		CBFF927125E08CA400EC34DB /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = Base; path = Base.lproj/PhoneSignIn.json; sourceTree = "<group>"; };
+		CBFF927625E1783B00EC34DB /* PhoneRegistrationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhoneRegistrationViewController.swift; sourceTree = "<group>"; };
+		CBFF927725E1783B00EC34DB /* RegistrationWaitingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegistrationWaitingViewController.swift; sourceTree = "<group>"; };
+		CBFF927D25E19B6200EC34DB /* PhoneLearnMore.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = PhoneLearnMore.html; sourceTree = "<group>"; };
+		CBFF927F25E19B7300EC34DB /* CSS_files */ = {isa = PBXFileReference; lastKnownFileType = folder; path = CSS_files; sourceTree = "<group>"; };
 		FF50109E22DD21420035E83C /* BridgeInfo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = BridgeInfo.plist; sourceTree = "<group>"; };
 		FF5010A022DD214A0035E83C /* BridgeInfo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = BridgeInfo.plist; sourceTree = "<group>"; };
 		FF5010A622DD22A50035E83C /* psorcast-validation.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "psorcast-validation.pem"; path = "../../../iOSPrivateProjectInfo/PsorcastValidation/psorcast-validation.pem"; sourceTree = "<group>"; };
@@ -624,6 +640,9 @@
 		CB7CF23C2400BE84003E02A5 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				CBFF927625E1783B00EC34DB /* PhoneRegistrationViewController.swift */,
+				CBFF927725E1783B00EC34DB /* RegistrationWaitingViewController.swift */,
+				CBFF926D25E08C3D00EC34DB /* SignInTaskViewController.swift */,
 				CBE561542412BD9D009A2930 /* TryItFirstTaskTableViewController.swift */,
 				CB7CF2412400BF10003E02A5 /* WelcomeVideoViewController.swift */,
 				CBAF1DA82437CB2A00ECC699 /* StudyExternalIdRegistrationViewController.swift */,
@@ -652,6 +671,8 @@
 		CB7CF2432400C627003E02A5 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				CBFF927C25E19AD800EC34DB /* HTML */,
+				CBFF926F25E08C9C00EC34DB /* JSON */,
 				CB7CF2442400C62F003E02A5 /* MP4 */,
 			);
 			name = Resources;
@@ -682,6 +703,7 @@
 		CB9F5E4122E0C27D003FBCEF /* PsorcastValidationTests */ = {
 			isa = PBXGroup;
 			children = (
+				CBB988AD25DF1AC1001B1D37 /* PsoriasisDrawBodySummaryImageTests.swift */,
 				CB1481B025BCAE7400865BAC /* PsoriasisDrawImageTests.swift */,
 				CB55C73B23198A1F00EA0C19 /* JointPainStepViewControllerTests.swift */,
 				CB77866F238B3F4D0009ECF9 /* DigitalJarOpenStepViewControllerTests.swift */,
@@ -850,6 +872,23 @@
 			name = ObjC;
 			sourceTree = "<group>";
 		};
+		CBFF926F25E08C9C00EC34DB /* JSON */ = {
+			isa = PBXGroup;
+			children = (
+				CBFF927025E08CA400EC34DB /* PhoneSignIn.json */,
+			);
+			name = JSON;
+			sourceTree = "<group>";
+		};
+		CBFF927C25E19AD800EC34DB /* HTML */ = {
+			isa = PBXGroup;
+			children = (
+				CBFF927F25E19B7300EC34DB /* CSS_files */,
+				CBFF927D25E19B6200EC34DB /* PhoneLearnMore.html */,
+			);
+			name = HTML;
+			sourceTree = "<group>";
+		};
 		FF50109C22DD20DE0035E83C /* Support Files */ = {
 			isa = PBXGroup;
 			children = (
@@ -899,10 +938,11 @@
 		FFABCBC022DD1EEB00D11109 /* Psorcast */ = {
 			isa = PBXGroup;
 			children = (
+				FFABCBCA22DD1EEC00D11109 /* LaunchScreen.storyboard */,
 				CBA0250823FC6B2500604F2D /* Main.storyboard */,
+				CBFF926725E0749700EC34DB /* Registration.storyboard */,
 				CBC6519523F392C700C3FF0C /* Psorcast.entitlements */,
 				FFABCBC122DD1EEB00D11109 /* AppDelegate.swift */,
-				FFABCBCA22DD1EEC00D11109 /* LaunchScreen.storyboard */,
 				CBDD30E12416C7D1003B0488 /* PsorcastAssets.xcassets */,
 				CBDCDCC023F3854600E5CEB8 /* ObjC */,
 				CBBE0F6024039A4F0072452C /* Model */,
@@ -1175,6 +1215,7 @@
 				CBDCDC7D23F3848500E5CEB8 /* JointCounting.json in Resources */,
 				CBDCDC9223F3849E00E5CEB8 /* EndOfValidationStepViewController.xib in Resources */,
 				CBA0250E23FC6B2500604F2D /* Main.storyboard in Resources */,
+				CBFF926C25E0749700EC34DB /* Registration.storyboard in Resources */,
 				CB9F5E1F22E0BED3003FBCEF /* lato_black.ttf in Resources */,
 				CB9F5E2322E0BED3003FBCEF /* lato_light.ttf in Resources */,
 				CBDCDC8423F3848E00E5CEB8 /* PsoriasisAreaPhoto.mov in Resources */,
@@ -1196,6 +1237,8 @@
 				CBDCDC8723F3848E00E5CEB8 /* JointCounting.mov in Resources */,
 				CBDCDC9623F3849E00E5CEB8 /* ImageCaptureStepViewController.xib in Resources */,
 				CB9F5E2422E0BED3003FBCEF /* lato_lightitalic.ttf in Resources */,
+				CBFF927225E08CA400EC34DB /* PhoneSignIn.json in Resources */,
+				CBFF928025E19B7300EC34DB /* CSS_files in Resources */,
 				CBDCDCB423F3849E00E5CEB8 /* DigitalJarOpenCompletionStepViewController.xib in Resources */,
 				CBDCDC8323F3848E00E5CEB8 /* FingersPhoto.mov in Resources */,
 				CBDD30E62416C7D1003B0488 /* PsorcastAssets.xcassets in Resources */,
@@ -1203,6 +1246,7 @@
 				FF5010A122DD214A0035E83C /* BridgeInfo.plist in Resources */,
 				04F00578243FE76E00EDB120 /* ShowInsightStepViewController.xib in Resources */,
 				CBDCDC7F23F3848500E5CEB8 /* MDJointCounting.json in Resources */,
+				CBFF927E25E19B6200EC34DB /* PhoneLearnMore.html in Resources */,
 				CBDCDCA423F3849E00E5CEB8 /* PsoriasisAreaPhotoStepViewController.xib in Resources */,
 				CB9F5E2022E0BED3003FBCEF /* lato_bold.ttf in Resources */,
 				CBDCDCB623F3849E00E5CEB8 /* DigitalJarOpenInstructionStepViewController.xib in Resources */,
@@ -1273,6 +1317,7 @@
 				CB55C73C23198A1F00EA0C19 /* JointPainStepViewControllerTests.swift in Sources */,
 				CB9F5E5C22E0C531003FBCEF /* CodableStepObjectTests.swift in Sources */,
 				CBB93CB3233FFD6900321A4D /* PSRImageHelperTests.swift in Sources */,
+				CBB988B225DF1AC1001B1D37 /* PsoriasisDrawBodySummaryImageTests.swift in Sources */,
 				CB9F5E4A22E0C2AA003FBCEF /* TaskListScheduleManagerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1311,6 +1356,7 @@
 				CBDCDC9B23F3849E00E5CEB8 /* JointPainResultObject.swift in Sources */,
 				CBDCDCAF23F3849E00E5CEB8 /* PsoriasisDrawCompletionStepViewController.swift in Sources */,
 				CBDCDC9A23F3849E00E5CEB8 /* JointPainStepObject.swift in Sources */,
+				CBFF927A25E1783B00EC34DB /* RegistrationWaitingViewController.swift in Sources */,
 				CB8F7D562422D73A00F77D62 /* StudyTaskFactory.swift in Sources */,
 				CB1F7BD025BCBFC3001985D2 /* PsoriasisDrawHelper.swift in Sources */,
 				CB144C7A2473346600DF0F6B /* HistoryDataManager.swift in Sources */,
@@ -1322,6 +1368,7 @@
 				CB89B897246C825A00567345 /* WebImageInstructionViewController.swift in Sources */,
 				CBDCDCAD23F3849E00E5CEB8 /* PsoriasisDrawResultObject.swift in Sources */,
 				CBDCDCB723F384A400E5CEB8 /* TaskFactory.swift in Sources */,
+				CBFF927925E1783B00EC34DB /* PhoneRegistrationViewController.swift in Sources */,
 				CBDCDCC223F3855300E5CEB8 /* BuildDateUtil.m in Sources */,
 				CBDCDCB123F3849E00E5CEB8 /* SelectedIdentifiersResultObject.swift in Sources */,
 				CBDCDC8D23F3849E00E5CEB8 /* SelectionCollectionStepViewController.swift in Sources */,
@@ -1331,6 +1378,7 @@
 				CB16C38C24465BC20046E200 /* ReminderStepViewController.swift in Sources */,
 				CBDCDCB323F3849E00E5CEB8 /* DigitalJarOpenCompletionStepViewController.swift in Sources */,
 				CB1535E024395410007D0307 /* ProfileTabViewController.swift in Sources */,
+				CBFF926E25E08C3D00EC34DB /* SignInTaskViewController.swift in Sources */,
 				CB6C16DB2477BD5500819FCE /* HistoryItem.swift in Sources */,
 				CBAAB6D92458CB2D00C1A619 /* AtomicBool.swift in Sources */,
 				CBDCDCA923F3849E00E5CEB8 /* PsoriasisDrawStepViewController.swift in Sources */,
@@ -1448,6 +1496,14 @@
 				CBA0250923FC6B2500604F2D /* Base */,
 			);
 			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		CBFF927025E08CA400EC34DB /* PhoneSignIn.json */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CBFF927125E08CA400EC34DB /* Base */,
+			);
+			name = PhoneSignIn.json;
 			sourceTree = "<group>";
 		};
 		FFABCBCA22DD1EEC00D11109 /* LaunchScreen.storyboard */ = {
@@ -1687,6 +1743,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				"OTHER_SWIFT_FLAGS[arch=*]" = "-D DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = org.sagebionetworks.Psorcast;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

@@ -53,9 +53,30 @@ open class StudyExternalIdRegistrationViewController: ExternalIDRegistrationView
         
         // At this point the user is signed in, and we should update their treatments
         // so we know if we should transition them to treatment selection
-        HistoryDataManager.shared.forceReloadSingletonData()
-        HistoryDataManager.shared.forceReloadHistory()
-        
-        super.goForward()
+        HistoryDataManager.shared.forceReloadSingletonData { (success) in
+            if success {
+                HistoryDataManager.shared.forceReloadHistory { (success) in
+                    if (success) {
+                        super.goForward()
+                    } else {
+                        self.showHistoryFail()
+                    }
+                }
+            } else {
+                self.showHistoryFail()
+            }
+        }
+    }
+    
+    func showHistoryFail() {
+        let alert = UIAlertController(title: "Connectivity issue", message: "We had trouble loading information from our server.", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Try again", style: .default, handler: { (action) in
+            self.goForward()
+        }))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (action) in
+            BridgeSDK.authManager.signOut(completion: nil)
+            HistoryDataManager.shared.flushStore()
+        }))
+        self.present(alert, animated: true)
     }
 }
