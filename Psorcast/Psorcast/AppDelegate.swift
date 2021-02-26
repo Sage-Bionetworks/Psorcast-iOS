@@ -208,18 +208,11 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate {
         vc.delegate = self
         self.transition(to: vc, state: .onboarding, animated: true)
     }
-
-    func showSignInViewController(animated: Bool) {
-        guard self.rootViewController?.state != .onboarding else { return }
-        let vc = SignInTaskViewController()
-        vc.delegate = self
-        self.transition(to: vc, state: .onboarding, animated: true)
-    }
     
     func showSignUpViewController(animated: Bool) {
         guard self.rootViewController?.state != .onboarding else { return }
         let vc = SignInTaskViewController()
-        vc.shouldSignUpFirst = true // use must sign up as well
+        vc.shouldSignUpFirst = false // use must sign up as well
         vc.delegate = self
         self.transition(to: vc, state: .onboarding, animated: true)
     }
@@ -274,7 +267,7 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate {
                                     message = Localization.localizedString("SIGN_IN_ERROR_BODY_USED_TOKEN")
                                 }
                                 self.presentAlertWithOk(title: title, message: message, actionHandler: { (_) in
-                                    self.showSignInViewController(animated: true)
+                                    self.showSignUpViewController(animated: true)
                                 })
                             }
                         }
@@ -342,7 +335,7 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate {
                 self.showMainViewController(animated: true)
                 return
             } else { // Otherwise we are ready to enter the app
-                self.showSignInViewController(animated: true)
+                self.showSignUpViewController(animated: true)
                 return
             }
         }

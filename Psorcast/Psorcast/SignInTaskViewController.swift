@@ -126,16 +126,12 @@ public class SignInTaskViewController: RSDTaskViewController, SignInDelegate {
                 return
             }
             
-            DispatchQueue.main.async {
-                completion(task, result, error)
-            }
-            
             // we're signed up so request a sign-in link via SMS
-//            BridgeSDK.authManager.textSignInToken(to: phoneNumber, regionCode: regionCode, completion: { (task, result, error) in
-//                DispatchQueue.main.async {
-//                    completion(task, result, error)
-//                }
-//            })
+            BridgeSDK.authManager.textSignInToken(to: phoneNumber, regionCode: regionCode, completion: { (task, result, error) in
+                DispatchQueue.main.async {
+                    completion(task, result, error)
+                }
+            })
         })
     }
     
