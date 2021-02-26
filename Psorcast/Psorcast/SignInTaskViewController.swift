@@ -177,6 +177,7 @@ public class SignInTaskViewController: RSDTaskViewController, SignInDelegate {
                     }
                     self.presentAlertWithOk(title: title, message: message, actionHandler: { (_) in
                         // Allow the user to try again
+                        self.taskViewModel.goBack()
                     })
                 }
             }
