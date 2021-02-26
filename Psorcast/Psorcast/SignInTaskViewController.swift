@@ -44,9 +44,6 @@ public class SignInTaskViewController: RSDTaskViewController, SignInDelegate {
     
     public static let taskIdentifier = "PhoneSignIn"
     
-    /// When set to true, the code will always sign the user up first before signing them in
-    public var shouldSignUpFirst = false
-    
     var phoneNumber: String? {
         guard let phoneNumber = self.resultForPhoneNumber()?.value as? String
             else {
@@ -85,25 +82,7 @@ public class SignInTaskViewController: RSDTaskViewController, SignInDelegate {
         // Do any additional setup after loading the view.
         (UIApplication.shared.delegate as? AppDelegate)?.smsSignInDelegate = self
     }
-    
-    func signInAndRequstSMSLink(completion: @escaping SBBNetworkManagerCompletionBlock) {
-        
-        guard let phoneNumber = self.phoneNumber,
-            let regionCode = self.regionCode,
-            !phoneNumber.isEmpty,
-            !regionCode.isEmpty else {
-                debugPrint("Unable to sign up and request SMS link: phone number or region code is missing or empty")
-                return
-        }
-        
-        // we're signed up so request a sign-in link via SMS
-        BridgeSDK.authManager.textSignInToken(to: phoneNumber, regionCode: regionCode, completion: { (task, result, error) in
-            DispatchQueue.main.async {
-                completion(task, result, error)
-            }
-        })
-    }
-    
+
     func signUpAndRequestSMSLink(completion: @escaping SBBNetworkManagerCompletionBlock) {
         guard let phoneNumber = self.phoneNumber,
             let regionCode = self.regionCode,

@@ -212,7 +212,6 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate {
     func showSignUpViewController(animated: Bool) {
         guard self.rootViewController?.state != .onboarding else { return }
         let vc = SignInTaskViewController()
-        vc.shouldSignUpFirst = false // use must sign up as well
         vc.delegate = self
         self.transition(to: vc, state: .onboarding, animated: true)
     }

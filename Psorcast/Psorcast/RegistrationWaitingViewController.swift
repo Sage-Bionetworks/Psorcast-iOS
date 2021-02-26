@@ -188,14 +188,8 @@ class RegistrationWaitingViewController: RSDStepViewController, UITextFieldDeleg
                 debugPrint("Error attempting to sign up and request SMS link:\n\(String(describing: error))\n\nResult:\n\(String(describing: result))")
             }
             
-            if (taskController.shouldSignUpFirst) {
-                taskController.signUpAndRequestSMSLink { (task, result, error) in
-                    afterTextSignIn(task: task, result: result, error: error)
-                }
-            } else {
-                taskController.signInAndRequstSMSLink { (task, result, error) in
-                    afterTextSignIn(task: task, result: result, error: error)
-                }
+            taskController.signUpAndRequestSMSLink { (task, result, error) in
+                afterTextSignIn(task: task, result: result, error: error)
             }
         })
 
@@ -260,14 +254,8 @@ class RegistrationWaitingViewController: RSDStepViewController, UITextFieldDeleg
             debugPrint("Error attempting to re-sign up and re-request SMS link:\n\(String(describing: error))\n\nResult:\n\(String(describing: result))")
         }
             
-        if (taskController.shouldSignUpFirst) {
-            taskController.signUpAndRequestSMSLink { (task, result, error) in
-                afterTextSignIn(task: task, result: result, error: error)
-            }
-        } else {
-            taskController.signInAndRequstSMSLink { (task, result, error) in
-                afterTextSignIn(task: task, result: result, error: error)
-            }
+        taskController.signUpAndRequestSMSLink { (task, result, error) in
+            afterTextSignIn(task: task, result: result, error: error)
         }
     }
     
