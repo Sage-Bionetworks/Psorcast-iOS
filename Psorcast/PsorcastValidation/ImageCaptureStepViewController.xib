@@ -27,20 +27,14 @@
                     <rect key="frame" x="0.0" y="0.0" width="395" height="720"/>
                     <subviews>
                         <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Bb7-gd-Spk" userLabel="CaptureView" customClass="CameraPreviewView" customModule="Psorcast" customModuleProvider="target">
-                            <rect key="frame" x="0.0" y="130" width="395" height="434"/>
+                            <rect key="frame" x="0.0" y="80" width="395" height="484"/>
                             <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fxA-Tz-ZiS" customClass="RSDNavigationHeaderView" customModule="ResearchUI">
-                            <rect key="frame" x="0.0" y="0.0" width="395" height="130"/>
+                            <rect key="frame" x="0.0" y="0.0" width="395" height="80"/>
                             <subviews>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Walk and Balance" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="d3p-ES-nu8" userLabel="Title Label">
-                                    <rect key="frame" x="60" y="61.999999999999993" width="275" height="28.666666666666664"/>
-                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="24"/>
-                                    <nil key="textColor"/>
-                                    <nil key="highlightedColor"/>
-                                </label>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MAO-q7-fPw" userLabel="Cancel Button">
-                                    <rect key="frame" x="24" y="24" width="50" height="50"/>
+                                    <rect key="frame" x="24" y="15" width="50" height="50"/>
                                     <constraints>
                                         <constraint firstAttribute="width" secondItem="MAO-q7-fPw" secondAttribute="height" multiplier="1:1" id="FQP-6M-XIU"/>
                                         <constraint firstAttribute="width" constant="50" id="oUt-Bl-kZX"/>
@@ -50,16 +44,12 @@
                             </subviews>
                             <color key="backgroundColor" red="0.99006377479999996" green="0.26231237190000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                             <constraints>
-                                <constraint firstItem="d3p-ES-nu8" firstAttribute="top" secondItem="MAO-q7-fPw" secondAttribute="bottom" constant="-12" id="717-ek-QdP"/>
                                 <constraint firstItem="MAO-q7-fPw" firstAttribute="leading" secondItem="fxA-Tz-ZiS" secondAttribute="leading" constant="24" id="9OQ-QY-59V"/>
-                                <constraint firstAttribute="trailing" secondItem="d3p-ES-nu8" secondAttribute="trailing" constant="60" id="Smt-1Y-XlF"/>
-                                <constraint firstAttribute="height" constant="130" id="b0u-aS-MUB"/>
-                                <constraint firstItem="d3p-ES-nu8" firstAttribute="leading" secondItem="fxA-Tz-ZiS" secondAttribute="leading" constant="60" id="bQC-or-EVq"/>
-                                <constraint firstItem="MAO-q7-fPw" firstAttribute="top" secondItem="fxA-Tz-ZiS" secondAttribute="top" constant="24" id="c4z-r0-dQU"/>
+                                <constraint firstItem="MAO-q7-fPw" firstAttribute="centerY" secondItem="fxA-Tz-ZiS" secondAttribute="centerY" id="NUf-3D-zYx"/>
+                                <constraint firstAttribute="height" constant="80" id="b0u-aS-MUB"/>
                             </constraints>
                             <connections>
                                 <outlet property="cancelButton" destination="MAO-q7-fPw" id="XfG-a0-FE9"/>
-                                <outlet property="titleLabel" destination="d3p-ES-nu8" id="LaJ-GO-IzF"/>
                             </connections>
                         </view>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Capture image" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Br6-tq-bnk">
@@ -83,7 +73,7 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="z7Q-cL-s9u">
-                            <rect key="frame" x="331" y="130" width="64" height="64"/>
+                            <rect key="frame" x="331" y="80" width="64" height="64"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="64" id="WjL-LO-zni"/>
                                 <constraint firstAttribute="width" constant="64" id="icX-ke-ucG"/>

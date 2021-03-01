@@ -37,26 +37,17 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8Oi-Gn-n4p" userLabel="Get started button" customClass="RSDRoundedButton" customModule="ResearchUI">
-                                        <rect key="frame" x="4" y="718.5" width="406" height="52"/>
-                                        <state key="normal" title="Join the research study"/>
+                                        <rect key="frame" x="4" y="744" width="406" height="52"/>
+                                        <state key="normal" title="Sign up / Sign in"/>
                                         <connections>
                                             <action selector="getStartedTapped" destination="VJ3-hJ-g4d" eventType="touchUpInside" id="5K4-ae-Pkm"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fZ4-xJ-Sfz" userLabel="Try it first Button" customClass="RSDRoundedButton" customModule="ResearchUI">
-                                        <rect key="frame" x="9" y="786.5" width="398" height="52"/>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fZ4-xJ-Sfz" userLabel="Try it first Button" customClass="RSDRoundedButton" customModule="ResearchUI">
+                                        <rect key="frame" x="8" y="812" width="398" height="52"/>
                                         <state key="normal" title="Preview and try the app first"/>
                                         <connections>
                                             <action selector="tryItFirstTapped" destination="VJ3-hJ-g4d" eventType="touchUpInside" id="8nL-yG-Hf6"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lJG-3B-rEz" userLabel="Login Button" customClass="RSDUnderlinedButton" customModule="ResearchUI">
-                                        <rect key="frame" x="8" y="846.5" width="398" height="33.5"/>
-                                        <state key="normal" title="Login">
-                                            <color key="titleColor" systemColor="darkTextColor"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="loginTapped" destination="VJ3-hJ-g4d" eventType="touchUpInside" id="RCE-ai-C4z"/>
                                         </connections>
                                     </button>
                                     <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EIV-ng-WnP" userLabel="Launch Screen">
@@ -89,17 +80,14 @@
                                     <constraint firstItem="DNP-n3-rC3" firstAttribute="top" secondItem="3Sp-Jq-mwa" secondAttribute="top" id="JeT-mk-WXK"/>
                                     <constraint firstItem="DNP-n3-rC3" firstAttribute="leading" secondItem="3Sp-Jq-mwa" secondAttribute="leading" id="Kdf-yh-PXw"/>
                                     <constraint firstItem="EIV-ng-WnP" firstAttribute="leading" secondItem="3Sp-Jq-mwa" secondAttribute="leading" id="Oj0-pp-hTT"/>
-                                    <constraint firstAttribute="bottom" secondItem="lJG-3B-rEz" secondAttribute="bottom" constant="16" id="YPe-3Z-Wmj"/>
                                     <constraint firstAttribute="trailing" secondItem="8Oi-Gn-n4p" secondAttribute="trailing" constant="4" id="cYt-ej-16J"/>
                                     <constraint firstAttribute="trailing" secondItem="eE4-TP-pcQ" secondAttribute="trailing" constant="4" id="gaa-Bg-Ivv"/>
                                     <constraint firstAttribute="trailing" secondItem="Q8p-Lc-Z7m" secondAttribute="trailing" constant="8" id="l6T-3m-XZw"/>
                                     <constraint firstItem="8Oi-Gn-n4p" firstAttribute="leading" secondItem="3Sp-Jq-mwa" secondAttribute="leading" constant="4" id="mg2-Uo-Th4"/>
                                     <constraint firstAttribute="trailing" secondItem="fZ4-xJ-Sfz" secondAttribute="trailing" constant="8" id="nJW-Ll-ONE"/>
                                     <constraint firstItem="Q8p-Lc-Z7m" firstAttribute="top" secondItem="eE4-TP-pcQ" secondAttribute="bottom" constant="12" id="nTb-jN-PtL"/>
-                                    <constraint firstAttribute="trailing" secondItem="lJG-3B-rEz" secondAttribute="trailing" constant="8" id="qGD-1E-FNe"/>
                                     <constraint firstItem="fZ4-xJ-Sfz" firstAttribute="leading" secondItem="3Sp-Jq-mwa" secondAttribute="leading" constant="8" id="qYa-FW-Pr3"/>
-                                    <constraint firstItem="lJG-3B-rEz" firstAttribute="top" secondItem="fZ4-xJ-Sfz" secondAttribute="bottom" constant="8" id="sOa-eY-ZtW"/>
-                                    <constraint firstItem="lJG-3B-rEz" firstAttribute="leading" secondItem="3Sp-Jq-mwa" secondAttribute="leading" constant="8" id="vTb-g6-J4H"/>
+                                    <constraint firstAttribute="bottom" secondItem="fZ4-xJ-Sfz" secondAttribute="bottom" constant="32" id="tu5-Jj-DDA"/>
                                     <constraint firstItem="eE4-TP-pcQ" firstAttribute="top" secondItem="DNP-n3-rC3" secondAttribute="bottom" constant="42.5" id="y7u-Is-tGl"/>
                                     <constraint firstItem="eE4-TP-pcQ" firstAttribute="leading" secondItem="3Sp-Jq-mwa" secondAttribute="leading" constant="4" id="yI7-7U-UPn"/>
                                 </constraints>
@@ -117,7 +105,6 @@
                     <connections>
                         <outlet property="getStartedButton" destination="8Oi-Gn-n4p" id="f38-eK-W9q"/>
                         <outlet property="launchView" destination="EIV-ng-WnP" id="4nx-LJ-Yyc"/>
-                        <outlet property="loginButton" destination="lJG-3B-rEz" id="9jg-0b-MZw"/>
                         <outlet property="textLabel" destination="Q8p-Lc-Z7m" id="vH0-KV-YeD"/>
                         <outlet property="titleLabel" destination="eE4-TP-pcQ" id="oyZ-Wc-pOF"/>
                         <outlet property="tryItFirstButton" destination="fZ4-xJ-Sfz" id="wTk-46-C14"/>
@@ -1240,7 +1227,7 @@ OCT 2020 to Today</string>
             <size key="intrinsicContentSize" width="123" height="33.5"/>
         </designable>
         <designable name="8Oi-Gn-n4p">
-            <size key="intrinsicContentSize" width="161" height="30"/>
+            <size key="intrinsicContentSize" width="111" height="30"/>
         </designable>
         <designable name="CxB-DG-SQx">
             <size key="intrinsicContentSize" width="126" height="30"/>
@@ -1256,9 +1243,6 @@ OCT 2020 to Today</string>
         </designable>
         <designable name="fZ4-xJ-Sfz">
             <size key="intrinsicContentSize" width="193" height="30"/>
-        </designable>
-        <designable name="lJG-3B-rEz">
-            <size key="intrinsicContentSize" width="44" height="33.5"/>
         </designable>
         <designable name="sS2-XF-vKD">
             <size key="intrinsicContentSize" width="123" height="33.5"/>
@@ -1283,9 +1267,6 @@ OCT 2020 to Today</string>
         <image name="ReviewTabIcon" width="31" height="23"/>
         <image name="ReviewVideoIcon" width="98" height="98"/>
         <image name="RightChevron" width="11" height="20"/>
-        <systemColor name="darkTextColor">
-            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

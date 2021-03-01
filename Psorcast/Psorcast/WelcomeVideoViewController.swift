@@ -41,7 +41,6 @@ class WelcomeVideoViewController: UIViewController {
     
     @IBOutlet weak var videoView: UIView!
     @IBOutlet weak var getStartedButton: UIButton!
-    @IBOutlet weak var loginButton: UIButton!
     @IBOutlet weak var tryItFirstButton: RSDRoundedButton!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var textLabel: UILabel!
@@ -74,7 +73,6 @@ class WelcomeVideoViewController: UIViewController {
         self.textLabel.font = designSystem.fontRules.font(for: .body)
                         
         self.getStartedButton.recursiveSetDesignSystem(designSystem, with: primaryColor)
-        self.loginButton.recursiveSetDesignSystem(designSystem, with: primaryColor)
         self.tryItFirstButton.recursiveSetDesignSystem(designSystem, with: primaryColor)
         
         #if DEBUG
@@ -174,13 +172,6 @@ class WelcomeVideoViewController: UIViewController {
             return
         }
         appDelegate.showTryItFirstIntroScreens(animated: true)
-    }
-    
-    @IBAction func loginTapped() {
-        BridgeSDK.authManager.signOut(completion: nil)
-        HistoryDataManager.shared.flushStore()
-        guard let appDelegate = AppDelegate.shared as? AppDelegate else { return }
-        appDelegate.showSignInViewController(animated: true)
     }
     
     func showCoreDataCriticalErrorAlert(_ error: String) {

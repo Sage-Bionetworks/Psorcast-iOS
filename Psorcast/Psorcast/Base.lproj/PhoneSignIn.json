@@ -32,7 +32,8 @@
                     "learnMore":{
                         "type": "webView",
                         "buttonTitle": "Learn more",
-                        "url" : "PhoneLearnMore.html"
+                        "url" : "PhoneLearnMore.html",
+                        "usesBackButton": true
                     }
                 },
                 "nextStepIdentifier": "waiting"

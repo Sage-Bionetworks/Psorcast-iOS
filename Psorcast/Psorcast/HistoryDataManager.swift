@@ -51,6 +51,10 @@ open class HistoryDataManager {
         return decoder
     }()
     
+    var defaults: UserDefaults {
+        return UserDefaults.standard
+    }
+    
     // Listen for changes in Data
     public static let treatmentChanged = Notification.Name(rawValue: "treatmentChanged")
     public static let remindersChanged = Notification.Name(rawValue: "remindersChanged")
@@ -352,6 +356,10 @@ open class HistoryDataManager {
     /// Flush the persistent store.
     @discardableResult
     public func flushStore() -> Bool {
+        // Remove all keys in our defaults
+        for key in Array(self.defaults.dictionaryRepresentation().keys) {
+            self.defaults.removeObject(forKey: key)
+        }
         do {
             let url = NSPersistentContainer.defaultDirectoryURL()
             let paths = ["History.sqlite", "History.sqlite-shm", "History.sqlite-wal"]
@@ -557,7 +565,7 @@ public enum TreatmentResultIdentifier: String {
 
 open class UserDefaultsSingletonReport {
     var defaults: UserDefaults {
-        return BridgeSDK.sharedUserDefaults()
+        return HistoryDataManager.shared.defaults
     }
     
     var isSyncingWithBridge = false
