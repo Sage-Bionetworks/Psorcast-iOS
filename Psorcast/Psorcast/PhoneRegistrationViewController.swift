@@ -119,14 +119,8 @@ class PhoneRegistrationViewController: RSDTableStepViewController {
 
         taskController.showLoadingView()
         
-        if (taskController.shouldSignUpFirst) {
-            taskController.signUpAndRequestSMSLink { (task, result, error) in
-                afterTextSignIn(task: task, result: result, error: error)
-            }
-        } else {
-            taskController.signInAndRequstSMSLink { (task, result, error) in
-                afterTextSignIn(task: task, result: result, error: error)
-            }
+        taskController.signUpAndRequestSMSLink { (task, result, error) in
+            afterTextSignIn(task: task, result: result, error: error)
         }
     }
     
