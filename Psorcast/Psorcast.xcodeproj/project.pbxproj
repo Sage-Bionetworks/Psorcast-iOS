@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		047C2CCF25F16628006AA52B /* PopTip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047C2CCC25F16628006AA52B /* PopTip.swift */; };
+		047C2CD025F16628006AA52B /* PopTip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047C2CCC25F16628006AA52B /* PopTip.swift */; };
+		047C2CD125F16628006AA52B /* PopTip+Draw.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047C2CCD25F16628006AA52B /* PopTip+Draw.swift */; };
+		047C2CD225F16628006AA52B /* PopTip+Draw.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047C2CCD25F16628006AA52B /* PopTip+Draw.swift */; };
+		047C2CD325F16628006AA52B /* PopTip+Transitions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047C2CCE25F16628006AA52B /* PopTip+Transitions.swift */; };
+		047C2CD425F16628006AA52B /* PopTip+Transitions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047C2CCE25F16628006AA52B /* PopTip+Transitions.swift */; };
 		04F00572243FE64800EDB120 /* ShowInsightStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F00571243FE64800EDB120 /* ShowInsightStepViewController.swift */; };
 		04F00578243FE76E00EDB120 /* ShowInsightStepViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 04F00577243FE76E00EDB120 /* ShowInsightStepViewController.xib */; };
 		CB03196523E3ED0A005063A3 /* ReviewCaptureStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB03196423E3ED09005063A3 /* ReviewCaptureStepViewController.swift */; };
@@ -354,6 +360,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		047C2CCC25F16628006AA52B /* PopTip.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopTip.swift; sourceTree = "<group>"; };
+		047C2CCD25F16628006AA52B /* PopTip+Draw.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PopTip+Draw.swift"; sourceTree = "<group>"; };
+		047C2CCE25F16628006AA52B /* PopTip+Transitions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PopTip+Transitions.swift"; sourceTree = "<group>"; };
 		04F00571243FE64800EDB120 /* ShowInsightStepViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowInsightStepViewController.swift; sourceTree = "<group>"; };
 		04F00577243FE76E00EDB120 /* ShowInsightStepViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ShowInsightStepViewController.xib; sourceTree = "<group>"; };
 		CB03196423E3ED09005063A3 /* ReviewCaptureStepViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReviewCaptureStepViewController.swift; sourceTree = "<group>"; };
@@ -594,6 +603,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		047C2CCB25F165C7006AA52B /* PopTip */ = {
+			isa = PBXGroup;
+			children = (
+				047C2CCC25F16628006AA52B /* PopTip.swift */,
+				047C2CCD25F16628006AA52B /* PopTip+Draw.swift */,
+				047C2CCE25F16628006AA52B /* PopTip+Transitions.swift */,
+			);
+			path = PopTip;
+			sourceTree = "<group>";
+		};
 		CB051464237F23310058D746 /* MP4 */ = {
 			isa = PBXGroup;
 			children = (
@@ -628,6 +647,7 @@
 		CB4794EB2426B31D00D5A7E6 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				047C2CCB25F165C7006AA52B /* PopTip */,
 				CB4794F02426B33300D5A7E6 /* LevenshteinTools.swift */,
 				CB4794F22426B36C00D5A7E6 /* ViewUtils.swift */,
 				CBAAB6D82458CB2D00C1A619 /* AtomicBool.swift */,
@@ -1389,6 +1409,7 @@
 				CB64AA1425D21F190040FC90 /* MetalHelper.swift in Sources */,
 				CBBDC3992477A3350017A304 /* InsightsUserDefaultsSingletonReport.swift in Sources */,
 				CBBDC38A247785550017A304 /* TreatmentRange.swift in Sources */,
+				047C2CCF25F16628006AA52B /* PopTip.swift in Sources */,
 				CBDCDC8C23F3849E00E5CEB8 /* RSDSelectionCollectionViewCell.swift in Sources */,
 				CBDCDCA123F3849E00E5CEB8 /* LearnMoreStepViewController.swift in Sources */,
 				CBE1D7DC245A97350063FEB2 /* ReviewTabViewController.swift in Sources */,
@@ -1409,6 +1430,7 @@
 				CBDCDC8F23F3849E00E5CEB8 /* ExternalIDRegistrationViewController.swift in Sources */,
 				CBAF1DA92437CB2A00ECC699 /* StudyExternalIdRegistrationViewController.swift in Sources */,
 				CB16C38924465BB80046E200 /* ReminderManager.swift in Sources */,
+				047C2CD125F16628006AA52B /* PopTip+Draw.swift in Sources */,
 				CBDCDC9D23F3849E00E5CEB8 /* JointPainStepViewController.swift in Sources */,
 				CB4794F12426B33300D5A7E6 /* LevenshteinTools.swift in Sources */,
 				CB2219D6246132D2007546CD /* PastInsightsViewController.swift in Sources */,
@@ -1418,6 +1440,7 @@
 				CBBDC394247787AA0017A304 /* TreatmentUserDefaultsSingletonReport.swift in Sources */,
 				CBDCDC9823F3849E00E5CEB8 /* ReviewCaptureStepViewController.swift in Sources */,
 				CBAA09CF243E4F5500D63CCD /* TreatmentSelectionResultObject.swift in Sources */,
+				047C2CD325F16628006AA52B /* PopTip+Transitions.swift in Sources */,
 				CB89B895246C7B3200567345 /* DeepDiveCollectionViewController.swift in Sources */,
 				CB4794F72426B3D800D5A7E6 /* TreatmentSelectionTableViewCell.swift in Sources */,
 				CB8F2927245BD14C00ABE5B3 /* FilterTreatmentViewController.swift in Sources */,
@@ -1447,11 +1470,14 @@
 				CBB3F6CE25D7696900578A0F /* Black2Clear.metal in Sources */,
 				CB55C73E23198C1000EA0C19 /* JointPainCompletionStepViewController.swift in Sources */,
 				CBE908A42333BADA00F88A9A /* PsoriasisAreaPhotoStepViewController.swift in Sources */,
+				047C2CD225F16628006AA52B /* PopTip+Draw.swift in Sources */,
 				CB47E565233FC2EC00AE8501 /* PsoriasisDrawResultObject.swift in Sources */,
 				CBB93CB5234252BC00321A4D /* PsoriasisDrawCompletionStepViewController.swift in Sources */,
+				047C2CD025F16628006AA52B /* PopTip.swift in Sources */,
 				CB09F00323D649FB009D344E /* DigitalJarOpenInstructionStepViewController.swift in Sources */,
 				CBD62BAC23342CBA00C78F22 /* PsoriasisAreaPhotoCompletionStepViewController.swift in Sources */,
 				CB03196523E3ED0A005063A3 /* ReviewCaptureStepViewController.swift in Sources */,
+				047C2CD425F16628006AA52B /* PopTip+Transitions.swift in Sources */,
 				CB55C71723173D6A00EA0C19 /* SelectionCollectionStepViewController.swift in Sources */,
 				CBD67D8422DFB90C00998516 /* ExternalIDRegistrationViewController.swift in Sources */,
 				CB5424D3237220910036DB6B /* RSDSelectionCollectionViewCell.swift in Sources */,
