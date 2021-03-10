@@ -91,6 +91,7 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
     // Poptip related inits
     // First, should we actually be showing this demo popTip?
     let showPopTip = true
+    // Now do the inits
     let popTip = PopTip()
     var direction = PopTipDirection.up
     var topRightDirection = PopTipDirection.down
