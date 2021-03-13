@@ -8,7 +8,7 @@
             "identifier": "introduction",
             "type":"overview",
             "title":"Toes Photo",
-            "text":"In this activity you will photograph your bare feet with your toe in focus in order to track any changes which may come about.",
+            "text":"In this activity you will photograph your bare feet with your toes in focus in order to track any changes which may come about.",
             "image": {
                 "type":"fetchable",
                 "imageName":"Foot1",
@@ -44,7 +44,7 @@
             "identifier":"footInstruction1",
             "type":"instruction",
             "title":"Bare feet",
-            "text":"Let’s first begin by photographing the toes on a flat surface. You should not be wearing any socks, sandals or shoes for this activity.",
+            "text":"Let’s first begin by photographing the toes on a flat, non-reflective surface. You should not be wearing any socks, sandals or shoes for this activity.",
             "image":{
                 "type":"fetchable",
                 "imageName": "Foot1",

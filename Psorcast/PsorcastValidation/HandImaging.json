@@ -39,8 +39,8 @@
         {
             "identifier":"handInstructionLeft1",
             "type":"instruction",
-            "title":"Find a flat, solid surface",
-            "text":"Find a flat surface which you can place your hands on. Capture your image on a solid colored surface which is different from your skin color if possible.",
+            "title":"Find a flat, non-reflective surface",
+            "text":"Find a flat surface which you can place your hands on. Capture your image on a solid, non-reflective surface which is different from your skin color if possible.",
             "image":{
                 "type":"fetchable",
                 "imageName": "HeaderHandLeft1",

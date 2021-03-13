@@ -41,7 +41,7 @@
              {
                  "identifier":"waiting",
                  "type":"instruction",
-                 "title":"Your sign-up link is on its way!",
+                 "title":"Your sign-up code is on its way!",
                  "image":{
                      "type": "fetchable",
                      "imageName":"expectSMS",
