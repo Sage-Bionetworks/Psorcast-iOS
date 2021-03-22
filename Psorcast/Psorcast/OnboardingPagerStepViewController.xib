@@ -35,7 +35,7 @@
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </view>
                         <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="Vv7-UY-HfC">
-                            <rect key="frame" x="136.66666666666666" y="644" width="121.99999999999997" height="28"/>
+                            <rect key="frame" x="136.66666666666666" y="668" width="121.99999999999997" height="28"/>
                         </pageControl>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -47,7 +47,7 @@
                         <constraint firstAttribute="trailing" secondItem="BYZ-X3-ulh" secondAttribute="trailing" id="MO6-NW-G5q"/>
                         <constraint firstAttribute="bottom" secondItem="BYZ-X3-ulh" secondAttribute="bottom" id="Tms-bV-I7T"/>
                         <constraint firstItem="Vv7-UY-HfC" firstAttribute="centerX" secondItem="nCy-4g-nIJ" secondAttribute="centerX" id="g60-9u-G2H"/>
-                        <constraint firstAttribute="bottom" secondItem="Vv7-UY-HfC" secondAttribute="bottom" constant="48" id="mB4-uh-DPW"/>
+                        <constraint firstAttribute="bottom" secondItem="Vv7-UY-HfC" secondAttribute="bottom" constant="24" id="mB4-uh-DPW"/>
                         <constraint firstItem="BYZ-X3-ulh" firstAttribute="leading" secondItem="nCy-4g-nIJ" secondAttribute="leading" id="pbd-I0-kEj"/>
                     </constraints>
                 </view>

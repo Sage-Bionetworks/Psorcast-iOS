@@ -37,14 +37,14 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8Oi-Gn-n4p" userLabel="Get started button" customClass="RSDRoundedButton" customModule="ResearchUI">
-                                        <rect key="frame" x="4" y="744" width="406" height="52"/>
+                                        <rect key="frame" x="4" y="788" width="406" height="30"/>
                                         <state key="normal" title="Sign up / Sign in"/>
                                         <connections>
                                             <action selector="getStartedTapped" destination="VJ3-hJ-g4d" eventType="touchUpInside" id="5K4-ae-Pkm"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fZ4-xJ-Sfz" userLabel="Try it first Button" customClass="RSDRoundedButton" customModule="ResearchUI">
-                                        <rect key="frame" x="8" y="812" width="398" height="52"/>
+                                        <rect key="frame" x="8" y="834" width="398" height="30"/>
                                         <state key="normal" title="Preview and try the app first"/>
                                         <connections>
                                             <action selector="tryItFirstTapped" destination="VJ3-hJ-g4d" eventType="touchUpInside" id="8nL-yG-Hf6"/>
@@ -350,7 +350,7 @@ OCT 2020 to Today</string>
                                                                                 </constraints>
                                                                             </view>
                                                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CxB-DG-SQx" customClass="RSDRoundedButton" customModule="ResearchUI">
-                                                                                <rect key="frame" x="32" y="248" width="317" height="52"/>
+                                                                                <rect key="frame" x="32" y="270" width="317" height="30"/>
                                                                                 <state key="normal" title="Add measurement"/>
                                                                                 <connections>
                                                                                     <action selector="addMeasurementTapped" destination="SkY-Tz-cJk" eventType="touchUpInside" id="mSO-19-BIn"/>

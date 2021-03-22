@@ -21,19 +21,17 @@
                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="yRw-Km-7lh" userLabel="Icon">
                     <rect key="frame" x="97" y="88" width="220" height="220"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="220" id="IEJ-3Q-Ivq"/>
-                        <constraint firstAttribute="height" constant="220" id="ZHE-ir-fKV"/>
+                        <constraint firstAttribute="width" secondItem="yRw-Km-7lh" secondAttribute="height" multiplier="1:1" id="hhp-CU-TLh"/>
                     </constraints>
                 </imageView>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QDJ-3U-pO2">
-                    <rect key="frame" x="36" y="352" width="342" height="59"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kxn-u0-3ZV" userLabel="Text Label">
+                    <rect key="frame" x="36" y="356" width="342" height="0.0"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="MBk-9b-uxi">
-                    <rect key="frame" x="36" y="427" width="342" height="76"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QDJ-3U-pO2">
+                    <rect key="frame" x="36" y="340" width="342" height="0.0"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
@@ -43,14 +41,16 @@
             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
             <constraints>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="QDJ-3U-pO2" secondAttribute="trailing" constant="36" id="0rT-XU-jQf"/>
+                <constraint firstItem="yRw-Km-7lh" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="97" id="4UJ-bu-z1K"/>
                 <constraint firstItem="FSc-OM-3rR" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="EMj-31-VhB"/>
+                <constraint firstItem="kxn-u0-3ZV" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="36" id="FIg-aC-s5t"/>
                 <constraint firstItem="FSc-OM-3rR" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="FYS-oH-7vx"/>
-                <constraint firstItem="QDJ-3U-pO2" firstAttribute="top" secondItem="yRw-Km-7lh" secondAttribute="bottom" constant="44" id="Kti-Hu-EtM"/>
-                <constraint firstItem="MBk-9b-uxi" firstAttribute="leading" secondItem="QDJ-3U-pO2" secondAttribute="leading" id="beZ-Xt-oDI"/>
-                <constraint firstItem="MBk-9b-uxi" firstAttribute="trailing" secondItem="QDJ-3U-pO2" secondAttribute="trailing" id="cQk-xV-4zr"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="yRw-Km-7lh" secondAttribute="trailing" constant="97" id="Rxk-kZ-VJ4"/>
+                <constraint firstItem="kxn-u0-3ZV" firstAttribute="top" secondItem="QDJ-3U-pO2" secondAttribute="bottom" constant="16" id="YEf-6D-gVS"/>
                 <constraint firstItem="QDJ-3U-pO2" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="36" id="cSZ-3m-ZIU"/>
-                <constraint firstItem="MBk-9b-uxi" firstAttribute="top" secondItem="QDJ-3U-pO2" secondAttribute="bottom" constant="16" id="fCe-Hg-1qO"/>
                 <constraint firstAttribute="bottom" secondItem="FSc-OM-3rR" secondAttribute="bottom" id="iDS-R0-sHa"/>
+                <constraint firstItem="QDJ-3U-pO2" firstAttribute="top" secondItem="yRw-Km-7lh" secondAttribute="bottom" constant="32" id="jdj-sK-4hc"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="kxn-u0-3ZV" secondAttribute="trailing" constant="36" id="npI-bd-vCZ"/>
                 <constraint firstItem="yRw-Km-7lh" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="44" id="o2C-bU-4fa"/>
                 <constraint firstItem="yRw-Km-7lh" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="oLl-BY-Xag"/>
                 <constraint firstItem="FSc-OM-3rR" firstAttribute="trailing" secondItem="vUN-kp-3ea" secondAttribute="trailing" id="x7i-vK-LVE"/>
@@ -58,7 +58,7 @@
             <connections>
                 <outlet property="backgroundImageView" destination="FSc-OM-3rR" id="lXj-8K-bHA"/>
                 <outlet property="iconImageView" destination="yRw-Km-7lh" id="u0o-nC-70C"/>
-                <outlet property="textLabel" destination="MBk-9b-uxi" id="qgO-AT-Aas"/>
+                <outlet property="textLabel" destination="kxn-u0-3ZV" id="nxg-I7-VVO"/>
                 <outlet property="titleLabel" destination="QDJ-3U-pO2" id="VMo-LN-HSy"/>
             </connections>
             <point key="canvasLocation" x="137.68115942028987" y="54.910714285714285"/>

@@ -146,7 +146,7 @@ public class OnboardingPagerStepViewController: RSDStepViewController, UIScrollV
                             delay: 0.0,
                             options: [.curveEaseOut],
                             animations: {
-                                self.footerBottom.constant = 80
+                                self.footerBottom.constant = 48
                               self.view.layoutIfNeeded()
                             }, completion: { _ in
                                 self.isAnimating = false
@@ -192,8 +192,8 @@ open class OnboardingPagerView: UIView, RSDViewDesignable {
         
         self.backgroundColor = background.color
         
-        titleLabel.font = designSystem.fontRules.font(for: .mediumHeader)
-        titleLabel.textColor = designSystem.colorRules.textColor(on: background, for: .mediumHeader)
+        titleLabel.font = designSystem.fontRules.font(for: .largeHeader)
+        titleLabel.textColor = designSystem.colorRules.textColor(on: background, for: .largeHeader)
         
         textLabel.font = designSystem.fontRules.font(for: .body)
         textLabel.textColor = designSystem.colorRules.textColor(on: background, for: .body)
