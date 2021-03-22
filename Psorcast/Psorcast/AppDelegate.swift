@@ -165,23 +165,16 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate {
     func showTryItFirstIntroScreens(animated: Bool) {
         guard self.rootViewController?.state != .main else { return }
         
-        var instructionSteps = [RSDStep]()
-        let stepIdList = ["TryItFirstInstruction0", "TryItFirstInstruction1", "TryItFirstInstruction2", "TryItFirstInstruction3"]
-        
-        for stepId in stepIdList {
-            let step = TryItFirstInstructionStepObject(identifier: stepId)
-            step.imageTheme = RSDFetchableImageThemeElementObject(imageName: stepId)
-            step.title = Localization.localizedString("\(stepId)Title")
-            step.text = Localization.localizedString("\(stepId)Text")
-            instructionSteps.append(step)
+        do {
+            let resourceTransformer = RSDResourceTransformerObject(resourceName: self.tryItFirstTaskId)
+            let task = try RSDFactory.shared.decodeTask(with: resourceTransformer)
+            let taskViewModel = RSDTaskViewModel(task: task)
+            let vc = RSDTaskViewController(taskViewModel: taskViewModel)
+            vc.delegate = self
+            self.transition(to: vc, state: .onboarding, animated: true)
+        } catch let err {
+            fatalError("Failed to decode the O task. \(err)")
         }
-        
-        var navigator = RSDConditionalStepNavigatorObject(with: instructionSteps)
-        navigator.progressMarkers = []
-        let task = RSDTaskObject(identifier: self.tryItFirstTaskId, stepNavigator: navigator)
-        let vc = RSDTaskViewController(task: task)
-        vc.delegate = self
-        self.transition(to: vc, state: .onboarding, animated: true)
     }
     
     func showTryItFirstViewController(animated: Bool) {
@@ -210,7 +203,6 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate {
     }
     
     func showSignUpViewController(animated: Bool) {
-        guard self.rootViewController?.state != .onboarding else { return }
         let vc = SignInTaskViewController()
         vc.delegate = self
         self.transition(to: vc, state: .onboarding, animated: true)
@@ -321,7 +313,12 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate {
         // If we finish the intro screens, send the user to the try it first task list
         if taskController.task.identifier == self.tryItFirstTaskId {
             if reason == .completed {
-                self.showTryItFirstViewController(animated: true)
+                if (taskController.taskViewModel.taskResult.stepHistory.first(where: { $0.identifier == "intro" }) as? RSDResultObject)?.skipToIdentifier == "enroll" {
+                    // User chose to enroll instead
+                    self.showSignUpViewController(animated: true)
+                } else {
+                    self.showTryItFirstViewController(animated: true)
+                }
             } else {
                 self.showWelcomeViewController(animated: true)
             }
@@ -367,6 +364,43 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate {
     func updateGlobalColors() {
         // Set all UISearchBar textfield background to white
         UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).backgroundColor = .white
+    }
+    
+    /// Convenience method for transitioning to the given view controller as the main window
+    /// rootViewController.
+    /// - parameters:
+    ///     - viewController: View controller to transition to.
+    ///     - state: State of the app.
+    ///     - animated: Should the transition be animated?
+    override open func transition(to viewController: UIViewController, state: SBAApplicationState, animated: Bool) {
+        // Do not continue if this is called before the app has finished launching.
+        guard let window = self.window else { return }
+        
+        // Do not continue if there is a catastrophic error and this is **not** transitioning to that state.
+        guard !hasCatastrophicError || (state == .catastrophicError) else {
+            if currentState != .catastrophicError {
+                showCatastrophicStartupErrorViewController(animated: animated)
+            }
+            return
+        }
+        
+        if let root = self.rootViewController {
+            root.set(viewController: viewController, state: state, animated: animated)
+        }
+        else {
+            if (animated) {
+                UIView.transition(with: window,
+                                  duration: 0.3,
+                                  options: .transitionCrossDissolve,
+                                  animations: {
+                                    window.rootViewController = viewController
+                },
+                                  completion: nil)
+            }
+            else {
+                window.rootViewController = viewController
+            }
+        }
     }
 }
 

@@ -34,6 +34,7 @@
 import BridgeApp
 
 extension RSDStepType {
+    public static let onboardingPager: RSDStepType = "onboardingPager"
     public static let treatmentSelection: RSDStepType = "treatmentSelection"
     public static let insights: RSDStepType = "insights"
     public static let reminder: RSDStepType = "reminder"
@@ -52,6 +53,8 @@ open class StudyTaskFactory: TaskFactory {
     /// Override the base factory to vend Psorcast specific step objects.
     override open func decodeStep(from decoder: Decoder, with type: RSDStepType) throws -> RSDStep? {
         switch type {
+        case.onboardingPager:
+            return try OnboardingPagerStepObject(from: decoder)
         case .treatmentSelection:
             return try TreatmentSelectionStepObject(from: decoder)
         case .insights:

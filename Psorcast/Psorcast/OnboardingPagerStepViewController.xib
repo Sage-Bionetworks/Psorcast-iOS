@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina5_9" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="OnboardingPagerStepViewController" customModule="Psorcast" customModuleProvider="target">
+            <connections>
+                <outlet property="footerBottom" destination="3cG-JL-TJL" id="I8g-Ih-Hoh"/>
+                <outlet property="navigationFooter" destination="eAW-rr-r7r" id="E5J-rM-OY2"/>
+                <outlet property="pageControl" destination="Vv7-UY-HfC" id="c4z-2t-pGB"/>
+                <outlet property="scrollView" destination="BYZ-X3-ulh" id="6Pn-6q-NqD"/>
+                <outlet property="view" destination="Be1-UX-e65" id="eci-s9-hNP"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="Be1-UX-e65" customClass="RSDStepNavigationView" customModule="ResearchUI">
+            <rect key="frame" x="0.0" y="0.0" width="395" height="720"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nCy-4g-nIJ" userLabel="Content View" customClass="RSDStepNavigationView" customModule="ResearchUI">
+                    <rect key="frame" x="0.0" y="0.0" width="395" height="720"/>
+                    <subviews>
+                        <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="BYZ-X3-ulh">
+                            <rect key="frame" x="0.0" y="0.0" width="395" height="720"/>
+                            <viewLayoutGuide key="contentLayoutGuide" id="YGY-xz-fNq"/>
+                            <viewLayoutGuide key="frameLayoutGuide" id="eTG-Tb-owL"/>
+                        </scrollView>
+                        <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eAW-rr-r7r" userLabel="Footer" customClass="RSDGenericNavigationFooterView" customModule="ResearchUI">
+                            <rect key="frame" x="0.0" y="519" width="395" height="101"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </view>
+                        <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="Vv7-UY-HfC">
+                            <rect key="frame" x="136.66666666666666" y="644" width="121.99999999999997" height="28"/>
+                        </pageControl>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="BYZ-X3-ulh" firstAttribute="top" secondItem="nCy-4g-nIJ" secondAttribute="top" id="3Lu-6v-nie"/>
+                        <constraint firstAttribute="bottom" secondItem="eAW-rr-r7r" secondAttribute="bottom" constant="100" id="3cG-JL-TJL"/>
+                        <constraint firstAttribute="trailing" secondItem="eAW-rr-r7r" secondAttribute="trailing" id="5l7-vn-DMJ"/>
+                        <constraint firstItem="eAW-rr-r7r" firstAttribute="leading" secondItem="nCy-4g-nIJ" secondAttribute="leading" id="9Co-vf-UGs"/>
+                        <constraint firstAttribute="trailing" secondItem="BYZ-X3-ulh" secondAttribute="trailing" id="MO6-NW-G5q"/>
+                        <constraint firstAttribute="bottom" secondItem="BYZ-X3-ulh" secondAttribute="bottom" id="Tms-bV-I7T"/>
+                        <constraint firstItem="Vv7-UY-HfC" firstAttribute="centerX" secondItem="nCy-4g-nIJ" secondAttribute="centerX" id="g60-9u-G2H"/>
+                        <constraint firstAttribute="bottom" secondItem="Vv7-UY-HfC" secondAttribute="bottom" constant="48" id="mB4-uh-DPW"/>
+                        <constraint firstItem="BYZ-X3-ulh" firstAttribute="leading" secondItem="nCy-4g-nIJ" secondAttribute="leading" id="pbd-I0-kEj"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="W8i-xX-fUy"/>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="nCy-4g-nIJ" firstAttribute="leading" secondItem="W8i-xX-fUy" secondAttribute="leading" id="4pq-1G-cUp"/>
+                <constraint firstItem="nCy-4g-nIJ" firstAttribute="top" secondItem="Be1-UX-e65" secondAttribute="top" id="DFJ-h3-V8m"/>
+                <constraint firstAttribute="bottom" secondItem="nCy-4g-nIJ" secondAttribute="bottom" id="Dqz-k4-Dgb"/>
+                <constraint firstItem="nCy-4g-nIJ" firstAttribute="trailing" secondItem="W8i-xX-fUy" secondAttribute="trailing" id="Xje-i7-OTa"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="645.60000000000002" y="486.94581280788179"/>
+        </view>
+    </objects>
+</document>
