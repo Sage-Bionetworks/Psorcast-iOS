@@ -128,7 +128,9 @@ public class OnboardingPagerStepViewController: RSDStepViewController, UIScrollV
     public func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let pageIndex = Int(round(scrollView.contentOffset.x / view.frame.width))
         pageControl.currentPage = Int(pageIndex)
-        if (scrollView.contentOffset.x >= view.frame.width * 3) {
+        
+        let itemCount = CGFloat(onboardingPagerStep?.items.count ?? 0)
+        if (scrollView.contentOffset.x == view.frame.width * (itemCount - 1)) {
             animateFooterIn()
         } else {
             animateFooterOut()

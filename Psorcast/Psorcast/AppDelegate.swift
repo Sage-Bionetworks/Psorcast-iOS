@@ -52,7 +52,7 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate {
                                               fontRules: PSRFontRules(version: 1))
     
     /// The task identifier of the try it first intro screens
-    let tryItFirstTaskId = "TryItFirstIntro"
+    let IntroductionTaskId = "Introduction"
     let signInTaskId = "signIn"
     weak var smsSignInDelegate: SignInDelegate? = nil
     
@@ -82,7 +82,7 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate {
         } else if isAuthenticated {
             self.showTreatmentSelectionScreens(animated: true)
         } else {
-            self.showWelcomeViewController(animated: animated)
+            self.showIntroductionScreens(animated: animated)
         }
     }
     
@@ -129,23 +129,12 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate {
     }
     
     func showMainViewController(animated: Bool) {
-        guard self.rootViewController?.state != .main else { return }
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let vc = storyboard.instantiateViewController(withIdentifier: "TabBarViewController")
         self.transition(to: vc, state: .main, animated: true)
     }
     
-    func showWelcomeViewController(animated: Bool) {
-        guard let storyboard = openStoryboard("Main"),
-            let vc = storyboard.instantiateInitialViewController() else {
-            fatalError("Failed to instantiate initial view controller in the main storyboard.")
-        }        
-        self.transition(to: vc, state: .launch, animated: true)
-    }
-    
     func showTreatmentSelectionScreens(animated: Bool) {
-        guard self.rootViewController?.state != .main else { return }
-        
         guard let vc = MasterScheduleManager.shared.instantiateTreatmentTaskController() else {
             debugPrint("WARNING! Failed to create treatment task from profile manager app config")
             let alert = UIAlertController(title: "Connectivity issue", message: "We had trouble loading information from our server.  Please close the app and then try again.", preferredStyle: .alert)
@@ -162,11 +151,9 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate {
         return StudyBridgeConfiguration()
     }
     
-    func showTryItFirstIntroScreens(animated: Bool) {
-        guard self.rootViewController?.state != .main else { return }
-        
+    func showIntroductionScreens(animated: Bool) {
         do {
-            let resourceTransformer = RSDResourceTransformerObject(resourceName: self.tryItFirstTaskId)
+            let resourceTransformer = RSDResourceTransformerObject(resourceName: self.IntroductionTaskId)
             let task = try RSDFactory.shared.decodeTask(with: resourceTransformer)
             let taskViewModel = RSDTaskViewModel(task: task)
             let vc = RSDTaskViewController(taskViewModel: taskViewModel)
@@ -178,8 +165,6 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate {
     }
     
     func showTryItFirstViewController(animated: Bool) {
-        guard self.rootViewController?.state != .main else { return }
-        
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let vc = storyboard.instantiateViewController(withIdentifier: "TryItFirstTaskTableViewController")
         
@@ -187,8 +172,6 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate {
     }
     
     func showExternalIDSignInViewController(animated: Bool) {
-        guard self.rootViewController?.state != .main else { return }
-        
         let externalIDStep = StudyExternalIdRegistrationStepObject(identifier: "enterExternalID", type: "externalID")
         externalIDStep.shouldHideActions = [.navigation(.goBackward), .navigation(.skip
             )]
@@ -301,7 +284,7 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate {
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (action) in
             BridgeSDK.authManager.signOut(completion: nil)
             HistoryDataManager.shared.flushStore()
-            self.showWelcomeViewController(animated: true)
+            self.showIntroductionScreens(animated: true)
         }))
         self.rootViewController?.present(alert, animated: true)
     }
@@ -311,16 +294,14 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate {
     func taskController(_ taskController: RSDTaskController, didFinishWith reason: RSDTaskFinishReason, error: Error?) {
         
         // If we finish the intro screens, send the user to the try it first task list
-        if taskController.task.identifier == self.tryItFirstTaskId {
+        if taskController.task.identifier == self.IntroductionTaskId {
             if reason == .completed {
-                if (taskController.taskViewModel.taskResult.stepHistory.first(where: { $0.identifier == "intro" }) as? RSDResultObject)?.skipToIdentifier == "enroll" {
-                    // User chose to enroll instead
-                    self.showSignUpViewController(animated: true)
-                } else {
+                if (taskController.taskViewModel.taskResult.stepHistory.first(where: { $0.identifier == "intro" }) as? RSDResultObject)?.skipToIdentifier == "try_it_first" {
+                    // User chose to try it first instead
                     self.showTryItFirstViewController(animated: true)
+                } else {
+                    self.showSignUpViewController(animated: true)
                 }
-            } else {
-                self.showWelcomeViewController(animated: true)
             }
             return
         }
@@ -337,7 +318,7 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate {
         }
                     
         if taskController.task.identifier == self.signInTaskId && reason != .completed {
-            self.showWelcomeViewController(animated: true)
+            self.showIntroductionScreens(animated: true)
             return
         }
         

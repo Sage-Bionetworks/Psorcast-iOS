@@ -43,13 +43,6 @@ extension RSDStepType {
 
 open class StudyTaskFactory: TaskFactory {
     
-    override open func decodeProfileManager(from decoder: Decoder) throws -> SBAProfileManager {
-        let typeName: String = try decoder.factory.typeName(from: decoder) ?? SBAProfileManagerType.profileManager.rawValue
-        let type = SBAProfileManagerType(rawValue: typeName)
-        
-        return try super.decodeProfileManager(from: decoder)
-    }
-    
     /// Override the base factory to vend Psorcast specific step objects.
     override open func decodeStep(from decoder: Decoder, with type: RSDStepType) throws -> RSDStep? {
         switch type {

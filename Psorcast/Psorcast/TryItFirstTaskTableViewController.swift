@@ -169,7 +169,7 @@ class TryItFirstTaskTableViewController: UIViewController, UICollectionViewDataS
         guard let appDelegate = (AppDelegate.shared as? AppDelegate) else {
             return
         }
-        appDelegate.showWelcomeViewController(animated: true)
+        appDelegate.showIntroductionScreens(animated: true)
     }
 
     func taskController(_ taskController: RSDTaskController, didFinishWith reason: RSDTaskFinishReason, error: Error?) {
