@@ -85,7 +85,6 @@
 		CB778670238B3F4D0009ECF9 /* DigitalJarOpenStepViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB77866F238B3F4D0009ECF9 /* DigitalJarOpenStepViewControllerTests.swift */; };
 		CB778672238D0E440009ECF9 /* DigitalJarOpenCompletionStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB778671238D0E440009ECF9 /* DigitalJarOpenCompletionStepViewController.swift */; };
 		CB778674238D18F30009ECF9 /* DigitalJarOpenCompletionStepViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB778673238D18F30009ECF9 /* DigitalJarOpenCompletionStepViewController.xib */; };
-		CB7CF2422400BF10003E02A5 /* WelcomeVideoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB7CF2412400BF10003E02A5 /* WelcomeVideoViewController.swift */; };
 		CB7CF2482400CFAA003E02A5 /* WelcomeVideo.mov in Resources */ = {isa = PBXBuildFile; fileRef = CB7CF2472400CFAA003E02A5 /* WelcomeVideo.mov */; };
 		CB81C92E242D3AB100A84886 /* MeasureTabViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB81C92D242D3AB100A84886 /* MeasureTabViewControllerTests.swift */; };
 		CB85FB52235F505300FDC59B /* PsorcastTaskResultProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB85FB51235F505300FDC59B /* PsorcastTaskResultProcessor.swift */; };
@@ -103,6 +102,11 @@
 		CB8F2A9E2375E4A4005A62E7 /* ImageCaptureCompletionStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB8F2A9D2375E4A4005A62E7 /* ImageCaptureCompletionStepViewController.swift */; };
 		CB8F7D562422D73A00F77D62 /* StudyTaskFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB8F7D512422D73900F77D62 /* StudyTaskFactory.swift */; };
 		CB8F7D592423F6BB00F77D62 /* LevenshteinToolsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB8F7D582423F6BB00F77D62 /* LevenshteinToolsTests.swift */; };
+		CB95A2852608540600F28273 /* OnboardingPagerStepViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB95A27E2608540600F28273 /* OnboardingPagerStepViewController.xib */; };
+		CB95A2862608540600F28273 /* OnboardingPagerStepObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB95A2832608540600F28273 /* OnboardingPagerStepObject.swift */; };
+		CB95A2872608540600F28273 /* OnboardingPagerStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB95A2842608540600F28273 /* OnboardingPagerStepViewController.swift */; };
+		CB95A28926085EDF00F28273 /* OnboardingPagerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB95A28826085EDF00F28273 /* OnboardingPagerView.xib */; };
+		CB95A28F260868A600F28273 /* Introduction.json in Resources */ = {isa = PBXBuildFile; fileRef = CB95A28D260868A600F28273 /* Introduction.json */; };
 		CB9F5E1F22E0BED3003FBCEF /* lato_black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CB9F5E1422E0BEA3003FBCEF /* lato_black.ttf */; };
 		CB9F5E2022E0BED3003FBCEF /* lato_bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CB9F5E1222E0BEA3003FBCEF /* lato_bold.ttf */; };
 		CB9F5E2122E0BED3003FBCEF /* lato_bolditalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CB9F5E1522E0BEA3003FBCEF /* lato_bolditalic.ttf */; };
@@ -431,7 +435,6 @@
 		CB77866F238B3F4D0009ECF9 /* DigitalJarOpenStepViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DigitalJarOpenStepViewControllerTests.swift; sourceTree = "<group>"; };
 		CB778671238D0E440009ECF9 /* DigitalJarOpenCompletionStepViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DigitalJarOpenCompletionStepViewController.swift; sourceTree = "<group>"; };
 		CB778673238D18F30009ECF9 /* DigitalJarOpenCompletionStepViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DigitalJarOpenCompletionStepViewController.xib; sourceTree = "<group>"; };
-		CB7CF2412400BF10003E02A5 /* WelcomeVideoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeVideoViewController.swift; sourceTree = "<group>"; };
 		CB7CF2472400CFAA003E02A5 /* WelcomeVideo.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = WelcomeVideo.mov; sourceTree = "<group>"; };
 		CB81C92D242D3AB100A84886 /* MeasureTabViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MeasureTabViewControllerTests.swift; sourceTree = "<group>"; };
 		CB85FB51235F505300FDC59B /* PsorcastTaskResultProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PsorcastTaskResultProcessor.swift; sourceTree = "<group>"; };
@@ -448,6 +451,11 @@
 		CB8F2A9D2375E4A4005A62E7 /* ImageCaptureCompletionStepViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCaptureCompletionStepViewController.swift; sourceTree = "<group>"; };
 		CB8F7D512422D73900F77D62 /* StudyTaskFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StudyTaskFactory.swift; sourceTree = "<group>"; };
 		CB8F7D582423F6BB00F77D62 /* LevenshteinToolsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevenshteinToolsTests.swift; sourceTree = "<group>"; };
+		CB95A27E2608540600F28273 /* OnboardingPagerStepViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OnboardingPagerStepViewController.xib; sourceTree = "<group>"; };
+		CB95A2832608540600F28273 /* OnboardingPagerStepObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardingPagerStepObject.swift; sourceTree = "<group>"; };
+		CB95A2842608540600F28273 /* OnboardingPagerStepViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardingPagerStepViewController.swift; sourceTree = "<group>"; };
+		CB95A28826085EDF00F28273 /* OnboardingPagerView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OnboardingPagerView.xib; sourceTree = "<group>"; };
+		CB95A28E260868A600F28273 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = Base; path = Base.lproj/Introduction.json; sourceTree = "<group>"; };
 		CB9F5E1222E0BEA3003FBCEF /* lato_bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = lato_bold.ttf; path = Fonts/lato_bold.ttf; sourceTree = "<group>"; };
 		CB9F5E1322E0BEA3003FBCEF /* lato_light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = lato_light.ttf; path = Fonts/lato_light.ttf; sourceTree = "<group>"; };
 		CB9F5E1422E0BEA3003FBCEF /* lato_black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = lato_black.ttf; path = Fonts/lato_black.ttf; sourceTree = "<group>"; };
@@ -664,7 +672,6 @@
 				CBFF927725E1783B00EC34DB /* RegistrationWaitingViewController.swift */,
 				CBFF926D25E08C3D00EC34DB /* SignInTaskViewController.swift */,
 				CBE561542412BD9D009A2930 /* TryItFirstTaskTableViewController.swift */,
-				CB7CF2412400BF10003E02A5 /* WelcomeVideoViewController.swift */,
 				CBAF1DA82437CB2A00ECC699 /* StudyExternalIdRegistrationViewController.swift */,
 				CBDD30E72416D403003B0488 /* MeasureTabViewController.swift */,
 				CB1535DF24395410007D0307 /* ProfileTabViewController.swift */,
@@ -684,6 +691,10 @@
 				CB2219D5246132D2007546CD /* PastInsightsViewController.swift */,
 				CB89B88C246C7B3200567345 /* DeepDiveCollectionViewController.swift */,
 				CB89B896246C825A00567345 /* WebImageInstructionViewController.swift */,
+				CB95A2832608540600F28273 /* OnboardingPagerStepObject.swift */,
+				CB95A2842608540600F28273 /* OnboardingPagerStepViewController.swift */,
+				CB95A27E2608540600F28273 /* OnboardingPagerStepViewController.xib */,
+				CB95A28826085EDF00F28273 /* OnboardingPagerView.xib */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -895,6 +906,7 @@
 		CBFF926F25E08C9C00EC34DB /* JSON */ = {
 			isa = PBXGroup;
 			children = (
+				CB95A28D260868A600F28273 /* Introduction.json */,
 				CBFF927025E08CA400EC34DB /* PhoneSignIn.json */,
 			);
 			name = JSON;
@@ -1244,6 +1256,8 @@
 				CBDCDC7E23F3848500E5CEB8 /* MDJointSwelling.json in Resources */,
 				CBDCDC9923F3849E00E5CEB8 /* ReviewCaptureStepViewController.xib in Resources */,
 				CB8F2926245BD14C00ABE5B3 /* FilterTreatmentViewController.xib in Resources */,
+				CB95A2852608540600F28273 /* OnboardingPagerStepViewController.xib in Resources */,
+				CB95A28F260868A600F28273 /* Introduction.json in Resources */,
 				CBDCDC7123F383DC00E5CEB8 /* sage-psorcast.pem in Resources */,
 				CBDCDC8223F3848500E5CEB8 /* DigitalJarOpen.json in Resources */,
 				CBDCDC8623F3848E00E5CEB8 /* DigitalJarOpen.mov in Resources */,
@@ -1264,6 +1278,7 @@
 				CBDD30E62416C7D1003B0488 /* PsorcastAssets.xcassets in Resources */,
 				CBDCDC9423F3849E00E5CEB8 /* ParticipantIDRegistrationViewController.xib in Resources */,
 				FF5010A122DD214A0035E83C /* BridgeInfo.plist in Resources */,
+				CB95A28926085EDF00F28273 /* OnboardingPagerView.xib in Resources */,
 				04F00578243FE76E00EDB120 /* ShowInsightStepViewController.xib in Resources */,
 				CBDCDC7F23F3848500E5CEB8 /* MDJointCounting.json in Resources */,
 				CBFF927E25E19B6200EC34DB /* PhoneLearnMore.html in Resources */,
@@ -1374,6 +1389,7 @@
 				CBDCDC9523F3849E00E5CEB8 /* ImageCaptureStepViewController.swift in Sources */,
 				CBE561552412BD9D009A2930 /* TryItFirstTaskTableViewController.swift in Sources */,
 				CBDCDC9B23F3849E00E5CEB8 /* JointPainResultObject.swift in Sources */,
+				CB95A2862608540600F28273 /* OnboardingPagerStepObject.swift in Sources */,
 				CBDCDCAF23F3849E00E5CEB8 /* PsoriasisDrawCompletionStepViewController.swift in Sources */,
 				CBDCDC9A23F3849E00E5CEB8 /* JointPainStepObject.swift in Sources */,
 				CBFF927A25E1783B00EC34DB /* RegistrationWaitingViewController.swift in Sources */,
@@ -1423,6 +1439,7 @@
 				CBDCDC9723F3849E00E5CEB8 /* ImageCaptureCompletionStepViewController.swift in Sources */,
 				CBDCDC9323F3849E00E5CEB8 /* ParticipantIDRegistrationViewController.swift in Sources */,
 				CB144C862473B50F00DF0F6B /* History.xcdatamodeld in Sources */,
+				CB95A2872608540600F28273 /* OnboardingPagerStepViewController.swift in Sources */,
 				CB09F0382421D5730005698D /* TreatmentSelectionStepViewController.swift in Sources */,
 				CB27B9F1243596F4007D36D8 /* MasterScheduleManager.swift in Sources */,
 				CBBDC397247788720017A304 /* RemindersUserDefaultsSingletonReport.swift in Sources */,
@@ -1436,7 +1453,6 @@
 				CB2219D6246132D2007546CD /* PastInsightsViewController.swift in Sources */,
 				CBB78870246CB85F004385AF /* DeepDiveReportManager.swift in Sources */,
 				CBAAB6DD2458D30F00C1A619 /* FileManagerExtensions.swift in Sources */,
-				CB7CF2422400BF10003E02A5 /* WelcomeVideoViewController.swift in Sources */,
 				CBBDC394247787AA0017A304 /* TreatmentUserDefaultsSingletonReport.swift in Sources */,
 				CBDCDC9823F3849E00E5CEB8 /* ReviewCaptureStepViewController.swift in Sources */,
 				CBAA09CF243E4F5500D63CCD /* TreatmentSelectionResultObject.swift in Sources */,
@@ -1516,6 +1532,14 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		CB95A28D260868A600F28273 /* Introduction.json */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CB95A28E260868A600F28273 /* Base */,
+			);
+			name = Introduction.json;
+			sourceTree = "<group>";
+		};
 		CBA0250823FC6B2500604F2D /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (

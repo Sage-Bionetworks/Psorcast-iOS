@@ -52,7 +52,7 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate {
                                               fontRules: PSRFontRules(version: 1))
     
     /// The task identifier of the try it first intro screens
-    let tryItFirstTaskId = "TryItFirstIntro"
+    let IntroductionTaskId = "Introduction"
     let signInTaskId = "signIn"
     weak var smsSignInDelegate: SignInDelegate? = nil
     
@@ -82,7 +82,7 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate {
         } else if isAuthenticated {
             self.showTreatmentSelectionScreens(animated: true)
         } else {
-            self.showWelcomeViewController(animated: animated)
+            self.showIntroductionScreens(animated: animated)
         }
     }
     
@@ -129,23 +129,12 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate {
     }
     
     func showMainViewController(animated: Bool) {
-        guard self.rootViewController?.state != .main else { return }
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let vc = storyboard.instantiateViewController(withIdentifier: "TabBarViewController")
         self.transition(to: vc, state: .main, animated: true)
     }
     
-    func showWelcomeViewController(animated: Bool) {
-        guard let storyboard = openStoryboard("Main"),
-            let vc = storyboard.instantiateInitialViewController() else {
-            fatalError("Failed to instantiate initial view controller in the main storyboard.")
-        }        
-        self.transition(to: vc, state: .launch, animated: true)
-    }
-    
     func showTreatmentSelectionScreens(animated: Bool) {
-        guard self.rootViewController?.state != .main else { return }
-        
         guard let vc = MasterScheduleManager.shared.instantiateTreatmentTaskController() else {
             debugPrint("WARNING! Failed to create treatment task from profile manager app config")
             let alert = UIAlertController(title: "Connectivity issue", message: "We had trouble loading information from our server.  Please close the app and then try again.", preferredStyle: .alert)
@@ -162,31 +151,20 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate {
         return StudyBridgeConfiguration()
     }
     
-    func showTryItFirstIntroScreens(animated: Bool) {
-        guard self.rootViewController?.state != .main else { return }
-        
-        var instructionSteps = [RSDStep]()
-        let stepIdList = ["TryItFirstInstruction0", "TryItFirstInstruction1", "TryItFirstInstruction2", "TryItFirstInstruction3"]
-        
-        for stepId in stepIdList {
-            let step = TryItFirstInstructionStepObject(identifier: stepId)
-            step.imageTheme = RSDFetchableImageThemeElementObject(imageName: stepId)
-            step.title = Localization.localizedString("\(stepId)Title")
-            step.text = Localization.localizedString("\(stepId)Text")
-            instructionSteps.append(step)
+    func showIntroductionScreens(animated: Bool) {
+        do {
+            let resourceTransformer = RSDResourceTransformerObject(resourceName: self.IntroductionTaskId)
+            let task = try RSDFactory.shared.decodeTask(with: resourceTransformer)
+            let taskViewModel = RSDTaskViewModel(task: task)
+            let vc = RSDTaskViewController(taskViewModel: taskViewModel)
+            vc.delegate = self
+            self.transition(to: vc, state: .onboarding, animated: true)
+        } catch let err {
+            fatalError("Failed to decode the O task. \(err)")
         }
-        
-        var navigator = RSDConditionalStepNavigatorObject(with: instructionSteps)
-        navigator.progressMarkers = []
-        let task = RSDTaskObject(identifier: self.tryItFirstTaskId, stepNavigator: navigator)
-        let vc = RSDTaskViewController(task: task)
-        vc.delegate = self
-        self.transition(to: vc, state: .onboarding, animated: true)
     }
     
     func showTryItFirstViewController(animated: Bool) {
-        guard self.rootViewController?.state != .main else { return }
-        
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let vc = storyboard.instantiateViewController(withIdentifier: "TryItFirstTaskTableViewController")
         
@@ -194,8 +172,6 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate {
     }
     
     func showExternalIDSignInViewController(animated: Bool) {
-        guard self.rootViewController?.state != .main else { return }
-        
         let externalIDStep = StudyExternalIdRegistrationStepObject(identifier: "enterExternalID", type: "externalID")
         externalIDStep.shouldHideActions = [.navigation(.goBackward), .navigation(.skip
             )]
@@ -210,7 +186,6 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate {
     }
     
     func showSignUpViewController(animated: Bool) {
-        guard self.rootViewController?.state != .onboarding else { return }
         let vc = SignInTaskViewController()
         vc.delegate = self
         self.transition(to: vc, state: .onboarding, animated: true)
@@ -309,7 +284,7 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate {
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (action) in
             BridgeSDK.authManager.signOut(completion: nil)
             HistoryDataManager.shared.flushStore()
-            self.showWelcomeViewController(animated: true)
+            self.showIntroductionScreens(animated: true)
         }))
         self.rootViewController?.present(alert, animated: true)
     }
@@ -319,11 +294,14 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate {
     func taskController(_ taskController: RSDTaskController, didFinishWith reason: RSDTaskFinishReason, error: Error?) {
         
         // If we finish the intro screens, send the user to the try it first task list
-        if taskController.task.identifier == self.tryItFirstTaskId {
+        if taskController.task.identifier == self.IntroductionTaskId {
             if reason == .completed {
-                self.showTryItFirstViewController(animated: true)
-            } else {
-                self.showWelcomeViewController(animated: true)
+                if (taskController.taskViewModel.taskResult.stepHistory.first(where: { $0.identifier == "intro" }) as? RSDResultObject)?.skipToIdentifier == "try_it_first" {
+                    // User chose to try it first instead
+                    self.showTryItFirstViewController(animated: true)
+                } else {
+                    self.showSignUpViewController(animated: true)
+                }
             }
             return
         }
@@ -340,7 +318,7 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate {
         }
                     
         if taskController.task.identifier == self.signInTaskId && reason != .completed {
-            self.showWelcomeViewController(animated: true)
+            self.showIntroductionScreens(animated: true)
             return
         }
         
@@ -367,6 +345,43 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate {
     func updateGlobalColors() {
         // Set all UISearchBar textfield background to white
         UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).backgroundColor = .white
+    }
+    
+    /// Convenience method for transitioning to the given view controller as the main window
+    /// rootViewController.
+    /// - parameters:
+    ///     - viewController: View controller to transition to.
+    ///     - state: State of the app.
+    ///     - animated: Should the transition be animated?
+    override open func transition(to viewController: UIViewController, state: SBAApplicationState, animated: Bool) {
+        // Do not continue if this is called before the app has finished launching.
+        guard let window = self.window else { return }
+        
+        // Do not continue if there is a catastrophic error and this is **not** transitioning to that state.
+        guard !hasCatastrophicError || (state == .catastrophicError) else {
+            if currentState != .catastrophicError {
+                showCatastrophicStartupErrorViewController(animated: animated)
+            }
+            return
+        }
+        
+        if let root = self.rootViewController {
+            root.set(viewController: viewController, state: state, animated: animated)
+        }
+        else {
+            if (animated) {
+                UIView.transition(with: window,
+                                  duration: 0.3,
+                                  options: .transitionCrossDissolve,
+                                  animations: {
+                                    window.rootViewController = viewController
+                },
+                                  completion: nil)
+            }
+            else {
+                window.rootViewController = viewController
+            }
+        }
     }
 }
 

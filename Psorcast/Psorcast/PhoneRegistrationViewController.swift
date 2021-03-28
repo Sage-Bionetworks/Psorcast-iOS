@@ -59,7 +59,10 @@ class PhoneRegistrationViewController: RSDTableStepViewController {
     }
     
     @objc func cancelButtonTapped() {
-        (UIApplication.shared.delegate as? AppDelegate)?.showWelcomeViewController(animated: true)
+        guard let appDelegate = (AppDelegate.shared as? AppDelegate) else {
+            return
+        }
+        appDelegate.showIntroductionScreens(animated: true)
     }
 
     override func goForward() {
