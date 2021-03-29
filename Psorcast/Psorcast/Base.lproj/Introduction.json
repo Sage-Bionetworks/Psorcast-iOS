@@ -1,0 +1,54 @@
+{
+    "identifier":"Introduction",
+    "shouldHideActions":["skip"],
+    "progressMarkers":[],
+    "steps":[
+             {
+                "identifier":"intro",
+                "type":"onboardingPager",
+                "actions": {
+                    "goForward": {
+                        "type": "default",
+                        "buttonTitle": "Sign up / Sign in"
+                    },
+                    "skip": {
+                        "type": "navigation",
+                        "buttonTitle" : "Preview and try it first",
+                        "skipToIdentifier": "try_it_first"
+                    }
+                },
+                "items": [
+                    {
+                        "backgroundImageName": "Wave0",
+                        "imageName": "Logo",
+                        "title": "Welcome to Psorcast!",
+                        "text": "This app is a research study and a tool for you to measure your psoriasis and/or psoriatic arthritis. Swipe through these screens to see what we’re all about."
+                    },
+                    {
+                        "backgroundImageName": "Wave1",
+                        "imageName": "Forecasts",
+                        "title": "Psoriasis forecasts could be like weather forecasts",
+                        "text": "Just like data from many satellites can be used to forecast your local weather, our research is based on many people like you measuring your skin and joints with a smartphone and studying this combined data to make forecasts of psoriasis outcomes"
+                    },
+                    {
+                        "backgroundImageName": "Wave2",
+                        "imageName": "Predictions",
+                        "title": "Predicting treatment response and arthritis risk",
+                        "text": "In the Psorcast research study, we hope to forecast which drugs might work best for certain people and who is at greatest risk of getting psoriatic arthritis"
+                    },
+                    {
+                        "backgroundImageName": "Wave3",
+                        "imageName": "Movies",
+                        "title": "Contribute to research and make your Psorcast movie",
+                        "text": "Each weekly Psorcast measure makes an image, and we’ll combine them into movies of how your symptoms change over time for you to use however you’d like."
+                    },
+                    {
+                        "backgroundImageName": "Wave4",
+                        "imageName": "TryItNow",
+                        "title": "Try out Psorcast today!",
+                        "text": "Feel free to try out the Psorcast measurements before joining the research study. None of the measurement data will be saved."
+                    }
+                ]
+             }
+        ]
+}

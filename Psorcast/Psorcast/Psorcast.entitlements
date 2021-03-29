@@ -6,5 +6,10 @@
 	<array>
 		<string>group.org.sagebionetworks.psorcast</string>
 	</array>
+	<key>keychain-access-groups</key>
+	<array>
+		<string>$(AppIdentifierPrefix)org.sagebionetworks.Psorcast</string>
+		<string>$(AppIdentifierPrefix)org.sagebase.Bridge</string>
+	</array>
 </dict>
 </plist>
