@@ -95,7 +95,8 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate {
         // Set up font rules.
         RSDStudyConfiguration.shared.fontRules = PSRFontRules(version: 0)
         
-        _ = HistoryDataManager.shared
+        // Setup HistoryDataManager
+        setupCoreData()
         
         // Setup reminder manager
         ReminderManager.shared.setupNotifications()
@@ -120,12 +121,21 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate {
         super.applicationDidBecomeActive(application)
     }
     
-    func showCoreDataLaunchScreen() {
-        guard let storyboard = openStoryboard("Main"),
-            let vc = storyboard.instantiateInitialViewController() else {
-            fatalError("Failed to instantiate initial view controller in the main storyboard.")
+    fileprivate func setupCoreData() {
+        HistoryDataManager.shared.loadStore { (errorMsg) in  // Make sure CoreData is loaded
+            DispatchQueue.main.async {
+                if let error = errorMsg {
+                    self.showCoreDataCriticalErrorAlert(error)
+                    return
+                }
+            }
         }
-        self.transition(to: vc, state: .custom("CoreDataLaunch"), animated: true)
+    }
+    
+    fileprivate func showCoreDataCriticalErrorAlert(_ error: String) {
+        let alert = UIAlertController(title: "Critical Error", message: "Please try restarting the app.  If that does not work, contact customer support. \(error)", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Okay", style: .default, handler: nil))
+        self.rootViewController?.present(alert, animated: true)
     }
     
     func showMainViewController(animated: Bool) {
