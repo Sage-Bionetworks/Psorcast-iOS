@@ -103,6 +103,8 @@ open class PsoriasisAreaPhotoStepViewController: RSDStepViewController, Psoriasi
         
         // If there is an initial result, apply the selected zone and show the correct view
         self.initializeImageViewsBasedOnResult()
+        
+        checkPopTips()
     }
     
     func initializeImageViewsBasedOnResult() {
@@ -332,5 +334,11 @@ open class PsoriasisAreaPhotoStepViewController: RSDStepViewController, Psoriasi
     
     public func didLayoutButtons(for psoriasisAreaPhotoView: PsoriasisAreaPhotoImageView) {
         // No-op needed
+    }
+    
+    private func checkPopTips() {
+        if (PopTipProgress.psoAreaNoPsoriasis.isNotConsumed()) {
+            PopTipProgress.psoAreaNoPsoriasis.consume(on: self)
+        }
     }
 }

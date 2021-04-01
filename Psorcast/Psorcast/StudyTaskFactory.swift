@@ -46,6 +46,8 @@ open class StudyTaskFactory: TaskFactory {
     /// Override the base factory to vend Psorcast specific step objects.
     override open func decodeStep(from decoder: Decoder, with type: RSDStepType) throws -> RSDStep? {
         switch type {
+        case .overview:
+            return try TaskOverviewStepObject(from: decoder)
         case.onboardingPager:
             return try OnboardingPagerStepObject(from: decoder)
         case .treatmentSelection:

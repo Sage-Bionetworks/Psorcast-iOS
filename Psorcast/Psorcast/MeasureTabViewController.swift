@@ -168,6 +168,10 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
             let activityFrame = collectionView.frame
             popTip.show(text: "These are the activities we'd like you to do this week", direction: .up, maxWidth: 150, in: view, from: activityFrame)
         }
+        
+        if (PopTipProgress.measureTabLanding.isNotConsumed()) {
+            PopTipProgress.measureTabLanding.consume(on: self)
+        }
     }
     
     public func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
@@ -656,13 +660,25 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
         // Let the schedule manager handle the cleanup.
         self.scheduleManager.taskController(taskController, didFinishWith: reason, error: error)
         
+        let taskId = taskController.task.identifier
+        
         self.dismiss(animated: true, completion: {
+            
             // If the user has not set their reminders yet, we should show them
-            if taskController.task.identifier == RSDIdentifier.insightsTask.rawValue &&
+            if taskId == RSDIdentifier.insightsTask.rawValue &&
                 !self.historyData.haveWeeklyRemindersBeenSet {
                 let vc = ReminderType.weekly.createReminderTaskViewController()
                 vc.delegate = self
                 self.show(vc, sender: self)
+            }
+            
+            if (reason == .completed &&
+                    MasterScheduleManager.filterAll.contains(RSDIdentifier(rawValue: taskId))) {
+                
+                if (PopTipProgress.firstTaskComplete.isNotConsumed()) {
+                    PopTipProgress.firstTaskComplete.consume(on: self)
+                    // TODO: esieg after first is consumed, show PopTipProgress.afterFirstTaskComplete
+                }
             }
         })
     }

@@ -114,6 +114,8 @@ open class SelectionCollectionStepViewController: RSDStepViewController, UIColle
         self.collectionView.register(NavigationHeaderCollectionViewHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: navigationHeaderResuableCellId)
         
         self.collectionView.register(SelectionBodyImageCollectionViewCell.self, forCellWithReuseIdentifier: selectionCellResuableCellId)
+        
+        checkPopTips()
     }
     
     override open func viewWillLayoutSubviews() {
@@ -234,6 +236,19 @@ open class SelectionCollectionStepViewController: RSDStepViewController, UIColle
         self.stepViewModel.parent?.taskResult.appendStepHistory(with: result)
         
         super.goForward()
+    }
+        
+    private func checkPopTips() {
+        let taskId = self.taskController?.task.identifier
+        if taskId == RSDIdentifier.jointCountingTask.rawValue {
+            if (PopTipProgress.jointsNoPsoriasis.isNotConsumed()) {
+                PopTipProgress.jointsNoPsoriasis.consume(on: self)
+            }
+        } else if taskId == RSDIdentifier.psoriasisDrawTask.rawValue {
+            if (PopTipProgress.psoDrawNoPsoriasis.isNotConsumed()) {
+                PopTipProgress.psoDrawNoPsoriasis.consume(on: self)
+            }
+        }
     }
 }
 

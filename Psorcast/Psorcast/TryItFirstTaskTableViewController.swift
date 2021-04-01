@@ -56,6 +56,10 @@ class TryItFirstTaskTableViewController: UIViewController, UICollectionViewDataS
         
         // Register the 30 second walking task with the motor control framework
         SBABridgeConfiguration.shared.addMapping(with: MCTTaskInfo(.walk30Seconds).task)
+        
+        if (PopTipProgress.tryOutFirstLanding.isNotConsumed()) {
+            PopTipProgress.tryOutFirstLanding.consume(on: self)
+        }
     }
     
     open override func viewDidLayoutSubviews() {
