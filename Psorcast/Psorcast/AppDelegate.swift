@@ -38,7 +38,7 @@ import Research
 import BridgeAppUI
 
 @UIApplicationMain
-class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate {
+class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate, ShowPopTipDelegate {
     
     static let colorPalette = RSDColorPalette(version: 1,
                                               primary: RSDColorMatrix.shared.colorKey(for: .palette(.fern),
@@ -55,6 +55,8 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate {
     let IntroductionTaskId = "Introduction"
     let signInTaskId = "signIn"
     weak var smsSignInDelegate: SignInDelegate? = nil
+    
+    let popTipController = PopTipController()
     
     open var profileDataSource: StudyProfileDataSource? {
         return SBAProfileDataSourceObject.shared as? StudyProfileDataSource
@@ -392,6 +394,11 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate {
                 window.rootViewController = viewController
             }
         }
+    }
+    
+    /// This function is called by PopTipProgress when a new pop-tip is requesting to be shown
+    func showPopTip(type: PopTipProgress, on viewController: UIViewController) {
+        popTipController.showPopTip(type: type, on: viewController)
     }
 }
 
