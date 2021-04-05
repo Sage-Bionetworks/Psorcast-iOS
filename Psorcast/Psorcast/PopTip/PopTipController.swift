@@ -138,7 +138,6 @@ public class PopTipController: ShowPopTipDelegate {
             if let taskOverviewStepViewController = viewController as? TaskOverviewStepViewController {
                 if let learnMoreButton = taskOverviewStepViewController.learnMoreButton {
                     let rect = learnMoreButton.frame
-                    let popTipRect = rect.offsetBy(dx: 0, dy: -400)
                     popTip.show(text: "This measurement can be tricky to do, so it might be helpful to see a person perform it by tapping the link above.", direction: .down, maxWidth: maxWidth, in: taskOverviewStepViewController.view, from: rect)
                 }
                 
