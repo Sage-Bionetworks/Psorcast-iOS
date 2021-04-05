@@ -142,7 +142,7 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
         // We have seen the measure screen, remove any badge numbers from notifications
         UIApplication.shared.applicationIconBadgeNumber = 0
         
-        if (true) {
+        if (PopTipProgress.measureTabLanding.isNotConsumed()) {
             PopTipProgress.measureTabLanding.consume(on: self)
         }
     }
