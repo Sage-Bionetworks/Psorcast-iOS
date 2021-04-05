@@ -47,7 +47,10 @@ open class TaskOverviewStepViewController: RSDScrollingOverviewStepViewControlle
     override open func viewDidLoad() {
         super.viewDidLoad()
         self.designSystem = AppDelegate.designSystem
-        
+    }
+    
+    override open func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()        
         checkPopTips()
     }
         

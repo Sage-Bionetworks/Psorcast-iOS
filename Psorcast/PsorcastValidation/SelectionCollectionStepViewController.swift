@@ -114,8 +114,6 @@ open class SelectionCollectionStepViewController: RSDStepViewController, UIColle
         self.collectionView.register(NavigationHeaderCollectionViewHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: navigationHeaderResuableCellId)
         
         self.collectionView.register(SelectionBodyImageCollectionViewCell.self, forCellWithReuseIdentifier: selectionCellResuableCellId)
-        
-        checkPopTips()
     }
     
     override open func viewWillLayoutSubviews() {
@@ -123,6 +121,8 @@ open class SelectionCollectionStepViewController: RSDStepViewController, UIColle
 
         // Invalidating the layout is necessary to get the navigation header height to be correct
         collectionView.collectionViewLayout.invalidateLayout()
+        
+        checkPopTips()
     }
     
     open override func setupViews() {

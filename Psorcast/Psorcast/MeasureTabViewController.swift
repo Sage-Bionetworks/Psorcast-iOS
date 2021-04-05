@@ -141,10 +141,6 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
         
         // We have seen the measure screen, remove any badge numbers from notifications
         UIApplication.shared.applicationIconBadgeNumber = 0
-        
-        if (PopTipProgress.measureTabLanding.isNotConsumed()) {
-            PopTipProgress.measureTabLanding.consume(on: self)
-        }
     }
     
     public func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
@@ -180,6 +176,8 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
         self.gridLayout.collectionViewWidth = self.collectionView.bounds.width
         // Refresh collection view sizes
         self.setupCollectionViewSizes()
+        
+        checkPopTips()
     }
     
     func refreshUI() {
@@ -654,6 +652,12 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
                 }
             }
         })
+    }
+    
+    private func checkPopTips() {
+        if (PopTipProgress.measureTabLanding.isNotConsumed()) {
+            PopTipProgress.measureTabLanding.consume(on: self)
+        }
     }
 }
 

@@ -103,7 +103,10 @@ open class PsoriasisAreaPhotoStepViewController: RSDStepViewController, Psoriasi
         
         // If there is an initial result, apply the selected zone and show the correct view
         self.initializeImageViewsBasedOnResult()
-        
+    }
+    
+    override open func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
         checkPopTips()
     }
     
