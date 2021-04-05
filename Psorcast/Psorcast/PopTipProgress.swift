@@ -39,6 +39,10 @@ import UIKit
  */
 public enum PopTipProgress: String, CaseIterable {
     
+    /// These debug flags are helpful during testing, but do not ever commit them as "true"
+    private static let alwaysShowPopTips = false
+    private static let neverShowPopTips = false
+    
     // When user first lands on TryItFirstTaskTableViewController
     case tryItFirst
     
@@ -75,10 +79,16 @@ public enum PopTipProgress: String, CaseIterable {
     }
     
     public func isNotConsumed() -> Bool {
-        return false == UserDefaults.standard.bool(forKey: self.userDefaultsKey())
+        return false == isConsumed()
     }
     
     public func isConsumed() -> Bool {
+        if PopTipProgress.alwaysShowPopTips {
+            return false
+        }
+        if PopTipProgress.neverShowPopTips {
+            return true
+        }
         return UserDefaults.standard.bool(forKey: self.userDefaultsKey())
     }
     
