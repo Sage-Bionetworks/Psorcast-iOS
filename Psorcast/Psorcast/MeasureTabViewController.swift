@@ -88,15 +88,6 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
     
     let showInsightTaskId = "showInsight"
     
-    // Poptip related inits
-    // First, should we actually be showing this demo popTip?
-    let showPopTip = true
-    // Now do the inits
-    let popTip = PopTip()
-    var direction = PopTipDirection.up
-    var topRightDirection = PopTipDirection.down
-    var timer: Timer? = nil
-    var autolayoutView: UIView?
     
     // Open for unit testing
     open func treatmentWeek() -> Int {
@@ -151,25 +142,7 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
         // We have seen the measure screen, remove any badge numbers from notifications
         UIApplication.shared.applicationIconBadgeNumber = 0
         
-        // Now, add the poptip (if displaying it) to the UI
-        if (self.showPopTip) {
-            // First, config the appearance
-            popTip.font = UIFont(name: "Avenir-Medium", size: 12)!
-            popTip.shouldDismissOnTap = true
-            popTip.shouldDismissOnTapOutside = true
-            popTip.shouldDismissOnSwipeOutside = true
-            popTip.edgeMargin = 5
-            popTip.offset = 2
-            popTip.bubbleOffset = 0
-            popTip.edgeInsets = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
-            
-            // Now show the popTip
-            popTip.bubbleColor = UIColor(red: 0.31, green: 0.475, blue: 0.259, alpha: 1)
-            let activityFrame = collectionView.frame
-            popTip.show(text: "These are the activities we'd like you to do this week", direction: .up, maxWidth: 150, in: view, from: activityFrame)
-        }
-        
-        if (PopTipProgress.measureTabLanding.isNotConsumed()) {
+        if (true) {
             PopTipProgress.measureTabLanding.consume(on: self)
         }
     }

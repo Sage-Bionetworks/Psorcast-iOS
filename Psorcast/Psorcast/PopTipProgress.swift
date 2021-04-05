@@ -40,7 +40,7 @@ import UIKit
 public enum PopTipProgress: String, CaseIterable {
     
     // When user first lands on TryItFirstTaskTableViewController
-    case tryOutFirstLanding
+    case tryItFirst
     
     // When user first lands on MeasureTabViewController
     case measureTabLanding
@@ -83,7 +83,7 @@ public enum PopTipProgress: String, CaseIterable {
     }
     
     public func show(on viewController: UIViewController) {
-        guard let appDelegate = (UIApplication.shared as? ShowPopTipDelegate) else {
+        guard let appDelegate = (UIApplication.shared.delegate as? ShowPopTipDelegate) else {
             return
         }
         appDelegate.showPopTip(type: self, on: viewController)
