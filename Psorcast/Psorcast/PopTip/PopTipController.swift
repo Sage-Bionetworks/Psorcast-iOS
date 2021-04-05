@@ -84,18 +84,18 @@ public class PopTipController: ShowPopTipDelegate {
                 let headerOffset = measureTabViewController.topHeader.bounds.height
                 let popTipRect = rect.offsetBy(dx: (vcBounds.width/2 - rect.width/2), dy: (headerOffset-15))
                 popTip.show(text: "When you finish your research tasks in a given week, this bar will fill up towards unlocking a Psorcast insight. Keep going, you're doing great.", direction: .down, maxWidth: maxWidth, in: measureTabViewController.view, from: popTipRect)
-            }
-        case .afterFirstTaskComplete:
-            NSLog("after first task complete showPopTip called")
-            if let measureTabViewController = viewController as? MeasureTabViewController {
-               if let tabItemView = measureTabViewController.tabBarController?.tabBar.items?[0].value(forKey: "view") as? UIView {
-                let tabFrame = tabItemView.frame
-                // Unfortunately, the origin point for the frame comes back as 0,0 so we need to offset X and Y
-                let yOffset = (vcBounds.height - tabFrame.height)
-                let xOffset = ((vcBounds.width * 0.375) - (tabFrame.width) / 2)
-                let popTipRect = tabFrame.offsetBy(dx: xOffset, dy: yOffset)
-                popTip.show(text: "After performing measurements, you can see your images and movies here on the Review tab", direction: .up, maxWidth: (vcBounds.width * 1/2), in: measureTabViewController.view, from: popTipRect)
-               }
+                popTip.dismissHandler = { popTip in
+                    if let tabItemView = measureTabViewController.tabBarController?.tabBar.items?[0].value(forKey: "view") as? UIView {
+                        let tabFrame = tabItemView.frame
+                        
+                        // Unfortunately, the origin point for the frame comes back as 0,0 so we need to offset X and Y
+                        let yOffset = (vcBounds.height - tabFrame.height)
+                        let xOffset = ((vcBounds.width * 0.375) - (tabFrame.width) / 2)
+                        let popTipRect = tabFrame.offsetBy(dx: xOffset, dy: yOffset)
+                        popTip.dismissHandler = nil
+                        popTip.show(text: "After performing measurements, you can see your images and movies here on the Review tab", direction: .up, maxWidth: (vcBounds.width * 1/2), in: measureTabViewController.view, from: popTipRect)
+                    }
+                }
             }
         case .reviewTabImage:
             NSLog("review tab image showPopTip called")
