@@ -56,10 +56,6 @@ class TryItFirstTaskTableViewController: UIViewController, UICollectionViewDataS
         
         // Register the 30 second walking task with the motor control framework
         SBABridgeConfiguration.shared.addMapping(with: MCTTaskInfo(.walk30Seconds).task)
-        
-        if (PopTipProgress.tryOutFirstLanding.isNotConsumed()) {
-            PopTipProgress.tryOutFirstLanding.consume(on: self)
-        }
     }
     
     open override func viewDidLayoutSubviews() {
@@ -73,8 +69,9 @@ class TryItFirstTaskTableViewController: UIViewController, UICollectionViewDataS
         
         self.gridLayout.itemCount = self.scheduleManager.tableRowCount
         self.collectionView.reloadData()
+        
+        checkPopTips()
     }
-    
     
     func updateDesignSystem() {
         let designSystem = AppDelegate.designSystem
@@ -207,6 +204,13 @@ class TryItFirstTaskTableViewController: UIViewController, UICollectionViewDataS
     /// Here we can customize which VCs show for a step within a survey
     func taskViewController(_ taskViewController: UIViewController, viewControllerForStep stepModel: RSDStepViewModel) -> UIViewController? {
         return nil
+    }
+    
+    
+    private func checkPopTips() {
+        if (PopTipProgress.tryItFirst.isNotConsumed()) {
+            PopTipProgress.tryItFirst.consume(on: self)
+        }
     }
 }
 

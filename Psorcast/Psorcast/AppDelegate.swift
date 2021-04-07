@@ -40,6 +40,9 @@ import BridgeAppUI
 @UIApplicationMain
 class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate, ShowPopTipDelegate {
     
+    /// Debug setting, do not commit as true
+    let debugAlwaysShowPopTips = false
+    
     static let colorPalette = RSDColorPalette(version: 1,
                                               primary: RSDColorMatrix.shared.colorKey(for: .palette(.fern),
                                                                                       shade: .medium),
@@ -115,6 +118,10 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate, ShowPopTipDele
         }
         
         self.showAppropriateViewController(animated: true)
+        
+        if (self.debugAlwaysShowPopTips) {
+            PopTipProgress.resetPopTipTracking()
+        }
         
         return true
     }

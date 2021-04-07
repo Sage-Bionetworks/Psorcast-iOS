@@ -155,3 +155,13 @@
 
 "RESET_TASKS_ALERT_TITLE" = "Reset Tasks: ";
 "RESET_TASKS_ALERT_MESSAGE" = "This will reset the status of all tasks to Begin. Proceed?";
+
+"POPTIP_TRYITFIRST" = "Tap any of the icons below to try the measurements. None of your data will be stored while you are trying these out.";
+"POPTIP_MEASURE_LANDING" = "You can change how you are treating your psoriasis any time by tapping here. We keep track of everything by how many weeks you’ve been on a given treatment.";
+"POPTIP_FIRT_TASK_COMPLETE" = "When you finish your research tasks in a given week, this bar will fill up towards unlocking a Psorcast insight. Keep going, you’re doing great.";
+"POPTIP_AFTER_FIRST_TASK_COMPLETE" = "After performing measurements, you can see your images and movies here on the Review tab";
+"POPTIP_DRAW_NO_PSORIASIS" = "Even if you don’t have any psoriasis currently, it is very helpful for our research to know when and how long you are clear (and we’re happy to see it!)";
+"POPTIP_JOINTS_NO_PSORIASIS" = "Even if you don’t have any painful joints currently, it is very helpful for our research to know when and how long you are pain-free (and we’re happy to see it!)";
+"POPTIP_AREA_NO_PSORIASIS" = "Even if you don’t have any psoriasis currently, it is very helpful for our research to know when and how long you are clear (and we’re happy to see it!)";
+"POPTIP_UNDO" = "You can undo your drawing at any point with this button";
+"POPTIP_JAR_OPEN" = "This measurement can be tricky to do, so it might be helpful to see a person perform it by tapping the link above.";

@@ -262,7 +262,10 @@ open class ReviewTabViewController: UIViewController, UITableViewDataSource, UIT
         if let firstTaskRow = self.allTaskRows.first {
             if (taskRowItemMap[firstTaskRow]?.count ?? 0) > 0 {
                 if (PopTipProgress.reviewTabImage.isNotConsumed()) {
-                    PopTipProgress.reviewTabImage.consume(on: self)
+                    // Give tableview/collectionview time to lay itself out
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+                        PopTipProgress.reviewTabImage.consume(on: self)
+                    }
                 }
             }
         }

@@ -150,7 +150,10 @@ open class PsoriasisDrawStepViewController: RSDStepViewController, ProcessorFini
         } else {
             self.longHoldDebugView?.isHidden = true
         }
-        
+    }
+    
+    override open func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
         checkPopTips()
     }
     
