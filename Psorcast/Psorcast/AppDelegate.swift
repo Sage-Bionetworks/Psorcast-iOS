@@ -41,7 +41,7 @@ import BridgeAppUI
 class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate, ShowPopTipDelegate {
     
     /// Debug setting, do not commit as true
-    let debugAlwaysShowPopTips = true
+    let debugAlwaysShowPopTips = false
     
     static let colorPalette = RSDColorPalette(version: 1,
                                               primary: RSDColorMatrix.shared.colorKey(for: .palette(.fern),

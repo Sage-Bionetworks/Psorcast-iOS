@@ -32,6 +32,7 @@
 //
 
 import UIKit
+import BridgeApp
 
 public class PopTipController: ShowPopTipDelegate {
     
@@ -64,14 +65,14 @@ public class PopTipController: ShowPopTipDelegate {
                 let initialRect = tryItFirstTaskTableViewController.collectionView.bounds
                 let headerOffset = tryItFirstTaskTableViewController.headerView.bounds.height
                 let popTipRect = initialRect.offsetBy(dx:(vcBounds.width/2 - initialRect.width/2), dy: 60+headerOffset)
-                popTip.show(text: "Tap any of the icons below to try the measurements. None of your data will be stored while you are trying these out.", direction: .up, maxWidth: maxWidth, in: tryItFirstTaskTableViewController.collectionView.superview!, from: popTipRect)
+                popTip.show(text: Localization.localizedString("POPTIP_TRYITFIRST"), direction: .up, maxWidth: maxWidth, in: tryItFirstTaskTableViewController.collectionView.superview!, from: popTipRect)
             }
         case .measureTabLanding:
             NSLog("Measure Tab Landing showPopTip called")
             if let measureTabViewController = viewController as? MeasureTabViewController {
                 let rect = measureTabViewController.bottomHeader.bounds
                 let popTipRect = rect.offsetBy(dx: (vcBounds.width/2 - rect.width/2), dy: 0)
-                popTip.show(text: "You can change how you are treating your psoriasis any time by tapping here. We keep track of everything by how many week you've been on a given treatment.", direction: .down, maxWidth: maxWidth, in: measureTabViewController.view, from: popTipRect)
+                popTip.show(text: Localization.localizedString("POPTIP_MEASURE_LANDING"), direction: .down, maxWidth: maxWidth, in: measureTabViewController.view, from: popTipRect)
             }
         case .firstTaskComplete:
             NSLog("first task complete showPopTip called")
@@ -79,7 +80,7 @@ public class PopTipController: ShowPopTipDelegate {
                 let rect = measureTabViewController.bottomHeader.bounds
                 let headerOffset = measureTabViewController.topHeader.bounds.height
                 let popTipRect = rect.offsetBy(dx: (vcBounds.width/2 - rect.width/2), dy: (headerOffset-15))
-                popTip.show(text: "When you finish your research tasks in a given week, this bar will fill up towards unlocking a Psorcast insight. Keep going, you're doing great.", direction: .down, maxWidth: maxWidth, in: measureTabViewController.view, from: popTipRect)
+                popTip.show(text: Localization.localizedString("POPTIP_FIRT_TASK_COMPLETE"), direction: .down, maxWidth: maxWidth, in: measureTabViewController.view, from: popTipRect)
                 popTip.dismissHandler = { popTip in
                     // After First Task Complete section
                     if let tabItemView = measureTabViewController.tabBarController?.tabBar.items?[0].value(forKey: "view") as? UIView {
@@ -87,7 +88,7 @@ public class PopTipController: ShowPopTipDelegate {
                         let barFrame = measureTabViewController.tabBarController?.tabBar.frame
                         let popTipRect = CGRect(x: (vcBounds.width * 0.375 - (tabFrame.width / 2)), y: (vcBounds.height - barFrame!.height), width: tabFrame.width, height: barFrame!.height)
                         popTip.dismissHandler = nil
-                        popTip.show(text: "After performing measurements, you can see your images and movies here on the Review tab", direction: .up, maxWidth: (vcBounds.width * 1/2), in: measureTabViewController.view, from: popTipRect)
+                        popTip.show(text: Localization.localizedString("POPTIP_AFTER_FIRST_TASK_COMPLETE"), direction: .up, maxWidth: (vcBounds.width * 1/2), in: measureTabViewController.view, from: popTipRect)
                     }
                 }
             }
@@ -102,7 +103,7 @@ public class PopTipController: ShowPopTipDelegate {
                 if let navigationFooter = selectionCollectionStepViewController.navigationFooter {
                     let locationHeight = navigationFooter.frame.height - 10
                     let popTipRect = CGRect(x: 0, y: (vcBounds.height-locationHeight), width: vcBounds.width, height: (locationHeight))
-                    popTip.show(text: "Even if you don't have any psoriasis currently, it is very helpful for our research to know when and how long you are clear (and we're happy to see it!)", direction: .up, maxWidth: maxWidth, in: selectionCollectionStepViewController.view, from: popTipRect)
+                    popTip.show(text: Localization.localizedString("POPTIP_DRAW_NO_PSORIASIS"), direction: .up, maxWidth: maxWidth, in: selectionCollectionStepViewController.view, from: popTipRect)
                 }
             }
         case .jointsNoPsoriasis:
@@ -111,7 +112,7 @@ public class PopTipController: ShowPopTipDelegate {
                 if let navigationFooter = selectionCollectionStepViewController.navigationFooter {
                     let locationHeight = navigationFooter.frame.height - 10
                     let popTipRect = CGRect(x: 0, y: (vcBounds.height-locationHeight), width: vcBounds.width, height: (locationHeight))
-                    popTip.show(text: "Even if you don't have any painful joints currently, it is very helpful for our research to know when and how long you are pain-free (and we're happy to see it!)", direction: .up, maxWidth: maxWidth, in: selectionCollectionStepViewController.view, from: popTipRect)
+                    popTip.show(text: Localization.localizedString("POPTIP_JOINTS_NO_PSORIASIS"), direction: .up, maxWidth: maxWidth, in: selectionCollectionStepViewController.view, from: popTipRect)
                 }
             }
         case .psoAreaNoPsoriasis:
@@ -120,7 +121,7 @@ public class PopTipController: ShowPopTipDelegate {
                 if let navigationFooter = psoriasisAreaPhotoStepViewController.navigationFooter {
                     let locationHeight = navigationFooter.frame.height - 10
                     let popTipRect = CGRect(x: 0, y: (vcBounds.height-locationHeight), width: vcBounds.width, height: (locationHeight))
-                    popTip.show(text: "Even if you don't have any psoriasis currently, it is very helpful for our research to know when and how long you are clear (and we're happy to see it!)", direction: .up, maxWidth: maxWidth, in: psoriasisAreaPhotoStepViewController.view, from: popTipRect)
+                    popTip.show(text: Localization.localizedString("POPTIP_AREA_NO_PSORIASIS"), direction: .up, maxWidth: maxWidth, in: psoriasisAreaPhotoStepViewController.view, from: popTipRect)
                 }
             }
         case .psoDrawUndo:
@@ -130,7 +131,7 @@ public class PopTipController: ShowPopTipDelegate {
                 let popTipRect = buttonFrame.offsetBy(dx: 0, dy: -10)
                 // scrollview offset y
                 // RSDScrollingOverviewStepViewController scroll to bottom
-                popTip.show(text: "You can undo your drawing at any point with this button", direction: .down, maxWidth: (vcBounds.width * 1/2), in: psoriasisDrawStepViewController.view, from: popTipRect)
+                popTip.show(text: Localization.localizedString("POPTIP_UNDO"), direction: .down, maxWidth: (vcBounds.width * 1/2), in: psoriasisDrawStepViewController.view, from: popTipRect)
             }
         case .digitalJarOpen:
             NSLog("digital jar open showPopTip called")
@@ -141,7 +142,7 @@ public class PopTipController: ShowPopTipDelegate {
                     let point = taskOverviewStepViewController.scrollView.convert(learnMoreButton.frame.origin, to: taskOverviewStepViewController.view)
                     let footerHeight = taskOverviewStepViewController.navigationFooter!.bounds.height
                     let popTipRect = CGRect(x: 0, y: (point.y-parentBounds.height+scrollViewBounds.height-footerHeight+learnMoreButton.bounds.height), width: vcBounds.width, height: 1)
-                    popTip.show(text: "This measurement can be tricky to do, so it might be helpful to see a person perform it by tapping the link above.", direction: .down, maxWidth: maxWidth, in: taskOverviewStepViewController.view, from: popTipRect)
+                    popTip.show(text: Localization.localizedString("POPTIP_JAR_OPEN"), direction: .down, maxWidth: maxWidth, in: taskOverviewStepViewController.view, from: popTipRect)
                 }
                 
             }
