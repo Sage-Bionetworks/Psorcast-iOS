@@ -94,8 +94,16 @@ public class PopTipController: ShowPopTipDelegate {
             }
         case .reviewTabImage:
             NSLog("review tab image showPopTip called")
-            if let reviewTabViewController = viewController as? ReviewTabViewController {
-                // Not Implemented
+            if let reviewTabViewController = viewController as? ReviewTabViewController,
+               let tableCell = reviewTabViewController.tableView
+                .cellForRow(at: IndexPath(row: 0, section: 0)) as? ReviewTableViewCell {
+                let collectionViewSize = tableCell.collectionView.numberOfItems(inSection: 0) - 1
+                   if let collectionViewCell = tableCell.collectionView.cellForItem(at: IndexPath(row: collectionViewSize, section: 0)) as? ReviewImageCollectionView {
+                    let rect = collectionViewCell.exportButton.bounds
+                    let headerOffset = reviewTabViewController.treatmentHeaderView.bounds.height + ReviewSectionHeader.headerHeight + collectionViewCell.contentView.bounds.height - rect.height
+                    let popTipRect = rect.offsetBy(dx: (vcBounds.width - rect.width - 44), dy: (headerOffset - 12))
+                    popTip.show(text: "This is YOUR data, and you can do whatever you’d like with it. You can download this image to your photo library by tapping this button.", direction: .up, maxWidth: maxWidth, in: reviewTabViewController.view, from: popTipRect)
+                }
             }
         case .psoDrawNoPsoriasis:
             NSLog("Psoriasis draw no psoriasis showPopTip called")
