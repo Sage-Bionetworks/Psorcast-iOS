@@ -80,6 +80,9 @@
 		CB67C29E23F390AB005B6BCD /* CopyStepTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB67C29423F390AB005B6BCD /* CopyStepTests.swift */; };
 		CB6C16DB2477BD5500819FCE /* HistoryItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6C16DA2477BD5500819FCE /* HistoryItem.swift */; };
 		CB6F54F022E25C5B0073BFE9 /* ParticipantIDRegistrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6F54EF22E25C5B0073BFE9 /* ParticipantIDRegistrationViewController.swift */; };
+		CB72819C2624CBE100AAEB2C /* TextfieldStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB72819A2624CBE100AAEB2C /* TextfieldStepViewController.swift */; };
+		CB72819D2624CBE100AAEB2C /* TextfieldStepViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB72819B2624CBE100AAEB2C /* TextfieldStepViewController.xib */; };
+		CB7281A02624D12400AAEB2C /* Feedback.json in Resources */ = {isa = PBXBuildFile; fileRef = CB72819E2624D12400AAEB2C /* Feedback.json */; };
 		CB737FEC231B100600FA1D3A /* MDJointSwelling.json in Resources */ = {isa = PBXBuildFile; fileRef = CB737FEB231B100600FA1D3A /* MDJointSwelling.json */; };
 		CB77866C238984790009ECF9 /* DigitalJarOpenStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB77866B238984790009ECF9 /* DigitalJarOpenStepViewController.swift */; };
 		CB778670238B3F4D0009ECF9 /* DigitalJarOpenStepViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB77866F238B3F4D0009ECF9 /* DigitalJarOpenStepViewControllerTests.swift */; };
@@ -435,6 +438,9 @@
 		CB67C29423F390AB005B6BCD /* CopyStepTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CopyStepTests.swift; sourceTree = "<group>"; };
 		CB6C16DA2477BD5500819FCE /* HistoryItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryItem.swift; sourceTree = "<group>"; };
 		CB6F54EF22E25C5B0073BFE9 /* ParticipantIDRegistrationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParticipantIDRegistrationViewController.swift; sourceTree = "<group>"; };
+		CB72819A2624CBE100AAEB2C /* TextfieldStepViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextfieldStepViewController.swift; sourceTree = "<group>"; };
+		CB72819B2624CBE100AAEB2C /* TextfieldStepViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TextfieldStepViewController.xib; sourceTree = "<group>"; };
+		CB72819F2624D12400AAEB2C /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = Base; path = Base.lproj/Feedback.json; sourceTree = "<group>"; };
 		CB737FEB231B100600FA1D3A /* MDJointSwelling.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = MDJointSwelling.json; sourceTree = "<group>"; };
 		CB77866B238984790009ECF9 /* DigitalJarOpenStepViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DigitalJarOpenStepViewController.swift; sourceTree = "<group>"; };
 		CB77866F238B3F4D0009ECF9 /* DigitalJarOpenStepViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DigitalJarOpenStepViewControllerTests.swift; sourceTree = "<group>"; };
@@ -707,6 +713,8 @@
 				CB95A28826085EDF00F28273 /* OnboardingPagerView.xib */,
 				CBF7D06A26167C9900266780 /* TaskOverviewStepViewController.swift */,
 				CBF7D06C26167FD200266780 /* TaskOverviewStepViewController.xib */,
+				CB72819A2624CBE100AAEB2C /* TextfieldStepViewController.swift */,
+				CB72819B2624CBE100AAEB2C /* TextfieldStepViewController.xib */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -919,6 +927,7 @@
 		CBFF926F25E08C9C00EC34DB /* JSON */ = {
 			isa = PBXGroup;
 			children = (
+				CB72819E2624D12400AAEB2C /* Feedback.json */,
 				CB95A28D260868A600F28273 /* Introduction.json */,
 				CBFF927025E08CA400EC34DB /* PhoneSignIn.json */,
 			);
@@ -1265,6 +1274,7 @@
 				CB9F5E1F22E0BED3003FBCEF /* lato_black.ttf in Resources */,
 				CB9F5E2322E0BED3003FBCEF /* lato_light.ttf in Resources */,
 				CBDCDC8423F3848E00E5CEB8 /* PsoriasisAreaPhoto.mov in Resources */,
+				CB7281A02624D12400AAEB2C /* Feedback.json in Resources */,
 				CBDCDCBE23F384D400E5CEB8 /* Assets.xcassets in Resources */,
 				CBDCDCA023F3849E00E5CEB8 /* JointPainCompletionStepViewController.xib in Resources */,
 				CBDCDC7E23F3848500E5CEB8 /* MDJointSwelling.json in Resources */,
@@ -1295,6 +1305,7 @@
 				CB95A28926085EDF00F28273 /* OnboardingPagerView.xib in Resources */,
 				04F00578243FE76E00EDB120 /* ShowInsightStepViewController.xib in Resources */,
 				CBDCDC7F23F3848500E5CEB8 /* MDJointCounting.json in Resources */,
+				CB72819D2624CBE100AAEB2C /* TextfieldStepViewController.xib in Resources */,
 				CBFF927E25E19B6200EC34DB /* PhoneLearnMore.html in Resources */,
 				CBDCDCA423F3849E00E5CEB8 /* PsoriasisAreaPhotoStepViewController.xib in Resources */,
 				CB9F5E2022E0BED3003FBCEF /* lato_bold.ttf in Resources */,
@@ -1472,6 +1483,7 @@
 				CBAAB6DD2458D30F00C1A619 /* FileManagerExtensions.swift in Sources */,
 				CBBDC394247787AA0017A304 /* TreatmentUserDefaultsSingletonReport.swift in Sources */,
 				CBDCDC9823F3849E00E5CEB8 /* ReviewCaptureStepViewController.swift in Sources */,
+				CB72819C2624CBE100AAEB2C /* TextfieldStepViewController.swift in Sources */,
 				CBAA09CF243E4F5500D63CCD /* TreatmentSelectionResultObject.swift in Sources */,
 				047C2CD325F16628006AA52B /* PopTip+Transitions.swift in Sources */,
 				CB89B895246C7B3200567345 /* DeepDiveCollectionViewController.swift in Sources */,
@@ -1550,6 +1562,14 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		CB72819E2624D12400AAEB2C /* Feedback.json */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CB72819F2624D12400AAEB2C /* Base */,
+			);
+			name = Feedback.json;
+			sourceTree = "<group>";
+		};
 		CB95A28D260868A600F28273 /* Introduction.json */ = {
 			isa = PBXVariantGroup;
 			children = (

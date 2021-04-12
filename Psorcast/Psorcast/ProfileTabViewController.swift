@@ -47,7 +47,10 @@ class ProfileTabViewController: UIViewController, UITableViewDelegate, UITableVi
     
     open var design = AppDelegate.designSystem
     
+    public static let feedbackTaskId = "Feedback"
+    
     public static let deepDiveProfileKey = "DeepDive"
+    public static let feedbackProfileKey = "feedback"
     
     override open func viewDidLoad() {
         super.viewDidLoad()                
@@ -203,6 +206,20 @@ class ProfileTabViewController: UIViewController, UITableViewDelegate, UITableVi
         self.show(vc, sender: self)
     }
     
+    func showFeedbackViewControler() {
+        do {
+            let resourceTransformer = RSDResourceTransformerObject(
+                resourceName: ProfileTabViewController.feedbackTaskId)
+            let task = try RSDFactory.shared.decodeTask(with: resourceTransformer)
+            let taskViewModel = RSDTaskViewModel(task: task)
+            let vc = RSDTaskViewController(taskViewModel: taskViewModel)
+            vc.delegate = self
+            self.present(vc, animated: true, completion: nil)
+        } catch let err {
+            fatalError("Failed to decode the task. \(err)")
+        }
+    }
+    
     public func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         guard self.profileDataSource?.title(for: section) != nil else { return CGFloat.leastNormalMagnitude }
         return UITableView.automaticDimension
@@ -251,6 +268,8 @@ class ProfileTabViewController: UIViewController, UITableViewDelegate, UITableVi
                 self.show(vc, sender: self)
             } else if profileItem.profileItemKey == ProfileTabViewController.deepDiveProfileKey {
                 self.showDeepDiveViewController()
+            } else if profileItem.profileItemKey == ProfileTabViewController.feedbackProfileKey {
+                self.showFeedbackViewControler()
             } else if let vc = MasterScheduleManager.shared.instantiateSingleQuestionTreatmentTaskController(for: profileItem.profileItemKey) {
                 vc.delegate = self
                 self.show(vc, sender: self)
