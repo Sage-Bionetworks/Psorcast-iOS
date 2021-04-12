@@ -98,6 +98,22 @@ class ProfileTabViewController: UIViewController, UITableViewDelegate, UITableVi
         return Localization.localizedString("REMINDERS_WEEKLY_I_HAVE_NOT_SET_REMINDERS")
     }
     
+    func insightProfileItemValue() -> String {
+        // Look for insights count or return "No Insights Yet" if we haven't unlocked any
+        if (self.historyData.pastInsightItemsViewed.count == 0) {
+            return Localization.localizedString("NO_INSIGHTS_YET")
+        } else if (self.historyData.pastInsightItemsViewed.count == 1) {
+            return Localization.localizedString("FIRST_INSIGHT_UNLOCKED")
+        } else {
+            return String(format: Localization.localizedString("%@_INSIGHTS_ACHIEVED"), "\(self.historyData.pastInsightItemsViewed.count)")
+        }
+    }
+    
+    func withdrawProfileItemValue() -> String {
+        return Localization.localizedString("CURRENTLY_ENROLLED")
+        // Todo: add logic to determine if enrolled, adjust return values here appropriately
+    }
+    
     // MARK: - Table view data source
        
     public func numberOfSections(in tableView: UITableView) -> Int {
@@ -166,6 +182,10 @@ class ProfileTabViewController: UIViewController, UITableViewDelegate, UITableVi
                 cell.detailLabel?.text = self.historyData.psoriasisSymptoms
             case TreatmentResultIdentifier.status.rawValue:
                 cell.detailLabel?.text = self.historyData.psoriasisStatus
+            case RSDIdentifier.insightsTask.rawValue:
+                cell.detailLabel?.text = self.insightProfileItemValue()
+            case RSDIdentifier.withdrawTask.rawValue:
+                cell.detailLabel?.text = self.withdrawProfileItemValue()
             default:
                 cell.detailLabel?.text = detailText
             }

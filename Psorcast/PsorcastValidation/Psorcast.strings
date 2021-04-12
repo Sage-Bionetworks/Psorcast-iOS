@@ -125,6 +125,10 @@
 "NO_REMINDERS_PLEASE" = "No reminders please";
 "SAVE_REMINDER_BUTTON" = "Save reminder";
 "REMINDERS_WEEKLY_I_HAVE_NOT_SET_REMINDERS" = "I have not set reminders";
+"NO_INSIGHTS_YET" = "No Insights Yet";
+"FIRST_INSIGHT_UNLOCKED" = "You've Unlocked Your First Insight";
+"%@_INSIGHTS_ACHIEVED" = "%@ insights achieved";
+"CURRENTLY_ENROLLED" = "Currently enrolled";
 "TREATMENT" = "Treatment";
 "PLAY" = "Play";
 "PAUSE" = "Pause";
