@@ -1,5 +1,5 @@
 //
-//  TextfieldStepViewController.swift
+//  WithdrawalStepViewController.swift
 //  Psorcast
 //
 //  Copyright © 2021 Sage Bionetworks. All rights reserved.
@@ -34,18 +34,23 @@
 import UIKit
 import BridgeApp
 import BridgeAppUI
+import BridgeSDK
 
-open class TextfieldStepObject: RSDUIStepObject, RSDStepViewControllerVendor {
+open class WithdrawalStepObject: RSDUIStepObject, RSDStepViewControllerVendor {
         
     private enum CodingKeys: String, CodingKey, CaseIterable {
-        case placeholder
+        case placeholder, alertTitle, alertMessage
     }
     
     public var placeholder: String? = nil
+    public var alertTitle: String? = nil
+    public var alertMessage: String? = nil
     
     public required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.placeholder = try container.decode(String.self, forKey: .placeholder)
+        self.alertTitle = try container.decode(String.self, forKey: .alertTitle)
+        self.alertMessage = try container.decode(String.self, forKey: .alertMessage)
         try super.init(from: decoder)
     }
     
@@ -56,31 +61,42 @@ open class TextfieldStepObject: RSDUIStepObject, RSDStepViewControllerVendor {
     /// Override to set the properties of the subclass.
     override open func copyInto(_ copy: RSDUIStepObject) {
         super.copyInto(copy)
-        guard let subclassCopy = copy as? TextfieldStepObject else {
+        guard let subclassCopy = copy as? WithdrawalStepObject else {
             assertionFailure("Superclass implementation of the `copy(with:)` protocol should return an instance of this class.")
             return
         }
         subclassCopy.placeholder = self.placeholder
+        subclassCopy.alertTitle = self.alertTitle
+        subclassCopy.alertMessage = self.alertMessage
     }
     
     public func instantiateViewController(with parent: RSDPathComponent?) -> (UIViewController & RSDStepController)? {
-        return TextfieldStepViewController(step: self, parent: parent)
+        return WithdrawalStepViewController(step: self, parent: parent)
+    }
+    
+    override open func shouldHideAction(for actionType: RSDUIActionType, on step: RSDStep) -> Bool? {
+        if (actionType == .navigation(.goBackward)) {
+            return false // always show back button
+        }
+        return super.shouldHideAction(for: actionType, on: step)
     }
     
     open override class func defaultType() -> RSDStepType {
-        return .textField
+        return .withdrawal
     }
 }
 
-public class TextfieldStepViewController: RSDStepViewController, UITextViewDelegate {
+public class WithdrawalStepViewController: RSDStepViewController, UITextViewDelegate {
 
     @IBOutlet weak var textview: UITextView!
     @IBOutlet weak var closeButton: UIButton!
+    @IBOutlet weak var loadingView: UIActivityIndicatorView!
         
     public var placeholderTextColor = UIColor.lightGray
+    public var withdrawalButtonColor = UIColor(hexString: "#A71C5D")
     
-    open var textfieldStep: TextfieldStepObject? {
-        return self.step as? TextfieldStepObject
+    open var withdrawalStep: WithdrawalStepObject? {
+        return self.step as? WithdrawalStepObject
     }
     
     override open func viewDidLoad() {
@@ -92,7 +108,7 @@ public class TextfieldStepViewController: RSDStepViewController, UITextViewDeleg
         })
         
         // Textviews dont inherently have a placeholder, so add one artificially
-        self.textview.text = self.textfieldStep?.placeholder
+        self.textview.text = self.withdrawalStep?.placeholder
         self.textview.textColor = self.placeholderTextColor
         self.textview.delegate = self
         
@@ -110,10 +126,6 @@ public class TextfieldStepViewController: RSDStepViewController, UITextViewDeleg
         }
     }
     
-    public func textViewDidChange(_ textView: UITextView) {
-        self.navigationFooter?.nextButton?.isEnabled = isFooterEnabled()
-    }
-    
     override open func setupHeader(_ header: RSDStepNavigationView) {
         super.setupHeader(header)
         header.backgroundColor = AppDelegate.designSystem.colorRules.backgroundPrimary.color
@@ -123,25 +135,70 @@ public class TextfieldStepViewController: RSDStepViewController, UITextViewDeleg
     override open func setupFooter(_ footer: RSDNavigationFooterView) {
         super.setupFooter(footer)
         footer.backgroundColor = AppDelegate.designSystem.colorRules.backgroundPrimary.color
-        self.navigationFooter?.nextButton?.isEnabled = isFooterEnabled()
+        footer.nextButton?.backgroundColor = self.withdrawalButtonColor
+        footer.nextButton?.removeTarget(nil, action: nil, for: .allEvents)
+        footer.nextButton?.addTarget(self, action: #selector(self.withdrawalTapped), for: .touchUpInside)
+        footer.backButton?.addTarget(self, action: #selector(self.closeButtonTapped), for: .touchUpInside)
     }
     
-    func isFooterEnabled() -> Bool {
-        return self.textview.text.count > 0 && self.textview.textColor != self.placeholderTextColor
+    @objc @IBAction func closeButtonTapped() {
+        super.cancelTask(shouldSave: false)
     }
     
     @objc func dismissKeyboard() {
         self.textview.resignFirstResponder()
     }
     
-    @IBAction func closeButtonTapped() {
-        super.goBack()
+    @objc @IBAction func withdrawalTapped() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute:  {
+            // Work-around for RSDButton switch colors after being clicked
+            self.navigationFooter?.nextButton?.backgroundColor = self.withdrawalButtonColor
+        })
+        let alert = UIAlertController(title: self.withdrawalStep?.alertTitle, message: self.withdrawalStep?.alertMessage, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: Localization.localizedString("BOOL_YES"), style: .default, handler: { _ in
+            self.loadingView.isHidden = false
+            self.navigationHeader?.isUserInteractionEnabled = false
+            self.navigationFooter?.isUserInteractionEnabled = false
+            self.withdrawal()
+        }))
+        alert.addAction(UIAlertAction(title: Localization.localizedString("BOOL_NO"), style: .cancel, handler: nil))
+        self.present(alert, animated: true)
     }
     
     override open func goForward() {
-        let textResult = RSDAnswerResultObject(identifier: self.step.identifier, answerType: .string, value: self.textview.text)
-        _ = self.stepViewModel.parent?.taskResult.appendStepHistory(with: textResult)
-        
-        super.goForward()
+        // no-op
+    }
+    
+    func withdrawal() {
+        var withdrawalReason = self.textview.text
+        if self.textview.textColor == self.placeholderTextColor {
+            withdrawalReason = nil
+        }
+        BridgeSDK.consentManager.withdrawConsent(withReason: withdrawalReason, completion: { _ , error in
+            DispatchQueue.main.async {
+                self.loadingView.isHidden = true
+                self.navigationHeader?.isUserInteractionEnabled = true
+                self.navigationFooter?.isUserInteractionEnabled = true
+                if (error != nil) {
+                    self.presentAlertWithOk(title: "Error", message: error?.localizedDescription ?? "", actionHandler: nil)
+                    return
+                }
+                BridgeSDK.authManager.signOut(completion: nil)
+                HistoryDataManager.shared.deleteAllDefaults()
+                HistoryDataManager.shared.deleteAllHistoryEntities()
+                self.resetDefaults()
+                self.dismiss(animated: false, completion: {
+                    (UIApplication.shared.delegate as? AppDelegate)?.showIntroductionScreens(animated: true)
+                })
+            }
+        })
+    }
+    
+    func resetDefaults() {
+        let defaults = UserDefaults.standard
+        let dictionary = defaults.dictionaryRepresentation()
+        dictionary.keys.forEach { key in
+            defaults.removeObject(forKey: key)
+        }
     }
 }

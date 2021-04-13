@@ -40,6 +40,7 @@ extension RSDStepType {
     public static let reminder: RSDStepType = "reminder"
     public static let webImageInstruction: RSDStepType = "webImageInstruction"
     public static let textField: RSDStepType = "textField"
+    public static let withdrawal: RSDStepType = "withdrawal"
 }
 
 open class StudyTaskFactory: TaskFactory {
@@ -61,6 +62,8 @@ open class StudyTaskFactory: TaskFactory {
             return try WebImageInstructionStepObject(from: decoder)
         case .textField:
             return try TextfieldStepObject(from: decoder)
+        case .withdrawal:
+            return try WithdrawalStepObject(from: decoder)
         default:
             return try super.decodeStep(from: decoder, with: type)
         }

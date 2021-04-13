@@ -1,0 +1,26 @@
+{
+    "identifier":"Withdrawal",
+    "shouldHideActions":["skip"],
+    "progressMarkers":[],
+    "steps":[
+        {
+            "identifier":"withdrawal",
+            "type":"withdrawal",
+            "title": "We’re sorry to see you go",
+            "text": "If you’re leaving, make sure you download your data from the ‘Review’ tab so that you have it for your  reference. Best wishes!",
+            "placeholder": "(OPTIONAL) Parting words for us, or things that we could have done better? Please do not include any personal health information here",
+            "alertTitle": "Are you sure you want to withdraw?",
+            "alertMessage": "We won’t be able to recover your account information and data after withdrawing from the study",
+            "actions": {
+                "goForward": {
+                    "type": "default",
+                    "buttonTitle": "Withdraw"
+                },
+                "goBackward": {
+                    "type": "default",
+                    "buttonTitle": "Cancel"
+                }
+            }
+        }
+    ]
+}

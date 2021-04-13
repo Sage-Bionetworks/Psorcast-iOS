@@ -83,6 +83,9 @@
 		CB72819C2624CBE100AAEB2C /* TextfieldStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB72819A2624CBE100AAEB2C /* TextfieldStepViewController.swift */; };
 		CB72819D2624CBE100AAEB2C /* TextfieldStepViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB72819B2624CBE100AAEB2C /* TextfieldStepViewController.xib */; };
 		CB7281A02624D12400AAEB2C /* Feedback.json in Resources */ = {isa = PBXBuildFile; fileRef = CB72819E2624D12400AAEB2C /* Feedback.json */; };
+		CB7281A52624DBBD00AAEB2C /* Withdrawal.json in Resources */ = {isa = PBXBuildFile; fileRef = CB7281A32624DBBD00AAEB2C /* Withdrawal.json */; };
+		CB7281A82624DC5000AAEB2C /* WithdrawalStepViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB7281A62624DC5000AAEB2C /* WithdrawalStepViewController.xib */; };
+		CB7281A92624DC5000AAEB2C /* WithdrawalStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB7281A72624DC5000AAEB2C /* WithdrawalStepViewController.swift */; };
 		CB737FEC231B100600FA1D3A /* MDJointSwelling.json in Resources */ = {isa = PBXBuildFile; fileRef = CB737FEB231B100600FA1D3A /* MDJointSwelling.json */; };
 		CB77866C238984790009ECF9 /* DigitalJarOpenStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB77866B238984790009ECF9 /* DigitalJarOpenStepViewController.swift */; };
 		CB778670238B3F4D0009ECF9 /* DigitalJarOpenStepViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB77866F238B3F4D0009ECF9 /* DigitalJarOpenStepViewControllerTests.swift */; };
@@ -441,6 +444,9 @@
 		CB72819A2624CBE100AAEB2C /* TextfieldStepViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextfieldStepViewController.swift; sourceTree = "<group>"; };
 		CB72819B2624CBE100AAEB2C /* TextfieldStepViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TextfieldStepViewController.xib; sourceTree = "<group>"; };
 		CB72819F2624D12400AAEB2C /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = Base; path = Base.lproj/Feedback.json; sourceTree = "<group>"; };
+		CB7281A42624DBBD00AAEB2C /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = Base; path = Base.lproj/Withdrawal.json; sourceTree = "<group>"; };
+		CB7281A62624DC5000AAEB2C /* WithdrawalStepViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WithdrawalStepViewController.xib; sourceTree = "<group>"; };
+		CB7281A72624DC5000AAEB2C /* WithdrawalStepViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WithdrawalStepViewController.swift; sourceTree = "<group>"; };
 		CB737FEB231B100600FA1D3A /* MDJointSwelling.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = MDJointSwelling.json; sourceTree = "<group>"; };
 		CB77866B238984790009ECF9 /* DigitalJarOpenStepViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DigitalJarOpenStepViewController.swift; sourceTree = "<group>"; };
 		CB77866F238B3F4D0009ECF9 /* DigitalJarOpenStepViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DigitalJarOpenStepViewControllerTests.swift; sourceTree = "<group>"; };
@@ -715,6 +721,8 @@
 				CBF7D06C26167FD200266780 /* TaskOverviewStepViewController.xib */,
 				CB72819A2624CBE100AAEB2C /* TextfieldStepViewController.swift */,
 				CB72819B2624CBE100AAEB2C /* TextfieldStepViewController.xib */,
+				CB7281A72624DC5000AAEB2C /* WithdrawalStepViewController.swift */,
+				CB7281A62624DC5000AAEB2C /* WithdrawalStepViewController.xib */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -927,6 +935,7 @@
 		CBFF926F25E08C9C00EC34DB /* JSON */ = {
 			isa = PBXGroup;
 			children = (
+				CB7281A32624DBBD00AAEB2C /* Withdrawal.json */,
 				CB72819E2624D12400AAEB2C /* Feedback.json */,
 				CB95A28D260868A600F28273 /* Introduction.json */,
 				CBFF927025E08CA400EC34DB /* PhoneSignIn.json */,
@@ -1298,6 +1307,7 @@
 				CBFF927225E08CA400EC34DB /* PhoneSignIn.json in Resources */,
 				CBFF928025E19B7300EC34DB /* CSS_files in Resources */,
 				CBDCDCB423F3849E00E5CEB8 /* DigitalJarOpenCompletionStepViewController.xib in Resources */,
+				CB7281A82624DC5000AAEB2C /* WithdrawalStepViewController.xib in Resources */,
 				CBDCDC8323F3848E00E5CEB8 /* FingersPhoto.mov in Resources */,
 				CBDD30E62416C7D1003B0488 /* PsorcastAssets.xcassets in Resources */,
 				CBDCDC9423F3849E00E5CEB8 /* ParticipantIDRegistrationViewController.xib in Resources */,
@@ -1307,6 +1317,7 @@
 				CBDCDC7F23F3848500E5CEB8 /* MDJointCounting.json in Resources */,
 				CB72819D2624CBE100AAEB2C /* TextfieldStepViewController.xib in Resources */,
 				CBFF927E25E19B6200EC34DB /* PhoneLearnMore.html in Resources */,
+				CB7281A52624DBBD00AAEB2C /* Withdrawal.json in Resources */,
 				CBDCDCA423F3849E00E5CEB8 /* PsoriasisAreaPhotoStepViewController.xib in Resources */,
 				CB9F5E2022E0BED3003FBCEF /* lato_bold.ttf in Resources */,
 				CBDCDCB623F3849E00E5CEB8 /* DigitalJarOpenInstructionStepViewController.xib in Resources */,
@@ -1487,6 +1498,7 @@
 				CBAA09CF243E4F5500D63CCD /* TreatmentSelectionResultObject.swift in Sources */,
 				047C2CD325F16628006AA52B /* PopTip+Transitions.swift in Sources */,
 				CB89B895246C7B3200567345 /* DeepDiveCollectionViewController.swift in Sources */,
+				CB7281A92624DC5000AAEB2C /* WithdrawalStepViewController.swift in Sources */,
 				CB4794F72426B3D800D5A7E6 /* TreatmentSelectionTableViewCell.swift in Sources */,
 				CB8F2927245BD14C00ABE5B3 /* FilterTreatmentViewController.swift in Sources */,
 				CBDCDCA723F3849E00E5CEB8 /* PsoriasisAreaPhotoImageView.swift in Sources */,
@@ -1568,6 +1580,14 @@
 				CB72819F2624D12400AAEB2C /* Base */,
 			);
 			name = Feedback.json;
+			sourceTree = "<group>";
+		};
+		CB7281A32624DBBD00AAEB2C /* Withdrawal.json */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CB7281A42624DBBD00AAEB2C /* Base */,
+			);
+			name = Withdrawal.json;
 			sourceTree = "<group>";
 		};
 		CB95A28D260868A600F28273 /* Introduction.json */ = {

@@ -402,6 +402,13 @@ open class HistoryDataManager {
             }
         }
     }
+    
+    func deleteAllDefaults() {
+        // Remove all keys in our defaults
+        for key in Array(self.defaults.dictionaryRepresentation().keys) {
+            self.defaults.removeObject(forKey: key)
+        }
+    }
 
     func deleteAllHistoryEntities() {
         guard let context = self.currentContext else { return }
