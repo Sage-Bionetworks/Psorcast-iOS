@@ -1,0 +1,20 @@
+{
+    "identifier":"Feedback",
+    "shouldHideActions":["skip"],
+    "progressMarkers":[],
+    "steps":[
+        {
+            "identifier":"feedback",
+            "type":"textField",
+            "title": "Your feedback is welcome",
+            "text": "Whether positive or constructive criticism, we’d love to hear your feedback about Psorcast",
+            "placeholder": "Feedback for us, please do not include any personal health information here",
+            "actions": {
+                "goForward": {
+                    "type": "default",
+                    "buttonTitle": "Submit"
+                }
+            }
+        }
+    ]
+}

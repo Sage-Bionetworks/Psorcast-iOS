@@ -179,7 +179,7 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate, ShowPopTipDele
             vc.delegate = self
             self.transition(to: vc, state: .onboarding, animated: true)
         } catch let err {
-            fatalError("Failed to decode the O task. \(err)")
+            fatalError("Failed to decode the intro task. \(err)")
         }
     }
     
