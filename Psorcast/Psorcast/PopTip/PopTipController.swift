@@ -137,8 +137,6 @@ public class PopTipController: ShowPopTipDelegate {
             if let psoriasisDrawStepViewController = viewController as? PsoriasisDrawStepViewController {
                 let buttonFrame = psoriasisDrawStepViewController.undoButton.frame
                 let popTipRect = buttonFrame.offsetBy(dx: 0, dy: -10)
-                // scrollview offset y
-                // RSDScrollingOverviewStepViewController scroll to bottom
                 popTip.show(text: Localization.localizedString("POPTIP_UNDO"), direction: .down, maxWidth: (vcBounds.width * 1/2), in: psoriasisDrawStepViewController.view, from: popTipRect)
             }
         case .digitalJarOpen:
