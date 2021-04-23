@@ -37,6 +37,8 @@ import BridgeAppUI
 
 public class TreatmentSelectionStepViewController: RSDStepViewController, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate {
     
+    public static let noTreatmentsIdentifier = "No Treatments"
+    
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var treatmentNotFoundView: UIView!
@@ -75,7 +77,7 @@ public class TreatmentSelectionStepViewController: RSDStepViewController, UITabl
     }
     
     // The treatment item that shows up when "No Treatments" checkbox is selected
-    let noTreatmentItem = TreatmentItem(identifier: "No Treatments", detail: nil, sectionIdentifier: nil)
+    let noTreatmentItem = TreatmentItem(identifier: TreatmentSelectionStepViewController.noTreatmentsIdentifier, detail: nil, sectionIdentifier: nil)
     
     // Hide the current treatments unless a treatment is selected
     var shouldShowCurrentTreatmentSection: Bool {

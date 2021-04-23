@@ -62,7 +62,7 @@ open class MasterScheduleManager : SBAScheduleManager {
     open var insightsTask: RSDTask? {
         return SBABridgeConfiguration.shared.task(for: RSDIdentifier.insightsTask.rawValue)
     }
-
+    
     fileprivate let historyData = HistoryDataManager.shared
     
     open func treatmentDate() -> Date? {
@@ -358,6 +358,22 @@ open class MasterScheduleManager : SBAScheduleManager {
     open func instantiateTreatmentTaskController() -> RSDTaskViewController? {
         guard let task = self.treatmentTask else { return nil }
         return RSDTaskViewController(task: task)
+    }
+    
+    open func populateItemsAndSections(for treatmentSelection: TreatmentSelectionStepObject) -> TreatmentSelectionStepObject {
+        let newStep = treatmentSelection
+        
+        guard let selectionStep = self.treatmentTask?.stepNavigator.step(with: RSDStepType.treatmentSelection.rawValue) as? TreatmentSelectionStepObject else {
+            return newStep
+        }
+        
+        // Transfer over the items/sections from the single point of truth
+        // Which is the TreatmentsTask items/sections lists
+        newStep.items = selectionStep.items
+        newStep.sortedItems = selectionStep.sortedItems
+        newStep.sortedSections = selectionStep.sortedSections
+        
+        return newStep
     }
     
     open func instantiateSingleQuestionTreatmentTaskController(for stepIdentifier: String) -> RSDTaskViewController? {
