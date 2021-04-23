@@ -35,6 +35,11 @@ import Foundation
 import BridgeApp
 import BridgeAppUI
 
+extension RSDResultType {
+    /// The type identifier for a pastTreatment completion result.
+    public static let pastTreatment: RSDResultType = "pastTreatment"
+}
+
 open class PastTreatmentsCompletionStepObject: RSDUIStepObject, RSDStepViewControllerVendor {
     public required init(from decoder: Decoder) throws {
         try super.init(from: decoder)
