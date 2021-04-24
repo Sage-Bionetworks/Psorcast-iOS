@@ -62,6 +62,8 @@ public enum PopTipProgress: String, CaseIterable {
     case jointsNoPsoriasis
     // When user first does digital jar open, shows on intro screen
     case digitalJarOpen
+    // When user has their first movie
+    case firstMovie
     
     fileprivate func userDefaultsKey() -> String {
         return "PopTipProgress\(self.rawValue)"
