@@ -258,6 +258,18 @@ open class ReviewTabViewController: UIViewController, UITableViewDataSource, UIT
             }
         }
         
+        // If the first group in the list has an image stored, potentially show the pop-tip
+        if let firstTaskRow = self.allTaskRows.first {
+            if (taskRowItemMap[firstTaskRow]?.count ?? 0) > 0 {
+                if (PopTipProgress.reviewTabImage.isNotConsumed()) {
+                    // Give tableview/collectionview time to lay itself out
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+                        PopTipProgress.reviewTabImage.consume(on: self)
+                    }
+                }
+            }
+        }
+
         // Reload table view with the newest data
         self.tableView.reloadData()
     }

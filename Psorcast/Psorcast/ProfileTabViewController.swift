@@ -47,7 +47,12 @@ class ProfileTabViewController: UIViewController, UITableViewDelegate, UITableVi
     
     open var design = AppDelegate.designSystem
     
+    public static let feedbackTaskId = "Feedback"
+    public static let withdrawalTaskId = "Withdrawal"
+    
     public static let deepDiveProfileKey = "DeepDive"
+    public static let feedbackProfileKey = "feedback"
+    public static let withdrawProfileKey = "withdraw"
     
     override open func viewDidLoad() {
         super.viewDidLoad()                
@@ -96,6 +101,22 @@ class ProfileTabViewController: UIViewController, UITableViewDelegate, UITableVi
             }
         }
         return Localization.localizedString("REMINDERS_WEEKLY_I_HAVE_NOT_SET_REMINDERS")
+    }
+    
+    func insightProfileItemValue() -> String {
+        // Look for insights count or return "No Insights Yet" if we haven't unlocked any
+        if (self.historyData.pastInsightItemsViewed.count == 0) {
+            return Localization.localizedString("NO_INSIGHTS_YET")
+        } else if (self.historyData.pastInsightItemsViewed.count == 1) {
+            return Localization.localizedString("FIRST_INSIGHT_UNLOCKED")
+        } else {
+            return String(format: Localization.localizedString("%@_INSIGHTS_ACHIEVED"), "\(self.historyData.pastInsightItemsViewed.count)")
+        }
+    }
+    
+    func withdrawProfileItemValue() -> String {
+        return Localization.localizedString("CURRENTLY_ENROLLED")
+        // Todo: add logic to determine if enrolled, adjust return values here appropriately
     }
     
     // MARK: - Table view data source
@@ -166,6 +187,10 @@ class ProfileTabViewController: UIViewController, UITableViewDelegate, UITableVi
                 cell.detailLabel?.text = self.historyData.psoriasisSymptoms
             case TreatmentResultIdentifier.status.rawValue:
                 cell.detailLabel?.text = self.historyData.psoriasisStatus
+            case RSDIdentifier.insightsTask.rawValue:
+                cell.detailLabel?.text = self.insightProfileItemValue()
+            case RSDIdentifier.withdrawTask.rawValue:
+                cell.detailLabel?.text = self.withdrawProfileItemValue()
             default:
                 cell.detailLabel?.text = detailText
             }
@@ -201,6 +226,20 @@ class ProfileTabViewController: UIViewController, UITableViewDelegate, UITableVi
         let vc = storyboard.instantiateViewController(withIdentifier: String(describing: DeepDiveCollectionViewController.self))
         vc.modalPresentationStyle = .fullScreen
         self.show(vc, sender: self)
+    }
+    
+    func showJsonTaskViewControler(jsonName: String) {
+        do {
+            let resourceTransformer = RSDResourceTransformerObject(
+                resourceName: jsonName)
+            let task = try RSDFactory.shared.decodeTask(with: resourceTransformer)
+            let taskViewModel = RSDTaskViewModel(task: task)
+            let vc = RSDTaskViewController(taskViewModel: taskViewModel)
+            vc.delegate = self
+            self.present(vc, animated: true, completion: nil)
+        } catch let err {
+            fatalError("Failed to decode the task. \(err)")
+        }
     }
     
     public func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -251,6 +290,10 @@ class ProfileTabViewController: UIViewController, UITableViewDelegate, UITableVi
                 self.show(vc, sender: self)
             } else if profileItem.profileItemKey == ProfileTabViewController.deepDiveProfileKey {
                 self.showDeepDiveViewController()
+            } else if profileItem.profileItemKey == ProfileTabViewController.feedbackProfileKey {
+                self.showJsonTaskViewControler(jsonName: ProfileTabViewController.feedbackTaskId)
+            } else if profileItem.profileItemKey == ProfileTabViewController.withdrawProfileKey {
+                self.showJsonTaskViewControler(jsonName: ProfileTabViewController.withdrawalTaskId)
             } else if let vc = MasterScheduleManager.shared.instantiateSingleQuestionTreatmentTaskController(for: profileItem.profileItemKey) {
                 vc.delegate = self
                 self.show(vc, sender: self)
@@ -294,6 +337,9 @@ class ProfileTabViewController: UIViewController, UITableViewDelegate, UITableVi
     }
     
     func taskController(_ taskController: RSDTaskController, readyToSave taskViewModel: RSDTaskViewModel) {
+        if (taskController.task.identifier == ProfileTabViewController.withdrawalTaskId) {
+            return
+        }
         MasterScheduleManager.shared.taskController(taskController, readyToSave: taskViewModel)
     }
 }

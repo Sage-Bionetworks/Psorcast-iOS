@@ -69,8 +69,9 @@ class TryItFirstTaskTableViewController: UIViewController, UICollectionViewDataS
         
         self.gridLayout.itemCount = self.scheduleManager.tableRowCount
         self.collectionView.reloadData()
+        
+        checkPopTips()
     }
-    
     
     func updateDesignSystem() {
         let designSystem = AppDelegate.designSystem
@@ -203,6 +204,13 @@ class TryItFirstTaskTableViewController: UIViewController, UICollectionViewDataS
     /// Here we can customize which VCs show for a step within a survey
     func taskViewController(_ taskViewController: UIViewController, viewControllerForStep stepModel: RSDStepViewModel) -> UIViewController? {
         return nil
+    }
+    
+    
+    private func checkPopTips() {
+        if (PopTipProgress.tryItFirst.isNotConsumed()) {
+            PopTipProgress.tryItFirst.consume(on: self)
+        }
     }
 }
 

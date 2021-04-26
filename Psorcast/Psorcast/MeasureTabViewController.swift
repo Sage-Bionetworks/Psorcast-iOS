@@ -88,15 +88,9 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
     
     let showInsightTaskId = "showInsight"
     
-    // Poptip related inits
-    // First, should we actually be showing this demo popTip?
-    let showPopTip = true
-    // Now do the inits
-    let popTip = PopTip()
-    var direction = PopTipDirection.up
-    var topRightDirection = PopTipDirection.down
-    var timer: Timer? = nil
-    var autolayoutView: UIView?
+    // The image manager for the review tab
+    var imageManager = ImageDataManager.shared
+    
     
     // Open for unit testing
     open func treatmentWeek() -> Int {
@@ -124,6 +118,19 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
         self.setupDefaultBlankUiState()
         self.updateDesignSystem()
         self.setupCollectionView()
+        // If we haven't show a movie yet, add a listener for a movie getting added
+        
+        // Only add the listener if we haven't shown this poptip already
+        if (PopTipProgress.firstMovie.isNotConsumed()) {
+            // Add a listener for a movie getting created
+            NotificationCenter.default.addObserver(forName: ImageDataManager.newVideoCreated, object: self.imageManager, queue: OperationQueue.main) { (notification) in
+                // A new movie was created, let's show a poptip
+                // Also double check to make sure it still isn't consumed
+                if (PopTipProgress.firstMovie.isNotConsumed()) {
+                    PopTipProgress.firstMovie.consume(on: self)
+                }
+            }
+        }
 
         // Register the 30 second walking task with the motor control framework
         SBABridgeConfiguration.shared.addMapping(with: MCTTaskInfo(.walk30Seconds).task)
@@ -150,24 +157,6 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
         
         // We have seen the measure screen, remove any badge numbers from notifications
         UIApplication.shared.applicationIconBadgeNumber = 0
-        
-        // Now, add the poptip (if displaying it) to the UI
-        if (self.showPopTip) {
-            // First, config the appearance
-            popTip.font = UIFont(name: "Avenir-Medium", size: 12)!
-            popTip.shouldDismissOnTap = true
-            popTip.shouldDismissOnTapOutside = true
-            popTip.shouldDismissOnSwipeOutside = true
-            popTip.edgeMargin = 5
-            popTip.offset = 2
-            popTip.bubbleOffset = 0
-            popTip.edgeInsets = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
-            
-            // Now show the popTip
-            popTip.bubbleColor = UIColor(red: 0.31, green: 0.475, blue: 0.259, alpha: 1)
-            let activityFrame = collectionView.frame
-            popTip.show(text: "These are the activities we'd like you to do this week", direction: .up, maxWidth: 150, in: view, from: activityFrame)
-        }
     }
     
     public func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
@@ -203,6 +192,8 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
         self.gridLayout.collectionViewWidth = self.collectionView.bounds.width
         // Refresh collection view sizes
         self.setupCollectionViewSizes()
+        
+        checkPopTips()
     }
     
     func refreshUI() {
@@ -656,15 +647,33 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
         // Let the schedule manager handle the cleanup.
         self.scheduleManager.taskController(taskController, didFinishWith: reason, error: error)
         
+        let taskId = taskController.task.identifier
+        
         self.dismiss(animated: true, completion: {
+            
             // If the user has not set their reminders yet, we should show them
-            if taskController.task.identifier == RSDIdentifier.insightsTask.rawValue &&
+            if taskId == RSDIdentifier.insightsTask.rawValue &&
                 !self.historyData.haveWeeklyRemindersBeenSet {
                 let vc = ReminderType.weekly.createReminderTaskViewController()
                 vc.delegate = self
                 self.show(vc, sender: self)
             }
+            
+            if (reason == .completed &&
+                    MasterScheduleManager.filterAll.contains(RSDIdentifier(rawValue: taskId))) {
+                
+                if (PopTipProgress.firstTaskComplete.isNotConsumed()) {
+                    PopTipProgress.firstTaskComplete.consume(on: self)
+                    // TODO: esieg after first is consumed, show PopTipProgress.afterFirstTaskComplete
+                }
+            }
         })
+    }
+    
+    private func checkPopTips() {
+        if (PopTipProgress.measureTabLanding.isNotConsumed()) {
+            PopTipProgress.measureTabLanding.consume(on: self)
+        }
     }
 }
 

@@ -152,6 +152,11 @@ open class PsoriasisDrawStepViewController: RSDStepViewController, ProcessorFini
         }
     }
     
+    override open func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        checkPopTips()
+    }
+    
     /// Long hold this invisible view to fill the draw coverage to 100%
     @objc func handleLongHoldDebug(_ sender: UITapGestureRecognizer? = nil) {
         self.imageView?.touchDrawableView?.fillAll200(nil)
@@ -396,6 +401,12 @@ open class PsoriasisDrawStepViewController: RSDStepViewController, ProcessorFini
             }
         } catch {
             debugPrint("Error reading old drawing \(error)")
+        }
+    }
+    
+    private func checkPopTips() {
+        if (PopTipProgress.psoDrawUndo.isNotConsumed()) {
+            PopTipProgress.psoDrawUndo.consume(on: self)
         }
     }
 }

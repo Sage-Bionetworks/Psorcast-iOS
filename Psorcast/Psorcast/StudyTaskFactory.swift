@@ -36,9 +36,16 @@ import BridgeApp
 extension RSDStepType {
     public static let onboardingPager: RSDStepType = "onboardingPager"
     public static let treatmentSelection: RSDStepType = "treatmentSelection"
+    public static let pastTreatmentsCompletion: RSDStepType = "pastTreatmentsCompletion"
     public static let insights: RSDStepType = "insights"
     public static let reminder: RSDStepType = "reminder"
     public static let webImageInstruction: RSDStepType = "webImageInstruction"
+    public static let textField: RSDStepType = "textField"
+    public static let withdrawal: RSDStepType = "withdrawal"
+}
+
+extension RSDStepNavigatorType {
+    public static let pastTreatments: RSDStepNavigatorType = "pastTreatments"
 }
 
 open class StudyTaskFactory: TaskFactory {
@@ -46,16 +53,28 @@ open class StudyTaskFactory: TaskFactory {
     /// Override the base factory to vend Psorcast specific step objects.
     override open func decodeStep(from decoder: Decoder, with type: RSDStepType) throws -> RSDStep? {
         switch type {
+        case .overview:
+            return try TaskOverviewStepObject(from: decoder)
         case.onboardingPager:
             return try OnboardingPagerStepObject(from: decoder)
         case .treatmentSelection:
-            return try TreatmentSelectionStepObject(from: decoder)
+            let step = try TreatmentSelectionStepObject(from: decoder)
+            if (step.items.isEmpty) {
+                return MasterScheduleManager.shared.populateItemsAndSections(for: step)
+            }
+            return step
+        case .pastTreatmentsCompletion:
+            return try PastTreatmentsCompletionStepObject(from: decoder)
         case .insights:
             return try ShowInsightStepObject(from: decoder)
         case .reminder:
             return try ReminderStepObject(from: decoder)
         case .webImageInstruction:
             return try WebImageInstructionStepObject(from: decoder)
+        case .textField:
+            return try TextfieldStepObject(from: decoder)
+        case .withdrawal:
+            return try WithdrawalStepObject(from: decoder)
         default:
             return try super.decodeStep(from: decoder, with: type)
         }
@@ -86,6 +105,15 @@ open class StudyTaskFactory: TaskFactory {
             return try super.decodeObject(from: decoder)
         }
     }
+    
+    override open func decodeStepNavigator(from decoder: Decoder, with type: RSDStepNavigatorType) throws -> RSDStepNavigator {
+        
+        if (type == .pastTreatments) {
+            return try PastTreatmentsStepNavigatorObject(from: decoder)
+        }
+        
+        return try RSDConditionalStepNavigatorObject(from: decoder)
+    }
 }
 
 extension SBAProfileDataSourceType {
@@ -99,7 +127,8 @@ open class StudyBridgeConfiguration: SBABridgeConfiguration {
         // TODO: mdephillips 5/14/20 remove after deep dive surveys are real and not fake
         if activityIdentifier == "DeepDiveTest1" ||
             activityIdentifier == "DeepDiveTest2" ||
-            activityIdentifier == "DeepDiveTest3" {
+            activityIdentifier == "DeepDiveTest3" ||
+            activityIdentifier == "PastTreatments" {
             return RSDSchemaInfoObject(identifier: activityIdentifier, revision: 1)
         }
         return super.schemaInfo(for: activityIdentifier)

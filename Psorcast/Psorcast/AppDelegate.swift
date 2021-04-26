@@ -38,7 +38,10 @@ import Research
 import BridgeAppUI
 
 @UIApplicationMain
-class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate {
+class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate, ShowPopTipDelegate {
+    
+    /// Debug setting, do not commit as true
+    let debugAlwaysShowPopTips = false
     
     static let colorPalette = RSDColorPalette(version: 1,
                                               primary: RSDColorMatrix.shared.colorKey(for: .palette(.fern),
@@ -55,6 +58,8 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate {
     let IntroductionTaskId = "Introduction"
     let signInTaskId = "signIn"
     weak var smsSignInDelegate: SignInDelegate? = nil
+    
+    let popTipController = PopTipController()
     
     open var profileDataSource: StudyProfileDataSource? {
         return SBAProfileDataSourceObject.shared as? StudyProfileDataSource
@@ -114,6 +119,10 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate {
         
         self.showAppropriateViewController(animated: true)
         
+        if (self.debugAlwaysShowPopTips) {
+            PopTipProgress.resetPopTipTracking()
+        }
+        
         return true
     }
     
@@ -170,7 +179,7 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate {
             vc.delegate = self
             self.transition(to: vc, state: .onboarding, animated: true)
         } catch let err {
-            fatalError("Failed to decode the O task. \(err)")
+            fatalError("Failed to decode the intro task. \(err)")
         }
     }
     
@@ -392,6 +401,11 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate {
                 window.rootViewController = viewController
             }
         }
+    }
+    
+    /// This function is called by PopTipProgress when a new pop-tip is requesting to be shown
+    func showPopTip(type: PopTipProgress, on viewController: UIViewController) {
+        popTipController.showPopTip(type: type, on: viewController)
     }
 }
 

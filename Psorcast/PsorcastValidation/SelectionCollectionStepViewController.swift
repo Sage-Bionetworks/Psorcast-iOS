@@ -121,6 +121,8 @@ open class SelectionCollectionStepViewController: RSDStepViewController, UIColle
 
         // Invalidating the layout is necessary to get the navigation header height to be correct
         collectionView.collectionViewLayout.invalidateLayout()
+        
+        checkPopTips()
     }
     
     open override func setupViews() {
@@ -234,6 +236,19 @@ open class SelectionCollectionStepViewController: RSDStepViewController, UIColle
         self.stepViewModel.parent?.taskResult.appendStepHistory(with: result)
         
         super.goForward()
+    }
+        
+    private func checkPopTips() {
+        let taskId = self.taskController?.task.identifier
+        if taskId == RSDIdentifier.jointCountingTask.rawValue {
+            if (PopTipProgress.jointsNoPsoriasis.isNotConsumed()) {
+                PopTipProgress.jointsNoPsoriasis.consume(on: self)
+            }
+        } else if taskId == RSDIdentifier.psoriasisDrawTask.rawValue {
+            if (PopTipProgress.psoDrawNoPsoriasis.isNotConsumed()) {
+                PopTipProgress.psoDrawNoPsoriasis.consume(on: self)
+            }
+        }
     }
 }
 

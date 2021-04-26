@@ -105,6 +105,11 @@ open class PsoriasisAreaPhotoStepViewController: RSDStepViewController, Psoriasi
         self.initializeImageViewsBasedOnResult()
     }
     
+    override open func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        checkPopTips()
+    }
+    
     func initializeImageViewsBasedOnResult() {
         if let result = self.initialResult,
             
@@ -332,5 +337,11 @@ open class PsoriasisAreaPhotoStepViewController: RSDStepViewController, Psoriasi
     
     public func didLayoutButtons(for psoriasisAreaPhotoView: PsoriasisAreaPhotoImageView) {
         // No-op needed
+    }
+    
+    private func checkPopTips() {
+        if (PopTipProgress.psoAreaNoPsoriasis.isNotConsumed()) {
+            PopTipProgress.psoAreaNoPsoriasis.consume(on: self)
+        }
     }
 }

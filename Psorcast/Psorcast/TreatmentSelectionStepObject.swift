@@ -49,8 +49,8 @@ public class TreatmentSelectionStepObject: RSDUIStepObject, RSDStepViewControlle
     
     public var goBackOnSameTreatments: Bool = false
     
-    public private (set) var sortedItems = [String: [TreatmentItem]]()
-    public private (set) var sortedSections = [String]()
+    public var sortedItems = [String: [TreatmentItem]]()
+    public var sortedSections = [String]()
     
     open var otherSectionIdentifier: String {
         return Localization.localizedString("OTHER_TREATMENT_SECTION_TITLE")
