@@ -152,6 +152,19 @@ public class PopTipController: ShowPopTipDelegate {
                 }
                 
             }
+        case .firstMovie:
+            NSLog("first movie showPopTip called")
+            if let measureTabViewController = viewController as? MeasureTabViewController {
+                // Now find the review tab
+                // Note assumes 4 tabs and review is 2nd
+                if let tabItemView = measureTabViewController.tabBarController?.tabBar.items?[0].value(forKey: "view") as? UIView {
+                    let tabFrame = tabItemView.frame
+                    let barFrame = measureTabViewController.tabBarController?.tabBar.frame
+                    let popTipRect = CGRect(x: (vcBounds.width * 0.375 - (tabFrame.width / 2)), y: (vcBounds.height - barFrame!.height), width: tabFrame.width, height: barFrame!.height)
+                    popTip.dismissHandler = nil
+                    popTip.show(text: Localization.localizedString("POPTIP_FIRST_MOVIE"), direction: .up, maxWidth: (vcBounds.width * 1/2), in: measureTabViewController.view, from: popTipRect)
+                }
+            }
         default:
             NSLog("Unexpected pop tip type called")
             
