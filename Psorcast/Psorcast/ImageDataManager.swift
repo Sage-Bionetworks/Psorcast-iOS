@@ -213,8 +213,9 @@ open class ImageDataManager {
         // Create the new video in the background
         let frames = self.findFrames(for: taskIdentifier, with: treatmentRange)
         
-        guard frames.count > 0 else {
-            print("Cannot create video with 0 frames")
+        // We need at least 2 frames to make a video
+        guard frames.count > 1 else {
+            print("Cannot create video with 1 or fewer frames")
             return
         }
         task.frames = frames

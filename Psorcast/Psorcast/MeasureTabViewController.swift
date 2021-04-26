@@ -88,6 +88,9 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
     
     let showInsightTaskId = "showInsight"
     
+    // The image manager for the review tab
+    var imageManager = ImageDataManager.shared
+    
     
     // Open for unit testing
     open func treatmentWeek() -> Int {
@@ -115,6 +118,19 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
         self.setupDefaultBlankUiState()
         self.updateDesignSystem()
         self.setupCollectionView()
+        // If we haven't show a movie yet, add a listener for a movie getting added
+        
+        // Only add the listener if we haven't shown this poptip already
+        if (PopTipProgress.firstMovie.isNotConsumed()) {
+            // Add a listener for a movie getting created
+            NotificationCenter.default.addObserver(forName: ImageDataManager.newVideoCreated, object: self.imageManager, queue: OperationQueue.main) { (notification) in
+                // A new movie was created, let's show a poptip
+                // Also double check to make sure it still isn't consumed
+                if (PopTipProgress.firstMovie.isNotConsumed()) {
+                    PopTipProgress.firstMovie.consume(on: self)
+                }
+            }
+        }
 
         // Register the 30 second walking task with the motor control framework
         SBABridgeConfiguration.shared.addMapping(with: MCTTaskInfo(.walk30Seconds).task)
