@@ -855,7 +855,11 @@ public class ReviewNotEnoughDataCollectionView: RSDCollectionViewCell {
         let moreFramesNeeded = (frameCount == 0) ? 2 : 1
         if isCurrentTreatmentSelected {
             self.imageTextContainerBottom.constant = originalBottom
-            self.titleLabel.text = String(format: Localization.localizedString("REVIEW_VIDEO_DATA_TITLE_%d"), moreFramesNeeded)
+            if (moreFramesNeeded <= 1) {
+                self.titleLabel.text = String(format: Localization.localizedString("REVIEW_VIDEO_DATA_TITLE_%d"), moreFramesNeeded)
+            } else { // 2 or more
+                self.titleLabel.text = String(format: Localization.localizedString("REVIEW_VIDEO_DATA_TITLE_PLURAL_%d"), moreFramesNeeded)
+            }
         } else {
             self.imageTextContainerBottom.constant = self.imageTextContainerTop.constant
             self.titleLabel.text = Localization.localizedString("REVIEW_VIDEO_DATA_TITLE_PAST")
