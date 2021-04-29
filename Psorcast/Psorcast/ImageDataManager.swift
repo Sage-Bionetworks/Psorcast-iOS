@@ -88,7 +88,7 @@ open class ImageDataManager {
     
     fileprivate let summaryImagesIdentifiers = [
         "summary",
-        "psorasisAreaPhoto",
+        "psoriasisAreaPhoto",
         "summaryImage",
     ]
     
