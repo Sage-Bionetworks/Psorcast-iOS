@@ -141,6 +141,7 @@
 "PHOTO_LIBRARY_FIRST_ASK_TITLE" = "Would you like to export to your Photo Library?";
 "NO_PAST_INSIGHTS" = "No insights yet";
 
+"REVIEW_VIDEO_DATA_TITLE_PLURAL_%d" = "You will need to complete %d more measurements to unlock your video.";
 "REVIEW_VIDEO_DATA_TITLE_%d" = "You will need to complete %d more measurement to unlock your video.";
 "REVIEW_VIDEO_DATA_TITLE_PAST" = "You did not complete enough measurements to unlock your video.";
 "REVIEW_PLAY_VIDEO_BTN" = "Play video";
