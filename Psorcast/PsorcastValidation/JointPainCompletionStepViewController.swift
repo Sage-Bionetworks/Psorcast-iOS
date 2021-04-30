@@ -301,7 +301,7 @@ open class JointPainCompletionStepViewController: RSDStepViewController, JointPa
         
         // Symptom History has a duplicate result name, so append the task ID to make it unique
         if (currentHistory?.contains(where: { $0.identifier == summaryImageId }) ?? false) {
-            let taskId = self.stepViewModel.parent?.identifier ?? ""
+            let taskId = RSDIdentifier.jointCountingTask.rawValue
             // This identifier will be too long unless we just use "summary" instead of "summaryImage"
             summaryImageId = "\( self.summaryResultIdentifier)\(taskId)"
         }

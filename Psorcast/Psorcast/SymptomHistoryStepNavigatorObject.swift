@@ -69,7 +69,7 @@ public struct SymptomHistoryStepNavigatorObject : RSDConditionalStepNavigator, D
         }
         
         do {
-            let taskId = "JointCounting"
+            let taskId = RSDIdentifier.jointCountingTask.rawValue
             let task = try factory.decodeTask(with: RSDResourceTransformerObject(resourceName: taskId))
             var jointPainSteps = (task.stepNavigator as? RSDConditionalStepNavigator)?.steps ?? []
             let stepIds = combinedSteps.map({ $0.identifier })
