@@ -46,6 +46,7 @@ extension RSDStepType {
 
 extension RSDStepNavigatorType {
     public static let pastTreatments: RSDStepNavigatorType = "pastTreatments"
+    public static let symptomHistory: RSDStepNavigatorType = "symptomHistory"
 }
 
 open class StudyTaskFactory: TaskFactory {
@@ -110,6 +111,8 @@ open class StudyTaskFactory: TaskFactory {
         
         if (type == .pastTreatments) {
             return try PastTreatmentsStepNavigatorObject(from: decoder)
+        } else if (type == .symptomHistory) {
+            return try SymptomHistoryStepNavigatorObject(from: decoder)
         }
         
         return try RSDConditionalStepNavigatorObject(from: decoder)
@@ -128,7 +131,8 @@ open class StudyBridgeConfiguration: SBABridgeConfiguration {
         if activityIdentifier == "DeepDiveTest1" ||
             activityIdentifier == "DeepDiveTest2" ||
             activityIdentifier == "DeepDiveTest3" ||
-            activityIdentifier == "PastTreatments" {
+            activityIdentifier == "PastTreatments" ||
+            activityIdentifier == "SymptomHistory" {
             return RSDSchemaInfoObject(identifier: activityIdentifier, revision: 1)
         }
         return super.schemaInfo(for: activityIdentifier)

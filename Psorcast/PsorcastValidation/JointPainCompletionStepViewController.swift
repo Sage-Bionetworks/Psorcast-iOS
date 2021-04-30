@@ -296,13 +296,23 @@ open class JointPainCompletionStepViewController: RSDStepViewController, JointPa
     /// Image result functions
     
     private func saveImageResult() {
+        let currentHistory = self.stepViewModel.parent?.taskResult.stepHistory
+        var summaryImageId = self.summaryImageResultIdentifier
+        
+        // Symptom History has a duplicate result name, so append the task ID to make it unique
+        if (currentHistory?.contains(where: { $0.identifier == summaryImageId }) ?? false) {
+            let taskId = self.stepViewModel.parent?.identifier ?? ""
+            // This identifier will be too long unless we just use "summary" instead of "summaryImage"
+            summaryImageId = "\( self.summaryResultIdentifier)\(taskId)"
+        }
+        
         // Add the image result of the header
         let image = PSRImageHelper.convertToImage(self.jointImageView)
         var url: URL?
         do {
             if let jpegData = PSRImageHelper.convertToJpegData(image: image),
                 let outputDir = self.stepViewModel.parentTaskPath?.outputDirectory {
-                url = try RSDFileResultUtility.createFileURL(identifier: self.summaryImageResultIdentifier, ext: "jpg", outputDirectory: outputDir, shouldDeletePrevious: true)
+                url = try RSDFileResultUtility.createFileURL(identifier: summaryImageId, ext: "jpg", outputDirectory: outputDir, shouldDeletePrevious: true)
                 self.save(jpegData, to: url!)
             }
         } catch let error {
@@ -310,7 +320,7 @@ open class JointPainCompletionStepViewController: RSDStepViewController, JointPa
         }
         
         // Create the result and set it as the result for this step
-        var result = RSDFileResultObject(identifier: self.summaryImageResultIdentifier)
+        var result = RSDFileResultObject(identifier: summaryImageId)
         result.url = url
         result.contentType = PSRImageHelper.contentTypeJpeg
         _ = self.stepViewModel.parent?.taskResult.appendStepHistory(with: result)

@@ -1,4 +1,5 @@
 {
+    "identifier"                : "JointCounting",
     "taskIdentifier"            : "JointCounting",
     "schemaIdentifier"          : "JointCounting",
     "progressMarkers":[],
