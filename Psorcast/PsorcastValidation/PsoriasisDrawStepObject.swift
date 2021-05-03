@@ -91,12 +91,18 @@ open class PsoriasisDrawStepObject: RSDUIStepObject, RSDStepViewControllerVendor
     }
     
     public func shouldSkipStep(with result: RSDTaskResult?, isPeeking: Bool) -> Bool {
-        // Only include this step if the user previously chose
-        // its region in the psoriasis draw selection step
-        if let answerResult = (result?.findResult(with: RSDStepType.selectionCollection.rawValue) as? RSDAnswerResultObject),
-            let answers = answerResult.value as? [String] {
-            
-            return !answers.contains(self.identifier)
+        // Find all selection collection results
+        for stepResult in (result?.stepHistory ?? []) {
+            if stepResult.identifier.contains(RSDStepType.selectionCollection.rawValue),
+               let answerResult = stepResult as? RSDAnswerResultObject,
+               let answers = answerResult.value as? [String] {
+                
+                // Only include this step if the user previously chose
+                // its region in the psoriasis draw selection step
+                if (answers.contains(self.identifier)) {
+                    return false
+                }
+            }
         }
         return true
     }

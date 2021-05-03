@@ -47,6 +47,14 @@ open class TaskOverviewStepViewController: RSDScrollingOverviewStepViewControlle
     override open func viewDidLoad() {
         super.viewDidLoad()
         self.designSystem = AppDelegate.designSystem
+        
+        // For long titles, make it multi-line
+        if let overviewStep = self.step as? RSDOverviewStep {
+            if ((overviewStep.title?.count ?? 0) > 20) {
+                stepTitleLabel?.rsd_alignToSuperview([.leading, .trailing], padding: CGFloat(24))
+                stepTitleLabel?.numberOfLines = 0
+            }
+        }
     }
     
     override open func viewDidLayoutSubviews() {
