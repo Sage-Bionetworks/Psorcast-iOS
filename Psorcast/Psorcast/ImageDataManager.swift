@@ -88,11 +88,15 @@ open class ImageDataManager {
     
     fileprivate let summaryImagesIdentifiers = [
         "summary",
-        "psorasisAreaPhoto",
+        "psoriasisAreaPhoto",
         "summaryImage",
     ]
     
     public func processTaskResult(_ taskResult: RSDTaskResult) -> String? {
+        
+        if (taskResult.identifier == RSDIdentifier.symptomHistoryTask.rawValue) {
+            return nil // no images needed for this task
+        }
         
         // Always process potential hand/feet images as well
         self.processTaskResultHandFeet(taskResult)
