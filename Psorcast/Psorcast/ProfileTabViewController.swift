@@ -222,10 +222,11 @@ class ProfileTabViewController: UIViewController, UITableViewDelegate, UITableVi
     }
     
     func showDeepDiveViewController() {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let vc = storyboard.instantiateViewController(withIdentifier: String(describing: DeepDiveCollectionViewController.self))
-        vc.modalPresentationStyle = .fullScreen
-        self.show(vc, sender: self)
+        self.showJsonTaskViewControler(jsonName: "Cardio_12MT")
+//        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+//        let vc = storyboard.instantiateViewController(withIdentifier: String(describing: DeepDiveCollectionViewController.self))
+//        vc.modalPresentationStyle = .fullScreen
+//        self.show(vc, sender: self)
     }
     
     func showJsonTaskViewControler(jsonName: String) {
