@@ -354,6 +354,7 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate, ShowPopTipDele
     func taskController(_ taskController: RSDTaskController, readyToSave taskViewModel: RSDTaskViewModel) {
         
         if taskController.task.identifier == self.signInTaskId ||
+            taskController.task.identifier == IntroductionTaskId ||
             taskController.task.identifier == SignInTaskViewController.taskIdentifier {
             return  // Do not complete sign in as a regular task
         }
