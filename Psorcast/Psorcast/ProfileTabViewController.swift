@@ -53,6 +53,7 @@ class ProfileTabViewController: UIViewController, UITableViewDelegate, UITableVi
     public static let deepDiveProfileKey = "DeepDive"
     public static let feedbackProfileKey = "feedback"
     public static let withdrawProfileKey = "withdraw"
+    public static let activityMeasuresKey = "activityMeasures"
     
     override open func viewDidLoad() {
         super.viewDidLoad()                
@@ -222,11 +223,10 @@ class ProfileTabViewController: UIViewController, UITableViewDelegate, UITableVi
     }
     
     func showDeepDiveViewController() {
-        self.showJsonTaskViewControler(jsonName: "Cardio_12MT")
-//        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-//        let vc = storyboard.instantiateViewController(withIdentifier: String(describing: DeepDiveCollectionViewController.self))
-//        vc.modalPresentationStyle = .fullScreen
-//        self.show(vc, sender: self)
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let vc = storyboard.instantiateViewController(withIdentifier: String(describing: DeepDiveCollectionViewController.self))
+        vc.modalPresentationStyle = .fullScreen
+        self.show(vc, sender: self)
     }
     
     func showJsonTaskViewControler(jsonName: String) {
@@ -295,6 +295,8 @@ class ProfileTabViewController: UIViewController, UITableViewDelegate, UITableVi
                 self.showJsonTaskViewControler(jsonName: ProfileTabViewController.feedbackTaskId)
             } else if profileItem.profileItemKey == ProfileTabViewController.withdrawProfileKey {
                 self.showJsonTaskViewControler(jsonName: ProfileTabViewController.withdrawalTaskId)
+            } else if profileItem.profileItemKey == ProfileTabViewController.activityMeasuresKey {
+                self.queryAndUploadHealthKitData()
             } else if let vc = MasterScheduleManager.shared.instantiateSingleQuestionTreatmentTaskController(for: profileItem.profileItemKey) {
                 vc.delegate = self
                 self.show(vc, sender: self)
@@ -323,6 +325,19 @@ class ProfileTabViewController: UIViewController, UITableViewDelegate, UITableVi
             cell.contentView.backgroundColor = RSDColor.white
         }
     }
+
+    private func queryAndUploadHealthKitData() {
+        let health = HealthKitDataManager.shared
+        if (health.isHealthKitAvailable()) {
+            // Request health kit authorization
+            health.requestAuthorization { (success, errorCode) in
+                if (success) {
+                    health.beginHealthDataQueries()
+                }
+            }
+        }
+    }
+    
     // MARK - RSDButtonCellDelegate
     
     /// This is called when deep dive profile cell is tapped

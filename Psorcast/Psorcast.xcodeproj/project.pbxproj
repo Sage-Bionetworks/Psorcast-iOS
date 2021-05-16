@@ -18,9 +18,6 @@
 		CB03196523E3ED0A005063A3 /* ReviewCaptureStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB03196423E3ED09005063A3 /* ReviewCaptureStepViewController.swift */; };
 		CB03196723E40836005063A3 /* ReviewCaptureStepViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB03196623E40835005063A3 /* ReviewCaptureStepViewController.xib */; };
 		CB05146C237F27560058D746 /* DigitalJarOpen.json in Resources */ = {isa = PBXBuildFile; fileRef = CB05146B237F27560058D746 /* DigitalJarOpen.json */; };
-		CB060334264AEB2D00E59A33 /* Cardio_12MT.json in Resources */ = {isa = PBXBuildFile; fileRef = CB06032F264AEB2D00E59A33 /* Cardio_12MT.json */; };
-		CB06033B264AEC8100E59A33 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBB0F4322643D0C7007442F3 /* HealthKit.framework */; };
-		CB06033C264AEC8100E59A33 /* HealthKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CBB0F4322643D0C7007442F3 /* HealthKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		CB09F00123D644A9009D344E /* DigitalJarOpenInstructionStepViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB09F00023D644A8009D344E /* DigitalJarOpenInstructionStepViewController.xib */; };
 		CB09F00323D649FB009D344E /* DigitalJarOpenInstructionStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB09F00223D649FB009D344E /* DigitalJarOpenInstructionStepViewController.swift */; };
 		CB09F0382421D5730005698D /* TreatmentSelectionStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB09F0372421D5730005698D /* TreatmentSelectionStepViewController.swift */; };
@@ -351,7 +348,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				CB06033C264AEC8100E59A33 /* HealthKit.framework in Embed Frameworks */,
 				CBDCDCC623F385AF00E5CEB8 /* BridgeApp.framework in Embed Frameworks */,
 				CBDCDCD523F385DA00E5CEB8 /* Research.framework in Embed Frameworks */,
 				CBDCDCDB23F385EC00E5CEB8 /* ResearchUI.framework in Embed Frameworks */,
@@ -392,7 +388,6 @@
 		CB03196423E3ED09005063A3 /* ReviewCaptureStepViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReviewCaptureStepViewController.swift; sourceTree = "<group>"; };
 		CB03196623E40835005063A3 /* ReviewCaptureStepViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReviewCaptureStepViewController.xib; sourceTree = "<group>"; };
 		CB05146B237F27560058D746 /* DigitalJarOpen.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = DigitalJarOpen.json; sourceTree = "<group>"; };
-		CB06032F264AEB2D00E59A33 /* Cardio_12MT.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Cardio_12MT.json; path = ../../../../../../Downloads/Cardio_12MT.json; sourceTree = "<group>"; };
 		CB09F00023D644A8009D344E /* DigitalJarOpenInstructionStepViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DigitalJarOpenInstructionStepViewController.xib; sourceTree = "<group>"; };
 		CB09F00223D649FB009D344E /* DigitalJarOpenInstructionStepViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DigitalJarOpenInstructionStepViewController.swift; sourceTree = "<group>"; };
 		CB09F0372421D5730005698D /* TreatmentSelectionStepViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreatmentSelectionStepViewController.swift; sourceTree = "<group>"; };
@@ -619,7 +614,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CB06033B264AEC8100E59A33 /* HealthKit.framework in Frameworks */,
 				CBDCDCC523F385AF00E5CEB8 /* BridgeApp.framework in Frameworks */,
 				CBDCDCD423F385DA00E5CEB8 /* Research.framework in Frameworks */,
 				CBDCDCDA23F385EC00E5CEB8 /* ResearchUI.framework in Frameworks */,
@@ -965,7 +959,6 @@
 		CBFF926F25E08C9C00EC34DB /* JSON */ = {
 			isa = PBXGroup;
 			children = (
-				CB06032F264AEB2D00E59A33 /* Cardio_12MT.json */,
 				CB7281A32624DBBD00AAEB2C /* Withdrawal.json */,
 				CB72819E2624D12400AAEB2C /* Feedback.json */,
 				CB95A28D260868A600F28273 /* Introduction.json */,
@@ -1346,7 +1339,6 @@
 				CBDCDC9423F3849E00E5CEB8 /* ParticipantIDRegistrationViewController.xib in Resources */,
 				FF5010A122DD214A0035E83C /* BridgeInfo.plist in Resources */,
 				CB95A28926085EDF00F28273 /* OnboardingPagerView.xib in Resources */,
-				CB060334264AEB2D00E59A33 /* Cardio_12MT.json in Resources */,
 				04F00578243FE76E00EDB120 /* ShowInsightStepViewController.xib in Resources */,
 				CBDCDC7F23F3848500E5CEB8 /* MDJointCounting.json in Resources */,
 				CB72819D2624CBE100AAEB2C /* TextfieldStepViewController.xib in Resources */,
