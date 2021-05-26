@@ -264,6 +264,14 @@ open class HealthKitDataManager {
             let schemaRevisionInfo = SBABridgeConfiguration.shared.schemaInfo(for: kArchiveIdentifier) ?? RSDSchemaInfoObject(identifier: kArchiveIdentifier, revision: 1)
             archive.setArchiveInfoObject(schemaRevisionInfo.schemaVersion, forKey: kSchemaRevisionKey)
             
+            // Add on the treatment week, treatments, etc.
+            let treatmentAddOns = MasterScheduleManager.shared.createTreatmentAnswerAddOns()
+            if (treatmentAddOns.count > 0) {
+                var answersDict = [AnyHashable: Any]()
+                treatmentAddOns.forEach({ answersDict[$0.identifier] = $0.value })
+                archive.insertAnswersDictionary(answersDict)
+            }
+            
             // Try to finish and upload the archive
             try archive.complete()
             archive.encryptAndUploadArchive()
