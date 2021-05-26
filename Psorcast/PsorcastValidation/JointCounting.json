@@ -22,7 +22,7 @@
                 },
                 "skip":{
                     "type":"reminder",
-                    "reminderIdentifier":"PsoriasisAreaPhoto"
+                    "reminderIdentifier":"JointCounting"
                 },
                 "learnMore": {
                     "type": "videoView",
@@ -59,7 +59,7 @@
                 "skip": {
                     "type": "navigation",
                     "buttonTitle" : "No areas have painful joints",
-                    "skipToIdentifier": "noPsoriasisCompletion"
+                    "skipToIdentifier": "noPsoriasisJointCountCompletion"
                 }
             },
             "inputFields": [
@@ -698,7 +698,7 @@
             }
         },
         {
-            "identifier":"noPsoriasisCompletion",
+            "identifier":"noPsoriasisJointCountCompletion",
             "type":"noPsoriasis",
             "title":"We’re glad to hear you are currently free of joint pain!",
             "text":"Thank you for reporting that you are currently free of joint pain. By letting us know that you are pain-free, we can understand more about people’s remissions and their duration.",
