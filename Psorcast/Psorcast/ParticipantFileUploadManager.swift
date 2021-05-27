@@ -51,6 +51,12 @@ struct ParticipantFileS3Metadata {
     var contentMD5String: String
 }
 
+struct ParticipantFileRetryInfo {
+    var originalFilePath: String
+    var s3Metadata: ParticipantFileS3Metadata
+    var whenToRetry: Date
+}
+
 /// Dictionary encoder/decoder from https://stackoverflow.com/a/52182418
 class DictionaryEncoder {
     private let jsonEncoder = JSONEncoder()
@@ -91,18 +97,27 @@ class ParticipantFileUploadManager: NSObject, URLSessionDownloadDelegate, URLSes
     let participantFileUploadsKey = "ParticipantFileUploadsKey"
     
     /// The key under which we store temp files in the "requested upload URL" state.
-    /// This key refers to a mapping of temp file -> ParticipantFile json (as originally passed to Bridge).
+    /// This key refers to a mapping of temp file -> ParticipantFileS3Metadata with the participantFile field
+    /// containing what was originally passed to Bridge when requesting the upload URL.
     let uploadURLsRequestedKey = "UploadURLsRequestedKey"
     
     /// The key under which we store temp files in the "attempting to upload to S3" state.
-    /// This key refers to a mapping of temp file -> ParticipantFile json (as returned from Bridge).
+    /// This key refers to a mapping of temp file -> ParticipantFileS3Metadata with the participantFile field
+    /// containing what was returned from Bridge when we requested the upload URL.
     let uploadingToS3Key = "UploadingToS3Key"
+    
+    /// The key under which we store retryInfo for retrying failed file uploads.
+    /// The key refers to a mapping of temp file -> ParticipantFileRetryInfo.
+    let retryUploadsKey = "RetryUploadsKey"
     
     /// The Notification.userInfo key for the uploaded file's ParticipantFile object from Bridge.
     let participantFileKey = "ParticipantFile"
     
     /// The Notification.userInfo key for the uploaded file's original (on-device) path.
     let filePathKey = "FilePath"
+    
+    /// The minimum delay before retrying a failed upload (in seconds).
+    var delayForRetry: TimeInterval = 5 * 60
     
     /// ParticipantFileUploadManager uses its own instance of SBBBridgeNetworkManager so that it
     /// can set itself as the backgroundTransferDelegate.
@@ -248,20 +263,6 @@ class ParticipantFileUploadManager: NSObject, URLSessionDownloadDelegate, URLSes
         }
         
         let participantFile = ParticipantFile(fileId: fileId, mimeType: mimeType, createdOn: createdOn)
-        var participantFileDict: Dictionary<String, Any>?
-        do {
-            let dictEncoder = DictionaryEncoder()
-            participantFileDict = try dictEncoder.encode(participantFile) as? Dictionary<String, Any>
-        } catch let err {
-            debugPrint("Error encoding participantFile object with fileId: \(fileId) mimeType: \(mimeType) createdOn: \(String(describing: createdOn)) to Dictionary<String, Any>: \(err)")
-            return
-        }
-        
-        // this should never happen, so if it ever does we would like to know why
-        if participantFileDict == nil {
-            debugPrint("participantFile object with fileId: \(fileId) mimeType: \(mimeType) createdOn: \(String(describing: createdOn)) was successfully encoded, but the resulting Dictionary<String, Any> value is nil")
-            return
-        }
         
         // Get the file size and MD5 hash before making the temp copy, in case something goes wrong
         var contentLengthString: String?
@@ -288,16 +289,47 @@ class ParticipantFileUploadManager: NSObject, URLSessionDownloadDelegate, URLSes
             return
         }
 
-        // Now make a temp local copy of the file
-        guard let tempFile = self.tempFileFor(inFileURL: fileURL) else { return }
+        // And finally, request an upload URL to S3 from Bridge
+        let s3Metadata = ParticipantFileS3Metadata(participantFile: participantFile, contentLengthString: contentLengthString, contentMD5String: contentMD5String)
+        
+        self.requestUploadURL(invariantFilePath: nil, fileURL: fileURL, s3Metadata: s3Metadata)
+    }
+    
+    fileprivate func requestUploadURL(invariantFilePath: String?, fileURL: URL?, s3Metadata: ParticipantFileS3Metadata) {
+        // serialize the participantFile object as a dictionary
+        var participantFileDict: Dictionary<String, Any>?
+        let participantFile = s3Metadata.participantFile
+        do {
+            let dictEncoder = DictionaryEncoder()
+            participantFileDict = try dictEncoder.encode(participantFile) as? Dictionary<String, Any>
+        } catch let err {
+            debugPrint("Error encoding participantFile object with fileId: \(String(describing: participantFile.fileId)) mimeType: \(participantFile.mimeType) createdOn: \(String(describing: participantFile.createdOn)) to Dictionary<String, Any>: \(err)")
+            return
+        }
+        
+        // this should never happen, so if it ever does we would like to know why
+        if participantFileDict == nil {
+            debugPrint("participantFile object with fileId: \(String(describing: participantFile.fileId)) mimeType: \(participantFile.mimeType) createdOn: \(String(describing: participantFile.createdOn)) was successfully encoded, but the resulting Dictionary<String, Any> value is nil")
+            return
+        }
+        
+        var invariantFilePath = invariantFilePath
+        
+        // if no invariant file path was passed in, make a temp local copy of the file at fileURL and use that
+        if invariantFilePath == nil {
+            guard let fileURL = fileURL else {
+                debugPrint("Error: requestUploadURL called with both invariantFilePath and fileURL as nil")
+                return
+            }
+            guard let tempFile = self.tempFileFor(inFileURL: fileURL) else { return }
+            invariantFilePath = (tempFile.path as NSString).sandboxRelativePath()!
+        }
         
         // Set its state as uploadRequested
-        let invariantFilePath = (tempFile.path as NSString).sandboxRelativePath()!
-        let s3Metadata = ParticipantFileS3Metadata(participantFile: participantFile, contentLengthString: contentLengthString, contentMD5String: contentMD5String)
-        self.persistMapping(from: invariantFilePath, to: s3Metadata, defaultsKey: self.uploadURLsRequestedKey)
+        self.persistMapping(from: invariantFilePath!, to: s3Metadata, defaultsKey: self.uploadURLsRequestedKey)
         
         // Request an uploadUrl for the ParticipantFile
-        let requestString = "v3/participants/self/files/\(fileId)"
+        let requestString = "v3/participants/self/files/\(participantFile.fileId!)"
         let headers = NSMutableDictionary()
         
         BridgeSDK.authManager.addAuthHeader(toHeaders: headers)
@@ -357,7 +389,8 @@ class ParticipantFileUploadManager: NSObject, URLSessionDownloadDelegate, URLSes
         }
         
         // add the file to the uploadingToS3 list
-        self.persistMapping(from: invariantFilePath, to: participantFile, defaultsKey: self.uploadingToS3Key
+        let uploadingToS3Metadata = ParticipantFileS3Metadata(participantFile: participantFile, contentLengthString: s3Metadata.contentLengthString, contentMD5String: s3Metadata.contentMD5String)
+        self.persistMapping(from: invariantFilePath, to: uploadingToS3Metadata, defaultsKey: self.uploadingToS3Key
         )
         
         // upload the file to S3
@@ -369,11 +402,58 @@ class ParticipantFileUploadManager: NSObject, URLSessionDownloadDelegate, URLSes
         self.netManager.uploadFile(fileUrl, httpHeaders: headers, toUrl: participantFile.uploadUrl, taskDescription: invariantFilePath, completion: nil)
     }
     
+    // TODO: Figure out where to call this!
+    /// Call this function to check for and run any retries where the required delay has elapsed.
+    public func retryUploadsAfterDelay() {
+        self.uploadQueue.addOperation {
+            let userDefaults = BridgeSDK.sharedUserDefaults()
+            guard var retryUploads = userDefaults.dictionary(forKey: self.retryUploadsKey) else { return }
+            for filePath in retryUploads.keys {
+                autoreleasepool {
+                    guard let retryInfo = retryUploads[filePath] as? ParticipantFileRetryInfo else { return }
+                    if retryInfo.whenToRetry.timeIntervalSinceNow <= 0.0 {
+                        // request a fresh upload URL from Bridge
+                        self.requestUploadURL(invariantFilePath: filePath, fileURL: nil, s3Metadata: retryInfo.s3Metadata)
+                        
+                        // remove it from the list of things needing to be retried
+                        retryUploads.removeValue(forKey: filePath)
+                        userDefaults.setValue(retryUploads, forKey: self.retryUploadsKey)
+                    }
+                }
+            }
+        }
+    }
+    
+    /// Helper for task delegate method in case of HTTP error on S3 upload.
+    fileprivate func handleHTTPUploadStatusCode(_ statusCode: Int, tempFilePath: String, originalFilePath: String, s3Metadata: ParticipantFileS3Metadata) {
+        switch statusCode {
+        case 403, 409, 500, 503:
+            // 403: for our purposes means the pre-signed url timed out before starting the actual upload to S3.
+            // 409: in our case it could only mean a temporary conflict (resource locked by another process, etc.) that should be retried.
+            // 500: means internal server error ("We encountered an internal error. Please try again.")
+            // 503: means service not available or the requests are coming too fast, so try again later.
+            // In any case, we'll retry after a minimum delay to avoid spamming retries.
+            let whenToRetry = Date(timeIntervalSinceNow: self.delayForRetry)
+            let retryInfo = ParticipantFileRetryInfo(originalFilePath: originalFilePath, s3Metadata: s3Metadata, whenToRetry: whenToRetry)
+            self.persistMapping(from: tempFilePath, to: retryInfo, defaultsKey: self.retryUploadsKey)
+
+        default:
+            // iOS handles redirects automatically so only e.g. 304 resource not changed etc. from the 300 range should end up here
+            // (along with all unhandled 4xx and 5xx of course).
+            // TODO: Post an upload-failed notification? Keep track of the failed uploads somewhere?
+            debugPrint("Participant file upload to S3 of file \(originalFilePath) failed with HTTP response status code \(statusCode)--unhandled, will not retry")
+        }
+    }
 
     /// Task delegate method.
     func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
-        guard !task.isKind(of: URLSessionDownloadTask.self) else {
-            // Download task stuff is handled elsewhere
+        if task.isKind(of: URLSessionDownloadTask.self) {
+            // TODO: SBBNetworkManager's downloadFileFromURLString: etc. method uses a completion block
+            // to do error checking/handling for download sessions. This is not robust against the
+            // app being suspended/restarted in the meantime so ideally we should handle it here instead,
+            // but we'd need a way to either tell it not to do that for us, or a way to tell if it has
+            // so we don't do the error handling twice. Or maybe now is a good time to just reimplement
+            // the network manager in Swift?
             return
         }
         
@@ -384,10 +464,12 @@ class ParticipantFileUploadManager: NSObject, URLSessionDownloadDelegate, URLSes
         }
         
         // remove the file from the upload requests, and retrieve its ParticipantFile object
-        guard let participantFile = removeMapping(from: invariantFilePath, defaultsKey: self.uploadingToS3Key) as? ParticipantFile else {
-            debugPrint("Unexpected: No ParticipantFile found mapped for temp file \(invariantFilePath)")
+        guard let s3Metadata = removeMapping(from: invariantFilePath, defaultsKey: self.uploadingToS3Key) as? ParticipantFileS3Metadata else {
+            debugPrint("Unexpected: No ParticipantFileS3Metadata found mapped for temp file \(invariantFilePath)")
             return
         }
+        
+        let participantFile = s3Metadata.participantFile
         
         // remove the file from the temp -> orig mappings, and retrieve the original sandbox-relative file path
         guard let invariantOriginalFilePath = removeMapping(from: invariantFilePath, defaultsKey: self.participantFileUploadsKey) as? String else {
@@ -405,6 +487,18 @@ class ParticipantFileUploadManager: NSObject, URLSessionDownloadDelegate, URLSes
         // so just log it and bail out
         if let error = error {
             debugPrint("Error uploading file \(originalFilePath) to S3: \(error)")
+            return
+        }
+        
+        // check the response for HTTP errors and handle accordingly
+        guard let httpResponse = task.response as? HTTPURLResponse else {
+            debugPrint("Unexpected: Upload task response is not an HTTPURLResponse")
+            return
+        }
+        
+        let statusCode = httpResponse.statusCode
+        if statusCode >= 300 {
+            self.handleHTTPUploadStatusCode(statusCode, tempFilePath: invariantFilePath, originalFilePath: invariantOriginalFilePath, s3Metadata: s3Metadata)
             return
         }
         
