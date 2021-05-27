@@ -67,6 +67,8 @@
 		CB55C73C23198A1F00EA0C19 /* JointPainStepViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB55C73B23198A1F00EA0C19 /* JointPainStepViewControllerTests.swift */; };
 		CB55C73E23198C1000EA0C19 /* JointPainCompletionStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB55C73D23198C1000EA0C19 /* JointPainCompletionStepViewController.swift */; };
 		CB55C7402319A18300EA0C19 /* JointPainCompletionStepViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB55C73F2319A18300EA0C19 /* JointPainCompletionStepViewController.xib */; };
+		CB5A93FF265EAB1A0063994F /* EnvironmentalStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB5A93F9265EAB1A0063994F /* EnvironmentalStepViewController.swift */; };
+		CB5A9400265EAB1A0063994F /* EnvironmentalStepViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB5A93FE265EAB1A0063994F /* EnvironmentalStepViewController.xib */; };
 		CB5E95FB22EE7A390001AAFE /* ParticipantIDRegistrationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB5E95FA22EE7A390001AAFE /* ParticipantIDRegistrationViewController.xib */; };
 		CB5E960A22EE920D0001AAFE /* ExternalIDRegistrationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB5E960922EE920D0001AAFE /* ExternalIDRegistrationViewController.xib */; };
 		CB5F3777237EFA2B003648DB /* LearnMoreStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB5F3775237EFA2A003648DB /* LearnMoreStepViewController.swift */; };
@@ -433,6 +435,8 @@
 		CB55C73B23198A1F00EA0C19 /* JointPainStepViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JointPainStepViewControllerTests.swift; sourceTree = "<group>"; };
 		CB55C73D23198C1000EA0C19 /* JointPainCompletionStepViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JointPainCompletionStepViewController.swift; sourceTree = "<group>"; };
 		CB55C73F2319A18300EA0C19 /* JointPainCompletionStepViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JointPainCompletionStepViewController.xib; sourceTree = "<group>"; };
+		CB5A93F9265EAB1A0063994F /* EnvironmentalStepViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnvironmentalStepViewController.swift; sourceTree = "<group>"; };
+		CB5A93FE265EAB1A0063994F /* EnvironmentalStepViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EnvironmentalStepViewController.xib; sourceTree = "<group>"; };
 		CB5E95FA22EE7A390001AAFE /* ParticipantIDRegistrationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ParticipantIDRegistrationViewController.xib; sourceTree = "<group>"; };
 		CB5E960922EE920D0001AAFE /* ExternalIDRegistrationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExternalIDRegistrationViewController.xib; sourceTree = "<group>"; };
 		CB5F3775237EFA2A003648DB /* LearnMoreStepViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LearnMoreStepViewController.swift; sourceTree = "<group>"; };
@@ -736,6 +740,8 @@
 				CB72819B2624CBE100AAEB2C /* TextfieldStepViewController.xib */,
 				CB7281A72624DC5000AAEB2C /* WithdrawalStepViewController.swift */,
 				CB7281A62624DC5000AAEB2C /* WithdrawalStepViewController.xib */,
+				CB5A93F9265EAB1A0063994F /* EnvironmentalStepViewController.swift */,
+				CB5A93FE265EAB1A0063994F /* EnvironmentalStepViewController.xib */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -1291,6 +1297,7 @@
 				CB7CF2482400CFAA003E02A5 /* WelcomeVideo.mov in Resources */,
 				CBDCDC8523F3848E00E5CEB8 /* ToesPhoto.mov in Resources */,
 				FFABCBCC22DD1EEC00D11109 /* LaunchScreen.storyboard in Resources */,
+				CB5A9400265EAB1A0063994F /* EnvironmentalStepViewController.xib in Resources */,
 				CBDCDC8023F3848500E5CEB8 /* PsoriasisAreaPhoto.json in Resources */,
 				CB9F5E2522E0BED3003FBCEF /* lato_regular.ttf in Resources */,
 				CBDCDC7C23F3848500E5CEB8 /* HandImaging.json in Resources */,
@@ -1475,6 +1482,7 @@
 				CBDCDC8B23F3849E00E5CEB8 /* RSDCollectionViewCell.swift in Sources */,
 				CBDCDCA523F3849E00E5CEB8 /* PsoriasisAreaPhotoResultObject.swift in Sources */,
 				CBDCDCBA23F384A400E5CEB8 /* PsorcastTaskResultProcessor.swift in Sources */,
+				CB5A93FF265EAB1A0063994F /* EnvironmentalStepViewController.swift in Sources */,
 				CB16C38C24465BC20046E200 /* ReminderStepViewController.swift in Sources */,
 				CBDCDCB323F3849E00E5CEB8 /* DigitalJarOpenCompletionStepViewController.swift in Sources */,
 				CB1535E024395410007D0307 /* ProfileTabViewController.swift in Sources */,
@@ -1874,7 +1882,7 @@
 				CODE_SIGN_ENTITLEMENTS = Psorcast/Psorcast.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 10;
 				DEVELOPMENT_TEAM = KA9Z8R6M6K;
 				INFOPLIST_FILE = Psorcast/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1898,7 +1906,7 @@
 				CODE_SIGN_ENTITLEMENTS = Psorcast/Psorcast.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 10;
 				DEVELOPMENT_TEAM = KA9Z8R6M6K;
 				INFOPLIST_FILE = Psorcast/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (

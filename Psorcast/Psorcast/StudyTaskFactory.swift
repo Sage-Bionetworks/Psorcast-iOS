@@ -42,6 +42,7 @@ extension RSDStepType {
     public static let webImageInstruction: RSDStepType = "webImageInstruction"
     public static let textField: RSDStepType = "textField"
     public static let withdrawal: RSDStepType = "withdrawal"
+    public static let environmental: RSDStepType = "environmental"
 }
 
 extension RSDStepNavigatorType {
@@ -76,6 +77,8 @@ open class StudyTaskFactory: TaskFactory {
             return try TextfieldStepObject(from: decoder)
         case .withdrawal:
             return try WithdrawalStepObject(from: decoder)
+        case .environmental:
+            return try EnvironmentalStepObject(from: decoder)
         default:
             return try super.decodeStep(from: decoder, with: type)
         }

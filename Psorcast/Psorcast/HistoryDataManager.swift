@@ -118,6 +118,12 @@ open class HistoryDataManager {
     fileprivate var treatmentData: TreatmentUserDefaultsSingletonReport? {
         return self.singletonData[RSDIdentifier.treatmentTask] as? TreatmentUserDefaultsSingletonReport
     }
+    public var hasSetEnvironmentalAuth: Bool {
+        return self.defaults.bool(forKey: "EnvironmentalAuth")
+    }
+    public func setEnvironmentalAuthSeen() {
+        self.defaults.set(true, forKey: "EnvironmentalAuth")
+    }
     public var hasSetTreatment: Bool {
         return self.treatmentData?.current != nil
     }
