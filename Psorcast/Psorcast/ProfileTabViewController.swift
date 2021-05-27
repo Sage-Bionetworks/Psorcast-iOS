@@ -295,8 +295,6 @@ class ProfileTabViewController: UIViewController, UITableViewDelegate, UITableVi
                 self.showJsonTaskViewControler(jsonName: ProfileTabViewController.feedbackTaskId)
             } else if profileItem.profileItemKey == ProfileTabViewController.withdrawProfileKey {
                 self.showJsonTaskViewControler(jsonName: ProfileTabViewController.withdrawalTaskId)
-            } else if profileItem.profileItemKey == ProfileTabViewController.activityMeasuresKey {
-                self.queryAndUploadHealthKitData()
             } else if let vc = MasterScheduleManager.shared.instantiateSingleQuestionTreatmentTaskController(for: profileItem.profileItemKey) {
                 vc.delegate = self
                 self.show(vc, sender: self)
@@ -323,18 +321,6 @@ class ProfileTabViewController: UIViewController, UITableViewDelegate, UITableVi
     public func tableView(_ tableView: UITableView, didUnhighlightRowAt indexPath: IndexPath) {
         if let cell = tableView.cellForRow(at: indexPath) {
             cell.contentView.backgroundColor = RSDColor.white
-        }
-    }
-
-    private func queryAndUploadHealthKitData() {
-        let health = HealthKitDataManager.shared
-        if (health.isHealthKitAvailable()) {
-            // Request health kit authorization
-            health.requestAuthorization { (success, errorCode) in
-                if (success) {
-                    health.beginHealthDataQueries()
-                }
-            }
         }
     }
     
