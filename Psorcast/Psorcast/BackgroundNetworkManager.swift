@@ -34,29 +34,248 @@
 import Foundation
 import BridgeSDK
 
-class BackgroundNetworkManager: NSObject, URLSessionDownloadDelegate, URLSessionDataDelegate {
+protocol URLSessionBackgroundDelegate: URLSessionDataDelegate, URLSessionDownloadDelegate {
+}
+
+class BackgroundNetworkManager: NSObject, URLSessionBackgroundDelegate {
     /// We use this custom HTTP request header as a hack to keep track of how many times we've retried a request.
     let retryCountHeader = "X-SageBridge-Retry"
     
     /// This sets the maximum number of times we will retry a request before giving up.
     let maxRetries = 5
     
+    /// If set, this object's delegate methods will be called to present UI around critical errors (app update required, etc.).
     public var bridgeErrorUIDelegate: SBBBridgeErrorUIDelegate?
     
-    public var backgroundTransferDelegate: NSObject<URLSessionDataDelegate, URLSessionDownloadDelegate>?
-    
-    var backgroundCompletionHandlers: Dictionary = [:]
-    
+    /// If set, URLSession(Data/Download)Delegate method calls received by the BackgroundNetworkManager
+    /// will be passed through to this object for further handling.
+    public var backgroundTransferDelegate: URLSessionBackgroundDelegate?
+        
+    /// Retrieve or (re-)create the background URLSession used by this BackgroundNetworkManager.
     func backgroundSession() -> URLSession {
         // TODO: Implement in a way that handles restoring after suspension/restart
     }
     
-    public func downloadFile(fromURLString: String, method: String, httpHeaders: Dictionary, parameters: Dictionary, taskDescription: String) {
-        // TODO: Implement a la SBBNetworkManager
+    /// For encoding objects to be passed to Bridge.
+    lazy var jsonEncoder: JSONEncoder = {
+        let encoder = JSONEncoder()
+        encoder.dateEncodingStrategy = .iso8601
+        return encoder
+    }()
+    
+    /// For decoding objects received from Bridge.
+    lazy var jsonDecoder: JSONDecoder = {
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .iso8601
+        return decoder
+    }()
+    
+    func bridgeBaseURL() -> URL {
+        let domainPrefix = "webservices"
+        let domainSuffixForEnv = [
+            "",
+            "-staging",
+            "-develop",
+            "-custom"
+        ]
+        
+        let bridgeEnv = BridgeSDK.bridgeInfo.environment.rawValue
+        guard bridgeEnv < domainSuffixForEnv.count else {
+            fatalError("Environment property in BridgeInfo must be an integer in the range 0..\(domainSuffixForEnv.count).")
+        }
+        
+        let bridgeHost = "\(domainPrefix)\(domainSuffixForEnv[bridgeEnv]).sagebridge.org"
+        guard let baseUrl = URL(string: "https://\(bridgeHost)") else {
+            fatalError("Unable to create URL object from string 'https://\(bridgeHost)'")
+        }
+        
+        return baseUrl
     }
     
-    public func uploadFile(URL, httpHeaders: Dictionary, toUrlString: String, taskDescription: String) {
-        // TODO: Implement a la SBBNetworkManager
+    func bridgeURL(for urlString: String) -> URL {
+        // If the string is a full httpx:// url already, just return it as a URL
+        if let fullURL = URL(string: urlString), fullURL.scheme?.hasPrefix("http") ?? false {
+            return fullURL
+        }
+        
+        let baseUrl = bridgeBaseURL()
+        guard let bridgeUrl = URL(string: urlString, relativeTo: baseUrl) else {
+            fatalError("Unable to create URL object from string '\(urlString)' relative to \(baseUrl)")
+        }
+        
+        return bridgeUrl
+    }
+    
+    // This helper method works around the fact that JSONEncoder.encode() is a generic and therefore
+    // requires a concrete type at compile time (can't just pass it an otherwise-unspecified Encodable).
+    func jsonEncode(value: Encodable) -> Data? {
+        var encodedValue: Data?
+        do {
+            switch value {
+            case is Date, is NSDate:
+                encodedValue = try jsonEncoder.encode(value as! Date)
+            case is String, is NSString:
+                encodedValue = try jsonEncoder.encode(value as! String)
+            case is Bool:
+                encodedValue = try jsonEncoder.encode(value as! Bool)
+            case is Int, is Int8, is Int16, is Int32, is Int64:
+                encodedValue = try jsonEncoder.encode(value as! Int)
+            case is UInt, is UInt8, is UInt16, is UInt32, is UInt64:
+                encodedValue = try jsonEncoder.encode(value as! UInt)
+            case is Float, is Double:
+                encodedValue = try jsonEncoder.encode(value as! Double)
+            case is NSNumber:
+                encodedValue = try jsonEncoder.encode(value as! NSNumber)
+            case is NSNull:
+                encodedValue = try jsonEncoder.encode(value as! NSNull)
+            case is Dictionary<String, Encodable>:
+                var dictJsonBody = String()
+                for (key, val) in value as! Dictionary<String, Encodable> {
+                    if !dictJsonBody.isEmpty {
+                        dictJsonBody.append(",\n")
+                    }
+                    guard let valJson = jsonEncode(value: val) else {
+                        debugPrint("Attempting to json-encode value '\(val)' for key '\(key)' in Dictionary resulted in nil; skipping")
+                        return nil
+                    }
+                    guard let valJsonString = String(data: valJson, encoding: .utf8) else {
+                        debugPrint("Attempting to convert json data '\(valJson)' from key '\(key)', value '\(val)' in Dictionary resulted in nil; skipping")
+                        return nil
+                    }
+                    dictJsonBody.append("\t\"\(key)\": \(valJsonString)")
+                }
+                let dictJsonString = "{\n\(dictJsonBody)\n}"
+                encodedValue = try jsonEncoder.encode(dictJsonString)
+            case is Array<Encodable>:
+                var arrayJsonBody = String()
+                for val in value as! Array<Encodable> {
+                    if !arrayJsonBody.isEmpty {
+                        arrayJsonBody.append(",\n")
+                    }
+                    guard let valJson = jsonEncode(value: val) else {
+                        debugPrint("Attempting to json-encode value '\(val)' in Array resulted in nil; skipping")
+                        return nil
+                    }
+                    guard let valJsonString = String(data: valJson, encoding: .utf8) else {
+                        debugPrint("Attempting to convert json data '\(valJson)' from value '\(val)' in Array resulted in nil; skipping")
+                        return nil
+                    }
+                    arrayJsonBody.append("\t\(valJsonString)")
+                }
+                let arrayJsonString = "[\n\(arrayJsonBody)\n]"
+                encodedValue = try jsonEncoder.encode(arrayJsonString)
+            default:
+                // not a known JSON-encodable type--log it and skip it
+                debugPrint("\(type(of: value)) is not a known JSON-encodable type")
+                return nil
+            }
+        } catch {
+            // this shouldn't happen, but log it just in case
+            debugPrint("Unexpected: JSON encoder failed to encode an object of a presumed JSON-encodable type")
+            return nil
+        }
+        
+        return encodedValue
+    }
+    
+    func queryString(from parameters: Encodable?) -> String? {
+        guard let paramDict = parameters as? Dictionary<String, Encodable> else { return nil }
+        
+        let allowedChars = CharacterSet.urlQueryAllowed
+        var queryParams = Array<String>()
+        for (param, value) in paramDict {
+            // if either the param name or the value fail to encode to a url %-encoded string, skip this parameter
+            guard let encodedValue = jsonEncode(value: value) else { continue }
+            guard let encodedValueString = String(data: encodedValue, encoding: .utf8)?.addingPercentEncoding(withAllowedCharacters: allowedChars) else { continue }
+            guard let encodedParam = param.addingPercentEncoding(withAllowedCharacters: allowedChars) else { continue }
+            
+            queryParams.append("\(encodedParam)=\(encodedValueString)")
+        }
+        return queryParams.joined(separator: "&")
+    }
+    
+    func addBasicHeaders(to request: inout URLRequest) {
+        // TODO: When adapted for use with BridgeClientKMM, this method should just call through
+        // to that module's facility for doing this.
+        let bundle = Bundle.main
+        let device = UIDevice.current
+        let name = bundle.appName()
+        let version = bundle.appVersion()
+        let info = device.deviceInfo()
+        
+        let userAgentHeader = "\(name)/\(version) (\(String(describing: info))) BridgeSDK/\(BridgeSDKVersionNumber)"
+        request.setValue(userAgentHeader, forHTTPHeaderField: "User-Agent")
+        
+        let acceptLanguageHeader = Locale.preferredLanguages.joined(separator: ", ")
+        request.setValue(acceptLanguageHeader, forHTTPHeaderField: "Accept-Language")
+        
+        request.setValue("no-cache", forHTTPHeaderField: "cache-control")
+    }
+    
+    func request(method: String, URLString: String, headers: Dictionary<String, String>?, parameters: Encodable?) -> URLRequest {
+        var URLString = URLString
+        let isGet = (method.uppercased() == "GET")
+        
+        // for GET requests, the parameters go in the query part of the URL
+        if isGet {
+            if let queryString = queryString(from: parameters), !queryString.isEmpty {
+                if URLString.contains("?") {
+                    URLString.append("&\(queryString)")
+                }
+                else {
+                    URLString.append("?\(queryString)")
+                }
+            }
+        }
+        
+        var request = URLRequest(url: bridgeURL(for: URLString))
+        request.httpMethod = method
+        request.httpShouldHandleCookies = false
+        addBasicHeaders(to: &request)
+        
+        if let headers = headers {
+            for (header, value) in headers {
+                request.addValue(value, forHTTPHeaderField: header)
+            }
+        }
+        
+        // for non-GET requests, the parameters (if any) go in the request body
+        let contentTypeHeader = "Content-Type"
+        if let parameters = parameters, !isGet {
+            if request.value(forHTTPHeaderField: contentTypeHeader) == nil {
+                let ianaCharset = CFStringConvertEncodingToIANACharSetName(CFStringConvertNSStringEncodingToEncoding(String.Encoding.utf8.rawValue)) as String
+                request.setValue("application/json; charset=\(ianaCharset)", forHTTPHeaderField: contentTypeHeader)
+            }
+            
+            let jsonData = jsonEncode(value: parameters)
+            request.httpBody = jsonData
+        }
+        
+        debugPrint("Prepared request--URL:\n\(String(describing: request.url?.absoluteString))\nHeaders:\n\(String(describing: request.allHTTPHeaderFields))\nBody:\n\(String(describing: String(data: request.httpBody ?? Data(), encoding: .utf8)))")
+        
+        return request
+    }
+    
+    public func downloadFile(from URLString: String, method: String, httpHeaders: Dictionary<String, String>?, parameters: Encodable?, taskDescription: String) -> URLSessionDownloadTask {
+        let request =  self.request(method: method, URLString: URLString, headers: httpHeaders, parameters: parameters)
+        let task = self.backgroundSession().downloadTask(with: request)
+        task.taskDescription = taskDescription
+        task.resume()
+        return task
+    }
+    
+    public func uploadFile(_ fileURL: URL, httpHeaders: Dictionary<String, String>?, to urlString: String, taskDescription: String) -> URLSessionUploadTask? {
+        guard let url = URL(string: urlString) else {
+            debugPrint("Could not create URL from string '\(urlString)")
+            return nil
+        }
+        var request = URLRequest(url: url)
+        request.allHTTPHeaderFields = httpHeaders
+        request.httpMethod = "PUT"
+        let task = backgroundSession().uploadTask(with: request, fromFile: fileURL)
+        task.taskDescription = taskDescription
+        task.resume()
+        return task
     }
     
     public func restore(backgroundSession: String, completionHandler: @escaping () -> Void) {
@@ -64,7 +283,7 @@ class BackgroundNetworkManager: NSObject, URLSessionDownloadDelegate, URLSession
     }
     
     // MARK: Helpers
-    func isTemporaryError(errorCode: Int) {
+    func isTemporaryError(errorCode: Int) -> Bool {
         return (errorCode == NSURLErrorTimedOut || errorCode == NSURLErrorCannotFindHost || errorCode == NSURLErrorCannotConnectToHost || errorCode == NSURLErrorNotConnectedToInternet || errorCode == NSURLErrorSecureConnectionFailed)
     }
     
@@ -72,7 +291,7 @@ class BackgroundNetworkManager: NSObject, URLSessionDownloadDelegate, URLSession
         var request = originalRequest
         
         // Try, try again, until we run out of retries.
-        var retry = Int(request?.value(forHTTPHeaderField: retryCountHeader)) ?? 0
+        var retry = Int(request?.value(forHTTPHeaderField: retryCountHeader) ?? "") ?? 0
         guard retry < maxRetries else { return false }
         
         retry += 1
