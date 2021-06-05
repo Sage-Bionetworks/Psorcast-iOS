@@ -285,33 +285,11 @@ open class MasterScheduleManager : SBAScheduleManager {
             taskController.taskViewModel.taskResult.stepHistory.append(RSDAnswerResultObject(identifier: MasterScheduleManager.resultIdParticipantID, answerType: .string, value: participantID))
         }
         
-        // For ease of data analysis, we should always upload
-        // Treatments, treatment week, diagnosis, and symptoms.
-        // Unless it is the treatment task itself, where this would be redundant.
+        // Unless it is the treatment task itself, where this would be redundant,
+        // add the treatment answer add-ons to every task upload
         if RSDIdentifier.treatmentTask.rawValue != taskViewModel.task?.identifier {
-            
-            if let currentTreatments = self.selectedTreatmentItems?.map({ $0.identifier }) {
-                taskController.taskViewModel.taskResult.stepHistory.append(RSDAnswerResultObject(identifier: MasterScheduleManager.resultIdCurrentTreatment, answerType: .string, value: currentTreatments.joined(separator: ", ")))
-            } else {
-                debugPrint("Invalid current treatments, cannot attach to task result.")
-            }
-            
-            if (self.treatmentWeek() >= 0) {
-                taskController.taskViewModel.taskResult.stepHistory.append(RSDAnswerResultObject(identifier: MasterScheduleManager.resultIdTreatmentWeek, answerType: .integer, value: self.treatmentWeek()))
-            } else {
-                debugPrint("Invalid treatment week, cannot attach to task result.")
-            }
-            
-            if let diagnosis = self.diagnosis() {
-                taskController.taskViewModel.taskResult.stepHistory.append(RSDAnswerResultObject(identifier: MasterScheduleManager.resultIdDiagnosis, answerType: .string, value: diagnosis))
-            } else {
-                debugPrint("Invalid diagnosis, cannot attach to task result.")
-            }
-            
-            if let symptoms = self.symptoms() {
-                taskController.taskViewModel.taskResult.stepHistory.append(RSDAnswerResultObject(identifier: MasterScheduleManager.resultIdSymptoms, answerType: .string, value: symptoms))
-            } else {
-                debugPrint("Invalid symptoms, cannot attach to task result.")
+            createTreatmentAnswerAddOns().forEach { (addOnResult) in
+                taskController.taskViewModel.taskResult.stepHistory.append(addOnResult)
             }
         }
     
@@ -319,6 +297,38 @@ open class MasterScheduleManager : SBAScheduleManager {
         self.historyData.uploadReports(from: taskResult)
         
         super.saveResults(from: taskViewModel)
+    }
+    
+    /// For ease of data analysis, we should always upload
+    /// Treatments, treatment week, diagnosis, and symptoms.
+    public func createTreatmentAnswerAddOns()-> [RSDAnswerResult] {
+        var addOns = [RSDAnswerResult]()
+        
+        if let currentTreatments = self.selectedTreatmentItems?.map({ $0.identifier }) {
+            addOns.append(RSDAnswerResultObject(identifier: MasterScheduleManager.resultIdCurrentTreatment, answerType: .string, value: currentTreatments.joined(separator: ", ")))
+        } else {
+            debugPrint("Invalid current treatments, cannot attach to task result.")
+        }
+        
+        if (self.treatmentWeek() >= 0) {
+            addOns.append(RSDAnswerResultObject(identifier: MasterScheduleManager.resultIdTreatmentWeek, answerType: .integer, value: self.treatmentWeek()))
+        } else {
+            debugPrint("Invalid treatment week, cannot attach to task result.")
+        }
+        
+        if let diagnosis = self.diagnosis() {
+            addOns.append(RSDAnswerResultObject(identifier: MasterScheduleManager.resultIdDiagnosis, answerType: .string, value: diagnosis))
+        } else {
+            debugPrint("Invalid diagnosis, cannot attach to task result.")
+        }
+        
+        if let symptoms = self.symptoms() {
+            addOns.append(RSDAnswerResultObject(identifier: MasterScheduleManager.resultIdSymptoms, answerType: .string, value: symptoms))
+        } else {
+            debugPrint("Invalid symptoms, cannot attach to task result.")
+        }
+        
+        return addOns
     }
     
     public func treatmentDurationInWeeks(treatmentRange: TreatmentRange) -> Int {

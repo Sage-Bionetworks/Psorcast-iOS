@@ -81,8 +81,11 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate, ShowPopTipDele
     func showAppropriateViewController(animated: Bool) {
         let isAuthenticated = BridgeSDK.authManager.isAuthenticated()
         let hasSetTreatments = HistoryDataManager.shared.hasSetTreatment
+        let hasSetEnvironMentalAuth = HistoryDataManager.shared.hasSetEnvironmentalAuth
         
-        if isAuthenticated && hasSetTreatments {
+        if isAuthenticated && hasSetTreatments && !hasSetEnvironMentalAuth {
+            self.showEnvironmentalAuthScreens(animated: true)
+        } else if isAuthenticated && hasSetTreatments {
             self.showMainViewController(animated: animated)
         } else if isAuthenticated {
             self.showTreatmentSelectionScreens(animated: true)
@@ -155,6 +158,19 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate, ShowPopTipDele
     
     func showTreatmentSelectionScreens(animated: Bool) {
         guard let vc = MasterScheduleManager.shared.instantiateTreatmentTaskController() else {
+            debugPrint("WARNING! Failed to create treatment task from profile manager app config")
+            let alert = UIAlertController(title: "Connectivity issue", message: "We had trouble loading information from our server.  Please close the app and then try again.", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Okay", style: .default, handler: nil))
+            self.rootViewController?.present(alert, animated: true)
+            return
+        }
+        
+        vc.delegate = self
+        self.transition(to: vc, state: .consent, animated: true)
+    }
+    
+    func showEnvironmentalAuthScreens(animated: Bool) {
+        guard let vc = MasterScheduleManager.shared.instantiateSingleQuestionTreatmentTaskController(for: "environmentalAuthorization") else {
             debugPrint("WARNING! Failed to create treatment task from profile manager app config")
             let alert = UIAlertController(title: "Connectivity issue", message: "We had trouble loading information from our server.  Please close the app and then try again.", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "Okay", style: .default, handler: nil))
@@ -328,6 +344,7 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate, ShowPopTipDele
         if taskController.task.identifier == RSDIdentifier.treatmentTask.rawValue {
             // If we finish the treatment screen by cancelling, show the sign in screen again
             if reason == .completed {
+                HistoryDataManager.shared.setEnvironmentalAuthSeen()
                 self.showMainViewController(animated: true)
                 return
             } else { // Otherwise we are ready to enter the app
@@ -354,6 +371,7 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate, ShowPopTipDele
     func taskController(_ taskController: RSDTaskController, readyToSave taskViewModel: RSDTaskViewModel) {
         
         if taskController.task.identifier == self.signInTaskId ||
+            taskController.task.identifier == IntroductionTaskId ||
             taskController.task.identifier == SignInTaskViewController.taskIdentifier {
             return  // Do not complete sign in as a regular task
         }

@@ -57,6 +57,9 @@ class TaskListTableViewController: UITableViewController, RSDTaskViewControllerD
         
         updateDesignSystem()
         updateHeaderFooterText()
+        
+        // If authorized, update health kit data
+        queryAndUploadHealthKitData()
     }
     
     func updateDesignSystem() {
@@ -217,6 +220,18 @@ class TaskListTableViewController: UITableViewController, RSDTaskViewControllerD
     /// Here we can customize which VCs show for a step within a survey
     func taskViewController(_ taskViewController: UIViewController, viewControllerForStep stepModel: RSDStepViewModel) -> UIViewController? {
         return nil
+    }
+    
+    private func queryAndUploadHealthKitData() {
+        let health = HealthKitDataManager.shared
+        if (health.isHealthKitAvailable()) {
+            // Request health kit authorization
+            health.requestAuthorization { (success, errorCode) in
+                if (success) {
+                    health.beginHealthDataQueries()
+                }
+            }
+        }
     }
 }
 

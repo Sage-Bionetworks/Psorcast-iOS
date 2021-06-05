@@ -53,6 +53,7 @@ class ProfileTabViewController: UIViewController, UITableViewDelegate, UITableVi
     public static let deepDiveProfileKey = "DeepDive"
     public static let feedbackProfileKey = "feedback"
     public static let withdrawProfileKey = "withdraw"
+    public static let activityMeasuresKey = "activityMeasures"
     
     override open func viewDidLoad() {
         super.viewDidLoad()                
@@ -322,6 +323,7 @@ class ProfileTabViewController: UIViewController, UITableViewDelegate, UITableVi
             cell.contentView.backgroundColor = RSDColor.white
         }
     }
+    
     // MARK - RSDButtonCellDelegate
     
     /// This is called when deep dive profile cell is tapped
