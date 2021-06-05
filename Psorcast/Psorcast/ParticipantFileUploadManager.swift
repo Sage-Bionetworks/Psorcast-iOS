@@ -91,7 +91,7 @@ extension Notification.Name {
 class ParticipantFileUploadManager: NSObject, URLSessionDownloadDelegate, URLSessionDataDelegate {
     
     /// A singleton instance of the manager.
-    static public let shared = ParticipantFileUploadManager()
+    public static let shared = ParticipantFileUploadManager()
     
     /// The key under which we store the mappings of temp file -> original file.
     let participantFileUploadsKey = "ParticipantFileUploadsKey"
