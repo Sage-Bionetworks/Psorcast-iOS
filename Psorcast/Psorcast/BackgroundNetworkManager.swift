@@ -38,6 +38,14 @@ protocol URLSessionBackgroundDelegate: URLSessionDataDelegate, URLSessionDownloa
 }
 
 class BackgroundNetworkManager: NSObject, URLSessionBackgroundDelegate {
+
+    /// A singleton instance of the manager.
+    public static let shared = BackgroundNetworkManager()
+    
+    /// The identifier (base) for the background URLSession. App extensions will append a unique string to this to distinguish
+    /// their background sessions.
+    public static let backgroundSessionIdentifier = "org.sagebase.backgroundnetworkmanager.session"
+    
     /// We use this custom HTTP request header as a hack to keep track of how many times we've retried a request.
     let retryCountHeader = "X-SageBridge-Retry"
     
@@ -50,10 +58,35 @@ class BackgroundNetworkManager: NSObject, URLSessionBackgroundDelegate {
     /// If set, URLSession(Data/Download)Delegate method calls received by the BackgroundNetworkManager
     /// will be passed through to this object for further handling.
     public var backgroundTransferDelegate: URLSessionBackgroundDelegate?
-        
-    /// Retrieve or (re-)create the background URLSession used by this BackgroundNetworkManager.
-    func backgroundSession() -> URLSession {
-        // TODO: Implement in a way that handles restoring after suspension/restart
+    
+    /// The queue used for calling background session delegate methods.
+    ///  Also used for creating the singleton background session itself in a thread-safe way.
+    ///  Created lazily.
+    public static let sessionDelegateQueue: OperationQueue = {
+        let delegateQueue = OperationQueue()
+        delegateQueue.maxConcurrentOperationCount = 1
+        return delegateQueue
+    }()
+            
+    /// The singleton background URLSession.
+    public static var _backgroundSession: URLSession? = nil
+    
+    private static func isRunningInAppExtension() -> Bool {
+        // "An app extension target’s Info.plist file identifies the extension point and may specify some details
+        // about your extension. At a minimum, the file includes the NSExtension key and a dictionary of keys and
+        // values that the extension point specifies."
+        // (see https://developer.apple.com/library/content/documentation/General/Conceptual/ExtensibilityPG/ExtensionCreation.html)
+        // We also double-check that the Bundle OS Type Code is not APPL, just to be sure they haven't for some
+        // reason added that key to their app's infoDict.
+        guard let infoDict = Bundle.main.infoDictionary,
+              let packageType = infoDict["CFBundlePackageType"] as? String
+            else { return false }
+        return (packageType != "APPL") && infoDict["NSExtension"] != nil
+    }
+    
+    /// Private initializer so only the singleton can ever get created.
+    private override init() {
+        super.init()
     }
     
     /// For encoding objects to be passed to Bridge.
@@ -69,6 +102,41 @@ class BackgroundNetworkManager: NSObject, URLSessionBackgroundDelegate {
         decoder.dateDecodingStrategy = .iso8601
         return decoder
     }()
+    
+    /// Access (and if necessary, create) the singleton background URLSession used by the singleton BackgroundNetworkManager.
+    /// Make sure it only gets created once, regardless of threading.
+    func backgroundSession() -> URLSession {
+        if BackgroundNetworkManager._backgroundSession == nil {
+            // If it doesn't yet exist, queue up a block of code to create it.
+            let createSessionOperation = BlockOperation {
+                // Once it's our turn in the operation queue, check if someone else created it
+                // in the meantime so we don't clobber it.
+                guard BackgroundNetworkManager._backgroundSession == nil else { return }
+                
+                // OK, create it.
+                var sessionIdentifier = BackgroundNetworkManager.backgroundSessionIdentifier
+                if BackgroundNetworkManager.isRunningInAppExtension() {
+                    // Uniquify it from the containing app's BridgeSDK background session and those of any other
+                    // app extensions or instances thereof with the same containing app that use BridgeSDK. Note
+                    // that if the extension is gone when the background upload/download finishes, the containing
+                    // app will be launched to handle it, not the extension, so this string doesn't need to be
+                    // preserved across multiple invocations of the extension, and this way multiple simultaneous
+                    // instances of the same extension, if such a thing is possible, wouldn't interfere with
+                    // each other.
+                    sessionIdentifier.append(UUID().uuidString)
+                }
+                
+                let config = URLSessionConfiguration.background(withIdentifier: sessionIdentifier)
+                if let appGroupIdentifier = BridgeSDK.bridgeInfo.appGroupIdentifier, !appGroupIdentifier.isEmpty {
+                    config.sharedContainerIdentifier = appGroupIdentifier
+                }
+                
+                BackgroundNetworkManager._backgroundSession = URLSession(configuration: config, delegate: self, delegateQueue: BackgroundNetworkManager.sessionDelegateQueue)
+            }
+            BackgroundNetworkManager.sessionDelegateQueue.addOperations([createSessionOperation], waitUntilFinished: true)
+        }
+        return BackgroundNetworkManager._backgroundSession!
+    }
     
     func bridgeBaseURL() -> URL {
         let domainPrefix = "webservices"
@@ -287,18 +355,21 @@ class BackgroundNetworkManager: NSObject, URLSessionBackgroundDelegate {
         return (errorCode == NSURLErrorTimedOut || errorCode == NSURLErrorCannotFindHost || errorCode == NSURLErrorCannotConnectToHost || errorCode == NSURLErrorNotConnectedToInternet || errorCode == NSURLErrorSecureConnectionFailed)
     }
     
-    func retry(originalRequest: URLRequest) -> Bool {
-        var request = originalRequest
+    func retry(task: URLSessionTask) -> Bool {
+        guard var request = task.originalRequest else {
+            debugPrint("Unable to retry task, as originalRequest is nil:\n\(task)")
+            return false
+        }
         
         // Try, try again, until we run out of retries.
-        var retry = Int(request?.value(forHTTPHeaderField: retryCountHeader) ?? "") ?? 0
+        var retry = Int(request.value(forHTTPHeaderField: retryCountHeader) ?? "") ?? 0
         guard retry < maxRetries else { return false }
         
         retry += 1
-        request?.setValue("\(retry)", forHTTPHeaderField: retryCountHeader)
-        var newTask = self.backgroundSession().downloadTask(with: request)
+        request.setValue("\(retry)", forHTTPHeaderField: retryCountHeader)
+        let newTask = self.backgroundSession().downloadTask(with: request)
         newTask.taskDescription = task.taskDescription
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2.0 ^ retry) {
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + pow(2.0, Double(retry))) {
             newTask.resume()
         }
         
@@ -308,23 +379,23 @@ class BackgroundNetworkManager: NSObject, URLSessionBackgroundDelegate {
     func handleError(_ error: NSError, session: URLSession, task: URLSessionTask) -> Bool {
         if isTemporaryError(errorCode: error.code) {
             // Retry, and let the caller know we're retrying.
-            return retry(originalRequest: task.originalRequest)
+            return retry(task: task)
         }
         
         return false
     }
     
     func handleUnsupportedAppVersion() {
-        let bridgeNetworkManager = SBBComponentManager.component(SBBBridgeNetworkManager.self) as SBBBridgeNetworkManager
+        let bridgeNetworkManager = SBBComponentManager.component(SBBBridgeNetworkManager.self) as! SBBBridgeNetworkManager
         guard !bridgeNetworkManager.isUnsupportedAppVersion else { return }
-        bridgeNetworkManager.unsupportedAppVersion = true
-        if !(bridgeErrorUIDelegate?.handleUnsupportedAppVersionError?(NSError.SBBUnsupportedAppVersionError, networkManager: bridgeNetworkManager) ?? false) {
+        bridgeNetworkManager.isUnsupportedAppVersion = true
+        if !(bridgeErrorUIDelegate?.handleUnsupportedAppVersionError?(NSError.sbbUnsupportedAppVersionError(), networkManager: bridgeNetworkManager) ?? false) {
             debugPrint("App Version Not Supported error not handled by error UI delegate")
         }
     }
     
     func handleServerPreconditionNotMet(task: URLSessionTask, response: HTTPURLResponse) {
-        if !(bridgeErrorUIDelegate?.handleUserNotConsentedError?(NSError.generateSBBError(for: 412), sessionInfo: response, networkManager: nil) ?? false) {
+        if !(bridgeErrorUIDelegate?.handleUserNotConsentedError?(NSError.generateSBBError(forStatusCode: 412), sessionInfo: response, networkManager: nil) ?? false) {
             debugPrint("User Not Consented error not handled by error UI delegate")
         }
     }
@@ -332,20 +403,20 @@ class BackgroundNetworkManager: NSObject, URLSessionBackgroundDelegate {
     func handleHTTPErrorResponse(_ response: HTTPURLResponse, session: URLSession, task: URLSessionTask) -> Bool {
         switch response.statusCode {
         case 401:
-            BridgeSDK.authManager.reauth { reauthTask, responseObject, error in
-                if let nsError = error as? NSError,
-                   nsError.code != SBBErrorCode.serverPreconditionNotMet {
-                    debugPrint("Session token auto-refresh failed: \(error)")
-                    if (nsError.code == SBBErrorCode.unsupportedAppVersion) {
+            BridgeSDK.authManager.reauth { [self] reauthTask, responseObject, error in
+                if let nsError = error as NSError?,
+                   nsError.code != SBBErrorCode.serverPreconditionNotMet.rawValue {
+                    debugPrint("Session token auto-refresh failed: \(String(describing: error))")
+                    if (nsError.code == SBBErrorCode.unsupportedAppVersion.rawValue) {
                         handleUnsupportedAppVersion()
                     }
-                    return false
+                    return
                 }
                 
                 debugPrint("Session token auto-refresh succeeded, retrying original request")
-                retry(originalRequest: task.originalRequest)
-                return true
+                let _ = retry(task: task)
             }
+            return true
             
         case 410:
             handleUnsupportedAppVersion()
@@ -368,16 +439,17 @@ class BackgroundNetworkManager: NSObject, URLSessionBackgroundDelegate {
     
     // MARK: URLSessionTaskDelegate
     fileprivate func retryFailedDownload(_ task: URLSessionDownloadTask, for session: URLSession, resumeData: Data) {
-        var resumeTask = session.downloadTask(withResumeData: resumeData)
+        let resumeTask = session.downloadTask(withResumeData: resumeData)
         resumeTask.taskDescription = task.taskDescription
         resumeTask.resume()
     }
     
     func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
-        if let nsError = error as? NSError {
+        if let nsError = error as NSError? {
             // if there's resume data from a download task, use it to retry
-            if let resumeData = nsError.userInfo[NSURLSessionDownloadTaskResumeData] {
-                self.retryFailedDownload(task, for: session, resumeData: resumeData)
+            if let downloadTask = task as? URLSessionDownloadTask,
+               let resumeData = nsError.userInfo[NSURLSessionDownloadTaskResumeData] as? Data {
+                self.retryFailedDownload(downloadTask, for: session, resumeData: resumeData)
                 return
             }
         }
@@ -385,17 +457,17 @@ class BackgroundNetworkManager: NSObject, URLSessionBackgroundDelegate {
         var retrying = false
         if task.isKind(of: URLSessionDownloadTask.self) {
             let httpResponse = task.response as? HTTPURLResponse
-            let httpError = (httpResponse?.status ?? 0) >= 400
-            if nsError != nil {
+            let httpError = (httpResponse?.statusCode ?? 0) >= 400
+            if let nsError = error as NSError? {
                 retrying = self.handleError(nsError, session: session, task: task)
             }
             else if httpError {
-                retrying = self.handleHTTPErrorResponse(httpResponse, session: session, task: task)
+                retrying = self.handleHTTPErrorResponse(httpResponse!, session: session, task: task)
             }
         }
         
         if !retrying {
-            self.backgroundTransferDelegate?.urlSession(session, task: task, didCompleteWithError: error)
+            self.backgroundTransferDelegate?.urlSession?(session, task: task, didCompleteWithError: error)
         }
     }
     
