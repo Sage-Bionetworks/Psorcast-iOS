@@ -25,7 +25,7 @@ open class SandboxImageApiViewController: UIViewController {
         // Check for when new videos are created
         NotificationCenter.default.addObserver(forName: .SBBParticipantFileUploaded, object: ParticipantFileUploadManager.shared, queue: OperationQueue.main) { (notification) in
             
-            print("Image uploaded successfully with user info \(notification.userInfo)")
+            print("Image uploaded successfully with user info \(String(describing: notification.userInfo))")
         }
     }
     
@@ -46,7 +46,8 @@ open class SandboxImageApiViewController: UIViewController {
     }
     
     @IBAction func downloadTapped() {
-        
+        // TODO: load image url into image view using SDImage library
+        // self.downloadedImageView?.sd_setImage(with: url, completed: nil)
     }
     
     func getDocumentsDirectory() -> URL {
