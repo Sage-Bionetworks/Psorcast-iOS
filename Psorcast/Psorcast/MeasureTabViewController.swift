@@ -157,6 +157,21 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
         
         // We have seen the measure screen, remove any badge numbers from notifications
         UIApplication.shared.applicationIconBadgeNumber = 0
+        
+        // If authorized, update health kit data
+        queryAndUploadHealthKitData()
+    }
+    
+    private func queryAndUploadHealthKitData() {
+        let health = HealthKitDataManager.shared
+        if (health.isHealthKitAvailable()) {
+            // Request health kit authorization
+            health.requestAuthorization { (success, errorCode) in
+                if (success) {
+                    health.beginHealthDataQueries()
+                }
+            }
+        }
     }
     
     public func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
