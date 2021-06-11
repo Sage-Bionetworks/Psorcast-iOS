@@ -30,7 +30,8 @@ open class SandboxImageApiViewController: UIViewController {
     }
     
     @IBAction func uploadTapped() {
-        let fileId = "fileUploadTest"
+        // TODO: Remove the .appending(...) part when the API is updated to allow reusing fileIds without deleting
+        let fileId = "fileUploadTest".appending(UUID().uuidString)
         
         do {
             if let data = self.srcImage?.pngData() {
