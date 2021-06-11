@@ -275,7 +275,8 @@ class ParticipantFileUploadManager: NSObject, URLSessionDownloadDelegate, URLSes
             return
         }
         
-        guard let contentLengthString = contentLengthString, !contentLengthString.isEmpty else {
+        guard let contentLengthStringUnwrapped = contentLengthString,
+              !(contentLengthString?.isEmpty ?? true) else {
             debugPrint("Error: Participant file content length string is nil or empty")
             return
         }
@@ -290,7 +291,7 @@ class ParticipantFileUploadManager: NSObject, URLSessionDownloadDelegate, URLSes
         }
 
         // And finally, request an upload URL to S3 from Bridge
-        let s3Metadata = ParticipantFileS3Metadata(participantFile: participantFile, contentLengthString: contentLengthString, contentMD5String: contentMD5String)
+        let s3Metadata = ParticipantFileS3Metadata(participantFile: participantFile, contentLengthString: contentLengthStringUnwrapped, contentMD5String: contentMD5String)
         
         self.requestUploadURL(invariantFilePath: nil, fileURL: fileURL, s3Metadata: s3Metadata)
     }

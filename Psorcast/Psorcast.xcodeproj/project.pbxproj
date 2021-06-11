@@ -73,6 +73,7 @@
 		CB47E563233FC1BD00AE8501 /* PsoriasisDrawStepObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB47E562233FC1BD00AE8501 /* PsoriasisDrawStepObject.swift */; };
 		CB47E565233FC2EC00AE8501 /* PsoriasisDrawResultObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB47E564233FC2EC00AE8501 /* PsoriasisDrawResultObject.swift */; };
 		CB47E567233FC61400AE8501 /* PsoriasisDrawStepViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB47E566233FC61400AE8501 /* PsoriasisDrawStepViewController.xib */; };
+		CB508BFB26713F15008B54D5 /* SandboxImageApiViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB508BFA26713F15008B54D5 /* SandboxImageApiViewController.swift */; };
 		CB5424D123721FFD0036DB6B /* RSDCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB5424D023721FFD0036DB6B /* RSDCollectionViewCell.swift */; };
 		CB5424D3237220910036DB6B /* RSDSelectionCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB5424D2237220910036DB6B /* RSDSelectionCollectionViewCell.swift */; };
 		CB5424D5237235460036DB6B /* SelectionCollectionStepViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB5424D4237235460036DB6B /* SelectionCollectionStepViewController.xib */; };
@@ -461,6 +462,7 @@
 		CB47E562233FC1BD00AE8501 /* PsoriasisDrawStepObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PsoriasisDrawStepObject.swift; sourceTree = "<group>"; };
 		CB47E564233FC2EC00AE8501 /* PsoriasisDrawResultObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PsoriasisDrawResultObject.swift; sourceTree = "<group>"; };
 		CB47E566233FC61400AE8501 /* PsoriasisDrawStepViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PsoriasisDrawStepViewController.xib; sourceTree = "<group>"; };
+		CB508BFA26713F15008B54D5 /* SandboxImageApiViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SandboxImageApiViewController.swift; sourceTree = "<group>"; };
 		CB5424D023721FFD0036DB6B /* RSDCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RSDCollectionViewCell.swift; sourceTree = "<group>"; };
 		CB5424D2237220910036DB6B /* RSDSelectionCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RSDSelectionCollectionViewCell.swift; sourceTree = "<group>"; };
 		CB5424D4237235460036DB6B /* SelectionCollectionStepViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SelectionCollectionStepViewController.xib; sourceTree = "<group>"; };
@@ -783,6 +785,7 @@
 				CB72819B2624CBE100AAEB2C /* TextfieldStepViewController.xib */,
 				CB7281A72624DC5000AAEB2C /* WithdrawalStepViewController.swift */,
 				CB7281A62624DC5000AAEB2C /* WithdrawalStepViewController.xib */,
+				CB508BFA26713F15008B54D5 /* SandboxImageApiViewController.swift */,
 				CB5A93F9265EAB1A0063994F /* EnvironmentalStepViewController.swift */,
 				CB5A93FE265EAB1A0063994F /* EnvironmentalStepViewController.xib */,
 				04E61CAC2672645300B371E9 /* ConsentReviewStepViewController.xib */,
@@ -1598,6 +1601,7 @@
 				CB27B9F1243596F4007D36D8 /* MasterScheduleManager.swift in Sources */,
 				CBBDC397247788720017A304 /* RemindersUserDefaultsSingletonReport.swift in Sources */,
 				CBDCDC9C23F3849E00E5CEB8 /* JointPainImageView.swift in Sources */,
+				CB508BFB26713F15008B54D5 /* SandboxImageApiViewController.swift in Sources */,
 				CBDCDC8F23F3849E00E5CEB8 /* ExternalIDRegistrationViewController.swift in Sources */,
 				CBAF1DA92437CB2A00ECC699 /* StudyExternalIdRegistrationViewController.swift in Sources */,
 				CB16C38924465BB80046E200 /* ReminderManager.swift in Sources */,
