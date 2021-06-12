@@ -439,8 +439,7 @@ class ParticipantFileUploadManager: NSObject, URLSessionBackgroundDelegate {
         // upload the file to S3
         let headers = [
             "Content-Length": s3Metadata.contentLengthString,
-            "Content-Type": participantFile.mimeType,
-            "Content-MD5": s3Metadata.contentMD5String
+            "Host": URL(string: uploadUrl)?.host ?? "org-sagebridge-participantfile-prod.s3.amazonaws.com"
         ]
         let _ = self.netManager.uploadFile(fileUrl, httpHeaders: headers, to: uploadUrl, taskDescription: invariantFilePath)
     }
