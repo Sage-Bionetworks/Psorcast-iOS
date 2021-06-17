@@ -163,7 +163,7 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
     }
     
     private func queryAndUploadHealthKitData() {
-        let health = HealthKitDataManager.shared
+        let health = PassiveDataManager.shared
         if (health.isHealthKitAvailable()) {
             // Request health kit authorization
             health.requestAuthorization { (success, errorCode) in
@@ -172,6 +172,7 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
                 }
             }
         }
+        health.fetchPassiveDataResult()
     }
     
     public func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
