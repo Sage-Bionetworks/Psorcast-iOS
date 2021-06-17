@@ -308,12 +308,11 @@ open class PassiveDataManager {
             .replacingOccurrences(of: "HKQuantityTypeIdentifier", with: "")
     }
     
-    public func fetchPassiveDataResult() {
+    public func fetchPassiveDataResult(loc: CLLocation) {
         let archive: SBBDataArchive = createArchive(identifier: kEnvironmentalArchiveIdentifier)
         
         var answerMap = [AnyHashable: Any]()
         
-        let loc = CLLocation(latitude: 47.978985, longitude: -122.202080)
         let openWeatherConfig = WeatherServiceConfiguration(identifier: "openWeather", type: .openWeather, apiKey: "29f0f932b932ea17417e50582d744d07")
         let airNowConfig = WeatherServiceConfiguration(identifier: "airNow", type: .airNow, apiKey: "D5402D83-CA18-444C-8359-AEC1495C321C")
         
