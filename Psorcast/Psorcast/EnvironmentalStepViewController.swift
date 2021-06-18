@@ -100,9 +100,9 @@ public class EnvironmentalStepViewController: RSDStepViewController, CLLocationM
         }
         
         guard self.hasAskedHealthKitPermission,
-              HealthKitDataManager.shared.isHealthKitAvailable() else {
+              PassiveDataManager.shared.isHealthKitAvailable() else {
             self.hasAskedHealthKitPermission = true
-            HealthKitDataManager.shared.requestAuthorization { (success, error) in
+            PassiveDataManager.shared.requestAuthorization { (success, error) in
                 DispatchQueue.main.async {
                     self.goForward()
                 }

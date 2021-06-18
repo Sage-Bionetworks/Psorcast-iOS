@@ -35,8 +35,9 @@ import UIKit
 import BridgeApp
 import BridgeSDK
 import MotorControl
+import CoreLocation
 
-open class MeasureTabViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, TaskCollectionViewCellDelegate, RSDTaskViewControllerDelegate, NSFetchedResultsControllerDelegate {
+open class MeasureTabViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, TaskCollectionViewCellDelegate, RSDTaskViewControllerDelegate, NSFetchedResultsControllerDelegate, CLLocationManagerDelegate {
         
     /// Header views
     @IBOutlet weak var topHeader: UIView!
@@ -106,6 +107,8 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
     let deepDiveManager = DeepDiveReportManager.shared
     let historyData = HistoryDataManager.shared
     
+    let locationManager = CLLocationManager()
+    
     open var currentDeepDiveSurvey: DeepDiveItem? {
         guard let treatmentStart = self.currentTreatment?.startDate else { return nil }
         let weeklyRange = self.weeklyRenewalDateRange(from: treatmentStart, toNow: Date())
@@ -163,7 +166,7 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
     }
     
     private func queryAndUploadHealthKitData() {
-        let health = HealthKitDataManager.shared
+        let health = PassiveDataManager.shared
         if (health.isHealthKitAvailable()) {
             // Request health kit authorization
             health.requestAuthorization { (success, errorCode) in
@@ -172,6 +175,9 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
                 }
             }
         }
+        
+        locationManager.delegate = self
+        locationManager.requestWhenInUseAuthorization()
     }
     
     public func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
@@ -688,6 +694,43 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
     private func checkPopTips() {
         if (PopTipProgress.measureTabLanding.isNotConsumed()) {
             PopTipProgress.measureTabLanding.consume(on: self)
+        }
+    }
+    
+    // CLLocationManager
+    public func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        let longitude = String(describing: locations.first?.coordinate.longitude)
+        let latitude = String(describing: locations.first?.coordinate.latitude)
+        let accuracy = String(describing: locations.first?.horizontalAccuracy)
+        
+        NSLog("GPS coordinate received longitude = \(longitude)), latitude = \(latitude), accuracy = \(accuracy)")
+        
+        if let loc = locations.first {
+            PassiveDataManager.shared.fetchPassiveDataResult(loc: loc)
+        }
+        
+        // Grab the first accurate GPS location, and integrate air and weather
+        locationManager.stopUpdatingLocation()
+    }
+    
+    
+    public func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        DispatchQueue.main.async {
+            self.newLocationAuthStatus(authStatus: status)
+        }
+    }
+
+    @available(iOS 14.0, *)  // iOS 14's version of function directly above
+    public func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+        DispatchQueue.main.async {
+            self.newLocationAuthStatus(authStatus: manager.authorizationStatus)
+        }
+    }
+    
+    private func newLocationAuthStatus(authStatus: CLAuthorizationStatus) {
+        if (authStatus == .authorizedWhenInUse ||
+                authStatus == .authorizedAlways) {
+            locationManager.startUpdatingLocation()
         }
     }
 }
