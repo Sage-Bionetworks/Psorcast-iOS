@@ -39,6 +39,7 @@ extension RSDStepType {
     public static let pastTreatmentsCompletion: RSDStepType = "pastTreatmentsCompletion"
     public static let insights: RSDStepType = "insights"
     public static let reminder: RSDStepType = "reminder"
+    public static let consentReview: RSDStepType = "consentReview"
     public static let webImageInstruction: RSDStepType = "webImageInstruction"
     public static let textField: RSDStepType = "textField"
     public static let withdrawal: RSDStepType = "withdrawal"
@@ -73,6 +74,8 @@ open class StudyTaskFactory: TaskFactory {
             return try ReminderStepObject(from: decoder)
         case .webImageInstruction:
             return try WebImageInstructionStepObject(from: decoder)
+        case .consentReview:
+            return try ConsentReviewStepObject(from: decoder)
         case .textField:
             return try TextfieldStepObject(from: decoder)
         case .withdrawal:

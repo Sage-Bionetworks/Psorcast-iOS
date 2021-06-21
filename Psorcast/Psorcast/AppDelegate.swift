@@ -56,6 +56,7 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate, ShowPopTipDele
     
     /// The task identifier of the try it first intro screens
     let IntroductionTaskId = "Introduction"
+    let ConsentTaskId = "Consent"
     let signInTaskId = "signIn"
     weak var smsSignInDelegate: SignInDelegate? = nil
     
@@ -80,6 +81,7 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate, ShowPopTipDele
     
     func showAppropriateViewController(animated: Bool) {
         let isAuthenticated = BridgeSDK.authManager.isAuthenticated()
+        let isConsented = SBAParticipantManager.shared.isConsented
         let hasSetTreatments = HistoryDataManager.shared.hasSetTreatment
         let hasSetEnvironMentalAuth = HistoryDataManager.shared.hasSetEnvironmentalAuth
         
@@ -87,8 +89,10 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate, ShowPopTipDele
             self.showEnvironmentalAuthScreens(animated: true)
         } else if isAuthenticated && hasSetTreatments {
             self.showMainViewController(animated: animated)
-        } else if isAuthenticated {
+        } else if isAuthenticated && isConsented {
             self.showTreatmentSelectionScreens(animated: true)
+        } else if isAuthenticated {
+            self.showConsentScreens(animated: animated)
         } else {
             self.showIntroductionScreens(animated: animated)
         }
@@ -199,6 +203,19 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate, ShowPopTipDele
         }
     }
     
+    func showConsentScreens(animated: Bool) {
+        do {
+            let resourceTransformer = RSDResourceTransformerObject(resourceName: self.ConsentTaskId)
+            let task = try RSDFactory.shared.decodeTask(with: resourceTransformer)
+            let taskViewModel = RSDTaskViewModel(task: task)
+            let vc = RSDTaskViewController(taskViewModel: taskViewModel)
+            vc.delegate = self
+            self.transition(to: vc, state: .consent, animated: true)
+        } catch let err {
+            fatalError("Failed to decode the consent screens task. \(err)")
+        }
+    }
+    
     func showTryItFirstViewController(animated: Bool) {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let vc = storyboard.instantiateViewController(withIdentifier: "TryItFirstTaskTableViewController")
@@ -264,8 +281,8 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate, ShowPopTipDele
                         DispatchQueue.main.async {
                             if (error == nil) || ((error as NSError?)?.code == SBBErrorCode.serverPreconditionNotMet.rawValue) {
                                 // TODO mdephillips 2/21/21 hook up to consent flow here
-                                //self.showConsentViewController(animated: true)
-                                self.loadUserHistoryAndProceedToMain()
+                                self.showConsentScreens(animated: true)
+                                //self.loadUserHistoryAndProceedToMain()
                             } else {
                                 #if DEBUG
                                 print("Error attempting to sign in with SMS link while not in registration flow:\n\(String(describing: error))\n\nResult:\n\(String(describing: result))")
@@ -361,7 +378,8 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate, ShowPopTipDele
         guard BridgeSDK.authManager.isAuthenticated() else { return }
         
         if taskController.task.identifier == SignInTaskViewController.taskIdentifier {
-            self.loadUserHistoryAndProceedToMain()
+            // Sign in complete, now show the consent screens
+            self.showConsentScreens(animated: true)
             return
         }
         
