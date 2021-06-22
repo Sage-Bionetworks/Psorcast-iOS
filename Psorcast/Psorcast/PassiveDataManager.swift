@@ -51,6 +51,11 @@ open class PassiveDataManager {
 
     private let kMetadataFilename                 = "metadata.json"
     
+    /// These are loaded from the private plist file
+    public var airNowApiKey: String? = nil
+    public var openWeatherApiKey: String? = nil
+    public var isFetchingPassiveData = false
+    
     public let categoryTypes = Set([
         HKCategoryTypeIdentifier.sleepAnalysis])
     
@@ -62,6 +67,29 @@ open class PassiveDataManager {
         HKQuantityTypeIdentifier.restingHeartRate,
         /// The standard deviation of heart beat-to-beat intevals (Standard Deviation of Normal to Normal). Unit is Time (ms).
         HKQuantityTypeIdentifier.heartRateVariabilitySDNN])
+    
+    init() {
+        self.loadApiKeys()
+    }
+    
+    private func loadApiKeys() {
+        var propertyListFormat =  PropertyListSerialization.PropertyListFormat.xml
+        
+        guard let plistPath = Bundle.main.path(forResource: "BridgeInfo-private", ofType: "plist"),
+              let plistXML = FileManager.default.contents(atPath: plistPath) else {
+            debugPrint("Error: missing plist file, airnow and open weather will not work")
+            return
+        }
+    
+        do { //convert the data to a dictionary and handle errors.
+            let plistData = try PropertyListSerialization.propertyList(from: plistXML, options: .mutableContainersAndLeaves, format: &propertyListFormat) as? [String : AnyObject]
+
+            self.airNowApiKey = plistData?["airnowKey"] as? String
+            self.openWeatherApiKey = plistData?["openweatherKey"] as? String
+        } catch {
+            print("Error reading plist: \(error), format: \(propertyListFormat)")
+        }
+    }
     
     @available(iOS 14.0, *)
     public func iOS14QuantityTypes() -> Set<HKQuantityTypeIdentifier> {
@@ -311,10 +339,22 @@ open class PassiveDataManager {
     public func fetchPassiveDataResult(loc: CLLocation) {
         let archive: SBBDataArchive = createArchive(identifier: kEnvironmentalArchiveIdentifier)
         
+        guard !self.isFetchingPassiveData else {
+            debugPrint("Already fetching passive data, ignoring request")
+            return
+        }
+        
+        self.isFetchingPassiveData = true
+        
+        guard let airNowApiKeyUnwrapped = self.airNowApiKey,
+              let openWeatherApiKeyUnwrapped = self.openWeatherApiKey else {
+            return
+        }
+        
         var answerMap = [AnyHashable: Any]()
         
-        let openWeatherConfig = WeatherServiceConfiguration(identifier: "openWeather", type: .openWeather, apiKey: "29f0f932b932ea17417e50582d744d07")
-        let airNowConfig = WeatherServiceConfiguration(identifier: "airNow", type: .airNow, apiKey: "D5402D83-CA18-444C-8359-AEC1495C321C")
+        let openWeatherConfig = WeatherServiceConfiguration(identifier: "openWeather", type: .openWeather, apiKey: openWeatherApiKeyUnwrapped)
+        let airNowConfig = WeatherServiceConfiguration(identifier: "airNow", type: .airNow, apiKey: airNowApiKeyUnwrapped)
         
         fetchOpenWeatherResult(config: openWeatherConfig, for: loc) { (config, answers, error) in
             
@@ -341,6 +381,10 @@ open class PassiveDataManager {
                 }
                 catch let error as NSError {
                   print("Error completing archive \(error)")
+                }
+                
+                DispatchQueue.main.async {  // Done fetching passive data
+                    self.isFetchingPassiveData = false
                 }
             }
         }

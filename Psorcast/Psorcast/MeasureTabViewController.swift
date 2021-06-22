@@ -707,10 +707,10 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
         
         if let loc = locations.first {
             PassiveDataManager.shared.fetchPassiveDataResult(loc: loc)
+            
+            // Grab the first accurate GPS location, and integrate air and weather
+            locationManager.stopUpdatingLocation()
         }
-        
-        // Grab the first accurate GPS location, and integrate air and weather
-        locationManager.stopUpdatingLocation()
     }
     
     
