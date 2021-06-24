@@ -15,6 +15,7 @@
 		047C2CD425F16628006AA52B /* PopTip+Transitions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047C2CCE25F16628006AA52B /* PopTip+Transitions.swift */; };
 		04F00572243FE64800EDB120 /* ShowInsightStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F00571243FE64800EDB120 /* ShowInsightStepViewController.swift */; };
 		04F00578243FE76E00EDB120 /* ShowInsightStepViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 04F00577243FE76E00EDB120 /* ShowInsightStepViewController.xib */; };
+		04F2653426839954004140B7 /* PrivacyPolicy.html in Resources */ = {isa = PBXBuildFile; fileRef = 04F2652F26839954004140B7 /* PrivacyPolicy.html */; };
 		CB03196523E3ED0A005063A3 /* ReviewCaptureStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB03196423E3ED09005063A3 /* ReviewCaptureStepViewController.swift */; };
 		CB03196723E40836005063A3 /* ReviewCaptureStepViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB03196623E40835005063A3 /* ReviewCaptureStepViewController.xib */; };
 		CB05146C237F27560058D746 /* DigitalJarOpen.json in Resources */ = {isa = PBXBuildFile; fileRef = CB05146B237F27560058D746 /* DigitalJarOpen.json */; };
@@ -387,6 +388,8 @@
 		047C2CCE25F16628006AA52B /* PopTip+Transitions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PopTip+Transitions.swift"; sourceTree = "<group>"; };
 		04F00571243FE64800EDB120 /* ShowInsightStepViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowInsightStepViewController.swift; sourceTree = "<group>"; };
 		04F00577243FE76E00EDB120 /* ShowInsightStepViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ShowInsightStepViewController.xib; sourceTree = "<group>"; };
+		04F2652F26839954004140B7 /* PrivacyPolicy.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = PrivacyPolicy.html; sourceTree = "<group>"; };
+		04F2653726839B5B004140B7 /* ConsentForm.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = ConsentForm.html; sourceTree = "<group>"; };
 		CB03196423E3ED09005063A3 /* ReviewCaptureStepViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReviewCaptureStepViewController.swift; sourceTree = "<group>"; };
 		CB03196623E40835005063A3 /* ReviewCaptureStepViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReviewCaptureStepViewController.xib; sourceTree = "<group>"; };
 		CB05146B237F27560058D746 /* DigitalJarOpen.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = DigitalJarOpen.json; sourceTree = "<group>"; };
@@ -977,7 +980,9 @@
 			isa = PBXGroup;
 			children = (
 				CBFF927F25E19B7300EC34DB /* CSS_files */,
+				04F2653726839B5B004140B7 /* ConsentForm.html */,
 				CBFF927D25E19B6200EC34DB /* PhoneLearnMore.html */,
+				04F2652F26839954004140B7 /* PrivacyPolicy.html */,
 			);
 			name = HTML;
 			sourceTree = "<group>";
@@ -1297,6 +1302,7 @@
 				CB7CF2482400CFAA003E02A5 /* WelcomeVideo.mov in Resources */,
 				CBDCDC8523F3848E00E5CEB8 /* ToesPhoto.mov in Resources */,
 				FFABCBCC22DD1EEC00D11109 /* LaunchScreen.storyboard in Resources */,
+				04F2653426839954004140B7 /* PrivacyPolicy.html in Resources */,
 				CB5A9400265EAB1A0063994F /* EnvironmentalStepViewController.xib in Resources */,
 				CBDCDC8023F3848500E5CEB8 /* PsoriasisAreaPhoto.json in Resources */,
 				CB9F5E2522E0BED3003FBCEF /* lato_regular.ttf in Resources */,
