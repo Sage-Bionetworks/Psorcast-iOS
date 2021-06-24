@@ -104,8 +104,8 @@ open class ShowInsightStepObject: RSDUIStepObject, RSDStepViewControllerVendor {
 
 public class ShowInsightStepViewController: RSDStepViewController {
 
-    @IBOutlet weak var noButton: HorizontallyCenteredButton!
-    @IBOutlet weak var yesButton: HorizontallyCenteredButton!
+    @IBOutlet weak var noButton: RSDRoundedButton!
+    @IBOutlet weak var yesButton: RSDRoundedButton!
     
     @IBOutlet weak var imageView: UIImageView!
     
@@ -113,6 +113,15 @@ public class ShowInsightStepViewController: RSDStepViewController {
     
     open var insightStep: ShowInsightStepObject? {
         return self.step as? ShowInsightStepObject
+    }
+    
+    override public func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        self.noButton.setDesignSystem(self.designSystem, with: self.designSystem.colorRules.backgroundLight)
+        self.noButton.setTitle(Localization.localizedString("INSIGHT_NOT_REALLY_BUTTON"), for: .normal)
+        self.yesButton.setDesignSystem(self.designSystem, with: self.designSystem.colorRules.backgroundLight)
+        self.yesButton.setTitle(Localization.localizedString("INSIGHT_YES_BUTTON"), for: .normal)
     }
     
     override open func setupHeader(_ header: RSDStepNavigationView) {
