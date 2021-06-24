@@ -16,6 +16,7 @@
 		04F00572243FE64800EDB120 /* ShowInsightStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F00571243FE64800EDB120 /* ShowInsightStepViewController.swift */; };
 		04F00578243FE76E00EDB120 /* ShowInsightStepViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 04F00577243FE76E00EDB120 /* ShowInsightStepViewController.xib */; };
 		04F2653426839954004140B7 /* PrivacyPolicy.html in Resources */ = {isa = PBXBuildFile; fileRef = 04F2652F26839954004140B7 /* PrivacyPolicy.html */; };
+		04F2654C26845794004140B7 /* ConsentForm.html in Resources */ = {isa = PBXBuildFile; fileRef = 04F2653726839B5B004140B7 /* ConsentForm.html */; };
 		CB03196523E3ED0A005063A3 /* ReviewCaptureStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB03196423E3ED09005063A3 /* ReviewCaptureStepViewController.swift */; };
 		CB03196723E40836005063A3 /* ReviewCaptureStepViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB03196623E40835005063A3 /* ReviewCaptureStepViewController.xib */; };
 		CB05146C237F27560058D746 /* DigitalJarOpen.json in Resources */ = {isa = PBXBuildFile; fileRef = CB05146B237F27560058D746 /* DigitalJarOpen.json */; };
@@ -1297,6 +1298,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				04F2654C26845794004140B7 /* ConsentForm.html in Resources */,
 				CBDCDC7B23F3848500E5CEB8 /* FootImaging.json in Resources */,
 				CB9F5E2222E0BED3003FBCEF /* lato_italic.ttf in Resources */,
 				CB7CF2482400CFAA003E02A5 /* WelcomeVideo.mov in Resources */,
