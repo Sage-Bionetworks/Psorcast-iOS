@@ -56,6 +56,10 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
     @IBOutlet weak var insightNotAchievedView: UIView!
     @IBOutlet weak var insightProgressBar: StudyProgressView!
     @IBOutlet weak var insightAchievedImage: UIImageView!
+    
+    /// Once you've unlocked your insight but there aren't any insights remaining, it will show this view
+    @IBOutlet weak var insightsCompleteView: UIView!
+    @IBOutlet weak var insightsCompleteTitle: UILabel!
         
     /// The current scheduled activities, these are maintianed separately from
     /// the master schedule manager for performance reasons
@@ -366,6 +370,10 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
         self.insightUnlockedText.textColor = design.colorRules.textColor(on: primary, for: .body)
         self.insightUnlockedText.font = design.fontRules.font(for: .body)
         self.insightUnlockedText.attributedText = NSAttributedString(string: Localization.localizedString("INSIGHT_UNLOCKED_TEXT"), attributes: [NSAttributedString.Key.underlineStyle: NSUnderlineStyle.single.rawValue])
+        
+        self.insightsCompleteTitle.textColor = design.colorRules.textColor(on: primary, for: .body)
+        self.insightsCompleteTitle.font = design.fontRules.font(for: .body)
+        self.insightsCompleteTitle.text = Localization.localizedString("INSIGHTS_COMPLETE_TEXT")
     }
     
     func runTask(for itemIndex: Int) {
@@ -389,8 +397,7 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
         }
         let treatmentWeek = self.treatmentWeek()
         let insightViewedRange = self.scheduleManager.completionRange(treatmentDate: treatmentDate, treatmentWeek: treatmentWeek)
-        return !insightViewedRange.contains(insightDate) &&
-            self.scheduleManager.nextInsightItem() != nil
+        return !insightViewedRange.contains(insightDate)
     }
     
     func updateInsightProgress() {
@@ -432,7 +439,12 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.00 * insightAnimationSpeed, execute: {
             if animateToInsightView {
                 // Animate in the new insight view if it was previously hidden
-                self.animateInsightAchievedView(hide: false)
+                if (self.scheduleManager.nextInsightItem() != nil) {
+                    self.animateInsightAchievedView(hide: false)
+                } else {
+                    // We've shown all the insights, so let's show the insights complete view
+                    self.animateInsightsCompleteView()
+                }
             } else if animateToInsightProgressView {
                 // Animate in the no insight view if it was previously hidden
                 self.animateInsightAchievedView(hide: true)
@@ -453,13 +465,23 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
             UIView.transition(from: self.insightNotAchievedView, to: self.insightAchievedView, duration: 0.5, options: [.transitionFlipFromRight, .showHideTransitionViews], completion: { (finished) in
                 self.insightNotAchievedView.isHidden = true
                 self.insightAchievedView.isHidden = false
+                self.insightsCompleteView.isHidden = true
             })
         } else {
             UIView.transition(from: self.insightAchievedView, to: self.insightNotAchievedView, duration: 0.5, options: [.transitionFlipFromRight, .showHideTransitionViews], completion: { (finished) in
                 self.insightNotAchievedView.isHidden = false
                 self.insightAchievedView.isHidden = true
+                self.insightsCompleteView.isHidden = true
             })
         }
+    }
+    
+    func animateInsightsCompleteView() {
+        UIView.transition(from: self.insightNotAchievedView, to: self.insightsCompleteView, duration: 0.5, options: [.transitionFlipFromRight, .showHideTransitionViews], completion: { (finished) in
+            self.insightNotAchievedView.isHidden = true
+            self.insightAchievedView.isHidden = true
+            self.insightsCompleteView.isHidden = false
+        })
     }
     
     func updateInsightAchievedImage() {
