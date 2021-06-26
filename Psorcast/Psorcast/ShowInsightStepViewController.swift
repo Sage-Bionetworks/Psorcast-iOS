@@ -38,27 +38,6 @@ import BridgeApp
 import BridgeAppUI
 import SDWebImage
 
-class HorizontallyCenteredButton: UIButton {
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        self.contentHorizontalAlignment = .left
-    }
-
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        self.centerButtonImageAndTitle()
-    }
-
-    func centerButtonImageAndTitle() {
-        let size = self.bounds.size
-        let titleSize = self.titleLabel!.frame.size
-        let imageSize = self.imageView!.frame.size
-
-        self.imageEdgeInsets = UIEdgeInsets(top: self.imageEdgeInsets.top, left: size.width/2 - imageSize.width/2, bottom: self.imageEdgeInsets.bottom, right: 0)
-        self.titleEdgeInsets = UIEdgeInsets(top: self.titleEdgeInsets.top, left: -imageSize.width + size.width/2 - titleSize.width/2, bottom: self.titleEdgeInsets.bottom, right: 0)
-    }
-}
-
 
 open class ShowInsightStepObject: RSDUIStepObject, RSDStepViewControllerVendor {
     
@@ -104,8 +83,8 @@ open class ShowInsightStepObject: RSDUIStepObject, RSDStepViewControllerVendor {
 
 public class ShowInsightStepViewController: RSDStepViewController {
 
-    @IBOutlet weak var noButton: HorizontallyCenteredButton!
-    @IBOutlet weak var yesButton: HorizontallyCenteredButton!
+    @IBOutlet weak var noButton: RSDRoundedButton!
+    @IBOutlet weak var yesButton: RSDRoundedButton!
     
     @IBOutlet weak var imageView: UIImageView!
     
@@ -113,6 +92,15 @@ public class ShowInsightStepViewController: RSDStepViewController {
     
     open var insightStep: ShowInsightStepObject? {
         return self.step as? ShowInsightStepObject
+    }
+    
+    override public func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        self.noButton.setDesignSystem(self.designSystem, with: self.designSystem.colorRules.backgroundLight)
+        self.noButton.setTitle(Localization.localizedString("INSIGHT_NOT_REALLY_BUTTON"), for: .normal)
+        self.yesButton.setDesignSystem(self.designSystem, with: self.designSystem.colorRules.backgroundLight)
+        self.yesButton.setTitle(Localization.localizedString("INSIGHT_YES_BUTTON"), for: .normal)
     }
     
     override open func setupHeader(_ header: RSDStepNavigationView) {

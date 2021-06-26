@@ -53,6 +53,8 @@ class ProfileTabViewController: UIViewController, UITableViewDelegate, UITableVi
     public static let deepDiveProfileKey = "DeepDive"
     public static let feedbackProfileKey = "feedback"
     public static let withdrawProfileKey = "withdraw"
+    public static let privacyPolicyKey = "privacyPolicy"
+    public static let studyInformationSheetKey = "studyInformationSheet"
     public static let activityMeasuresKey = "activityMeasures"
     
     override open func viewDidLoad() {
@@ -295,6 +297,16 @@ class ProfileTabViewController: UIViewController, UITableViewDelegate, UITableVi
                 self.showJsonTaskViewControler(jsonName: ProfileTabViewController.feedbackTaskId)
             } else if profileItem.profileItemKey == ProfileTabViewController.withdrawProfileKey {
                 self.showJsonTaskViewControler(jsonName: ProfileTabViewController.withdrawalTaskId)
+            } else if profileItem.profileItemKey == ProfileTabViewController.privacyPolicyKey {
+                let webAction = RSDWebViewUIActionObject(url: "PrivacyPolicy.html", buttonTitle: "Done")
+                let (_, navVC) = RSDWebViewController.instantiateController(using: AppDelegate.designSystem, action: webAction)
+                navVC.modalPresentationStyle = .popover
+                self.present(navVC, animated: true, completion: nil)
+            }  else if profileItem.profileItemKey == ProfileTabViewController.studyInformationSheetKey {
+                let webAction = RSDWebViewUIActionObject(url: "ConsentForm.html", buttonTitle: "Done")
+                let (_, navVC) = RSDWebViewController.instantiateController(using: AppDelegate.designSystem, action: webAction)
+                navVC.modalPresentationStyle = .pageSheet
+                self.present(navVC, animated: true, completion: nil)
             } else if let vc = MasterScheduleManager.shared.instantiateSingleQuestionTreatmentTaskController(for: profileItem.profileItemKey) {
                 vc.delegate = self
                 self.show(vc, sender: self)

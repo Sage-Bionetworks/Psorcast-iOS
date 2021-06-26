@@ -19,6 +19,8 @@
 		04E61CB12672671000B371E9 /* ConsentReviewStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E61CB02672671000B371E9 /* ConsentReviewStepViewController.swift */; };
 		04F00572243FE64800EDB120 /* ShowInsightStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F00571243FE64800EDB120 /* ShowInsightStepViewController.swift */; };
 		04F00578243FE76E00EDB120 /* ShowInsightStepViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 04F00577243FE76E00EDB120 /* ShowInsightStepViewController.xib */; };
+		04F2653426839954004140B7 /* PrivacyPolicy.html in Resources */ = {isa = PBXBuildFile; fileRef = 04F2652F26839954004140B7 /* PrivacyPolicy.html */; };
+		04F2654C26845794004140B7 /* ConsentForm.html in Resources */ = {isa = PBXBuildFile; fileRef = 04F2653726839B5B004140B7 /* ConsentForm.html */; };
 		CB03196523E3ED0A005063A3 /* ReviewCaptureStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB03196423E3ED09005063A3 /* ReviewCaptureStepViewController.swift */; };
 		CB03196723E40836005063A3 /* ReviewCaptureStepViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB03196623E40835005063A3 /* ReviewCaptureStepViewController.xib */; };
 		CB05146C237F27560058D746 /* DigitalJarOpen.json in Resources */ = {isa = PBXBuildFile; fileRef = CB05146B237F27560058D746 /* DigitalJarOpen.json */; };
@@ -152,7 +154,7 @@
 		CBADD5372450C33A00422CE4 /* VideoExporterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBADD5362450C33A00422CE4 /* VideoExporterTests.swift */; };
 		CBADD53F2450ED1200422CE4 /* ResearchTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBADD53E2450ED1200422CE4 /* ResearchTabViewController.swift */; };
 		CBAF1DA92437CB2A00ECC699 /* StudyExternalIdRegistrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBAF1DA82437CB2A00ECC699 /* StudyExternalIdRegistrationViewController.swift */; };
-		CBB0F43A2643D1B0007442F3 /* HealthKitDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBB0F4392643D1B0007442F3 /* HealthKitDataManager.swift */; };
+		CBB0F43A2643D1B0007442F3 /* PassiveDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBB0F4392643D1B0007442F3 /* PassiveDataManager.swift */; };
 		CBB3F6CD25D7696700578A0F /* MetalHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB64AA1325D21F190040FC90 /* MetalHelper.swift */; };
 		CBB3F6CE25D7696900578A0F /* Black2Clear.metal in Sources */ = {isa = PBXBuildFile; fileRef = CB64AA1125D20FA10040FC90 /* Black2Clear.metal */; };
 		CBB78870246CB85F004385AF /* DeepDiveReportManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBB7886F246CB85F004385AF /* DeepDiveReportManager.swift */; };
@@ -395,6 +397,8 @@
 		04E61CB02672671000B371E9 /* ConsentReviewStepViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsentReviewStepViewController.swift; sourceTree = "<group>"; };
 		04F00571243FE64800EDB120 /* ShowInsightStepViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowInsightStepViewController.swift; sourceTree = "<group>"; };
 		04F00577243FE76E00EDB120 /* ShowInsightStepViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ShowInsightStepViewController.xib; sourceTree = "<group>"; };
+		04F2652F26839954004140B7 /* PrivacyPolicy.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = PrivacyPolicy.html; sourceTree = "<group>"; };
+		04F2653726839B5B004140B7 /* ConsentForm.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = ConsentForm.html; sourceTree = "<group>"; };
 		CB03196423E3ED09005063A3 /* ReviewCaptureStepViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReviewCaptureStepViewController.swift; sourceTree = "<group>"; };
 		CB03196623E40835005063A3 /* ReviewCaptureStepViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReviewCaptureStepViewController.xib; sourceTree = "<group>"; };
 		CB05146B237F27560058D746 /* DigitalJarOpen.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = DigitalJarOpen.json; sourceTree = "<group>"; };
@@ -517,7 +521,7 @@
 		CBADD53E2450ED1200422CE4 /* ResearchTabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResearchTabViewController.swift; sourceTree = "<group>"; };
 		CBAF1DA82437CB2A00ECC699 /* StudyExternalIdRegistrationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyExternalIdRegistrationViewController.swift; sourceTree = "<group>"; };
 		CBB0F4322643D0C7007442F3 /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
-		CBB0F4392643D1B0007442F3 /* HealthKitDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitDataManager.swift; sourceTree = "<group>"; };
+		CBB0F4392643D1B0007442F3 /* PassiveDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassiveDataManager.swift; sourceTree = "<group>"; };
 		CBB7886F246CB85F004385AF /* DeepDiveReportManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepDiveReportManager.swift; sourceTree = "<group>"; };
 		CBB90AE52381FF8500F1DFA4 /* PsoriasisAreaPhoto.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = PsoriasisAreaPhoto.mov; sourceTree = "<group>"; };
 		CBB90AE62381FF8600F1DFA4 /* FingersPhoto.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = FingersPhoto.mov; sourceTree = "<group>"; };
@@ -807,12 +811,12 @@
 			path = PsorcastValidationTests;
 			sourceTree = "<group>";
 		};
-		CBB0F4382643D173007442F3 /* HealthKit */ = {
+		CBB0F4382643D173007442F3 /* PassiveData */ = {
 			isa = PBXGroup;
 			children = (
-				CBB0F4392643D1B0007442F3 /* HealthKitDataManager.swift */,
+				CBB0F4392643D1B0007442F3 /* PassiveDataManager.swift */,
 			);
-			name = HealthKit;
+			name = PassiveData;
 			sourceTree = "<group>";
 		};
 		CBB3F6CC25D7695600578A0F /* Metal */ = {
@@ -847,7 +851,7 @@
 		CBBE0F6024039A4F0072452C /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				CBB0F4382643D173007442F3 /* HealthKit */,
+				CBB0F4382643D173007442F3 /* PassiveData */,
 				CBBDC395247787D20017A304 /* HistoryDataManager */,
 				CB8F7D512422D73900F77D62 /* StudyTaskFactory.swift */,
 				CBE5614E2412BD96009A2930 /* TryItFirstTaskScheduleManager.swift */,
@@ -988,8 +992,10 @@
 			isa = PBXGroup;
 			children = (
 				CBFF927F25E19B7300EC34DB /* CSS_files */,
+				04F2653726839B5B004140B7 /* ConsentForm.html */,
 				CBFF927D25E19B6200EC34DB /* PhoneLearnMore.html */,
 				04E61CA526721B6000B371E9 /* ConsentLearnMorePlaceholder.html */,
+				04F2652F26839954004140B7 /* PrivacyPolicy.html */,
 			);
 			name = HTML;
 			sourceTree = "<group>";
@@ -1304,11 +1310,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				04F2654C26845794004140B7 /* ConsentForm.html in Resources */,
 				CBDCDC7B23F3848500E5CEB8 /* FootImaging.json in Resources */,
 				CB9F5E2222E0BED3003FBCEF /* lato_italic.ttf in Resources */,
 				CB7CF2482400CFAA003E02A5 /* WelcomeVideo.mov in Resources */,
 				CBDCDC8523F3848E00E5CEB8 /* ToesPhoto.mov in Resources */,
 				FFABCBCC22DD1EEC00D11109 /* LaunchScreen.storyboard in Resources */,
+				04F2653426839954004140B7 /* PrivacyPolicy.html in Resources */,
 				CB5A9400265EAB1A0063994F /* EnvironmentalStepViewController.xib in Resources */,
 				CBDCDC8023F3848500E5CEB8 /* PsoriasisAreaPhoto.json in Resources */,
 				CB9F5E2522E0BED3003FBCEF /* lato_regular.ttf in Resources */,
@@ -1556,7 +1564,7 @@
 				CB8F2927245BD14C00ABE5B3 /* FilterTreatmentViewController.swift in Sources */,
 				CBDCDCA723F3849E00E5CEB8 /* PsoriasisAreaPhotoImageView.swift in Sources */,
 				CBDCDCAC23F3849E00E5CEB8 /* PsoriasisDrawStepObject.swift in Sources */,
-				CBB0F43A2643D1B0007442F3 /* HealthKitDataManager.swift in Sources */,
+				CBB0F43A2643D1B0007442F3 /* PassiveDataManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1898,7 +1906,7 @@
 				CODE_SIGN_ENTITLEMENTS = Psorcast/Psorcast.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 10;
+				CURRENT_PROJECT_VERSION = 11;
 				DEVELOPMENT_TEAM = KA9Z8R6M6K;
 				INFOPLIST_FILE = Psorcast/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1922,7 +1930,7 @@
 				CODE_SIGN_ENTITLEMENTS = Psorcast/Psorcast.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 10;
+				CURRENT_PROJECT_VERSION = 11;
 				DEVELOPMENT_TEAM = KA9Z8R6M6K;
 				INFOPLIST_FILE = Psorcast/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1946,7 +1954,7 @@
 				CODE_SIGN_ENTITLEMENTS = PsorcastValidation/PsorcastValidation.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 26;
+				CURRENT_PROJECT_VERSION = 28;
 				DEVELOPMENT_TEAM = KA9Z8R6M6K;
 				INFOPLIST_FILE = PsorcastValidation/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1970,9 +1978,9 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = PsorcastValidation/PsorcastValidation.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 26;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 28;
 				DEVELOPMENT_TEAM = KA9Z8R6M6K;
 				INFOPLIST_FILE = PsorcastValidation/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1982,7 +1990,7 @@
 				OTHER_SWIFT_FLAGS = "-D VALIDATION";
 				PRODUCT_BUNDLE_IDENTIFIER = org.sageBionetworks.psorcastValidation0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "match Distribution org.sageBionetworks.psorcastValidation0";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "PsorcastValidation/PsorcastValidation-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;

@@ -138,6 +138,7 @@ open class StudyBridgeConfiguration: SBABridgeConfiguration {
             activityIdentifier == "DeepDiveTest2" ||
             activityIdentifier == "DeepDiveTest3" ||
             activityIdentifier == "PastTreatments" ||
+            activityIdentifier == "Demographics" ||
             activityIdentifier == "SymptomHistory" {
             return RSDSchemaInfoObject(identifier: activityIdentifier, revision: 1)
         }

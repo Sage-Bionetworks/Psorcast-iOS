@@ -35,8 +35,9 @@ import UIKit
 import BridgeApp
 import BridgeSDK
 import MotorControl
+import CoreLocation
 
-open class MeasureTabViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, TaskCollectionViewCellDelegate, RSDTaskViewControllerDelegate, NSFetchedResultsControllerDelegate {
+open class MeasureTabViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, TaskCollectionViewCellDelegate, RSDTaskViewControllerDelegate, NSFetchedResultsControllerDelegate, CLLocationManagerDelegate {
         
     /// Header views
     @IBOutlet weak var topHeader: UIView!
@@ -55,6 +56,10 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
     @IBOutlet weak var insightNotAchievedView: UIView!
     @IBOutlet weak var insightProgressBar: StudyProgressView!
     @IBOutlet weak var insightAchievedImage: UIImageView!
+    
+    /// Once you've unlocked your insight but there aren't any insights remaining, it will show this view
+    @IBOutlet weak var insightsCompleteView: UIView!
+    @IBOutlet weak var insightsCompleteTitle: UILabel!
         
     /// The current scheduled activities, these are maintianed separately from
     /// the master schedule manager for performance reasons
@@ -105,6 +110,8 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
     
     let deepDiveManager = DeepDiveReportManager.shared
     let historyData = HistoryDataManager.shared
+    
+    let locationManager = CLLocationManager()
     
     open var currentDeepDiveSurvey: DeepDiveItem? {
         guard let treatmentStart = self.currentTreatment?.startDate else { return nil }
@@ -157,6 +164,24 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
         
         // We have seen the measure screen, remove any badge numbers from notifications
         UIApplication.shared.applicationIconBadgeNumber = 0
+        
+        // If authorized, update health kit data
+        queryAndUploadHealthKitData()
+    }
+    
+    private func queryAndUploadHealthKitData() {
+        let health = PassiveDataManager.shared
+        if (health.isHealthKitAvailable()) {
+            // Request health kit authorization
+            health.requestAuthorization { (success, errorCode) in
+                if (success) {
+                    health.beginHealthDataQueries()
+                }
+            }
+        }
+        
+        locationManager.delegate = self
+        locationManager.requestWhenInUseAuthorization()
     }
     
     public func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
@@ -345,6 +370,10 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
         self.insightUnlockedText.textColor = design.colorRules.textColor(on: primary, for: .body)
         self.insightUnlockedText.font = design.fontRules.font(for: .body)
         self.insightUnlockedText.attributedText = NSAttributedString(string: Localization.localizedString("INSIGHT_UNLOCKED_TEXT"), attributes: [NSAttributedString.Key.underlineStyle: NSUnderlineStyle.single.rawValue])
+        
+        self.insightsCompleteTitle.textColor = design.colorRules.textColor(on: primary, for: .body)
+        self.insightsCompleteTitle.font = design.fontRules.font(for: .body)
+        self.insightsCompleteTitle.text = Localization.localizedString("INSIGHTS_COMPLETE_TEXT")
     }
     
     func runTask(for itemIndex: Int) {
@@ -368,8 +397,7 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
         }
         let treatmentWeek = self.treatmentWeek()
         let insightViewedRange = self.scheduleManager.completionRange(treatmentDate: treatmentDate, treatmentWeek: treatmentWeek)
-        return !insightViewedRange.contains(insightDate) &&
-            self.scheduleManager.nextInsightItem() != nil
+        return !insightViewedRange.contains(insightDate)
     }
     
     func updateInsightProgress() {
@@ -411,7 +439,12 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.00 * insightAnimationSpeed, execute: {
             if animateToInsightView {
                 // Animate in the new insight view if it was previously hidden
-                self.animateInsightAchievedView(hide: false)
+                if (self.scheduleManager.nextInsightItem() != nil) {
+                    self.animateInsightAchievedView(hide: false)
+                } else {
+                    // We've shown all the insights, so let's show the insights complete view
+                    self.animateInsightsCompleteView()
+                }
             } else if animateToInsightProgressView {
                 // Animate in the no insight view if it was previously hidden
                 self.animateInsightAchievedView(hide: true)
@@ -432,13 +465,23 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
             UIView.transition(from: self.insightNotAchievedView, to: self.insightAchievedView, duration: 0.5, options: [.transitionFlipFromRight, .showHideTransitionViews], completion: { (finished) in
                 self.insightNotAchievedView.isHidden = true
                 self.insightAchievedView.isHidden = false
+                self.insightsCompleteView.isHidden = true
             })
         } else {
             UIView.transition(from: self.insightAchievedView, to: self.insightNotAchievedView, duration: 0.5, options: [.transitionFlipFromRight, .showHideTransitionViews], completion: { (finished) in
                 self.insightNotAchievedView.isHidden = false
                 self.insightAchievedView.isHidden = true
+                self.insightsCompleteView.isHidden = true
             })
         }
+    }
+    
+    func animateInsightsCompleteView() {
+        UIView.transition(from: self.insightNotAchievedView, to: self.insightsCompleteView, duration: 0.5, options: [.transitionFlipFromRight, .showHideTransitionViews], completion: { (finished) in
+            self.insightNotAchievedView.isHidden = true
+            self.insightAchievedView.isHidden = true
+            self.insightsCompleteView.isHidden = false
+        })
     }
     
     func updateInsightAchievedImage() {
@@ -673,6 +716,43 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
     private func checkPopTips() {
         if (PopTipProgress.measureTabLanding.isNotConsumed()) {
             PopTipProgress.measureTabLanding.consume(on: self)
+        }
+    }
+    
+    // CLLocationManager
+    public func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        let longitude = String(describing: locations.first?.coordinate.longitude)
+        let latitude = String(describing: locations.first?.coordinate.latitude)
+        let accuracy = String(describing: locations.first?.horizontalAccuracy)
+        
+        NSLog("GPS coordinate received longitude = \(longitude)), latitude = \(latitude), accuracy = \(accuracy)")
+        
+        if let loc = locations.first {
+            PassiveDataManager.shared.fetchPassiveDataResult(loc: loc)
+            
+            // Grab the first accurate GPS location, and integrate air and weather
+            locationManager.stopUpdatingLocation()
+        }
+    }
+    
+    
+    public func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        DispatchQueue.main.async {
+            self.newLocationAuthStatus(authStatus: status)
+        }
+    }
+
+    @available(iOS 14.0, *)  // iOS 14's version of function directly above
+    public func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+        DispatchQueue.main.async {
+            self.newLocationAuthStatus(authStatus: manager.authorizationStatus)
+        }
+    }
+    
+    private func newLocationAuthStatus(authStatus: CLAuthorizationStatus) {
+        if (authStatus == .authorizedWhenInUse ||
+                authStatus == .authorizedAlways) {
+            locationManager.startUpdatingLocation()
         }
     }
 }

@@ -24,6 +24,8 @@
 	<string>This app would like to access your camera to capture images of your Psoriasis.</string>
 	<key>NSHealthShareUsageDescription</key>
 	<string>Psorcast would like to analyze variables that might influence your immune system.</string>
+	<key>NSHealthUpdateUsageDescription</key>
+	<string>Psorcast would like to analyze your HealthKit data to see how certain lifestyle factors may affect your symptoms</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Psorcast would like to get your location of your phone to get the weather and air quality, then we’ll delete the GPS data from the phone’s temporary storage.</string>
 	<key>NSMotionUsageDescription</key>

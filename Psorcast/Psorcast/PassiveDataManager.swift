@@ -1,5 +1,5 @@
 //
-//  HealthKitDataManager.swift
+//  PassiveDataManager.swift
 //  Psorcast
 //
 //  Copyright © 2021 Sage Bionetworks. All rights reserved.
@@ -36,19 +36,25 @@ import Research
 import ResearchUI
 import HealthKit
 
-open class HealthKitDataManager {
+open class PassiveDataManager {
     
-    public static let shared = HealthKitDataManager()
+    public static let shared = PassiveDataManager()
     
     lazy var healthKit: HKHealthStore = HKHealthStore()
     
-    private let kArchiveIdentifier                = "HealthKit"
+    private let kHealthArchiveIdentifier          = "HealthKit"
+    private let kEnvironmentalArchiveIdentifier   = "Environmental"
     private let kSchemaRevisionKey                = "schemaRevision"
     private let kDataGroups                       = "dataGroups"
     private let kSurveyCreatedOnKey               = "surveyCreatedOn"
     private let kExternalIdKey                    = "externalId"
 
     private let kMetadataFilename                 = "metadata.json"
+    
+    /// These are loaded from the private plist file
+    public var airNowApiKey: String? = nil
+    public var openWeatherApiKey: String? = nil
+    public var isFetchingPassiveData = false
     
     public let categoryTypes = Set([
         HKCategoryTypeIdentifier.sleepAnalysis])
@@ -61,6 +67,29 @@ open class HealthKitDataManager {
         HKQuantityTypeIdentifier.restingHeartRate,
         /// The standard deviation of heart beat-to-beat intevals (Standard Deviation of Normal to Normal). Unit is Time (ms).
         HKQuantityTypeIdentifier.heartRateVariabilitySDNN])
+    
+    init() {
+        self.loadApiKeys()
+    }
+    
+    private func loadApiKeys() {
+        var propertyListFormat =  PropertyListSerialization.PropertyListFormat.xml
+        
+        guard let plistPath = Bundle.main.path(forResource: "BridgeInfo-private", ofType: "plist"),
+              let plistXML = FileManager.default.contents(atPath: plistPath) else {
+            debugPrint("Error: missing plist file, airnow and open weather will not work")
+            return
+        }
+    
+        do { //convert the data to a dictionary and handle errors.
+            let plistData = try PropertyListSerialization.propertyList(from: plistXML, options: .mutableContainersAndLeaves, format: &propertyListFormat) as? [String : AnyObject]
+
+            self.airNowApiKey = plistData?["airnowKey"] as? String
+            self.openWeatherApiKey = plistData?["openweatherKey"] as? String
+        } catch {
+            print("Error reading plist: \(error), format: \(propertyListFormat)")
+        }
+    }
     
     @available(iOS 14.0, *)
     public func iOS14QuantityTypes() -> Set<HKQuantityTypeIdentifier> {
@@ -144,7 +173,7 @@ open class HealthKitDataManager {
         }
 
         // The archive to add data to
-        let archive = createArchive()
+        let archive = createArchive(identifier: kHealthArchiveIdentifier)
         let queryTypes = Array(self.allReadTypes())
         
         // Kick-off the queries
@@ -166,7 +195,7 @@ open class HealthKitDataManager {
         newQueryTypes.removeLast()
         
         // Try and load the spot where we last queried
-        let typeId = HealthKitDataManager.formatIdentifier(type.identifier)
+        let typeId = PassiveDataManager.formatIdentifier(type.identifier)
         var previousAnchor: HKQueryAnchor? = nil
         if let anchorData = UserDefaults.standard.data(forKey: "\(typeId)StepAnchor") {
             do {
@@ -239,9 +268,9 @@ open class HealthKitDataManager {
         }
     }
     
-    private func createArchive() -> SBBDataArchive {
+    private func createArchive(identifier: String) -> SBBDataArchive {
         // Archive to add data to as our queries succeed
-        let archive = SBBDataArchive(reference: kArchiveIdentifier, jsonValidationMapping: nil)
+        let archive = SBBDataArchive(reference: identifier, jsonValidationMapping: nil)
                 
         // Add the current data groups and the user's arc id
         var metadata = [String: Any]()
@@ -254,28 +283,38 @@ open class HealthKitDataManager {
         // Insert the metadata dictionary
         archive.insertDictionary(intoArchive: metadata, filename: kMetadataFilename, createdOn: Date())
         
+        // Set the correct schema revision version, this is required
+        // for bridge to know that this archive has a schema
+        let schemaRevisionInfo = SBABridgeConfiguration.shared.schemaInfo(for: identifier) ?? RSDSchemaInfoObject(identifier: identifier, revision: 1)
+        archive.setArchiveInfoObject(schemaRevisionInfo.schemaVersion, forKey: kSchemaRevisionKey)
+        
         return archive
     }
     
+    private func completeArchive(archive: SBBDataArchive, answers: [AnyHashable: Any]) throws {
+        
+        var answersDict = [AnyHashable: Any]()
+        answers.forEach({ answersDict[$0.key] = $0.value })
+        
+        // Add on the treatment week, treatments, etc.
+        let treatmentAddOns = MasterScheduleManager.shared.createTreatmentAnswerAddOns()
+        if (treatmentAddOns.count > 0) {
+            treatmentAddOns.forEach({ answersDict[$0.identifier] = $0.value })
+        }
+        
+        archive.insertAnswersDictionary(answersDict)
+        
+        // Try to finish and upload the archive
+        try archive.complete()
+        archive.encryptAndUploadArchive()
+    }
+    
     private func completeArchive(archive: SBBDataArchive, anchors: [String : HKQueryAnchor]) {
+        
         do {
-            // Set the correct schema revision version, this is required
-            // for bridge to know that this archive has a schema
-            let schemaRevisionInfo = SBABridgeConfiguration.shared.schemaInfo(for: kArchiveIdentifier) ?? RSDSchemaInfoObject(identifier: kArchiveIdentifier, revision: 1)
-            archive.setArchiveInfoObject(schemaRevisionInfo.schemaVersion, forKey: kSchemaRevisionKey)
-            
-            // Add on the treatment week, treatments, etc.
-            let treatmentAddOns = MasterScheduleManager.shared.createTreatmentAnswerAddOns()
-            if (treatmentAddOns.count > 0) {
-                var answersDict = [AnyHashable: Any]()
-                treatmentAddOns.forEach({ answersDict[$0.identifier] = $0.value })
-                archive.insertAnswersDictionary(answersDict)
-            }
-            
-            // Try to finish and upload the archive
-            try archive.complete()
-            archive.encryptAndUploadArchive()
-            
+            // Complete and upload the archive
+            try completeArchive(archive: archive, answers: [AnyHashable: Any]())
+                
             // If we got this far, we can safely save the anchors for next time
             for (typeId, value) in anchors {
                 // Try and save our current query spot for next time
@@ -295,6 +334,233 @@ open class HealthKitDataManager {
         return identifier
             .replacingOccurrences(of: "HKCategoryTypeIdentifier", with: "")
             .replacingOccurrences(of: "HKQuantityTypeIdentifier", with: "")
+    }
+    
+    public func fetchPassiveDataResult(loc: CLLocation) {
+        let archive: SBBDataArchive = createArchive(identifier: kEnvironmentalArchiveIdentifier)
+        
+        guard !self.isFetchingPassiveData else {
+            debugPrint("Already fetching passive data, ignoring request")
+            return
+        }
+        
+        self.isFetchingPassiveData = true
+        
+        guard let airNowApiKeyUnwrapped = self.airNowApiKey,
+              let openWeatherApiKeyUnwrapped = self.openWeatherApiKey else {
+            return
+        }
+        
+        var answerMap = [AnyHashable: Any]()
+        
+        let openWeatherConfig = WeatherServiceConfiguration(identifier: "openWeather", type: .openWeather, apiKey: openWeatherApiKeyUnwrapped)
+        let airNowConfig = WeatherServiceConfiguration(identifier: "airNow", type: .airNow, apiKey: airNowApiKeyUnwrapped)
+        
+        fetchOpenWeatherResult(config: openWeatherConfig, for: loc) { (config, answers, error) in
+            
+            if (error != nil) {
+                print(error?.localizedDescription ?? "")
+            }
+            
+            answers?.forEach({
+                answerMap[$0.key] = $0.value
+            })
+            
+            self.fetchAirNowResult(config: airNowConfig, for: loc) { (config, airNowAnswers, airNowError) in
+                
+                if (airNowError != nil) {
+                    print(airNowError?.localizedDescription ?? "")
+                }
+                
+                airNowAnswers?.forEach({
+                    answerMap[$0.key] = $0.value
+                })
+                
+                do {
+                    try self.completeArchive(archive: archive, answers: answerMap)
+                }
+                catch let error as NSError {
+                  print("Error completing archive \(error)")
+                }
+                
+                DispatchQueue.main.async {  // Done fetching passive data
+                    self.isFetchingPassiveData = false
+                }
+            }
+        }
+    }
+    
+    public func fetchOpenWeatherResult(config: WeatherServiceConfiguration, for coordinates: CLLocation, _ completion: @escaping WeatherCompletionHandler) {
+        
+        let url = URL(string: "https://api.openweathermap.org/data/2.5/weather?lat=\(coordinates.coordinate.latitude)&lon=\(coordinates.coordinate.longitude)&units=metric&appid=\(config.apiKey)")!
+        
+        let task = URLSession.shared.dataTask(with: url, completionHandler: { (data: Data?, response: URLResponse?, error: Error?) in
+            
+            self.processOpenWeatherResponse(config: config, url, data, error, completion)
+        })
+    
+        task.resume()
+    }
+    
+    func processOpenWeatherResponse(config: WeatherServiceConfiguration, _ url: URL, _ data: Data?, _ error: Error?, _ completion: @escaping WeatherCompletionHandler) {
+        guard error == nil, let json = data else {
+            completion(config, nil, error)
+            return
+        }
+        do {
+            let rawStr = String(data: data!, encoding: String.Encoding.utf8)
+            print("Open Weather raw str result found \(String(describing: rawStr))")
+            
+            let decoder = JSONDecoder()
+            decoder.dateDecodingStrategy = .secondsSince1970
+            let responseObject = try decoder.decode(OpenWeatherResponseObject.self, from: json)
+            
+            var answers = [AnyHashable: Any]()
+            answers["temp"] = responseObject.main.temp
+            answers["temp_min"] = responseObject.main.temp_min
+            answers["temp_max"] = responseObject.main.temp_max
+            answers["pressure"] = responseObject.main.pressure
+            answers["humidity"] = responseObject.main.humidity
+            
+            completion(config, answers, nil)
+        }
+        catch let err {
+            let jsonString = String(data: json, encoding: .utf8)
+            print("WARNING! \(config.type) service response decoding failed.\n\(url)\n\(String(describing: jsonString))\n")
+            completion(config, nil, err)
+        }
+    }
+    
+    public func fetchAirNowResult(config: WeatherServiceConfiguration, for coordinates: CLLocation, _ completion: @escaping WeatherCompletionHandler) {
+        
+        let date = Date()
+        let dateString = NSDate.iso8601DateOnlyformatter()!.string(from: date)
+        
+        let url = URL(string: "https://www.airnowapi.org/aq/forecast/latLong/?format=application/json&latitude=\(coordinates.coordinate.latitude)&longitude=\(coordinates.coordinate.longitude)&date=\(dateString)&distance=25&API_KEY=\(config.apiKey)")!
+        
+        let task = URLSession.shared.dataTask(with: url, completionHandler: { (data: Data?, response: URLResponse?, error: Error?) in
+            
+            self.processAirNowResponse(config: config, url, dateString, date, data, error, completion)
+        })
+        
+        task.resume()
+    }
+    
+    func processAirNowResponse(config: WeatherServiceConfiguration, _ url: URL, _ dateString: String, _ date: Date, _ data: Data?, _ error: Error?, _ completion: @escaping WeatherCompletionHandler) {
+        
+        guard error == nil, let json = data else {
+            completion(config, nil, error)
+            return
+        }
+        do {
+            let rawStr = String(data: data!, encoding: String.Encoding.utf8)
+            print("AirNow raw str result found \(String(describing: rawStr))")
+            
+            let decoder = JSONDecoder()
+            let responses = try decoder.decode([AirNowResponseObject].self, from: json)
+            
+            let aqiValues = responses
+                .filter({ $0.aqi != nil })
+                .map({ $0.aqi ?? 0 })
+            
+            var answers = [AnyHashable: Any]()
+            
+            if (!aqiValues.isEmpty) {
+                var sum = 0
+                aqiValues.forEach({ sum += $0 })
+                
+                let meanAqi = sum / aqiValues.count
+                let minAqi = aqiValues.min()
+                let maxAqi = aqiValues.max()
+                
+                // AQI Values to write to answer map
+                answers["aqi_mean"] = meanAqi
+                answers["aqi_min"] = minAqi
+                answers["aqi_max"] = maxAqi
+            }
+            
+            answers["aqi_array"] = aqiValues.map({ "\($0)" }).joined(separator: ", ")
+            
+            completion(config, answers, nil)
+        }
+        catch let err {
+            let jsonString = String(data: json, encoding: .utf8)
+            print("WARNING! \(config.type) service response decoding failed.\n\(url)\n\(String(describing: jsonString))\n")
+            completion(config, nil, err)
+        }
+    }
+}
+
+public struct OpenWeatherResponseObject : Codable {
+    let main: Main
+    let wind: Wind?
+    let clouds: Clouds?
+    let rain: Precipitation?
+    let snow: Precipitation?
+    let dt: Date
+
+    struct Main : Codable {
+        // Temperature. Unit: Celsius
+        let temp: Double?
+        // Temperature. This temperature parameter accounts for the human perception of weather. Unit: Celsius
+        let feels_like: Double?
+        // Minimum temperature at the moment. This is minimal currently observed temperature (within large megalopolises and urban areas). Unit: Celsius
+        let temp_min: Double?
+        // Maximum temperature at the moment. This is maximal currently observed temperature (within large megalopolises and urban areas). Unit: Celsius
+        let temp_max: Double?
+        // Atmospheric pressure (on the sea level, if there is no sea_level or grnd_level data), hPa
+        let pressure: Double?
+        // Atmospheric pressure on the sea level, hPa
+        let sea_level: Double?
+        // Atmospheric pressure on the ground level, hPa
+        let grnd_level: Double?
+        // Humidity, %
+        let humidity: Double?
+        
+        func seaLevel() -> Double? {
+            sea_level ?? ((grnd_level == nil) ? pressure : nil)
+        }
+    }
+    
+    struct Wind : Codable {
+        // Wind speed. Unit: meter/sec
+        let speed: Double?
+        // Wind direction, degrees (meteorological)
+        let deg: Double?
+        // Wind gust. Unit Default: meter/sec
+        let gust: Double?
+    }
+    
+    struct Clouds : Codable {
+        // Cloudiness, %
+        let all: Double
+    }
+    
+    struct Precipitation: Codable {
+        private enum CodingKeys: String, CodingKey {
+            case pastHour = "1hr", pastThreeHours = "3hr"
+        }
+        let pastHour: Double?
+        let pastThreeHours: Double?
+    }
+}
+
+public struct AirNowResponseObject : Codable {
+    private enum CodingKeys : String, CodingKey {
+        case dateIssue = "DateIssue", dateForecast = "DateForecast", stateCode = "StateCode", aqi = "AQI", category = "Category"
+    }
+    let dateIssue: String
+    let dateForecast: String
+    let stateCode: String?
+    let aqi: Int?
+    let category: Category?
+    
+    struct Category : Codable {
+        private enum CodingKeys : String, CodingKey {
+            case number = "Number", name = "Name"
+        }
+        let number: Int
+        let name: String
     }
 }
 
@@ -316,7 +582,7 @@ extension HKQuantitySample: Encodable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         
-        let sampleTypeStr = HealthKitDataManager.formatIdentifier(self.sampleType.identifier)
+        let sampleTypeStr = PassiveDataManager.formatIdentifier(self.sampleType.identifier)
         
         // Convert dates to ISO8601
         let dateFormatter = rsd_ISO8601TimestampFormatter
@@ -348,7 +614,7 @@ extension HKCategorySample: Encodable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         
-        let sampleTypeStr = HealthKitDataManager.formatIdentifier(self.sampleType.identifier)
+        let sampleTypeStr = PassiveDataManager.formatIdentifier(self.sampleType.identifier)
         
         // Convert dates to ISO8601
         let dateFormatter = rsd_ISO8601TimestampFormatter
@@ -362,4 +628,16 @@ extension HKCategorySample: Encodable {
     }
 }
 
+public struct WeatherServiceConfiguration {
+    var identifier: String
+    var type: WeatherServiceType
+    var apiKey: String
+}
+
+/// What is the "type" of weather service provided? This is either "weather" or "air quality".
+public enum WeatherServiceType : String, Codable {
+    case openWeather, airNow
+}
+
+public typealias WeatherCompletionHandler = (WeatherServiceConfiguration, [AnyHashable: Any]?, Error?) -> Void
     
