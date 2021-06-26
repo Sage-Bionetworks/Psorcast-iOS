@@ -21,6 +21,17 @@
 		04F00578243FE76E00EDB120 /* ShowInsightStepViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 04F00577243FE76E00EDB120 /* ShowInsightStepViewController.xib */; };
 		04F2653426839954004140B7 /* PrivacyPolicy.html in Resources */ = {isa = PBXBuildFile; fileRef = 04F2652F26839954004140B7 /* PrivacyPolicy.html */; };
 		04F2654C26845794004140B7 /* ConsentForm.html in Resources */ = {isa = PBXBuildFile; fileRef = 04F2653726839B5B004140B7 /* ConsentForm.html */; };
+		04F2655F2686D40B004140B7 /* ResearchActivities_Consent.html in Resources */ = {isa = PBXBuildFile; fileRef = 04F2655E2686D40B004140B7 /* ResearchActivities_Consent.html */; };
+		04F265672686D78E004140B7 /* Privacy_Consent.html in Resources */ = {isa = PBXBuildFile; fileRef = 04F265662686D78E004140B7 /* Privacy_Consent.html */; };
+		04F2656B2686D809004140B7 /* DataUse_Consent.html in Resources */ = {isa = PBXBuildFile; fileRef = 04F2656A2686D809004140B7 /* DataUse_Consent.html */; };
+		04F2656F2686D88E004140B7 /* TimeCommitment_Consent.html in Resources */ = {isa = PBXBuildFile; fileRef = 04F2656E2686D88E004140B7 /* TimeCommitment_Consent.html */; };
+		04F265732686DA0E004140B7 /* PotentialBenefits_Consent.html in Resources */ = {isa = PBXBuildFile; fileRef = 04F265722686DA0E004140B7 /* PotentialBenefits_Consent.html */; };
+		04F265772686DAD0004140B7 /* PotentialRisks_Consent.html in Resources */ = {isa = PBXBuildFile; fileRef = 04F265762686DAD0004140B7 /* PotentialRisks_Consent.html */; };
+		04F2657B2686DB6D004140B7 /* MedicalCare_Consent.html in Resources */ = {isa = PBXBuildFile; fileRef = 04F2657A2686DB6D004140B7 /* MedicalCare_Consent.html */; };
+		04F2657F2686DBEB004140B7 /* FutureIndependentResearch_Consent.html in Resources */ = {isa = PBXBuildFile; fileRef = 04F2657E2686DBEB004140B7 /* FutureIndependentResearch_Consent.html */; };
+		04F265832686DC6F004140B7 /* QualifiedResearchers_Consent.html in Resources */ = {isa = PBXBuildFile; fileRef = 04F265822686DC6F004140B7 /* QualifiedResearchers_Consent.html */; };
+		04F265872686DCE5004140B7 /* FollowUp_Consent.html in Resources */ = {isa = PBXBuildFile; fileRef = 04F265862686DCE5004140B7 /* FollowUp_Consent.html */; };
+		04F2658B2686DD2E004140B7 /* Quit_Consent.html in Resources */ = {isa = PBXBuildFile; fileRef = 04F2658A2686DD2E004140B7 /* Quit_Consent.html */; };
 		CB03196523E3ED0A005063A3 /* ReviewCaptureStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB03196423E3ED09005063A3 /* ReviewCaptureStepViewController.swift */; };
 		CB03196723E40836005063A3 /* ReviewCaptureStepViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB03196623E40835005063A3 /* ReviewCaptureStepViewController.xib */; };
 		CB05146C237F27560058D746 /* DigitalJarOpen.json in Resources */ = {isa = PBXBuildFile; fileRef = CB05146B237F27560058D746 /* DigitalJarOpen.json */; };
@@ -399,6 +410,17 @@
 		04F00577243FE76E00EDB120 /* ShowInsightStepViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ShowInsightStepViewController.xib; sourceTree = "<group>"; };
 		04F2652F26839954004140B7 /* PrivacyPolicy.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = PrivacyPolicy.html; sourceTree = "<group>"; };
 		04F2653726839B5B004140B7 /* ConsentForm.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = ConsentForm.html; sourceTree = "<group>"; };
+		04F2655E2686D40B004140B7 /* ResearchActivities_Consent.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = ResearchActivities_Consent.html; sourceTree = "<group>"; };
+		04F265662686D78E004140B7 /* Privacy_Consent.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = Privacy_Consent.html; sourceTree = "<group>"; };
+		04F2656A2686D809004140B7 /* DataUse_Consent.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = DataUse_Consent.html; sourceTree = "<group>"; };
+		04F2656E2686D88E004140B7 /* TimeCommitment_Consent.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = TimeCommitment_Consent.html; sourceTree = "<group>"; };
+		04F265722686DA0E004140B7 /* PotentialBenefits_Consent.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = PotentialBenefits_Consent.html; sourceTree = "<group>"; };
+		04F265762686DAD0004140B7 /* PotentialRisks_Consent.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = PotentialRisks_Consent.html; sourceTree = "<group>"; };
+		04F2657A2686DB6D004140B7 /* MedicalCare_Consent.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = MedicalCare_Consent.html; sourceTree = "<group>"; };
+		04F2657E2686DBEB004140B7 /* FutureIndependentResearch_Consent.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = FutureIndependentResearch_Consent.html; sourceTree = "<group>"; };
+		04F265822686DC6F004140B7 /* QualifiedResearchers_Consent.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = QualifiedResearchers_Consent.html; sourceTree = "<group>"; };
+		04F265862686DCE5004140B7 /* FollowUp_Consent.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = FollowUp_Consent.html; sourceTree = "<group>"; };
+		04F2658A2686DD2E004140B7 /* Quit_Consent.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = Quit_Consent.html; sourceTree = "<group>"; };
 		CB03196423E3ED09005063A3 /* ReviewCaptureStepViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReviewCaptureStepViewController.swift; sourceTree = "<group>"; };
 		CB03196623E40835005063A3 /* ReviewCaptureStepViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReviewCaptureStepViewController.xib; sourceTree = "<group>"; };
 		CB05146B237F27560058D746 /* DigitalJarOpen.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = DigitalJarOpen.json; sourceTree = "<group>"; };
@@ -996,6 +1018,17 @@
 				CBFF927D25E19B6200EC34DB /* PhoneLearnMore.html */,
 				04E61CA526721B6000B371E9 /* ConsentLearnMorePlaceholder.html */,
 				04F2652F26839954004140B7 /* PrivacyPolicy.html */,
+				04F2655E2686D40B004140B7 /* ResearchActivities_Consent.html */,
+				04F265662686D78E004140B7 /* Privacy_Consent.html */,
+				04F2656A2686D809004140B7 /* DataUse_Consent.html */,
+				04F2656E2686D88E004140B7 /* TimeCommitment_Consent.html */,
+				04F265722686DA0E004140B7 /* PotentialBenefits_Consent.html */,
+				04F265762686DAD0004140B7 /* PotentialRisks_Consent.html */,
+				04F2657A2686DB6D004140B7 /* MedicalCare_Consent.html */,
+				04F2657E2686DBEB004140B7 /* FutureIndependentResearch_Consent.html */,
+				04F265822686DC6F004140B7 /* QualifiedResearchers_Consent.html */,
+				04F265862686DCE5004140B7 /* FollowUp_Consent.html */,
+				04F2658A2686DD2E004140B7 /* Quit_Consent.html */,
 			);
 			name = HTML;
 			sourceTree = "<group>";
@@ -1310,11 +1343,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				04F265832686DC6F004140B7 /* QualifiedResearchers_Consent.html in Resources */,
 				04F2654C26845794004140B7 /* ConsentForm.html in Resources */,
 				CBDCDC7B23F3848500E5CEB8 /* FootImaging.json in Resources */,
 				CB9F5E2222E0BED3003FBCEF /* lato_italic.ttf in Resources */,
 				CB7CF2482400CFAA003E02A5 /* WelcomeVideo.mov in Resources */,
 				CBDCDC8523F3848E00E5CEB8 /* ToesPhoto.mov in Resources */,
+				04F2658B2686DD2E004140B7 /* Quit_Consent.html in Resources */,
 				FFABCBCC22DD1EEC00D11109 /* LaunchScreen.storyboard in Resources */,
 				04F2653426839954004140B7 /* PrivacyPolicy.html in Resources */,
 				CB5A9400265EAB1A0063994F /* EnvironmentalStepViewController.xib in Resources */,
@@ -1327,11 +1362,13 @@
 				CB16C38D24465BC20046E200 /* ReminderStepViewController.xib in Resources */,
 				CBDCDC9E23F3849E00E5CEB8 /* JointPainStepViewController.xib in Resources */,
 				CBDCDC8E23F3849E00E5CEB8 /* SelectionCollectionStepViewController.xib in Resources */,
+				04F2655F2686D40B004140B7 /* ResearchActivities_Consent.html in Resources */,
 				CB09F03E2421E9E80005698D /* TreatmentSelectionStepViewController.xib in Resources */,
 				CBDCDCB023F3849E00E5CEB8 /* PsoriasisDrawCompletionStepViewController.xib in Resources */,
 				CBDCDC9023F3849E00E5CEB8 /* ExternalIDRegistrationViewController.xib in Resources */,
 				CBDCDC7D23F3848500E5CEB8 /* JointCounting.json in Resources */,
 				CBDCDC9223F3849E00E5CEB8 /* EndOfValidationStepViewController.xib in Resources */,
+				04F265872686DCE5004140B7 /* FollowUp_Consent.html in Resources */,
 				CBA0250E23FC6B2500604F2D /* Main.storyboard in Resources */,
 				CBFF926C25E0749700EC34DB /* Registration.storyboard in Resources */,
 				CB9F5E1F22E0BED3003FBCEF /* lato_black.ttf in Resources */,
@@ -1343,16 +1380,19 @@
 				CBDCDC7E23F3848500E5CEB8 /* MDJointSwelling.json in Resources */,
 				CBDCDC9923F3849E00E5CEB8 /* ReviewCaptureStepViewController.xib in Resources */,
 				CB8F2926245BD14C00ABE5B3 /* FilterTreatmentViewController.xib in Resources */,
+				04F265732686DA0E004140B7 /* PotentialBenefits_Consent.html in Resources */,
 				CB95A2852608540600F28273 /* OnboardingPagerStepViewController.xib in Resources */,
 				CB95A28F260868A600F28273 /* Introduction.json in Resources */,
 				CBDCDC7123F383DC00E5CEB8 /* sage-psorcast.pem in Resources */,
 				CBDCDC8223F3848500E5CEB8 /* DigitalJarOpen.json in Resources */,
+				04F265772686DAD0004140B7 /* PotentialRisks_Consent.html in Resources */,
 				CBDCDC8623F3848E00E5CEB8 /* DigitalJarOpen.mov in Resources */,
 				CBDCDC7223F383DC00E5CEB8 /* BridgeInfo-private.plist in Resources */,
 				CBDCDC8123F3848500E5CEB8 /* PsoriasisDraw.json in Resources */,
 				CBDCDCA223F3849E00E5CEB8 /* LearnMoreStepViewController.xib in Resources */,
 				CBDA96E0262F470C00C9FAA3 /* PastTreatmentsCompletionStepViewController.xib in Resources */,
 				CBDCDCAA23F3849E00E5CEB8 /* PsoriasisDrawStepViewController.xib in Resources */,
+				04F2656F2686D88E004140B7 /* TimeCommitment_Consent.html in Resources */,
 				CB9F5E2122E0BED3003FBCEF /* lato_bolditalic.ttf in Resources */,
 				04E61CAD2672645300B371E9 /* ConsentReviewStepViewController.xib in Resources */,
 				CBC6519623F3931800C3FF0C /* Psorcast.strings in Resources */,
@@ -1362,9 +1402,12 @@
 				CB9F5E2422E0BED3003FBCEF /* lato_lightitalic.ttf in Resources */,
 				CBFF927225E08CA400EC34DB /* PhoneSignIn.json in Resources */,
 				CBFF928025E19B7300EC34DB /* CSS_files in Resources */,
+				04F2656B2686D809004140B7 /* DataUse_Consent.html in Resources */,
 				CBDCDCB423F3849E00E5CEB8 /* DigitalJarOpenCompletionStepViewController.xib in Resources */,
 				CB7281A82624DC5000AAEB2C /* WithdrawalStepViewController.xib in Resources */,
+				04F2657F2686DBEB004140B7 /* FutureIndependentResearch_Consent.html in Resources */,
 				CBDCDC8323F3848E00E5CEB8 /* FingersPhoto.mov in Resources */,
+				04F265672686D78E004140B7 /* Privacy_Consent.html in Resources */,
 				CBDD30E62416C7D1003B0488 /* PsorcastAssets.xcassets in Resources */,
 				CBDCDC9423F3849E00E5CEB8 /* ParticipantIDRegistrationViewController.xib in Resources */,
 				FF5010A122DD214A0035E83C /* BridgeInfo.plist in Resources */,
@@ -1372,6 +1415,7 @@
 				04F00578243FE76E00EDB120 /* ShowInsightStepViewController.xib in Resources */,
 				CBDCDC7F23F3848500E5CEB8 /* MDJointCounting.json in Resources */,
 				CB72819D2624CBE100AAEB2C /* TextfieldStepViewController.xib in Resources */,
+				04F2657B2686DB6D004140B7 /* MedicalCare_Consent.html in Resources */,
 				CBFF927E25E19B6200EC34DB /* PhoneLearnMore.html in Resources */,
 				CB7281A52624DBBD00AAEB2C /* Withdrawal.json in Resources */,
 				CBDCDCA423F3849E00E5CEB8 /* PsoriasisAreaPhotoStepViewController.xib in Resources */,

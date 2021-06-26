@@ -17,7 +17,7 @@
                    "learnMore":{
                        "type": "webView",
                        "buttonTitle": "Learn more",
-                       "url" : "ConsentLearnMorePlaceholder.html",
+                       "url" : "ResearchActivities_Consent.html",
                        "usesBackButton": true
                    }
                }
@@ -36,7 +36,7 @@
                    "learnMore":{
                        "type": "webView",
                        "buttonTitle": "Learn more",
-                       "url" : "ConsentLearnMorePlaceholder.html",
+                       "url" : "Privacy_Consent.html",
                        "usesBackButton": true
                    }
                }
@@ -55,7 +55,7 @@
                    "learnMore":{
                        "type": "webView",
                        "buttonTitle": "Learn more",
-                       "url" : "ConsentLearnMorePlaceholder.html",
+                       "url" : "DataUse_Consent.html",
                        "usesBackButton": true
                    }
                }
@@ -74,7 +74,26 @@
                    "learnMore":{
                        "type": "webView",
                        "buttonTitle": "Learn more",
-                       "url" : "ConsentLearnMorePlaceholder.html",
+                       "url" : "TimeCommitment_Consent.html",
+                       "usesBackButton": true
+                   }
+               }
+             },
+             {
+               "identifier": "potential_benefits",
+               "type": "instruction",
+               "title": "Potential benefits",
+               "text": "This app may help you better understand or measure your symptoms, you can generate GIFs of your symptoms over time and you may be compensated for your participation.",
+               "image": {
+                 "type": "fetchable",
+                 "imageName": "consent_icon_potential_benefits",
+                 "placementType": "iconBefore"
+               },
+               "actions":{
+                   "learnMore":{
+                       "type": "webView",
+                       "buttonTitle": "Learn more",
+                       "url" : "PotentialBenefits_Consent.html",
                        "usesBackButton": true
                    }
                }
@@ -93,7 +112,7 @@
                    "learnMore":{
                        "type": "webView",
                        "buttonTitle": "Learn more",
-                       "url" : "ConsentLearnMorePlaceholder.html",
+                       "url" : "PotentialRisks_Consent.html",
                        "usesBackButton": true
                    }
                }
@@ -112,7 +131,7 @@
                    "learnMore":{
                        "type": "webView",
                        "buttonTitle": "Learn more",
-                       "url" : "ConsentLearnMorePlaceholder.html",
+                       "url" : "MedicalCare_Consent.html",
                        "usesBackButton": true
                    }
                }
@@ -131,7 +150,7 @@
                    "learnMore":{
                        "type": "webView",
                        "buttonTitle": "Learn more",
-                       "url" : "ConsentLearnMorePlaceholder.html",
+                       "url" : "FutureIndependentResearch_Consent.html",
                        "usesBackButton": true
                    }
                }
@@ -150,7 +169,7 @@
                    "learnMore":{
                        "type": "webView",
                        "buttonTitle": "Learn more",
-                       "url" : "ConsentLearnMorePlaceholder.html",
+                       "url" : "QualifiedResearchers_Consent.html",
                        "usesBackButton": true
                    }
                }
@@ -169,7 +188,7 @@
                    "learnMore":{
                        "type": "webView",
                        "buttonTitle": "Learn more",
-                       "url" : "ConsentLearnMorePlaceholder.html",
+                       "url" : "FollowUp_Consent.html",
                        "usesBackButton": true
                    }
                }
@@ -188,7 +207,7 @@
                    "learnMore":{
                        "type": "webView",
                        "buttonTitle": "Learn more",
-                       "url" : "ConsentLearnMorePlaceholder.html",
+                       "url" : "Quit_Consent.html",
                        "usesBackButton": true
                    }
                }
