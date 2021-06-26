@@ -42,6 +42,25 @@
                }
              },
              {
+                 "identifier": "consentQuiz1",
+                 "type": "consentQuiz",
+                 "title": "How will my privacy be protected?",
+                 "image": {
+                   "type": "fetchable",
+                   "imageName": "consent_icon_your_privacy",
+                   "placementType": "iconBefore"
+                 },
+                 "items":[
+                          {"text" :"Your privacy will not be protected", "value" : false},
+                          {"text" :"We will use a code instead of your name", "value": true},
+                 ],
+                 "expectedAnswer": true,
+                 "answerCorrectTitle": "That's correct!",
+                 "answerCorrectText": "",
+                 "answerIncorrectTitle": "Not quite!",
+                 "answerIncorrectText": "To protect your privacy, we will remove your name and contact information from your study data. We will replace them with a code."
+             },
+             {
                "identifier": "data_use",
                "type": "instruction",
                "title": "Data use",

@@ -44,6 +44,7 @@ extension RSDStepType {
     public static let textField: RSDStepType = "textField"
     public static let withdrawal: RSDStepType = "withdrawal"
     public static let environmental: RSDStepType = "environmental"
+    public static let consentQuiz: RSDStepType = "consentQuiz"
 }
 
 extension RSDStepNavigatorType {
@@ -82,6 +83,8 @@ open class StudyTaskFactory: TaskFactory {
             return try WithdrawalStepObject(from: decoder)
         case .environmental:
             return try EnvironmentalStepObject(from: decoder)
+        case .consentQuiz:
+            return try ConsentQuizStepObject(from: decoder)
         default:
             return try super.decodeStep(from: decoder, with: type)
         }
