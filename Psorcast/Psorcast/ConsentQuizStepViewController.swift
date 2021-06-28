@@ -37,14 +37,12 @@ import Research
 import BridgeSDK
 import BridgeApp
 
-open class ConsentQuizStepObject: RSDUIStepObject, RSDStepViewControllerVendor {
+open class ConsentQuizStepObject: RSDFormUIStepObject, RSDStepViewControllerVendor {
 
     private enum CodingKeys : String, CodingKey {
-        case answerCorrectTitle, answerCorrectText, answerIncorrectTitle, answerIncorrectText, items
+        case answerCorrectTitle, answerCorrectText, answerIncorrectTitle, answerIncorrectText
     }
     
-    /// List of quiz answers
-    public var items = [QuizAnswerItem]()
     /// The view title if the user selects the correct answer
     public var answerCorrectTitle: String?
     /// The view text if the user selects the correct answer
@@ -53,6 +51,8 @@ open class ConsentQuizStepObject: RSDUIStepObject, RSDStepViewControllerVendor {
     public var answerIncorrectTitle: String?
     /// The view text if the user selects a wrong answer
     public var answerIncorrectText: String?
+    /// The answer actually selected (most recently) by the user
+    public var selectedAnswer: String?
 
     public func instantiateViewController(with parent: RSDPathComponent?) -> (UIViewController & RSDStepController)? {
         return ConsentQuizStepViewController(step: self, parent: parent)
@@ -66,7 +66,6 @@ open class ConsentQuizStepObject: RSDUIStepObject, RSDStepViewControllerVendor {
     public required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
-        self.items = try container.decode([QuizAnswerItem].self, forKey: .items)
         if container.contains(.answerCorrectTitle) {
             self.answerCorrectTitle = try container.decode(String.self, forKey: .answerCorrectTitle)
         }
@@ -99,16 +98,37 @@ open class ConsentQuizStepObject: RSDUIStepObject, RSDStepViewControllerVendor {
         copy.answerCorrectText = self.answerCorrectText
         copy.answerIncorrectTitle = self.answerIncorrectTitle
         copy.answerIncorrectText = self.answerIncorrectText
-        copy.items = self.items
     }
 }
 
-public class ConsentQuizStepViewController: RSDStepViewController {
-    
-}
+public class ConsentQuizStepViewController: RSDTableStepViewController {
+    override open func goForward() {
+        if let step = self.formStep as? ConsentQuizStepObject, let answer = step.selectedAnswer as? String {
+            if (!answer.isEmpty && (answer == step.answerCorrectText)) {
+                // Show that's correct screen
+            } else {
+                // Show that's wrong screen
+            }
+        }
 
-public struct QuizAnswerItem: Codable {
-    public var text: String?
-    public var sortValue: Int?
-    public var isCorrect: Bool?
+        super.goForward() // remove this when above is implemented
+    }
+    
+    open override func setupHeader(_ header: RSDStepNavigationView) {
+        super.setupHeader(header)
+        header.cancelButton?.addTarget(self, action: #selector(self.cancelButtonTapped), for: .touchUpInside)
+    }
+    
+    @objc func cancelButtonTapped() {
+        goBack()
+    }
+
+    
+    open override func didSelectItem(_ item: RSDTableItem, at indexPath: IndexPath) {
+        if let choice = item as? RSDChoiceTableItem, let step = self.formStep as? ConsentQuizStepObject {
+            step.selectedAnswer = choice.answer as? String
+        }
+        
+        super.didSelectItem(item, at: indexPath)
+    }
 }

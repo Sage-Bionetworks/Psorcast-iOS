@@ -1,7 +1,7 @@
 {
     "identifier":"Consent",
     "shouldHideActions":["skip"],
-    "progressMarkers":["research_activities", "privacy", "data_use", "time_commitment", "potential_risks", "medical_care", "future_independent_research", "qualified_researchers", "follow_up", "quit"],
+    "progressMarkers":["research_activities", "privacy", "consentQuiz1", "data_use", "time_commitment", "potential_benefits", "potential_risks", "medical_care", "future_independent_research", "qualified_researchers", "follow_up", "quit"],
     "steps":[
              {
                "identifier": "research_activities",
@@ -47,14 +47,26 @@
                  "title": "How will my privacy be protected?",
                  "image": {
                    "type": "fetchable",
-                   "imageName": "consent_icon_your_privacy",
+                   "imageName": "consent_icon_question_mark",
                    "placementType": "iconBefore"
                  },
-                 "items":[
-                          {"text" :"Your privacy will not be protected", "value" : false},
-                          {"text" :"We will use a code instead of your name", "value": true},
-                 ],
-                 "expectedAnswer": true,
+                 "inputFields": [
+                         {
+                           "uiHint": "list",
+                           "type": "singleChoice.string",
+                           "choices": [
+                             {
+                               "text": "Your privacy will not be protected",
+                               "value": "false"
+                             },
+                             {
+                               "text": "We will use a code instead of your name",
+                               "value": "true"
+                             }
+                           ]
+                         }
+                       ],
+                 "expectedAnswer": "true",
                  "answerCorrectTitle": "That's correct!",
                  "answerCorrectText": "",
                  "answerIncorrectTitle": "Not quite!",
