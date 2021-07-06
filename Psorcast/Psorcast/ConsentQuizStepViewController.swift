@@ -197,18 +197,18 @@ public class ConsentQuizStepViewController: RSDTableStepViewController {
                     popinContinueButton?.removeTarget(self, action: #selector(self.incorrectAlertButtonPressed), for: .touchUpInside)
                     popinContinueButton?.addTarget(self, action: #selector(self.correctAlertButtonPressed), for: .touchUpInside)
                     self.view.bringSubviewToFront(popinView!)
-                    popinView?.isHidden = false
-                    grayView?.isHidden = false
-                    self.navigationFooter?.isHidden = true
+                    popinView?.fadeIn()
+                    grayView?.fadeIn()
+                    self.navigationFooter?.fadeOut()
                 } else {
                     titleLabel?.text = self.consentQuizStep?.answerIncorrectTitle
                     detailsLabel?.text = self.consentQuizStep?.answerIncorrectText
                     popinContinueButton?.setTitle(self.consentQuizStep?.answerIncorrectContinueButtonTitle, for: .normal)
                     popinContinueButton?.addTarget(self, action:#selector(self.incorrectAlertButtonPressed), for: .touchUpInside)
                     self.view.bringSubviewToFront(popinView!)
-                    popinView?.isHidden = false
-                    grayView?.isHidden = false
-                    self.navigationFooter?.isHidden = true
+                    popinView?.fadeIn()
+                    grayView?.fadeIn()
+                    self.navigationFooter?.fadeOut()
                 }
             }
         }
@@ -222,15 +222,15 @@ public class ConsentQuizStepViewController: RSDTableStepViewController {
     }
     
     @objc func incorrectAlertButtonPressed() {
-        popinView?.isHidden = true
-        grayView?.isHidden = true
-        self.navigationFooter?.isHidden = false
+        popinView?.fadeOut()
+        grayView?.fadeOut()
+        self.navigationFooter?.fadeIn()
     }
     
     @objc func correctAlertButtonPressed() {
-        popinView?.isHidden = true
-        grayView?.isHidden = true
-        self.navigationFooter?.isHidden = false
+        popinView?.fadeOut()
+        grayView?.fadeOut()
+        self.navigationFooter?.fadeIn()
         super.goForward()
     }
     
@@ -255,9 +255,21 @@ public class ConsentQuizStepNavigationView : RSDStepNavigationView {
 
 extension UIView {
 
-    func addToWindow()  {
-        let window = UIApplication.shared.keyWindow!
-        self.frame = window.bounds
-        window.addSubview(self)
+    func fadeIn(duration: TimeInterval = 0.5, delay: TimeInterval = 0.0, completion: @escaping ((Bool) -> Void) = {(finished: Bool) -> Void in }) {
+        self.alpha = 0.0
+
+        UIView.animate(withDuration: duration, delay: delay, options: UIView.AnimationOptions.curveEaseIn, animations: {
+            self.isHidden = false
+            self.alpha = 1.0
+        }, completion: completion)
+    }
+
+    func fadeOut(duration: TimeInterval = 0.5, delay: TimeInterval = 0.0, completion: @escaping (Bool) -> Void = {(finished: Bool) -> Void in }) {
+        self.alpha = 1.0
+
+        UIView.animate(withDuration: duration, delay: delay, options: UIView.AnimationOptions.curveEaseOut, animations: {
+            self.isHidden = true
+            self.alpha = 0.0
+        }, completion: completion)
     }
 }
