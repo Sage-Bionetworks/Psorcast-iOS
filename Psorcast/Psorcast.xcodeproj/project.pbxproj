@@ -17,6 +17,8 @@
 		04F00578243FE76E00EDB120 /* ShowInsightStepViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 04F00577243FE76E00EDB120 /* ShowInsightStepViewController.xib */; };
 		04F2653426839954004140B7 /* PrivacyPolicy.html in Resources */ = {isa = PBXBuildFile; fileRef = 04F2652F26839954004140B7 /* PrivacyPolicy.html */; };
 		04F2654C26845794004140B7 /* ConsentForm.html in Resources */ = {isa = PBXBuildFile; fileRef = 04F2653726839B5B004140B7 /* ConsentForm.html */; };
+		60E8C6A6266019B600AA906A /* BackgroundNetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E8C6A5266019B600AA906A /* BackgroundNetworkManager.swift */; };
+		60F877262628E29900D1D9C1 /* ParticipantFileUploadManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60F877212628E29900D1D9C1 /* ParticipantFileUploadManager.swift */; };
 		60F877272628E29900D1D9C1 /* ParticipantFileUploadManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60F877212628E29900D1D9C1 /* ParticipantFileUploadManager.swift */; };
 		CB03196523E3ED0A005063A3 /* ReviewCaptureStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB03196423E3ED09005063A3 /* ReviewCaptureStepViewController.swift */; };
 		CB03196723E40836005063A3 /* ReviewCaptureStepViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB03196623E40835005063A3 /* ReviewCaptureStepViewController.xib */; };
@@ -392,6 +394,7 @@
 		04F00577243FE76E00EDB120 /* ShowInsightStepViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ShowInsightStepViewController.xib; sourceTree = "<group>"; };
 		04F2652F26839954004140B7 /* PrivacyPolicy.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = PrivacyPolicy.html; sourceTree = "<group>"; };
 		04F2653726839B5B004140B7 /* ConsentForm.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = ConsentForm.html; sourceTree = "<group>"; };
+		60E8C6A5266019B600AA906A /* BackgroundNetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundNetworkManager.swift; sourceTree = "<group>"; };
 		60F877212628E29900D1D9C1 /* ParticipantFileUploadManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParticipantFileUploadManager.swift; sourceTree = "<group>"; };
 		CB03196423E3ED09005063A3 /* ReviewCaptureStepViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReviewCaptureStepViewController.swift; sourceTree = "<group>"; };
 		CB03196623E40835005063A3 /* ReviewCaptureStepViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReviewCaptureStepViewController.xib; sourceTree = "<group>"; };
@@ -700,6 +703,7 @@
 			isa = PBXGroup;
 			children = (
 				60F877212628E29900D1D9C1 /* ParticipantFileUploadManager.swift */,
+				60E8C6A5266019B600AA906A /* BackgroundNetworkManager.swift */,
 				CB4794F02426B33300D5A7E6 /* LevenshteinTools.swift */,
 				CB4794F22426B36C00D5A7E6 /* ViewUtils.swift */,
 				CBAAB6D82458CB2D00C1A619 /* AtomicBool.swift */,
@@ -1489,6 +1493,7 @@
 				CBDCDCC223F3855300E5CEB8 /* BuildDateUtil.m in Sources */,
 				CBDCDCB123F3849E00E5CEB8 /* SelectedIdentifiersResultObject.swift in Sources */,
 				CBDA96DF262F470C00C9FAA3 /* PastTreatmentsCompletionStepViewController.swift in Sources */,
+				60E8C6A6266019B600AA906A /* BackgroundNetworkManager.swift in Sources */,
 				CBDCDC8D23F3849E00E5CEB8 /* SelectionCollectionStepViewController.swift in Sources */,
 				CBDCDC8B23F3849E00E5CEB8 /* RSDCollectionViewCell.swift in Sources */,
 				CBDCDCA523F3849E00E5CEB8 /* PsoriasisAreaPhotoResultObject.swift in Sources */,
