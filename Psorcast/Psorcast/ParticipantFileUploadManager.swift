@@ -48,7 +48,8 @@ public struct ParticipantFile: Codable {
 struct ParticipantFileS3Metadata: Codable {
     var participantFile: ParticipantFile
     var contentLengthString: String
-    var contentMD5String: String
+    // TODO: This is not needed for Participant File uploads, but will be when I port the result file uploader to Swift. ~emm 2021-06-29
+    //var contentMD5String: String
 }
 
 struct ParticipantFileRetryInfo: Codable {
@@ -182,16 +183,14 @@ class ParticipantFileUploadManager: NSObject, URLSessionBackgroundDelegate {
         // even though /var is actually a symlink to /private/var in this case).
         let fileURL = inFileURL.resolvingSymlinksInPath()
         
-        // We will use only the sandbox-relative part of the path to identify
-        // the original file, since there are circumstances under which the full
-        // path might change (e.g. app update, or during debugging--sim vs device,
-        // subsequent run of the same app after a new build)
-        let invariantFilePath = (fileURL.path as NSString).sandboxRelativePath()!
+        let filePath = fileURL.path
         
         // Use a UUID for the temp file's name
         let tempFileURL = self.tempUploadDirURL.appendingPathComponent(UUID().uuidString)
         
-        // ...and also get its sandbox-relative part for the same reasons as above
+        // ...and get its sandbox-relative part since there are circumstances under
+        // which the full path might change (e.g. app update, or during debugging--
+        // sim vs device, subsequent run of the same app after a new build)
         let invariantTempFilePath = (tempFileURL.path as NSString).sandboxRelativePath()!
 
         // Use a NSFileCoordinator to make a temp local copy so the app can delete
@@ -203,7 +202,7 @@ class ParticipantFileUploadManager: NSObject, URLSessionBackgroundDelegate {
             do {
                 try FileManager.default.copyItem(at: readURL, to: writeURL)
             } catch let err {
-                debugPrint("Error copying Participant File \(String(describing: invariantFilePath)) to temp file \(String(describing: invariantTempFilePath)) for upload: \(err)")
+                debugPrint("Error copying Participant File \(fileURL) to temp file \(String(describing: invariantTempFilePath)) for upload: \(err)")
                 copyError = err
             }
         }
@@ -211,7 +210,7 @@ class ParticipantFileUploadManager: NSObject, URLSessionBackgroundDelegate {
             return nil
         }
         if let err = coordError {
-            debugPrint("File coordinator error copying Participant File \(String(describing: invariantFilePath)) to temp file \(String(describing: invariantTempFilePath)) for upload: \(err)")
+            debugPrint("File coordinator error copying Participant File \(fileURL) to temp file \(String(describing: invariantTempFilePath)) for upload: \(err)")
             return nil
         }
         
@@ -225,13 +224,13 @@ class ParticipantFileUploadManager: NSObject, URLSessionBackgroundDelegate {
         }
         
         // Keep track of what file it's a copy of.
-        self.persistMapping(from: invariantTempFilePath, to: invariantFilePath, defaultsKey: self.participantFileUploadsKey)
+        self.persistMapping(from: invariantTempFilePath, to: filePath, defaultsKey: self.participantFileUploadsKey)
         
         return tempFileURL
     }
     
     fileprivate func persistMapping<T>(from key: String, to value: T, defaultsKey: String) where T: Encodable {
-        self.uploadQueue.addOperation {
+        let block = {
             let userDefaults = BridgeSDK.sharedUserDefaults()
             var mappings = userDefaults.dictionary(forKey: defaultsKey) ?? Dictionary()
             var plistValue: Any
@@ -244,11 +243,18 @@ class ParticipantFileUploadManager: NSObject, URLSessionBackgroundDelegate {
             mappings[key] = plistValue
             userDefaults.setValue(mappings, forKey: defaultsKey)
         }
+        
+        if OperationQueue.current == self.uploadQueue {
+            block()
+        }
+        else {
+            self.uploadQueue.addOperation(block)
+        }
     }
     
-    fileprivate func removeMapping<T>(_ type: T.Type, from key: String, defaultsKey: String) -> T? where T: Decodable {
+    func removeMapping<T>(_ type: T.Type, from key: String, defaultsKey: String) -> T? where T: Decodable {
         var mapping: T?
-        self.uploadQueue.addOperations( [BlockOperation(block: {
+        let block = {
             let userDefaults = BridgeSDK.sharedUserDefaults()
             var mappings = userDefaults.dictionary(forKey: defaultsKey)
             let mappingPlist = mappings?.removeValue(forKey: key)
@@ -262,7 +268,13 @@ class ParticipantFileUploadManager: NSObject, URLSessionBackgroundDelegate {
             if mappings != nil {
                 userDefaults.setValue(mappings, forKey: defaultsKey)
             }
-        })], waitUntilFinished: true)
+        }
+        if OperationQueue.current == self.uploadQueue {
+            block()
+        }
+        else {
+            self.uploadQueue.addOperations( [BlockOperation(block: block)], waitUntilFinished: true)
+        }
         
         return mapping
     }
@@ -283,7 +295,15 @@ class ParticipantFileUploadManager: NSObject, URLSessionBackgroundDelegate {
         }
     }
     
+    /// Upload a participant file to Bridge.
     public func upload(fileId: String, fileURL: URL, contentType: String? = nil) {
+        let _ = uploadInternal(fileId: fileId, fileURL: fileURL, contentType: contentType)
+        return
+    }
+    
+    // Internal function returns temp file URL for tests, or nil on pre-flight check failures.
+    // Should not be called directly except from unit/integration test cases.
+    func uploadInternal(fileId: String, fileURL: URL, contentType: String? = nil) -> URL? {
         let mimeType = contentType ?? self.mimeTypeFor(fileURL: fileURL)
         var createdOn: String?
         do {
@@ -306,46 +326,50 @@ class ParticipantFileUploadManager: NSObject, URLSessionBackgroundDelegate {
             }
         } catch let err {
             debugPrint("Error trying to get content length of participant file at \(fileURL): \(err)")
-            return
+            return nil
         }
         
         guard let contentLengthString = contentLengthString,
               !contentLengthString.isEmpty else {
             debugPrint("Error: Participant file content length string is nil or empty")
-            return
+            return nil
         }
         
+        /* TODO: This is not needed for Participant File uploads, but will be when I port the result file uploader to Swift. ~emm 2021-06-29
         var contentMD5String: String
         do {
             let fileData = try Data(contentsOf: fileURL, options: [.alwaysMapped, .uncached])
             contentMD5String = (fileData as NSData).contentMD5()
         } catch let err {
             debugPrint("Error trying to get memory-mapped data of participant file at \(fileURL) in order to calculate its base64encoded MD5 hash: \(err)")
-            return
+            return nil
         }
+         */
 
         // And finally, request an upload URL to S3 from Bridge
-        let s3Metadata = ParticipantFileS3Metadata(participantFile: participantFile, contentLengthString: contentLengthString, contentMD5String: contentMD5String)
+        let s3Metadata = ParticipantFileS3Metadata(participantFile: participantFile, contentLengthString: contentLengthString)
         
-        self.requestUploadURL(invariantFilePath: nil, fileURL: fileURL, s3Metadata: s3Metadata)
+        return self.requestUploadURL(invariantFilePath: nil, fileURL: fileURL, s3Metadata: s3Metadata)
     }
     
-    fileprivate func requestUploadURL(invariantFilePath: String?, fileURL: URL?, s3Metadata: ParticipantFileS3Metadata) {
+    fileprivate func requestUploadURL(invariantFilePath: String?, fileURL: URL?, s3Metadata: ParticipantFileS3Metadata) -> URL? {
         let participantFile = s3Metadata.participantFile
         var invariantFilePath = invariantFilePath
         
         // if no invariant file path was passed in, make a temp local copy of the file at fileURL and use that
+        var fileCopy: URL? = nil
         if invariantFilePath == nil {
             guard let fileURL = fileURL else {
                 debugPrint("Error: requestUploadURL called with both invariantFilePath and fileURL as nil")
-                return
+                return nil
             }
-            guard let tempFile = self.tempFileFor(inFileURL: fileURL) else { return }
+            guard let tempFile = self.tempFileFor(inFileURL: fileURL) else { return nil }
+            fileCopy = tempFile
             invariantFilePath = (tempFile.path as NSString).sandboxRelativePath()
         }
         guard let invariantFilePath = invariantFilePath else {
             debugPrint("Failed to get sandbox-relative file path from temp file URL")
-            return
+            return nil
         }
         
         // Set its state as uploadRequested
@@ -358,6 +382,8 @@ class ParticipantFileUploadManager: NSObject, URLSessionBackgroundDelegate {
         BridgeSDK.authManager.addAuthHeader(toHeaders: headers)
 
         let _ = self.netManager.downloadFile(from: requestString, method: "POST", httpHeaders: headers as? [String : String], parameters: participantFile, taskDescription: invariantFilePath)
+        
+        return fileCopy
     }
     
     /// Download delegate method.
@@ -432,13 +458,13 @@ class ParticipantFileUploadManager: NSObject, URLSessionBackgroundDelegate {
         }
         
         // add the file to the uploadingToS3 list
-        let uploadingToS3Metadata = ParticipantFileS3Metadata(participantFile: participantFile, contentLengthString: s3Metadata.contentLengthString, contentMD5String: s3Metadata.contentMD5String)
+        let uploadingToS3Metadata = ParticipantFileS3Metadata(participantFile: participantFile, contentLengthString: s3Metadata.contentLengthString)
         self.persistMapping(from: invariantFilePath, to: uploadingToS3Metadata, defaultsKey: self.uploadingToS3Key
         )
         
         // upload the file to S3
         let headers = [
-            "Content-Length": s3Metadata.contentLengthString,
+            "Content-Type": participantFile.mimeType,
             "Host": URL(string: uploadUrl)?.host ?? "org-sagebridge-participantfile-prod.s3.amazonaws.com"
         ]
         let _ = self.netManager.uploadFile(fileUrl, httpHeaders: headers, to: uploadUrl, taskDescription: invariantFilePath)
@@ -475,15 +501,9 @@ class ParticipantFileUploadManager: NSObject, URLSessionBackgroundDelegate {
             return
         }
 
-        // remove the file from the temp -> orig mappings, and retrieve the original sandbox-relative file path
-        guard let invariantOriginalFilePath = removeMapping(String.self, from: invariantFilePath, defaultsKey: self.participantFileUploadsKey) else {
+        // remove the file from the temp -> orig mappings, and retrieve the original file path
+        guard let originalFilePath = removeMapping(String.self, from: invariantFilePath, defaultsKey: self.participantFileUploadsKey) else {
             debugPrint("Unexpected: No original file path found mapped from temp file path \(invariantFilePath)")
-            return
-        }
-        
-        // get the fully-qualified path of the original file to be uploaded
-        guard let originalFilePath = (invariantOriginalFilePath as NSString).fullyQualifiedPath(), !originalFilePath.isEmpty else {
-            debugPrint("Unable to recover fully qualified path from sandbox-relative path \"\(invariantOriginalFilePath)\"")
             return
         }
         
@@ -500,6 +520,7 @@ class ParticipantFileUploadManager: NSObject, URLSessionBackgroundDelegate {
         }
                 
         let uploadedNotification = Notification(name: .SBBParticipantFileUploadRequestFailed, object: nil, userInfo: userInfo)
+        cleanUpTempFile(filePath: invariantFilePath)
         NotificationCenter.default.post(uploadedNotification)
     }
 
@@ -524,6 +545,7 @@ class ParticipantFileUploadManager: NSObject, URLSessionBackgroundDelegate {
             // post a notification that the file upload to S3 failed unrecoverably
             let userInfo: [AnyHashable : Any] = [self.filePathKey: originalFilePath, self.participantFileKey: s3Metadata.participantFile]
             let uploadedNotification = Notification(name: .SBBParticipantFileUploadToS3Failed, object: nil, userInfo: userInfo)
+            cleanUpTempFile(filePath: tempFilePath)
             NotificationCenter.default.post(uploadedNotification)
         }
     }
@@ -557,22 +579,23 @@ class ParticipantFileUploadManager: NSObject, URLSessionBackgroundDelegate {
         
         let participantFile = s3Metadata.participantFile
         
-        // remove the file from the temp -> orig mappings, and retrieve the original sandbox-relative file path
-        guard let invariantOriginalFilePath = removeMapping(String.self, from: invariantFilePath, defaultsKey: self.participantFileUploadsKey) else {
+        // remove the file from the temp -> orig mappings, and retrieve the original file path
+        guard let originalFilePath = removeMapping(String.self, from: invariantFilePath, defaultsKey: self.participantFileUploadsKey) else {
             debugPrint("Unexpected: No original file path found mapped from temp file path \(invariantFilePath)")
             return
         }
         
-        // get the fully-qualified path of the original file to be uploaded
-        guard let originalFilePath = (invariantOriginalFilePath as NSString).fullyQualifiedPath(), !originalFilePath.isEmpty else {
-            debugPrint("Unable to recover fully qualified path from sandbox-relative path \"\(invariantOriginalFilePath)\"")
-            return
-        }
+        // set up the userInfo for an upload failed/succeeded notification
+        let userInfo: [AnyHashable : Any] = [self.filePathKey: originalFilePath, self.participantFileKey: participantFile]
 
-        // any error that makes it all the way through to here would be the result of something like a malformed request,
-        // so just log it and bail out
+        // any error that makes it all the way through to here would be the result of something like a
+        // malformed request, so log it, post a failed upload notification, clean up the temp file,
+        // and bail out
         if let error = error {
             debugPrint("Error uploading file \(originalFilePath) to S3: \(error)")
+            let failedUploadNotification = Notification(name: .SBBParticipantFileUploadToS3Failed, object: nil, userInfo: userInfo)
+            cleanUpTempFile(filePath: invariantFilePath)
+            NotificationCenter.default.post(failedUploadNotification)
             return
         }
         
@@ -584,13 +607,37 @@ class ParticipantFileUploadManager: NSObject, URLSessionBackgroundDelegate {
         
         let statusCode = httpResponse.statusCode
         if statusCode >= 300 {
-            self.handleHTTPUploadStatusCode(statusCode, tempFilePath: invariantFilePath, originalFilePath: invariantOriginalFilePath, s3Metadata: s3Metadata)
+            self.handleHTTPUploadStatusCode(statusCode, tempFilePath: invariantFilePath, originalFilePath: originalFilePath, s3Metadata: s3Metadata)
             return
         }
         
         // post a notification that the file uploaded
-        let userInfo: [AnyHashable : Any] = [self.filePathKey: originalFilePath, self.participantFileKey: participantFile]
         let uploadedNotification = Notification(name: .SBBParticipantFileUploaded, object: nil, userInfo: userInfo)
+        cleanUpTempFile(filePath: invariantFilePath)
         NotificationCenter.default.post(uploadedNotification)
+    }
+    
+    func cleanUpTempFile(filePath: String) {
+        guard let fullPath = (filePath as NSString).fullyQualifiedPath() else {
+            debugPrint("Unexpected: Could not form fully qualified path from '\(filePath)'")
+            return
+        }
+        guard FileManager.default.fileExists(atPath: fullPath) else {
+            debugPrint("Unexpected: Attempting to clean up temp file with invariant path '\(filePath) but temp file does not exist at '\(fullPath)")
+            return
+        }
+        let tempFile = URL(fileURLWithPath: fullPath)
+        let coordinator = NSFileCoordinator(filePresenter: nil)
+        var fileCoordinatorError: NSError?
+        coordinator.coordinate(writingItemAt: tempFile, options: .forDeleting, error: &fileCoordinatorError) { fileUrl in
+            do {
+                try FileManager.default.removeItem(at: fileUrl)
+            } catch let err {
+                debugPrint("Error attempting to remove file at \(fileUrl): \(err)")
+            }
+        }
+        if let fileCoordinatorError = fileCoordinatorError {
+            debugPrint("Error coordinating deletion of file \(tempFile): \(fileCoordinatorError)")
+        }
     }
 }
