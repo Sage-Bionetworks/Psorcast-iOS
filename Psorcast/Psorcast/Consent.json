@@ -69,8 +69,10 @@
                  "expectedAnswer": "true",
                  "answerCorrectTitle": "That's correct!",
                  "answerCorrectText": "",
+                 "answerCorrectContinueButtonTitle": "Next",
                  "answerIncorrectTitle": "Not quite!",
-                 "answerIncorrectText": "To protect your privacy, we will remove your name and contact information from your study data. We will replace them with a code."
+                 "answerIncorrectText": "To protect your privacy, we will remove your name and contact information from your study data. We will replace them with a code.",
+                 "answerIncorrectContinueButtonTitle": "Try again"
              },
              {
                "identifier": "data_use",

@@ -32,7 +32,6 @@
 		04F265832686DC6F004140B7 /* QualifiedResearchers_Consent.html in Resources */ = {isa = PBXBuildFile; fileRef = 04F265822686DC6F004140B7 /* QualifiedResearchers_Consent.html */; };
 		04F265872686DCE5004140B7 /* FollowUp_Consent.html in Resources */ = {isa = PBXBuildFile; fileRef = 04F265862686DCE5004140B7 /* FollowUp_Consent.html */; };
 		04F2658B2686DD2E004140B7 /* Quit_Consent.html in Resources */ = {isa = PBXBuildFile; fileRef = 04F2658A2686DD2E004140B7 /* Quit_Consent.html */; };
-		04F2659C26870179004140B7 /* ConsentQuizStepViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 04F2659B26870179004140B7 /* ConsentQuizStepViewController.xib */; };
 		04F265A0268701E6004140B7 /* ConsentQuizStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F2659F268701E6004140B7 /* ConsentQuizStepViewController.swift */; };
 		CB03196523E3ED0A005063A3 /* ReviewCaptureStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB03196423E3ED09005063A3 /* ReviewCaptureStepViewController.swift */; };
 		CB03196723E40836005063A3 /* ReviewCaptureStepViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB03196623E40835005063A3 /* ReviewCaptureStepViewController.xib */; };
@@ -423,7 +422,6 @@
 		04F265822686DC6F004140B7 /* QualifiedResearchers_Consent.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = QualifiedResearchers_Consent.html; sourceTree = "<group>"; };
 		04F265862686DCE5004140B7 /* FollowUp_Consent.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = FollowUp_Consent.html; sourceTree = "<group>"; };
 		04F2658A2686DD2E004140B7 /* Quit_Consent.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = Quit_Consent.html; sourceTree = "<group>"; };
-		04F2659B26870179004140B7 /* ConsentQuizStepViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ConsentQuizStepViewController.xib; sourceTree = "<group>"; };
 		04F2659F268701E6004140B7 /* ConsentQuizStepViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsentQuizStepViewController.swift; sourceTree = "<group>"; };
 		CB03196423E3ED09005063A3 /* ReviewCaptureStepViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReviewCaptureStepViewController.swift; sourceTree = "<group>"; };
 		CB03196623E40835005063A3 /* ReviewCaptureStepViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReviewCaptureStepViewController.xib; sourceTree = "<group>"; };
@@ -783,7 +781,6 @@
 				04E61CAC2672645300B371E9 /* ConsentReviewStepViewController.xib */,
 				04E61CB02672671000B371E9 /* ConsentReviewStepViewController.swift */,
 				04F2659F268701E6004140B7 /* ConsentQuizStepViewController.swift */,
-				04F2659B26870179004140B7 /* ConsentQuizStepViewController.xib */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -1380,7 +1377,6 @@
 				CB9F5E1F22E0BED3003FBCEF /* lato_black.ttf in Resources */,
 				CB9F5E2322E0BED3003FBCEF /* lato_light.ttf in Resources */,
 				CBDCDC8423F3848E00E5CEB8 /* PsoriasisAreaPhoto.mov in Resources */,
-				04F2659C26870179004140B7 /* ConsentQuizStepViewController.xib in Resources */,
 				CB7281A02624D12400AAEB2C /* Feedback.json in Resources */,
 				CBDCDCBE23F384D400E5CEB8 /* Assets.xcassets in Resources */,
 				CBDCDCA023F3849E00E5CEB8 /* JointPainCompletionStepViewController.xib in Resources */,
