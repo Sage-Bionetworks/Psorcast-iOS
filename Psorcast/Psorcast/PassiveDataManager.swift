@@ -366,27 +366,94 @@ open class PassiveDataManager {
                 answerMap[$0.key] = $0.value
             })
             
-            self.fetchAirNowResult(config: airNowConfig, for: loc) { (config, airNowAnswers, airNowError) in
+            self.fetch5DayOpenWeatherResult(config: openWeatherConfig, for: loc) { (config, fiveDayAnswer, error) in
                 
-                if (airNowError != nil) {
-                    print(airNowError?.localizedDescription ?? "")
+                if (error != nil) {
+                    print(error?.localizedDescription ?? "")
                 }
                 
-                airNowAnswers?.forEach({
-                    answerMap[$0.key] = $0.value
-                })
-                
-                do {
-                    try self.completeArchive(archive: archive, answers: answerMap)
+                if let json = fiveDayAnswer?["json"] as? String {
+                    self.insert5DayJson(json, into: archive)
                 }
-                catch let error as NSError {
-                  print("Error completing archive \(error)")
+                
+                self.fetchAirNowResult(config: airNowConfig, for: loc) { (config, airNowAnswers, airNowError) in
+                    
+                    if (airNowError != nil) {
+                        print(airNowError?.localizedDescription ?? "")
+                    }
+                    
+                    airNowAnswers?.forEach({
+                        answerMap[$0.key] = $0.value
+                    })
+                    
+                    do {
+                        try self.completeArchive(archive: archive, answers: answerMap)
+                    }
+                    catch let error as NSError {
+                      print("Error completing archive \(error)")
+                    }
                 }
                 
                 DispatchQueue.main.async {  // Done fetching passive data
                     self.isFetchingPassiveData = false
                 }
             }
+        }
+    }
+    
+    public func fetch5DayOpenWeatherResult(config: WeatherServiceConfiguration, for coordinates: CLLocation, _ completion: @escaping WeatherCompletionHandler) {
+        let url = URL(string: "https://api.openweathermap.org/data/2.5/forecast?lat=\(coordinates.coordinate.latitude)&lon=\(coordinates.coordinate.longitude)&units=metric&appid=\(config.apiKey)")!
+        
+        let task = URLSession.shared.dataTask(with: url, completionHandler: { (data: Data?, response: URLResponse?, error: Error?) in
+            
+            self.process5DayOpenWeatherResponse(config: config, url, data, error, completion)
+        })
+    
+        task.resume()
+    }
+    
+    func process5DayOpenWeatherResponse(config: WeatherServiceConfiguration, _ url: URL, _ data: Data?, _ error: Error?, _ completion: @escaping WeatherCompletionHandler) {
+        guard error == nil, let json = data else {
+            completion(config, nil, error)
+            return
+        }
+        
+        // Remove reference to location for user privacy
+        var rawStr = self.removeLocFromJson(rawStr: String(data: json, encoding: String.Encoding.utf8), jsonKey: ",\"coord\"")
+        rawStr = self.removeLocFromJson(rawStr: rawStr, jsonKey: ",\"city\"")
+                
+        print("5 day Open Weather forecase raw str result found \(String(describing: rawStr))")
+        
+        var answers = [AnyHashable: Any]()
+        answers["json"] = rawStr
+        completion(config, answers, nil)
+    }
+    
+    private func removeLocFromJson(rawStr: String?, jsonKey: String) -> String? {
+        var rawStrUnwrapped = rawStr ?? ""
+                
+        var stringsToRemove = [String]()
+        let startIndexes = rawStrUnwrapped.indicesOf(string: jsonKey)
+        startIndexes.forEach { (index) in
+            let strAfterIndex = rawStrUnwrapped[index ..< (rawStr?.count ?? index)]
+            if let endIdx = strAfterIndex.firstIndex(of: "}") {
+                let endIdxPlus1 = strAfterIndex.index(endIdx, offsetBy: 1)
+                let toRemove = strAfterIndex[strAfterIndex.startIndex ..< endIdxPlus1]
+                stringsToRemove.append(String(toRemove))
+            }
+        }
+        
+        stringsToRemove.forEach({
+            rawStrUnwrapped = rawStrUnwrapped.replacingOccurrences(of: $0, with: "")
+        })
+        
+        return rawStrUnwrapped
+    }
+    
+    private func insert5DayJson(_ rawJson: String, into archive: SBBDataArchive) {
+        let archiveFilename = "forecast5Day.json"
+        if let data = rawJson.data(using: String.Encoding.utf8) {
+            archive.insertData(intoArchive: data, filename: archiveFilename, createdOn: Date())
         }
     }
     
@@ -561,6 +628,30 @@ public struct AirNowResponseObject : Codable {
         }
         let number: Int
         let name: String
+    }
+}
+
+extension String {
+    func indicesOf(string: String) -> [Int] {
+        var indices = [Int]()
+        var searchStartIndex = self.startIndex
+
+        while searchStartIndex < self.endIndex,
+            let range = self.range(of: string, range: searchStartIndex..<self.endIndex),
+            !range.isEmpty
+        {
+            let index = distance(from: self.startIndex, to: range.lowerBound)
+            indices.append(index)
+            searchStartIndex = range.upperBound
+        }
+
+        return indices
+    }
+    
+    subscript (range: Range<Int>) -> Substring {
+        let startIndex = self.index(self.startIndex, offsetBy: range.startIndex)
+        let stopIndex = self.index(self.startIndex, offsetBy: range.startIndex + range.count)
+        return self[startIndex..<stopIndex]
     }
 }
 
