@@ -345,6 +345,11 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate, ShowPopTipDele
     
     func taskController(_ taskController: RSDTaskController, didFinishWith reason: RSDTaskFinishReason, error: Error?) {
         
+        if (true) {
+            self.showConsentScreens(animated: true)
+            return
+        }
+
         // If we finish the intro screens, send the user to the try it first task list
         if taskController.task.identifier == self.IntroductionTaskId {
             if reason == .completed {

@@ -69,11 +69,11 @@
                                 <outlet property="titleLabel" destination="n77-ca-UzS" id="QhQ-bd-uJs"/>
                             </connections>
                         </view>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tqM-PK-2qc" userLabel="Footer" customClass="RSDGenericNavigationFooterView" customModule="ResearchUI">
+                        <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tqM-PK-2qc" userLabel="Footer" customClass="RSDGenericNavigationFooterView" customModule="ResearchUI">
                             <rect key="frame" x="0.0" y="803" width="414" height="137"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </view>
-                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="Feedback for us, please do not include any personal health information here" translatesAutoresizingMaskIntoConstraints="NO" id="cJA-fy-lPu">
+                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="This is where the consent form will go" translatesAutoresizingMaskIntoConstraints="NO" id="cJA-fy-lPu">
                             <rect key="frame" x="36" y="295" width="342" height="200"/>
                             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             <constraints>
