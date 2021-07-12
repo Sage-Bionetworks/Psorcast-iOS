@@ -9,67 +9,110 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ConsentReviewStepViewController" customModule="Psorcast" customModuleProvider="target"/>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ConsentReviewStepViewController" customModule="Psorcast" customModuleProvider="target">
+            <connections>
+                <outlet property="cancelButton" destination="qFb-go-pOL" id="frH-uq-2XB"/>
+                <outlet property="footer" destination="tqM-PK-2qc" id="zIc-TD-jB2"/>
+                <outlet property="header" destination="w3d-oH-2L5" id="ye3-7F-nkb"/>
+                <outlet property="textLabel" destination="Lt1-jd-uGn" id="GHj-hE-j7S"/>
+                <outlet property="textView" destination="cJA-fy-lPu" id="g9K-4Q-OIR"/>
+                <outlet property="titleLabel" destination="n77-ca-UzS" id="1qf-WV-wQS"/>
+                <outlet property="view" destination="3b3-3V-haV" id="ig5-Rp-QO2"/>
+            </connections>
+        </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <view contentMode="scaleToFill" id="iN0-l3-epB">
+        <view contentMode="scaleToFill" id="3b3-3V-haV" customClass="RSDStepNavigationView" customModule="ResearchUI">
             <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XyJ-sD-SfG" userLabel="Header" customClass="RSDNavigationHeaderView" customModule="ResearchUI">
-                    <rect key="frame" x="0.0" y="44" width="414" height="265.5"/>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="v0v-h1-nk4" userLabel="Content View">
+                    <rect key="frame" x="0.0" y="-44" width="414" height="940"/>
                     <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Review" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="q4l-It-Eal" userLabel="Title Label">
-                            <rect key="frame" x="24" y="144" width="366" height="36"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="30"/>
-                            <nil key="highlightedColor"/>
-                        </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Review the consent form below, sign and then tap accept if you're ready to continue." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qUz-vv-fYp" userLabel="Text Label">
-                            <rect key="frame" x="24" y="204" width="366" height="41"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                            <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            <nil key="highlightedColor"/>
-                        </label>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fJM-Ll-mvq" userLabel="Cancel Button">
-                            <rect key="frame" x="16" y="86" width="50" height="50"/>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="w3d-oH-2L5" userLabel="Header" customClass="RSDNavigationHeaderView" customModule="ResearchUI">
+                            <rect key="frame" x="0.0" y="0.0" width="414" height="265.5"/>
+                            <subviews>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Review" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="n77-ca-UzS" userLabel="Title Label">
+                                    <rect key="frame" x="24" y="144" width="366" height="36"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="30"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Review the consent form below, and tap continue to sign on the next screen" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lt1-jd-uGn" userLabel="Text Label">
+                                    <rect key="frame" x="24" y="204" width="366" height="41"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                    <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qFb-go-pOL" userLabel="Cancel Button">
+                                    <rect key="frame" x="16" y="86" width="50" height="50"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="50" id="j11-mv-qR7"/>
+                                    </constraints>
+                                    <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <state key="normal" image="closeActivity"/>
+                                </button>
+                            </subviews>
+                            <color key="backgroundColor" systemColor="systemGreenColor"/>
                             <constraints>
-                                <constraint firstAttribute="width" constant="50" id="kN8-xH-jtj"/>
+                                <constraint firstItem="qFb-go-pOL" firstAttribute="top" secondItem="w3d-oH-2L5" secondAttribute="top" constant="86" id="55z-yf-TCb"/>
+                                <constraint firstAttribute="trailing" secondItem="Lt1-jd-uGn" secondAttribute="trailing" constant="24" id="B8N-vU-gZL"/>
+                                <constraint firstItem="Lt1-jd-uGn" firstAttribute="top" secondItem="n77-ca-UzS" secondAttribute="bottom" constant="24" id="FjY-2u-EO6"/>
+                                <constraint firstItem="Lt1-jd-uGn" firstAttribute="leading" secondItem="w3d-oH-2L5" secondAttribute="leading" constant="24" id="IHn-sj-VNj"/>
+                                <constraint firstAttribute="trailing" secondItem="n77-ca-UzS" secondAttribute="trailing" constant="24" id="JgW-kA-5TO"/>
+                                <constraint firstItem="qFb-go-pOL" firstAttribute="leading" secondItem="w3d-oH-2L5" secondAttribute="leading" constant="16" id="ZzU-l1-u0R"/>
+                                <constraint firstItem="n77-ca-UzS" firstAttribute="top" secondItem="w3d-oH-2L5" secondAttribute="top" constant="144" id="gOV-mP-j8O"/>
+                                <constraint firstAttribute="bottom" secondItem="Lt1-jd-uGn" secondAttribute="bottom" constant="20.5" id="ibJ-81-Xqz"/>
+                                <constraint firstItem="n77-ca-UzS" firstAttribute="leading" secondItem="w3d-oH-2L5" secondAttribute="leading" constant="24" id="vrj-oQ-ZUZ"/>
                             </constraints>
-                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            <state key="normal" image="closeActivity"/>
-                        </button>
+                            <connections>
+                                <outlet property="cancelButton" destination="qFb-go-pOL" id="lQB-hV-0Gd"/>
+                                <outlet property="textLabel" destination="Lt1-jd-uGn" id="vy6-5Z-pH7"/>
+                                <outlet property="titleLabel" destination="n77-ca-UzS" id="QhQ-bd-uJs"/>
+                            </connections>
+                        </view>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tqM-PK-2qc" userLabel="Footer" customClass="RSDGenericNavigationFooterView" customModule="ResearchUI">
+                            <rect key="frame" x="0.0" y="803" width="414" height="137"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </view>
+                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="Feedback for us, please do not include any personal health information here" translatesAutoresizingMaskIntoConstraints="NO" id="cJA-fy-lPu">
+                            <rect key="frame" x="36" y="295" width="342" height="200"/>
+                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="200" id="vWU-97-rQj"/>
+                            </constraints>
+                            <color key="textColor" systemColor="labelColor"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                        </textView>
                     </subviews>
-                    <color key="backgroundColor" systemColor="systemGreenColor"/>
                     <constraints>
-                        <constraint firstItem="fJM-Ll-mvq" firstAttribute="top" secondItem="XyJ-sD-SfG" secondAttribute="top" constant="86" id="3L6-Zk-PTS"/>
-                        <constraint firstItem="q4l-It-Eal" firstAttribute="centerX" secondItem="XyJ-sD-SfG" secondAttribute="centerX" id="5tJ-ss-GJM"/>
-                        <constraint firstItem="qUz-vv-fYp" firstAttribute="top" secondItem="q4l-It-Eal" secondAttribute="bottom" constant="24" id="8h6-Zd-l3w"/>
-                        <constraint firstAttribute="trailing" secondItem="q4l-It-Eal" secondAttribute="trailing" constant="24" id="SPO-tz-Vfc"/>
-                        <constraint firstItem="qUz-vv-fYp" firstAttribute="leading" secondItem="XyJ-sD-SfG" secondAttribute="leading" constant="24" id="b1n-wW-2bE"/>
-                        <constraint firstAttribute="bottom" secondItem="qUz-vv-fYp" secondAttribute="bottom" constant="20.5" id="k6f-Og-vEE"/>
-                        <constraint firstItem="fJM-Ll-mvq" firstAttribute="leading" secondItem="XyJ-sD-SfG" secondAttribute="leading" constant="16" id="nNs-NW-en6"/>
-                        <constraint firstAttribute="trailing" secondItem="qUz-vv-fYp" secondAttribute="trailing" constant="24" id="nTJ-x5-xmY"/>
-                        <constraint firstItem="q4l-It-Eal" firstAttribute="top" secondItem="XyJ-sD-SfG" secondAttribute="top" constant="144" id="q4i-UV-FTa"/>
-                        <constraint firstItem="q4l-It-Eal" firstAttribute="leading" secondItem="XyJ-sD-SfG" secondAttribute="leading" constant="24" id="vrL-eP-zix"/>
+                        <constraint firstItem="w3d-oH-2L5" firstAttribute="top" secondItem="v0v-h1-nk4" secondAttribute="top" id="42J-mk-EBI"/>
+                        <constraint firstAttribute="trailing" secondItem="cJA-fy-lPu" secondAttribute="trailing" constant="36" id="Ov0-uM-f8F"/>
+                        <constraint firstItem="tqM-PK-2qc" firstAttribute="leading" secondItem="v0v-h1-nk4" secondAttribute="leading" id="P7J-GR-x35"/>
+                        <constraint firstAttribute="bottom" secondItem="tqM-PK-2qc" secondAttribute="bottom" id="SJv-ql-N8a"/>
+                        <constraint firstItem="cJA-fy-lPu" firstAttribute="leading" secondItem="v0v-h1-nk4" secondAttribute="leading" constant="36" id="TaU-ai-yOZ"/>
+                        <constraint firstItem="w3d-oH-2L5" firstAttribute="leading" secondItem="v0v-h1-nk4" secondAttribute="leading" id="i18-qi-aHr"/>
+                        <constraint firstAttribute="trailing" secondItem="tqM-PK-2qc" secondAttribute="trailing" id="iGJ-cx-rDJ"/>
+                        <constraint firstItem="cJA-fy-lPu" firstAttribute="top" secondItem="w3d-oH-2L5" secondAttribute="bottom" constant="29.5" id="ndj-qJ-vIi"/>
+                        <constraint firstAttribute="trailing" secondItem="w3d-oH-2L5" secondAttribute="trailing" id="zJp-cJ-Tcl"/>
                     </constraints>
-                    <connections>
-                        <outlet property="cancelButton" destination="fJM-Ll-mvq" id="7UV-cb-y48"/>
-                        <outlet property="textLabel" destination="qUz-vv-fYp" id="Ioh-sB-9pC"/>
-                        <outlet property="titleLabel" destination="q4l-It-Eal" id="x9S-Ys-AaZ"/>
-                    </connections>
                 </view>
             </subviews>
-            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
-            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+            <viewLayoutGuide key="safeArea" id="M28-rs-I6L"/>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstItem="XyJ-sD-SfG" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="az9-Ma-U0a"/>
-                <constraint firstItem="XyJ-sD-SfG" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="cOU-SO-gTD"/>
-                <constraint firstItem="XyJ-sD-SfG" firstAttribute="trailing" secondItem="vUN-kp-3ea" secondAttribute="trailing" id="vXJ-AN-uqN"/>
+                <constraint firstItem="v0v-h1-nk4" firstAttribute="bottom" secondItem="3b3-3V-haV" secondAttribute="bottom" id="JdL-KC-rvy"/>
+                <constraint firstItem="v0v-h1-nk4" firstAttribute="leading" secondItem="3b3-3V-haV" secondAttribute="leading" id="Kf5-9T-NTM"/>
+                <constraint firstAttribute="top" secondItem="v0v-h1-nk4" secondAttribute="top" constant="44" id="Pss-D5-VSu"/>
+                <constraint firstAttribute="trailing" secondItem="v0v-h1-nk4" secondAttribute="trailing" id="YbL-It-VvQ"/>
             </constraints>
-            <point key="canvasLocation" x="132" y="132"/>
+            <point key="canvasLocation" x="130" y="127"/>
         </view>
     </objects>
     <resources>
         <image name="closeActivity" width="50" height="50"/>
+        <systemColor name="labelColor">
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

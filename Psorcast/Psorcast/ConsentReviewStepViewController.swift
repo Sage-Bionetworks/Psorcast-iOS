@@ -43,13 +43,34 @@ class ConsentReviewStepObject : RSDUIStepObject, RSDStepViewControllerVendor {
 }
 
 open class ConsentReviewStepViewController: RSDStepViewController {
+    @IBOutlet weak var header: RSDNavigationHeaderView!
+    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var textLabel: UILabel!
+    @IBOutlet weak var cancelButton: UIButton!
+    
+    
+    @IBOutlet weak var footer: RSDGenericNavigationFooterView!
+    @IBOutlet weak var textView: UITextView! // probably deleting this
+    
+    
     
     override open func viewDidLoad() {
         super.viewDidLoad()
 
+        updateDesignSystem()
     }
     
     override open func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
+    }
+        
+    func updateDesignSystem() {
+//        let design = AppDelegate.designSystem
+//        let background = design.colorRules.backgroundLight
+//
+//        self.view.backgroundColor = designSystem.colorRules.backgroundPrimary.color
+        header?.backgroundColor = AppDelegate.designSystem.colorRules.backgroundPrimary.color
+//        textView.textColor = designSystem.colorRules.textColor(on: background, for: .body)
+        
     }
 }

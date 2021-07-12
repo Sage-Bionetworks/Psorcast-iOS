@@ -171,7 +171,6 @@ public class ConsentQuizStepViewController: RSDTableStepViewController {
 
 
             popinView?.addSubview(popinContinueButton!)
-            //bottomView.rsd (then .animate)
             self.view.addSubview(popinView!)
             popinContinueButton?.translatesAutoresizingMaskIntoConstraints = false
             popinContinueButton?.rsd_alignCenterHorizontal(padding:0)
