@@ -44,14 +44,9 @@ class ConsentReviewStepObject : RSDUIStepObject, RSDStepViewControllerVendor {
 }
 
 open class ConsentReviewStepViewController: RSDStepViewController {
-    @IBOutlet weak var header: RSDNavigationHeaderView!
-    @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var textLabel: UILabel!
-    @IBOutlet weak var cancelButton: UIButton!
+    
     @IBOutlet weak var webView: WKWebView!
     
-    
-    @IBOutlet weak var footer: RSDGenericNavigationFooterView!
     @IBOutlet weak var textView: UITextView! // probably deleting this
     
     /// The button to continue that pops in after you select an answer
@@ -76,25 +71,29 @@ open class ConsentReviewStepViewController: RSDStepViewController {
     override open func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
-        footer.isBackHidden = true
-        footer.nextButton?.setTitle("Continue", for: .normal)
-        footer.nextButton?.addTarget(self, action: #selector(continuePressed), for: .touchUpInside)
-        
         updateDesignSystem()
         setupBottomPopup()
     }
         
     func updateDesignSystem() {
         
-        let design = AppDelegate.designSystem
-        self.header.backgroundColor = design.colorRules.backgroundPrimary.color
-        cancelButton.isHidden = false
-        
 //        let background = design.colorRules.backgroundLight
 //
 //        self.view.backgroundColor = designSystem.colorRules.backgroundPrimary.color
 //        header?.backgroundColor = AppDelegate.designSystem.colorRules.backgroundPrimary.color
 //        textView.textColor = designSystem.colorRules.textColor(on: background, for: .body)
+        
+    }
+    
+    open override func setupHeader(_ header: RSDStepNavigationView) {
+        super.setupHeader(header)
+        
+        
+    }
+    
+    open override func setupFooter(_ footer: RSDNavigationFooterView) {
+        super.setupFooter(footer)
+        
         
     }
     
@@ -139,7 +138,7 @@ open class ConsentReviewStepViewController: RSDStepViewController {
         
     }
     
-    @objc func continuePressed() {
+    open override func goForward() {
         signatureTitleLabel?.text = "Sign consent"
         signatureDetailsLabel?.text = "By agreeing you confirm that you read the consent and that you wish to take part in this research study."
         self.view.bringSubviewToFront(popinView!)
@@ -147,6 +146,4 @@ open class ConsentReviewStepViewController: RSDStepViewController {
         grayView?.fadeIn()
         self.navigationFooter?.fadeOut()
     }
-    
-
 }

@@ -11,12 +11,9 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ConsentReviewStepViewController" customModule="Psorcast" customModuleProvider="target">
             <connections>
-                <outlet property="cancelButton" destination="qFb-go-pOL" id="frH-uq-2XB"/>
-                <outlet property="footer" destination="tqM-PK-2qc" id="zIc-TD-jB2"/>
-                <outlet property="header" destination="w3d-oH-2L5" id="ye3-7F-nkb"/>
-                <outlet property="textLabel" destination="Lt1-jd-uGn" id="GHj-hE-j7S"/>
+                <outlet property="navigationFooter" destination="tqM-PK-2qc" id="3Xj-7s-SdV"/>
+                <outlet property="navigationHeader" destination="w3d-oH-2L5" id="a5n-bg-Qjz"/>
                 <outlet property="textView" destination="cJA-fy-lPu" id="g9K-4Q-OIR"/>
-                <outlet property="titleLabel" destination="n77-ca-UzS" id="1qf-WV-wQS"/>
                 <outlet property="view" destination="3b3-3V-haV" id="ig5-Rp-QO2"/>
             </connections>
         </placeholder>
@@ -64,25 +61,22 @@
                                 <constraint firstItem="n77-ca-UzS" firstAttribute="leading" secondItem="w3d-oH-2L5" secondAttribute="leading" constant="24" id="vrj-oQ-ZUZ"/>
                             </constraints>
                             <connections>
-                                <outlet property="cancelButton" destination="qFb-go-pOL" id="lQB-hV-0Gd"/>
-                                <outlet property="textLabel" destination="Lt1-jd-uGn" id="vy6-5Z-pH7"/>
-                                <outlet property="titleLabel" destination="n77-ca-UzS" id="QhQ-bd-uJs"/>
+                                <outlet property="cancelButton" destination="qFb-go-pOL" id="szj-o8-XBh"/>
+                                <outlet property="textLabel" destination="Lt1-jd-uGn" id="O60-Id-WNj"/>
+                                <outlet property="titleLabel" destination="n77-ca-UzS" id="jFl-7E-hC6"/>
                             </connections>
                         </view>
-                        <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tqM-PK-2qc" userLabel="Footer" customClass="RSDGenericNavigationFooterView" customModule="ResearchUI">
-                            <rect key="frame" x="0.0" y="803" width="414" height="137"/>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        </view>
                         <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="This is where the consent form will go" translatesAutoresizingMaskIntoConstraints="NO" id="cJA-fy-lPu">
-                            <rect key="frame" x="36" y="295" width="342" height="200"/>
+                            <rect key="frame" x="36" y="295" width="342" height="500"/>
                             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="200" id="vWU-97-rQj"/>
-                            </constraints>
                             <color key="textColor" systemColor="labelColor"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                         </textView>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tqM-PK-2qc" userLabel="Footer" customClass="RSDGenericNavigationFooterView" customModule="ResearchUI">
+                            <rect key="frame" x="0.0" y="803" width="414" height="137"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </view>
                     </subviews>
                     <constraints>
                         <constraint firstItem="w3d-oH-2L5" firstAttribute="top" secondItem="v0v-h1-nk4" secondAttribute="top" id="42J-mk-EBI"/>
@@ -93,6 +87,7 @@
                         <constraint firstItem="w3d-oH-2L5" firstAttribute="leading" secondItem="v0v-h1-nk4" secondAttribute="leading" id="i18-qi-aHr"/>
                         <constraint firstAttribute="trailing" secondItem="tqM-PK-2qc" secondAttribute="trailing" id="iGJ-cx-rDJ"/>
                         <constraint firstItem="cJA-fy-lPu" firstAttribute="top" secondItem="w3d-oH-2L5" secondAttribute="bottom" constant="29.5" id="ndj-qJ-vIi"/>
+                        <constraint firstItem="tqM-PK-2qc" firstAttribute="top" secondItem="cJA-fy-lPu" secondAttribute="bottom" constant="8" symbolic="YES" id="xVr-nZ-fpg"/>
                         <constraint firstAttribute="trailing" secondItem="w3d-oH-2L5" secondAttribute="trailing" id="zJp-cJ-Tcl"/>
                     </constraints>
                 </view>
@@ -105,7 +100,7 @@
                 <constraint firstAttribute="top" secondItem="v0v-h1-nk4" secondAttribute="top" constant="44" id="Pss-D5-VSu"/>
                 <constraint firstAttribute="trailing" secondItem="v0v-h1-nk4" secondAttribute="trailing" id="YbL-It-VvQ"/>
             </constraints>
-            <point key="canvasLocation" x="130" y="127"/>
+            <point key="canvasLocation" x="128.98550724637681" y="126.5625"/>
         </view>
     </objects>
     <resources>
