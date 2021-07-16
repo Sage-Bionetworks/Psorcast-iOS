@@ -11,9 +11,15 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ConsentReviewStepViewController" customModule="Psorcast" customModuleProvider="target">
             <connections>
+                <outlet property="agreeButton" destination="9d5-3f-GpT" id="MC5-Ft-1GG"/>
+                <outlet property="detailsLabel" destination="fR5-vp-ZId" id="9fa-3l-4x7"/>
+                <outlet property="disagreeButton" destination="xMU-kr-7ba" id="rFf-UV-BAi"/>
                 <outlet property="navigationFooter" destination="tqM-PK-2qc" id="3Xj-7s-SdV"/>
                 <outlet property="navigationHeader" destination="w3d-oH-2L5" id="a5n-bg-Qjz"/>
+                <outlet property="signatureContainer" destination="OSS-pe-N96" id="Hf3-KW-1Ru"/>
+                <outlet property="signatureTextField" destination="DRW-8O-EDe" id="7Yk-df-Vsy"/>
                 <outlet property="textView" destination="cJA-fy-lPu" id="g9K-4Q-OIR"/>
+                <outlet property="titleLabel" destination="tON-rV-b5o" id="BQQ-vH-308"/>
                 <outlet property="view" destination="3b3-3V-haV" id="ig5-Rp-QO2"/>
             </connections>
         </placeholder>
@@ -77,9 +83,74 @@
                             <rect key="frame" x="0.0" y="803" width="414" height="137"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </view>
+                        <view hidden="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OSS-pe-N96" userLabel="Sign Consent View">
+                            <rect key="frame" x="0.0" y="580" width="414" height="360"/>
+                            <subviews>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tON-rV-b5o" userLabel="Title Label">
+                                    <rect key="frame" x="24" y="24" width="366" height="30"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="25"/>
+                                    <nil key="textColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Details" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fR5-vp-ZId" userLabel="Details Label">
+                                    <rect key="frame" x="24" y="64" width="366" height="20.5"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                    <nil key="textColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="DRW-8O-EDe" userLabel="Signature Field">
+                                    <rect key="frame" x="24" y="190" width="366" height="34"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                    <textInputTraits key="textInputTraits"/>
+                                </textField>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xMU-kr-7ba" userLabel="Disagree Button" customClass="RSDRoundedButton" customModule="ResearchUI">
+                                    <rect key="frame" x="63" y="284" width="120" height="52"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="120" id="Nq9-P1-934"/>
+                                        <constraint firstAttribute="height" constant="52" id="rMq-eW-Omk"/>
+                                    </constraints>
+                                    <state key="normal" title="Disagree"/>
+                                    <connections>
+                                        <action selector="disagreePressed:" destination="-1" eventType="touchUpInside" id="yqM-aF-BxC"/>
+                                    </connections>
+                                </button>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9d5-3f-GpT" userLabel="Agree Button" customClass="RSDRoundedButton" customModule="ResearchUI">
+                                    <rect key="frame" x="231" y="284" width="120" height="52"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="120" id="0s4-sO-gaB"/>
+                                        <constraint firstAttribute="height" constant="52" id="rHf-oi-Pyo"/>
+                                    </constraints>
+                                    <state key="normal" title="Agree"/>
+                                    <connections>
+                                        <action selector="agreePressed:" destination="-1" eventType="touchUpInside" id="YVb-HR-bwC"/>
+                                    </connections>
+                                </button>
+                            </subviews>
+                            <color key="backgroundColor" systemColor="systemRedColor"/>
+                            <constraints>
+                                <constraint firstItem="fR5-vp-ZId" firstAttribute="centerX" secondItem="OSS-pe-N96" secondAttribute="centerX" id="4E1-pt-phb"/>
+                                <constraint firstItem="fR5-vp-ZId" firstAttribute="leading" secondItem="OSS-pe-N96" secondAttribute="leading" constant="24" id="6AD-sc-umh"/>
+                                <constraint firstItem="9d5-3f-GpT" firstAttribute="centerX" secondItem="OSS-pe-N96" secondAttribute="centerX" constant="84" id="IpY-P0-yMw"/>
+                                <constraint firstAttribute="bottom" secondItem="9d5-3f-GpT" secondAttribute="bottom" constant="24" id="KKj-e6-Csz"/>
+                                <constraint firstAttribute="height" constant="360" id="Ltn-t7-p6H"/>
+                                <constraint firstItem="9d5-3f-GpT" firstAttribute="bottom" secondItem="xMU-kr-7ba" secondAttribute="bottom" id="MaF-7O-Yq6"/>
+                                <constraint firstItem="tON-rV-b5o" firstAttribute="leading" secondItem="OSS-pe-N96" secondAttribute="leading" constant="24" id="O2j-4l-c8x"/>
+                                <constraint firstAttribute="trailing" secondItem="tON-rV-b5o" secondAttribute="trailing" constant="24" id="Pkl-ao-yb0"/>
+                                <constraint firstItem="xMU-kr-7ba" firstAttribute="top" secondItem="DRW-8O-EDe" secondAttribute="bottom" constant="60" id="Ttk-BY-5ze"/>
+                                <constraint firstAttribute="trailing" secondItem="fR5-vp-ZId" secondAttribute="trailing" constant="24" id="eEi-eu-Dk7"/>
+                                <constraint firstItem="DRW-8O-EDe" firstAttribute="leading" secondItem="OSS-pe-N96" secondAttribute="leading" constant="24" id="gIw-ra-tzt"/>
+                                <constraint firstItem="tON-rV-b5o" firstAttribute="centerX" secondItem="OSS-pe-N96" secondAttribute="centerX" id="ggm-JB-xoW"/>
+                                <constraint firstItem="xMU-kr-7ba" firstAttribute="centerX" secondItem="OSS-pe-N96" secondAttribute="centerX" constant="-84" id="n4U-u6-qUd"/>
+                                <constraint firstItem="tON-rV-b5o" firstAttribute="top" secondItem="OSS-pe-N96" secondAttribute="top" constant="24" id="qcg-NO-YPm"/>
+                                <constraint firstAttribute="trailing" secondItem="DRW-8O-EDe" secondAttribute="trailing" constant="24" id="sGV-cR-ltZ"/>
+                                <constraint firstItem="fR5-vp-ZId" firstAttribute="top" secondItem="tON-rV-b5o" secondAttribute="bottom" constant="10" id="yjg-Nz-CR2"/>
+                            </constraints>
+                        </view>
                     </subviews>
                     <constraints>
                         <constraint firstItem="w3d-oH-2L5" firstAttribute="top" secondItem="v0v-h1-nk4" secondAttribute="top" id="42J-mk-EBI"/>
+                        <constraint firstItem="OSS-pe-N96" firstAttribute="centerX" secondItem="v0v-h1-nk4" secondAttribute="centerX" id="CXr-Fl-kiz"/>
+                        <constraint firstItem="OSS-pe-N96" firstAttribute="leading" secondItem="v0v-h1-nk4" secondAttribute="leading" id="KuO-3f-MmW"/>
                         <constraint firstAttribute="trailing" secondItem="cJA-fy-lPu" secondAttribute="trailing" constant="36" id="Ov0-uM-f8F"/>
                         <constraint firstItem="tqM-PK-2qc" firstAttribute="leading" secondItem="v0v-h1-nk4" secondAttribute="leading" id="P7J-GR-x35"/>
                         <constraint firstAttribute="bottom" secondItem="tqM-PK-2qc" secondAttribute="bottom" id="SJv-ql-N8a"/>
@@ -87,8 +158,10 @@
                         <constraint firstItem="w3d-oH-2L5" firstAttribute="leading" secondItem="v0v-h1-nk4" secondAttribute="leading" id="i18-qi-aHr"/>
                         <constraint firstAttribute="trailing" secondItem="tqM-PK-2qc" secondAttribute="trailing" id="iGJ-cx-rDJ"/>
                         <constraint firstItem="cJA-fy-lPu" firstAttribute="top" secondItem="w3d-oH-2L5" secondAttribute="bottom" constant="29.5" id="ndj-qJ-vIi"/>
+                        <constraint firstAttribute="trailing" secondItem="OSS-pe-N96" secondAttribute="trailing" id="vcc-Ua-kP1"/>
                         <constraint firstItem="tqM-PK-2qc" firstAttribute="top" secondItem="cJA-fy-lPu" secondAttribute="bottom" constant="8" symbolic="YES" id="xVr-nZ-fpg"/>
                         <constraint firstAttribute="trailing" secondItem="w3d-oH-2L5" secondAttribute="trailing" id="zJp-cJ-Tcl"/>
+                        <constraint firstAttribute="bottom" secondItem="OSS-pe-N96" secondAttribute="bottom" id="zb1-5p-oDo"/>
                     </constraints>
                 </view>
             </subviews>
@@ -103,6 +176,14 @@
             <point key="canvasLocation" x="128.98550724637681" y="126.5625"/>
         </view>
     </objects>
+    <designables>
+        <designable name="9d5-3f-GpT">
+            <size key="intrinsicContentSize" width="41" height="30"/>
+        </designable>
+        <designable name="xMU-kr-7ba">
+            <size key="intrinsicContentSize" width="61" height="30"/>
+        </designable>
+    </designables>
     <resources>
         <image name="closeActivity" width="50" height="50"/>
         <systemColor name="labelColor">
@@ -113,6 +194,9 @@
         </systemColor>
         <systemColor name="systemGreenColor">
             <color red="0.20392156862745098" green="0.7803921568627451" blue="0.34901960784313724" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemRedColor">
+            <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>
