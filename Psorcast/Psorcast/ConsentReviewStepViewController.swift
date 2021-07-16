@@ -43,7 +43,7 @@ class ConsentReviewStepObject : RSDUIStepObject, RSDStepViewControllerVendor {
     }
 }
 
-open class ConsentReviewStepViewController: RSDStepViewController {
+open class ConsentReviewStepViewController: RSDStepViewController, UITextFieldDelegate {
     
     
     @IBOutlet weak var textView: UITextView! // probably deleting this
@@ -65,6 +65,7 @@ open class ConsentReviewStepViewController: RSDStepViewController {
 
         agreeButton.isEnabled = false
         signatureTextField.addTarget(self, action: #selector(editingChanged), for: .editingChanged)
+        self.view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.dismissKeyboard)))
     }
     
     override open func viewDidLayoutSubviews() {
@@ -148,5 +149,19 @@ open class ConsentReviewStepViewController: RSDStepViewController {
         self.navigationFooter?.fadeOut()
         signatureContainer.fadeIn()
         grayView?.fadeIn()
+    }
+    
+    @objc func dismissKeyboard() {
+        self.signatureTextField.resignFirstResponder()
+    }
+    
+    // MARK: UITextField delegate
+    
+    /// Resign first responder on "Enter" key tapped.
+    open func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if textField.canResignFirstResponder {
+            textField.resignFirstResponder()
+        }
+        return false
     }
 }
