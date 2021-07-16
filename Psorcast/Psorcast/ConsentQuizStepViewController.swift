@@ -40,7 +40,7 @@ import BridgeApp
 open class ConsentQuizStepObject: RSDFormUIStepObject, RSDStepViewControllerVendor {
 
     private enum CodingKeys : String, CodingKey {
-        case answerCorrectTitle, answerCorrectText, answerCorrectContinueButtonTitle,  answerIncorrectTitle, answerIncorrectText, answerIncorrectContinueButtonTitle, expectedAnswer
+        case answerCorrectTitle, answerCorrectText, answerCorrectContinueButtonTitle,  answerIncorrectTitle, answerIncorrectText, answerIncorrectContinueButtonTitle, expectedAnswer, titleOnly
     }
     
     /// The expected answer to progress in the quiz
@@ -59,6 +59,8 @@ open class ConsentQuizStepObject: RSDFormUIStepObject, RSDStepViewControllerVend
     public var answerIncorrectContinueButtonTitle: String?
     /// The answer actually selected (most recently) by the user
     public var selectedAnswer: String?
+    /// identifies if the only text is the title (thus increasing the # of lines it should support)
+    public var titleOnly: Bool = false
 
     public func instantiateViewController(with parent: RSDPathComponent?) -> (UIViewController & RSDStepController)? {
         return ConsentQuizStepViewController(step: self, parent: parent)
@@ -93,6 +95,9 @@ open class ConsentQuizStepObject: RSDFormUIStepObject, RSDStepViewControllerVend
         if container.contains(.expectedAnswer) {
             self.expectedAnswer = try container.decode(String.self, forKey: .expectedAnswer)
         }
+        if container.contains(.titleOnly) {
+            self.titleOnly = try container.decode(Bool.self, forKey: .titleOnly)
+        }
         
         try super.init(from: decoder)
     }
@@ -115,6 +120,7 @@ open class ConsentQuizStepObject: RSDFormUIStepObject, RSDStepViewControllerVend
         copy.answerIncorrectText = self.answerIncorrectText
         copy.answerCorrectContinueButtonTitle = self.answerCorrectContinueButtonTitle
         copy.answerIncorrectContinueButtonTitle = self.answerIncorrectContinueButtonTitle
+        copy.titleOnly = self.titleOnly
     }
 }
 
@@ -156,10 +162,20 @@ public class ConsentQuizStepViewController: RSDTableStepViewController {
             grayView?.backgroundColor = UIColor(white: 0, alpha: 0.4)
             self.view.addSubview(grayView!)
 
-            titleLabel = UILabel(frame: CGRect(x: 20, y: 16, width: screenSize.width-40, height: 40))
+            detailsLabel = UILabel(frame: CGRect(x: 20, y: 0, width: screenSize.width-40, height: 180))
+            
+            if let step = self.formStep as? ConsentQuizStepObject {
+                if (step.titleOnly) {
+                    titleLabel = UILabel(frame: CGRect(x: 20, y: 32, width: screenSize.width-40, height: 180))
+                    titleLabel?.numberOfLines = 0
+                    detailsLabel?.isHidden = true
+                } else {
+                    titleLabel = UILabel(frame: CGRect(x: 20, y: 16, width: screenSize.width-40, height: 40))
+                    detailsLabel?.isHidden = false
+                }
+            }
             titleLabel?.textAlignment = .center
             titleLabel?.font = titleLabel?.font.withSize(24).withTraits(traits: .traitBold)
-            detailsLabel = UILabel(frame: CGRect(x: 20, y: 0, width: screenSize.width-40, height: 180))
             detailsLabel?.font = detailsLabel?.font.withSize(16)
             detailsLabel?.numberOfLines = 0
 

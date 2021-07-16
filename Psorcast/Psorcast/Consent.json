@@ -1,8 +1,68 @@
 {
     "identifier":"Consent",
     "shouldHideActions":["skip"],
-    "progressMarkers":["research_activities", "privacy", "consentQuiz1", "data_use", "time_commitment", "potential_benefits", "potential_risks", "medical_care", "future_independent_research", "qualified_researchers", "follow_up", "quit"],
+    "progressMarkers":["eligibilityQuiz1", "eligibilityQuiz2", "research_activities", "privacy", "consentQuiz1", "data_use", "time_commitment", "potential_benefits", "potential_risks", "medical_care", "future_independent_research", "qualified_researchers", "follow_up", "quit"],
     "steps":[
+        {
+            "identifier": "eligibilityQuiz1",
+            "type": "consentQuiz",
+            "title": "Eligibility for research",
+            "text": "Are you 18 years old or over?",
+            "inputFields": [
+                    {
+                      "uiHint": "list",
+                      "type": "singleChoice.string",
+                      "choices": [
+                        {
+                          "text": "Yes",
+                          "value": "true"
+                        },
+                        {
+                          "text": "No",
+                          "value": "false"
+                        }
+                      ]
+                    }
+                  ],
+            "expectedAnswer": "true",
+            "answerCorrectTitle": "Great! On to the next question.",
+            "answerCorrectText": "",
+            "answerCorrectContinueButtonTitle": "Continue",
+            "answerIncorrectTitle": "We’re sorry, but only people 18 years old or older can participate in this study.",
+            "answerIncorrectText": "",
+            "answerIncorrectContinueButtonTitle": "Done",
+            "titleOnly": true
+        },
+        {
+            "identifier": "eligibilityQuiz2",
+            "type": "consentQuiz",
+            "title": "Eligibility for research",
+            "text": "Do you live in the United States?",
+            "inputFields": [
+                    {
+                      "uiHint": "list",
+                      "type": "singleChoice.string",
+                      "choices": [
+                        {
+                          "text": "Yes",
+                          "value": "true"
+                        },
+                        {
+                          "text": "No",
+                          "value": "false"
+                        }
+                      ]
+                    }
+                  ],
+            "expectedAnswer": "true",
+            "answerCorrectTitle": "You’re eligible! Now we’ll explain more about the study in the following screens.",
+            "answerCorrectText": "",
+            "answerCorrectContinueButtonTitle": "Continue",
+            "answerIncorrectTitle": "We’re sorry, but this study is currently only approved to take place in the U.S.",
+            "answerIncorrectText": "",
+            "answerIncorrectContinueButtonTitle": "Done",
+            "titleOnly": true
+        },
         {
           "identifier": "research_activities",
           "type": "instruction",
