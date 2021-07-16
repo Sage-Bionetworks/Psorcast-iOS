@@ -345,10 +345,10 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate, ShowPopTipDele
     
     func taskController(_ taskController: RSDTaskController, didFinishWith reason: RSDTaskFinishReason, error: Error?) {
         
-        if (true) {
-            self.showConsentScreens(animated: true)
-            return
-        }
+//        if (true) {
+//            self.showConsentScreens(animated: true)
+//            return
+//        }
 
         // If we finish the intro screens, send the user to the try it first task list
         if taskController.task.identifier == self.IntroductionTaskId {
@@ -362,19 +362,7 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate, ShowPopTipDele
             }
             return
         }
-                
-        if taskController.task.identifier == RSDIdentifier.treatmentTask.rawValue {
-            // If we finish the treatment screen by cancelling, show the sign in screen again
-            if reason == .completed {
-                HistoryDataManager.shared.setEnvironmentalAuthSeen()
-                self.showMainViewController(animated: true)
-                return
-            } else { // Otherwise we are ready to enter the app
-                self.showSignUpViewController(animated: true)
-                return
-            }
-        }
-                    
+                   
         if taskController.task.identifier == self.signInTaskId && reason != .completed {
             self.showIntroductionScreens(animated: true)
             return
@@ -386,6 +374,27 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate, ShowPopTipDele
             // Sign in complete, now show the consent screens
             self.showConsentScreens(animated: true)
             return
+        }
+        
+        if taskController.task.identifier == self.ConsentTaskId {
+            if reason == .completed {
+                self.showTreatmentSelectionScreens(animated: true)
+                return
+            } else {
+                self.showIntroductionScreens(animated: true)
+            }
+        }
+        
+        if taskController.task.identifier == RSDIdentifier.treatmentTask.rawValue {
+            // If we finish the treatment screen by cancelling, show the sign in screen again
+            if reason == .completed {
+                HistoryDataManager.shared.setEnvironmentalAuthSeen()
+                self.showMainViewController(animated: true)
+                return
+            } else { // Otherwise we are ready to enter the app
+                self.showSignUpViewController(animated: true)
+                return
+            }
         }
         
         self.showAppropriateViewController(animated: true)

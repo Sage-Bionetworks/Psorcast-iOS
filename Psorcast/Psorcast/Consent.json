@@ -1,7 +1,7 @@
 {
     "identifier":"Consent",
     "shouldHideActions":["skip"],
-    "progressMarkers":["eligibilityQuiz1", "eligibilityQuiz2", "research_activities", "privacy", "consentQuiz1", "data_use", "time_commitment", "potential_benefits", "potential_risks", "medical_care", "future_independent_research", "qualified_researchers", "follow_up", "quit"],
+    "progressMarkers":["eligibilityQuiz1", "eligibilityQuiz2", "research_activities", "privacy", "consentQuiz1", "data_use", "time_commitment", "potential_benefits", "potential_risks", "consentQuiz2", "medical_care", "future_independent_research", "consentQuiz3", "qualified_researchers", "follow_up", "quit"],
     "steps":[
         {
             "identifier": "eligibilityQuiz1",
@@ -211,6 +211,39 @@
           }
         },
         {
+            "identifier": "consentQuiz2",
+            "type": "consentQuiz",
+            "title": "What are the risks of participating in this study?",
+            "image": {
+              "type": "fetchable",
+              "imageName": "consent_icon_question_mark",
+              "placementType": "iconBefore"
+            },
+            "inputFields": [
+                    {
+                      "uiHint": "list",
+                      "type": "singleChoice.string",
+                      "choices": [
+                        {
+                          "text": "There is a risk someone could misuse my information",
+                          "value": "true"
+                        },
+                        {
+                          "text": "There is no risk to participating",
+                          "value": "false"
+                        }
+                      ]
+                    }
+                  ],
+            "expectedAnswer": "true",
+            "answerCorrectTitle": "That's correct!",
+            "answerCorrectText": "",
+            "answerCorrectContinueButtonTitle": "Next",
+            "answerIncorrectTitle": "Not quite!",
+            "answerIncorrectText": "Despite all of our privacy and security protections, there is always a risk to participating in research where you share your data.",
+            "answerIncorrectContinueButtonTitle": "Try again"
+        },
+        {
           "identifier": "medical_care",
           "type": "instruction",
           "title": "NOT medical care",
@@ -247,6 +280,39 @@
                   "usesBackButton": true
               }
           }
+        },
+        {
+            "identifier": "consentQuiz3",
+            "type": "consentQuiz",
+            "title": "What is the purpose of the study?",
+            "image": {
+              "type": "fetchable",
+              "imageName": "consent_icon_question_mark",
+              "placementType": "iconBefore"
+            },
+            "inputFields": [
+                    {
+                      "uiHint": "list",
+                      "type": "singleChoice.string",
+                      "choices": [
+                        {
+                          "text": "To diagnose or treat my psoriatic disease",
+                          "value": "false"
+                        },
+                        {
+                          "text": "To research the ability to forecast disease outcomes",
+                          "value": "true"
+                        }
+                      ]
+                    }
+                  ],
+            "expectedAnswer": "true",
+            "answerCorrectTitle": "That's correct!",
+            "answerCorrectText": "",
+            "answerCorrectContinueButtonTitle": "Next",
+            "answerIncorrectTitle": "Not quite!",
+            "answerIncorrectText": "This is a research study where we will not provide any diagnosis or treatment",
+            "answerIncorrectContinueButtonTitle": "Try again"
         },
         {
           "identifier": "qualified_researchers",
