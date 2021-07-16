@@ -45,18 +45,16 @@ class ConsentReviewStepObject : RSDUIStepObject, RSDStepViewControllerVendor {
 
 open class ConsentReviewStepViewController: RSDStepViewController {
     
-    @IBOutlet weak var webView: WKWebView!
     
     @IBOutlet weak var textView: UITextView! // probably deleting this
+    @IBOutlet weak var signatureContainer: UIView!
+    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var detailsLabel: UILabel!
+    @IBOutlet weak var signatureTextField: UITextField!
+    @IBOutlet weak var disagreeButton: RSDRoundedButton!
+    @IBOutlet weak var agreeButton: RSDRoundedButton!
     
-    /// The button to continue that pops in after you select an answer
-    public var popinAgreeButton: RSDRoundedButton?
-    public var popinDisagreeButton: RSDRoundedButton?
-    public var popinViewHeight = CGFloat(300)
     public var grayView: UIView?
-    public var popinView: UIView?
-    public var signatureTitleLabel: UILabel?
-    public var signatureDetailsLabel: UILabel?
     
     private var _webviewLoaded = false
     private var _didAddBottomPanel = false
@@ -65,24 +63,24 @@ open class ConsentReviewStepViewController: RSDStepViewController {
     override open func viewDidLoad() {
         super.viewDidLoad()
 
-        
+        agreeButton.isEnabled = false
+        signatureTextField.addTarget(self, action: #selector(editingChanged), for: .editingChanged)
     }
     
     override open func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
         updateDesignSystem()
-        setupBottomPopup()
-    }
+        titleLabel?.font = RSDFont.latoFont(ofSize: 24.0, weight: .bold)
+        titleLabel?.text = "Sign Consent"
+        detailsLabel?.font = RSDFont.latoFont(ofSize: 18.0, weight: .medium)
+        detailsLabel?.text = "By agreeing you confirm that you read the consent and that you wish to take part in this research study."
+        signatureTextField.placeholder = "Type your name to sign"
         
-    func updateDesignSystem() {
-        
-//        let background = design.colorRules.backgroundLight
-//
-//        self.view.backgroundColor = designSystem.colorRules.backgroundPrimary.color
-//        header?.backgroundColor = AppDelegate.designSystem.colorRules.backgroundPrimary.color
-//        textView.textColor = designSystem.colorRules.textColor(on: background, for: .body)
-        
+        self.grayView = UIView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height-360))
+        grayView?.backgroundColor = UIColor(white: 0, alpha: 0.4)
+        self.view.addSubview(grayView!)
+        grayView?.isHidden = true
     }
     
     open override func setupHeader(_ header: RSDStepNavigationView) {
@@ -94,56 +92,61 @@ open class ConsentReviewStepViewController: RSDStepViewController {
     open override func setupFooter(_ footer: RSDNavigationFooterView) {
         super.setupFooter(footer)
         
+        footer.isBackHidden = true
+        footer.nextButton?.setTitle("Continue", for: .normal)
+    }
+        
+    func updateDesignSystem() {
+        
         
     }
     
-    open func setupBottomPopup() {
-        if (!_didAddBottomPanel) {
-//            let screenSize: CGRect = UIScreen.main.bounds
-//            self.popinViewHeight = CGFloat(300)
-//            self.grayView = UIView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height-self.popinViewHeight))
-//            self.popinView = UIView(frame: CGRect(x: 0, y: (screenSize.height-popinViewHeight), width: screenSize.width, height: popinViewHeight))
-//            popinContinueButton = RSDRoundedButton()
-//
-//            grayView?.backgroundColor = UIColor(white: 0, alpha: 0.4)
-//            self.view.addSubview(grayView!)
-//
-//            signatureTitleLabel = UILabel(frame: CGRect(x: 20, y: 16, width: screenSize.width-40, height: 40))
-//            signatureTitleLabel?.textAlignment = .center
-//            signatureTitleLabel?.font = signatureTitleLabel?.font.withSize(24).withTraits(traits: .traitBold)
-//            signatureDetailsLabel = UILabel(frame: CGRect(x: 20, y: 0, width: screenSize.width-40, height: 180))
-//            signatureDetailsLabel?.font = signatureDetailsLabel?.font.withSize(16)
-//            signatureDetailsLabel?.numberOfLines = 0
-//
-//            popinView?.addSubview(signatureTitleLabel!)
-//            popinView?.addSubview(signatureDetailsLabel!)
-//            signatureTitleLabel?.rsd_alignCenterHorizontal(padding: 0)
-//            signatureDetailsLabel?.rsd_alignCenterHorizontal(padding: 24)
-//            signatureDetailsLabel?.rsd_alignCenterVertical(padding: 0)
-//
-//
-//            popinView?.addSubview(popinContinueButton!)
-//            self.view.addSubview(popinView!)
-//            popinContinueButton?.translatesAutoresizingMaskIntoConstraints = false
-//            popinContinueButton?.rsd_alignCenterHorizontal(padding:0)
-//            popinContinueButton?.rsd_makeWidth(.equal, 240.0)
-//            popinContinueButton?.rsd_alignToSuperview([.bottom], padding: 32)
-//            popinView?.rsd_alignToSuperview([.bottom], padding: 0)
-//            popinView?.backgroundColor = UIColor.white
-//
-//            grayView?.isHidden = true
-//            popinView?.isHidden = true
-//            _didAddBottomPanel = true
+    @objc func editingChanged(sender: UITextField) {
+        // Trim leading (only) whitespace
+        if sender.text?.count == 1 {
+            if sender.text == " " {
+                sender.text = ""
+                return
+            }
         }
         
+        guard let signature = signatureTextField.text, !signature.isEmpty else {
+            agreeButton.isEnabled = false
+            disagreeButton.isEnabled = false
+            return
+        }
+        agreeButton.isEnabled = true
     }
     
+
+    
+    @IBAction func agreePressed(_ sender: Any) {
+        let signatureImage = PSRImageHelper.convertToImage(signatureTextField)
+        let userName = signatureTextField.text
+        let birthDate = Date().addingNumberOfYears(-19)
+        (self.taskController as? RSDTaskViewController)?.showLoadingView()
+        if let studyIdentifier = SBBBridgeInfo.shared()?.studyIdentifier {
+            BridgeSDK.consentManager.consentSignature(userName!, forSubpopulationGuid: studyIdentifier, birthdate: birthDate, signatureImage: signatureImage, dataSharing: SBBParticipantDataSharingScope.all, completion: { _ , error in
+                    DispatchQueue.main.async {
+                        (self.taskController as? RSDTaskViewController)?.hideLoadingIfNeeded()
+                        super.goForward()
+                    }
+                })
+        }
+    }
+    
+    @IBAction func disagreePressed(_ sender: Any) {
+        // For now, just go back to the review view
+        signatureContainer.fadeOut()
+        grayView?.fadeOut()
+        self.navigationFooter?.fadeIn()
+    }
+    
+    
     open override func goForward() {
-        signatureTitleLabel?.text = "Sign consent"
-        signatureDetailsLabel?.text = "By agreeing you confirm that you read the consent and that you wish to take part in this research study."
-        self.view.bringSubviewToFront(popinView!)
-        popinView?.fadeIn()
-        grayView?.fadeIn()
+        self.view.bringSubviewToFront(signatureContainer)
         self.navigationFooter?.fadeOut()
+        signatureContainer.fadeIn()
+        grayView?.fadeIn()
     }
 }
