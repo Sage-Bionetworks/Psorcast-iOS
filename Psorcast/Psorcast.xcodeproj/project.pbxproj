@@ -37,6 +37,8 @@
 		605B872A268E644C006BA0AA /* ParticipantFileUploadManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 605B8729268E644C006BA0AA /* ParticipantFileUploadManagerTests.swift */; };
 		605B8730268E73F1006BA0AA /* failed-upload-request-response.json in Resources */ = {isa = PBXBuildFile; fileRef = 605B872F268E73F1006BA0AA /* failed-upload-request-response.json */; };
 		605B873B268E74F6006BA0AA /* cat.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 605B8736268E74F6006BA0AA /* cat.jpg */; };
+		60E0248C2697C08F0065AF9A /* upload-request-success.json in Resources */ = {isa = PBXBuildFile; fileRef = 60E024872697C08F0065AF9A /* upload-request-success.json */; };
+		60E0CC2826A7551D00BB7BE5 /* upload-request-expired.json in Resources */ = {isa = PBXBuildFile; fileRef = 60E0CC2326A7551D00BB7BE5 /* upload-request-expired.json */; };
 		60E8C6A6266019B600AA906A /* BackgroundNetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E8C6A5266019B600AA906A /* BackgroundNetworkManager.swift */; };
 		60E9E2A22695251F004B67EC /* ParticipantFileUploadManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60F877212628E29900D1D9C1 /* ParticipantFileUploadManager.swift */; };
 		60F877272628E29900D1D9C1 /* ParticipantFileUploadManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60F877212628E29900D1D9C1 /* ParticipantFileUploadManager.swift */; };
@@ -434,6 +436,8 @@
 		605B8729268E644C006BA0AA /* ParticipantFileUploadManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParticipantFileUploadManagerTests.swift; sourceTree = "<group>"; };
 		605B872F268E73F1006BA0AA /* failed-upload-request-response.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "failed-upload-request-response.json"; sourceTree = "<group>"; };
 		605B8736268E74F6006BA0AA /* cat.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = cat.jpg; sourceTree = "<group>"; };
+		60E024872697C08F0065AF9A /* upload-request-success.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "upload-request-success.json"; sourceTree = "<group>"; };
+		60E0CC2326A7551D00BB7BE5 /* upload-request-expired.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "upload-request-expired.json"; sourceTree = "<group>"; };
 		60E8C6A5266019B600AA906A /* BackgroundNetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundNetworkManager.swift; sourceTree = "<group>"; };
 		60F877212628E29900D1D9C1 /* ParticipantFileUploadManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParticipantFileUploadManager.swift; sourceTree = "<group>"; };
 		CB03196423E3ED09005063A3 /* ReviewCaptureStepViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReviewCaptureStepViewController.swift; sourceTree = "<group>"; };
@@ -1125,6 +1129,8 @@
 				CBC0C85C242BBBEF00E2EE80 /* Assets.xcassets */,
 				605B8736268E74F6006BA0AA /* cat.jpg */,
 				605B872F268E73F1006BA0AA /* failed-upload-request-response.json */,
+				60E024872697C08F0065AF9A /* upload-request-success.json */,
+				60E0CC2326A7551D00BB7BE5 /* upload-request-expired.json */,
 				CBC0C85D242BBBF000E2EE80 /* Info.plist */,
 				CBC6519323F391BC00C3FF0C /* PsorcastTests.swift */,
 				CB67C29023F390AA005B6BCD /* CodableResultObjectTests.swift */,
@@ -1359,9 +1365,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				60E0248C2697C08F0065AF9A /* upload-request-success.json in Resources */,
 				605B873B268E74F6006BA0AA /* cat.jpg in Resources */,
 				CBC0C85E242BBBF000E2EE80 /* Assets.xcassets in Resources */,
 				605B8730268E73F1006BA0AA /* failed-upload-request-response.json in Resources */,
+				60E0CC2826A7551D00BB7BE5 /* upload-request-expired.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

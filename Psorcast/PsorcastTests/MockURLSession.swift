@@ -70,9 +70,14 @@ class MockDownloadTask: URLSessionDownloadTask {
     override func resume() {
         session.delegateQueue.addOperation { [self] in
             (_, mockResponse) = session.dataAndResponse(for: request)
-            
-            (session.delegate as? URLSessionTaskDelegate)?.urlSession?(session, task: self, didCompleteWithError: nil)
+            let (fileUrl, error) = session.downloadFileUrlAndError(for: request)
             session.remove(mockTask: self)
+            guard let fileUrl = fileUrl else {
+                debugPrint("TEST SETUP ERROR: No download file URL provided for mock download task request.")
+                return
+            }
+            (session.delegate as? URLSessionDownloadDelegate)?.urlSession(self.session, downloadTask: self, didFinishDownloadingTo: fileUrl)
+            (session.delegate as? URLSessionTaskDelegate)?.urlSession?(session, task: self, didCompleteWithError: error)
         }
     }
     
@@ -179,9 +184,7 @@ class MockURLSession: URLSession {
         guard codes.count > 0 else {
             return nil
         }
-        guard let code = codes.object(at: 0) as? Int else {
-            return nil
-        }
+        let code = codes.object(at: 0) as? Int
         codes.removeObject(at: 0)
         return code
     }
@@ -242,11 +245,9 @@ class MockURLSession: URLSession {
             return nil
         }
         
-        guard let fileUrl = fileUrls.firstObject as? URL else {
-            return nil
-        }
-        
+        let fileUrl = fileUrls.firstObject as? URL
         fileUrls.removeObject(at: 0)
+        
         return fileUrl
     }
     
@@ -257,10 +258,7 @@ class MockURLSession: URLSession {
             return nil
         }
         
-        guard let error = errors.firstObject as? Error else {
-            return nil
-        }
-        
+        let error = errors.firstObject as? Error
         errors.removeObject(at: 0)
         return error
     }

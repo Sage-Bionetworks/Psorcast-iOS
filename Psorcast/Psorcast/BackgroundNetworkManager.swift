@@ -37,6 +37,34 @@ import BridgeSDK
 protocol URLSessionBackgroundDelegate: URLSessionDataDelegate, URLSessionDownloadDelegate {
 }
 
+class BridgeJsonParser {
+    /// The .iso8601 date encoding/decoding strategy for JSONEncoder/Decoder uses ISO8601DateFormatter,
+    /// which (a) is not a subclass of DateFormatter and (b) only supports the RFC 3339 profile, which does not include
+    /// fractional seconds. Bridge always includes fractional seconds in dates.
+    
+    static let iso8601FormatterWithFractionalSeconds: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.calendar = Calendar(identifier: .iso8601)
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSXXXXX"
+        return formatter
+    } ()
+    
+    /// For encoding objects to be passed to Bridge.
+    static let jsonEncoder: JSONEncoder = {
+        let encoder = JSONEncoder()
+        encoder.dateEncodingStrategy = .formatted(BridgeJsonParser.iso8601FormatterWithFractionalSeconds)
+        return encoder
+    }()
+    
+    /// For decoding objects received from Bridge.
+    static let jsonDecoder: JSONDecoder = {
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .formatted(BridgeJsonParser.iso8601FormatterWithFractionalSeconds)
+        return decoder
+    }()
+}
+
 class BackgroundNetworkManager: NSObject, URLSessionBackgroundDelegate {
 
     /// A singleton instance of the manager.
@@ -64,6 +92,7 @@ class BackgroundNetworkManager: NSObject, URLSessionBackgroundDelegate {
     /// The queue used for calling background session delegate methods.
     ///  Also used for creating the singleton background session itself in a thread-safe way.
     ///  Created lazily.
+    // TODO: When supporting multiple sessions (below), does it make sense to share one delegate queue among all of them?
     public static let sessionDelegateQueue: OperationQueue = {
         let delegateQueue = OperationQueue()
         delegateQueue.maxConcurrentOperationCount = 1
@@ -92,18 +121,10 @@ class BackgroundNetworkManager: NSObject, URLSessionBackgroundDelegate {
     }
     
     /// For encoding objects to be passed to Bridge.
-    lazy var jsonEncoder: JSONEncoder = {
-        let encoder = JSONEncoder()
-        encoder.dateEncodingStrategy = .iso8601
-        return encoder
-    }()
+    let jsonEncoder = BridgeJsonParser.jsonEncoder
     
     /// For decoding objects received from Bridge.
-    lazy var jsonDecoder: JSONDecoder = {
-        let decoder = JSONDecoder()
-        decoder.dateDecodingStrategy = .iso8601
-        return decoder
-    }()
+    let jsonDecoder = BridgeJsonParser.jsonDecoder
     
     /// Access (and if necessary, create) the singleton background URLSession used by the singleton BackgroundNetworkManager.
     /// Make sure it only gets created once, regardless of threading.

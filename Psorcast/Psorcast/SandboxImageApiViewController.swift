@@ -39,7 +39,7 @@ open class SandboxImageApiViewController: UIViewController {
                 
                 try data.write(to: filepath)
                 
-                ParticipantFileUploadManager.shared.upload(fileId: fileId, fileURL: filepath, contentType: PSRImageHelper.contentTypePng)
+                ParticipantFileUploadManager.shared.upload(fileId: fileId, fileUrl: filepath, contentType: PSRImageHelper.contentTypePng)
             }
         } catch {
             print("Error writing image to file")
