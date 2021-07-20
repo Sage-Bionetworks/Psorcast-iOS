@@ -33,8 +33,8 @@
 		04F265872686DCE5004140B7 /* FollowUp_Consent.html in Resources */ = {isa = PBXBuildFile; fileRef = 04F265862686DCE5004140B7 /* FollowUp_Consent.html */; };
 		04F2658B2686DD2E004140B7 /* Quit_Consent.html in Resources */ = {isa = PBXBuildFile; fileRef = 04F2658A2686DD2E004140B7 /* Quit_Consent.html */; };
 		04F265A0268701E6004140B7 /* ConsentQuizStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F2659F268701E6004140B7 /* ConsentQuizStepViewController.swift */; };
+		60396E09266EDC5100DB7126 /* MockURLSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60396E08266EDC5100DB7126 /* MockURLSession.swift */; };
 		60E8C6A6266019B600AA906A /* BackgroundNetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E8C6A5266019B600AA906A /* BackgroundNetworkManager.swift */; };
-		60F877262628E29900D1D9C1 /* ParticipantFileUploadManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60F877212628E29900D1D9C1 /* ParticipantFileUploadManager.swift */; };
 		60F877272628E29900D1D9C1 /* ParticipantFileUploadManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60F877212628E29900D1D9C1 /* ParticipantFileUploadManager.swift */; };
 		CB03196523E3ED0A005063A3 /* ReviewCaptureStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB03196423E3ED09005063A3 /* ReviewCaptureStepViewController.swift */; };
 		CB03196723E40836005063A3 /* ReviewCaptureStepViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB03196623E40835005063A3 /* ReviewCaptureStepViewController.xib */; };
@@ -427,6 +427,7 @@
 		04F265862686DCE5004140B7 /* FollowUp_Consent.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = FollowUp_Consent.html; sourceTree = "<group>"; };
 		04F2658A2686DD2E004140B7 /* Quit_Consent.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = Quit_Consent.html; sourceTree = "<group>"; };
 		04F2659F268701E6004140B7 /* ConsentQuizStepViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsentQuizStepViewController.swift; sourceTree = "<group>"; };
+		60396E08266EDC5100DB7126 /* MockURLSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockURLSession.swift; sourceTree = "<group>"; };
 		60E8C6A5266019B600AA906A /* BackgroundNetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundNetworkManager.swift; sourceTree = "<group>"; };
 		60F877212628E29900D1D9C1 /* ParticipantFileUploadManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParticipantFileUploadManager.swift; sourceTree = "<group>"; };
 		CB03196423E3ED09005063A3 /* ReviewCaptureStepViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReviewCaptureStepViewController.swift; sourceTree = "<group>"; };
@@ -1129,6 +1130,7 @@
 				CB81C92D242D3AB100A84886 /* MeasureTabViewControllerTests.swift */,
 				CBD0A5AE244E2D12002EE886 /* MasterScheduleManagerTests.swift */,
 				CBADD5362450C33A00422CE4 /* VideoExporterTests.swift */,
+				60396E08266EDC5100DB7126 /* MockURLSession.swift */,
 			);
 			path = PsorcastTests;
 			sourceTree = "<group>";
@@ -1522,6 +1524,7 @@
 				CB67C29B23F390AB005B6BCD /* CodableStepObjectTests.swift in Sources */,
 				CB8F7D592423F6BB00F77D62 /* LevenshteinToolsTests.swift in Sources */,
 				CB67C29823F390AB005B6BCD /* PSRImageHelperTests.swift in Sources */,
+				60396E09266EDC5100DB7126 /* MockURLSession.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
