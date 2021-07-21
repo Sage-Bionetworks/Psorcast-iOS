@@ -12,6 +12,7 @@ import UIKit
 open class SandboxImageApiViewController: UIViewController {
     @IBOutlet weak var srcImageView: UIImageView!
     @IBOutlet weak var downloadedImageView: UIImageView!
+    var fileDownloadUrl: URL?
     
     var srcImage: UIImage? {
         return UIImage(named: "ImageApiTest")
@@ -23,15 +24,24 @@ open class SandboxImageApiViewController: UIViewController {
         self.srcImageView.image = self.srcImage
         
         // Check for when new videos are created
-        NotificationCenter.default.addObserver(forName: .SBBParticipantFileUploaded, object: ParticipantFileUploadManager.shared, queue: OperationQueue.main) { (notification) in
+        NotificationCenter.default.addObserver(forName: .SBBParticipantFileUploaded, object: nil, queue: OperationQueue.main) { notification in
             
             print("Image uploaded successfully with user info \(String(describing: notification.userInfo))")
+            let requestUrlKey = ParticipantFileUploadManager.shared.requestUrlKey
+            self.fileDownloadUrl = notification.userInfo?[requestUrlKey] as? URL
+        }
+        
+        NotificationCenter.default.addObserver(forName: .SBBParticipantFileUploadRequestFailed, object: nil, queue: OperationQueue.main) { notification in
+            print("Image upload request failed: \(String(describing: notification.userInfo))")
+        }
+        
+        NotificationCenter.default.addObserver(forName: .SBBParticipantFileUploadToS3Failed, object: nil, queue: OperationQueue.main) { notification in
+            print("Image upload to S3 failed: \(String(describing: notification.userInfo))")
         }
     }
     
     @IBAction func uploadTapped() {
-        // TODO: Remove the .appending(...) part when the API is updated to allow reusing fileIds without deleting
-        let fileId = "fileUploadTest".appending(UUID().uuidString)
+        let fileId = "fileUploadTest"
         
         do {
             if let data = self.srcImage?.pngData() {
@@ -48,7 +58,11 @@ open class SandboxImageApiViewController: UIViewController {
     
     @IBAction func downloadTapped() {
         // TODO: load image url into image view using SDImage library
-        // self.downloadedImageView?.sd_setImage(with: url, completed: nil)
+        // NOTE: To download the file, we need to do a GET to self.fileDownloadUrl with
+        // the Bridge-Session header set (following the resulting redirect).
+        // I don't know how to set session headers with this library. ~emm 2021-07-20
+        //self.downloadedImageView?.sd_setImage(with: self.fileDownloadUrl, completed: nil)
+        
     }
     
     func getDocumentsDirectory() -> URL {

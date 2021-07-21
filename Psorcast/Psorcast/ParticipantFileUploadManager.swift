@@ -144,7 +144,7 @@ class ParticipantFileUploadManager: NSObject, URLSessionBackgroundDelegate {
     
     /// The Notification.userInfo key for the Bridge API URL at which one can (with appropriate authentication headers)
     /// DELETE the uploaded file, or GET it back (via redirect).
-    let requestUrlStringKey = "RequestUrlString"
+    let requestUrlKey = "RequestUrl"
     
     /// The minimum delay before retrying a failed upload (in seconds).
     var delayForRetry: TimeInterval = 5 * 60
@@ -679,8 +679,8 @@ class ParticipantFileUploadManager: NSObject, URLSessionBackgroundDelegate {
         }
         
         // post a notification that the file uploaded
-        let requestString = requestUrlString(fileId: participantFile.fileId!)
-        userInfo[self.requestUrlStringKey] = requestString
+        let requestUrl = self.netManager.bridgeURL(for: requestUrlString(fileId: participantFile.fileId!))
+        userInfo[self.requestUrlKey] = requestUrl
         let uploadedNotification = Notification(name: .SBBParticipantFileUploaded, object: nil, userInfo: userInfo)
         cleanUpTempFile(filePath: invariantFilePath)
         NotificationCenter.default.post(uploadedNotification)

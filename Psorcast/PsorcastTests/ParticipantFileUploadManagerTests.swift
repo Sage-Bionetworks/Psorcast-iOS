@@ -158,8 +158,8 @@ class ParticipantFileUploadManagerTests: XCTestCase {
             XCTAssert(originalFilePath == uploadFileUrl.path, "Original file path in userInfo '\(String(describing: originalFilePath))' does not match upload file path '\(uploadFileUrl.path)'")
             let participantFile = userInfo?[pfum.participantFileKey] as? ParticipantFile
             XCTAssertNotNil(participantFile, "SBBParticipantFileUploaded notification userInfo has no ParticipantFile object at '\(pfum.participantFileKey)'")
-            let requestUrlString = userInfo?[pfum.requestUrlStringKey] as? String
-            XCTAssertNotNil(requestUrlString, "SBBParticipantFileUploaded notification userInfo has no request URL string at '\(pfum.requestUrlStringKey)")
+            let requestUrl = userInfo?[pfum.requestUrlKey] as? URL
+            XCTAssertNotNil(requestUrl, "SBBParticipantFileUploaded notification userInfo has no request URL at '\(pfum.requestUrlKey)")
             XCTAssertNotNil(tempCopyUrl, "Temp file copy URL is nil")
             if let tempCopyUrl = tempCopyUrl {
                 self.check(file: tempCopyUrl, willRetry: false, message: "Should no longer be in retry queue upon successful retry after initial 503 error")
