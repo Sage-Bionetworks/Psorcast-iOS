@@ -124,6 +124,7 @@ class ParticipantFileUploadManager: NSObject, URLSessionBackgroundDelegate {
     
     /// The key under which we save download HTTP error response bodies in case we need to
     /// later report them as unrecoverable.
+    /// This key refers to a mapping of temp file -> HTTP response body (as a String).
     let downloadErrorResponseBodyKey = "DownloadErrorResponseBodyKey"
     
     /// The key under which we store retryInfo for retrying failed file uploads.
@@ -179,6 +180,14 @@ class ParticipantFileUploadManager: NSObject, URLSessionBackgroundDelegate {
         super.init()
         
         self.netManager.backgroundTransferDelegate = self
+        
+        // Set up a listener to retry temporarily-failed uploads whenever the app becomes active
+        NotificationCenter.default.addObserver(forName: UIApplication.didBecomeActiveNotification, object: nil, queue: nil) { notification in
+            self.retryUploadsAfterDelay()
+        }
+        
+        // Also do it right away
+        self.retryUploadsAfterDelay()
     }
     
     fileprivate func tempFileFor(inFileURL: URL) -> URL? {
@@ -261,8 +270,7 @@ class ParticipantFileUploadManager: NSObject, URLSessionBackgroundDelegate {
         let block = {
             let userDefaults = BridgeSDK.sharedUserDefaults()
             var mappings = userDefaults.dictionary(forKey: defaultsKey)
-            let mappingPlist = mappings?.removeValue(forKey: key)
-            if let mappingPlist = mappingPlist {
+            if let mappingPlist = mappings?.removeValue(forKey: key) {
                 do {
                     mapping = try DictionaryDecoder().decode(type, from: mappingPlist)
                 } catch let error {
@@ -281,6 +289,76 @@ class ParticipantFileUploadManager: NSObject, URLSessionBackgroundDelegate {
         }
         
         return mapping
+    }
+    
+    // Only call this on the upload queue
+    fileprivate func retrieveMapping<T>(_ type: T.Type, from key: String, mappings: [String : Any]?) -> T? where T: Decodable {
+        var mapping: T?
+        if let mappingPlist = mappings?[key] {
+            do {
+                mapping = try DictionaryDecoder().decode(type, from: mappingPlist)
+            } catch let error {
+                debugPrint("Error attempting to decode plist object to \(T.self):\n\(mappingPlist)\n\(error)")
+            }
+        }
+
+        return mapping
+    }
+
+    
+    func resetMappings(for defaultsKey: String) {
+        let block = {
+            let userDefaults = BridgeSDK.sharedUserDefaults()
+            userDefaults.removeObject(forKey: defaultsKey)
+        }
+        
+        if OperationQueue.current == self.uploadQueue {
+            block()
+        }
+        else {
+            self.uploadQueue.addOperation(block)
+        }
+    }
+    
+    // This func resets the state of the ParticipantFileUploadManager, including clearing out all mappings
+    // and deleting all temp files.
+    // You shouldn't call this directly except in test cases; if you want to put the brakes on all pending
+    // uploads, you should invalidate the URLSession associated with this manager, which will cause this
+    // to get called.
+    func reset() {
+        let block = {
+            let userDefaults = BridgeSDK.sharedUserDefaults()
+
+            // Go through and reset all the mappings, gathering up the temp files that are used as keys
+            // so we can delete them afterward.
+            var invariantFilePaths = Set<String>()
+            for defaultsKey in [
+                self.participantFileUploadsKey,
+                self.uploadURLsRequestedKey,
+                self.uploadingToS3Key,
+                self.downloadErrorResponseBodyKey,
+                self.retryUploadsKey
+            ] {
+                // add the temp files used as keys in this mapping
+                if let filePaths = userDefaults.dictionary(forKey: defaultsKey)?.keys {
+                    invariantFilePaths.formUnion(filePaths)
+                }
+                
+                // reset the mapping
+                self.resetMappings(for: defaultsKey)
+            }
+            
+            for invariantFilePath in invariantFilePaths {
+                self.cleanUpTempFile(filePath: invariantFilePath)
+            }
+        }
+        
+        if OperationQueue.current == self.uploadQueue {
+            block()
+        }
+        else {
+            self.uploadQueue.addOperation(block)
+        }
     }
     
     fileprivate func mimeTypeFor(fileUrl: URL) -> String {
@@ -508,7 +586,6 @@ class ParticipantFileUploadManager: NSObject, URLSessionBackgroundDelegate {
         let _ = self.netManager.uploadFile(fileUrl, httpHeaders: headers, to: uploadUrl, taskDescription: invariantFilePath)
     }
     
-    // TODO: Figure out where to call this!
     /// Call this function to check for and run any retries where the required delay has elapsed.
     public func retryUploadsAfterDelay() {
         self.uploadQueue.addOperation {
@@ -551,7 +628,14 @@ class ParticipantFileUploadManager: NSObject, URLSessionBackgroundDelegate {
         }
     }
     
-    /// Helper for task delegate method in case of HTTP error on Bridge upload request.
+    // Put a file into the retry queue so we can try again later.
+    func enqueueForRetry(invariantFilePath: String, originalFilePath: String, s3Metadata: ParticipantFileS3Metadata) {
+        let whenToRetry = Date(timeIntervalSinceNow: self.delayForRetry)
+        let retryInfo = ParticipantFileRetryInfo(originalFilePath: originalFilePath, s3Metadata: s3Metadata, whenToRetry: whenToRetry)
+        self.persistMapping(from: invariantFilePath, to: retryInfo, defaultsKey: self.retryUploadsKey)
+    }
+    
+    // Helper for task delegate method in case of HTTP error on Bridge upload request.
     fileprivate func handleHTTPDownloadStatusCode(_ statusCode: Int, downloadTask: URLSessionDownloadTask, invariantFilePath: String) {
         
         // remove the participant file from the uploadRequested list, retrieving its associated S3 metadata
@@ -566,11 +650,12 @@ class ParticipantFileUploadManager: NSObject, URLSessionBackgroundDelegate {
             return
         }
         
+        // remove the file from the temp -> download error response body mappings, and retrieve the response body, if any
+        let responseBody = removeMapping(String.self, from: invariantFilePath, defaultsKey: self.downloadErrorResponseBodyKey)
+        
         // server errors should be retried
         if statusCode >= 500 {
-            let whenToRetry = Date(timeIntervalSinceNow: self.delayForRetry)
-            let retryInfo = ParticipantFileRetryInfo(originalFilePath: originalFilePath, s3Metadata: s3Metadata, whenToRetry: whenToRetry)
-            self.persistMapping(from: invariantFilePath, to: retryInfo, defaultsKey: self.retryUploadsKey)
+            self.enqueueForRetry(invariantFilePath: invariantFilePath, originalFilePath: originalFilePath, s3Metadata: s3Metadata)
             return
         }
         
@@ -581,8 +666,8 @@ class ParticipantFileUploadManager: NSObject, URLSessionBackgroundDelegate {
             self.httpStatusKey: statusCode
         ]
         
-        // remove the response body from the temp -> response body mappings and add it to the userInfo
-        if let responseBody = removeMapping(String.self, from: invariantFilePath, defaultsKey: self.downloadErrorResponseBodyKey) {
+        // add the error response body, if any, to the userInfo
+        if let responseBody = responseBody {
             userInfo[self.responseBodyKey] = responseBody
         }
                 
@@ -591,7 +676,7 @@ class ParticipantFileUploadManager: NSObject, URLSessionBackgroundDelegate {
         NotificationCenter.default.post(uploadFailedNotification)
     }
 
-    /// Helper for task delegate method in case of HTTP error on S3 upload.
+    // Helper for task delegate method in case of HTTP error on S3 upload.
     fileprivate func handleHTTPUploadStatusCode(_ statusCode: Int, tempFilePath: String, originalFilePath: String,  s3Metadata: ParticipantFileS3Metadata) {
         switch statusCode {
         case 403, 409, 500, 503:
@@ -600,9 +685,7 @@ class ParticipantFileUploadManager: NSObject, URLSessionBackgroundDelegate {
             // 500: means internal server error ("We encountered an internal error. Please try again.")
             // 503: means service not available or the requests are coming too fast, so try again later.
             // In any case, we'll retry after a minimum delay to avoid spamming retries.
-            let whenToRetry = Date(timeIntervalSinceNow: self.delayForRetry)
-            let retryInfo = ParticipantFileRetryInfo(originalFilePath: originalFilePath, s3Metadata: s3Metadata, whenToRetry: whenToRetry)
-            self.persistMapping(from: tempFilePath, to: retryInfo, defaultsKey: self.retryUploadsKey)
+            self.enqueueForRetry(invariantFilePath: tempFilePath, originalFilePath: originalFilePath, s3Metadata: s3Metadata)
 
         default:
             // iOS handles redirects automatically so only e.g. 304 resource not changed etc. from the 300 range should end up here
@@ -652,6 +735,10 @@ class ParticipantFileUploadManager: NSObject, URLSessionBackgroundDelegate {
             return
         }
         
+        // remove the file from the retry queue if it's in there (as it might be if an URLSession was invalidated
+        // due to an error)
+        let _ = removeMapping(ParticipantFileRetryInfo.self, from: invariantFilePath, defaultsKey: self.retryUploadsKey)
+        
         // set up the userInfo for an upload failed/succeeded notification
         var userInfo: [AnyHashable : Any] = [self.filePathKey: originalFilePath, self.participantFileKey: participantFile]
 
@@ -686,27 +773,82 @@ class ParticipantFileUploadManager: NSObject, URLSessionBackgroundDelegate {
         NotificationCenter.default.post(uploadedNotification)
     }
     
-    func cleanUpTempFile(filePath: String) {
-        guard let fullPath = (filePath as NSString).fullyQualifiedPath() else {
-            debugPrint("Unexpected: Could not form fully qualified path from '\(filePath)'")
-            return
+    /// Session delegate method.
+    func urlSession(_ session: URLSession, didBecomeInvalidWithError error: Error?) {
+        if error != nil {
+            // If the URLSession was deliberately invalidated (i.e., error is nil) then we assume
+            // the intention is to cancel and forget all incomplete uploads, including retries.
+            // This might be used e.g. to clear out all pending uploads if we receive a 412
+            // (Not Consented) error from Bridge or if the participant withdraws from the study.
+            self.reset()
         }
-        guard FileManager.default.fileExists(atPath: fullPath) else {
-            debugPrint("Unexpected: Attempting to clean up temp file with invariant path '\(filePath) but temp file does not exist at '\(fullPath)")
-            return
-        }
-        let tempFile = URL(fileURLWithPath: fullPath)
-        let coordinator = NSFileCoordinator(filePresenter: nil)
-        var fileCoordinatorError: NSError?
-        coordinator.coordinate(writingItemAt: tempFile, options: .forDeleting, error: &fileCoordinatorError) { fileUrl in
-            do {
-                try FileManager.default.removeItem(at: fileUrl)
-            } catch let err {
-                debugPrint("Error attempting to remove file at \(fileUrl): \(err)")
+        else {
+            // If the URLSession was invalidated due to an error then we want to recover from that,
+            // so we copy all incomplete uploads into the retry queue just to be sure. But we also
+            // leave them in their current state in the mappings in case the error only broke it
+            // on our end and iOS could still come through for us.
+            let block = {
+                let userDefaults = BridgeSDK.sharedUserDefaults()
+
+                guard let originalFilePaths = userDefaults.dictionary(forKey: self.participantFileUploadsKey) else {
+                    // nothing to see here, move along
+                    return
+                }
+                
+                let uploadsRequested = userDefaults.dictionary(forKey: self.uploadURLsRequestedKey)
+                let uploadsToS3 = userDefaults.dictionary(forKey: self.uploadingToS3Key)
+                
+                // Get the temp copy and original file path for each file currently in the upload process and
+                // copy it to the upload queue with its s3 metadata.
+                for invariantFilePath in originalFilePaths.keys {
+                    guard let originalFilePath = self.retrieveMapping(String.self, from: invariantFilePath, mappings: originalFilePaths),
+                          let s3Metadata = self.retrieveMapping(ParticipantFileS3Metadata.self, from: invariantFilePath, mappings: uploadsToS3) ??
+                            self.retrieveMapping(ParticipantFileS3Metadata.self, from: invariantFilePath, mappings: uploadsRequested) else {
+                        continue
+                    }
+                    self.enqueueForRetry(invariantFilePath: invariantFilePath, originalFilePath: originalFilePath, s3Metadata: s3Metadata)
+                }
+            }
+            
+            if OperationQueue.current == self.uploadQueue {
+                block()
+            }
+            else {
+                self.uploadQueue.addOperation(block)
             }
         }
-        if let fileCoordinatorError = fileCoordinatorError {
-            debugPrint("Error coordinating deletion of file \(tempFile): \(fileCoordinatorError)")
+    }
+    
+    func cleanUpTempFile(filePath: String) {
+        let block = {
+            guard let fullPath = (filePath as NSString).fullyQualifiedPath() else {
+                debugPrint("Unexpected: Could not form fully qualified path from '\(filePath)'")
+                return
+            }
+            guard FileManager.default.fileExists(atPath: fullPath) else {
+                debugPrint("Unexpected: Attempting to clean up temp file with invariant path '\(filePath) but temp file does not exist at '\(fullPath)")
+                return
+            }
+            let tempFile = URL(fileURLWithPath: fullPath)
+            let coordinator = NSFileCoordinator(filePresenter: nil)
+            var fileCoordinatorError: NSError?
+            coordinator.coordinate(writingItemAt: tempFile, options: .forDeleting, error: &fileCoordinatorError) { fileUrl in
+                do {
+                    try FileManager.default.removeItem(at: fileUrl)
+                } catch let err {
+                    debugPrint("Error attempting to remove file at \(fileUrl): \(err)")
+                }
+            }
+            if let fileCoordinatorError = fileCoordinatorError {
+                debugPrint("Error coordinating deletion of file \(tempFile): \(fileCoordinatorError)")
+            }
+        }
+
+        if OperationQueue.current == self.uploadQueue {
+            block()
+        }
+        else {
+            self.uploadQueue.addOperation(block)
         }
     }
 }

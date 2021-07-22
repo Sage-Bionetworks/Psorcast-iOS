@@ -102,6 +102,9 @@ class BackgroundNetworkManager: NSObject, URLSessionBackgroundDelegate {
     /// The singleton background URLSession.
     public static var _backgroundSession: URLSession? = nil
     
+    /// A singleton map of pending background URLSession completion handlers that have been passed in from the app delegate and not yet called.
+    public static var backgroundSessionCompletionHandlers = [String : () -> Void]()
+    
     private static func isRunningInAppExtension() -> Bool {
         // "An app extension target’s Info.plist file identifies the extension point and may specify some details
         // about your extension. At a minimum, the file includes the NSExtension key and a dictionary of keys and
@@ -150,16 +153,21 @@ class BackgroundNetworkManager: NSObject, URLSessionBackgroundDelegate {
                     sessionIdentifier.append(UUID().uuidString)
                 }
                 
-                let config = URLSessionConfiguration.background(withIdentifier: sessionIdentifier)
-                if let appGroupIdentifier = BridgeSDK.bridgeInfo.appGroupIdentifier, !appGroupIdentifier.isEmpty {
-                    config.sharedContainerIdentifier = appGroupIdentifier
-                }
-                
-                BackgroundNetworkManager._backgroundSession = URLSession(configuration: config, delegate: self, delegateQueue: BackgroundNetworkManager.sessionDelegateQueue)
+                self.createBackgroundSession(with: sessionIdentifier)
             }
             BackgroundNetworkManager.sessionDelegateQueue.addOperations([createSessionOperation], waitUntilFinished: true)
         }
         return BackgroundNetworkManager._backgroundSession!
+    }
+    
+    // internal-use-only method, must always be called on the session delegate queue
+    fileprivate func createBackgroundSession(with sessionIdentifier: String) {
+        let config = URLSessionConfiguration.background(withIdentifier: sessionIdentifier)
+        if let appGroupIdentifier = BridgeSDK.bridgeInfo.appGroupIdentifier, !appGroupIdentifier.isEmpty {
+            config.sharedContainerIdentifier = appGroupIdentifier
+        }
+        
+        BackgroundNetworkManager._backgroundSession = URLSession(configuration: config, delegate: self, delegateQueue: BackgroundNetworkManager.sessionDelegateQueue)
     }
     
     func bridgeBaseURL() -> URL {
@@ -308,7 +316,15 @@ class BackgroundNetworkManager: NSObject, URLSessionBackgroundDelegate {
     }
     
     public func restore(backgroundSession: String, completionHandler: @escaping () -> Void) {
-        // TODO: Implement a la SBBNetworkManager
+        if backgroundSession.starts(with: BackgroundNetworkManager.backgroundSessionIdentifier) {
+            BackgroundNetworkManager.backgroundSessionCompletionHandlers[backgroundSession] = completionHandler
+            BackgroundNetworkManager.sessionDelegateQueue.addOperation {
+                // TODO: Update this when support is added for multiple named background sessions.
+                if BackgroundNetworkManager._backgroundSession == nil {
+                    self.createBackgroundSession(with: backgroundSession)
+                }
+            }
+        }
     }
     
     // MARK: Helpers
@@ -433,5 +449,25 @@ class BackgroundNetworkManager: NSObject, URLSessionBackgroundDelegate {
     }
     
     // MARK: URLSessionDelegate
+    func urlSessionDidFinishEvents(forBackgroundURLSession session: URLSession) {
+        if let identifier = session.configuration.identifier,
+            let completion = BackgroundNetworkManager.backgroundSessionCompletionHandlers[identifier] {
+            OperationQueue.main.addOperation {
+                completion()
+            }
+            BackgroundNetworkManager.backgroundSessionCompletionHandlers.removeValue(forKey: identifier)
+        }
+        self.backgroundTransferDelegate?.urlSessionDidFinishEvents?(forBackgroundURLSession: session)
+    }
     
+    func urlSession(_ session: URLSession, didBecomeInvalidWithError error: Error?) {
+        if error != nil,
+           let identifier = session.configuration.identifier {
+            // if it became invalid unintentionally (i.e. due to an error), re-create the session:
+            BackgroundNetworkManager.sessionDelegateQueue.addOperation {
+                self.createBackgroundSession(with: identifier)
+            }
+        }
+        self.backgroundTransferDelegate?.urlSession?(session, didBecomeInvalidWithError: error)
+    }
 }
