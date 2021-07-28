@@ -409,8 +409,8 @@ class ParticipantFileUploadManager: NSObject, URLSessionBackgroundDelegate {
             return nil
         }
         
-        guard let contentLengthString = contentLengthString,
-              !contentLengthString.isEmpty else {
+        guard let contentLengthStringUnwrapped = contentLengthString,
+              !contentLengthStringUnwrapped.isEmpty else {
             debugPrint("Error: Participant file content length string is nil or empty")
             return nil
         }
@@ -427,7 +427,7 @@ class ParticipantFileUploadManager: NSObject, URLSessionBackgroundDelegate {
          */
 
         // And finally, request an upload URL to S3 from Bridge
-        let s3Metadata = ParticipantFileS3Metadata(participantFile: participantFile, contentLengthString: contentLengthString)
+        let s3Metadata = ParticipantFileS3Metadata(participantFile: participantFile, contentLengthString: contentLengthStringUnwrapped)
         
         return self.requestUploadURL(invariantFilePath: nil, fileUrl: fileUrl, s3Metadata: s3Metadata)
     }
@@ -453,8 +453,7 @@ class ParticipantFileUploadManager: NSObject, URLSessionBackgroundDelegate {
         }
         else {
             // we already have the file copy--create a URL from its path
-            let filePath = (invariantFilePath! as NSString).fullyQualifiedPath()
-            guard let filePath = filePath  else {
+            guard let filePath = (invariantFilePath! as NSString).fullyQualifiedPath()  else {
                 debugPrint("Error: unable to get fully qualified path from invariantFilePath '\(invariantFilePath!)'")
                 return nil
             }
@@ -479,13 +478,13 @@ class ParticipantFileUploadManager: NSObject, URLSessionBackgroundDelegate {
             self.persistMapping(from: invariantFilePath!, to: fileUrl.path, defaultsKey: self.participantFileUploadsKey)
         }
         
-        guard let invariantFilePath = invariantFilePath else {
+        guard let invariantFilePathUnwrapped = invariantFilePath else {
             debugPrint("Failed to get sandbox-relative file path from temp file URL")
             return nil
         }
         
         // Set its state as uploadRequested
-        self.persistMapping(from: invariantFilePath, to: s3Metadata, defaultsKey: self.uploadURLsRequestedKey)
+        self.persistMapping(from: invariantFilePathUnwrapped, to: s3Metadata, defaultsKey: self.uploadURLsRequestedKey)
         
         // Request an uploadUrl for the ParticipantFile
         let requestString = requestUrlString(fileId: participantFile.fileId!)
@@ -493,7 +492,7 @@ class ParticipantFileUploadManager: NSObject, URLSessionBackgroundDelegate {
         
         BridgeSDK.authManager.addAuthHeader(toHeaders: headers)
 
-        let _ = self.netManager.downloadFile(from: requestString, method: "POST", httpHeaders: headers as? [String : String], parameters: participantFile, taskDescription: invariantFilePath)
+        let _ = self.netManager.downloadFile(from: requestString, method: "POST", httpHeaders: headers as? [String : String], parameters: participantFile, taskDescription: invariantFilePathUnwrapped)
         
         return fileCopy
     }
