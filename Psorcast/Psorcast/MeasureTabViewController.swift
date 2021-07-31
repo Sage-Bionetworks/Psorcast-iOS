@@ -83,7 +83,7 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
     
     /// The animation speed for insight progress change, range with 1.0 being 1 second long
     /// Normal range is 0.5 (fast) to 2.0 (slow)
-    let insightAnimationSpeed = 1.0
+    let insightAnimationSpeed = 0.5
     var isInsightAnimating = false
 
     // The current treatment for the user
@@ -436,7 +436,7 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
         })
         
         // After the progress animation is done, possibly flip to the insight view
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.00 * insightAnimationSpeed, execute: {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.75 * insightAnimationSpeed, execute: {
             if animateToInsightView {
                 // Animate in the new insight view if it was previously hidden
                 if (self.scheduleManager.nextInsightItem() != nil) {
