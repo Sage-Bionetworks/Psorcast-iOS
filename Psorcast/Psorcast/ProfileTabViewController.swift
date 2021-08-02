@@ -282,7 +282,12 @@ class ProfileTabViewController: UIViewController, UITableViewDelegate, UITableVi
         
         guard let item = itemForRow(at: indexPath) else { return }
         
-        if let profileItem = item as? SBAProfileItemProfileTableItem {
+        
+        if let webProfileItem = item as? SBAHTMLProfileTableItem {
+            if webProfileItem.url != nil {
+                UIApplication.shared.open(webProfileItem.url!)
+            }
+        } else if let profileItem = item as? SBAProfileItemProfileTableItem {
             if profileItem.profileItemKey == RSDIdentifier.remindersTask.rawValue {
                 let vc = ReminderType.weekly.createReminderTaskViewController(defaultTime: self.historyData.reminderItem?.reminderTime, defaultDay: self.historyData.reminderItem?.reminderWeekday, doNotRemind: self.historyData.reminderItem?.reminderDoNotRemindMe)
                 vc.delegate = self
