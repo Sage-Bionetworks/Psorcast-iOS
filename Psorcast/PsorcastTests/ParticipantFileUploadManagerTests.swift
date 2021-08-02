@@ -217,14 +217,14 @@ class ParticipantFileUploadManagerTests: XCTestCase {
         //    queue up the file for 'later' retry.
         tempCopyUrl = pfum.uploadInternal(fileId: testFileId, fileUrl: uploadFileUrl, contentType: mimeType)
         XCTAssertNotNil(tempCopyUrl, "Temp file url is nil when testing participant file upload request retrying after initial 503 from upload api")
-        guard let tempCopyUrl = tempCopyUrl else { return }
+        guard let tempCopyUrlUnwrapped = tempCopyUrl else { return }
 
         // -- now set up the responses for the retry attempt and then initiate it.
         //    (queue up so this happens after the above has completed)
         self.mockURLSession.delegateQueue.addOperation {
             guard retryRecoverable else { return }
             // first, check that the file is indeed in the retry queue as expected
-            self.check(file: tempCopyUrl, willRetry: true, stillExists: true, message: "Should retry after 503 from participant file upload API", cleanUpAfter: false)
+            self.check(file: tempCopyUrlUnwrapped, willRetry: true, stillExists: true, message: "Should retry after 503 from participant file upload API", cleanUpAfter: false)
             
             // set up the responses for the retry
             // -- set up the Participant File Upload Request response
@@ -320,7 +320,7 @@ class ParticipantFileUploadManagerTests: XCTestCase {
 
         tempCopyUrl = pfum.uploadInternal(fileId: testFileId, fileUrl: uploadFileUrl)
         XCTAssertNotNil(tempCopyUrl, "Temp file url is nil when testing participant file upload request with retryable S3 error response")
-        guard let tempCopyUrl = tempCopyUrl else { return }
+        guard let tempCopyUrlUnwrapped = tempCopyUrl else { return }
 
         // queue up a couple of times to make sure the above stuff has actually completed before we check the retry queue
         self.mockURLSession.delegateQueue.addOperation {
@@ -338,7 +338,7 @@ class ParticipantFileUploadManagerTests: XCTestCase {
         NotificationCenter.default.removeObserver(retryableErrorButFailed)
         NotificationCenter.default.removeObserver(errorResponseButSucceeded)
         
-        self.check(file: tempCopyUrl, willRetry: true, message: "Should have been in retry queue after non-success status \(status) from S3")
+        self.check(file: tempCopyUrlUnwrapped, willRetry: true, message: "Should have been in retry queue after non-success status \(status) from S3")
     }
 
     func testUploadFileToBridgeHappyPath() {

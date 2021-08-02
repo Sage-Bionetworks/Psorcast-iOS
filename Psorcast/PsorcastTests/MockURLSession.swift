@@ -72,11 +72,11 @@ class MockDownloadTask: URLSessionDownloadTask {
             (_, mockResponse) = session.dataAndResponse(for: request)
             let (fileUrl, error) = session.downloadFileUrlAndError(for: request)
             session.remove(mockTask: self)
-            guard let fileUrl = fileUrl else {
+            guard let fileUrlUnwrapped = fileUrl else {
                 debugPrint("TEST SETUP ERROR: No download file URL provided for mock download task request.")
                 return
             }
-            (session.delegate as? URLSessionDownloadDelegate)?.urlSession(self.session, downloadTask: self, didFinishDownloadingTo: fileUrl)
+            (session.delegate as? URLSessionDownloadDelegate)?.urlSession(self.session, downloadTask: self, didFinishDownloadingTo: fileUrlUnwrapped)
             (session.delegate as? URLSessionTaskDelegate)?.urlSession?(session, task: self, didCompleteWithError: error)
         }
     }
@@ -136,9 +136,9 @@ class MockURLSession: URLSession {
     }
     
     func set(json: Any?, responseCode: Int, for endpoint: String, httpMethod: String) {
-        let key = key(for: endpoint, httpMethod: httpMethod)
-        responses(for: key).add(json ?? NSNull())
-        codes(for: key).add(responseCode)
+        let keyUnwrapped = key(for: endpoint, httpMethod: httpMethod)
+        responses(for: keyUnwrapped).add(json ?? NSNull())
+        codes(for: keyUnwrapped).add(responseCode)
     }
     
     func setJsonFromFile(named fileName: String, responseCode: Int, for endpoint: String, httpMethod: String) {
@@ -167,25 +167,25 @@ class MockURLSession: URLSession {
     }
     
     func pullNextResponse(for key: String) -> Any? {
-        let responses = responses(for: key)
-        guard responses.count > 0 else {
+        let responsesUnwrapped = responses(for: key)
+        guard responsesUnwrapped.count > 0 else {
             return nil
         }
-        let response = responses.object(at: 0)
-        responses.removeObject(at: 0)
-        if response is NSNull {
+        let responseUnwrapped = responsesUnwrapped.object(at: 0)
+        responsesUnwrapped.removeObject(at: 0)
+        if responseUnwrapped is NSNull {
             return nil
         }
-        return response
+        return responseUnwrapped
     }
     
     func pullNextCode(for key: String) -> Int? {
-        let codes = codes(for: key)
-        guard codes.count > 0 else {
+        let codesUnwrapped = codes(for: key)
+        guard codesUnwrapped.count > 0 else {
             return nil
         }
-        let code = codes.object(at: 0) as? Int
-        codes.removeObject(at: 0)
+        let code = codesUnwrapped.object(at: 0) as? Int
+        codesUnwrapped.removeObject(at: 0)
         return code
     }
     
@@ -197,9 +197,9 @@ class MockURLSession: URLSession {
         var statusCode: Int?
         var json: Any?
         if headersContainValidAuth(request.allHTTPHeaderFields) {
-            let key = key(for: request.url!.path, httpMethod: request.httpMethod!)
-            json = pullNextResponse(for: key)
-            statusCode = pullNextCode(for: key)
+            let keyUnwrapped = key(for: request.url!.path, httpMethod: request.httpMethod!)
+            json = pullNextResponse(for: keyUnwrapped)
+            statusCode = pullNextCode(for: keyUnwrapped)
         }
         else {
             statusCode = 401
@@ -233,39 +233,39 @@ class MockURLSession: URLSession {
     }
     
     func set(downloadFileUrl fileUrl: URL?, error: Error?, for endpoint: String, httpMethod: String) {
-        let key = key(for: endpoint, httpMethod: httpMethod)
-        fileUrls(for: key).add(fileUrl ?? NSNull())
-        errors(for: key).add(error ?? NSNull())
+        let keyUnwrapped = key(for: endpoint, httpMethod: httpMethod)
+        fileUrls(for: keyUnwrapped).add(fileUrl ?? NSNull())
+        errors(for: keyUnwrapped).add(error ?? NSNull())
     }
     
     func pullNextFileUrl(for key: String) -> URL? {
-        let fileUrls = fileUrls(for: key)
+        let fileUrlsUnwrapped = fileUrls(for: key)
         
-        guard fileUrls.count > 0 else {
+        guard fileUrlsUnwrapped.count > 0 else {
             return nil
         }
         
-        let fileUrl = fileUrls.firstObject as? URL
-        fileUrls.removeObject(at: 0)
+        let fileUrl = fileUrlsUnwrapped.firstObject as? URL
+        fileUrlsUnwrapped.removeObject(at: 0)
         
         return fileUrl
     }
     
     func pullNextError(for key: String) -> Error? {
-        let errors = errors(for: key)
+        let errorsUnwrapped = errors(for: key)
         
-        guard errors.count > 0 else {
+        guard errorsUnwrapped.count > 0 else {
             return nil
         }
         
-        let error = errors.firstObject as? Error
-        errors.removeObject(at: 0)
+        let error = errorsUnwrapped.firstObject as? Error
+        errorsUnwrapped.removeObject(at: 0)
         return error
     }
     
     func downloadFileUrlAndError(for request: URLRequest) -> (URL?, Error?) {
-        let key = key(for: request.url!.path, httpMethod: request.httpMethod!)
-        return (pullNextFileUrl(for: key), pullNextError(for: key))
+        let keyUnwrapped = key(for: request.url!.path, httpMethod: request.httpMethod!)
+        return (pullNextFileUrl(for: keyUnwrapped), pullNextError(for: keyUnwrapped))
     }
     
     func doSyncInDelegateQueue(block: @escaping () -> Void) {
