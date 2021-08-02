@@ -132,6 +132,7 @@
 		CB8F2A9E2375E4A4005A62E7 /* ImageCaptureCompletionStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB8F2A9D2375E4A4005A62E7 /* ImageCaptureCompletionStepViewController.swift */; };
 		CB8F7D562422D73A00F77D62 /* StudyTaskFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB8F7D512422D73900F77D62 /* StudyTaskFactory.swift */; };
 		CB8F7D592423F6BB00F77D62 /* LevenshteinToolsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB8F7D582423F6BB00F77D62 /* LevenshteinToolsTests.swift */; };
+		CB9518A826B60BAB00EE44A2 /* EnvironmentalLearnMore.html in Resources */ = {isa = PBXBuildFile; fileRef = CB9518A326B60BAB00EE44A2 /* EnvironmentalLearnMore.html */; };
 		CB95A2852608540600F28273 /* OnboardingPagerStepViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB95A27E2608540600F28273 /* OnboardingPagerStepViewController.xib */; };
 		CB95A2862608540600F28273 /* OnboardingPagerStepObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB95A2832608540600F28273 /* OnboardingPagerStepObject.swift */; };
 		CB95A2872608540600F28273 /* OnboardingPagerStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB95A2842608540600F28273 /* OnboardingPagerStepViewController.swift */; };
@@ -515,6 +516,7 @@
 		CB8F2A9D2375E4A4005A62E7 /* ImageCaptureCompletionStepViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCaptureCompletionStepViewController.swift; sourceTree = "<group>"; };
 		CB8F7D512422D73900F77D62 /* StudyTaskFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StudyTaskFactory.swift; sourceTree = "<group>"; };
 		CB8F7D582423F6BB00F77D62 /* LevenshteinToolsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevenshteinToolsTests.swift; sourceTree = "<group>"; };
+		CB9518A326B60BAB00EE44A2 /* EnvironmentalLearnMore.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = EnvironmentalLearnMore.html; sourceTree = "<group>"; };
 		CB95A27E2608540600F28273 /* OnboardingPagerStepViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OnboardingPagerStepViewController.xib; sourceTree = "<group>"; };
 		CB95A2832608540600F28273 /* OnboardingPagerStepObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardingPagerStepObject.swift; sourceTree = "<group>"; };
 		CB95A2842608540600F28273 /* OnboardingPagerStepViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardingPagerStepViewController.swift; sourceTree = "<group>"; };
@@ -1032,6 +1034,7 @@
 				04F265822686DC6F004140B7 /* QualifiedResearchers_Consent.html */,
 				04F265862686DCE5004140B7 /* FollowUp_Consent.html */,
 				04F2658A2686DD2E004140B7 /* Quit_Consent.html */,
+				CB9518A326B60BAB00EE44A2 /* EnvironmentalLearnMore.html */,
 			);
 			name = HTML;
 			sourceTree = "<group>";
@@ -1420,6 +1423,7 @@
 				CB72819D2624CBE100AAEB2C /* TextfieldStepViewController.xib in Resources */,
 				04F2657B2686DB6D004140B7 /* MedicalCare_Consent.html in Resources */,
 				CBFF927E25E19B6200EC34DB /* PhoneLearnMore.html in Resources */,
+				CB9518A826B60BAB00EE44A2 /* EnvironmentalLearnMore.html in Resources */,
 				CB7281A52624DBBD00AAEB2C /* Withdrawal.json in Resources */,
 				CBDCDCA423F3849E00E5CEB8 /* PsoriasisAreaPhotoStepViewController.xib in Resources */,
 				CB9F5E2022E0BED3003FBCEF /* lato_bold.ttf in Resources */,
