@@ -753,27 +753,38 @@ OCT 2020 to Today</string>
                                     <constraint firstAttribute="width" secondItem="eCh-yz-RTX" secondAttribute="height" multiplier="1388:356" id="rOP-Da-rU1"/>
                                 </constraints>
                             </imageView>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="DemoResearchTabBody" translatesAutoresizingMaskIntoConstraints="NO" id="07f-DY-ORK">
-                                <rect key="frame" x="24" y="165" width="366" height="236"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9MF-mQ-shr" customClass="InsetLabel" customModule="Psorcast" customModuleProvider="target">
+                                <rect key="frame" x="32" y="187" width="350" height="240"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" secondItem="07f-DY-ORK" secondAttribute="height" multiplier="1210:780" id="dxG-eX-w1a"/>
+                                    <constraint firstAttribute="height" constant="240" id="EiZ-mf-M95"/>
                                 </constraints>
-                            </imageView>
+                                <attributedString key="attributedText">
+                                    <fragment content="There are no sub-studies to join right now, but stay tuned and we’ll let you know when they're ready!">
+                                        <attributes>
+                                            <font key="NSFont" metaFont="system" size="17"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" paragraphSpacing="10" paragraphSpacingBefore="10" tighteningFactorForTruncation="0.0"/>
+                                        </attributes>
+                                    </fragment>
+                                </attributedString>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="TI1-tg-2iw"/>
                         <color key="backgroundColor" systemColor="systemGreenColor"/>
                         <constraints>
+                            <constraint firstItem="TI1-tg-2iw" firstAttribute="trailing" secondItem="9MF-mQ-shr" secondAttribute="trailing" constant="32" id="7zm-3S-JqO"/>
                             <constraint firstItem="eCh-yz-RTX" firstAttribute="trailing" secondItem="TI1-tg-2iw" secondAttribute="trailing" id="Iq2-Zg-Omh"/>
-                            <constraint firstItem="07f-DY-ORK" firstAttribute="top" secondItem="eCh-yz-RTX" secondAttribute="bottom" constant="23" id="N97-7j-Kz3"/>
-                            <constraint firstItem="TI1-tg-2iw" firstAttribute="trailing" secondItem="07f-DY-ORK" secondAttribute="trailing" constant="24" id="XaA-5n-Baj"/>
-                            <constraint firstItem="07f-DY-ORK" firstAttribute="leading" secondItem="TI1-tg-2iw" secondAttribute="leading" constant="24" id="xVJ-RS-fB3"/>
+                            <constraint firstItem="9MF-mQ-shr" firstAttribute="top" secondItem="eCh-yz-RTX" secondAttribute="bottom" constant="45" id="RiI-8c-waY"/>
+                            <constraint firstItem="9MF-mQ-shr" firstAttribute="leading" secondItem="TI1-tg-2iw" secondAttribute="leading" constant="32" id="VL6-yL-sl9"/>
+                            <constraint firstItem="9MF-mQ-shr" firstAttribute="centerX" secondItem="aEA-Lq-LBx" secondAttribute="centerX" id="Yfm-Yb-DsD"/>
                             <constraint firstItem="eCh-yz-RTX" firstAttribute="leading" secondItem="TI1-tg-2iw" secondAttribute="leading" id="xbU-aE-kkA"/>
                             <constraint firstItem="eCh-yz-RTX" firstAttribute="top" secondItem="aEA-Lq-LBx" secondAttribute="top" constant="36" id="yOm-Us-EZi"/>
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="Research" image="ResearchTabIcon" id="XIB-eJ-Sia"/>
                     <connections>
-                        <outlet property="demoBody" destination="07f-DY-ORK" id="mxT-u2-vjU"/>
+                        <outlet property="comingSoonLabel" destination="9MF-mQ-shr" id="QZ4-R1-sgo"/>
                         <outlet property="demoHeader" destination="eCh-yz-RTX" id="dlA-5I-zDb"/>
                     </connections>
                 </viewController>
@@ -1238,7 +1249,6 @@ OCT 2020 to Today</string>
         <image name="AppHeader" width="241" height="41"/>
         <image name="BackDark" width="30" height="31"/>
         <image name="Checkmark" width="24" height="24"/>
-        <image name="DemoResearchTabBody" width="1210" height="780"/>
         <image name="DemoResearchTabHeader" width="1392" height="358"/>
         <image name="ExportButton" width="24" height="24"/>
         <image name="FilterUpArrow" width="14" height="8"/>

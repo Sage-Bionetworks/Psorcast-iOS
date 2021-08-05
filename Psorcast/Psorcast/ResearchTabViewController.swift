@@ -39,24 +39,29 @@ import BridgeSDK
 open class ResearchTabViewController: UIViewController {
     
     @IBOutlet weak var demoHeader: UIImageView!
-    @IBOutlet weak var demoBody: UIImageView!
+    @IBOutlet weak var comingSoonLabel: InsetLabel!
     
     override open func viewDidLoad() {
         super.viewDidLoad()
         
         self.view.backgroundColor = AppDelegate.designSystem.colorRules.backgroundPrimary.color
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.imageTapped))
-        self.demoHeader.isUserInteractionEnabled = true
-        self.demoHeader.addGestureRecognizer(tapGestureRecognizer)
-        let tapGestureRecognizer2 = UITapGestureRecognizer(target: self, action: #selector(self.imageTapped))
-        self.demoBody.isUserInteractionEnabled = true
-        self.demoBody.addGestureRecognizer(tapGestureRecognizer2)
+//        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.imageTapped))
+    //        self.demoHeader.isUserInteractionEnabled = true
+//        self.demoHeader.addGestureRecognizer(tapGestureRecognizer)
+        self.comingSoonLabel.text = "There are no sub-studies to join right now, but stay tuned and we’ll let you know when they're ready!"
+//        let tapGestureRecognizer2 = UITapGestureRecognizer(target: self, action: #selector(self.imageTapped))
     }
     
     @objc func imageTapped() {
         let alert = UIAlertController(title: "This feature will be available in a future version of the app.", message: nil, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Okay", style: .default, handler: nil))
         self.present(alert, animated: true)
+    }
+}
+
+class InsetLabel: UILabel {
+    override func drawText(in rect: CGRect) {
+        super.drawText(in: rect.inset(by: UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)))
     }
 }
 
