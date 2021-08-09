@@ -137,6 +137,15 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate, ShowPopTipDele
         super.applicationDidBecomeActive(application)
     }
     
+    override open func application(_ application: UIApplication, handleEventsForBackgroundURLSession identifier: String, completionHandler: @escaping () -> Void) {
+        if identifier.starts(with: BackgroundNetworkManager.backgroundSessionIdentifier) {
+            BackgroundNetworkManager.shared.restore(backgroundSession: identifier, completionHandler: completionHandler)
+        }
+        else {
+            super.application(application, handleEventsForBackgroundURLSession: identifier, completionHandler: completionHandler)
+        }
+    }
+    
     fileprivate func setupCoreData() {
         HistoryDataManager.shared.loadStore { (errorMsg) in  // Make sure CoreData is loaded
             DispatchQueue.main.async {

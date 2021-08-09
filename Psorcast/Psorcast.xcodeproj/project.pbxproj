@@ -33,6 +33,15 @@
 		04F265872686DCE5004140B7 /* FollowUp_Consent.html in Resources */ = {isa = PBXBuildFile; fileRef = 04F265862686DCE5004140B7 /* FollowUp_Consent.html */; };
 		04F2658B2686DD2E004140B7 /* Quit_Consent.html in Resources */ = {isa = PBXBuildFile; fileRef = 04F2658A2686DD2E004140B7 /* Quit_Consent.html */; };
 		04F265A0268701E6004140B7 /* ConsentQuizStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F2659F268701E6004140B7 /* ConsentQuizStepViewController.swift */; };
+		60396E09266EDC5100DB7126 /* MockURLSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60396E08266EDC5100DB7126 /* MockURLSession.swift */; };
+		605B872A268E644C006BA0AA /* ParticipantFileUploadManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 605B8729268E644C006BA0AA /* ParticipantFileUploadManagerTests.swift */; };
+		605B8730268E73F1006BA0AA /* failed-upload-request-response.json in Resources */ = {isa = PBXBuildFile; fileRef = 605B872F268E73F1006BA0AA /* failed-upload-request-response.json */; };
+		605B873B268E74F6006BA0AA /* cat.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 605B8736268E74F6006BA0AA /* cat.jpg */; };
+		60E0248C2697C08F0065AF9A /* upload-request-success.json in Resources */ = {isa = PBXBuildFile; fileRef = 60E024872697C08F0065AF9A /* upload-request-success.json */; };
+		60E0CC2826A7551D00BB7BE5 /* upload-request-expired.json in Resources */ = {isa = PBXBuildFile; fileRef = 60E0CC2326A7551D00BB7BE5 /* upload-request-expired.json */; };
+		60E8C6A6266019B600AA906A /* BackgroundNetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E8C6A5266019B600AA906A /* BackgroundNetworkManager.swift */; };
+		60E9E2A22695251F004B67EC /* ParticipantFileUploadManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60F877212628E29900D1D9C1 /* ParticipantFileUploadManager.swift */; };
+		60F877272628E29900D1D9C1 /* ParticipantFileUploadManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60F877212628E29900D1D9C1 /* ParticipantFileUploadManager.swift */; };
 		CB03196523E3ED0A005063A3 /* ReviewCaptureStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB03196423E3ED09005063A3 /* ReviewCaptureStepViewController.swift */; };
 		CB03196723E40836005063A3 /* ReviewCaptureStepViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB03196623E40835005063A3 /* ReviewCaptureStepViewController.xib */; };
 		CB05146C237F27560058D746 /* DigitalJarOpen.json in Resources */ = {isa = PBXBuildFile; fileRef = CB05146B237F27560058D746 /* DigitalJarOpen.json */; };
@@ -70,6 +79,7 @@
 		CB47E563233FC1BD00AE8501 /* PsoriasisDrawStepObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB47E562233FC1BD00AE8501 /* PsoriasisDrawStepObject.swift */; };
 		CB47E565233FC2EC00AE8501 /* PsoriasisDrawResultObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB47E564233FC2EC00AE8501 /* PsoriasisDrawResultObject.swift */; };
 		CB47E567233FC61400AE8501 /* PsoriasisDrawStepViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB47E566233FC61400AE8501 /* PsoriasisDrawStepViewController.xib */; };
+		CB508BFB26713F15008B54D5 /* SandboxImageApiViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB508BFA26713F15008B54D5 /* SandboxImageApiViewController.swift */; };
 		CB5424D123721FFD0036DB6B /* RSDCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB5424D023721FFD0036DB6B /* RSDCollectionViewCell.swift */; };
 		CB5424D3237220910036DB6B /* RSDSelectionCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB5424D2237220910036DB6B /* RSDSelectionCollectionViewCell.swift */; };
 		CB5424D5237235460036DB6B /* SelectionCollectionStepViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB5424D4237235460036DB6B /* SelectionCollectionStepViewController.xib */; };
@@ -94,7 +104,6 @@
 		CB64AA1225D20FA10040FC90 /* Black2Clear.metal in Sources */ = {isa = PBXBuildFile; fileRef = CB64AA1125D20FA10040FC90 /* Black2Clear.metal */; };
 		CB64AA1425D21F190040FC90 /* MetalHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB64AA1325D21F190040FC90 /* MetalHelper.swift */; };
 		CB67C29723F390AB005B6BCD /* DigitalJarOpenStepViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB67C28D23F390AA005B6BCD /* DigitalJarOpenStepViewControllerTests.swift */; };
-		CB67C29823F390AB005B6BCD /* PSRImageHelperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB67C28E23F390AA005B6BCD /* PSRImageHelperTests.swift */; };
 		CB67C29923F390AB005B6BCD /* JointPainImageViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB67C28F23F390AA005B6BCD /* JointPainImageViewTests.swift */; };
 		CB67C29A23F390AB005B6BCD /* CodableResultObjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB67C29023F390AA005B6BCD /* CodableResultObjectTests.swift */; };
 		CB67C29B23F390AB005B6BCD /* CodableStepObjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB67C29123F390AA005B6BCD /* CodableStepObjectTests.swift */; };
@@ -424,6 +433,14 @@
 		04F265862686DCE5004140B7 /* FollowUp_Consent.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = FollowUp_Consent.html; sourceTree = "<group>"; };
 		04F2658A2686DD2E004140B7 /* Quit_Consent.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = Quit_Consent.html; sourceTree = "<group>"; };
 		04F2659F268701E6004140B7 /* ConsentQuizStepViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsentQuizStepViewController.swift; sourceTree = "<group>"; };
+		60396E08266EDC5100DB7126 /* MockURLSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockURLSession.swift; sourceTree = "<group>"; };
+		605B8729268E644C006BA0AA /* ParticipantFileUploadManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParticipantFileUploadManagerTests.swift; sourceTree = "<group>"; };
+		605B872F268E73F1006BA0AA /* failed-upload-request-response.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "failed-upload-request-response.json"; sourceTree = "<group>"; };
+		605B8736268E74F6006BA0AA /* cat.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = cat.jpg; sourceTree = "<group>"; };
+		60E024872697C08F0065AF9A /* upload-request-success.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "upload-request-success.json"; sourceTree = "<group>"; };
+		60E0CC2326A7551D00BB7BE5 /* upload-request-expired.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "upload-request-expired.json"; sourceTree = "<group>"; };
+		60E8C6A5266019B600AA906A /* BackgroundNetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundNetworkManager.swift; sourceTree = "<group>"; };
+		60F877212628E29900D1D9C1 /* ParticipantFileUploadManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParticipantFileUploadManager.swift; sourceTree = "<group>"; };
 		CB03196423E3ED09005063A3 /* ReviewCaptureStepViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReviewCaptureStepViewController.swift; sourceTree = "<group>"; };
 		CB03196623E40835005063A3 /* ReviewCaptureStepViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReviewCaptureStepViewController.xib; sourceTree = "<group>"; };
 		CB05146B237F27560058D746 /* DigitalJarOpen.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = DigitalJarOpen.json; sourceTree = "<group>"; };
@@ -457,6 +474,7 @@
 		CB47E562233FC1BD00AE8501 /* PsoriasisDrawStepObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PsoriasisDrawStepObject.swift; sourceTree = "<group>"; };
 		CB47E564233FC2EC00AE8501 /* PsoriasisDrawResultObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PsoriasisDrawResultObject.swift; sourceTree = "<group>"; };
 		CB47E566233FC61400AE8501 /* PsoriasisDrawStepViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PsoriasisDrawStepViewController.xib; sourceTree = "<group>"; };
+		CB508BFA26713F15008B54D5 /* SandboxImageApiViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SandboxImageApiViewController.swift; sourceTree = "<group>"; };
 		CB5424D023721FFD0036DB6B /* RSDCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RSDCollectionViewCell.swift; sourceTree = "<group>"; };
 		CB5424D2237220910036DB6B /* RSDSelectionCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RSDSelectionCollectionViewCell.swift; sourceTree = "<group>"; };
 		CB5424D4237235460036DB6B /* SelectionCollectionStepViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SelectionCollectionStepViewController.xib; sourceTree = "<group>"; };
@@ -731,6 +749,8 @@
 		CB4794EB2426B31D00D5A7E6 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				60F877212628E29900D1D9C1 /* ParticipantFileUploadManager.swift */,
+				60E8C6A5266019B600AA906A /* BackgroundNetworkManager.swift */,
 				CB4794F02426B33300D5A7E6 /* LevenshteinTools.swift */,
 				CB4794F22426B36C00D5A7E6 /* ViewUtils.swift */,
 				CBAAB6D82458CB2D00C1A619 /* AtomicBool.swift */,
@@ -778,6 +798,7 @@
 				CB72819B2624CBE100AAEB2C /* TextfieldStepViewController.xib */,
 				CB7281A72624DC5000AAEB2C /* WithdrawalStepViewController.swift */,
 				CB7281A62624DC5000AAEB2C /* WithdrawalStepViewController.xib */,
+				CB508BFA26713F15008B54D5 /* SandboxImageApiViewController.swift */,
 				CB5A93F9265EAB1A0063994F /* EnvironmentalStepViewController.swift */,
 				CB5A93FE265EAB1A0063994F /* EnvironmentalStepViewController.xib */,
 				04E61CAC2672645300B371E9 /* ConsentReviewStepViewController.xib */,
@@ -1109,6 +1130,10 @@
 			isa = PBXGroup;
 			children = (
 				CBC0C85C242BBBEF00E2EE80 /* Assets.xcassets */,
+				605B8736268E74F6006BA0AA /* cat.jpg */,
+				605B872F268E73F1006BA0AA /* failed-upload-request-response.json */,
+				60E024872697C08F0065AF9A /* upload-request-success.json */,
+				60E0CC2326A7551D00BB7BE5 /* upload-request-expired.json */,
 				CBC0C85D242BBBF000E2EE80 /* Info.plist */,
 				CBC6519323F391BC00C3FF0C /* PsorcastTests.swift */,
 				CB67C29023F390AA005B6BCD /* CodableResultObjectTests.swift */,
@@ -1122,6 +1147,8 @@
 				CB81C92D242D3AB100A84886 /* MeasureTabViewControllerTests.swift */,
 				CBD0A5AE244E2D12002EE886 /* MasterScheduleManagerTests.swift */,
 				CBADD5362450C33A00422CE4 /* VideoExporterTests.swift */,
+				60396E08266EDC5100DB7126 /* MockURLSession.swift */,
+				605B8729268E644C006BA0AA /* ParticipantFileUploadManagerTests.swift */,
 			);
 			path = PsorcastTests;
 			sourceTree = "<group>";
@@ -1341,7 +1368,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				60E0248C2697C08F0065AF9A /* upload-request-success.json in Resources */,
+				605B873B268E74F6006BA0AA /* cat.jpg in Resources */,
 				CBC0C85E242BBBF000E2EE80 /* Assets.xcassets in Resources */,
+				605B8730268E73F1006BA0AA /* failed-upload-request-response.json in Resources */,
+				60E0CC2826A7551D00BB7BE5 /* upload-request-expired.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1506,6 +1537,7 @@
 			files = (
 				CB67C29A23F390AB005B6BCD /* CodableResultObjectTests.swift in Sources */,
 				CB67C29E23F390AB005B6BCD /* CopyStepTests.swift in Sources */,
+				605B872A268E644C006BA0AA /* ParticipantFileUploadManagerTests.swift in Sources */,
 				CBD0A5AF244E2D12002EE886 /* MasterScheduleManagerTests.swift in Sources */,
 				CBC6519423F391BC00C3FF0C /* PsorcastTests.swift in Sources */,
 				CB81C92E242D3AB100A84886 /* MeasureTabViewControllerTests.swift in Sources */,
@@ -1515,7 +1547,7 @@
 				CB67C29923F390AB005B6BCD /* JointPainImageViewTests.swift in Sources */,
 				CB67C29B23F390AB005B6BCD /* CodableStepObjectTests.swift in Sources */,
 				CB8F7D592423F6BB00F77D62 /* LevenshteinToolsTests.swift in Sources */,
-				CB67C29823F390AB005B6BCD /* PSRImageHelperTests.swift in Sources */,
+				60396E09266EDC5100DB7126 /* MockURLSession.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1553,6 +1585,8 @@
 				04E61CB12672671000B371E9 /* ConsentReviewStepViewController.swift in Sources */,
 				CBDCDCB123F3849E00E5CEB8 /* SelectedIdentifiersResultObject.swift in Sources */,
 				CBDA96DF262F470C00C9FAA3 /* PastTreatmentsCompletionStepViewController.swift in Sources */,
+				60E8C6A6266019B600AA906A /* BackgroundNetworkManager.swift in Sources */,
+				60E9E2A22695251F004B67EC /* ParticipantFileUploadManager.swift in Sources */,
 				CBDCDC8D23F3849E00E5CEB8 /* SelectionCollectionStepViewController.swift in Sources */,
 				CBDCDC8B23F3849E00E5CEB8 /* RSDCollectionViewCell.swift in Sources */,
 				CBDCDCA523F3849E00E5CEB8 /* PsoriasisAreaPhotoResultObject.swift in Sources */,
@@ -1594,6 +1628,7 @@
 				CB27B9F1243596F4007D36D8 /* MasterScheduleManager.swift in Sources */,
 				CBBDC397247788720017A304 /* RemindersUserDefaultsSingletonReport.swift in Sources */,
 				CBDCDC9C23F3849E00E5CEB8 /* JointPainImageView.swift in Sources */,
+				CB508BFB26713F15008B54D5 /* SandboxImageApiViewController.swift in Sources */,
 				CBDCDC8F23F3849E00E5CEB8 /* ExternalIDRegistrationViewController.swift in Sources */,
 				CBAF1DA92437CB2A00ECC699 /* StudyExternalIdRegistrationViewController.swift in Sources */,
 				CB16C38924465BB80046E200 /* ReminderManager.swift in Sources */,
@@ -1649,6 +1684,7 @@
 				047C2CD025F16628006AA52B /* PopTip.swift in Sources */,
 				CB09F00323D649FB009D344E /* DigitalJarOpenInstructionStepViewController.swift in Sources */,
 				CBD62BAC23342CBA00C78F22 /* PsoriasisAreaPhotoCompletionStepViewController.swift in Sources */,
+				60F877272628E29900D1D9C1 /* ParticipantFileUploadManager.swift in Sources */,
 				CB03196523E3ED0A005063A3 /* ReviewCaptureStepViewController.swift in Sources */,
 				047C2CD425F16628006AA52B /* PopTip+Transitions.swift in Sources */,
 				CB55C71723173D6A00EA0C19 /* SelectionCollectionStepViewController.swift in Sources */,
