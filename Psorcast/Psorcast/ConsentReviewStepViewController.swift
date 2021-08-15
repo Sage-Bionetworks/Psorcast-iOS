@@ -50,9 +50,17 @@ open class ConsentReviewStepViewController: RSDStepViewController, UITextFieldDe
     @IBOutlet weak var signatureContainer: UIView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var detailsLabel: UILabel!
+    @IBOutlet weak var signConsentContainer: UIView!
     @IBOutlet weak var signatureTextField: UITextField!
     @IBOutlet weak var disagreeButton: RSDRoundedButton!
     @IBOutlet weak var agreeButton: RSDRoundedButton!
+    
+    private var keyboardWillShowObserver: Any?
+    private var keyboardWillHideObserver: Any?
+    private var isKeyboardOffset: Bool = false
+    private var offsetAmount: CGFloat = 0.0
+    
+    private let kKeyboardPadding: CGFloat = 5.0
     
     public var grayView: UIView?
     
@@ -66,6 +74,65 @@ open class ConsentReviewStepViewController: RSDStepViewController, UITextFieldDe
         agreeButton.isEnabled = false
         signatureTextField.addTarget(self, action: #selector(editingChanged), for: .editingChanged)
         self.view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.dismissKeyboard)))
+    }
+    
+    override open func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        // Add observers for keyboard show/hide notifications and text changes.
+        let center = NotificationCenter.default
+        let mainQ = OperationQueue.main
+        
+        self.keyboardWillShowObserver = center.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: mainQ, using: { (notification) in
+            guard let keyboardRect = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect,
+                    let screenCoordinates = self.view.window?.screen.fixedCoordinateSpace
+                else { return }
+            
+            let consentContainerView = self.signConsentContainer!
+            let consentContainerFrame = consentContainerView.convert(consentContainerView.bounds, to: screenCoordinates) // keyboardRect is in screen coordinates.
+            let consentContainerBottom = consentContainerFrame.origin.y + consentContainerFrame.size.height
+            let yOffset = keyboardRect.origin.y - consentContainerBottom - self.kKeyboardPadding
+            
+            // Don't scroll if the bottom of the code entry field is already above the keyboard.
+            if yOffset < 0 {
+                self.isKeyboardOffset = true
+                self.offsetAmount = yOffset
+                var newFrame = self.view.frame
+                newFrame.origin.y += yOffset
+                
+                UIView.animate(withDuration: 0.3, animations: {
+                    self.view.frame = newFrame
+                })
+            }
+        })
+        
+        self.keyboardWillHideObserver = center.addObserver(forName: UIResponder.keyboardWillHideNotification, object: nil, queue: mainQ, using: { (notification) in
+            var oldFrame = self.view.frame
+
+            // If we scrolled it when the keyboard slid up, scroll it back now.
+            if self.isKeyboardOffset {
+                oldFrame.origin.y -= self.offsetAmount
+                
+                UIView.animate(withDuration: 0.3, animations: {
+                    self.view.frame = oldFrame
+                })
+                self.isKeyboardOffset = false
+                self.offsetAmount = 0.0
+            }
+        })
+    }
+    
+    override open func viewWillDisappear(_ animated: Bool) {
+        // Remove keyboard show/hide notification listeners.
+        let center = NotificationCenter.default
+        if let showObserver = self.keyboardWillShowObserver {
+            center.removeObserver(showObserver)
+        }
+        if let hideObserver = self.keyboardWillHideObserver {
+            center.removeObserver(hideObserver)
+        }
+        
+        super.viewWillDisappear(animated)
     }
     
     override open func viewDidLayoutSubviews() {

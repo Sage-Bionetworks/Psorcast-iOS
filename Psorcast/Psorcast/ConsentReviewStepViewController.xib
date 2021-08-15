@@ -16,6 +16,7 @@
                 <outlet property="disagreeButton" destination="xMU-kr-7ba" id="rFf-UV-BAi"/>
                 <outlet property="navigationFooter" destination="tqM-PK-2qc" id="3Xj-7s-SdV"/>
                 <outlet property="navigationHeader" destination="w3d-oH-2L5" id="a5n-bg-Qjz"/>
+                <outlet property="signConsentContainer" destination="OSS-pe-N96" id="8R0-v5-fAU"/>
                 <outlet property="signatureContainer" destination="OSS-pe-N96" id="Hf3-KW-1Ru"/>
                 <outlet property="signatureTextField" destination="DRW-8O-EDe" id="7Yk-df-Vsy"/>
                 <outlet property="textView" destination="cJA-fy-lPu" id="g9K-4Q-OIR"/>
