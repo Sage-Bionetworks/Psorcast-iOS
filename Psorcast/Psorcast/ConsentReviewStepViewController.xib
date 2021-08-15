@@ -102,6 +102,9 @@
                                     <rect key="frame" x="24" y="190" width="366" height="34"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                     <textInputTraits key="textInputTraits"/>
+                                    <connections>
+                                        <action selector="done:" destination="-1" eventType="primaryActionTriggered" id="4S5-4I-yoC"/>
+                                    </connections>
                                 </textField>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xMU-kr-7ba" userLabel="Disagree Button" customClass="RSDRoundedButton" customModule="ResearchUI">
                                     <rect key="frame" x="24" y="284" width="171" height="52"/>

@@ -119,7 +119,10 @@ open class ConsentReviewStepViewController: RSDStepViewController, UITextFieldDe
         agreeButton.isEnabled = true
     }
     
-
+    @IBAction func done(_ sender: UITextField) {
+        sender.resignFirstResponder()
+    }
+    
     
     @IBAction func agreePressed(_ sender: Any) {
         let signatureImage = PSRImageHelper.convertToImage(signatureTextField)
