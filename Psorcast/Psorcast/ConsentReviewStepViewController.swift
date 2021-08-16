@@ -74,6 +74,15 @@ open class ConsentReviewStepViewController: RSDStepViewController, UITextFieldDe
         agreeButton.isEnabled = false
         signatureTextField.addTarget(self, action: #selector(editingChanged), for: .editingChanged)
         self.view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.dismissKeyboard)))
+        
+        if let htmlFile = Bundle.main.path(forResource:"ConsentForm", ofType: "html") {
+            do {
+                let htmlString = try String(contentsOfFile: htmlFile)
+                self.textView.attributedText = htmlString.htmlToAttributedString
+            } catch {
+                print(error)
+            }
+        }
     }
     
     override open func viewWillAppear(_ animated: Bool) {
@@ -233,5 +242,19 @@ open class ConsentReviewStepViewController: RSDStepViewController, UITextFieldDe
             textField.resignFirstResponder()
         }
         return false
+    }
+}
+
+extension String {
+    var htmlToAttributedString: NSAttributedString? {
+        guard let data = data(using: .utf8) else { return nil }
+        do {
+            return try NSAttributedString(data: data, options: [.documentType: NSAttributedString.DocumentType.html, .characterEncoding:String.Encoding.utf8.rawValue], documentAttributes: nil)
+        } catch {
+            return nil
+        }
+    }
+    var htmlToString: String {
+        return htmlToAttributedString?.string ?? ""
     }
 }
