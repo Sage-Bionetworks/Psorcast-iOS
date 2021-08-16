@@ -16,6 +16,7 @@
                 <outlet property="disagreeButton" destination="xMU-kr-7ba" id="rFf-UV-BAi"/>
                 <outlet property="navigationFooter" destination="tqM-PK-2qc" id="3Xj-7s-SdV"/>
                 <outlet property="navigationHeader" destination="w3d-oH-2L5" id="a5n-bg-Qjz"/>
+                <outlet property="signConsentContainer" destination="OSS-pe-N96" id="8R0-v5-fAU"/>
                 <outlet property="signatureContainer" destination="OSS-pe-N96" id="Hf3-KW-1Ru"/>
                 <outlet property="signatureTextField" destination="DRW-8O-EDe" id="7Yk-df-Vsy"/>
                 <outlet property="textView" destination="cJA-fy-lPu" id="g9K-4Q-OIR"/>
@@ -72,8 +73,8 @@
                                 <outlet property="titleLabel" destination="n77-ca-UzS" id="jFl-7E-hC6"/>
                             </connections>
                         </view>
-                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="This is where the consent form will go" translatesAutoresizingMaskIntoConstraints="NO" id="cJA-fy-lPu">
-                            <rect key="frame" x="36" y="295" width="342" height="500"/>
+                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" text="This is where the consent form will go" translatesAutoresizingMaskIntoConstraints="NO" id="cJA-fy-lPu">
+                            <rect key="frame" x="36" y="295" width="342" height="508"/>
                             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             <color key="textColor" systemColor="labelColor"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -102,6 +103,9 @@
                                     <rect key="frame" x="24" y="190" width="366" height="34"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                     <textInputTraits key="textInputTraits"/>
+                                    <connections>
+                                        <action selector="done:" destination="-1" eventType="primaryActionTriggered" id="4S5-4I-yoC"/>
+                                    </connections>
                                 </textField>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xMU-kr-7ba" userLabel="Disagree Button" customClass="RSDRoundedButton" customModule="ResearchUI">
                                     <rect key="frame" x="24" y="284" width="171" height="52"/>
@@ -124,6 +128,7 @@
                                     </connections>
                                 </button>
                             </subviews>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstItem="fR5-vp-ZId" firstAttribute="centerX" secondItem="OSS-pe-N96" secondAttribute="centerX" id="4E1-pt-phb"/>
                                 <constraint firstItem="fR5-vp-ZId" firstAttribute="leading" secondItem="OSS-pe-N96" secondAttribute="leading" constant="24" id="6AD-sc-umh"/>
@@ -152,15 +157,15 @@
                         <constraint firstItem="OSS-pe-N96" firstAttribute="leading" secondItem="v0v-h1-nk4" secondAttribute="leading" id="KuO-3f-MmW"/>
                         <constraint firstAttribute="trailing" secondItem="cJA-fy-lPu" secondAttribute="trailing" constant="36" id="Ov0-uM-f8F"/>
                         <constraint firstItem="tqM-PK-2qc" firstAttribute="leading" secondItem="v0v-h1-nk4" secondAttribute="leading" id="P7J-GR-x35"/>
+                        <constraint firstAttribute="bottom" secondItem="OSS-pe-N96" secondAttribute="bottom" id="PgG-Zj-tU8"/>
                         <constraint firstAttribute="bottom" secondItem="tqM-PK-2qc" secondAttribute="bottom" id="SJv-ql-N8a"/>
                         <constraint firstItem="cJA-fy-lPu" firstAttribute="leading" secondItem="v0v-h1-nk4" secondAttribute="leading" constant="36" id="TaU-ai-yOZ"/>
                         <constraint firstItem="w3d-oH-2L5" firstAttribute="leading" secondItem="v0v-h1-nk4" secondAttribute="leading" id="i18-qi-aHr"/>
                         <constraint firstAttribute="trailing" secondItem="tqM-PK-2qc" secondAttribute="trailing" id="iGJ-cx-rDJ"/>
                         <constraint firstItem="cJA-fy-lPu" firstAttribute="top" secondItem="w3d-oH-2L5" secondAttribute="bottom" constant="29.5" id="ndj-qJ-vIi"/>
                         <constraint firstAttribute="trailing" secondItem="OSS-pe-N96" secondAttribute="trailing" id="vcc-Ua-kP1"/>
-                        <constraint firstItem="tqM-PK-2qc" firstAttribute="top" secondItem="cJA-fy-lPu" secondAttribute="bottom" constant="8" symbolic="YES" id="xVr-nZ-fpg"/>
+                        <constraint firstItem="tqM-PK-2qc" firstAttribute="top" secondItem="cJA-fy-lPu" secondAttribute="bottom" priority="999" id="xVr-nZ-fpg"/>
                         <constraint firstAttribute="trailing" secondItem="w3d-oH-2L5" secondAttribute="trailing" id="zJp-cJ-Tcl"/>
-                        <constraint firstAttribute="bottom" secondItem="OSS-pe-N96" secondAttribute="bottom" id="zb1-5p-oDo"/>
                     </constraints>
                 </view>
             </subviews>

@@ -77,8 +77,6 @@ public class EnvironmentalStepViewController: RSDStepViewController, CLLocationM
         self.textview.textColor = AppDelegate.designSystem.colorRules.textColor(on: white, for: .body)
         self.textview.font = AppDelegate.designSystem.fontRules.font(for: .body)
         self.textview.isEditable = false
-        
-        
     }
     
     override open func setupHeader(_ header: RSDStepNavigationView) {
@@ -91,6 +89,20 @@ public class EnvironmentalStepViewController: RSDStepViewController, CLLocationM
         super.setupFooter(footer)
     }
     
+    override open func actionTapped(with actionType: RSDUIActionType) -> Bool {
+        guard let action = self.stepViewModel.action(for: actionType) else { return false }
+        // This is a work-around to a bug in ResearchUI on iOS 13
+        // where default actionTapped behavior is not allowing user to cancel
+        if let webAction = action as? RSDWebViewUIAction {
+            let (_, navVC) = RSDWebViewController.instantiateController(using: self.designSystem, action: webAction)
+            // This modal style allows user to slide to cancel modal
+            navVC.modalPresentationStyle = .formSheet
+            self.present(navVC, animated: true, completion: nil)
+            return true
+        }
+        return super.actionTapped(with: actionType)
+    }
+    
     override open func goForward() {
         
         guard self.hasAskedLocationPermission else {
@@ -99,8 +111,7 @@ public class EnvironmentalStepViewController: RSDStepViewController, CLLocationM
             return
         }
         
-        guard self.hasAskedHealthKitPermission,
-              PassiveDataManager.shared.isHealthKitAvailable() else {
+        guard self.hasAskedHealthKitPermission else {
             self.hasAskedHealthKitPermission = true
             PassiveDataManager.shared.requestAuthorization { (success, error) in
                 DispatchQueue.main.async {
@@ -110,23 +121,8 @@ public class EnvironmentalStepViewController: RSDStepViewController, CLLocationM
             return
         }
         
-        // Stop getting location updates
-        locationManager.stopUpdatingLocation()
-        
         super.goForward()
     }
-    
-    public func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        let longitude = String(describing: locations.first?.coordinate.longitude)
-        let latitude = String(describing: locations.first?.coordinate.latitude)
-        let accuracy = String(describing: locations.first?.horizontalAccuracy)
-        
-        NSLog("GPS coordinate received longitude = \(longitude)), latitude = \(latitude), accuracy = \(accuracy)")
-        
-        // Grab the first accurate GPS location, and integrate air and weather
-        locationManager.stopUpdatingLocation()
-    }
-    
     
     public func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         DispatchQueue.main.async {
@@ -142,13 +138,7 @@ public class EnvironmentalStepViewController: RSDStepViewController, CLLocationM
     }
     
     private func newLocationAuthStatus(authStatus: CLAuthorizationStatus) {
-        guard !self.hasAskedLocationPermission else {
-            return // we already got auth status
-        }
         self.hasAskedLocationPermission = true
-        if (authStatus == .authorizedWhenInUse) {
-            locationManager.startUpdatingLocation()
-        }
         self.goForward()
     }
 }
