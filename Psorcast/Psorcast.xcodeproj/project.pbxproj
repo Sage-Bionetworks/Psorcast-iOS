@@ -13,6 +13,7 @@
 		047C2CD225F16628006AA52B /* PopTip+Draw.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047C2CCD25F16628006AA52B /* PopTip+Draw.swift */; };
 		047C2CD325F16628006AA52B /* PopTip+Transitions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047C2CCE25F16628006AA52B /* PopTip+Transitions.swift */; };
 		047C2CD425F16628006AA52B /* PopTip+Transitions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047C2CCE25F16628006AA52B /* PopTip+Transitions.swift */; };
+		04C9B28626B78E5900DF9CAB /* OnboardingInstructionStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C9B28526B78E5900DF9CAB /* OnboardingInstructionStepViewController.swift */; };
 		04E61C9E2671CE5E00B371E9 /* Consent.json in Resources */ = {isa = PBXBuildFile; fileRef = 04E61C9D2671CE5E00B371E9 /* Consent.json */; };
 		04E61CA626721B6000B371E9 /* ConsentLearnMorePlaceholder.html in Resources */ = {isa = PBXBuildFile; fileRef = 04E61CA526721B6000B371E9 /* ConsentLearnMorePlaceholder.html */; };
 		04E61CAD2672645300B371E9 /* ConsentReviewStepViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 04E61CAC2672645300B371E9 /* ConsentReviewStepViewController.xib */; };
@@ -413,6 +414,7 @@
 		047C2CCC25F16628006AA52B /* PopTip.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopTip.swift; sourceTree = "<group>"; };
 		047C2CCD25F16628006AA52B /* PopTip+Draw.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PopTip+Draw.swift"; sourceTree = "<group>"; };
 		047C2CCE25F16628006AA52B /* PopTip+Transitions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PopTip+Transitions.swift"; sourceTree = "<group>"; };
+		04C9B28526B78E5900DF9CAB /* OnboardingInstructionStepViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingInstructionStepViewController.swift; sourceTree = "<group>"; };
 		04E61C9D2671CE5E00B371E9 /* Consent.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Consent.json; sourceTree = "<group>"; };
 		04E61CA526721B6000B371E9 /* ConsentLearnMorePlaceholder.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = ConsentLearnMorePlaceholder.html; sourceTree = "<group>"; };
 		04E61CAC2672645300B371E9 /* ConsentReviewStepViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ConsentReviewStepViewController.xib; sourceTree = "<group>"; };
@@ -804,6 +806,7 @@
 				04E61CAC2672645300B371E9 /* ConsentReviewStepViewController.xib */,
 				04E61CB02672671000B371E9 /* ConsentReviewStepViewController.swift */,
 				04F2659F268701E6004140B7 /* ConsentQuizStepViewController.swift */,
+				04C9B28526B78E5900DF9CAB /* OnboardingInstructionStepViewController.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -1610,6 +1613,7 @@
 				CB268431263BC20A0057FF4C /* SymptomHistoryStepNavigatorObject.swift in Sources */,
 				CBDCDC8C23F3849E00E5CEB8 /* RSDSelectionCollectionViewCell.swift in Sources */,
 				CBDCDCA123F3849E00E5CEB8 /* LearnMoreStepViewController.swift in Sources */,
+				04C9B28626B78E5900DF9CAB /* OnboardingInstructionStepViewController.swift in Sources */,
 				CBE1D7DC245A97350063FEB2 /* ReviewTabViewController.swift in Sources */,
 				04F00572243FE64800EDB120 /* ShowInsightStepViewController.swift in Sources */,
 				CBDD30E82416D403003B0488 /* MeasureTabViewController.swift in Sources */,

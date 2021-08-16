@@ -65,7 +65,7 @@
         },
         {
           "identifier": "research_activities",
-          "type": "instruction",
+          "type": "onboardingInstruction",
           "title": "Research Activities",
           "text": "We will ask you to measure your psoriatic disease symptoms using your phone and answer short surveys once per week. You can continue using the app after this for as long as you’d like.",
           "image": {
@@ -84,7 +84,7 @@
         },
         {
           "identifier": "privacy",
-          "type": "instruction",
+          "type": "onboardingInstruction",
           "title": "Your privacy",
           "text": "Your data will be encrypted on your phone. We will replace your name with a random code and store your coded study data on a secure cloud server.",
           "image": {
@@ -136,7 +136,7 @@
         },
         {
           "identifier": "data_use",
-          "type": "instruction",
+          "type": "onboardingInstruction",
           "title": "Data use",
           "text": "We will combine the data from each participant (without identifiable information) and analyze it to answer research questions. ",
           "image": {
@@ -155,7 +155,7 @@
         },
         {
           "identifier": "time_commitment",
-          "type": "instruction",
+          "type": "onboardingInstruction",
           "title": "Time commitment",
           "text": "We will combine the data from each participant (without identifiable information) and analyze it to answer research questions. ",
           "image": {
@@ -174,7 +174,7 @@
         },
         {
           "identifier": "potential_benefits",
-          "type": "instruction",
+          "type": "onboardingInstruction",
           "title": "Potential benefits",
           "text": "This app may help you better understand or measure your symptoms, you can generate GIFs of your symptoms over time and you may be compensated for your participation.",
           "image": {
@@ -193,7 +193,7 @@
         },
         {
           "identifier": "potential_risks",
-          "type": "instruction",
+          "type": "onboardingInstruction",
           "title": "Potential risks",
           "text": "If you participate in this study, your privacy may be at risk. Data transferred from this app may count against your mobile data plan, but you can set up this app to only transfer using a Wi-Fi connection.There may be other risks to participating that we do not know about yet.",
           "image": {
@@ -245,7 +245,7 @@
         },
         {
           "identifier": "medical_care",
-          "type": "instruction",
+          "type": "onboardingInstruction",
           "title": "NOT medical care",
           "text": "Psorcast is not used for medical care and is not a diagnostic tool. We do not give medical advice or treatment recommendations.",
           "image": {
@@ -264,7 +264,7 @@
         },
         {
           "identifier": "future_independent_research",
-          "type": "instruction",
+          "type": "onboardingInstruction",
           "title": "Future independent research",
           "text": "Your coded study data is valuable. In addition to this study, it could be used for other research. You decide whether or not to share your data for other research. ",
           "image": {
@@ -316,7 +316,7 @@
         },
         {
           "identifier": "qualified_researchers",
-          "type": "instruction",
+          "type": "onboardingInstruction",
           "title": "Qualified researchers",
           "text": "With your permission, we will share your coded study data with qualified researchers worldwide. We have rules to qualify researchers. We do not control the research that they do with the shared data.",
           "image": {
@@ -335,7 +335,7 @@
         },
         {
           "identifier": "follow_up",
-          "type": "instruction",
+          "type": "onboardingInstruction",
           "title": "Follow up",
           "text": "We might want to reach out to you or present you with opportunities to enroll in other studies in the Psorcast app. \n\nYou can opt out of these follow up notifications at any time.",
           "image": {
@@ -354,7 +354,7 @@
         },
              {
                "identifier": "quit",
-               "type": "instruction",
+               "type": "onboardingInstruction",
                "title": "Quit",
                "text": "Your participation is voluntary. You can leave the study at any time by withdrawing in the app.",
                "image": {

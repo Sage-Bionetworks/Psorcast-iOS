@@ -35,6 +35,7 @@ import BridgeApp
 
 extension RSDStepType {
     public static let onboardingPager: RSDStepType = "onboardingPager"
+    public static let onboardingInstruction: RSDStepType = "onboardingInstruction"
     public static let treatmentSelection: RSDStepType = "treatmentSelection"
     public static let pastTreatmentsCompletion: RSDStepType = "pastTreatmentsCompletion"
     public static let insights: RSDStepType = "insights"
@@ -85,6 +86,8 @@ open class StudyTaskFactory: TaskFactory {
             return try EnvironmentalStepObject(from: decoder)
         case .consentQuiz:
             return try ConsentQuizStepObject(from: decoder)
+        case .onboardingInstruction:
+            return try OnboardingInstructionStepObject(from: decoder)
         default:
             return try super.decodeStep(from: decoder, with: type)
         }
