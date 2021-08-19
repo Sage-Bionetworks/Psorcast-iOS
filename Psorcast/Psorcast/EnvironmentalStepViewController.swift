@@ -55,7 +55,7 @@ public class EnvironmentalStepViewController: RSDStepViewController, CLLocationM
     var hasAskedLocationPermission = false
     var hasAskedHealthKitPermission = false
     
-    let locationManager = CLLocationManager()
+    var locationManager: CLLocationManager?
     
     open var environmentalStep: EnvironmentalStepObject? {
         return self.step as? EnvironmentalStepObject
@@ -106,8 +106,9 @@ public class EnvironmentalStepViewController: RSDStepViewController, CLLocationM
     override open func goForward() {
         
         guard self.hasAskedLocationPermission else {
-            locationManager.delegate = self
-            locationManager.requestWhenInUseAuthorization()
+            locationManager = CLLocationManager()
+            locationManager?.delegate = self
+            locationManager?.requestWhenInUseAuthorization()
             return
         }
         
