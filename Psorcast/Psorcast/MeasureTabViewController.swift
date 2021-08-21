@@ -115,8 +115,8 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
     
     open var currentDeepDiveSurvey: DeepDiveItem? {
         guard let treatmentStart = self.currentTreatment?.startDate else { return nil }
-        let weeklyRange = self.weeklyRenewalDateRange(from: treatmentStart, toNow: Date())
-        return DeepDiveReportManager.shared.currentDeepDiveSurvey(for: weeklyRange)
+        let twiceWeeklyRange = self.twiceWeeklyRenewalDateRange(from: treatmentStart, toNow: Date())
+        return DeepDiveReportManager.shared.currentDeepDiveSurvey(for: twiceWeeklyRange)
     }
     
     override open func viewDidLoad() {
@@ -555,6 +555,17 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
             }
         }
         return timeRenewalStr
+    }
+    
+    public func twiceWeeklyRenewalDateRange(from treatmentSetDate: Date, toNow: Date) -> ClosedRange<Date> {
+        let end = self.weeklyRenewalDate(from: treatmentSetDate, toNow: toNow)
+        let start = end.addingNumberOfDays(-7)
+        let midWeek = end.addingNumberOfDays(-4)
+        if (toNow.timeIntervalSince1970 < midWeek.timeIntervalSince1970) {
+            return start...midWeek
+        } else {
+            return midWeek...end
+        }
     }
     
     public func weeklyRenewalDateRange(from treatmentSetDate: Date, toNow: Date) -> ClosedRange<Date> {
