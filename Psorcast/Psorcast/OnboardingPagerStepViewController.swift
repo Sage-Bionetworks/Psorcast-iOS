@@ -196,9 +196,11 @@ open class OnboardingPagerView: UIView, RSDViewDesignable {
         
         titleLabel.font = designSystem.fontRules.font(for: .largeHeader)
         titleLabel.textColor = designSystem.colorRules.textColor(on: background, for: .largeHeader)
+        titleLabel.textAlignment = .center
         
         textLabel.font = designSystem.fontRules.font(for: .body)
         textLabel.textColor = designSystem.colorRules.textColor(on: background, for: .body)
+        textLabel.textAlignment = .left
     }
 }
 
