@@ -342,8 +342,16 @@ class BackgroundNetworkManager: NSObject, URLSessionBackgroundDelegate {
         var retry = Int(request.value(forHTTPHeaderField: retryCountHeader) ?? "") ?? 0
         guard retry < maxRetries else { return false }
         
+        let headers = NSMutableDictionary()
+        BridgeSDK.authManager.addAuthHeader(toHeaders: headers)
+        guard let sessionToken = headers["Bridge-Session"] as? String else {
+            debugPrint("Unable to retry task--not signed in (auth manager's sessionToken is nil)")
+            return false
+        }
+
         retry += 1
         request.setValue("\(retry)", forHTTPHeaderField: retryCountHeader)
+        request.setValue(sessionToken, forHTTPHeaderField: "Bridge-Session")
         let newTask = self.backgroundSession().downloadTask(with: request)
         newTask.taskDescription = task.taskDescription
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + pow(2.0, Double(retry))) {
