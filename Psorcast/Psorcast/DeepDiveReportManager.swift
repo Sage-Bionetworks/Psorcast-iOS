@@ -50,20 +50,24 @@ open class DeepDiveReportManager: SBAReportManager {
         return queries
     }
     
-    open func currentDeepDiveSurvey(for weekRange: ClosedRange<Date>) -> DeepDiveItem? {
+    open func currentDeepDiveSurveyList(for weekRange: ClosedRange<Date>) -> [DeepDiveItem]? {
+        var deepDiveRetVal = [DeepDiveItem]()
         let deepDiveItems = self.deepDiveTaskItems
         for item in deepDiveItems {
             if !self.isDeepDiveComplete(for: item.task.identifier) {
                 // The first incomplete one should be the current deep dive
-                return item
+                deepDiveRetVal.append(item)
             } else if let mostRecent = self.mostRecentDeepDiveReport(for: item.task.identifier),
                 weekRange.contains(mostRecent.date) {
                 // If the user completed the most recent deep-dive, but we shouldn't move to
                 // the next one until the week is over
-                return item
+                deepDiveRetVal.append(item)
             }
         }
-        return nil
+        if (deepDiveRetVal.count < 2) {
+            return deepDiveRetVal
+        }
+        return [deepDiveRetVal[0], deepDiveRetVal[1]]
     }
     
     /// A value from 0.0 to 1.0 (0% to 100%) of the progress the user has made of

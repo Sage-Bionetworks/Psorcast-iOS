@@ -64,8 +64,8 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
     /// The current scheduled activities, these are maintianed separately from
     /// the master schedule manager for performance reasons
     var currentActivityState = [ActivityState]()
-    var lastDeepDiveItem: DeepDiveItem?
-    var lastDeepDiveComplete = false
+    var lastDeepDiveItemList: [DeepDiveItem]?
+    var lastDeepDiveComplete: [Bool]?
     
     /// The activities collection view
     @IBOutlet weak var collectionView: UICollectionView!
@@ -103,7 +103,7 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
     }
     
     open var measureTabItemCount: Int {
-        let deepDiveCount = (self.currentDeepDiveSurvey == nil) ? 0 : 1
+        let deepDiveCount = (self.currentDeepDiveSurveyList ?? []).count
         let scheduleCount = self.scheduleManager.sortedScheduleCount
         return scheduleCount + deepDiveCount
     }
@@ -113,10 +113,10 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
     
     let locationManager = CLLocationManager()
     
-    open var currentDeepDiveSurvey: DeepDiveItem? {
+    open var currentDeepDiveSurveyList: [DeepDiveItem]? {
         guard let treatmentStart = self.currentTreatment?.startDate else { return nil }
-        let twiceWeeklyRange = self.twiceWeeklyRenewalDateRange(from: treatmentStart, toNow: Date())
-        return DeepDiveReportManager.shared.currentDeepDiveSurvey(for: twiceWeeklyRange)
+        let weeklyRange = self.weeklyRenewalDateRange(from: treatmentStart, toNow: Date())
+        return DeepDiveReportManager.shared.currentDeepDiveSurveyList(for: weeklyRange)
     }
     
     override open func viewDidLoad() {
@@ -255,25 +255,42 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
         
         var deepDiveChanged = false
         var deepDiveUpdated = false
-        // If the deep dive item chagned, or has become complete
-        if let newDeepDive = self.currentDeepDiveSurvey {
-            if let lastItem = self.lastDeepDiveItem {
-                if lastItem.task.identifier != newDeepDive.task.identifier  {
-                    // Deep-dive survey changed
+        // If the deep dive item list changed, or has become complete
+        if let newDeepDiveList = self.currentDeepDiveSurveyList {
+            if let lastItemList = self.lastDeepDiveItemList {
+                if (lastItemList.count != newDeepDiveList.count) {
                     deepDiveChanged = true
+                } else {
+                    for i in 0..<lastItemList.count {
+                        if lastItemList[i].task.identifier != newDeepDiveList[i].task.identifier  {
+                            // Deep-dive survey changed
+                            deepDiveChanged = true
+                        }
+                    }
                 }
             } else { // The first time showing the deep dive
                 deepDiveChanged = true
             }
             
-            let newDeepDiveComplete = self.deepDiveManager.isDeepDiveComplete(for: newDeepDive.task.identifier)
-            if self.lastDeepDiveComplete != newDeepDiveComplete  {
-                // Deep-dive survey was completed
+            let newDeepDiveCompleteList = newDeepDiveList.map({
+                self.deepDiveManager.isDeepDiveComplete(for: $0.task.identifier)
+            })
+            
+            if let lastDeepDiveCompleteUnwrapped = self.lastDeepDiveComplete {
+                if (newDeepDiveCompleteList.count == lastDeepDiveCompleteUnwrapped.count) {
+                    for i in 0..<newDeepDiveCompleteList.count {
+                        if lastDeepDiveCompleteUnwrapped[i] != newDeepDiveCompleteList[i]  {
+                            // Deep-dive survey was completed
+                            deepDiveUpdated = true
+                        }
+                    }
+                }
+            } else { // The first time showing the deep dive
                 deepDiveUpdated = true
             }
-            self.lastDeepDiveComplete = newDeepDiveComplete
             
-            self.lastDeepDiveItem = newDeepDive
+            self.lastDeepDiveComplete = newDeepDiveCompleteList
+            self.lastDeepDiveItemList = newDeepDiveList
         }
         
         let newItemCount = self.scheduleManager.sortedScheduleCount
@@ -306,9 +323,14 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
             self.collectionView.reloadItems(at: indexPathsToUpdate)
         }
         
-        if deepDiveUpdated && !deepDiveChanged && (self.measureTabItemCount > 0),
-            let indexPath = self.collectionViewIndexPath(for: self.measureTabItemCount - 1) {
-            self.collectionView.reloadItems(at: [indexPath])
+        if deepDiveUpdated && !deepDiveChanged && (self.measureTabItemCount > 0) {
+            var indexPathList = [IndexPath]()
+            for i in 0 ..< (self.lastDeepDiveItemList ?? []).count {
+                if let indexPath = self.collectionViewIndexPath(for: self.measureTabItemCount - (i + 1)) {
+                    indexPathList.append(indexPath)
+                }
+            }
+            self.collectionView.reloadItems(at: indexPathList)
         }
         
         // Refresh to current activity states
@@ -411,9 +433,10 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
         }
         
         var activitiesCompletedThisWeek = self.scheduleManager.completedActivitiesCount()
-        if let currentDeepDive = self.currentDeepDiveSurvey,
-            DeepDiveReportManager.shared.isDeepDiveComplete(for: currentDeepDive.task.identifier) {
-            activitiesCompletedThisWeek = activitiesCompletedThisWeek + 1
+        for deepDive in self.currentDeepDiveSurveyList ?? [] {
+            if DeepDiveReportManager.shared.isDeepDiveComplete(for: deepDive.task.identifier) {
+                activitiesCompletedThisWeek = activitiesCompletedThisWeek + 1
+            }
         }
                         
         let newProgress = Float(activitiesCompletedThisWeek) / Float(totalSchedules)
@@ -557,17 +580,6 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
         return timeRenewalStr
     }
     
-    public func twiceWeeklyRenewalDateRange(from treatmentSetDate: Date, toNow: Date) -> ClosedRange<Date> {
-        let end = self.weeklyRenewalDate(from: treatmentSetDate, toNow: toNow)
-        let start = end.addingNumberOfDays(-7)
-        let midWeek = end.addingNumberOfDays(-4)
-        if (toNow.timeIntervalSince1970 < midWeek.timeIntervalSince1970) {
-            return start...midWeek
-        } else {
-            return midWeek...end
-        }
-    }
-    
     public func weeklyRenewalDateRange(from treatmentSetDate: Date, toNow: Date) -> ClosedRange<Date> {
         let end = self.weeklyRenewalDate(from: treatmentSetDate, toNow: toNow)
         let start = end.addingNumberOfDays(-7)
@@ -666,7 +678,9 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
 
                 measureCell.setItemIndex(itemIndex: translatedIndexPath.item, title: title, buttonTitle: buttonTitle, image: image, isComplete: isComplete)
                 
-            } else if let deepDiveSurvey = self.currentDeepDiveSurvey {
+            } else if let deepDiveSurveys = self.currentDeepDiveSurveyList {
+                let deepDiveIdx = itemIndex - self.scheduleManager.sortedScheduleCount
+                let deepDiveSurvey = deepDiveSurveys[deepDiveIdx]
                 measureCell.setItemIndex(itemIndex: translatedIndexPath.item,
                                          title: deepDiveSurvey.detail,
                                          buttonTitle: deepDiveSurvey.title,
@@ -683,7 +697,9 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
     func didTapItem(for itemIndex: Int) {
         if itemIndex < self.scheduleManager.sortedScheduleCount {
             self.runTask(for: itemIndex)
-        } else if let item = self.currentDeepDiveSurvey {
+        } else if let items = self.currentDeepDiveSurveyList {
+            let deepDiveIdx = itemIndex - self.scheduleManager.sortedScheduleCount
+            let item = items[deepDiveIdx]
             let vc = RSDTaskViewController(task: item.task)
             vc.delegate = self
             self.show(vc, sender: self)
