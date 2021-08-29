@@ -375,7 +375,7 @@
                "identifier": "consent_review",
                "type": "consentReview",
                "title": "Review",
-               "text": "Review the consent form below, sign and then tap accept if you’re ready to continue."
+               "text": "Review the consent form below and then tap Continue to proceed to digitally sign."
              }
         ]
 }
