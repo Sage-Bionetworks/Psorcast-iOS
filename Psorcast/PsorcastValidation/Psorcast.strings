@@ -119,6 +119,8 @@
 "INSIGHT_NOT_REALLY_BUTTON" = "Not Really";
 "INSIGHTS_COMPLETE_TEXT" = "Thank you from all of us at Psorcast, keep up the great work next week!";
 
+"CANCEL_CANT_SAVE_TEXT" = "Are you sure you want to exit? We will not be able to save your progress if you exit right now.";
+
 "PROFILE_TITLE" = "Your Profile";
 
 "REMINDER_NOTIFICATION_TITLE" = "Time to do your weekly activities";

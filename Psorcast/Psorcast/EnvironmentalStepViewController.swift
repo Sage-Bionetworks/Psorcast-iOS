@@ -83,10 +83,12 @@ public class EnvironmentalStepViewController: RSDStepViewController, CLLocationM
         super.setupHeader(header)
         
         header.titleLabel?.font = AppDelegate.designSystem.fontRules.font(ofSize: 36, weight: .bold)
+        header.cancelButton?.isHidden = true
     }
     
     override open func setupFooter(_ footer: RSDNavigationFooterView) {
         super.setupFooter(footer)
+        footer.isBackHidden = true
     }
     
     override open func actionTapped(with actionType: RSDUIActionType) -> Bool {

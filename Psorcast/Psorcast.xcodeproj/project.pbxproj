@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0423F49826DD303B005F4112 /* OnboardingFormStepObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0423F49726DD303B005F4112 /* OnboardingFormStepObject.swift */; };
 		047C2CCF25F16628006AA52B /* PopTip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047C2CCC25F16628006AA52B /* PopTip.swift */; };
 		047C2CD025F16628006AA52B /* PopTip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047C2CCC25F16628006AA52B /* PopTip.swift */; };
 		047C2CD125F16628006AA52B /* PopTip+Draw.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047C2CCD25F16628006AA52B /* PopTip+Draw.swift */; };
@@ -411,6 +412,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0423F49726DD303B005F4112 /* OnboardingFormStepObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingFormStepObject.swift; sourceTree = "<group>"; };
 		047C2CCC25F16628006AA52B /* PopTip.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopTip.swift; sourceTree = "<group>"; };
 		047C2CCD25F16628006AA52B /* PopTip+Draw.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PopTip+Draw.swift"; sourceTree = "<group>"; };
 		047C2CCE25F16628006AA52B /* PopTip+Transitions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PopTip+Transitions.swift"; sourceTree = "<group>"; };
@@ -807,6 +809,7 @@
 				04E61CB02672671000B371E9 /* ConsentReviewStepViewController.swift */,
 				04F2659F268701E6004140B7 /* ConsentQuizStepViewController.swift */,
 				04C9B28526B78E5900DF9CAB /* OnboardingInstructionStepViewController.swift */,
+				0423F49726DD303B005F4112 /* OnboardingFormStepObject.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -1600,6 +1603,7 @@
 				CB1535E024395410007D0307 /* ProfileTabViewController.swift in Sources */,
 				CBFF926E25E08C3D00EC34DB /* SignInTaskViewController.swift in Sources */,
 				CB6C16DB2477BD5500819FCE /* HistoryItem.swift in Sources */,
+				0423F49826DD303B005F4112 /* OnboardingFormStepObject.swift in Sources */,
 				CBAAB6D92458CB2D00C1A619 /* AtomicBool.swift in Sources */,
 				CBDCDCA923F3849E00E5CEB8 /* PsoriasisDrawStepViewController.swift in Sources */,
 				CB4794F32426B36C00D5A7E6 /* ViewUtils.swift in Sources */,
