@@ -1,5 +1,5 @@
 //
-//  OnboardingInstructionStepViewController.swift
+//  OnboardingFormStepObject.swift
 //  Psorcast
 //
 //  Copyright © 2021 Sage Bionetworks. All rights reserved.
@@ -37,14 +37,14 @@ import UIKit
 import BridgeApp
 import BridgeAppUI
 
-open class OnboardingInstructionStepObject: RSDUIStepObject, RSDStepViewControllerVendor {
+open class OnboardingFormStepObject: RSDFormUIStepObject, RSDStepViewControllerVendor {
 
     public func instantiateViewController(with parent: RSDPathComponent?) -> (UIViewController & RSDStepController)? {
-        return OnboardingInstructionStepViewController(step: self, parent: parent)
+        return OnboardingFormStepViewController(step: self, parent: parent)
     }
     
     open override class func defaultType() -> RSDStepType {
-        return .onboardingInstruction
+        return .onboardingForm
     }
     
     required public init(identifier: String, type: RSDStepType? = nil) {
@@ -56,41 +56,10 @@ open class OnboardingInstructionStepObject: RSDUIStepObject, RSDStepViewControll
     }
 }
 
-public class OnboardingInstructionStepViewController: RSDInstructionStepViewController {
+public class OnboardingFormStepViewController: RSDTableStepViewController {
     
     override open func cancel() {
         processCancel()
-    }
-    
-    override open func viewDidLoad() {
-        super.viewDidLoad()
-        self.stepTitleLabel?.textAlignment = .center
-    }
-    
-    /// Override `viewWillAppear` to update image placement constraints.
-    override open func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        self.stepTitleLabel?.textAlignment = .center
-    }
-    
-    override open func updateImageHeightConstraintIfNeeded() {
-        guard let instructionTextView = self.instructionTextView,
-            let scrollView = self.scrollView,
-            let headerTopConstraint = self.imageBackgroundTopConstraint,
-            let headerHeightConstraint = self.headerHeightConstraint
-            else {
-                return
-        }
-        
-        let remainingHeight = scrollView.bounds.height - instructionTextView.bounds.height - headerTopConstraint.constant
-        let minHeight = self.view.bounds.height / 3
-        let height = minHeight
-        if headerHeightConstraint.constant != height {
-            headerHeightConstraint.constant = height
-            self.navigationFooter?.shouldShowShadow = (height != remainingHeight)
-            self.view.setNeedsUpdateConstraints()
-            self.view.setNeedsLayout()
-        }
     }
     
     open func processCancel() {
@@ -118,5 +87,4 @@ public class OnboardingInstructionStepViewController: RSDInstructionStepViewCont
         
         self.presentAlertWithActions(title: nil, message: Localization.localizedString("CANCEL_CANT_SAVE_TEXT"), preferredStyle: .actionSheet, actions: actions)
     }
-
 }
