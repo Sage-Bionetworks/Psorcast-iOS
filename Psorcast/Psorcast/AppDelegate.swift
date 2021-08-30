@@ -358,6 +358,17 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate, ShowPopTipDele
 //            self.showConsentScreens(animated: true)
 //            return
 //        }
+        
+        // If we stopped due to canceling, sign out, purge data, and go back to the start
+        if (reason == .discarded) {
+            BridgeSDK.authManager.signOut(completion: { (_, _, error) in
+                DispatchQueue.main.async {
+                    self.resetDefaults(defaults: UserDefaults.standard)
+                    self.resetDefaults(defaults: BridgeSDK.sharedUserDefaults())
+                }
+            })
+            self.showIntroductionScreens(animated: true)
+        }
 
         // If we finish the intro screens, send the user to the try it first task list
         if taskController.task.identifier == self.IntroductionTaskId {
@@ -465,6 +476,13 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate, ShowPopTipDele
     /// This function is called by PopTipProgress when a new pop-tip is requesting to be shown
     func showPopTip(type: PopTipProgress, on viewController: UIViewController) {
         popTipController.showPopTip(type: type, on: viewController)
+    }
+    
+    func resetDefaults(defaults: UserDefaults) {
+        let dictionary = defaults.dictionaryRepresentation()
+        dictionary.keys.forEach { key in
+            defaults.removeObject(forKey: key)
+        }
     }
 }
 
