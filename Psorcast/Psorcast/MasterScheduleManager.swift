@@ -55,6 +55,14 @@ open class MasterScheduleManager : SBAScheduleManager {
     public static let resultIdSymptoms          = "symptoms"
     public static let resultIdParticipantID     = "participantID"
     
+    private let kDataGroups                       = "dataGroups"
+    private let kSchemaRevisionKey                = "schemaRevision"
+    private let kSurveyCreatedOnKey               = "surveyCreatedOn"
+    private let kSurveyGuidKey                    = "surveyGuid"
+    private let kExternalIdKey                    = "externalId"
+
+    private let kMetadataFilename                 = "metadata.json"
+    
     open var insightStepIdentifiers: [InsightResultIdentifier] {
         return [.insightViewedIdentifier, .insightViewedDate, .insightUsefulAnswer]
     }
@@ -365,6 +373,14 @@ open class MasterScheduleManager : SBAScheduleManager {
         return SBABridgeConfiguration.shared.task(for: RSDIdentifier.treatmentTask.rawValue)
     }
     
+    open func instantiateTreatmentTaskControllerNoCancel() -> RSDTaskViewController? {
+        guard let task = self.treatmentTask else { return nil }
+        (task.stepNavigator as? RSDConditionalStepNavigatorObject)?.steps.forEach({
+            ($0 as? RSDUIStepObject)?.shouldHideActions = [.navigation(.cancel)]
+        })
+        return RSDTaskViewController(task: task)
+    }
+    
     open func instantiateTreatmentTaskController() -> RSDTaskViewController? {
         guard let task = self.treatmentTask else { return nil }
         return RSDTaskViewController(task: task)
@@ -516,6 +532,45 @@ open class MasterScheduleManager : SBAScheduleManager {
         }
         
         return (.weekly, 1)
+    }
+    
+    public func uploadAnalyticsTryBeforeYouBuy(count: Int) {
+        let answersMap = ["TryBeforeYouBuyCount" : count]
+        self.uploadData(identifier: "AnalyticsTryBeforeYouBuy", answersMap: answersMap)
+    }
+    
+    private func uploadData(identifier: String, answersMap: [String: Any] = [:]) {
+        let archive = SBBDataArchive(reference: identifier, jsonValidationMapping: nil)
+        
+        do {
+            // Add answers dictionary data
+            var mutableMap = [String: Any]()
+            answersMap.forEach({
+                mutableMap[$0.key] = $0.value
+            })
+            archive.insertAnswersDictionary(mutableMap)
+            
+            // Add the current data groups and the user's arc id
+            var metadata = [String: Any]()
+            if let dataGroups = SBAParticipantManager.shared.studyParticipant?.dataGroups {
+                metadata[kDataGroups] = dataGroups.joined(separator: ",")
+            }
+            if let externalId = SBAParticipantManager.shared.studyParticipant?.externalId {
+                metadata[kExternalIdKey] = externalId
+            }
+            // Insert the metadata dictionary
+            archive.insertDictionary(intoArchive: metadata, filename: kMetadataFilename, createdOn: Date())
+            
+            // Set the correct schema revision version, this is required
+            // for bridge to know that this archive has a schema
+            let schemaRevisionInfo = SBABridgeConfiguration.shared.schemaInfo(for: identifier) ?? RSDSchemaInfoObject(identifier: identifier, revision: 1)
+            archive.setArchiveInfoObject(schemaRevisionInfo.schemaVersion, forKey: kSchemaRevisionKey)
+            
+            try archive.complete()
+            archive.encryptAndUploadArchive()
+        } catch let error as NSError {
+          print("Error while converting test to upload format \(error)")
+        }
     }
 }
 

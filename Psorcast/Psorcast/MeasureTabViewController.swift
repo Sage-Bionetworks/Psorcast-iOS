@@ -201,6 +201,26 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
         self.renewelTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.updateTimeFormattedText), userInfo: nil, repeats: true)
                 
         self.refreshUI()
+        
+        // If user is authorized, upload analytics info
+        self.uploadAnalyticsIfAvailable()
+    }
+    
+    private func uploadAnalyticsIfAvailable() {
+        guard BridgeSDK.authManager.isAuthenticated(),
+              let analytics = (AppDelegate.shared as? AppDelegate)?.analyticsDefaults else {
+            return
+        }
+        if (analytics.object(forKey: "TryItFirstCount") == nil) {
+            MasterScheduleManager.shared.uploadAnalyticsTryBeforeYouBuy(count: 0)
+            analytics.setValue(0, forKey: "TryItFirstCount")
+        } else {
+            let analyticsCount = analytics.integer(forKey: "TryItFirstCount")
+            if (analyticsCount > 0) {
+                MasterScheduleManager.shared.uploadAnalyticsTryBeforeYouBuy(count: analyticsCount)
+                analytics.setValue(0, forKey: "TryItFirstCount")
+            }
+        }
     }
     
     override open func viewWillDisappear(_ animated: Bool) {

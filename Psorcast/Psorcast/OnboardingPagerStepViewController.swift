@@ -53,7 +53,6 @@ public class OnboardingPagerStepViewController: RSDStepViewController, UIScrollV
         
         self.pages = self.createPages(items: onboardingPagerStep?.items ?? [])
         
-        self.scrollView.delegate = self
         self.scrollView.isPagingEnabled = true
         
         self.pageControl.numberOfPages = self.pages.count

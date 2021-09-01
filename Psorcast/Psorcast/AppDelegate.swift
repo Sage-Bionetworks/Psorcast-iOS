@@ -62,6 +62,11 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate, ShowPopTipDele
     
     let popTipController = PopTipController()
     
+    // These should never be cleared, even when a user signs out
+    public lazy var analyticsDefaults: UserDefaults? = {
+        return UserDefaults(suiteName: "PsorcastAnalytics")
+    }()
+    
     open var profileDataSource: StudyProfileDataSource? {
         return SBAProfileDataSourceObject.shared as? StudyProfileDataSource
     }
@@ -170,7 +175,7 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate, ShowPopTipDele
     }
     
     func showTreatmentSelectionScreens(animated: Bool) {
-        guard let vc = MasterScheduleManager.shared.instantiateTreatmentTaskController() else {
+        guard let vc = MasterScheduleManager.shared.instantiateTreatmentTaskControllerNoCancel() else {
             debugPrint("WARNING! Failed to create treatment task from profile manager app config")
             let alert = UIAlertController(title: "Connectivity issue", message: "We had trouble loading information from our server.  Please close the app and then try again.", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "Okay", style: .default, handler: nil))
@@ -360,7 +365,7 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate, ShowPopTipDele
 //        }
         
         // If we stopped due to canceling, sign out, purge data, and go back to the start
-        if (reason == .discarded) {
+        if (reason == .discarded && taskController.task.identifier == self.ConsentTaskId) {
             BridgeSDK.authManager.signOut(completion: { (_, _, error) in
                 DispatchQueue.main.async {
                     self.resetDefaults(defaults: UserDefaults.standard)
@@ -368,6 +373,17 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate, ShowPopTipDele
                 }
             })
             self.showIntroductionScreens(animated: true)
+            return
+        }
+        
+        if (reason == .discarded && taskController.task.identifier == RSDIdentifier.treatmentTask.rawValue) {
+            self.showIntroductionScreens(animated: true)
+            return
+        }
+        
+        if (reason == .discarded) {
+            self.rootViewController?.dismiss(animated: true)
+            return
         }
 
         // If we finish the intro screens, send the user to the try it first task list
