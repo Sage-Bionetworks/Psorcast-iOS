@@ -56,6 +56,8 @@ class TryItFirstTaskTableViewController: UIViewController, UICollectionViewDataS
         
         // Register the 30 second walking task with the motor control framework
         SBABridgeConfiguration.shared.addMapping(with: MCTTaskInfo(.walk30Seconds).task)
+        
+        self.writeAnalytics()
     }
     
     open override func viewDidLayoutSubviews() {
@@ -71,6 +73,15 @@ class TryItFirstTaskTableViewController: UIViewController, UICollectionViewDataS
         self.collectionView.reloadData()
         
         checkPopTips()
+    }
+    
+    func writeAnalytics() {
+        guard let analytics = (AppDelegate.shared as? AppDelegate)?.analyticsDefaults else {
+            return
+        }
+        var analyticsCount = analytics.integer(forKey: "TryItFirstCount")
+        analyticsCount += 1
+        analytics.setValue(analyticsCount, forKey: "TryItFirstCount")
     }
     
     func updateDesignSystem() {
@@ -152,7 +163,10 @@ class TryItFirstTaskTableViewController: UIViewController, UICollectionViewDataS
         self.runTask(at: itemIndex)
     }
     
-    func runTask(at itemIndex: Int) {        
+    func runTask(at itemIndex: Int) {
+        // Write that they tried a task
+        self.writeAnalytics()
+        
         // Work-around fix for permission bug
         // This will force the overview screen to check permission state every time
         // Usually research framework caches it and the state becomes invalid

@@ -92,31 +92,4 @@ public class OnboardingInstructionStepViewController: RSDInstructionStepViewCont
             self.view.setNeedsLayout()
         }
     }
-    
-    open func processCancel() {
-        var actions: [UIAlertAction] = []
-        
-        // Always add a choice to discard the results.
-        let discardResults = UIAlertAction(title: Localization.localizedString("BUTTON_OPTION_DISCARD"), style: .destructive) { (_) in
-            self.cancelTask(shouldSave: false)
-        }
-        actions.append(discardResults)
-        
-        // Only add the option to save if the task controller supports it.
-        if self.stepViewModel.rootPathComponent.canSaveTaskProgress() {
-            let saveResults = UIAlertAction(title: Localization.localizedString("BUTTON_OPTION_SAVE"), style: .default) { (_) in
-                self.cancelTask(shouldSave: true)
-            }
-            actions.append(saveResults)
-        }
-        
-        // Always add a choice to keep going.
-        let keepGoing = UIAlertAction(title: Localization.localizedString("BUTTON_OPTION_CONTINUE"), style: .cancel) { (_) in
-            self.didNotCancel()
-        }
-        actions.append(keepGoing)
-        
-        self.presentAlertWithActions(title: nil, message: Localization.localizedString("CANCEL_CANT_SAVE_TEXT"), preferredStyle: .actionSheet, actions: actions)
-    }
-
 }
