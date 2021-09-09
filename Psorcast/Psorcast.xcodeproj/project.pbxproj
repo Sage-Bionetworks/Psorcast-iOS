@@ -51,6 +51,7 @@
 		CB09F00323D649FB009D344E /* DigitalJarOpenInstructionStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB09F00223D649FB009D344E /* DigitalJarOpenInstructionStepViewController.swift */; };
 		CB09F0382421D5730005698D /* TreatmentSelectionStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB09F0372421D5730005698D /* TreatmentSelectionStepViewController.swift */; };
 		CB09F03E2421E9E80005698D /* TreatmentSelectionStepViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB09F03D2421E9E80005698D /* TreatmentSelectionStepViewController.xib */; };
+		CB0D52B026E9D466009BD911 /* HandPose.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB0D52AF26E9D466009BD911 /* HandPose.swift */; };
 		CB144C7A2473346600DF0F6B /* HistoryDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB144C792473346600DF0F6B /* HistoryDataManager.swift */; };
 		CB144C862473B50F00DF0F6B /* History.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = CB144C842473B50F00DF0F6B /* History.xcdatamodeld */; };
 		CB144C8E24760D5800DF0F6B /* ImageDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB144C8D24760D5700DF0F6B /* ImageDataManager.swift */; };
@@ -452,6 +453,7 @@
 		CB09F00223D649FB009D344E /* DigitalJarOpenInstructionStepViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DigitalJarOpenInstructionStepViewController.swift; sourceTree = "<group>"; };
 		CB09F0372421D5730005698D /* TreatmentSelectionStepViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreatmentSelectionStepViewController.swift; sourceTree = "<group>"; };
 		CB09F03D2421E9E80005698D /* TreatmentSelectionStepViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TreatmentSelectionStepViewController.xib; sourceTree = "<group>"; };
+		CB0D52AF26E9D466009BD911 /* HandPose.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandPose.swift; sourceTree = "<group>"; };
 		CB144C792473346600DF0F6B /* HistoryDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryDataManager.swift; sourceTree = "<group>"; };
 		CB144C852473B50F00DF0F6B /* History.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = History.xcdatamodel; sourceTree = "<group>"; };
 		CB144C8D24760D5700DF0F6B /* ImageDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageDataManager.swift; sourceTree = "<group>"; };
@@ -731,6 +733,14 @@
 			name = MP4;
 			sourceTree = "<group>";
 		};
+		CB0D52AA26E9D457009BD911 /* Vision */ = {
+			isa = PBXGroup;
+			children = (
+				CB0D52AF26E9D466009BD911 /* HandPose.swift */,
+			);
+			name = Vision;
+			sourceTree = "<group>";
+		};
 		CB2219A424611FC4007546CD /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -905,6 +915,7 @@
 		CBBE0F6024039A4F0072452C /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				CB0D52AA26E9D457009BD911 /* Vision */,
 				CBB0F4382643D173007442F3 /* PassiveData */,
 				CBBDC395247787D20017A304 /* HistoryDataManager */,
 				CB8F7D512422D73900F77D62 /* StudyTaskFactory.swift */,
@@ -1572,6 +1583,7 @@
 				CBDCDC9B23F3849E00E5CEB8 /* JointPainResultObject.swift in Sources */,
 				CB73F7ED2630FDC200969688 /* PsorcastIdentifiers.swift in Sources */,
 				CB95A2862608540600F28273 /* OnboardingPagerStepObject.swift in Sources */,
+				CB0D52B026E9D466009BD911 /* HandPose.swift in Sources */,
 				CBDCDCAF23F3849E00E5CEB8 /* PsoriasisDrawCompletionStepViewController.swift in Sources */,
 				CBDCDC9A23F3849E00E5CEB8 /* JointPainStepObject.swift in Sources */,
 				CBFF927A25E1783B00EC34DB /* RegistrationWaitingViewController.swift in Sources */,
