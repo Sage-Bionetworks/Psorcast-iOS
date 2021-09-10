@@ -182,6 +182,8 @@
 		CBB0F43A2643D1B0007442F3 /* PassiveDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBB0F4392643D1B0007442F3 /* PassiveDataManager.swift */; };
 		CBB3F6CD25D7696700578A0F /* MetalHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB64AA1325D21F190040FC90 /* MetalHelper.swift */; };
 		CBB3F6CE25D7696900578A0F /* Black2Clear.metal in Sources */ = {isa = PBXBuildFile; fileRef = CB64AA1125D20FA10040FC90 /* Black2Clear.metal */; };
+		CBB5C41F26EBDE1C000688CD /* HandPose.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB0D52AF26E9D466009BD911 /* HandPose.swift */; };
+		CBB5C42226EBDE5C000688CD /* BackgroundNetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E8C6A5266019B600AA906A /* BackgroundNetworkManager.swift */; };
 		CBB78870246CB85F004385AF /* DeepDiveReportManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBB7886F246CB85F004385AF /* DeepDiveReportManager.swift */; };
 		CBB90AE82381FF8700F1DFA4 /* PsoriasisAreaPhoto.mov in Resources */ = {isa = PBXBuildFile; fileRef = CBB90AE52381FF8500F1DFA4 /* PsoriasisAreaPhoto.mov */; };
 		CBB90AE92381FF8700F1DFA4 /* FingersPhoto.mov in Resources */ = {isa = PBXBuildFile; fileRef = CBB90AE62381FF8600F1DFA4 /* FingersPhoto.mov */; };
@@ -739,6 +741,7 @@
 				CB0D52AF26E9D466009BD911 /* HandPose.swift */,
 			);
 			name = Vision;
+			path = ../Psorcast;
 			sourceTree = "<group>";
 		};
 		CB2219A424611FC4007546CD /* Products */ = {
@@ -915,7 +918,6 @@
 		CBBE0F6024039A4F0072452C /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				CB0D52AA26E9D457009BD911 /* Vision */,
 				CBB0F4382643D173007442F3 /* PassiveData */,
 				CBBDC395247787D20017A304 /* HistoryDataManager */,
 				CB8F7D512422D73900F77D62 /* StudyTaskFactory.swift */,
@@ -997,6 +999,7 @@
 		CBD67D8922DFC5B500998516 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				CB0D52AA26E9D457009BD911 /* Vision */,
 				CBAA78BB261662A20031E2B0 /* PopTipProgress.swift */,
 				CB64AA1325D21F190040FC90 /* MetalHelper.swift */,
 				CB64AA1125D20FA10040FC90 /* Black2Clear.metal */,
@@ -1690,6 +1693,7 @@
 				CB5424D123721FFD0036DB6B /* RSDCollectionViewCell.swift in Sources */,
 				CBA8390E234A6B3F00408D81 /* EndOfValidationStepViewController.swift in Sources */,
 				CBD67D9322DFC71E00998516 /* TaskFactory.swift in Sources */,
+				CBB5C41F26EBDE1C000688CD /* HandPose.swift in Sources */,
 				FFABCBE822DD1F2800D11109 /* AppDelegate.swift in Sources */,
 				CB55C725231773FF00EA0C19 /* JointPainStepViewController.swift in Sources */,
 				CB85FB56235F5C5500FDC59B /* SelectedIdentifiersResultObject.swift in Sources */,
@@ -1724,6 +1728,7 @@
 				CB77866C238984790009ECF9 /* DigitalJarOpenStepViewController.swift in Sources */,
 				CB6F54F022E25C5B0073BFE9 /* ParticipantIDRegistrationViewController.swift in Sources */,
 				CB8DC7B824189E31001B7982 /* TaskListScheduleManager.swift in Sources */,
+				CBB5C42226EBDE5C000688CD /* BackgroundNetworkManager.swift in Sources */,
 				CB1F7BC725BCBF8F001985D2 /* PsoriasisDrawHelper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
