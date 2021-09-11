@@ -13,6 +13,7 @@
             <connections>
                 <outlet property="cameraToggleButton" destination="z7Q-cL-s9u" id="v4B-LD-Orv"/>
                 <outlet property="captureButton" destination="7Iz-4x-dLZ" id="b5R-jR-RN4"/>
+                <outlet property="handOverlayView" destination="Ln8-EY-YfR" id="EAO-cl-lnY"/>
                 <outlet property="navigationHeader" destination="fxA-Tz-ZiS" id="agX-5m-P7G"/>
                 <outlet property="previewView" destination="Bb7-gd-Spk" id="gx5-ZP-Ljt"/>
                 <outlet property="view" destination="Be1-UX-e65" id="eci-s9-hNP"/>
@@ -83,19 +84,27 @@
                                 <action selector="changeCamera:" destination="-1" eventType="touchUpInside" id="t6y-2m-w11"/>
                             </connections>
                         </button>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ln8-EY-YfR" userLabel="Hand Overlay">
+                            <rect key="frame" x="0.0" y="80" width="395" height="484"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </view>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
+                        <constraint firstItem="Ln8-EY-YfR" firstAttribute="trailing" secondItem="Bb7-gd-Spk" secondAttribute="trailing" id="2fV-Si-Mt4"/>
                         <constraint firstAttribute="trailing" secondItem="fxA-Tz-ZiS" secondAttribute="trailing" id="3JV-je-hxC"/>
                         <constraint firstAttribute="trailing" secondItem="Bb7-gd-Spk" secondAttribute="trailing" id="Bd0-Lg-k57"/>
                         <constraint firstAttribute="bottom" secondItem="Br6-tq-bnk" secondAttribute="bottom" constant="24" id="Bnl-m2-DkF"/>
+                        <constraint firstItem="Ln8-EY-YfR" firstAttribute="top" secondItem="Bb7-gd-Spk" secondAttribute="top" id="JvG-DY-Uxg"/>
                         <constraint firstItem="z7Q-cL-s9u" firstAttribute="top" secondItem="fxA-Tz-ZiS" secondAttribute="bottom" id="MwW-H9-neu"/>
                         <constraint firstItem="Br6-tq-bnk" firstAttribute="top" secondItem="7Iz-4x-dLZ" secondAttribute="bottom" constant="8" id="Nl3-Uq-fax"/>
                         <constraint firstItem="7Iz-4x-dLZ" firstAttribute="centerX" secondItem="nCy-4g-nIJ" secondAttribute="centerX" id="Otr-xa-UAw"/>
                         <constraint firstItem="fxA-Tz-ZiS" firstAttribute="top" secondItem="nCy-4g-nIJ" secondAttribute="top" id="SC4-I8-O5N"/>
                         <constraint firstAttribute="trailing" secondItem="z7Q-cL-s9u" secondAttribute="trailing" id="cEu-Oj-CcG"/>
+                        <constraint firstItem="Ln8-EY-YfR" firstAttribute="leading" secondItem="Bb7-gd-Spk" secondAttribute="leading" id="lXN-XC-P0D"/>
                         <constraint firstItem="Bb7-gd-Spk" firstAttribute="leading" secondItem="nCy-4g-nIJ" secondAttribute="leading" id="mgY-QI-c9q"/>
                         <constraint firstItem="Bb7-gd-Spk" firstAttribute="top" secondItem="fxA-Tz-ZiS" secondAttribute="bottom" id="pki-Yv-2aA"/>
+                        <constraint firstItem="Ln8-EY-YfR" firstAttribute="bottom" secondItem="Bb7-gd-Spk" secondAttribute="bottom" id="q3H-E8-XJM"/>
                         <constraint firstItem="fxA-Tz-ZiS" firstAttribute="leading" secondItem="nCy-4g-nIJ" secondAttribute="leading" id="rEg-ZD-hZb"/>
                         <constraint firstAttribute="bottom" secondItem="Bb7-gd-Spk" secondAttribute="bottom" constant="156" id="t2M-kq-AFr"/>
                         <constraint firstItem="Br6-tq-bnk" firstAttribute="centerX" secondItem="nCy-4g-nIJ" secondAttribute="centerX" id="xYT-Ri-THY"/>

@@ -37,6 +37,7 @@ import BridgeApp
 import BridgeAppUI
 import MetalKit
 import MetalPerformanceShaders
+import Vision
 
 open class ImageCaptureStepObject: RSDUIStepObject, RSDStepViewControllerVendor {
     
@@ -88,7 +89,7 @@ open class ImageCaptureStepObject: RSDUIStepObject, RSDStepViewControllerVendor 
     }
 }
 
-open class ImageCaptureStepViewController: RSDStepViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, MTKViewDelegate {
+open class ImageCaptureStepViewController: RSDStepViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, MTKViewDelegate, AVCaptureVideoDataOutputSampleBufferDelegate {
     
     // MARK: Session Management
     
@@ -100,6 +101,20 @@ open class ImageCaptureStepViewController: RSDStepViewController, UIImagePickerC
     
     private let session = AVCaptureSession()
     private var isSessionRunning = false
+    
+    // Hand pose tracking
+    private let videoDataOutputQueue = DispatchQueue(
+      label: "CameraFeedOutput",
+      qos: .userInteractive)
+    
+    @available(iOS 14.0, *)
+    private(set) lazy var handPoseRequest: VNDetectHumanHandPoseRequest = {
+        let request = VNDetectHumanHandPoseRequest()
+        request.maximumHandCount = 2
+        return request
+    }()
+    
+    var fingerTips: [CGPoint] = []
     
     // Communicate with the session and other session objects on this queue.
     private let sessionQueue = DispatchQueue(label: "camera session queue")
@@ -113,6 +128,8 @@ open class ImageCaptureStepViewController: RSDStepViewController, UIImagePickerC
     private let photoOutput = AVCapturePhotoOutput()
     
     private var inProgressPhotoCaptureDelegates = [Int64: PhotoCaptureProcessor]()
+    
+    @IBOutlet weak var handOverlayView: UIView!
     
     @IBOutlet weak var captureButton: UIButton!
     
@@ -650,6 +667,7 @@ open class ImageCaptureStepViewController: RSDStepViewController, UIImagePickerC
                 session.commitConfiguration()
                 return
             }
+            
         } catch {
             print("Couldn't create video device input: \(error)")
             setupResult = .configurationFailed
@@ -657,7 +675,7 @@ open class ImageCaptureStepViewController: RSDStepViewController, UIImagePickerC
             return
         }
         
-        // Add the photo output.
+        // Add the photo output
         if session.canAddOutput(photoOutput) {
             session.addOutput(photoOutput)
             photoOutput.isHighResolutionCaptureEnabled = true
@@ -669,6 +687,21 @@ open class ImageCaptureStepViewController: RSDStepViewController, UIImagePickerC
             setupResult = .configurationFailed
             session.commitConfiguration()
             return
+        }
+        
+        // Hand pose tracking output
+        if #available(iOS 14.0, *) {
+            let dataOutput = AVCaptureVideoDataOutput()
+            if session.canAddOutput(dataOutput) {
+              session.addOutput(dataOutput)
+              dataOutput.alwaysDiscardsLateVideoFrames = true
+              dataOutput.setSampleBufferDelegate(self, queue: videoDataOutputQueue)
+            } else {
+                print("Could not add hand pose tracking to output to the session")
+                setupResult = .configurationFailed
+                session.commitConfiguration()
+                return
+            }
         }
         
         session.commitConfiguration()
@@ -910,6 +943,72 @@ open class ImageCaptureStepViewController: RSDStepViewController, UIImagePickerC
         
         // Go to the next step.
         self.goForward()
+    }
+    
+    /// AVCaptureVideoDataOutputSampleBufferDelegate
+    public func captureOutput(_ output: AVCaptureOutput,
+                       didOutput sampleBuffer: CMSampleBuffer,
+                       from connection: AVCaptureConnection) {
+        
+        // Vision framework is not available on simulator, needs > A7 chip
+        #if TARGET_OS_SIMULATOR
+            return
+        #endif
+        
+        guard #available(iOS 14.0, *) else {
+            return
+        }
+        
+        let handler = VNImageRequestHandler(cmSampleBuffer: sampleBuffer,
+                                            orientation: .up, options: [:])
+        do {
+            try handler.perform([self.handPoseRequest])
+            guard
+                let results = self.handPoseRequest.results?.prefix(2),
+              !results.isEmpty
+            else {
+              return
+            }            
+            
+            var handPose: HandPose? = nil
+            results.forEach { observation in
+                if let newHand = HandPose.create(observation: observation) {
+                    handPose = newHand
+                }
+            }
+            
+            DispatchQueue.main.async {
+                guard let handPoseUnwrapped = handPose else {
+                    return
+                }
+                
+                self.clearHand()
+                handPoseUnwrapped.createHand(videoPreviewLayer: self.previewView.videoPreviewLayer).forEach({
+                    self.handOverlayView.layer.addSublayer($0)
+                })
+                
+                // Cancel previous attempts
+                NSObject.cancelPreviousPerformRequests(withTarget: self, selector: #selector(self.hideHand), object: nil)
+                
+                // Set up a delayed call to hide the hand if we lose tracking after a second
+                self.perform(#selector(self.hideHand), with: nil, afterDelay: 1)
+            }
+        } catch {
+            print("Cannot perform hand pose tracking")
+        }
+    }
+    
+    public func clearHand() {
+        // Clear all shape layers
+        self.handOverlayView.layer.sublayers?.filter({
+            $0.isKind(of: CAShapeLayer.self)
+        }).forEach({
+            $0.removeFromSuperlayer()
+        })
+    }
+    
+    @objc public func hideHand() {
+        self.clearHand()
     }
 }
 
