@@ -211,6 +211,11 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
               let analytics = (AppDelegate.shared as? AppDelegate)?.analyticsDefaults else {
             return
         }
+        
+        // Review tab analytics
+        MasterScheduleManager.shared.uploadReviewTabAnalyticsIfNeeded()
+        
+        // Try before you buy analytics
         if (analytics.object(forKey: "TryItFirstCount") == nil) {
             MasterScheduleManager.shared.uploadAnalyticsTryBeforeYouBuy(count: 0)
             analytics.setValue(0, forKey: "TryItFirstCount")
