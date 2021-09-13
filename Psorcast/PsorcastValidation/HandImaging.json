@@ -75,6 +75,7 @@
         {
             "identifier"    : "leftHand",
             "type"          : "imageCapture",
+            "handTracking"  : true,
             "title"         : "Fit your LEFT hand to the outline if you can"
         },
         {
@@ -114,6 +115,7 @@
         {
             "identifier"    : "rightHand",
             "type"          : "imageCapture",
+            "handTracking"  : true,
             "title"         : "Fit your RIGHT hand to the outline if you can"
         },
         {

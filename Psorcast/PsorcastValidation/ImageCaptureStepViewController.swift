@@ -42,11 +42,12 @@ import Vision
 open class ImageCaptureStepObject: RSDUIStepObject, RSDStepViewControllerVendor {
     
     private enum CodingKeys: String, CodingKey, CaseIterable {
-        case cameraDevice
+        case cameraDevice, handTracking
     }
     
     /// front or back camera
     var cameraDevice: CameraDeviceWrapper?
+    var handTracking: Bool = false
     
     /// Default type is `.imageCapture`.
     open override class func defaultType() -> RSDStepType {
@@ -69,6 +70,10 @@ open class ImageCaptureStepObject: RSDUIStepObject, RSDStepViewControllerVendor 
         
         if container.contains(.cameraDevice) {
             self.cameraDevice = try container.decode(CameraDeviceWrapper.self, forKey: .cameraDevice)
+        }
+        
+        if container.contains(.handTracking) {
+            self.handTracking = try container.decode(Bool.self, forKey: .handTracking)
         }
         
         try super.decode(from: decoder, for: deviceType)
@@ -691,16 +696,18 @@ open class ImageCaptureStepViewController: RSDStepViewController, UIImagePickerC
         
         // Hand pose tracking output
         if #available(iOS 14.0, *) {
-            let dataOutput = AVCaptureVideoDataOutput()
-            if session.canAddOutput(dataOutput) {
-              session.addOutput(dataOutput)
-              dataOutput.alwaysDiscardsLateVideoFrames = true
-              dataOutput.setSampleBufferDelegate(self, queue: videoDataOutputQueue)
-            } else {
-                print("Could not add hand pose tracking to output to the session")
-                setupResult = .configurationFailed
-                session.commitConfiguration()
-                return
+            if (self.captureStep?.handTracking == true) {
+                let dataOutput = AVCaptureVideoDataOutput()
+                if session.canAddOutput(dataOutput) {
+                  session.addOutput(dataOutput)
+                  dataOutput.alwaysDiscardsLateVideoFrames = true
+                  dataOutput.setSampleBufferDelegate(self, queue: videoDataOutputQueue)
+                } else {
+                    print("Could not add hand pose tracking to output to the session")
+                    setupResult = .configurationFailed
+                    session.commitConfiguration()
+                    return
+                }
             }
         }
         
@@ -956,6 +963,10 @@ open class ImageCaptureStepViewController: RSDStepViewController, UIImagePickerC
         #endif
         
         guard #available(iOS 14.0, *) else {
+            return
+        }
+        
+        guard (self.captureStep?.handTracking == true) else {
             return
         }
         
