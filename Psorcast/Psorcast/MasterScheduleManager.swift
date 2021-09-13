@@ -534,15 +534,148 @@ open class MasterScheduleManager : SBAScheduleManager {
         return (.weekly, 1)
     }
     
+    private func readReviewTabAnalytics() -> ReviewTabAnalytics {
+        guard let defaults = (AppDelegate.shared as? AppDelegate)?.analyticsDefaults,
+              let analyticsJson = defaults.string(forKey: "reviewTabAnalytics")?.data(using: .utf8) else {
+            return ReviewTabAnalytics()
+        }
+        do {
+            let decoder = JSONDecoder()
+            decoder.dateDecodingStrategy = .secondsSince1970
+            return try decoder.decode(ReviewTabAnalytics.self, from: analyticsJson)
+        } catch let err {
+            print("Error loading ReviewTabAnalytics \(err.localizedDescription)")
+        }
+        return ReviewTabAnalytics()
+    }
+    
+    private func writeReviewTabAnalytics(analytics: ReviewTabAnalytics) {
+        guard let defaults = (AppDelegate.shared as? AppDelegate)?.analyticsDefaults else {
+            return
+        }
+        let encoder = JSONEncoder()
+        encoder.dateEncodingStrategy = .secondsSince1970
+        do {
+            let data = try encoder.encode(analytics)
+            let jsonStr = String(decoding: data, as: UTF8.self)
+            defaults.set(jsonStr, forKey: "reviewTabAnalytics")
+            debugPrint("Wrote review tab analytics \(jsonStr)")
+        } catch let err {
+            print("Error loading ReviewTabAnalytics \(err.localizedDescription)")
+        }
+    }
+    
+    public func userLookedAtReviewTab() {
+        debugPrint("Analytics - User looked at review tab")
+        let analytics = readReviewTabAnalytics()
+        let dateString = NSDate.iso8601formatter()!.string(from: Date())
+        analytics.reviewTabVisited.append(dateString)
+        writeReviewTabAnalytics(analytics: analytics)
+    }
+    
+    public func userUsedReviewTabFeature(isImage: Bool, type: String) {
+        if isImage {
+            debugPrint("Analytics - User exported \(type) image")
+        } else {
+            debugPrint("Analytics - User exported \(type) video")
+        }
+        let analytics = readReviewTabAnalytics()
+        let dateString = rsd_ISO8601TimestampFormatter.string(from: Date())
+
+        switch type {
+        case RSDIdentifier.psoriasisDrawTask.rawValue:
+            if isImage {
+                analytics.psoriasisDrawExportImg.append(dateString)
+            } else {
+                analytics.psoriasisDrawExportVid.append(dateString)
+            }
+        case RSDIdentifier.psoriasisAreaPhotoTask.rawValue:
+            if isImage {
+                analytics.psoriasisAreaPhotoExportImg.append(dateString)
+            } else {
+                analytics.psoriasisAreaPhotoExportVid.append(dateString)
+            }
+        case RSDIdentifier.handImagingTask.rawValue:
+            if isImage {
+                analytics.handImagingExportImg.append(dateString)
+            } else {
+                analytics.handImagingExportVid.append(dateString)
+            }
+        case RSDIdentifier.footImagingTask.rawValue:
+            if isImage {
+                analytics.footImagingTaskExportImg.append(dateString)
+            } else {
+                analytics.footImagingTaskExportVid.append(dateString)
+            }
+        case RSDIdentifier.digitalJarOpenTask.rawValue:
+            if isImage {
+                analytics.digitalJarOpenTaskExportImg.append(dateString)
+            } else {
+                analytics.digitalJarOpenTaskExportVid.append(dateString)
+            }
+        case RSDIdentifier.jointCountingTask.rawValue:
+            if isImage {
+                analytics.jointCountingTaskExportImg.append(dateString)
+            } else {
+                analytics.jointCountingTaskExportVid.append(dateString)
+            }
+        default: // Do nothing
+            print("Could not write identifier to analytics")
+        }
+
+        writeReviewTabAnalytics(analytics: analytics)
+    }
+    
+    public func uploadReviewTabAnalyticsIfNeeded() {
+        guard let defaults = (AppDelegate.shared as? AppDelegate)?.analyticsDefaults
+              else {
+            return
+        }
+        let now = Date()
+        let key = "lastReviewTabAnalyticsUpload"
+        let formatter = rsd_ISO8601TimestampFormatter
+        guard let lastUploadTimeStr = defaults.string(forKey: key) else {
+            defaults.set(formatter.string(from: now), forKey: key)
+            return
+        }
+                
+        guard let lastUploadDate = formatter.date(from: lastUploadTimeStr) else {
+            print("Error parsing date for review tab analytics last upload data")
+            return
+        }
+        if now > lastUploadDate.addingNumberOfDays(7) {
+            let analytics = readReviewTabAnalytics()
+            self.uploadAnalyticsReviewTab(analytics: analytics)
+            defaults.set(formatter.string(from: now), forKey: key)
+        }
+    }
+    
+    public func uploadAnalyticsReviewTab(analytics: ReviewTabAnalytics) {
+        do {
+            let encoder = JSONEncoder()
+            let data = try encoder.encode(analytics)
+            self.uploadData(identifier: "AnalyticsReviewTab", answersMap: [String: String](), data: data)
+            // Reset analytics
+            self.writeReviewTabAnalytics(analytics: ReviewTabAnalytics())
+        } catch let err {
+            print("Error ecoding review tab analytics \(err.localizedDescription)")
+        }
+    }
+    
     public func uploadAnalyticsTryBeforeYouBuy(count: Int) {
         let answersMap = ["TryBeforeYouBuyCount" : count]
         self.uploadData(identifier: "AnalyticsTryBeforeYouBuy", answersMap: answersMap)
     }
     
-    private func uploadData(identifier: String, answersMap: [String: Any] = [:]) {
+    private func uploadData(identifier: String, answersMap: [String: Any] = [:], data: Data? = nil) {
         let archive = SBBDataArchive(reference: identifier, jsonValidationMapping: nil)
         
         do {
+            if let dataUnwrapped = data {
+                let dataFilename = "data.json"
+                archive.insertData(intoArchive: dataUnwrapped, filename: dataFilename, createdOn: Date())
+            }
+            
             // Add answers dictionary data
             var mutableMap = [String: Any]()
             answersMap.forEach({
@@ -577,4 +710,26 @@ open class MasterScheduleManager : SBAScheduleManager {
 public enum StudyScheduleFrequency {
     case weekly
     case monthly
+}
+
+public class ReviewTabAnalytics: Codable {
+    var reviewTabVisited: [String] = []
+    
+    var psoriasisDrawExportImg: [String] = []
+    var psoriasisDrawExportVid: [String] = []
+    
+    var psoriasisAreaPhotoExportImg: [String] = []
+    var psoriasisAreaPhotoExportVid: [String] = []
+    
+    var handImagingExportImg: [String] = []
+    var handImagingExportVid: [String] = []
+    
+    var footImagingTaskExportImg: [String] = []
+    var footImagingTaskExportVid: [String] = []
+    
+    var digitalJarOpenTaskExportImg: [String] = []
+    var digitalJarOpenTaskExportVid: [String] = []
+    
+    var jointCountingTaskExportImg: [String] = []
+    var jointCountingTaskExportVid: [String] = []
 }

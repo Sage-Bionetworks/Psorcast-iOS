@@ -211,6 +211,9 @@ open class ReviewTabViewController: UIViewController, UITableViewDataSource, UIT
         if shouldRefreshUi {
             self.refreshTreatmentContent()
         }
+        
+        // Save analytics
+        MasterScheduleManager.shared.userLookedAtReviewTab()    
     }
     
     func refreshTreatmentContent() {
@@ -475,9 +478,17 @@ open class ReviewTabViewController: UIViewController, UITableViewDataSource, UIT
         self.requestPermission {
             if let frame = renderFrame {
                 self.userHasPermissionToSaveToLibary(renderFrame: frame, taskId: taskIdentifier, cellIdx: cellIdx)
+                
+                // Save analytics
+                MasterScheduleManager.shared.userUsedReviewTabFeature(isImage: true, type: taskIdentifier.rawValue)
+                
             } else if let filteredStartDate = self.selectedTreatmentRange?.startDate,
                 let videoUrl = self.imageManager.findVideoUrl(for: taskIdentifier.rawValue, with: filteredStartDate) {
+                                
                 self.userHasPermissionToSaveToLibary(video: videoUrl, taskId: taskIdentifier, cellIdx: cellIdx)
+                
+                // Save analytics
+                MasterScheduleManager.shared.userUsedReviewTabFeature(isImage: false, type: taskIdentifier.rawValue)
             }
         }
     }
