@@ -58,7 +58,7 @@
             "identifier":"handInstructionLeft2",
             "type":"instruction",
             "title":"Capture from directly above",
-            "text":"Capture from directly above. Your fingernails should be in focus.",
+            "text":"Capture from directly above. Leave space between your fingers and your nails should be in focus.",
             "image":{
                 "type":"fetchable",
                 "imageName": "HeaderHandLeft2",
@@ -76,7 +76,7 @@
             "identifier"    : "leftHand",
             "type"          : "imageCapture",
             "handTracking"  : true,
-            "title"         : "Fit your LEFT hand to the outline if you can"
+            "title"         : "Please leave space between fingers"
         },
         {
             "identifier":"reviewLeftHand",
@@ -98,7 +98,7 @@
             "identifier":"handInstructionRight2",
             "type":"instruction",
             "title":"Capture from directly above",
-            "text":"Capture from directly above. Your fingernails should be in focus.",
+            "text":"Capture from directly above. Leave space between your fingers and your nails should be in focus.",
             "image":{
                 "type":"fetchable",
                 "imageName": "HeaderHandRight2",
@@ -116,7 +116,7 @@
             "identifier"    : "rightHand",
             "type"          : "imageCapture",
             "handTracking"  : true,
-            "title"         : "Fit your RIGHT hand to the outline if you can"
+            "title"         : "Please leave space between fingers"
         },
         {
             "identifier":"reviewRightHand",
