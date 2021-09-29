@@ -123,6 +123,9 @@
 		CB737FEC231B100600FA1D3A /* MDJointSwelling.json in Resources */ = {isa = PBXBuildFile; fileRef = CB737FEB231B100600FA1D3A /* MDJointSwelling.json */; };
 		CB73F7EC2630FDC100969688 /* PsorcastIdentifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBD67D8C22DFC5EE00998516 /* PsorcastIdentifiers.swift */; };
 		CB73F7ED2630FDC200969688 /* PsorcastIdentifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBD67D8C22DFC5EE00998516 /* PsorcastIdentifiers.swift */; };
+		CB7612882703EE3400191575 /* leftHandPose.json in Resources */ = {isa = PBXBuildFile; fileRef = CB7612822703EE3400191575 /* leftHandPose.json */; };
+		CB7612892703EE3400191575 /* rightHandPose.json in Resources */ = {isa = PBXBuildFile; fileRef = CB7612872703EE3400191575 /* rightHandPose.json */; };
+		CB76128D2703EE7D00191575 /* HandPoseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB76128C2703EE7C00191575 /* HandPoseTests.swift */; };
 		CB77866C238984790009ECF9 /* DigitalJarOpenStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB77866B238984790009ECF9 /* DigitalJarOpenStepViewController.swift */; };
 		CB778670238B3F4D0009ECF9 /* DigitalJarOpenStepViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB77866F238B3F4D0009ECF9 /* DigitalJarOpenStepViewControllerTests.swift */; };
 		CB778672238D0E440009ECF9 /* DigitalJarOpenCompletionStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB778671238D0E440009ECF9 /* DigitalJarOpenCompletionStepViewController.swift */; };
@@ -522,6 +525,9 @@
 		CB7281A62624DC5000AAEB2C /* WithdrawalStepViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WithdrawalStepViewController.xib; sourceTree = "<group>"; };
 		CB7281A72624DC5000AAEB2C /* WithdrawalStepViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WithdrawalStepViewController.swift; sourceTree = "<group>"; };
 		CB737FEB231B100600FA1D3A /* MDJointSwelling.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = MDJointSwelling.json; sourceTree = "<group>"; };
+		CB7612822703EE3400191575 /* leftHandPose.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = leftHandPose.json; sourceTree = "<group>"; };
+		CB7612872703EE3400191575 /* rightHandPose.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = rightHandPose.json; sourceTree = "<group>"; };
+		CB76128C2703EE7C00191575 /* HandPoseTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HandPoseTests.swift; sourceTree = "<group>"; };
 		CB77866B238984790009ECF9 /* DigitalJarOpenStepViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DigitalJarOpenStepViewController.swift; sourceTree = "<group>"; };
 		CB77866F238B3F4D0009ECF9 /* DigitalJarOpenStepViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DigitalJarOpenStepViewControllerTests.swift; sourceTree = "<group>"; };
 		CB778671238D0E440009ECF9 /* DigitalJarOpenCompletionStepViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DigitalJarOpenCompletionStepViewController.swift; sourceTree = "<group>"; };
@@ -1154,6 +1160,8 @@
 				605B872F268E73F1006BA0AA /* failed-upload-request-response.json */,
 				60E024872697C08F0065AF9A /* upload-request-success.json */,
 				60E0CC2326A7551D00BB7BE5 /* upload-request-expired.json */,
+				CB7612822703EE3400191575 /* leftHandPose.json */,
+				CB7612872703EE3400191575 /* rightHandPose.json */,
 				CBC0C85D242BBBF000E2EE80 /* Info.plist */,
 				CBC6519323F391BC00C3FF0C /* PsorcastTests.swift */,
 				CB67C29023F390AA005B6BCD /* CodableResultObjectTests.swift */,
@@ -1169,6 +1177,7 @@
 				CBADD5362450C33A00422CE4 /* VideoExporterTests.swift */,
 				60396E08266EDC5100DB7126 /* MockURLSession.swift */,
 				605B8729268E644C006BA0AA /* ParticipantFileUploadManagerTests.swift */,
+				CB76128C2703EE7C00191575 /* HandPoseTests.swift */,
 			);
 			path = PsorcastTests;
 			sourceTree = "<group>";
@@ -1388,8 +1397,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CB7612882703EE3400191575 /* leftHandPose.json in Resources */,
 				60E0248C2697C08F0065AF9A /* upload-request-success.json in Resources */,
 				605B873B268E74F6006BA0AA /* cat.jpg in Resources */,
+				CB7612892703EE3400191575 /* rightHandPose.json in Resources */,
 				CBC0C85E242BBBF000E2EE80 /* Assets.xcassets in Resources */,
 				605B8730268E73F1006BA0AA /* failed-upload-request-response.json in Resources */,
 				60E0CC2826A7551D00BB7BE5 /* upload-request-expired.json in Resources */,
@@ -1566,6 +1577,7 @@
 				CB67C29D23F390AB005B6BCD /* JointPainStepViewControllerTests.swift in Sources */,
 				CB67C29923F390AB005B6BCD /* JointPainImageViewTests.swift in Sources */,
 				CB67C29B23F390AB005B6BCD /* CodableStepObjectTests.swift in Sources */,
+				CB76128D2703EE7D00191575 /* HandPoseTests.swift in Sources */,
 				CB8F7D592423F6BB00F77D62 /* LevenshteinToolsTests.swift in Sources */,
 				60396E09266EDC5100DB7126 /* MockURLSession.swift in Sources */,
 			);

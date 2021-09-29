@@ -163,6 +163,8 @@ open class ImageCaptureStepViewController: RSDStepViewController, UIImagePickerC
     var metalImageError = false
     var mtkView: MTKView? = nil
     
+    var mostRecentHandPose: HandPose? = nil
+    
     var captureStep: ImageCaptureStepObject? {
         return self.step as? ImageCaptureStepObject
     }
@@ -931,6 +933,13 @@ open class ImageCaptureStepViewController: RSDStepViewController, UIImagePickerC
             return
         }
         
+        // If it is available, save the most recent hand pose
+        if let handPose = self.mostRecentHandPose {
+            let isLeftHand = self.step.identifier == "leftHand"
+            let handPoseResult = handPose.toHandPoseResult(isLeftHand: isLeftHand)
+            _ = self.stepViewModel.parent?.taskResult.appendStepHistory(with: handPoseResult)
+        }
+        
         var url: URL?
         do {
             if let jpegData = PSRImageHelper.convertToJpegData(pngData: pngDataUnwrapped),
@@ -981,20 +990,21 @@ open class ImageCaptureStepViewController: RSDStepViewController, UIImagePickerC
               return
             }            
             
-            var handPose: HandPose? = nil
-            results.forEach { observation in
-                if let newHand = HandPose.create(observation: observation) {
-                    handPose = newHand
-                }
-            }
-            
             DispatchQueue.main.async {
+                var handPose: HandPose? = nil
+                results.forEach { observation in
+                    if let newHand = HandPose.create(observation: observation, videoPreviewLayer: self.previewView.videoPreviewLayer) {
+                        handPose = newHand
+                    }
+                }
+                        
                 guard let handPoseUnwrapped = handPose else {
                     return
                 }
+                self.mostRecentHandPose = handPoseUnwrapped
                 
                 self.clearHand()
-                handPoseUnwrapped.createHand(videoPreviewLayer: self.previewView.videoPreviewLayer).forEach({
+                handPoseUnwrapped.createHand().forEach({
                     self.handOverlayView.layer.addSublayer($0)
                 })
                 

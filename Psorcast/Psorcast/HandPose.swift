@@ -34,75 +34,100 @@
 import UIKit
 import Vision
 import AVFoundation
+import BridgeAppUI
 
 open class HandPose {
     
-    var accuracy: CGFloat = CGFloat.zero
+    // Minimum confidence level for accuracy
+    public static let minimumConfidence: Float = 0.3
     
-    var thumbTip: CGPoint? = nil
-    var thumbIp: CGPoint? = nil
-    var thumbMp: CGPoint? = nil
-    var thumbCmc: CGPoint? = nil
-    var indexTip: CGPoint? = nil
-    var indexDip: CGPoint? = nil
-    var indexPip: CGPoint? = nil
-    var indexMcp: CGPoint? = nil
-    var middleTip: CGPoint? = nil
-    var middleDip: CGPoint? = nil
-    var middlePip: CGPoint? = nil
-    var middleMcp: CGPoint? = nil
-    var ringTip: CGPoint? = nil
-    var ringDip: CGPoint? = nil
-    var ringPip: CGPoint? = nil
-    var ringMcp: CGPoint? = nil
-    var littleTip: CGPoint? = nil
-    var littleDip: CGPoint? = nil
-    var littlePip: CGPoint? = nil
-    var littleMcp: CGPoint? = nil
-    var wrist: CGPoint? = nil
+    // Dictionary keys
+    public static let dip = "dip_"
+    public static let pip = "pip_"
+    public static let mcp = "mcp_"
+    public static let tip = "tip_"
+    public static let cmc = "cmc_"
+    public static let wrist = "wrist_"
     
-    func thumbDrawPoints() -> [CGPoint]? {
-        guard let tip = thumbTip, let ip = thumbIp, let mp = thumbMp,
-              let cmc = thumbCmc, let wr = wrist else {
+    // Finger indexes
+    public static let wristIdx = 1
+    public static let thumbIdx = 1
+    public static let indexIdx = 2
+    public static let middleIdx = 3
+    public static let ringIdx = 4
+    public static let pinkyIdx = 5
+    
+    // Locations of al the hand joints, and their accuracies
+    var locations = [String:HandPoseLocation]()
+    var bounds = HandPoseBounds(width: 0, height: 0)
+    
+    public init() {}
+    
+    public init(bounds: HandPoseBounds, locations: [String:HandPoseLocation]) {
+        self.bounds = bounds
+        self.locations = locations
+    }
+    
+    @available(iOS 14.0, *)
+    public func setLocation(_ prefix: String, _ index: Int, _ pt: VNRecognizedPoint, _ view: AVCaptureVideoPreviewLayer) {
+        // Convert points from Vision coordinates to AVFoundation coordinates.
+        // This includes inverting the y-axis point first
+        let pos = view .layerPointConverted(
+            fromCaptureDevicePoint: CGPoint(x: pt.location.x, y: 1 - pt.location.y))
+        
+        self.locations[self.key(prefix, index)] =
+            HandPoseLocation(x: pos.x, y: pos.y, conf: pt.confidence)
+    }
+    
+    private func key(_ prefix: String, _ index: Int) -> String {
+        return "\(prefix)\(index)"
+    }
+    
+    private func wristKey() -> String {
+        return key(HandPose.wrist, HandPose.wristIdx)
+    }
+    
+    func thumbDrawLocations() -> [HandPoseLocation]? {
+        guard let tip = locations[key(HandPose.tip, HandPose.thumbIdx)],
+              let ip = locations[key(HandPose.pip, HandPose.thumbIdx)],
+              let mp = locations[key(HandPose.mcp, HandPose.thumbIdx)],
+              let cmc = locations[key(HandPose.cmc, HandPose.thumbIdx)],
+              let wr = locations[wristKey()] else {
             return nil
         }
         return [tip, ip, mp, cmc, wr]
     }
     
-    func indexDrawPoints() -> [CGPoint]? {
-        guard let tip = indexTip, let dip = indexDip, let pip = indexPip,
-              let mcp = indexMcp, let wr = wrist else {
+    func fingerDrawLocations(_ fingerIdx: Int) -> [HandPoseLocation]? {
+        guard let tip = locations[key(HandPose.tip, fingerIdx)],
+              let dip = locations[key(HandPose.dip, fingerIdx)],
+              let pip = locations[key(HandPose.pip, fingerIdx)],
+              let mcp = locations[key(HandPose.mcp, fingerIdx)],
+              let wr = locations[wristKey()] else {
             return nil
         }
         return [tip, dip, pip, mcp, wr]
     }
     
-    func middleDrawPoints() -> [CGPoint]? {
-        guard let tip = middleTip, let dip = middleDip, let pip = middlePip,
-              let mcp = middleMcp, let wr = wrist else {
-            return nil
-        }
-        return [tip, dip, pip, mcp, wr]
-    }
-   
-    func ringDrawPoints() -> [CGPoint]? {
-        guard let tip = ringTip, let dip = ringDip, let pip = ringPip,
-              let mcp = ringMcp, let wr = wrist else {
-            return nil
-        }
-        return [tip, dip, pip, mcp, wr]
+    func indexDrawLocations() -> [HandPoseLocation]? {
+        return self.fingerDrawLocations(HandPose.indexIdx)
     }
     
-    func littleDrawPoints() -> [CGPoint]? {
-        guard let tip = littleTip, let dip = littleDip, let pip = littlePip,
-              let mcp = littleMcp, let wr = wrist else {
-            return nil
-        }
-        return [tip, dip, pip, mcp, wr]
+    func middleDrawLocations() -> [HandPoseLocation]? {
+        return self.fingerDrawLocations(HandPose.middleIdx)
+    }
+    
+    func ringDrawLocations() -> [HandPoseLocation]? {
+        return self.fingerDrawLocations(HandPose.ringIdx)
+    }
+    
+    func pinkyDrawLocations() -> [HandPoseLocation]? {
+        return self.fingerDrawLocations(HandPose.pinkyIdx)
     }
     
     @available(iOS 14.0, *)
-    public static func create(observation: VNHumanHandPoseObservation) -> HandPose? {
+    public static func create(observation: VNHumanHandPoseObservation,
+                              videoPreviewLayer: AVCaptureVideoPreviewLayer) -> HandPose? {
         
         let hand = HandPose()
         
@@ -153,8 +178,6 @@ open class HandPose {
             guard let wristPoint = wristPoints[.wrist] else {
                 return nil
             }
-
-            let minimumConfidence: Float = 0.3
             
             // Ignore low confidence points.
             guard thumbTipPoint.confidence > minimumConfidence,
@@ -195,30 +218,43 @@ open class HandPose {
             guard wristPoint.confidence > minimumConfidence else {
                 return nil
             }
-
-            // Convert points from Vision coordinates to AVFoundation coordinates.
-            hand.thumbTip = CGPoint(x: thumbTipPoint.location.x, y: 1 - thumbTipPoint.location.y)
-            hand.thumbIp = CGPoint(x: thumbIpPoint.location.x, y: 1 - thumbIpPoint.location.y)
-            hand.thumbMp = CGPoint(x: thumbMpPoint.location.x, y: 1 - thumbMpPoint.location.y)
-            hand.thumbCmc = CGPoint(x: thumbCMCPoint.location.x, y: 1 - thumbCMCPoint.location.y)
-            hand.indexTip = CGPoint(x: indexTipPoint.location.x, y: 1 - indexTipPoint.location.y)
-            hand.indexDip = CGPoint(x: indexDipPoint.location.x, y: 1 - indexDipPoint.location.y)
-            hand.indexPip = CGPoint(x: indexPipPoint.location.x, y: 1 - indexPipPoint.location.y)
-            hand.indexMcp = CGPoint(x: indexMcpPoint.location.x, y: 1 - indexMcpPoint.location.y)
-            hand.middleTip = CGPoint(x: middleTipPoint.location.x, y: 1 - middleTipPoint.location.y)
-            hand.middleDip = CGPoint(x: middleDipPoint.location.x, y: 1 - middleDipPoint.location.y)
-            hand.middlePip = CGPoint(x: middlePipPoint.location.x, y: 1 - middlePipPoint.location.y)
-            hand.middleMcp = CGPoint(x: middleMcpPoint.location.x, y: 1 - middleMcpPoint.location.y)
-            hand.ringTip = CGPoint(x: ringTipPoint.location.x, y: 1 - ringTipPoint.location.y)
-            hand.ringDip = CGPoint(x: ringDipPoint.location.x, y: 1 - ringDipPoint.location.y)
-            hand.ringPip = CGPoint(x: ringPipPoint.location.x, y: 1 - ringPipPoint.location.y)
-            hand.ringMcp = CGPoint(x: ringMcpPoint.location.x, y: 1 - ringMcpPoint.location.y)
-            hand.littleTip = CGPoint(x: littleTipPoint.location.x, y: 1 - littleTipPoint.location.y)
-            hand.littleDip = CGPoint(x: littleDipPoint.location.x, y: 1 - littleDipPoint.location.y)
-            hand.littlePip = CGPoint(x: littlePipPoint.location.x, y: 1 - littlePipPoint.location.y)
-            hand.littleMcp = CGPoint(x: littleMcpPoint.location.x, y: 1 - littleMcpPoint.location.y)
-            hand.wrist = CGPoint(x: wristPoint.location.x, y: 1 - wristPoint.location.y)
             
+            // Thumb point
+            hand.setLocation(tip, thumbIdx, thumbTipPoint, videoPreviewLayer)
+            hand.setLocation(pip, thumbIdx, thumbIpPoint, videoPreviewLayer)
+            hand.setLocation(mcp, thumbIdx, thumbMpPoint, videoPreviewLayer)
+            hand.setLocation(cmc, thumbIdx, thumbCMCPoint, videoPreviewLayer)
+            
+            // Index finger points
+            hand.setLocation(tip, indexIdx, indexTipPoint, videoPreviewLayer)
+            hand.setLocation(dip, indexIdx, indexDipPoint, videoPreviewLayer)
+            hand.setLocation(pip, indexIdx, indexPipPoint, videoPreviewLayer)
+            hand.setLocation(mcp, indexIdx, indexMcpPoint, videoPreviewLayer)
+            
+            // Middle finger points
+            hand.setLocation(tip, middleIdx, middleTipPoint, videoPreviewLayer)
+            hand.setLocation(dip, middleIdx, middleDipPoint, videoPreviewLayer)
+            hand.setLocation(pip, middleIdx, middlePipPoint, videoPreviewLayer)
+            hand.setLocation(mcp, middleIdx, middleMcpPoint, videoPreviewLayer)
+             
+            // Ring finger points
+            hand.setLocation(tip, ringIdx, ringTipPoint, videoPreviewLayer)
+            hand.setLocation(dip, ringIdx, ringDipPoint, videoPreviewLayer)
+            hand.setLocation(pip, ringIdx, ringPipPoint, videoPreviewLayer)
+            hand.setLocation(mcp, ringIdx, ringMcpPoint, videoPreviewLayer)
+
+            // Pinky finger points
+            hand.setLocation(tip, pinkyIdx, littleTipPoint, videoPreviewLayer)
+            hand.setLocation(dip, pinkyIdx, littleDipPoint, videoPreviewLayer)
+            hand.setLocation(pip, pinkyIdx, littlePipPoint, videoPreviewLayer)
+            hand.setLocation(mcp, pinkyIdx, littleMcpPoint, videoPreviewLayer)
+            
+            // Wrist joint point
+            hand.setLocation(wrist, wristIdx, wristPoint, videoPreviewLayer)
+            
+            // Set image bounds in context to the video preview layer
+            hand.bounds = HandPoseBounds(width: videoPreviewLayer.bounds.width,
+                                         height: videoPreviewLayer.bounds.height)
             
         } catch {
             print("Cannot perform hand pose tracking")
@@ -228,12 +264,12 @@ open class HandPose {
         return hand
     }
     
-    public func createHand(videoPreviewLayer: AVCaptureVideoPreviewLayer) -> [CAShapeLayer] {
-        guard let thumb = thumbDrawPoints(),
-              let index = indexDrawPoints(),
-              let middle = middleDrawPoints(),
-              let ring = ringDrawPoints(),
-              let little = littleDrawPoints() else {
+    public func createHand() -> [CAShapeLayer] {
+        guard let thumb = thumbDrawLocations(),
+              let index = indexDrawLocations(),
+              let middle = middleDrawLocations(),
+              let ring = ringDrawLocations(),
+              let pinky = pinkyDrawLocations() else {
             return []
         }
         
@@ -241,10 +277,10 @@ open class HandPose {
         var circleLayers: [CAShapeLayer] = []
         var lastPosition: CGPoint? = nil
         
-        [thumb, index, middle, ring, little].forEach { (jointGroup) in
+        [thumb, index, middle, ring, pinky].forEach { (jointGroup) in
             lastPosition = nil
             for (_, joint) in jointGroup.enumerated() {
-                let jointPos = videoPreviewLayer.layerPointConverted(fromCaptureDevicePoint: joint)
+                let jointPos = CGPoint(x: joint.x, y: joint.y)
                 if let lastPosUnwrapped = lastPosition {
                     lineLayers.append(createLine(pointA: jointPos, pointB: lastPosUnwrapped))
                 }
@@ -281,5 +317,96 @@ open class HandPose {
         circle.strokeColor = AppDelegate.designSystem.colorRules.palette.secondary.normal.color.cgColor
         circle.path = UIBezierPath(ovalIn: CGRect(x: point.x - 6, y: point.y - 6, width: 12, height: 12)).cgPath
         return circle
+    }
+    
+    public static func fromHandPoseResult(result: HandPoseResultObject) -> HandPose {
+        let bounds = result.bounds
+        var data = [String:HandPoseLocation]()
+        result.data.forEach { (key: String, value: HandPoseLocation) in
+            let newKey = key
+                .replacingOccurrences(of: "left_", with: "")
+                .replacingOccurrences(of: "right_", with: "")
+            data[newKey] = value
+        }
+        return HandPose(bounds: bounds, locations: data)
+    }
+    
+    public func toHandPoseResult(isLeftHand: Bool) -> HandPoseResultObject {
+        let prefix = isLeftHand ? "left" : "right"
+        let identifier = "\(prefix)HandPose"
+        var data = [String:HandPoseLocation]()
+        self.locations.forEach { (key: String, value: HandPoseLocation) in
+            data["\(prefix)_\(key)"] = value
+        }
+        return HandPoseResultObject(identifier: identifier, bounds: self.bounds, data: data, startDate: Date(), endDate: Date())
+    }
+}
+
+public struct HandPoseBounds: Codable {
+    var width: CGFloat
+    var height: CGFloat
+}
+
+public struct HandPoseLocation: Codable {
+    var x: CGFloat
+    var y: CGFloat
+    var conf: Float
+}
+
+/// The `HandPoseResultObject` records the pose of the hand when the image was captured
+public struct HandPoseResultObject : RSDResult, Codable, RSDArchivable {
+    
+    private enum CodingKeys : String, CodingKey {
+        case identifier, type, startDate, endDate, bounds, data
+    }
+    
+    /// The identifier for the associated step.
+    public var identifier: String
+    
+    /// Default = `.selectedIdentifier`.
+    public private(set) var type: RSDResultType = .selectedIdentifier
+    
+    /// Timestamp date for when the step was started.
+    public var startDate: Date = Date()
+    
+    /// Timestamp date for when the step was ended.
+    public var endDate: Date = Date()
+    
+    /// The bounds of the image to give context to the hand pose positions
+    var bounds: HandPoseBounds
+    
+    /// The data containing [name_of_joint: location_and_accuracy_of_joint]
+    var data: [String:HandPoseLocation]
+    
+    init(identifier: String, bounds: HandPoseBounds, data: [String:HandPoseLocation], startDate: Date = Date(), endDate: Date = Date()) {
+        self.identifier = identifier
+        self.bounds = bounds
+        self.data = data
+    }
+    
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.identifier = try container.decode(String.self, forKey: .identifier)
+        self.type = try container.decode(RSDResultType.self, forKey: .type)
+        self.bounds = try container.decode(HandPoseBounds.self, forKey: .bounds)
+        self.data = try container.decode([String:HandPoseLocation].self, forKey: .data)
+    }
+    
+    /// Build the archiveable or uploadable data for this result.
+    public func buildArchiveData(at stepPath: String?) throws -> (manifest: RSDFileManifest, data: Data)? {
+        // Create the manifest and encode the result.
+        let manifest = RSDFileManifest(filename: "\(self.identifier).json", timestamp: self.startDate, contentType: "application/json", identifier: self.identifier, stepPath: stepPath)
+        let data = try self.rsd_jsonEncodedData()
+        return (manifest, data)
+    }
+    
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(self.identifier, forKey: .identifier)
+        try container.encode(self.type, forKey: .type)
+        try container.encode(self.startDate, forKey: .startDate)
+        try container.encode(self.endDate, forKey: .endDate)
+        try container.encode(self.bounds, forKey: .bounds)
+        try container.encode(self.data, forKey: .data)
     }
 }
