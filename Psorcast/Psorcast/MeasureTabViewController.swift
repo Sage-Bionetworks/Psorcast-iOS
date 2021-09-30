@@ -95,6 +95,7 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
     var currentStatus: String?
     
     let showInsightTaskId = "showInsight"
+    let totalStudyWeeks = 12
     
     // The image manager for the review tab
     var imageManager = ImageDataManager.shared
@@ -569,8 +570,15 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
         let week = self.treatmentWeek()
         
         // Update the time sensitive text
-        //self.weekActivitiesTitleLabel.text = self.treatmentWeekLabelText(for: week)
-        self.weekActivitiesTitleLabel.text = "Weekly Activity Progress"
+        self.weekActivitiesTitleLabel.text = Localization.localizedString("INSIGHT_PROGRESS_TITLE")
+        let weeksRemaining = max(0, totalStudyWeeks - week + 1)
+        if (weeksRemaining != 1) {
+            self.insightStudyProgressLabel.text = String(format: Localization.localizedString("TREATMENT_WEEKS_%@_LEFT"), "\(weeksRemaining)")
+        } else {
+            self.insightStudyProgressLabel.text = Localization.localizedString("TREATMENT_1WEEK_LEFT")
+        }
+        self.insightStudyProgressBar.progress = ((Float(week) - 1.0) / Float(totalStudyWeeks))
+        
         
         // Show only the time countdown text as bold
         var renewalTimeText = Localization.localizedString("TREATMENT_RENEWAL_TITLE_NO_BOLD")
@@ -586,7 +594,7 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
         }
         
         // Keep track of previous week so we can determine
-        // when dweek thresholds are passed
+        // when week thresholds are passed
         self.renewelWeek = week
     }
     
