@@ -47,7 +47,7 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
     @IBOutlet weak var weekActivitiesTitleLabel: UILabel!
     @IBOutlet weak var weekActivitiesTimerLabel: UILabel!
     
-    /// Once you unluck the inisght, it will show these views instead of the insight progress view
+    /// Once you unlock the inisght, it will show these views instead of the insight progress view
     @IBOutlet weak var insightAchievedView: UIView!
     @IBOutlet weak var insightUnlockedTitle: UILabel!
     @IBOutlet weak var insightUnlockedText: UILabel!
@@ -56,6 +56,9 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
     @IBOutlet weak var insightNotAchievedView: UIView!
     @IBOutlet weak var insightProgressBar: StudyProgressView!
     @IBOutlet weak var insightAchievedImage: UIImageView!
+    @IBOutlet weak var insightStudyProgressLabel: UILabel!
+    @IBOutlet weak var insightStudyProgressBar: StudyProgressView!
+    
     
     /// Once you've unlocked your insight but there aren't any insights remaining, it will show this view
     @IBOutlet weak var insightsCompleteView: UIView!
@@ -421,6 +424,15 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
         self.insightsCompleteTitle.textColor = design.colorRules.textColor(on: primary, for: .body)
         self.insightsCompleteTitle.font = design.fontRules.font(for: .body)
         self.insightsCompleteTitle.text = Localization.localizedString("INSIGHTS_COMPLETE_TEXT")
+        
+        self.insightStudyProgressLabel.textColor = design.colorRules.textColor(on: primary, for: .body)
+        self.insightStudyProgressLabel.font = design.fontRules.font(for: .body)
+        self.insightStudyProgressLabel.text = "Overall Progress Needs Sub"
+        
+        self.insightStudyProgressBar.setDesignSystem(design, with: background)
+        // Override the background color
+        self.insightStudyProgressBar.backgroundColor = UIColor.white
+        self.insightStudyProgressBar.tintColor = primary.color
     }
     
     func runTask(for itemIndex: Int) {
@@ -557,7 +569,8 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
         let week = self.treatmentWeek()
         
         // Update the time sensitive text
-        self.weekActivitiesTitleLabel.text = self.treatmentWeekLabelText(for: week)
+        //self.weekActivitiesTitleLabel.text = self.treatmentWeekLabelText(for: week)
+        self.weekActivitiesTitleLabel.text = "Weekly Activity Progress"
         
         // Show only the time countdown text as bold
         let renewalTimeTextAttributed = NSMutableAttributedString(string: Localization.localizedString("TREATMENT_RENEWAL_TITLE_NO_BOLD"))
