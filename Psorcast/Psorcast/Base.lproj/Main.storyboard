@@ -559,6 +559,12 @@ OCT 2020 to Today</string>
                                                             <constraint firstAttribute="height" constant="10" id="sh8-b5-LGJ"/>
                                                         </constraints>
                                                     </progressView>
+                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="InsightProgressMask" translatesAutoresizingMaskIntoConstraints="NO" id="e2z-6r-US7" userLabel="Study Progress Mask">
+                                                        <rect key="frame" x="20" y="133" width="374" height="12"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="12" id="0Hi-Ba-2eY"/>
+                                                        </constraints>
+                                                    </imageView>
                                                 </subviews>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
@@ -566,10 +572,12 @@ OCT 2020 to Today</string>
                                                     <constraint firstAttribute="trailing" secondItem="X06-M3-toR" secondAttribute="trailing" constant="8" id="0WV-8R-iGD"/>
                                                     <constraint firstAttribute="trailing" secondItem="Lr8-dz-Waw" secondAttribute="trailing" constant="8" id="3Ui-l3-Szw"/>
                                                     <constraint firstItem="HpU-Ij-fdO" firstAttribute="centerX" secondItem="00y-Iu-hAE" secondAttribute="centerX" id="EV8-KN-XK6"/>
+                                                    <constraint firstItem="e2z-6r-US7" firstAttribute="top" secondItem="BK1-pA-6qZ" secondAttribute="bottom" constant="19" id="HW5-MA-LMA"/>
                                                     <constraint firstItem="X06-M3-toR" firstAttribute="leading" secondItem="00y-Iu-hAE" secondAttribute="leading" constant="8" id="IZ2-D8-PxJ"/>
                                                     <constraint firstAttribute="trailing" secondItem="Ezf-2F-0rZ" secondAttribute="trailing" constant="48" id="KrV-Qs-x1B"/>
                                                     <constraint firstItem="Ezf-2F-0rZ" firstAttribute="top" secondItem="Lr8-dz-Waw" secondAttribute="bottom" constant="5" id="LS2-bb-Mza"/>
                                                     <constraint firstItem="Ezf-2F-0rZ" firstAttribute="leading" secondItem="9ep-Kk-VrL" secondAttribute="trailing" constant="-20" id="RiO-ge-zkM"/>
+                                                    <constraint firstItem="e2z-6r-US7" firstAttribute="centerX" secondItem="00y-Iu-hAE" secondAttribute="centerX" id="ZNO-6o-xtV"/>
                                                     <constraint firstItem="9ep-Kk-VrL" firstAttribute="leading" secondItem="00y-Iu-hAE" secondAttribute="leading" constant="48" id="aQJ-2r-xeb"/>
                                                     <constraint firstItem="BK1-pA-6qZ" firstAttribute="top" secondItem="9ep-Kk-VrL" secondAttribute="bottom" constant="20" id="bO3-Fu-bix"/>
                                                     <constraint firstItem="Lr8-dz-Waw" firstAttribute="leading" secondItem="00y-Iu-hAE" secondAttribute="leading" constant="8" id="iGk-Xk-Gv7"/>
@@ -594,8 +602,10 @@ OCT 2020 to Today</string>
                                             <constraint firstAttribute="trailing" secondItem="bEL-9t-e4K" secondAttribute="trailing" id="QXS-Y6-saK"/>
                                             <constraint firstAttribute="bottom" secondItem="00y-Iu-hAE" secondAttribute="bottom" id="Wen-Ln-zVJ"/>
                                             <constraint firstItem="HpU-Ij-fdO" firstAttribute="leading" secondItem="EZf-wd-h5e" secondAttribute="leading" constant="20" id="avw-Wo-2X8"/>
+                                            <constraint firstAttribute="trailing" secondItem="e2z-6r-US7" secondAttribute="trailing" constant="20" id="bB8-Jw-2rN"/>
                                             <constraint firstItem="xGK-zQ-hyz" firstAttribute="top" secondItem="EZf-wd-h5e" secondAttribute="top" id="nOi-VY-pZP"/>
                                             <constraint firstAttribute="trailing" secondItem="xGK-zQ-hyz" secondAttribute="trailing" id="sHS-Ym-9bO"/>
+                                            <constraint firstItem="e2z-6r-US7" firstAttribute="leading" secondItem="EZf-wd-h5e" secondAttribute="leading" constant="20" id="xMp-oG-efx"/>
                                         </constraints>
                                     </view>
                                 </subviews>
@@ -1381,6 +1391,7 @@ OCT 2020 to Today</string>
         <image name="FilterUpArrow" width="14" height="8"/>
         <image name="InsightBulb" width="41" height="59"/>
         <image name="InsightIcon" width="34" height="34"/>
+        <image name="InsightProgressMask" width="354.5" height="7.5"/>
         <image name="MeasureTabIcon" width="31" height="16"/>
         <image name="PlayButton" width="10" height="11"/>
         <image name="ProfileTabIcon" width="27" height="27"/>
