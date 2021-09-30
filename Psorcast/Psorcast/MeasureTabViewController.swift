@@ -405,8 +405,8 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
         self.weekActivitiesTitleLabel.textColor = design.colorRules.textColor(on: primary, for: .mediumHeader)
         self.weekActivitiesTitleLabel.font = design.fontRules.font(for: .mediumHeader)
         
-        self.weekActivitiesTimerLabel.textColor = design.colorRules.textColor(on: primary, for: .body)
-        self.weekActivitiesTimerLabel.font = design.fontRules.font(for: .body)
+        self.weekActivitiesTimerLabel.textColor = design.colorRules.textColor(on: primary, for: .italicDetail)
+        self.weekActivitiesTimerLabel.font = design.fontRules.font(for: .superMicroDetail)
         
         let background = RSDColorTile(RSDColor.white, usesLightStyle: false)
         self.insightProgressBar.setDesignSystem(design, with: background)
@@ -425,8 +425,8 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
         self.insightsCompleteTitle.font = design.fontRules.font(for: .body)
         self.insightsCompleteTitle.text = Localization.localizedString("INSIGHTS_COMPLETE_TEXT")
         
-        self.insightStudyProgressLabel.textColor = design.colorRules.textColor(on: primary, for: .body)
-        self.insightStudyProgressLabel.font = design.fontRules.font(for: .body)
+        self.insightStudyProgressLabel.textColor = design.colorRules.textColor(on: primary, for: .italicDetail)
+        self.insightStudyProgressLabel.font = design.fontRules.font(for: .superMicroDetail)
         self.insightStudyProgressLabel.text = "Overall Progress Needs Sub"
         
         self.insightStudyProgressBar.setDesignSystem(design, with: background)
@@ -573,11 +573,10 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
         self.weekActivitiesTitleLabel.text = "Weekly Activity Progress"
         
         // Show only the time countdown text as bold
-        let renewalTimeTextAttributed = NSMutableAttributedString(string: Localization.localizedString("TREATMENT_RENEWAL_TITLE_NO_BOLD"))
-        let prefixText = NSAttributedString(string: self.activityRenewalText(from: setTreatmentsDate, toNow: now), attributes: [NSAttributedString.Key.font: AppDelegate.designSystem.fontRules.font(for: .mediumHeader)])
-        renewalTimeTextAttributed.append(prefixText)
+        var renewalTimeText = Localization.localizedString("TREATMENT_RENEWAL_TITLE_NO_BOLD")
+        renewalTimeText.append(self.activityRenewalText(from: setTreatmentsDate, toNow: now))
         
-        self.weekActivitiesTimerLabel.attributedText = renewalTimeTextAttributed
+        self.weekActivitiesTimerLabel.text = renewalTimeText
         
         // Check for week crossover
         if let previous = self.renewelWeek,

@@ -395,7 +395,7 @@ OCT 2020 to Today</string>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Mjc-cg-3zo" userLabel="Header">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="300"/>
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="260"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="D8m-la-ykO" userLabel="Top Header">
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="112"/>
@@ -430,7 +430,7 @@ OCT 2020 to Today</string>
                                         <rect key="frame" x="0.0" y="112" width="414" height="160"/>
                                         <subviews>
                                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xGK-zQ-hyz">
-                                                <rect key="frame" x="0.0" y="0.0" width="414" height="188"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="414" height="148"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You unlocked your Psorcast Insight" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fYI-pt-hiU">
                                                         <rect key="frame" x="100" y="16" width="231" height="41"/>
@@ -445,21 +445,21 @@ OCT 2020 to Today</string>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="InsightBulb" translatesAutoresizingMaskIntoConstraints="NO" id="LJG-Mv-JWf">
-                                                        <rect key="frame" x="27" y="58" width="57" height="72"/>
+                                                        <rect key="frame" x="27" y="38" width="57" height="72"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="57" id="BZk-mL-oK2"/>
                                                             <constraint firstAttribute="height" constant="72" id="ZcC-nN-0jq"/>
                                                         </constraints>
                                                     </imageView>
                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="RightChevron" translatesAutoresizingMaskIntoConstraints="NO" id="6Oq-uY-yqR">
-                                                        <rect key="frame" x="379" y="84" width="11" height="20"/>
+                                                        <rect key="frame" x="379" y="64" width="11" height="20"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="11" id="6SU-gg-Tsz"/>
                                                             <constraint firstAttribute="height" constant="20" id="C3D-oP-9y6"/>
                                                         </constraints>
                                                     </imageView>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vK4-Yh-hbn" userLabel="InsightButton">
-                                                        <rect key="frame" x="0.0" y="0.0" width="414" height="188"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="414" height="148"/>
                                                         <connections>
                                                             <action selector="insightTapped" destination="ehR-um-ksg" eventType="touchUpInside" id="fCQ-kZ-cs3"/>
                                                         </connections>
@@ -484,7 +484,7 @@ OCT 2020 to Today</string>
                                                 </constraints>
                                             </view>
                                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bEL-9t-e4K" userLabel="Insights Complete View">
-                                                <rect key="frame" x="0.0" y="0.0" width="414" height="188"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="414" height="148"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You unlocked your Psorcast Insight" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fYX-gd-FUL" userLabel="Insights Complete Title">
                                                         <rect key="frame" x="100" y="16" width="290" height="20.5"/>
@@ -493,14 +493,14 @@ OCT 2020 to Today</string>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="thankYouHands" translatesAutoresizingMaskIntoConstraints="NO" id="aOM-fk-HIv">
-                                                        <rect key="frame" x="27" y="58" width="57" height="72"/>
+                                                        <rect key="frame" x="27" y="38" width="57" height="72"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="57" id="eJD-n9-c1s"/>
                                                             <constraint firstAttribute="height" constant="72" id="nUV-8Y-9uK"/>
                                                         </constraints>
                                                     </imageView>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2rX-lV-wB1" userLabel="InsightButton">
-                                                        <rect key="frame" x="0.0" y="0.0" width="414" height="188"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="414" height="148"/>
                                                         <connections>
                                                             <action selector="insightTapped" destination="ehR-um-ksg" eventType="touchUpInside" id="Ze1-SU-RCp"/>
                                                         </connections>
@@ -520,7 +520,7 @@ OCT 2020 to Today</string>
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="00y-Iu-hAE" userLabel="Insight not achieved">
-                                                <rect key="frame" x="0.0" y="0.0" width="414" height="188"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="414" height="148"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Treatment Week 2 Activities" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="X06-M3-toR">
                                                         <rect key="frame" x="8" y="16" width="398" height="21"/>
@@ -548,19 +548,19 @@ OCT 2020 to Today</string>
                                                         </constraints>
                                                     </imageView>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BK1-pA-6qZ" userLabel="Study Progress Label">
-                                                        <rect key="frame" x="193.5" y="102" width="27" height="12"/>
+                                                        <rect key="frame" x="193.5" y="94" width="27" height="12"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="10"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progressViewStyle="bar" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="HpU-Ij-fdO" userLabel="Study Progress Bar" customClass="StudyProgressView" customModule="Psorcast" customModuleProvider="target">
-                                                        <rect key="frame" x="20" y="134" width="374" height="11"/>
+                                                        <rect key="frame" x="20" y="114" width="374" height="11"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="10" id="sh8-b5-LGJ"/>
                                                         </constraints>
                                                     </progressView>
                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="InsightProgressMask" translatesAutoresizingMaskIntoConstraints="NO" id="e2z-6r-US7" userLabel="Study Progress Mask">
-                                                        <rect key="frame" x="20" y="133" width="374" height="12"/>
+                                                        <rect key="frame" x="20" y="113" width="374" height="12"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="12" id="0Hi-Ba-2eY"/>
                                                         </constraints>
@@ -572,17 +572,17 @@ OCT 2020 to Today</string>
                                                     <constraint firstAttribute="trailing" secondItem="X06-M3-toR" secondAttribute="trailing" constant="8" id="0WV-8R-iGD"/>
                                                     <constraint firstAttribute="trailing" secondItem="Lr8-dz-Waw" secondAttribute="trailing" constant="8" id="3Ui-l3-Szw"/>
                                                     <constraint firstItem="HpU-Ij-fdO" firstAttribute="centerX" secondItem="00y-Iu-hAE" secondAttribute="centerX" id="EV8-KN-XK6"/>
-                                                    <constraint firstItem="e2z-6r-US7" firstAttribute="top" secondItem="BK1-pA-6qZ" secondAttribute="bottom" constant="19" id="HW5-MA-LMA"/>
+                                                    <constraint firstItem="e2z-6r-US7" firstAttribute="top" secondItem="BK1-pA-6qZ" secondAttribute="bottom" constant="7" id="HW5-MA-LMA"/>
                                                     <constraint firstItem="X06-M3-toR" firstAttribute="leading" secondItem="00y-Iu-hAE" secondAttribute="leading" constant="8" id="IZ2-D8-PxJ"/>
                                                     <constraint firstAttribute="trailing" secondItem="Ezf-2F-0rZ" secondAttribute="trailing" constant="48" id="KrV-Qs-x1B"/>
                                                     <constraint firstItem="Ezf-2F-0rZ" firstAttribute="top" secondItem="Lr8-dz-Waw" secondAttribute="bottom" constant="5" id="LS2-bb-Mza"/>
                                                     <constraint firstItem="Ezf-2F-0rZ" firstAttribute="leading" secondItem="9ep-Kk-VrL" secondAttribute="trailing" constant="-20" id="RiO-ge-zkM"/>
                                                     <constraint firstItem="e2z-6r-US7" firstAttribute="centerX" secondItem="00y-Iu-hAE" secondAttribute="centerX" id="ZNO-6o-xtV"/>
                                                     <constraint firstItem="9ep-Kk-VrL" firstAttribute="leading" secondItem="00y-Iu-hAE" secondAttribute="leading" constant="48" id="aQJ-2r-xeb"/>
-                                                    <constraint firstItem="BK1-pA-6qZ" firstAttribute="top" secondItem="9ep-Kk-VrL" secondAttribute="bottom" constant="20" id="bO3-Fu-bix"/>
+                                                    <constraint firstItem="BK1-pA-6qZ" firstAttribute="top" secondItem="9ep-Kk-VrL" secondAttribute="bottom" constant="12" id="bO3-Fu-bix"/>
                                                     <constraint firstItem="Lr8-dz-Waw" firstAttribute="leading" secondItem="00y-Iu-hAE" secondAttribute="leading" constant="8" id="iGk-Xk-Gv7"/>
                                                     <constraint firstItem="BK1-pA-6qZ" firstAttribute="centerX" secondItem="00y-Iu-hAE" secondAttribute="centerX" id="jTG-zx-g6I"/>
-                                                    <constraint firstItem="HpU-Ij-fdO" firstAttribute="top" secondItem="BK1-pA-6qZ" secondAttribute="bottom" constant="20" id="jf7-IH-waX"/>
+                                                    <constraint firstItem="HpU-Ij-fdO" firstAttribute="top" secondItem="BK1-pA-6qZ" secondAttribute="bottom" constant="8" id="jf7-IH-waX"/>
                                                     <constraint firstItem="9ep-Kk-VrL" firstAttribute="centerY" secondItem="Ezf-2F-0rZ" secondAttribute="centerY" id="kUb-8x-hs9"/>
                                                     <constraint firstItem="Lr8-dz-Waw" firstAttribute="top" secondItem="X06-M3-toR" secondAttribute="bottom" constant="8" id="nWa-WE-qQ4"/>
                                                 </constraints>
@@ -617,12 +617,12 @@ OCT 2020 to Today</string>
                                     <constraint firstItem="EZf-wd-h5e" firstAttribute="leading" secondItem="Mjc-cg-3zo" secondAttribute="leading" id="dWT-ik-ZVL"/>
                                     <constraint firstItem="EZf-wd-h5e" firstAttribute="top" secondItem="D8m-la-ykO" secondAttribute="bottom" id="fIU-Hm-I5f"/>
                                     <constraint firstAttribute="trailing" secondItem="EZf-wd-h5e" secondAttribute="trailing" id="kyw-kj-HL7"/>
-                                    <constraint firstAttribute="height" constant="300" id="mfl-1t-9L0"/>
+                                    <constraint firstAttribute="height" constant="260" id="mfl-1t-9L0"/>
                                     <constraint firstAttribute="bottom" secondItem="EZf-wd-h5e" secondAttribute="bottom" id="va3-yG-OaQ"/>
                                 </constraints>
                             </view>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="OR1-ou-7G7">
-                                <rect key="frame" x="0.0" y="300" width="414" height="513"/>
+                                <rect key="frame" x="0.0" y="260" width="414" height="553"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="vi1-YY-mcr">
                                     <size key="itemSize" width="212" height="120"/>
