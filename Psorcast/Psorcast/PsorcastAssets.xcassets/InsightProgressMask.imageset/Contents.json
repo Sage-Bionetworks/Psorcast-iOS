@@ -1,17 +1,15 @@
 {
   "images" : [
     {
-      "filename" : "ProgressCutout1x.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "ProgressCutout2x.png",
+      "filename" : "ProgressMask2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "ProgressCutout3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
