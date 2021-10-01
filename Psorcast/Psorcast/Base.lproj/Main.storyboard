@@ -487,7 +487,7 @@ OCT 2020 to Today</string>
                                                 <rect key="frame" x="0.0" y="0.0" width="414" height="148"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You unlocked your Psorcast Insight" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fYX-gd-FUL" userLabel="Insights Complete Title">
-                                                        <rect key="frame" x="100" y="16" width="290" height="20.5"/>
+                                                        <rect key="frame" x="100" y="64" width="290" height="20.5"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
@@ -511,9 +511,9 @@ OCT 2020 to Today</string>
                                                     <constraint firstAttribute="bottom" secondItem="2rX-lV-wB1" secondAttribute="bottom" id="8hF-sE-Tx0"/>
                                                     <constraint firstItem="aOM-fk-HIv" firstAttribute="centerY" secondItem="bEL-9t-e4K" secondAttribute="centerY" id="G6a-ag-6V7"/>
                                                     <constraint firstAttribute="trailing" secondItem="2rX-lV-wB1" secondAttribute="trailing" id="KbX-SH-xxm"/>
+                                                    <constraint firstItem="fYX-gd-FUL" firstAttribute="centerY" secondItem="bEL-9t-e4K" secondAttribute="centerY" id="P2A-FI-3lX"/>
                                                     <constraint firstItem="2rX-lV-wB1" firstAttribute="top" secondItem="bEL-9t-e4K" secondAttribute="top" id="T9a-KM-wUX"/>
                                                     <constraint firstAttribute="trailing" secondItem="fYX-gd-FUL" secondAttribute="trailing" constant="24" id="Y6p-j4-lEk"/>
-                                                    <constraint firstItem="fYX-gd-FUL" firstAttribute="top" secondItem="bEL-9t-e4K" secondAttribute="top" constant="16" id="aXn-t2-4Y3"/>
                                                     <constraint firstItem="2rX-lV-wB1" firstAttribute="leading" secondItem="bEL-9t-e4K" secondAttribute="leading" id="dWa-Di-VgK"/>
                                                     <constraint firstItem="fYX-gd-FUL" firstAttribute="leading" secondItem="aOM-fk-HIv" secondAttribute="trailing" constant="16" id="jop-U0-SFi"/>
                                                     <constraint firstItem="aOM-fk-HIv" firstAttribute="leading" secondItem="bEL-9t-e4K" secondAttribute="leading" constant="27" id="w8o-Tb-B2x"/>
