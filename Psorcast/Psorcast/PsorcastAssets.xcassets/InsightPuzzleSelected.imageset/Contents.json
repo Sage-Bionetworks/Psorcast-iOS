@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "CirclePuzzle.png",
+      "filename" : "PuzzleSelected.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "CirclePuzzle@2x.png",
+      "filename" : "PuzzleSelected@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "CirclePuzzle@3x.png",
+      "filename" : "PuzzleSelected@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

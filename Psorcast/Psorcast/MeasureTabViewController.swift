@@ -428,7 +428,7 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
         
         self.insightStudyProgressLabel.textColor = design.colorRules.textColor(on: primary, for: .italicDetail)
         self.insightStudyProgressLabel.font = design.fontRules.font(for: .superMicroDetail)
-        self.insightStudyProgressLabel.text = "Overall Progress Needs Sub"
+        self.insightStudyProgressLabel.text = ""
         
         self.insightStudyProgressBar.setDesignSystem(design, with: background)
         // Override the background color
@@ -463,7 +463,7 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
     func updateInsightProgress() {
         let totalSchedules = self.measureTabItemCount
         
-        // Make sure pre-conditions are mets
+        // Make sure pre-conditions are met
         guard totalSchedules != 0 else {
             self.insightProgressBar.progress = 0
             self.updateInsightAchievedImage()
@@ -547,9 +547,9 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
     
     func updateInsightAchievedImage() {
         if self.insightProgressBar.progress >= 1 {
-            self.insightAchievedImage.image = UIImage(named: "InsightIconSelected")
+            self.insightAchievedImage.image = UIImage(named: "InsightPuzzleSelected")
         } else {
-            self.insightAchievedImage.image = UIImage(named: "InsightIcon")
+            self.insightAchievedImage.image = UIImage(named: "InsightPuzzlePiece")
         }
     }
     
