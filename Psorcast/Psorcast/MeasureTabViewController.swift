@@ -490,8 +490,16 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
                 if (self.scheduleManager.nextInsightItem() != nil) {
                     self.animateInsightAchievedView(hide: false)
                 } else {
-                    // We've shown all the insights, so let's show the insights complete view
-                    self.animateInsightsCompleteView()
+                    // We've shown all the insights, so let's show the insights complete view, but only if
+                    // we haven't already viewed it this week
+                    let lastSuccessWeek = self.historyData.insightFinishedShownWeek
+                    // Check to see if we've shown this already this week. If not, animate and update. If
+                    // it's already been seen, don't animate.
+                    if (lastSuccessWeek != self.treatmentWeek()) {
+                        // show the success view, and update the date
+                        self.animateInsightsCompleteView()
+                        self.historyData.setInsightFinishedShownWeek(week: self.treatmentWeek())
+                    }
                 }
             } else if animateToInsightProgressView {
                 // Animate in the no insight view if it was previously hidden

@@ -103,6 +103,12 @@ open class HistoryDataManager {
     public var pastInsightItemsViewed: [InsightItemViewed] {
         return self.insightData?.current ?? []
     }
+    public var insightFinishedShownWeek: Int {
+        return self.defaults.integer(forKey: "InsightSuccessLastViewedWeek")
+    }
+    public func setInsightFinishedShownWeek(week: Int) {
+        self.defaults.set(week, forKey: "InsightSuccessLastViewedWeek")
+    }
     
     fileprivate var reminderData: RemindersUserDefaultsSingletonReport? {
         return self.singletonData[RSDIdentifier.remindersTask] as? RemindersUserDefaultsSingletonReport
