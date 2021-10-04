@@ -112,6 +112,9 @@
 "TREATMENT_WEEK_TITLE_%@" = "Treatment Week %@ Activities";
 "%@_DAYS_PLURAL" = "%@ Days";
 "%@_DAYS_SINGULAR" = "%@ Day";
+"INSIGHT_PROGRESS_TITLE" = "Weekly Activity Progress";
+"TREATMENT_WEEKS_%@_LEFT" = "Overall Study Progress (%@ weeks left)";
+"TREATMENT_1WEEK_LEFT" = "Overall Study Progress (1 week left)";
 
 "INSIGHT_UNLOCKED_TITLE" = "You unlocked your Psorcast Insight";
 "INSIGHT_UNLOCKED_TEXT" = "View Your Insight";

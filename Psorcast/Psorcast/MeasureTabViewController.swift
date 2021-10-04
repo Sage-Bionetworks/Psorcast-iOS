@@ -47,7 +47,7 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
     @IBOutlet weak var weekActivitiesTitleLabel: UILabel!
     @IBOutlet weak var weekActivitiesTimerLabel: UILabel!
     
-    /// Once you unluck the inisght, it will show these views instead of the insight progress view
+    /// Once you unlock the inisght, it will show these views instead of the insight progress view
     @IBOutlet weak var insightAchievedView: UIView!
     @IBOutlet weak var insightUnlockedTitle: UILabel!
     @IBOutlet weak var insightUnlockedText: UILabel!
@@ -56,6 +56,9 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
     @IBOutlet weak var insightNotAchievedView: UIView!
     @IBOutlet weak var insightProgressBar: StudyProgressView!
     @IBOutlet weak var insightAchievedImage: UIImageView!
+    @IBOutlet weak var insightStudyProgressLabel: UILabel!
+    @IBOutlet weak var insightStudyProgressBar: StudyProgressView!
+    
     
     /// Once you've unlocked your insight but there aren't any insights remaining, it will show this view
     @IBOutlet weak var insightsCompleteView: UIView!
@@ -92,6 +95,7 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
     var currentStatus: String?
     
     let showInsightTaskId = "showInsight"
+    let totalStudyWeeks = 12
     
     // The image manager for the review tab
     var imageManager = ImageDataManager.shared
@@ -402,8 +406,8 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
         self.weekActivitiesTitleLabel.textColor = design.colorRules.textColor(on: primary, for: .mediumHeader)
         self.weekActivitiesTitleLabel.font = design.fontRules.font(for: .mediumHeader)
         
-        self.weekActivitiesTimerLabel.textColor = design.colorRules.textColor(on: primary, for: .body)
-        self.weekActivitiesTimerLabel.font = design.fontRules.font(for: .body)
+        self.weekActivitiesTimerLabel.textColor = design.colorRules.textColor(on: primary, for: .italicDetail)
+        self.weekActivitiesTimerLabel.font = design.fontRules.font(for: .superMicroDetail)
         
         let background = RSDColorTile(RSDColor.white, usesLightStyle: false)
         self.insightProgressBar.setDesignSystem(design, with: background)
@@ -421,6 +425,15 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
         self.insightsCompleteTitle.textColor = design.colorRules.textColor(on: primary, for: .body)
         self.insightsCompleteTitle.font = design.fontRules.font(for: .body)
         self.insightsCompleteTitle.text = Localization.localizedString("INSIGHTS_COMPLETE_TEXT")
+        
+        self.insightStudyProgressLabel.textColor = design.colorRules.textColor(on: primary, for: .italicDetail)
+        self.insightStudyProgressLabel.font = design.fontRules.font(for: .superMicroDetail)
+        self.insightStudyProgressLabel.text = ""
+        
+        self.insightStudyProgressBar.setDesignSystem(design, with: background)
+        // Override the background color
+        self.insightStudyProgressBar.backgroundColor = UIColor.white
+        self.insightStudyProgressBar.tintColor = primary.color
     }
     
     func runTask(for itemIndex: Int) {
@@ -450,7 +463,7 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
     func updateInsightProgress() {
         let totalSchedules = self.measureTabItemCount
         
-        // Make sure pre-conditions are mets
+        // Make sure pre-conditions are met
         guard totalSchedules != 0 else {
             self.insightProgressBar.progress = 0
             self.updateInsightAchievedImage()
@@ -542,9 +555,9 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
     
     func updateInsightAchievedImage() {
         if self.insightProgressBar.progress >= 1 {
-            self.insightAchievedImage.image = UIImage(named: "InsightIconSelected")
+            self.insightAchievedImage.image = UIImage(named: "InsightPuzzleSelected")
         } else {
-            self.insightAchievedImage.image = UIImage(named: "InsightIcon")
+            self.insightAchievedImage.image = UIImage(named: "InsightPuzzlePiece")
         }
     }
     
@@ -565,14 +578,21 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
         let week = self.treatmentWeek()
         
         // Update the time sensitive text
-        self.weekActivitiesTitleLabel.text = self.treatmentWeekLabelText(for: week)
+        self.weekActivitiesTitleLabel.text = Localization.localizedString("INSIGHT_PROGRESS_TITLE")
+        let weeksRemaining = max(0, totalStudyWeeks - week + 1)
+        if (weeksRemaining != 1) {
+            self.insightStudyProgressLabel.text = String(format: Localization.localizedString("TREATMENT_WEEKS_%@_LEFT"), "\(weeksRemaining)")
+        } else {
+            self.insightStudyProgressLabel.text = Localization.localizedString("TREATMENT_1WEEK_LEFT")
+        }
+        self.insightStudyProgressBar.progress = ((Float(week) - 1.0) / Float(totalStudyWeeks))
+        
         
         // Show only the time countdown text as bold
-        let renewalTimeTextAttributed = NSMutableAttributedString(string: Localization.localizedString("TREATMENT_RENEWAL_TITLE_NO_BOLD"))
-        let prefixText = NSAttributedString(string: self.activityRenewalText(from: setTreatmentsDate, toNow: now), attributes: [NSAttributedString.Key.font: AppDelegate.designSystem.fontRules.font(for: .mediumHeader)])
-        renewalTimeTextAttributed.append(prefixText)
+        var renewalTimeText = Localization.localizedString("TREATMENT_RENEWAL_TITLE_NO_BOLD")
+        renewalTimeText.append(self.activityRenewalText(from: setTreatmentsDate, toNow: now))
         
-        self.weekActivitiesTimerLabel.attributedText = renewalTimeTextAttributed
+        self.weekActivitiesTimerLabel.text = renewalTimeText
         
         // Check for week crossover
         if let previous = self.renewelWeek,
@@ -582,7 +602,7 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
         }
         
         // Keep track of previous week so we can determine
-        // when dweek thresholds are passed
+        // when week thresholds are passed
         self.renewelWeek = week
     }
     
