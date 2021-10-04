@@ -407,9 +407,17 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate, ShowPopTipDele
         guard BridgeSDK.authManager.isAuthenticated() else { return }
         
         if taskController.task.identifier == SignInTaskViewController.taskIdentifier {
-            // Sign in complete, now show the consent screens
-            self.showConsentScreens(animated: true)
-            return
+            // Sign in complete, now show the consent screens if appropriate. If not, show the appropriate VC
+            let isConsented = SBAParticipantManager.shared.isConsented
+            if (!isConsented) {
+                self.showConsentScreens(animated: true)
+                return
+            } else {
+                // We were previously consented, so this should be a case of logging into an old
+                // account. In that case, load data and proceed to the appropriate step
+                self.loadUserHistoryAndProceedToMain()
+                return
+            }
         }
         
         if taskController.task.identifier == self.ConsentTaskId {

@@ -120,7 +120,7 @@ open class HistoryDataManager {
         return self.reminderData?.current?.reminderDoNotRemindMe != nil
     }
     
-    // Controls persistnce of Treatment data locally and on Bridge
+    // Controls persistence of Treatment data locally and on Bridge
     fileprivate var treatmentData: TreatmentUserDefaultsSingletonReport? {
         return self.singletonData[RSDIdentifier.treatmentTask] as? TreatmentUserDefaultsSingletonReport
     }
