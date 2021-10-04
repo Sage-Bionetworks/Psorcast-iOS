@@ -218,15 +218,24 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate, ShowPopTipDele
     }
     
     func showConsentScreens(animated: Bool) {
-        do {
-            let resourceTransformer = RSDResourceTransformerObject(resourceName: self.ConsentTaskId)
-            let task = try RSDFactory.shared.decodeTask(with: resourceTransformer)
-            let taskViewModel = RSDTaskViewModel(task: task)
-            let vc = RSDTaskViewController(taskViewModel: taskViewModel)
-            vc.delegate = self
-            self.transition(to: vc, state: .consent, animated: true)
-        } catch let err {
-            fatalError("Failed to decode the consent screens task. \(err)")
+        // First, make sure we aren't consented
+        let isConsented = SBAParticipantManager.shared.isConsented
+        if (!isConsented) {
+            // All is good, go ahead and show the consent screens
+            do {
+                let resourceTransformer = RSDResourceTransformerObject(resourceName: self.ConsentTaskId)
+                let task = try RSDFactory.shared.decodeTask(with: resourceTransformer)
+                let taskViewModel = RSDTaskViewModel(task: task)
+                let vc = RSDTaskViewController(taskViewModel: taskViewModel)
+                vc.delegate = self
+                self.transition(to: vc, state: .consent, animated: true)
+            } catch let err {
+                fatalError("Failed to decode the consent screens task. \(err)")
+            }
+        } else {
+            // We were previously consented, so this should be a case of logging into an old
+            // account. In that case, load data and proceed to the appropriate step
+            self.loadUserHistoryAndProceedToMain()
         }
     }
     
@@ -407,7 +416,7 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate, ShowPopTipDele
         guard BridgeSDK.authManager.isAuthenticated() else { return }
         
         if taskController.task.identifier == SignInTaskViewController.taskIdentifier {
-            // Sign in complete, now show the consent screens
+            // Sign in complete, now proceed to consent
             self.showConsentScreens(animated: true)
             return
         }
