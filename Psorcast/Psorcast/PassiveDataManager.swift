@@ -35,6 +35,7 @@ import BridgeApp
 import Research
 import ResearchUI
 import HealthKit
+import CoreLocation
 
 open class PassiveDataManager {
     

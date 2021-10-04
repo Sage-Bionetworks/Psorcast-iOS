@@ -35,6 +35,7 @@ import UIKit
 import BridgeApp
 import BridgeAppUI
 import BridgeSDK
+import CoreLocation
 
 open class EnvironmentalStepObject: RSDUIStepObject, RSDStepViewControllerVendor {
         
