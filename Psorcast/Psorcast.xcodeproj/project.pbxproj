@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		0423F49826DD303B005F4112 /* OnboardingFormStepObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0423F49726DD303B005F4112 /* OnboardingFormStepObject.swift */; };
 		043781B1270EB34F001F374F /* ConsentForm_files in Resources */ = {isa = PBXBuildFile; fileRef = 043781B0270EB34F001F374F /* ConsentForm_files */; };
+		043781B7270EC448001F374F /* ConsentFormOnboarding.html in Resources */ = {isa = PBXBuildFile; fileRef = 043781B4270EC374001F374F /* ConsentFormOnboarding.html */; };
 		047C2CCF25F16628006AA52B /* PopTip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047C2CCC25F16628006AA52B /* PopTip.swift */; };
 		047C2CD025F16628006AA52B /* PopTip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047C2CCC25F16628006AA52B /* PopTip.swift */; };
 		047C2CD125F16628006AA52B /* PopTip+Draw.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047C2CCD25F16628006AA52B /* PopTip+Draw.swift */; };
@@ -421,6 +422,7 @@
 /* Begin PBXFileReference section */
 		0423F49726DD303B005F4112 /* OnboardingFormStepObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingFormStepObject.swift; sourceTree = "<group>"; };
 		043781B0270EB34F001F374F /* ConsentForm_files */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ConsentForm_files; sourceTree = "<group>"; };
+		043781B4270EC374001F374F /* ConsentFormOnboarding.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = ConsentFormOnboarding.html; sourceTree = "<group>"; };
 		047C2CCC25F16628006AA52B /* PopTip.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopTip.swift; sourceTree = "<group>"; };
 		047C2CCD25F16628006AA52B /* PopTip+Draw.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PopTip+Draw.swift"; sourceTree = "<group>"; };
 		047C2CCE25F16628006AA52B /* PopTip+Transitions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PopTip+Transitions.swift"; sourceTree = "<group>"; };
@@ -1070,6 +1072,7 @@
 				043781B0270EB34F001F374F /* ConsentForm_files */,
 				CBFF927F25E19B7300EC34DB /* CSS_files */,
 				04F2653726839B5B004140B7 /* ConsentForm.html */,
+				043781B4270EC374001F374F /* ConsentFormOnboarding.html */,
 				CBFF927D25E19B6200EC34DB /* PhoneLearnMore.html */,
 				04E61CA526721B6000B371E9 /* ConsentLearnMorePlaceholder.html */,
 				04F2652F26839954004140B7 /* PrivacyPolicy.html */,
@@ -1414,6 +1417,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				043781B7270EC448001F374F /* ConsentFormOnboarding.html in Resources */,
 				04F265832686DC6F004140B7 /* QualifiedResearchers_Consent.html in Resources */,
 				04F2654C26845794004140B7 /* ConsentForm.html in Resources */,
 				CBDCDC7B23F3848500E5CEB8 /* FootImaging.json in Resources */,
