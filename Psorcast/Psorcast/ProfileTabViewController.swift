@@ -56,6 +56,7 @@ class ProfileTabViewController: UIViewController, UITableViewDelegate, UITableVi
     public static let privacyPolicyKey = "privacyPolicy"
     public static let studyInformationSheetKey = "studyInformationSheet"
     public static let activityMeasuresKey = "activityMeasures"
+    public static let licensesKey = "licenses"
     
     override open func viewDidLoad() {
         super.viewDidLoad()                
@@ -307,8 +308,13 @@ class ProfileTabViewController: UIViewController, UITableViewDelegate, UITableVi
                 let (_, navVC) = RSDWebViewController.instantiateController(using: AppDelegate.designSystem, action: webAction)
                 navVC.modalPresentationStyle = .popover
                 self.present(navVC, animated: true, completion: nil)
-            }  else if profileItem.profileItemKey == ProfileTabViewController.studyInformationSheetKey {
+            } else if profileItem.profileItemKey == ProfileTabViewController.studyInformationSheetKey {
                 let webAction = RSDWebViewUIActionObject(url: "ConsentForm.html", buttonTitle: "Done")
+                let (_, navVC) = RSDWebViewController.instantiateController(using: AppDelegate.designSystem, action: webAction)
+                navVC.modalPresentationStyle = .pageSheet
+                self.present(navVC, animated: true, completion: nil)
+            } else if profileItem.profileItemKey == ProfileTabViewController.licensesKey {
+                let webAction = RSDWebViewUIActionObject(url: "Licenses.html", buttonTitle: "Done")
                 let (_, navVC) = RSDWebViewController.instantiateController(using: AppDelegate.designSystem, action: webAction)
                 navVC.modalPresentationStyle = .pageSheet
                 self.present(navVC, animated: true, completion: nil)

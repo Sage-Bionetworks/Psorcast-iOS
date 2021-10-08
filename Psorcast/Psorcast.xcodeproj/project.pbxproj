@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0423F49826DD303B005F4112 /* OnboardingFormStepObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0423F49726DD303B005F4112 /* OnboardingFormStepObject.swift */; };
+		043781C2270ECCB7001F374F /* Licenses.html in Resources */ = {isa = PBXBuildFile; fileRef = 043781BD270ECCB7001F374F /* Licenses.html */; };
 		047C2CCF25F16628006AA52B /* PopTip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047C2CCC25F16628006AA52B /* PopTip.swift */; };
 		047C2CD025F16628006AA52B /* PopTip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047C2CCC25F16628006AA52B /* PopTip.swift */; };
 		047C2CD125F16628006AA52B /* PopTip+Draw.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047C2CCD25F16628006AA52B /* PopTip+Draw.swift */; };
@@ -419,6 +420,7 @@
 
 /* Begin PBXFileReference section */
 		0423F49726DD303B005F4112 /* OnboardingFormStepObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingFormStepObject.swift; sourceTree = "<group>"; };
+		043781BD270ECCB7001F374F /* Licenses.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = Licenses.html; sourceTree = "<group>"; };
 		047C2CCC25F16628006AA52B /* PopTip.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopTip.swift; sourceTree = "<group>"; };
 		047C2CCD25F16628006AA52B /* PopTip+Draw.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PopTip+Draw.swift"; sourceTree = "<group>"; };
 		047C2CCE25F16628006AA52B /* PopTip+Transitions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PopTip+Transitions.swift"; sourceTree = "<group>"; };
@@ -1072,6 +1074,7 @@
 				04F2652F26839954004140B7 /* PrivacyPolicy.html */,
 				04F2655E2686D40B004140B7 /* ResearchActivities_Consent.html */,
 				04F265662686D78E004140B7 /* Privacy_Consent.html */,
+				043781BD270ECCB7001F374F /* Licenses.html */,
 				04F2656A2686D809004140B7 /* DataUse_Consent.html */,
 				04F2656E2686D88E004140B7 /* TimeCommitment_Consent.html */,
 				04F265722686DA0E004140B7 /* PotentialBenefits_Consent.html */,
@@ -1481,6 +1484,7 @@
 				FF5010A122DD214A0035E83C /* BridgeInfo.plist in Resources */,
 				CB95A28926085EDF00F28273 /* OnboardingPagerView.xib in Resources */,
 				04F00578243FE76E00EDB120 /* ShowInsightStepViewController.xib in Resources */,
+				043781C2270ECCB7001F374F /* Licenses.html in Resources */,
 				CBDCDC7F23F3848500E5CEB8 /* MDJointCounting.json in Resources */,
 				CB72819D2624CBE100AAEB2C /* TextfieldStepViewController.xib in Resources */,
 				04F2657B2686DB6D004140B7 /* MedicalCare_Consent.html in Resources */,
