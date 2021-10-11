@@ -78,7 +78,7 @@ open class ConsentReviewStepViewController: RSDStepViewController, UITextFieldDe
         signatureTextField.addTarget(self, action: #selector(editingChanged), for: .editingChanged)
         self.view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.dismissKeyboard)))
         
-        if let htmlFile = Bundle.main.path(forResource:"ConsentForm", ofType: "html") {
+        if let htmlFile = Bundle.main.path(forResource:"ConsentFormOnboarding", ofType: "html") {
             do {
                 let htmlString = try String(contentsOfFile: htmlFile)
                 self.textView.attributedText = htmlString.htmlToAttributedString
