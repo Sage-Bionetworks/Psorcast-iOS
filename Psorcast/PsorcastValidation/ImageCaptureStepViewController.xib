@@ -15,6 +15,7 @@
                 <outlet property="captureButton" destination="7Iz-4x-dLZ" id="b5R-jR-RN4"/>
                 <outlet property="handOverlayView" destination="Ln8-EY-YfR" id="EAO-cl-lnY"/>
                 <outlet property="navigationHeader" destination="fxA-Tz-ZiS" id="agX-5m-P7G"/>
+                <outlet property="overlayToggleButton" destination="tyD-12-OlI" id="gaf-F2-BvS"/>
                 <outlet property="previewView" destination="Bb7-gd-Spk" id="gx5-ZP-Ljt"/>
                 <outlet property="view" destination="Be1-UX-e65" id="eci-s9-hNP"/>
             </connections>
@@ -88,11 +89,26 @@
                             <rect key="frame" x="0.0" y="80" width="395" height="484"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </view>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="z7Q-cL-s9u">
-                            <rect key="frame" x="30" y="612" width="46" height="39.666666666666664"/>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="z7Q-cL-s9u" userLabel="ToggleCameraButton">
+                            <rect key="frame" x="32" y="607.66666666666663" width="48" height="48"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="48" id="naG-sq-bIx"/>
+                                <constraint firstAttribute="height" constant="48" id="tSO-h2-GVw"/>
+                            </constraints>
                             <state key="normal" image="CameraToggle"/>
                             <connections>
                                 <action selector="changeCamera:" destination="-1" eventType="touchUpInside" id="t6y-2m-w11"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tyD-12-OlI" userLabel="OverlayButton">
+                            <rect key="frame" x="315" y="607.66666666666663" width="48" height="48"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="48" id="KF4-kK-62T"/>
+                                <constraint firstAttribute="height" constant="48" id="XUr-7j-PAY"/>
+                            </constraints>
+                            <state key="normal" image="OverlayHandFull"/>
+                            <connections>
+                                <action selector="moveToNextOverlayState" destination="-2" eventType="touchUpInside" id="kHZ-Ly-c0q"/>
                             </connections>
                         </button>
                     </subviews>
@@ -105,14 +121,16 @@
                         <constraint firstItem="Ln8-EY-YfR" firstAttribute="top" secondItem="Bb7-gd-Spk" secondAttribute="top" id="JvG-DY-Uxg"/>
                         <constraint firstItem="Br6-tq-bnk" firstAttribute="top" secondItem="7Iz-4x-dLZ" secondAttribute="bottom" constant="8" id="Nl3-Uq-fax"/>
                         <constraint firstItem="7Iz-4x-dLZ" firstAttribute="centerX" secondItem="nCy-4g-nIJ" secondAttribute="centerX" id="Otr-xa-UAw"/>
+                        <constraint firstAttribute="trailing" secondItem="tyD-12-OlI" secondAttribute="trailing" constant="32" id="PL6-9W-OV3"/>
                         <constraint firstItem="fxA-Tz-ZiS" firstAttribute="top" secondItem="nCy-4g-nIJ" secondAttribute="top" id="SC4-I8-O5N"/>
+                        <constraint firstItem="tyD-12-OlI" firstAttribute="centerY" secondItem="7Iz-4x-dLZ" secondAttribute="centerY" id="eQX-OM-F7X"/>
                         <constraint firstItem="Ln8-EY-YfR" firstAttribute="leading" secondItem="Bb7-gd-Spk" secondAttribute="leading" id="lXN-XC-P0D"/>
                         <constraint firstItem="Bb7-gd-Spk" firstAttribute="leading" secondItem="nCy-4g-nIJ" secondAttribute="leading" id="mgY-QI-c9q"/>
                         <constraint firstItem="Bb7-gd-Spk" firstAttribute="top" secondItem="fxA-Tz-ZiS" secondAttribute="bottom" id="pki-Yv-2aA"/>
                         <constraint firstItem="Ln8-EY-YfR" firstAttribute="bottom" secondItem="Bb7-gd-Spk" secondAttribute="bottom" id="q3H-E8-XJM"/>
                         <constraint firstItem="fxA-Tz-ZiS" firstAttribute="leading" secondItem="nCy-4g-nIJ" secondAttribute="leading" id="rEg-ZD-hZb"/>
                         <constraint firstAttribute="bottom" secondItem="Bb7-gd-Spk" secondAttribute="bottom" constant="156" id="t2M-kq-AFr"/>
-                        <constraint firstItem="z7Q-cL-s9u" firstAttribute="leading" secondItem="nCy-4g-nIJ" secondAttribute="leading" constant="30" id="tzi-9u-Qc2"/>
+                        <constraint firstItem="z7Q-cL-s9u" firstAttribute="leading" secondItem="nCy-4g-nIJ" secondAttribute="leading" constant="32" id="tzi-9u-Qc2"/>
                         <constraint firstItem="Br6-tq-bnk" firstAttribute="centerX" secondItem="nCy-4g-nIJ" secondAttribute="centerX" id="xYT-Ri-THY"/>
                         <constraint firstItem="z7Q-cL-s9u" firstAttribute="centerY" secondItem="7Iz-4x-dLZ" secondAttribute="centerY" id="zGV-vJ-a3g"/>
                     </constraints>
@@ -134,6 +152,7 @@
     <resources>
         <image name="Camera" width="48" height="48"/>
         <image name="CameraToggle" width="46" height="39.666667938232422"/>
+        <image name="OverlayHandFull" width="174" height="174"/>
         <image name="closeActivity" width="50" height="50"/>
         <systemColor name="linkColor">
             <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
