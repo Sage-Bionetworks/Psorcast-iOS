@@ -42,12 +42,13 @@ import Vision
 open class ImageCaptureStepObject: RSDUIStepObject, RSDStepViewControllerVendor {
     
     private enum CodingKeys: String, CodingKey, CaseIterable {
-        case cameraDevice, handTracking
+        case cameraDevice, handTracking, overlayLastPhoto
     }
     
     /// front or back camera
     var cameraDevice: CameraDeviceWrapper?
     var handTracking: Bool = false
+    var overlayLastPhoto: Bool = true
     
     /// Default type is `.imageCapture`.
     open override class func defaultType() -> RSDStepType {
@@ -62,6 +63,8 @@ open class ImageCaptureStepObject: RSDUIStepObject, RSDStepViewControllerVendor 
             return
         }
         subclassCopy.cameraDevice = self.cameraDevice
+        subclassCopy.handTracking = self.handTracking
+        subclassCopy.overlayLastPhoto = self.overlayLastPhoto
     }
     
     /// Override the decoder per device type b/c the task may require a different set of permissions depending upon the device.
@@ -74,6 +77,10 @@ open class ImageCaptureStepObject: RSDUIStepObject, RSDStepViewControllerVendor 
         
         if container.contains(.handTracking) {
             self.handTracking = try container.decode(Bool.self, forKey: .handTracking)
+        }
+        
+        if container.contains(.overlayLastPhoto) {
+            self.overlayLastPhoto = try container.decode(Bool.self, forKey: .overlayLastPhoto)
         }
         
         try super.decode(from: decoder, for: deviceType)
@@ -139,6 +146,9 @@ open class ImageCaptureStepViewController: RSDStepViewController, UIImagePickerC
     @IBOutlet weak var captureButton: UIButton!
     
     @IBOutlet weak var cameraToggleButton: UIButton!
+    
+    @IBOutlet weak var overlayToggleButton: UIButton!
+    var overlayButtonState: OverlayPhotoState = .full
     
     @IBOutlet public var cameraContainerView: UIView?
     open var cameraView: UIView {
@@ -288,6 +298,12 @@ open class ImageCaptureStepViewController: RSDStepViewController, UIImagePickerC
         #if TARGET_OS_SIMULATOR
             return
         #endif
+        
+        if (self.captureStep?.overlayLastPhoto != true) {
+            self.overlayToggleButton?.isHidden = true
+            return
+        }
+        self.overlayToggleButton?.isHidden = false
         
         // Only init metal device once
         if device == nil {
@@ -1030,6 +1046,45 @@ open class ImageCaptureStepViewController: RSDStepViewController, UIImagePickerC
     
     @objc public func hideHand() {
         self.clearHand()
+    }
+    
+    @IBAction public func moveToNextOverlayState() {
+        self.overlayButtonState = self.overlayButtonState.nextState()
+        self.overlayToggleButton.setImage(self.overlayButtonState.image(), for: .normal)
+        self.mtkView?.alpha = self.overlayButtonState.alpha()
+    }
+}
+
+/// Describes the state of the overlayToggleButton
+public enum OverlayPhotoState: Int {
+    case full = 100
+    case partial = 25
+    case none = 0
+    
+    public func alpha() -> CGFloat {
+        return CGFloat(self.rawValue) / CGFloat(100)
+    }
+    
+    public func image() -> UIImage? {
+        switch self {
+        case .full:
+            return UIImage(named: "OverlayHandFull")
+        case .partial:
+            return UIImage(named: "OverlayHandPartial")
+        case .none:
+            return UIImage(named: "OverlayHandNone")
+        }
+    }
+    
+    public func nextState() -> OverlayPhotoState {
+        switch self {
+        case .full:
+            return .partial
+        case .partial:
+            return .none
+        case .none:
+            return .full
+        }
     }
 }
 

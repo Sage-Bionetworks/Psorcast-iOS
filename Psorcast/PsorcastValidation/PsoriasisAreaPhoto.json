@@ -850,7 +850,8 @@
             "identifier"    : "psoriasisAreaPhoto",
             "type"          : "imageCapture",
             "title"         : "Capture Image",
-            "cameraDevice"  : "both"
+            "cameraDevice"  : "both",
+            "overlayLastPhoto": false
         },
         {
             "identifier":"reviewPsoriasisAreaPhoto",
