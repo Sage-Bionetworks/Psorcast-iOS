@@ -303,11 +303,6 @@ class ProfileTabViewController: UIViewController, UITableViewDelegate, UITableVi
                 self.showJsonTaskViewControler(jsonName: ProfileTabViewController.feedbackTaskId)
             } else if profileItem.profileItemKey == ProfileTabViewController.withdrawProfileKey {
                 self.showJsonTaskViewControler(jsonName: ProfileTabViewController.withdrawalTaskId)
-            } else if profileItem.profileItemKey == ProfileTabViewController.privacyPolicyKey {
-                let webAction = RSDWebViewUIActionObject(url: "PrivacyPolicy.html", buttonTitle: "Done")
-                let (_, navVC) = RSDWebViewController.instantiateController(using: AppDelegate.designSystem, action: webAction)
-                navVC.modalPresentationStyle = .popover
-                self.present(navVC, animated: true, completion: nil)
             } else if profileItem.profileItemKey == ProfileTabViewController.studyInformationSheetKey {
                 let webAction = RSDWebViewUIActionObject(url: "ConsentForm.html", buttonTitle: "Done")
                 let (_, navVC) = RSDWebViewController.instantiateController(using: AppDelegate.designSystem, action: webAction)
