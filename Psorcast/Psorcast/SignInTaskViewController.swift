@@ -97,8 +97,7 @@ public class SignInTaskViewController: RSDTaskViewController, SignInDelegate {
         signUp.phone!.number = phoneNumber
         signUp.phone!.regionCode = regionCode
         
-        // TODO: mdephillips 3/1/21 remove for launch
-        signUp.dataGroups = ["test_user"]
+        signUp.dataGroups = ["BETA2021"]
         signUp.sharingScope = "all_qualified_researchers"
         
         BridgeSDK.authManager.signUpStudyParticipant(signUp, completion: { (task, result, error) in
