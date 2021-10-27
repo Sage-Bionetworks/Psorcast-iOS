@@ -56,8 +56,6 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
     @IBOutlet weak var insightNotAchievedView: UIView!
     @IBOutlet weak var insightProgressBar: StudyProgressView!
     @IBOutlet weak var insightAchievedImage: UIImageView!
-    @IBOutlet weak var insightStudyProgressLabel: UILabel!
-    @IBOutlet weak var insightStudyProgressBar: StudyProgressView!
     
     
     /// Once you've unlocked your insight but there aren't any insights remaining, it will show this view
@@ -425,15 +423,6 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
         self.insightsCompleteTitle.textColor = design.colorRules.textColor(on: primary, for: .body)
         self.insightsCompleteTitle.font = design.fontRules.font(for: .body)
         self.insightsCompleteTitle.text = Localization.localizedString("INSIGHTS_COMPLETE_TEXT")
-        
-        self.insightStudyProgressLabel.textColor = design.colorRules.textColor(on: primary, for: .italicDetail)
-        self.insightStudyProgressLabel.font = design.fontRules.font(for: .superMicroDetail)
-        self.insightStudyProgressLabel.text = ""
-        
-        self.insightStudyProgressBar.setDesignSystem(design, with: background)
-        // Override the background color
-        self.insightStudyProgressBar.backgroundColor = UIColor.white
-        self.insightStudyProgressBar.tintColor = primary.color
     }
     
     func runTask(for itemIndex: Int) {
@@ -579,14 +568,6 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
         
         // Update the time sensitive text
         self.weekActivitiesTitleLabel.text = Localization.localizedString("INSIGHT_PROGRESS_TITLE")
-        let weeksRemaining = max(0, totalStudyWeeks - week + 1)
-        if (weeksRemaining != 1) {
-            self.insightStudyProgressLabel.text = String(format: Localization.localizedString("TREATMENT_WEEKS_%@_LEFT"), "\(weeksRemaining)")
-        } else {
-            self.insightStudyProgressLabel.text = Localization.localizedString("TREATMENT_1WEEK_LEFT")
-        }
-        self.insightStudyProgressBar.progress = ((Float(week) - 1.0) / Float(totalStudyWeeks))
-        
         
         // Show only the time countdown text as bold
         var renewalTimeText = Localization.localizedString("TREATMENT_RENEWAL_TITLE_NO_BOLD")
