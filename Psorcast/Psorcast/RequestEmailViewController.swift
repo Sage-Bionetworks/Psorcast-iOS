@@ -48,6 +48,7 @@ open class RequestEmailStepObject: RSDFormUIStepObject, RSDStepViewControllerVen
 class RequestEmailViewController: RSDTableStepViewController {
     let PARTICIPANT_ATTRIBUTES = "attributes"
     var firstEmail = ""
+    let COMPENSATE_ATTRIBUTE = "compensateEmail"
 
     open override func setupHeader(_ header: RSDStepNavigationView) {
         super.setupHeader(header)
@@ -86,18 +87,18 @@ class RequestEmailViewController: RSDTableStepViewController {
             // This is the first time entering email, try again
             firstEmail = emailText!
             emailCell.textField.text = ""
-            emailCell.textField.placeholder = "Please verify email"
+            emailCell.textField.placeholder = Localization.localizedString("VERIFY_EMAIL")
         } else if emailText == firstEmail {
             // Validated email, save it and proceed as normal
             var newAttributes = [String: String]()
-            newAttributes["compensateEmail"] = emailText
+            newAttributes[COMPENSATE_ATTRIBUTE] = emailText
             var participant = [String: [String: Any]]()
             participant[PARTICIPANT_ATTRIBUTES] = newAttributes
             BridgeSDK.participantManager.updateParticipantRecord(withRecord: participant) { response, error in
                 DispatchQueue.main.async {
                     if let errorStr = error?.localizedDescription {
                         print(errorStr)
-                        let title = "There was an error adding your email. Please try again."
+                        let title = Localization.localizedString("ERROR_ADDING_EMAIL")
                         let alert = UIAlertController(title: title, message: nil, preferredStyle: .alert)
                         alert.addAction(UIAlertAction(title: Localization.buttonOK(), style: .default, handler: nil))
                         self.present(alert, animated: true)
@@ -110,8 +111,8 @@ class RequestEmailViewController: RSDTableStepViewController {
             // They didn't match, show a warning, and begin again
             firstEmail = ""
             emailCell.textField.text = ""
-            emailCell.textField.placeholder = "Please re-enter email"
-            let title = "The email addresses entered did not match, please enter them again."
+            emailCell.textField.placeholder = Localization.localizedString("REENTER_PLACEHOLDER")
+            let title = Localization.localizedString("EMAIL_DID_NOT_MATCH_TITLE")
             let alert = UIAlertController(title: title, message: nil, preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: Localization.buttonOK(), style: .default, handler: nil))
             self.present(alert, animated: true)

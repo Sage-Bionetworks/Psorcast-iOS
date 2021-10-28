@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		04096328272A317D003200D5 /* RequestEmailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04096327272A317D003200D5 /* RequestEmailViewController.swift */; };
+		04096330272B52AB003200D5 /* ChangeEmail.json in Resources */ = {isa = PBXBuildFile; fileRef = 0409632F272B52AB003200D5 /* ChangeEmail.json */; };
 		0423F49826DD303B005F4112 /* OnboardingFormStepObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0423F49726DD303B005F4112 /* OnboardingFormStepObject.swift */; };
 		043781B1270EB34F001F374F /* ConsentForm_files in Resources */ = {isa = PBXBuildFile; fileRef = 043781B0270EB34F001F374F /* ConsentForm_files */; };
 		043781B7270EC448001F374F /* ConsentFormOnboarding.html in Resources */ = {isa = PBXBuildFile; fileRef = 043781B4270EC374001F374F /* ConsentFormOnboarding.html */; };
@@ -423,6 +424,7 @@
 
 /* Begin PBXFileReference section */
 		04096327272A317D003200D5 /* RequestEmailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestEmailViewController.swift; sourceTree = "<group>"; };
+		0409632F272B52AB003200D5 /* ChangeEmail.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = ChangeEmail.json; sourceTree = "<group>"; };
 		0423F49726DD303B005F4112 /* OnboardingFormStepObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingFormStepObject.swift; sourceTree = "<group>"; };
 		043781B0270EB34F001F374F /* ConsentForm_files */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ConsentForm_files; sourceTree = "<group>"; };
 		043781B4270EC374001F374F /* ConsentFormOnboarding.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = ConsentFormOnboarding.html; sourceTree = "<group>"; };
@@ -1067,6 +1069,7 @@
 				CB95A28D260868A600F28273 /* Introduction.json */,
 				CBFF927025E08CA400EC34DB /* PhoneSignIn.json */,
 				04E61C9D2671CE5E00B371E9 /* Consent.json */,
+				0409632F272B52AB003200D5 /* ChangeEmail.json */,
 			);
 			name = JSON;
 			sourceTree = "<group>";
@@ -1485,6 +1488,7 @@
 				CBFF927225E08CA400EC34DB /* PhoneSignIn.json in Resources */,
 				CBFF928025E19B7300EC34DB /* CSS_files in Resources */,
 				04F2656B2686D809004140B7 /* DataUse_Consent.html in Resources */,
+				04096330272B52AB003200D5 /* ChangeEmail.json in Resources */,
 				CBDCDCB423F3849E00E5CEB8 /* DigitalJarOpenCompletionStepViewController.xib in Resources */,
 				CB7281A82624DC5000AAEB2C /* WithdrawalStepViewController.xib in Resources */,
 				04F2657F2686DBEB004140B7 /* FutureIndependentResearch_Consent.html in Resources */,
