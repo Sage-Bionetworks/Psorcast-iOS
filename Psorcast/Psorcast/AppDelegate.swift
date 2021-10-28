@@ -431,12 +431,11 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate, ShowPopTipDele
         }
         
         if taskController.task.identifier == RSDIdentifier.treatmentTask.rawValue {
-            // If we finish the treatment screen by cancelling, show the sign in screen again
-            if reason == .completed {
+            if reason == .completed { // Ready to enter the app
                 HistoryDataManager.shared.setEnvironmentalAuthSeen()
                 self.showMainViewController(animated: true)
                 return
-            } else { // Otherwise we are ready to enter the app
+            } else { // If we finish the treatment screen by cancelling, show the sign in screen again
                 self.showSignUpViewController(animated: true)
                 return
             }

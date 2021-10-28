@@ -92,7 +92,7 @@
             "imageName": "consent_icon_your_privacy",
             "placementType": "iconBefore"
           },
-          "actions":{
+          "actions": {
               "learnMore":{
                   "type": "webView",
                   "buttonTitle": "Learn more",
@@ -225,7 +225,7 @@
                       "type": "singleChoice.string",
                       "choices": [
                         {
-                          "text": "There is a risk someone could misuse my information",
+                          "text": "There is a risk someone could misuse my information",
                           "value": "true"
                         },
                         {

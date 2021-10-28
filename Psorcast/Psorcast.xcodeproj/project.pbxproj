@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		04096328272A317D003200D5 /* RequestEmailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04096327272A317D003200D5 /* RequestEmailViewController.swift */; };
 		0423F49826DD303B005F4112 /* OnboardingFormStepObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0423F49726DD303B005F4112 /* OnboardingFormStepObject.swift */; };
 		043781B1270EB34F001F374F /* ConsentForm_files in Resources */ = {isa = PBXBuildFile; fileRef = 043781B0270EB34F001F374F /* ConsentForm_files */; };
 		043781B7270EC448001F374F /* ConsentFormOnboarding.html in Resources */ = {isa = PBXBuildFile; fileRef = 043781B4270EC374001F374F /* ConsentFormOnboarding.html */; };
@@ -421,6 +422,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		04096327272A317D003200D5 /* RequestEmailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestEmailViewController.swift; sourceTree = "<group>"; };
 		0423F49726DD303B005F4112 /* OnboardingFormStepObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingFormStepObject.swift; sourceTree = "<group>"; };
 		043781B0270EB34F001F374F /* ConsentForm_files */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ConsentForm_files; sourceTree = "<group>"; };
 		043781B4270EC374001F374F /* ConsentFormOnboarding.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = ConsentFormOnboarding.html; sourceTree = "<group>"; };
@@ -835,6 +837,7 @@
 				04F2659F268701E6004140B7 /* ConsentQuizStepViewController.swift */,
 				04C9B28526B78E5900DF9CAB /* OnboardingInstructionStepViewController.swift */,
 				0423F49726DD303B005F4112 /* OnboardingFormStepObject.swift */,
+				04096327272A317D003200D5 /* RequestEmailViewController.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -1645,6 +1648,7 @@
 				0423F49826DD303B005F4112 /* OnboardingFormStepObject.swift in Sources */,
 				CBAAB6D92458CB2D00C1A619 /* AtomicBool.swift in Sources */,
 				CBDCDCA923F3849E00E5CEB8 /* PsoriasisDrawStepViewController.swift in Sources */,
+				04096328272A317D003200D5 /* RequestEmailViewController.swift in Sources */,
 				CB4794F32426B36C00D5A7E6 /* ViewUtils.swift in Sources */,
 				CBDCDCA323F3849E00E5CEB8 /* PsoriasisAreaPhotoStepViewController.swift in Sources */,
 				CB4794F52426B39900D5A7E6 /* TreatmentSelectionStepObject.swift in Sources */,
