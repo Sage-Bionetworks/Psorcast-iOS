@@ -33,10 +33,7 @@
 
 import BridgeApp
 
-open class LinkerStudiesUserDefaultsSingletonReport: UserDefaultsSingletonReport {
-    
-    public static let LINKER_STUDY_DEFAULT = "PsorcastUS"
-    public static let LINKER_STUDY_BETA_2021 = "BETA2021"
+open class LinkerStudiesUserDefaultsSingletonReport: UserDefaultsSingletonReport {        
     
     var _current: [LinkerStudy]?
     var current: [LinkerStudy]? {
@@ -73,8 +70,8 @@ open class LinkerStudiesUserDefaultsSingletonReport: UserDefaultsSingletonReport
     /// it is because the user just signed up and this func needs called
     open func initializedStudyDates(startDate: Date) {
         var items = [LinkerStudy]()
-        items.append(LinkerStudy(identifier: LinkerStudiesUserDefaultsSingletonReport.LINKER_STUDY_DEFAULT, startDate: startDate))
-        items.append(LinkerStudy(identifier: LinkerStudiesUserDefaultsSingletonReport.LINKER_STUDY_BETA_2021, startDate: startDate))
+        items.append(LinkerStudy(identifier: HistoryDataManager.LINKER_STUDY_DEFAULT, startDate: startDate))
+        items.append(LinkerStudy(identifier: HistoryDataManager.LINKER_STUDY_BETA_2021, startDate: startDate))
         // Signal that the new state needs synced with Bridge
         self.append(items: items)
     }

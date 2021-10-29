@@ -37,6 +37,9 @@ import ResearchUI
 
 open class HistoryDataManager {
     
+    public static let LINKER_STUDY_DEFAULT = "PsorcastUS"
+    public static let LINKER_STUDY_BETA_2021 = "BETA2021"
+    
     /// For encoding report client data
     lazy var jsonEncoder: JSONEncoder = {
         let encoder = JSONEncoder()
@@ -98,6 +101,14 @@ open class HistoryDataManager {
     
     public var studyDateData: LinkerStudiesUserDefaultsSingletonReport? {
         return self.singletonData[RSDIdentifier.studyDates] as? LinkerStudiesUserDefaultsSingletonReport
+    }
+    
+    public func studyStartDate(for identifier: String) -> Date? {
+        self.studyDateData?.current?.first(where: { $0.identifier == identifier })?.startDate
+    }
+    
+    public var baseStudyStartDate: Date? {
+        return self.studyStartDate(for: HistoryDataManager.LINKER_STUDY_DEFAULT)
     }
     
     fileprivate var insightData: InsightsUserDefaultsSingletonReport? {

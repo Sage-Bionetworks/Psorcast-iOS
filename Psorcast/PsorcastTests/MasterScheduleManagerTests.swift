@@ -84,13 +84,13 @@ class MasterScheduleManagerTests: XCTestCase {
     func testCompletionRange() {
         mockManager.mockNow = date(28, 5, 0, 0)
         mockManager.mockTreatmentDate = date(25, 5, 0, 0)
-        var range = mockManager.completionRange(treatmentDate: mockManager.mockTreatmentDate, treatmentWeek: mockManager.treatmentWeek())
+        var range = mockManager.completionRange(date: mockManager.mockTreatmentDate, week: mockManager.treatmentWeek())
         XCTAssertEqual(range.lowerBound, date(25, 0, 0, 0))
         XCTAssertEqual(range.upperBound, date(32, 0, 0, 0))
         
         mockManager.mockNow = date(34, 5, 0, 0)
         mockManager.mockTreatmentDate = date(25, 5, 0, 0)
-        range = mockManager.completionRange(treatmentDate: mockManager.mockTreatmentDate, treatmentWeek: mockManager.treatmentWeek())
+        range = mockManager.completionRange(date: mockManager.mockTreatmentDate, week: mockManager.treatmentWeek())
         XCTAssertEqual(range.lowerBound, date(32, 0, 0, 0))
         XCTAssertEqual(range.upperBound, date(39, 0, 0, 0))
     }
@@ -289,6 +289,10 @@ open class MockMasterScheduleManager: MasterScheduleManager {
     var mockTreatmentDate = Date()
     override open func treatmentDate() -> Date? {
         return mockTreatmentDate
+    }
+    
+    override open func baseStudyWeek() -> Int {
+        return super.treatmentWeek()
     }
 
     var mockSymptoms: String?
