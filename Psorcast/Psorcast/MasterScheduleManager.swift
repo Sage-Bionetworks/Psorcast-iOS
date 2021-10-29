@@ -294,11 +294,16 @@ open class MasterScheduleManager : SBAScheduleManager {
         }
         
         // Unless it is the treatment task itself, where this would be redundant,
-        // add the treatment answer add-ons to every task upload
+        // add the treatment and study progress answer add-ons to every task upload
         if RSDIdentifier.treatmentTask.rawValue != taskViewModel.task?.identifier {
             createTreatmentAnswerAddOns().forEach { (addOnResult) in
                 taskController.taskViewModel.taskResult.stepHistory.append(addOnResult)
             }
+        }
+        
+        // Add metadata around the progress in study information to every task upload
+        if let studyStateResult = createStudyProgressAnswerAddOns(taskViewModel: taskViewModel) {
+            taskController.taskViewModel.taskResult.stepHistory.append(studyStateResult)
         }
     
         let taskResult = taskController.taskViewModel.taskResult
@@ -337,6 +342,34 @@ open class MasterScheduleManager : SBAScheduleManager {
         }
         
         return addOns
+    }
+    
+    /// For ease of data analysis, we should always upload study progress information
+    public func createStudyProgressAnswerAddOns(taskViewModel: RSDTaskViewModel)-> RSDFileResultObject? {
+        guard let current = HistoryDataManager.shared.studyDateData?.current else {
+            print("No study progress history to save")
+            return nil
+        }
+        do {
+            guard let outputDir = taskViewModel.outputDirectory else {
+                print("No output dir to save to")
+                return nil
+            }
+            let jsonStr = try HistoryDataManager.shared.jsonEncoder.encode(current)
+            
+            // Write json string to file
+            let identifier = "studyStates"
+            let url = try RSDFileResultUtility.createFileURL(identifier: identifier, ext: "json", outputDirectory: outputDir, shouldDeletePrevious: true)
+            try jsonStr.write(to: url, options: .atomic)
+            
+            // Build and return file result object
+            var fileResult = RSDFileResultObject(identifier: identifier)
+            fileResult.url = url
+            return fileResult
+        } catch {
+            print("Error encoding study progress info to JSON \(error.localizedDescription)")
+        }
+        return nil
     }
     
     public func treatmentDurationInWeeks(treatmentRange: TreatmentRange) -> Int {

@@ -157,9 +157,12 @@ open class TreatmentUserDefaultsSingletonReport: UserDefaultsSingletonReport {
         return merged
     }
     
-    open func loadFromBridge(treatmentCompletion: @escaping ((Bool) -> Void)) {
+    override open func loadFromBridge(completion: ((Bool) -> Void)?) {
         
-        guard !self.isSyncingWithBridge else { return }
+        guard !self.isSyncingWithBridge else {
+            completion?(false)
+            return
+        }
         self.isSyncingWithBridge = true
         HistoryDataManager.shared.getSingletonReport(reportId: self.identifier) { (report, error) in
             DispatchQueue.main.async {
@@ -167,19 +170,19 @@ open class TreatmentUserDefaultsSingletonReport: UserDefaultsSingletonReport {
             }
                                     
             guard error == nil else {
-                treatmentCompletion(false)
+                completion?(false)
                 return
             }
             
             guard report != nil else {
                 debugPrint("Treatment data nil, assume first time user")
-                treatmentCompletion(true)
+                completion?(true)
                 return
             }
             
             guard let bridgeJsonData = (report?.clientData as? String)?.data(using: .utf8) else {
                 debugPrint("Treatment data invalid formatting")
-                treatmentCompletion(false)
+                completion?(false)
                 return
             }
             
@@ -189,7 +192,7 @@ open class TreatmentUserDefaultsSingletonReport: UserDefaultsSingletonReport {
                 // User just signed in, set their treatments to bridge version
                 guard var cached = self.current else {
                     self.setCurrent(treatmentTask: bridgeItem)
-                    treatmentCompletion(true)
+                    completion?(true)
                     return
                 }
                 
@@ -213,17 +216,11 @@ open class TreatmentUserDefaultsSingletonReport: UserDefaultsSingletonReport {
                     self.syncToBridge()
                 }
                 
-                treatmentCompletion(true)
+                completion?(true)
             } catch {
-                treatmentCompletion(false)
+                completion?(false)
                 print("Error parsing clientData for treatment report \(error)")
             }
-        }
-    }
-    
-    override open func loadFromBridge() {
-        loadFromBridge { (success) in
-            // no-op needed
         }
     }
             
