@@ -1,0 +1,32 @@
+{
+    "identifier": "ChangeEmail",
+    "shouldHideActions": ["skip"],
+    "progressMarkers": [],
+    "steps": [{
+        "identifier": "provide_email",
+        "type": "requestEmailForm",
+        "title": "Get compensated for participating!",
+        "text": "On the first day of each month of the study, we'll send you a digital Amazon gift card for $13.99 for completing 75% of the study tasks from the previous month. Please enter your email below where we should send your compensation.",
+        "inputFields": [{
+            "type": "string",
+            "textFieldOptions": {
+                "keyboardType": "emailAddress",
+                "textValidator": "^[A-Za-z0-9+_.-]+@(.+)$",
+                "invalidMessage": "Please enter a valid email address."
+            },
+            "uiHint": "textfield",
+            "placeholder": "Email address"
+        }],
+        "image": {
+            "type": "fetchable",
+            "imageName": "CompensateIcon",
+            "placementType": "iconBefore"
+        },
+        "actions": {
+            "goForward": {
+                "type": "default",
+                "buttonTitle": "Submit"
+            }
+        }
+    }]
+}
