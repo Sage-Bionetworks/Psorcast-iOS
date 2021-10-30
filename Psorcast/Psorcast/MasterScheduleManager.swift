@@ -63,6 +63,9 @@ open class MasterScheduleManager : SBAScheduleManager {
 
     private let kMetadataFilename                 = "metadata.json"
     
+    private static let studyStateFilename = "studyStates"
+    public static let fullStudyStateFilename = "\(studyStateFilename).json"
+    
     open var insightStepIdentifiers: [InsightResultIdentifier] {
         return [.insightViewedIdentifier, .insightViewedDate, .insightUsefulAnswer]
     }
@@ -108,20 +111,20 @@ open class MasterScheduleManager : SBAScheduleManager {
     }
     
     public func isComplete(schedule: SBBScheduledActivity) -> Bool {
-        guard let treatmentDate = HistoryDataManager.shared.currentTreatmentRange?.startDate else {
+        guard let studyDate = HistoryDataManager.shared.baseStudyStartDate else {
             return false
         }
-        let treatmentWeek = self.treatmentWeek()
-        let range = self.completionRange(treatmentDate: treatmentDate, treatmentWeek: treatmentWeek)
+        let studyWeek = self.baseStudyWeek()
+        let range = self.completionRange(date: studyDate, week: studyWeek)
         if let finishedOn = schedule.finishedOn {
             return range.contains(finishedOn)
         }
         return false
     }
     
-    func completionRange(treatmentDate: Date, treatmentWeek: Int) -> ClosedRange<Date> {
+    func completionRange(date: Date, week: Int) -> ClosedRange<Date> {
         // All schedules are treated as weekly finished on ranges
-        let rangeStart = treatmentDate.startOfDay().addingNumberOfDays(7 * (treatmentWeek - 1))
+        let rangeStart = date.startOfDay().addingNumberOfDays(7 * (week - 1))
         let rangeEnd = rangeStart.addingNumberOfDays(7)
         return rangeStart...rangeEnd
     }
@@ -159,7 +162,7 @@ open class MasterScheduleManager : SBAScheduleManager {
     
     /// The filter list is dynamic based on business requirements surrounding symptoms and diagnosis
     open var filterList: [RSDIdentifier] {
-        let treatmentWeek = self.treatmentWeek()
+        let studyWeek = self.baseStudyWeek()
         var includeList = [RSDIdentifier]()
         for rsdIdentifier in MasterScheduleManager.filterAll {
             let timingInfo = self.scheduleFrequency(for: rsdIdentifier)
@@ -168,8 +171,8 @@ open class MasterScheduleManager : SBAScheduleManager {
                 includeList.append(rsdIdentifier)
             } else if timingInfo.freq == .monthly {
                 // Only monthly activities that fall on the correct week are included
-                if treatmentWeek >= timingInfo.startWeek &&
-                    ((treatmentWeek - timingInfo.startWeek) % 4) == 0 {
+                if studyWeek >= timingInfo.startWeek &&
+                    ((studyWeek - timingInfo.startWeek) % 4) == 0 {
                     includeList.append(rsdIdentifier)
                 }
             } else {
@@ -288,19 +291,26 @@ open class MasterScheduleManager : SBAScheduleManager {
     /// Call from the view controller that is used to display the task when the task is ready to save.
     override open func taskController(_ taskController: RSDTaskController, readyToSave taskViewModel: RSDTaskViewModel) {
         
+        let taskId = taskController.task.identifier
+        
         // It is a requirement for our app to always upload the participantID with an upload
         if let participantID = UserDefaults.standard.string(forKey: MasterScheduleManager.resultIdParticipantID) {
             taskController.taskViewModel.taskResult.stepHistory.append(RSDAnswerResultObject(identifier: MasterScheduleManager.resultIdParticipantID, answerType: .string, value: participantID))
         }
         
         // Unless it is the treatment task itself, where this would be redundant,
-        // add the treatment answer add-ons to every task upload
-        if RSDIdentifier.treatmentTask.rawValue != taskViewModel.task?.identifier {
+        // add the treatment and study progress answer add-ons to every task upload
+        if RSDIdentifier.treatmentTask.rawValue != taskId {
             createTreatmentAnswerAddOns().forEach { (addOnResult) in
                 taskController.taskViewModel.taskResult.stepHistory.append(addOnResult)
             }
         }
-    
+        
+        // Add metadata around the progress in study information to every task upload
+        if let studyStateResult = createStudyProgressAnswerAddOns(taskViewModel: taskViewModel) {
+            taskController.taskViewModel.taskResult.stepHistory.append(studyStateResult)
+        }    
+        
         let taskResult = taskController.taskViewModel.taskResult
         self.historyData.uploadReports(from: taskResult)
         
@@ -339,6 +349,46 @@ open class MasterScheduleManager : SBAScheduleManager {
         return addOns
     }
     
+    public func createStudyProgressData() -> Data? {
+        guard let current = HistoryDataManager.shared.studyDateData?.current else {
+            print("No study progress history to save")
+            return nil
+        }
+        do {
+            return try HistoryDataManager.shared.jsonEncoder.encode(current)
+        } catch {
+            print("Error encoding study progress info to JSON \(error.localizedDescription)")
+        }
+        return nil
+    }
+    
+    /// For ease of data analysis, we should always upload study progress information
+    public func createStudyProgressAnswerAddOns(taskViewModel: RSDTaskViewModel)-> RSDFileResultObject? {
+        guard let data = self.createStudyProgressData() else {
+            print("No study progress history to save")
+            return nil
+        }
+        do {
+            guard let outputDir = taskViewModel.outputDirectory else {
+                print("No output dir to save to")
+                return nil
+            }
+            
+            // Write json string to file
+            let identifier = MasterScheduleManager.studyStateFilename
+            let url = try RSDFileResultUtility.createFileURL(identifier: identifier, ext: "json", outputDirectory: outputDir, shouldDeletePrevious: true)
+            try data.write(to: url, options: .atomic)
+            
+            // Build and return file result object
+            var fileResult = RSDFileResultObject(identifier: identifier)
+            fileResult.url = url
+            return fileResult
+        } catch {
+            print("Error encoding study progress info to JSON \(error.localizedDescription)")
+        }
+        return nil
+    }
+    
     public func treatmentDurationInWeeks(treatmentRange: TreatmentRange) -> Int {
         return (Calendar.current.dateComponents([.weekOfYear], from: treatmentRange.startDate, to: treatmentRange.endDate ?? nowDate()).weekOfYear ?? 0) + 1
     }
@@ -351,6 +401,11 @@ open class MasterScheduleManager : SBAScheduleManager {
     public func treatmentWeek() -> Int {
         guard let currentTreatmentStart = self.treatmentDate() else { return 1 }
         return (Calendar.current.dateComponents([.weekOfYear], from: currentTreatmentStart.startOfDay(), to: nowDate()).weekOfYear ?? 0) + 1
+    }
+    
+    open func baseStudyWeek() -> Int {
+        guard let studyStart = HistoryDataManager.shared.baseStudyStartDate else { return 1 }
+        return (Calendar.current.dateComponents([.weekOfYear], from: studyStart.startOfDay(), to: nowDate()).weekOfYear ?? 0) + 1
     }
     
     open var selectedTreatmentItems: [TreatmentItem]? {

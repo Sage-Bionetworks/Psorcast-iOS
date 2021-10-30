@@ -423,6 +423,7 @@ class AppDelegate: SBAAppDelegate, RSDTaskViewControllerDelegate, ShowPopTipDele
         
         if taskController.task.identifier == self.ConsentTaskId {
             if reason == .completed {
+                HistoryDataManager.shared.studyDateData?.initializedStudyDates(startDate: Date())
                 self.showTreatmentSelectionScreens(animated: true)
                 return
             } else {

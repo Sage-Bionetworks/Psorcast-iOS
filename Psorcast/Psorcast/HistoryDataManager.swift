@@ -37,6 +37,9 @@ import ResearchUI
 
 open class HistoryDataManager {
     
+    public static let LINKER_STUDY_DEFAULT = "PsorcastUS"
+    public static let LINKER_STUDY_BETA_2021 = "BETA2021"
+    
     /// For encoding report client data
     lazy var jsonEncoder: JSONEncoder = {
         let encoder = JSONEncoder()
@@ -59,6 +62,7 @@ open class HistoryDataManager {
     public static let treatmentChanged = Notification.Name(rawValue: "treatmentChanged")
     public static let remindersChanged = Notification.Name(rawValue: "remindersChanged")
     public static let insightsChanged = Notification.Name(rawValue: "insightsChanged")
+    public static let studyDatesChanged = Notification.Name(rawValue: "studyDatesChanged")
     
     /// These are the bridge stored answers from the Treatment task Config Element
     public static let symptomsNoneAnswer = "I do not have symptoms"
@@ -91,8 +95,21 @@ open class HistoryDataManager {
     fileprivate let singletonData: [RSDIdentifier : UserDefaultsSingletonReport] = [
         RSDIdentifier.treatmentTask : TreatmentUserDefaultsSingletonReport(),
         RSDIdentifier.remindersTask : RemindersUserDefaultsSingletonReport(),
-        RSDIdentifier.insightsTask : InsightsUserDefaultsSingletonReport()
+        RSDIdentifier.insightsTask : InsightsUserDefaultsSingletonReport(),
+        RSDIdentifier.studyDates : LinkerStudiesUserDefaultsSingletonReport()
     ]
+    
+    public var studyDateData: LinkerStudiesUserDefaultsSingletonReport? {
+        return self.singletonData[RSDIdentifier.studyDates] as? LinkerStudiesUserDefaultsSingletonReport
+    }
+    
+    public func studyStartDate(for identifier: String) -> Date? {
+        self.studyDateData?.current?.first(where: { $0.identifier == identifier })?.startDate
+    }
+    
+    public var baseStudyStartDate: Date? {
+        return self.studyStartDate(for: HistoryDataManager.LINKER_STUDY_DEFAULT)
+    }
     
     fileprivate var insightData: InsightsUserDefaultsSingletonReport? {
         return self.singletonData[RSDIdentifier.insightsTask] as? InsightsUserDefaultsSingletonReport
@@ -152,14 +169,22 @@ open class HistoryDataManager {
     }
     
     /// This should only be called by the sign-in controller or when the app loads
-    public func forceReloadSingletonData(treatmentCompletion: @escaping ((Bool) -> Void)) {
+    public func forceReloadSingletonData(completion: @escaping ((Bool) -> Void)) {
+        var hasReturned = false
+        var count = self.singletonData.count
         self.singletonData.forEach { (key: RSDIdentifier, value: UserDefaultsSingletonReport) in
-            
-            // Assign a completion status from treatments
-            if let treatmentSingleton = value as? TreatmentUserDefaultsSingletonReport {
-                treatmentSingleton.loadFromBridge(treatmentCompletion: treatmentCompletion)
-            } else {
-                value.loadFromBridge()
+            value.loadFromBridge { success in
+                count = count - 1
+                if (!success) {
+                    if (!hasReturned) {
+                        hasReturned = true
+                        completion(false)
+                    }
+                    return
+                }
+                if count <= 0 {
+                    completion(true)
+                }
             }
         }
     }
@@ -611,7 +636,7 @@ open class UserDefaultsSingletonReport {
         // to be implemented by sub-class
     }
     
-    open func loadFromBridge() {
+    open func loadFromBridge(completion: ((Bool) -> Void)?) {
         // to be implemented by sub-class
     }
     

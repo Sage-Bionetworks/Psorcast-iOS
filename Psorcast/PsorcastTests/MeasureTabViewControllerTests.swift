@@ -139,7 +139,7 @@ class MeasureTabViewControllerTests: XCTestCase {
 
 open class MockMeasureTabViewController: MeasureTabViewController {
     var mockWeek = 1
-    override open func treatmentWeek() -> Int {
+    override open func studyWeek() -> Int {
         return mockWeek
     }
 }
