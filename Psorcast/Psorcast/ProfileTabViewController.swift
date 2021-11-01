@@ -49,6 +49,7 @@ class ProfileTabViewController: UIViewController, UITableViewDelegate, UITableVi
     
     public static let feedbackTaskId = "Feedback"
     public static let withdrawalTaskId = "Withdrawal"
+    public static let changeEmailTaskId = "ChangeEmail"
     
     public static let deepDiveProfileKey = "DeepDive"
     public static let feedbackProfileKey = "feedback"
@@ -57,6 +58,8 @@ class ProfileTabViewController: UIViewController, UITableViewDelegate, UITableVi
     public static let studyInformationSheetKey = "studyInformationSheet"
     public static let activityMeasuresKey = "activityMeasures"
     public static let licensesKey = "licenses"
+    
+    var emailCellIndexPath: IndexPath = []
     
     override open func viewDidLoad() {
         super.viewDidLoad()                
@@ -123,6 +126,22 @@ class ProfileTabViewController: UIViewController, UITableViewDelegate, UITableVi
         // Todo: add logic to determine if enrolled, adjust return values here appropriately
     }
     
+    func populateCompensationEmailValue() {
+        BridgeSDK.participantManager.getParticipantRecord(completion: { record, error in
+            DispatchQueue.main.async {
+                guard let participant = record as? SBBStudyParticipant, error == nil else { return }
+                let attributes = participant.attributes
+                let dic = attributes?.dictionaryRepresentation()
+                let cell = self.tableView.dequeueReusableCell(withIdentifier: String(describing: ProfileTableViewCell.self), for: self.emailCellIndexPath) as! ProfileTableViewCell
+                if let compensationEmail = participant.attributes?.dictionaryRepresentation()[RequestEmailViewController.COMPENSATE_ATTRIBUTE] as? String {
+                    // We now have the email address, so go ahead and populate the appropriate cell
+                    cell.detailLabel?.text = compensationEmail
+                }
+                // Note: might need to add a call to update the UI for the cell appropriately once pulling the attributes is working correctly
+            }
+        })
+    }
+    
     // MARK: - Table view data source
        
     public func numberOfSections(in tableView: UITableView) -> Int {
@@ -179,6 +198,7 @@ class ProfileTabViewController: UIViewController, UITableViewDelegate, UITableVi
        
         // Configure the cell...
         cell.titleLabel?.text = titleText
+        cell.detailLabel?.text = ""
         
         if let itemKey = (tableItem as? SBAProfileItemProfileTableItem)?.profileItemKey {
             switch itemKey {
@@ -195,6 +215,14 @@ class ProfileTabViewController: UIViewController, UITableViewDelegate, UITableVi
                 cell.detailLabel?.text = self.insightProfileItemValue()
             case RSDIdentifier.withdrawTask.rawValue:
                 cell.detailLabel?.text = self.withdrawProfileItemValue()
+            case RSDIdentifier.emailCompensationTask.rawValue:
+                self.emailCellIndexPath = indexPath
+                //self.populateCompensationEmailValue()
+                // There's currently an issue pulling attributes down from bridge, so as a stopgap we are
+                // storing the email in user defaults. Pull the value from there.
+                // TODO: ESIEG 11/19/21 Remove this stopgap
+                let defaultsCompensateEmail = UserDefaults.standard.string(forKey: RequestEmailViewController.COMPENSATE_ATTRIBUTE)
+                cell.detailLabel?.text = defaultsCompensateEmail
             default:
                 cell.detailLabel?.text = detailText
             }
@@ -313,6 +341,8 @@ class ProfileTabViewController: UIViewController, UITableViewDelegate, UITableVi
                 let (_, navVC) = RSDWebViewController.instantiateController(using: AppDelegate.designSystem, action: webAction)
                 navVC.modalPresentationStyle = .pageSheet
                 self.present(navVC, animated: true, completion: nil)
+            } else if profileItem.profileItemKey == RSDIdentifier.emailCompensationTask.rawValue {
+                self.showJsonTaskViewControler(jsonName: ProfileTabViewController.changeEmailTaskId)
             } else if let vc = MasterScheduleManager.shared.instantiateSingleQuestionTreatmentTaskController(for: profileItem.profileItemKey) {
                 vc.delegate = self
                 self.show(vc, sender: self)

@@ -34,9 +34,23 @@
 //  Use this file to import your target's public headers that you would like to expose to Swift.
 //
 #import <Foundation/Foundation.h>
+#import <BridgeSDK/BridgeSDK.h>
 
 /**
  @return A string representation of the date the app was built.
  Example format: May 18 2019
  */
 NSString* compileDate();
+
+@interface SBBStudyParticipantCustomAttributes (customFields)
+
+@property (nonatomic, strong) NSString *compensateEmail;
+
+
+@end
+
+@implementation SBBStudyParticipantCustomAttributes (customFields)
+
+@dynamic compensateEmail;
+
+@end

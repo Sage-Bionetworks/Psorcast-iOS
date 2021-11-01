@@ -53,6 +53,7 @@ public extension RSDIdentifier {
     static let remindersTask: RSDIdentifier = "Reminders"
     static let withdrawTask: RSDIdentifier = "withdraw"
     static let symptomHistoryTask: RSDIdentifier = "SymptomHistory"
+    static let emailCompensationTask: RSDIdentifier = "compensationEmailItem"
     
     // Insight tasks
     static let insightsTask: RSDIdentifier = "Insights"
