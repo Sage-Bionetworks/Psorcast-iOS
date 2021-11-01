@@ -46,9 +46,11 @@ open class RequestEmailStepObject: RSDFormUIStepObject, RSDStepViewControllerVen
 }
 
 class RequestEmailViewController: RSDTableStepViewController {
+    public static let COMPENSATE_ATTRIBUTE = "compensateEmail"
+    
     let PARTICIPANT_ATTRIBUTES = "attributes"
     var firstEmail = ""
-    let COMPENSATE_ATTRIBUTE = "compensateEmail"
+    
 
     open override func setupHeader(_ header: RSDStepNavigationView) {
         super.setupHeader(header)
@@ -91,7 +93,7 @@ class RequestEmailViewController: RSDTableStepViewController {
         } else if emailText == firstEmail {
             // Validated email, save it and proceed as normal
             var newAttributes = [String: String]()
-            newAttributes[COMPENSATE_ATTRIBUTE] = emailText
+            newAttributes[RequestEmailViewController.COMPENSATE_ATTRIBUTE] = emailText
             var participant = [String: [String: Any]]()
             participant[PARTICIPANT_ATTRIBUTES] = newAttributes
             BridgeSDK.participantManager.updateParticipantRecord(withRecord: participant) { response, error in

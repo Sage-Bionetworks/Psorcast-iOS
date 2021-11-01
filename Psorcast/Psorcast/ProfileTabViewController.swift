@@ -49,6 +49,7 @@ class ProfileTabViewController: UIViewController, UITableViewDelegate, UITableVi
     
     public static let feedbackTaskId = "Feedback"
     public static let withdrawalTaskId = "Withdrawal"
+    public static let changeEmailTaskId = "ChangeEmail"
     
     public static let deepDiveProfileKey = "DeepDive"
     public static let feedbackProfileKey = "feedback"
@@ -57,6 +58,8 @@ class ProfileTabViewController: UIViewController, UITableViewDelegate, UITableVi
     public static let studyInformationSheetKey = "studyInformationSheet"
     public static let activityMeasuresKey = "activityMeasures"
     public static let licensesKey = "licenses"
+    
+    var emailCellIndexPath: IndexPath = []
     
     override open func viewDidLoad() {
         super.viewDidLoad()                
@@ -121,6 +124,21 @@ class ProfileTabViewController: UIViewController, UITableViewDelegate, UITableVi
     func withdrawProfileItemValue() -> String {
         return Localization.localizedString("CURRENTLY_ENROLLED")
         // Todo: add logic to determine if enrolled, adjust return values here appropriately
+    }
+    
+    func populateCompensationEmailValue() {
+        BridgeSDK.participantManager.getParticipantRecord(completion: { record, error in
+            DispatchQueue.main.async {
+                guard let participant = record as? SBBStudyParticipant, error == nil else { return }
+//                let attributes = participant.attributes
+//                let dic = attributes?.dictionaryRepresentation()
+                if let compensationEmail = participant.attributes?.dictionaryRepresentation()[RequestEmailViewController.COMPENSATE_ATTRIBUTE] as? String {
+                    // We now have the email address, so go ahead and populate the appropriate cell
+                    let cell = self.tableView.dequeueReusableCell(withIdentifier: String(describing: ProfileTableViewCell.self), for: self.emailCellIndexPath) as! ProfileTableViewCell
+                    cell.detailLabel?.text = compensationEmail
+                }
+            }
+        })
     }
     
     // MARK: - Table view data source
@@ -195,6 +213,9 @@ class ProfileTabViewController: UIViewController, UITableViewDelegate, UITableVi
                 cell.detailLabel?.text = self.insightProfileItemValue()
             case RSDIdentifier.withdrawTask.rawValue:
                 cell.detailLabel?.text = self.withdrawProfileItemValue()
+            case RSDIdentifier.emailCompensationTask.rawValue:
+                self.emailCellIndexPath = indexPath
+                self.populateCompensationEmailValue()
             default:
                 cell.detailLabel?.text = detailText
             }
@@ -302,7 +323,7 @@ class ProfileTabViewController: UIViewController, UITableViewDelegate, UITableVi
             } else if profileItem.profileItemKey == ProfileTabViewController.feedbackProfileKey {
                 self.showJsonTaskViewControler(jsonName: ProfileTabViewController.feedbackTaskId)
             } else if profileItem.profileItemKey == ProfileTabViewController.withdrawProfileKey {
-                self.showJsonTaskViewControler(jsonName: ProfileTabViewController.withdrawalTaskId)
+                self.showJsonTaskViewControler(jsonName: ProfileTabViewController.changeEmailTaskId)
             } else if profileItem.profileItemKey == ProfileTabViewController.studyInformationSheetKey {
                 let webAction = RSDWebViewUIActionObject(url: "ConsentForm.html", buttonTitle: "Done")
                 let (_, navVC) = RSDWebViewController.instantiateController(using: AppDelegate.designSystem, action: webAction)
@@ -313,6 +334,8 @@ class ProfileTabViewController: UIViewController, UITableViewDelegate, UITableVi
                 let (_, navVC) = RSDWebViewController.instantiateController(using: AppDelegate.designSystem, action: webAction)
                 navVC.modalPresentationStyle = .pageSheet
                 self.present(navVC, animated: true, completion: nil)
+            } else if profileItem.profileItemKey == RSDIdentifier.emailCompensationTask.rawValue {
+                self.showJsonTaskViewControler(jsonName: ProfileTabViewController.changeEmailTaskId)
             } else if let vc = MasterScheduleManager.shared.instantiateSingleQuestionTreatmentTaskController(for: profileItem.profileItemKey) {
                 vc.delegate = self
                 self.show(vc, sender: self)
