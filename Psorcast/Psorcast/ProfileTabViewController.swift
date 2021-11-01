@@ -323,7 +323,7 @@ class ProfileTabViewController: UIViewController, UITableViewDelegate, UITableVi
             } else if profileItem.profileItemKey == ProfileTabViewController.feedbackProfileKey {
                 self.showJsonTaskViewControler(jsonName: ProfileTabViewController.feedbackTaskId)
             } else if profileItem.profileItemKey == ProfileTabViewController.withdrawProfileKey {
-                self.showJsonTaskViewControler(jsonName: ProfileTabViewController.changeEmailTaskId)
+                self.showJsonTaskViewControler(jsonName: ProfileTabViewController.withdrawalTaskId)
             } else if profileItem.profileItemKey == ProfileTabViewController.studyInformationSheetKey {
                 let webAction = RSDWebViewUIActionObject(url: "ConsentForm.html", buttonTitle: "Done")
                 let (_, navVC) = RSDWebViewController.instantiateController(using: AppDelegate.designSystem, action: webAction)
