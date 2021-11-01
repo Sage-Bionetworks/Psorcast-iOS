@@ -2055,7 +2055,7 @@
 				CODE_SIGN_ENTITLEMENTS = Psorcast/Psorcast.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 13;
+				CURRENT_PROJECT_VERSION = 15;
 				DEVELOPMENT_TEAM = KA9Z8R6M6K;
 				INFOPLIST_FILE = Psorcast/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -2079,7 +2079,7 @@
 				CODE_SIGN_ENTITLEMENTS = Psorcast/Psorcast.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 13;
+				CURRENT_PROJECT_VERSION = 15;
 				DEVELOPMENT_TEAM = KA9Z8R6M6K;
 				INFOPLIST_FILE = Psorcast/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
