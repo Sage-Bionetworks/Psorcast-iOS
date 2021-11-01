@@ -86,8 +86,11 @@ open class RemindersUserDefaultsSingletonReport: UserDefaultsSingletonReport {
         self.syncToBridge()
     }
     
-    override open func loadFromBridge() {
-        guard !self.isSyncingWithBridge else { return }
+    override open func loadFromBridge(completion: ((Bool) -> Void)?) {
+        guard !self.isSyncingWithBridge else {
+            completion?(true)
+            return
+        }
         self.isSyncingWithBridge = true
         HistoryDataManager.shared.getSingletonReport(reportId: self.identifier) { (report, error) in
             
@@ -95,11 +98,19 @@ open class RemindersUserDefaultsSingletonReport: UserDefaultsSingletonReport {
             
             guard error == nil else {
                 print("Error getting remidners \(String(describing: error))")
+                completion?(false)
+                return
+            }
+            
+            guard report != nil else {
+                debugPrint("Reminders data nil, assume first time user")
+                completion?(true)
                 return
             }
             
             guard let bridgeJsonData = (report?.clientData as? String)?.data(using: .utf8) else {
                 print("Error parsing clientData for reminders report")
+                completion?(false)
                 return
             }
 
@@ -126,8 +137,10 @@ open class RemindersUserDefaultsSingletonReport: UserDefaultsSingletonReport {
                 if !self.isSyncedWithBridge {
                     self.syncToBridge()
                 }
+                completion?(true)
             } catch {
                 print("Error parsing clientData for reminders report \(error)")
+                completion?(false)
             }
         }
     }

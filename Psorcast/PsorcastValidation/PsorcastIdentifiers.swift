@@ -57,6 +57,9 @@ public extension RSDIdentifier {
     
     // Insight tasks
     static let insightsTask: RSDIdentifier = "Insights"
+    
+    // Study Dates Holding Task
+    static let studyDates: RSDIdentifier = "StudyDates"
 }
 
 extension MCTTaskInfo : SBAActivityInfo {

@@ -272,7 +272,7 @@ open class PassiveDataManager {
     private func createArchive(identifier: String) -> SBBDataArchive {
         // Archive to add data to as our queries succeed
         let archive = SBBDataArchive(reference: identifier, jsonValidationMapping: nil)
-                
+        
         // Add the current data groups and the user's arc id
         var metadata = [String: Any]()
         if let dataGroups = SBAParticipantManager.shared.studyParticipant?.dataGroups {
@@ -301,6 +301,13 @@ open class PassiveDataManager {
         let treatmentAddOns = MasterScheduleManager.shared.createTreatmentAnswerAddOns()
         if (treatmentAddOns.count > 0) {
             treatmentAddOns.forEach({ answersDict[$0.identifier] = $0.value })
+        }
+        
+        // Add on study progress info
+        if let data = MasterScheduleManager.shared.createStudyProgressData() {
+            archive.insertData(intoArchive: data,
+                               filename: MasterScheduleManager.fullStudyStateFilename,
+                               createdOn: Date())
         }
         
         archive.insertAnswersDictionary(answersDict)

@@ -100,8 +100,8 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
     
     
     // Open for unit testing
-    open func treatmentWeek() -> Int {
-        return self.scheduleManager.treatmentWeek()
+    open func studyWeek() -> Int {
+        return self.scheduleManager.baseStudyWeek()
     }
     
     open var measureTabItemCount: Int {
@@ -116,8 +116,8 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
     let locationManager = CLLocationManager()
     
     open var currentDeepDiveSurveyList: [DeepDiveItem]? {
-        guard let treatmentStart = self.currentTreatment?.startDate else { return nil }
-        let weeklyRange = self.weeklyRenewalDateRange(from: treatmentStart, toNow: Date())
+        guard let studyStart = HistoryDataManager.shared.baseStudyStartDate else { return nil }
+        let weeklyRange = self.weeklyRenewalDateRange(from: studyStart, toNow: Date())
         return DeepDiveReportManager.shared.currentDeepDiveSurveyList(for: weeklyRange)
     }
     
@@ -441,11 +441,11 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
         guard let insightDate = self.historyData.mostRecentInsightViewed?.date else {
             return true // We've never viewed an insight, so they should all be available
         }
-        guard let treatmentDate = self.currentTreatment?.startDate else {
+        guard let studyStartDate = HistoryDataManager.shared.baseStudyStartDate else {
             return false // We don't have valid data
         }
-        let treatmentWeek = self.treatmentWeek()
-        let insightViewedRange = self.scheduleManager.completionRange(treatmentDate: treatmentDate, treatmentWeek: treatmentWeek)
+        let studyWeek = self.studyWeek()
+        let insightViewedRange = self.scheduleManager.completionRange(date: studyStartDate, week: studyWeek)
         return !insightViewedRange.contains(insightDate)
     }
     
@@ -497,10 +497,10 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
                     let lastSuccessWeek = self.historyData.insightFinishedShownWeek
                     // Check to see if we've shown this already this week. If not, animate and update. If
                     // it's already been seen, don't animate.
-                    if (lastSuccessWeek != self.treatmentWeek()) {
+                    if (lastSuccessWeek != self.studyWeek()) {
                         // show the success view, and update the date
                         self.animateInsightsCompleteView()
-                        self.historyData.setInsightFinishedShownWeek(week: self.treatmentWeek())
+                        self.historyData.setInsightFinishedShownWeek(week: self.studyWeek())
                     }
                 }
             } else if animateToInsightProgressView {
@@ -559,19 +559,19 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
     @objc func updateTimeFormattedText() {
         self.updateCurrentTreatmentsText()
         
-        guard let setTreatmentsDate = self.historyData.currentTreatmentRange?.startDate else {
+        guard let studyStartDate = HistoryDataManager.shared.baseStudyStartDate else {
             return 
         }
         
         let now = Date()
-        let week = self.treatmentWeek()
+        let week = self.studyWeek()
         
         // Update the time sensitive text
         self.weekActivitiesTitleLabel.text = Localization.localizedString("INSIGHT_PROGRESS_TITLE")
         
         // Show only the time countdown text as bold
         var renewalTimeText = Localization.localizedString("TREATMENT_RENEWAL_TITLE_NO_BOLD")
-        renewalTimeText.append(self.activityRenewalText(from: setTreatmentsDate, toNow: now))
+        renewalTimeText.append(self.activityRenewalText(from: studyStartDate, toNow: now))
         
         self.weekActivitiesTimerLabel.text = renewalTimeText
         
@@ -620,9 +620,9 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
         return start...end
     }
     
-    public func weeklyRenewalDate(from treatmentSetDate: Date, toNow: Date) -> Date {
-        let week = self.treatmentWeek()
-        let weeklyRenewalDate = treatmentSetDate.startOfDay().addingNumberOfDays(7 * week)
+    public func weeklyRenewalDate(from studyStartDate: Date, toNow: Date) -> Date {
+        let week = self.studyWeek()
+        let weeklyRenewalDate = studyStartDate.startOfDay().addingNumberOfDays(7 * week)
         return weeklyRenewalDate
     }
     
@@ -705,9 +705,9 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
                 let image = self.scheduleManager.image(for: itemIndex)
                 
                 var isComplete = false
-                if let setTreatmentsDate = self.currentTreatment?.startDate,
+                if let studyStartDate = HistoryDataManager.shared.baseStudyStartDate,
                     let finishedOn = self.scheduleManager.sortedScheduledActivity(for: itemIndex)?.finishedOn {
-                    isComplete = self.weeklyRenewalDateRange(from: setTreatmentsDate, toNow: Date()).contains(finishedOn)
+                    isComplete = self.weeklyRenewalDateRange(from: studyStartDate, toNow: Date()).contains(finishedOn)
                 }
 
                 measureCell.setItemIndex(itemIndex: translatedIndexPath.item, title: title, buttonTitle: buttonTitle, image: image, isComplete: isComplete)
@@ -742,7 +742,7 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
     
     // MARK: RSDTaskViewControllerDelegate
     
-    public func taskController(_ taskController: RSDTaskController, readyToSave taskViewModel: RSDTaskViewModel) {
+    public func taskController(_ taskController: RSDTaskController, readyToSave taskViewModel: RSDTaskViewModel) {                        
         self.scheduleManager.taskController(taskController, readyToSave: taskViewModel)
     }
     

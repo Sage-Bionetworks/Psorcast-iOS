@@ -1,8 +1,8 @@
 //
-//  InsightsUserDefaultsSingletonReport.swift
+//  LinkerStudiesUserDefaultsSingletonReport.swift
 //  Psorcast
 //
-//  Copyright © 2020 Sage Bionetworks. All rights reserved.
+//  Copyright © 2021 Sage Bionetworks. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without modification,
 // are permitted provided that the following conditions are met:
@@ -33,23 +33,23 @@
 
 import BridgeApp
 
-open class InsightsUserDefaultsSingletonReport: UserDefaultsSingletonReport {    
+open class LinkerStudiesUserDefaultsSingletonReport: UserDefaultsSingletonReport {        
     
-    var _current: [InsightItemViewed]?
-    var current: [InsightItemViewed]? {
+    var _current: [LinkerStudy]?
+    var current: [LinkerStudy]? {
         if _current != nil { return _current }
         guard let jsonStr = self.defaults.data(forKey: "\(identifier)JsonValue") else { return nil }
         do {
-            _current = try HistoryDataManager.shared.jsonDecoder.decode([InsightItemViewed].self, from: jsonStr)
+            _current = try HistoryDataManager.shared.jsonDecoder.decode([LinkerStudy].self, from: jsonStr)
             return _current
         } catch {
             debugPrint("Error decoding reminders json \(error)")
         }
         return nil
     }
-    func setCurrent(_ items: [InsightItemViewed]) {
+    func setCurrent(_ items: [LinkerStudy]) {
         _current = items
-        NotificationCenter.default.post(name: HistoryDataManager.insightsChanged, object: nil)
+        NotificationCenter.default.post(name: HistoryDataManager.studyDatesChanged, object: nil)
         do {
             let jsonData = try HistoryDataManager.shared.jsonEncoder.encode(items)
             self.defaults.set(jsonData, forKey: "\(identifier)JsonValue")
@@ -59,50 +59,50 @@ open class InsightsUserDefaultsSingletonReport: UserDefaultsSingletonReport {
     }
     
     public override init(identifier: RSDIdentifier) {
-        super.init(identifier: RSDIdentifier.insightsTask)
+        super.init(identifier: RSDIdentifier.studyDates)
     }
     
     public init() {
-        super.init(identifier: RSDIdentifier.insightsTask)
+        super.init(identifier: RSDIdentifier.studyDates)
+    }
+    
+    /// At this point, if we do not have any linker study items,
+    /// it is because the user just signed up and this func needs called
+    open func initializedStudyDates(startDate: Date) {
+        var items = [LinkerStudy]()
+        items.append(LinkerStudy(identifier: HistoryDataManager.LINKER_STUDY_DEFAULT, startDate: startDate))
+        items.append(LinkerStudy(identifier: HistoryDataManager.LINKER_STUDY_BETA_2021, startDate: startDate))
+        // Signal that the new state needs synced with Bridge
+        self.append(items: items)
+    }
+    
+    open func append(items: [LinkerStudy]) {
+        let merged = self.mergeAndSortItems(cached: self.current ?? [], newItems: items)
+        self.setCurrent(merged)
+        self.syncToBridge()
     }
 
     override open func append(taskResult: RSDTaskResult) {
-        // No need for a recursive solution as we don't have nested results
-        guard let insightId = taskResult.findAnswerResult(with: InsightResultIdentifier.insightViewedIdentifier.rawValue.rawValue)?.value as? String else {
-            print("Invalid reminders task result data")
-            return
-        }
-                
-        let item = InsightItemViewed(insightIdentifier: insightId, date: taskResult.endDate)
-        let merged = self.mergeAndSortItems(cached: self.current ?? [], newItems: [item])
-        self.setCurrent(merged)
-        
-        self.syncToBridge()
+        // Not needed, as this is not how this is updated, see func above
     }
-    
-    // TODO: mdephillips unit test this function
-    func mergeAndSortItems(cached: [InsightItemViewed], newItems: [InsightItemViewed]) -> [InsightItemViewed] {
         
-        var merged = [InsightItemViewed]()
+    func mergeAndSortItems(cached: [LinkerStudy], newItems: [LinkerStudy]) -> [LinkerStudy] {
         
+        var merged = [LinkerStudy]()
+        
+        // Add all unique data group elements
         cached.forEach { (item) in
-            if let same = newItems.first(where: { $0.insightIdentifier == item.insightIdentifier }),
-                (same.date?.timeIntervalSince1970 ?? 0) > (item.date?.timeIntervalSince1970 ?? 0) {
-                // Add the newer bridge one instead
-                merged.append(same)
-            } else {
+            if (!merged.contains(where: { $0.identifier == item.identifier })) {
                 merged.append(item)
             }
         }
-        
-        // Add in all new unique insight items
         newItems.forEach { (item) in
-            if !merged.contains(where: { $0.insightIdentifier == item.insightIdentifier }) {
+            if (!merged.contains(where: { $0.identifier == item.identifier })) {
                 merged.append(item)
             }
         }
         
-        return merged.sorted(by: { ($0.date?.timeIntervalSince1970 ?? 0) < ($1.date?.timeIntervalSince1970 ?? 0) })
+        return merged
     }
     
     override open func loadFromBridge(completion: ((Bool) -> Void)?) {
@@ -120,21 +120,13 @@ open class InsightsUserDefaultsSingletonReport: UserDefaultsSingletonReport {
                 completion?(false)
                 return
             }
-            
-            guard report != nil else {
-                debugPrint("Insights data nil, assume first time user")
-                completion?(true)
-                return
-            }
-            
-            guard let bridgeJsonData = (report?.clientData as? String)?.data(using: .utf8) else {
-                print("Error parsing clientData for reminders report")
-                completion?(false)
-                return
-            }
 
             do {
-                let bridgeItems = try HistoryDataManager.shared.jsonDecoder.decode([InsightItemViewed].self, from: bridgeJsonData)
+                var bridgeItems = [LinkerStudy]()
+                // If this is the first time loading the report, it may be null or have client data missing
+                if let bridgeJsonData = (report?.clientData as? String)?.data(using: .utf8) {
+                    bridgeItems = try HistoryDataManager.shared.jsonDecoder.decode([LinkerStudy].self, from: bridgeJsonData)
+                }
                 let merged = self.mergeAndSortItems(cached: self.current ?? [], newItems: bridgeItems)
                 self.setCurrent(merged)
                 
@@ -163,7 +155,20 @@ open class InsightsUserDefaultsSingletonReport: UserDefaultsSingletonReport {
     }
 }
 
-public struct InsightItemViewed: Codable {
-    var insightIdentifier: String?
-    var date: Date?
+public struct LinkerStudy: Codable {
+    var identifier: String?
+    var startDate: Date?
+}
+
+public struct LinkerStudyDetailed: Codable {
+    var identifier: String?
+    var startDate: Date?
+    var weekInStudy: Int?
+    
+    public static func create(from study: LinkerStudy,
+                              manager: MasterScheduleManager) -> LinkerStudyDetailed {
+        return LinkerStudyDetailed(identifier: study.identifier,
+                                   startDate: study.startDate,
+                                   weekInStudy: manager.studyWeek(for: study.identifier ?? ""))
+    }
 }

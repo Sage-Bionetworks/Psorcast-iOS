@@ -157,7 +157,7 @@
           "identifier": "time_commitment",
           "type": "onboardingInstruction",
           "title": "Time commitment",
-          "text": "We will combine the data from each participant (without identifiable information) and analyze it to answer research questions. ",
+          "text": "This study will take about 5-10 minutes per week. We’d like for you to participate as long as you can, but 12 weeks is a perfect amount.\n\nMany measurements over time help us understand how symptoms change during the time between doctor visits.",
           "image": {
             "type": "fetchable",
             "imageName": "consent_icon_time_commitment",
@@ -176,7 +176,7 @@
           "identifier": "potential_benefits",
           "type": "onboardingInstruction",
           "title": "Potential benefits",
-          "text": "This app may help you better understand or measure your symptoms, you can generate GIFs of your symptoms over time and you may be compensated for your participation.",
+          "text": "This app may help you better understand or measure your symptoms and you can generate GIFs of your symptoms over time. You may be compensated for your participation.",
           "image": {
             "type": "fetchable",
             "imageName": "consent_icon_potential_benefits",
@@ -195,7 +195,7 @@
           "identifier": "potential_risks",
           "type": "onboardingInstruction",
           "title": "Potential risks",
-          "text": "If you participate in this study, your privacy may be at risk. Data transferred from this app may count against your mobile data plan, but you can set up this app to only transfer using a Wi-Fi connection.There may be other risks to participating that we do not know about yet.",
+          "text": "If you participate in this study, your privacy may be at risk. Data transferred from this app may count against your mobile data plan, but you can set up this app to only transfer using a Wi-Fi connection. There may be other risks to participating that we do not know about yet.",
           "image": {
             "type": "fetchable",
             "imageName": "consent_icon_potential_risks",
@@ -356,7 +356,7 @@
                "identifier": "quit",
                "type": "onboardingInstruction",
                "title": "Quit",
-               "text": "Your participation is voluntary. You can leave the study at any time by withdrawing in the app.",
+               "text": "Your participation is voluntary. You can leave the study at any time by withdrawing in the app. There will be no penalty or loss of benefits to which you are otherwise entitled as a result of your decision.",
                "image": {
                  "type": "fetchable",
                  "imageName": "consent_icon_quit",
