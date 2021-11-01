@@ -130,8 +130,8 @@ class ProfileTabViewController: UIViewController, UITableViewDelegate, UITableVi
         BridgeSDK.participantManager.getParticipantRecord(completion: { record, error in
             DispatchQueue.main.async {
                 guard let participant = record as? SBBStudyParticipant, error == nil else { return }
-//                let attributes = participant.attributes
-//                let dic = attributes?.dictionaryRepresentation()
+                let attributes = participant.attributes
+                let dic = attributes?.dictionaryRepresentation()
                 if let compensationEmail = participant.attributes?.dictionaryRepresentation()[RequestEmailViewController.COMPENSATE_ATTRIBUTE] as? String {
                     // We now have the email address, so go ahead and populate the appropriate cell
                     let cell = self.tableView.dequeueReusableCell(withIdentifier: String(describing: ProfileTableViewCell.self), for: self.emailCellIndexPath) as! ProfileTableViewCell
@@ -197,6 +197,7 @@ class ProfileTabViewController: UIViewController, UITableViewDelegate, UITableVi
        
         // Configure the cell...
         cell.titleLabel?.text = titleText
+        cell.detailLabel?.text = ""
         
         if let itemKey = (tableItem as? SBAProfileItemProfileTableItem)?.profileItemKey {
             switch itemKey {
