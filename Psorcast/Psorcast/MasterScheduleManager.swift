@@ -354,8 +354,12 @@ open class MasterScheduleManager : SBAScheduleManager {
             print("No study progress history to save")
             return nil
         }
+        
+        // Add week in study to the data model before uploading
+        let detailedData = current.map({ LinkerStudyDetailed.create(from: $0, manager: self) })
+        
         do {
-            return try HistoryDataManager.shared.jsonEncoder.encode(current)
+            return try HistoryDataManager.shared.jsonEncoder.encode(detailedData)
         } catch {
             print("Error encoding study progress info to JSON \(error.localizedDescription)")
         }
@@ -404,7 +408,11 @@ open class MasterScheduleManager : SBAScheduleManager {
     }
     
     open func baseStudyWeek() -> Int {
-        guard let studyStart = HistoryDataManager.shared.baseStudyStartDate else { return 1 }
+        return studyWeek(for: HistoryDataManager.LINKER_STUDY_DEFAULT)
+    }
+    
+    open func studyWeek(for studyId: String) -> Int {
+        guard let studyStart = HistoryDataManager.shared.studyStartDate(for: studyId) else { return 1 }
         return (Calendar.current.dateComponents([.weekOfYear], from: studyStart.startOfDay(), to: nowDate()).weekOfYear ?? 0) + 1
     }
     
