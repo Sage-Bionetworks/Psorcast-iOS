@@ -106,6 +106,11 @@ class RequestEmailViewController: RSDTableStepViewController {
                         self.present(alert, animated: true)
                         return
                     }
+                    // We've successfully uploaded, however there's currently an issue with later pulling attributes
+                    // down from bridge. As an interim stopgap, go ahead and store the email locally so we can
+                    // populate the appropriate field in the profile
+                    // TODO: ESIEG 11/19/21 Remove this stopgap
+                    UserDefaults.standard.set(emailText, forKey: RequestEmailViewController.COMPENSATE_ATTRIBUTE)
                     super.goForward()
                 }
             }

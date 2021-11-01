@@ -132,11 +132,12 @@ class ProfileTabViewController: UIViewController, UITableViewDelegate, UITableVi
                 guard let participant = record as? SBBStudyParticipant, error == nil else { return }
                 let attributes = participant.attributes
                 let dic = attributes?.dictionaryRepresentation()
+                let cell = self.tableView.dequeueReusableCell(withIdentifier: String(describing: ProfileTableViewCell.self), for: self.emailCellIndexPath) as! ProfileTableViewCell
                 if let compensationEmail = participant.attributes?.dictionaryRepresentation()[RequestEmailViewController.COMPENSATE_ATTRIBUTE] as? String {
                     // We now have the email address, so go ahead and populate the appropriate cell
-                    let cell = self.tableView.dequeueReusableCell(withIdentifier: String(describing: ProfileTableViewCell.self), for: self.emailCellIndexPath) as! ProfileTableViewCell
                     cell.detailLabel?.text = compensationEmail
                 }
+                // Note: might need to add a call to update the UI for the cell appropriately once pulling the attributes is working correctly
             }
         })
     }
@@ -216,7 +217,12 @@ class ProfileTabViewController: UIViewController, UITableViewDelegate, UITableVi
                 cell.detailLabel?.text = self.withdrawProfileItemValue()
             case RSDIdentifier.emailCompensationTask.rawValue:
                 self.emailCellIndexPath = indexPath
-                self.populateCompensationEmailValue()
+                //self.populateCompensationEmailValue()
+                // There's currently an issue pulling attributes down from bridge, so as a stopgap we are
+                // storing the email in user defaults. Pull the value from there.
+                // TODO: ESIEG 11/19/21 Remove this stopgap
+                let defaultsCompensateEmail = UserDefaults.standard.string(forKey: RequestEmailViewController.COMPENSATE_ATTRIBUTE)
+                cell.detailLabel?.text = defaultsCompensateEmail
             default:
                 cell.detailLabel?.text = detailText
             }
