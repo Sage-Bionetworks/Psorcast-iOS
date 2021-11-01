@@ -159,3 +159,16 @@ public struct LinkerStudy: Codable {
     var identifier: String?
     var startDate: Date?
 }
+
+public struct LinkerStudyDetailed: Codable {
+    var identifier: String?
+    var startDate: Date?
+    var weekInStudy: Int?
+    
+    public static func create(from study: LinkerStudy,
+                              manager: MasterScheduleManager) -> LinkerStudyDetailed {
+        return LinkerStudyDetailed(identifier: study.identifier,
+                                   startDate: study.startDate,
+                                   weekInStudy: manager.studyWeek(for: study.identifier ?? ""))
+    }
+}
