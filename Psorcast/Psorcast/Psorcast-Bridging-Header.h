@@ -41,16 +41,3 @@
  Example format: May 18 2019
  */
 NSString* compileDate();
-
-@interface SBBStudyParticipantCustomAttributes (customFields)
-
-@property (nonatomic, strong) NSString *compensateEmail;
-
-
-@end
-
-@implementation SBBStudyParticipantCustomAttributes (customFields)
-
-@dynamic compensateEmail;
-
-@end

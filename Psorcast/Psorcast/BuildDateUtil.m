@@ -32,6 +32,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <BridgeSDK/BridgeSDK.h>
 
 /**
  The __DATE__ macro will return a string representation
@@ -40,3 +41,16 @@
 NSString *compileDate() {
     return [NSString stringWithUTF8String:__DATE__];
 }
+
+@interface SBBStudyParticipantCustomAttributes (customFields)
+
+@property (nonatomic, strong) NSString *compensateEmail;
+
+
+@end
+
+@implementation SBBStudyParticipantCustomAttributes (customFields)
+
+@dynamic compensateEmail;
+
+@end

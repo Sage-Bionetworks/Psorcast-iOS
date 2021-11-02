@@ -59,8 +59,7 @@ class ProfileTabViewController: UIViewController, UITableViewDelegate, UITableVi
     public static let activityMeasuresKey = "activityMeasures"
     public static let licensesKey = "licenses"
     
-    var emailCellIndexPath: IndexPath = []
-    
+    var storedCompensationEmail = ""
     override open func viewDidLoad() {
         super.viewDidLoad()                
         self.setupTableView()
@@ -69,6 +68,7 @@ class ProfileTabViewController: UIViewController, UITableViewDelegate, UITableVi
     override open func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
                 
+        self.fetchCompensationEmailValue()
         self.tableView.reloadData()
     }
     
@@ -126,18 +126,17 @@ class ProfileTabViewController: UIViewController, UITableViewDelegate, UITableVi
         // Todo: add logic to determine if enrolled, adjust return values here appropriately
     }
     
-    func populateCompensationEmailValue() {
+    func fetchCompensationEmailValue() {
         BridgeSDK.participantManager.getParticipantRecord(completion: { record, error in
             DispatchQueue.main.async {
                 guard let participant = record as? SBBStudyParticipant, error == nil else { return }
                 let attributes = participant.attributes
                 let dic = attributes?.dictionaryRepresentation()
-                let cell = self.tableView.dequeueReusableCell(withIdentifier: String(describing: ProfileTableViewCell.self), for: self.emailCellIndexPath) as! ProfileTableViewCell
                 if let compensationEmail = participant.attributes?.dictionaryRepresentation()[RequestEmailViewController.COMPENSATE_ATTRIBUTE] as? String {
-                    // We now have the email address, so go ahead and populate the appropriate cell
-                    cell.detailLabel?.text = compensationEmail
+                    // We now have the email address, so save it and have the table view reload
+                    self.storedCompensationEmail = compensationEmail
+                    self.tableView.reloadData()
                 }
-                // Note: might need to add a call to update the UI for the cell appropriately once pulling the attributes is working correctly
             }
         })
     }
@@ -198,7 +197,6 @@ class ProfileTabViewController: UIViewController, UITableViewDelegate, UITableVi
        
         // Configure the cell...
         cell.titleLabel?.text = titleText
-        cell.detailLabel?.text = ""
         
         if let itemKey = (tableItem as? SBAProfileItemProfileTableItem)?.profileItemKey {
             switch itemKey {
@@ -216,16 +214,12 @@ class ProfileTabViewController: UIViewController, UITableViewDelegate, UITableVi
             case RSDIdentifier.withdrawTask.rawValue:
                 cell.detailLabel?.text = self.withdrawProfileItemValue()
             case RSDIdentifier.emailCompensationTask.rawValue:
-                self.emailCellIndexPath = indexPath
-                //self.populateCompensationEmailValue()
-                // There's currently an issue pulling attributes down from bridge, so as a stopgap we are
-                // storing the email in user defaults. Pull the value from there.
-                // TODO: ESIEG 11/19/21 Remove this stopgap
-                let defaultsCompensateEmail = UserDefaults.standard.string(forKey: RequestEmailViewController.COMPENSATE_ATTRIBUTE)
-                cell.detailLabel?.text = defaultsCompensateEmail
+                cell.detailLabel?.text = self.storedCompensationEmail
             default:
                 cell.detailLabel?.text = detailText
             }
+        } else {
+            cell.detailLabel?.text = detailText
         }
         
         cell.setDesignSystem(self.design, with: RSDColorTile(RSDColor.white, usesLightStyle: false))
