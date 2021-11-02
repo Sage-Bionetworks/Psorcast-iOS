@@ -336,6 +336,9 @@ class ProfileTabViewController: UIViewController, UITableViewDelegate, UITableVi
                 navVC.modalPresentationStyle = .pageSheet
                 self.present(navVC, animated: true, completion: nil)
             } else if profileItem.profileItemKey == RSDIdentifier.emailCompensationTask.rawValue {
+                // Clear the local value of the email so when they come back, it
+                // won't temporarily show the old value until we've updated what it should show
+                self.storedCompensationEmail = ""
                 self.showJsonTaskViewControler(jsonName: ProfileTabViewController.changeEmailTaskId)
             } else if let vc = MasterScheduleManager.shared.instantiateSingleQuestionTreatmentTaskController(for: profileItem.profileItemKey) {
                 vc.delegate = self

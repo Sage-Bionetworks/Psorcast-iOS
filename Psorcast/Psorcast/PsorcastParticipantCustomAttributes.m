@@ -1,8 +1,8 @@
 ///
-//  BuildDateUtil.m
-//  PsorcastValidation
+//  PsorcastParticipantCustomAttributes.m
+//  Psorcast
 //
-//  Copyright © 2019 Sage Bionetworks. All rights reserved.
+//  Copyright © 2021 Sage Bionetworks. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without modification,
 // are permitted provided that the following conditions are met:
@@ -31,12 +31,19 @@
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-#import <Foundation/Foundation.h>
 
-/**
- The __DATE__ macro will return a string representation
- of the date the app was built.
- */
-NSString *compileDate() {
-    return [NSString stringWithUTF8String:__DATE__];
-}
+#import <Foundation/Foundation.h>
+#import <BridgeSDK/BridgeSDK.h>
+
+@interface SBBStudyParticipantCustomAttributes (customFields)
+
+@property (nonatomic, strong) NSString *compensateEmail;
+
+
+@end
+
+@implementation SBBStudyParticipantCustomAttributes (customFields)
+
+@dynamic compensateEmail;
+
+@end
