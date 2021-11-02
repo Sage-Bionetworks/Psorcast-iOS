@@ -130,8 +130,6 @@ class ProfileTabViewController: UIViewController, UITableViewDelegate, UITableVi
         BridgeSDK.participantManager.getParticipantRecord(completion: { record, error in
             DispatchQueue.main.async {
                 guard let participant = record as? SBBStudyParticipant, error == nil else { return }
-                let attributes = participant.attributes
-                let dic = attributes?.dictionaryRepresentation()
                 if let compensationEmail = participant.attributes?.dictionaryRepresentation()[RequestEmailViewController.COMPENSATE_ATTRIBUTE] as? String {
                     // We now have the email address, so save it and have the table view reload
                     self.storedCompensationEmail = compensationEmail
