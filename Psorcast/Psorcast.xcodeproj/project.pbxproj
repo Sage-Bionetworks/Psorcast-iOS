@@ -13,6 +13,7 @@
 		043781B1270EB34F001F374F /* ConsentForm_files in Resources */ = {isa = PBXBuildFile; fileRef = 043781B0270EB34F001F374F /* ConsentForm_files */; };
 		043781B7270EC448001F374F /* ConsentFormOnboarding.html in Resources */ = {isa = PBXBuildFile; fileRef = 043781B4270EC374001F374F /* ConsentFormOnboarding.html */; };
 		043781C2270ECCB7001F374F /* Licenses.html in Resources */ = {isa = PBXBuildFile; fileRef = 043781BD270ECCB7001F374F /* Licenses.html */; };
+		0456535F2731F22A00BEA3CA /* PsorcastParticipantCustomAttributes.m in Sources */ = {isa = PBXBuildFile; fileRef = 0456535E2731F22A00BEA3CA /* PsorcastParticipantCustomAttributes.m */; };
 		047C2CCF25F16628006AA52B /* PopTip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047C2CCC25F16628006AA52B /* PopTip.swift */; };
 		047C2CD025F16628006AA52B /* PopTip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047C2CCC25F16628006AA52B /* PopTip.swift */; };
 		047C2CD125F16628006AA52B /* PopTip+Draw.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047C2CCD25F16628006AA52B /* PopTip+Draw.swift */; };
@@ -430,6 +431,7 @@
 		043781B0270EB34F001F374F /* ConsentForm_files */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ConsentForm_files; sourceTree = "<group>"; };
 		043781B4270EC374001F374F /* ConsentFormOnboarding.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = ConsentFormOnboarding.html; sourceTree = "<group>"; };
 		043781BD270ECCB7001F374F /* Licenses.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = Licenses.html; sourceTree = "<group>"; };
+		0456535E2731F22A00BEA3CA /* PsorcastParticipantCustomAttributes.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PsorcastParticipantCustomAttributes.m; sourceTree = "<group>"; };
 		047C2CCC25F16628006AA52B /* PopTip.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopTip.swift; sourceTree = "<group>"; };
 		047C2CCD25F16628006AA52B /* PopTip+Draw.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PopTip+Draw.swift"; sourceTree = "<group>"; };
 		047C2CCE25F16628006AA52B /* PopTip+Transitions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PopTip+Transitions.swift"; sourceTree = "<group>"; };
@@ -1060,6 +1062,7 @@
 			children = (
 				CBDCDCC123F3855300E5CEB8 /* BuildDateUtil.m */,
 				CBDCDCC323F3857600E5CEB8 /* Psorcast-Bridging-Header.h */,
+				0456535E2731F22A00BEA3CA /* PsorcastParticipantCustomAttributes.m */,
 			);
 			name = ObjC;
 			sourceTree = "<group>";
@@ -1711,6 +1714,7 @@
 				CBDCDCA723F3849E00E5CEB8 /* PsoriasisAreaPhotoImageView.swift in Sources */,
 				CBDCDCAC23F3849E00E5CEB8 /* PsoriasisDrawStepObject.swift in Sources */,
 				CBB0F43A2643D1B0007442F3 /* PassiveDataManager.swift in Sources */,
+				0456535F2731F22A00BEA3CA /* PsorcastParticipantCustomAttributes.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
