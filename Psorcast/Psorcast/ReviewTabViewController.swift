@@ -341,6 +341,7 @@ open class ReviewTabViewController: UIViewController, UITableViewDataSource, UIT
         
         cell.collectionCellWidth = self.tableViewCellWidth
         cell.collectionCellHeight = self.tableViewCellHeight
+        cell.layer.cornerRadius = ReviewTabViewController.tableViewCellCornerRadius
                 
         cell.isCurrentTreatmentSelected = false
         if let current = self.currentTreatmentRange {
@@ -384,7 +385,6 @@ open class ReviewTabViewController: UIViewController, UITableViewDataSource, UIT
             self.taskRowState[taskId]?.scrollPosition = scrollPos
         })
                  
-        cell.layer.cornerRadius = ReviewTabViewController.tableViewCellCornerRadius
         return cell
     }
     
@@ -684,6 +684,7 @@ public class ReviewTableViewCell: RSDDesignableTableViewCell, UICollectionViewDe
             if let design = designSystem, let colorTile = backgroundColorTile {
                 cell.setDesignSystem(design, with: colorTile)
             }
+            cell.layer.cornerRadius = ReviewTabViewController.tableViewCellCornerRadius
             
             cell.delegate = self
             cell.taskIdentifier = self.taskIdentifier
@@ -691,7 +692,6 @@ public class ReviewTableViewCell: RSDDesignableTableViewCell, UICollectionViewDe
                 cell.setTaskIdentifier(taskId, isCurrentTreatmentSelected: self.isCurrentTreatmentSelected, frameCount: self.historyItems.count)
             }
             
-            cell.layer.cornerRadius = ReviewTabViewController.tableViewCellCornerRadius
             return cell
         }
         
@@ -703,6 +703,7 @@ public class ReviewTableViewCell: RSDDesignableTableViewCell, UICollectionViewDe
         if let design = designSystem, let colorTile = backgroundColorTile {
             cell.setDesignSystem(design, with: colorTile)
         }
+        cell.layer.cornerRadius = ReviewTabViewController.tableViewCellCornerRadius
         
         let isLastCell = self.historyItems.count == indexPath.row
         let imageFrameIdx = isLastCell ? (indexPath.row - 1) : indexPath.row
@@ -749,7 +750,6 @@ public class ReviewTableViewCell: RSDDesignableTableViewCell, UICollectionViewDe
         cell.exportButton.isEnabled = true
         
         guard let taskIdUnwrapped = self.taskIdentifier else {
-            cell.layer.cornerRadius = ReviewTabViewController.tableViewCellCornerRadius
             return cell
         }
         
@@ -776,7 +776,6 @@ public class ReviewTableViewCell: RSDDesignableTableViewCell, UICollectionViewDe
             }
         }
                     
-        cell.layer.cornerRadius = ReviewTabViewController.tableViewCellCornerRadius
         return cell
     }
     
