@@ -55,6 +55,7 @@ open class ReviewTabViewController: UIViewController, UITableViewDataSource, UIT
     var tableViewCellHeight: CGFloat {
         return self.tableView.bounds.height - CGFloat(2 * ReviewSectionHeader.headerHeight)
     }
+    static let tableViewCellCornerRadius : CGFloat = 6.0
     
     // The image manager for the review tab
     var imageManager = ImageDataManager.shared
@@ -382,7 +383,8 @@ open class ReviewTabViewController: UIViewController, UITableViewDataSource, UIT
             cell.collectionView.setContentOffset(CGPoint(x: scrollPos, y: cell.collectionView.contentOffset.y), animated: false)
             self.taskRowState[taskId]?.scrollPosition = scrollPos
         })
-                        
+                 
+        cell.layer.cornerRadius = ReviewTabViewController.tableViewCellCornerRadius
         return cell
     }
     
@@ -689,6 +691,7 @@ public class ReviewTableViewCell: RSDDesignableTableViewCell, UICollectionViewDe
                 cell.setTaskIdentifier(taskId, isCurrentTreatmentSelected: self.isCurrentTreatmentSelected, frameCount: self.historyItems.count)
             }
             
+            cell.layer.cornerRadius = ReviewTabViewController.tableViewCellCornerRadius
             return cell
         }
         
@@ -745,7 +748,10 @@ public class ReviewTableViewCell: RSDDesignableTableViewCell, UICollectionViewDe
         cell.loadProgress.isHidden = !isVideoCell
         cell.exportButton.isEnabled = true
         
-        guard let taskIdUnwrapped = self.taskIdentifier else { return cell }
+        guard let taskIdUnwrapped = self.taskIdentifier else {
+            cell.layer.cornerRadius = ReviewTabViewController.tableViewCellCornerRadius
+            return cell
+        }
         
         cell.checkMarkImage.isHidden = true
         if isVideoCell {
@@ -769,7 +775,8 @@ public class ReviewTableViewCell: RSDDesignableTableViewCell, UICollectionViewDe
                 cell.exportButton.isEnabled = videoIsLoaded
             }
         }
-                               
+                    
+        cell.layer.cornerRadius = ReviewTabViewController.tableViewCellCornerRadius
         return cell
     }
     
