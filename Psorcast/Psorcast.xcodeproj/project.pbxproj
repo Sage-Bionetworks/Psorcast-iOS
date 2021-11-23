@@ -52,6 +52,8 @@
 		CB03196523E3ED0A005063A3 /* ReviewCaptureStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB03196423E3ED09005063A3 /* ReviewCaptureStepViewController.swift */; };
 		CB03196723E40836005063A3 /* ReviewCaptureStepViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB03196623E40835005063A3 /* ReviewCaptureStepViewController.xib */; };
 		CB05146C237F27560058D746 /* DigitalJarOpen.json in Resources */ = {isa = PBXBuildFile; fileRef = CB05146B237F27560058D746 /* DigitalJarOpen.json */; };
+		CB08D9882735DB9300447D95 /* psoObjDetect_2021_05_28.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = CB08D9872735DB9300447D95 /* psoObjDetect_2021_05_28.mlmodel */; settings = {ATTRIBUTES = (codegen, ); }; };
+		CB08D9892735DB9B00447D95 /* psoObjDetect_2021_05_28.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = CB08D9872735DB9300447D95 /* psoObjDetect_2021_05_28.mlmodel */; settings = {ATTRIBUTES = (codegen, ); }; };
 		CB09F00123D644A9009D344E /* DigitalJarOpenInstructionStepViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB09F00023D644A8009D344E /* DigitalJarOpenInstructionStepViewController.xib */; };
 		CB09F00323D649FB009D344E /* DigitalJarOpenInstructionStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB09F00223D649FB009D344E /* DigitalJarOpenInstructionStepViewController.swift */; };
 		CB09F0382421D5730005698D /* TreatmentSelectionStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB09F0372421D5730005698D /* TreatmentSelectionStepViewController.swift */; };
@@ -465,6 +467,7 @@
 		CB03196423E3ED09005063A3 /* ReviewCaptureStepViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReviewCaptureStepViewController.swift; sourceTree = "<group>"; };
 		CB03196623E40835005063A3 /* ReviewCaptureStepViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReviewCaptureStepViewController.xib; sourceTree = "<group>"; };
 		CB05146B237F27560058D746 /* DigitalJarOpen.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = DigitalJarOpen.json; sourceTree = "<group>"; };
+		CB08D9872735DB9300447D95 /* psoObjDetect_2021_05_28.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; name = psoObjDetect_2021_05_28.mlmodel; path = ../../../../../../Downloads/psoObjDetect_2021_05_28.mlmodel; sourceTree = "<group>"; };
 		CB09F00023D644A8009D344E /* DigitalJarOpenInstructionStepViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DigitalJarOpenInstructionStepViewController.xib; sourceTree = "<group>"; };
 		CB09F00223D649FB009D344E /* DigitalJarOpenInstructionStepViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DigitalJarOpenInstructionStepViewController.swift; sourceTree = "<group>"; };
 		CB09F0372421D5730005698D /* TreatmentSelectionStepViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreatmentSelectionStepViewController.swift; sourceTree = "<group>"; };
@@ -753,6 +756,15 @@
 			name = MP4;
 			sourceTree = "<group>";
 		};
+		CB08D9822735DB8A00447D95 /* CoreML */ = {
+			isa = PBXGroup;
+			children = (
+				CB08D9872735DB9300447D95 /* psoObjDetect_2021_05_28.mlmodel */,
+			);
+			name = CoreML;
+			path = ../Psorcast;
+			sourceTree = "<group>";
+		};
 		CB0D52AA26E9D457009BD911 /* Vision */ = {
 			isa = PBXGroup;
 			children = (
@@ -956,6 +968,7 @@
 		CBD67D7F22DFB8C400998516 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				CB08D9822735DB8A00447D95 /* CoreML */,
 				CB051464237F23310058D746 /* MP4 */,
 				CB9F5E1122E0BE8D003FBCEF /* Fonts */,
 				CBD67D9422DFDAA700998516 /* JSON */,
@@ -1623,6 +1636,7 @@
 				CB0D52B026E9D466009BD911 /* HandPose.swift in Sources */,
 				CBDCDCAF23F3849E00E5CEB8 /* PsoriasisDrawCompletionStepViewController.swift in Sources */,
 				CBDCDC9A23F3849E00E5CEB8 /* JointPainStepObject.swift in Sources */,
+				CB08D9882735DB9300447D95 /* psoObjDetect_2021_05_28.mlmodel in Sources */,
 				CBFF927A25E1783B00EC34DB /* RegistrationWaitingViewController.swift in Sources */,
 				CB8F7D562422D73A00F77D62 /* StudyTaskFactory.swift in Sources */,
 				CB1F7BD025BCBFC3001985D2 /* PsoriasisDrawHelper.swift in Sources */,
@@ -1762,6 +1776,7 @@
 				CB8AE6FF233FBA1800F5F8AC /* PsoriasisDrawImageView.swift in Sources */,
 				CB55C73A231972BE00EA0C19 /* JointPainImageView.swift in Sources */,
 				CB77866C238984790009ECF9 /* DigitalJarOpenStepViewController.swift in Sources */,
+				CB08D9892735DB9B00447D95 /* psoObjDetect_2021_05_28.mlmodel in Sources */,
 				CB6F54F022E25C5B0073BFE9 /* ParticipantIDRegistrationViewController.swift in Sources */,
 				CB8DC7B824189E31001B7982 /* TaskListScheduleManager.swift in Sources */,
 				CBB5C42226EBDE5C000688CD /* BackgroundNetworkManager.swift in Sources */,

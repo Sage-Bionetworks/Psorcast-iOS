@@ -34,6 +34,7 @@
 import Foundation
 import BridgeApp
 import BridgeAppUI
+import CoreML
 
 open class ReviewCaptureStepObject: RSDUIStepObject, RSDStepViewControllerVendor {
     
@@ -79,10 +80,19 @@ open class ReviewCaptureStepObject: RSDUIStepObject, RSDStepViewControllerVendor
 /// The 'ReviewCaptureStepViewController' displays the photos the user took side by side
 open class ReviewCaptureStepViewController: RSDStepViewController {
     
+    // Psoriasis CoreML tracking
+    var coreMLConfig: MLModelConfiguration? = nil
+    var psoriasisCoreML: psoObjDetect_2021_05_28? = nil
+    
     // Set a max attempts to load images to avoid infinite attempts
     var imageLoadAttempt = 0
     let maxImageLoadAttempt = 8
-    let imageLoadAttemptDelay = 0.25 
+    let imageLoadAttemptDelay = 0.25
+    
+    open override func viewDidLoad() {
+        super.viewDidLoad()
+        self.setupCoreML()
+    }
     
     /// The step for this view controller
     open var reviewCaptureStep: ReviewCaptureStepObject? {
@@ -106,6 +116,7 @@ open class ReviewCaptureStepViewController: RSDStepViewController {
             let image = self.imageResult(with: imageId)?.fixOrientationForPNG() {
             debugPrint("Images loaded")
             self.navigationHeader?.imageView?.image = image
+            self.runCoreMLModel(image: image)
         } else if self.imageLoadAttempt < self.maxImageLoadAttempt {
             debugPrint("Image not available immediately, trying again in 0.25 sec")
             // Because the user has taken the picture only moments before this
@@ -132,5 +143,60 @@ open class ReviewCaptureStepViewController: RSDStepViewController {
             }
         }
         return nil
+    }
+    
+    func setupCoreML() {
+        self.coreMLConfig = MLModelConfiguration()
+        if let modelUnwrapped = self.coreMLConfig {
+            do {
+                self.psoriasisCoreML = try psoObjDetect_2021_05_28(configuration: modelUnwrapped)
+            } catch {
+                print("Error intiailizing machine learning model")
+            }
+        }
+    }
+    
+    func runCoreMLModel(image: UIImage) {
+        let imageViewBounds = self.navigationHeader?.imageView?.bounds ?? CGRect.zero
+        
+        do {
+            if #available(iOS 13.0, *) {
+                let startTime = Date()
+                let confidenceThreshold = 0.05
+                let input = try psoObjDetect_2021_05_28Input.init(imageWith: imageScaled, iouThreshold: 0.0, confidenceThreshold: confidenceThreshold)
+                let output = try self.psoriasisCoreML?.prediction(input: input)
+                
+                print("CoreML analysis \(Date().timeIntervalSince1970 - startTime.timeIntervalSince1970)")
+                let validOutputs = output?.confidence.count ?? 0
+                
+                for i in 0..<validOutputs {
+                    let confidence = output?.confidence[i].doubleValue ?? 0.0
+                    if confidence > confidenceThreshold {
+                        
+                        let coordinateCount = output?.coordinates.count ?? 0
+                        let startIdx = i * 4
+                        if coordinateCount >= (4 * validOutputs) {
+                            
+                            let x = (output?.coordinates[startIdx].doubleValue ?? 0.0) * imageViewBounds.width
+                            let y = (output?.coordinates[startIdx + 1].doubleValue ?? 0.0) * imageViewBounds.height
+                            let width = (output?.coordinates[startIdx + 2].doubleValue ?? 0.0) * imageViewBounds.width
+                            let height = (output?.coordinates[startIdx + 3].doubleValue ?? 0.0) * imageViewBounds.height
+                            
+                            let layer = CAShapeLayer()
+                            let rect = CGRect(x: x, y: y, width: width, height: height)
+                            layer.path = UIBezierPath(roundedRect: rect, cornerRadius: 2).cgPath
+                            layer.strokeColor = UIColor.red.cgColor
+                            layer.fillColor = UIColor.clear.cgColor
+                            self.navigationHeader?.imageView?.layer.addSublayer(layer)
+                        }
+                    }
+                }
+                print("CoreML analysis and shape layers \(Date().timeIntervalSince1970 - startTime.timeIntervalSince1970)")
+            } else {
+                print("iOS < 13 cannot run CoreML model")
+            }
+        } catch {
+            print("Error running CoreML model")
+        }
     }
 }
