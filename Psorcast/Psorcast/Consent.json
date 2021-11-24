@@ -67,7 +67,7 @@
           "identifier": "research_activities",
           "type": "onboardingInstruction",
           "title": "Research Activities",
-          "text": "We will ask you to measure your psoriatic disease symptoms using your phone and answer short surveys once per week. You can continue using the app after this for as long as you’d like.",
+          "text": "Each week, we will ask you to complete activities like measuring your psoriatic disease symptoms using your phone and answering short surveys.",
           "image": {
             "type": "fetchable",
             "imageName": "consent_icon_activities_and_surveys",
