@@ -122,6 +122,13 @@ open class ImageDataManager {
         // Copy new video frames into the documents directory
         // Copy the result file url into a the local cache so it persists upload complete
         if let newImageUrl = FileManager.default.copyFile(at: summaryImageUrl, to: storageDir, filename: imageFileName) {
+            
+            // Re-create current treatment video if we found a new image
+            if let treatmentRange = self.historyData.currentTreatmentRange {
+                // We should re-export the most recent treatment task video if we have a new frame
+                self.recreateCurrentTreatmentVideo(for: taskIdentifier, with: treatmentRange)
+            }
+            
             // Let the app know about the new image so it can update the UI
             self.postImageFrameAddedNotification(url: newImageUrl)
             
@@ -197,6 +204,7 @@ open class ImageDataManager {
         // Check if it is in the process of being created
         if self.videoCreatorTasks.filter({ $0.settings.videoFilename == videoFilename }).count > 0 {
             debugPrint("Video is already being created, do not start it again")
+         
             return
         }
         
