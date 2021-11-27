@@ -137,6 +137,7 @@
 		CB778672238D0E440009ECF9 /* DigitalJarOpenCompletionStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB778671238D0E440009ECF9 /* DigitalJarOpenCompletionStepViewController.swift */; };
 		CB778674238D18F30009ECF9 /* DigitalJarOpenCompletionStepViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB778673238D18F30009ECF9 /* DigitalJarOpenCompletionStepViewController.xib */; };
 		CB7CF2482400CFAA003E02A5 /* WelcomeVideo.mov in Resources */ = {isa = PBXBuildFile; fileRef = CB7CF2472400CFAA003E02A5 /* WelcomeVideo.mov */; };
+		CB7E9438274DC6FF0058780E /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBB0F4322643D0C7007442F3 /* HealthKit.framework */; };
 		CB81C92E242D3AB100A84886 /* MeasureTabViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB81C92D242D3AB100A84886 /* MeasureTabViewControllerTests.swift */; };
 		CB85FB52235F505300FDC59B /* PsorcastTaskResultProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB85FB51235F505300FDC59B /* PsorcastTaskResultProcessor.swift */; };
 		CB85FB56235F5C5500FDC59B /* SelectedIdentifiersResultObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB85FB55235F5C5500FDC59B /* SelectedIdentifiersResultObject.swift */; };
@@ -702,6 +703,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CB7E9438274DC6FF0058780E /* HealthKit.framework in Frameworks */,
 				CBDCDCC523F385AF00E5CEB8 /* BridgeApp.framework in Frameworks */,
 				CBDCDCD423F385DA00E5CEB8 /* Research.framework in Frameworks */,
 				CBDCDCDA23F385EC00E5CEB8 /* ResearchUI.framework in Frameworks */,

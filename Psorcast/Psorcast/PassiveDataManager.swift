@@ -57,8 +57,13 @@ open class PassiveDataManager {
     public var openWeatherApiKey: String? = nil
     public var isFetchingPassiveData = false
     
+    public let clinicalTypes = Set([
+        HKClinicalTypeIdentifier.conditionRecord,
+        HKClinicalTypeIdentifier.medicationRecord])
+
     public let categoryTypes = Set([
-        HKCategoryTypeIdentifier.sleepAnalysis])
+        HKCategoryTypeIdentifier.sleepAnalysis,
+        HKCategoryTypeIdentifier.menstrualFlow])
     
     public let quantityTypes = Set([
         HKQuantityTypeIdentifier.stepCount,
@@ -67,7 +72,9 @@ open class PassiveDataManager {
         /// Beats per minute estimate of a user's lowest heart rate while at rest. Unit is Scalar(Count)/Time).
         HKQuantityTypeIdentifier.restingHeartRate,
         /// The standard deviation of heart beat-to-beat intevals (Standard Deviation of Normal to Normal). Unit is Time (ms).
-        HKQuantityTypeIdentifier.heartRateVariabilitySDNN])
+        HKQuantityTypeIdentifier.heartRateVariabilitySDNN,
+        // A quantity sample type that measures the user’s weight.
+        HKQuantityTypeIdentifier.bodyMass])
     
     init() {
         self.loadApiKeys()
@@ -104,6 +111,14 @@ open class PassiveDataManager {
         ])
     }
     
+    @available(iOS 13.6, *)
+    public func iOS136CategoryTypes() -> Set<HKCategoryTypeIdentifier> {
+        return Set([
+            HKCategoryTypeIdentifier.fatigue,
+            HKCategoryTypeIdentifier.lowerBackPain
+        ])
+    }
+    
     public func allReadTypes() -> Set<HKSampleType> {
         var readTypes = Set<HKSampleType>()
         
@@ -124,6 +139,26 @@ open class PassiveDataManager {
                 readTypes = readTypes.union([typeUnwrapped])
             }
         })
+        
+        // Add default clinical types for all OS versions
+        self.clinicalTypes.map({
+            HKQuantityType.clinicalType(forIdentifier: $0)
+        }).forEach({
+            if let typeUnwrapped = $0 {
+                readTypes = readTypes.union([typeUnwrapped])
+            }
+        })
+        
+        // Add all types if user's device is running iOS 13.6 or later
+        if #available(iOS 13.6, *) {
+            self.iOS136CategoryTypes().map({
+                HKQuantityType.categoryType(forIdentifier: $0)
+            }).forEach({
+                if let typeUnwrapped = $0 {
+                    readTypes = readTypes.union([typeUnwrapped])
+                }
+            })
+        }
         
         // Add all types if user's device is running iOS 14 or later
         if #available(iOS 14.0, *) {
@@ -177,8 +212,28 @@ open class PassiveDataManager {
         let archive = createArchive(identifier: kHealthArchiveIdentifier)
         let queryTypes = Array(self.allReadTypes())
         
+        self.insertSkinType(into: archive)
+        
         // Kick-off the queries
         self.queryDataAndProceedToNext(queryTypes: queryTypes, archive: archive)
+    }
+    
+    private func insertSkinType(into archive: SBBDataArchive) {
+        do {
+            let skinType = try healthKit.fitzpatrickSkinType()
+            if (skinType.skinType != HKFitzpatrickSkinType.notSet) {
+                let archiveFilename = "FitzpatrickSkinType.json"
+                let encoder = JSONEncoder()
+                do {
+                    let data = try encoder.encode(EncodableFitzpatrickSkinType(skinType: skinType.skinType.rawValue))
+                    archive.insertData(intoArchive: data, filename: archiveFilename, createdOn: Date())
+                } catch {
+                    print("Error encoding skin data for FitzpatrickSkinType.json")
+                }
+            }
+        } catch {
+            print("Could not retrieve users skin type \(error.localizedDescription)")
+        }
     }
     
     private func queryDataAndProceedToNext(queryTypes: [HKSampleType],
@@ -237,6 +292,8 @@ open class PassiveDataManager {
                 self.insertQuantitySamples(quantitySamples, into: archive, with: typeId)
             } else if let categorySamples = samples as? [HKCategorySample] {
                 self.insertCategorySamples(categorySamples, into: archive, with: typeId)
+            } else if let clinicalRecords = samples as? [HKClinicalRecord] {
+                self.insertClinicalRecords(clinicalRecords, into: archive, with: typeId)
             }
             
             // Go to the next query type or complete the archive
@@ -259,6 +316,17 @@ open class PassiveDataManager {
     }
     
     private func insertCategorySamples(_ samples: [HKCategorySample], into archive: SBBDataArchive, with typeId: String) {
+        let archiveFilename = "\(typeId).json"
+        let encoder = JSONEncoder()
+        do {
+            let data = try encoder.encode(samples)
+            archive.insertData(intoArchive: data, filename: archiveFilename, createdOn: Date())
+        } catch {
+            print("Error encoding healthkit sample data for \(typeId)")
+        }
+    }
+    
+    private func insertClinicalRecords(_ samples: [HKClinicalRecord], into archive: SBBDataArchive, with typeId: String) {
         let archiveFilename = "\(typeId).json"
         let encoder = JSONEncoder()
         do {
@@ -342,6 +410,7 @@ open class PassiveDataManager {
         return identifier
             .replacingOccurrences(of: "HKCategoryTypeIdentifier", with: "")
             .replacingOccurrences(of: "HKQuantityTypeIdentifier", with: "")
+            .replacingOccurrences(of: "HKClinicalTypeIdentifier", with: "")
     }
     
     public func fetchPassiveDataResult(loc: CLLocation) {
@@ -663,6 +732,11 @@ extension String {
     }
 }
 
+/// Custom encoding for fitzpatrick skin type
+public struct EncodableFitzpatrickSkinType: Encodable {
+    public var skinType: Int
+}
+
 /// Custom encoding for a quantity sample
 extension HKQuantitySample: Encodable {
     enum CodingKeys: String, CodingKey {
@@ -724,6 +798,54 @@ extension HKCategorySample: Encodable {
         try container.encode(startDateStr, forKey: .startDate)
         try container.encode(endDateStr, forKey: .endDate)
         try container.encode(self.value, forKey: .value)
+    }
+}
+
+/// Custom encoding for a clinical record
+extension HKClinicalRecord: Encodable {
+    enum CodingKeys: String, CodingKey {
+        /// The healthkit type for this sample
+        case sampleType
+        /// The sample’s start date.
+        case startDate
+        /// The sample’s end date.
+        case endDate
+        /// The value of the data, it will always be a json string
+        case fhirData
+        /// The type of resource, this will be set by the healthcare institution
+        case fhirResourceType
+        /// The version of the resource, this will be set by the healthcare institution
+        case fhirVersion
+        /// The identifier of the resource, this will be set by the healthcare institution
+        case fhirIdentifier
+    }
+    
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        
+        let sampleTypeStr = PassiveDataManager.formatIdentifier(self.sampleType.identifier)
+        
+        // Convert dates to ISO8601
+        let dateFormatter = rsd_ISO8601TimestampFormatter
+        let startDateStr = dateFormatter.string(from: self.startDate)
+        let endDateStr = dateFormatter.string(from: self.endDate)
+        
+        try container.encode(sampleTypeStr, forKey: .sampleType)
+        try container.encode(startDateStr, forKey: .startDate)
+        try container.encode(endDateStr, forKey: .endDate)
+        
+        if let fhirRecord = self.fhirResource {
+            
+            // Data is always in JSON format, so convert to a JSON string
+            let jsonData = String(data: fhirRecord.data, encoding: .utf8)
+            try container.encode(jsonData, forKey: .fhirData)
+            
+            try container.encode(fhirRecord.resourceType.rawValue, forKey: .fhirResourceType)
+            try container.encode(fhirRecord.identifier, forKey: .fhirVersion)
+            if #available(iOS 14.0, *) {
+                try container.encode(fhirRecord.fhirVersion.fhirRelease.rawValue, forKey: .fhirVersion)
+            }
+        }
     }
 }
 
