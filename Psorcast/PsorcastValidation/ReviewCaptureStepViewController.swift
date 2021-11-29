@@ -158,12 +158,13 @@ open class ReviewCaptureStepViewController: RSDStepViewController {
     
     func runCoreMLModel(image: UIImage) {
         let imageViewBounds = self.navigationHeader?.imageView?.bounds ?? CGRect.zero
+        let imageScaled = image.resizeImageAspectFit(toTargetWidthInPixels: 360.0)
         
         do {
             if #available(iOS 13.0, *) {
                 let startTime = Date()
-                let confidenceThreshold = 0.05
-                let input = try psoObjDetect_2021_05_28Input.init(imageWith: imageScaled, iouThreshold: 0.0, confidenceThreshold: confidenceThreshold)
+                let confidenceThreshold = 0.01
+                let input = try psoObjDetect_2021_05_28Input.init(imageWith: imageScaled.cgImage!, iouThreshold: 0.0, confidenceThreshold: confidenceThreshold)
                 let output = try self.psoriasisCoreML?.prediction(input: input)
                 
                 print("CoreML analysis \(Date().timeIntervalSince1970 - startTime.timeIntervalSince1970)")
