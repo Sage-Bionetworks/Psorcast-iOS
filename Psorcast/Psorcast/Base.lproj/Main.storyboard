@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19455" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="VJ3-hJ-g4d">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19162" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="VJ3-hJ-g4d">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19454"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19144"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="collection view cell content view" minToolsVersion="11.0"/>
@@ -300,7 +300,7 @@ OCT 2020 to Today</string>
                                                                                 </constraints>
                                                                             </view>
                                                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CxB-DG-SQx" customClass="RSDRoundedButton" customModule="ResearchUI">
-                                                                                <rect key="frame" x="32" y="248" width="317" height="52"/>
+                                                                                <rect key="frame" x="32" y="248" width="126" height="52"/>
                                                                                 <state key="normal" title="Add measurement"/>
                                                                                 <connections>
                                                                                     <action selector="addMeasurementTapped" destination="SkY-Tz-cJk" eventType="touchUpInside" id="mSO-19-BIn"/>
@@ -309,7 +309,7 @@ OCT 2020 to Today</string>
                                                                         </subviews>
                                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                         <constraints>
-                                                                            <constraint firstAttribute="trailing" secondItem="CxB-DG-SQx" secondAttribute="trailing" constant="32" id="5KT-Iz-ST3"/>
+                                                                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="CxB-DG-SQx" secondAttribute="trailing" id="5KT-Iz-ST3"/>
                                                                             <constraint firstItem="EKf-xY-2cc" firstAttribute="top" secondItem="WAZ-pn-e47" secondAttribute="top" constant="32" id="6I4-nn-FTb"/>
                                                                             <constraint firstAttribute="trailing" secondItem="EKf-xY-2cc" secondAttribute="trailing" id="I3v-CD-D47"/>
                                                                             <constraint firstAttribute="bottom" secondItem="CxB-DG-SQx" secondAttribute="bottom" constant="32" id="JDv-WE-urn"/>
@@ -360,14 +360,73 @@ OCT 2020 to Today</string>
                                     <constraint firstItem="udd-L0-NzR" firstAttribute="top" secondItem="f6y-22-A7T" secondAttribute="top" id="viM-VP-QxW"/>
                                 </constraints>
                             </view>
+                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="le5-nH-ROM" userLabel="Example Video View">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wkz-iq-5sm">
+                                        <rect key="frame" x="32" y="60" width="350" height="776"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XeX-wX-K1Y">
+                                                <rect key="frame" x="8" y="8" width="48" height="48"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="48" id="1f5-mx-OwU"/>
+                                                    <constraint firstAttribute="height" constant="48" id="pm5-v8-0Kn"/>
+                                                </constraints>
+                                                <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="0.84705882349999995" colorSpace="calibratedRGB"/>
+                                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                <state key="normal" image="CloseIcon"/>
+                                                <connections>
+                                                    <action selector="exampleVideoViewExitTapped" destination="0VO-CW-s3X" eventType="touchUpInside" id="hRY-d6-cVe"/>
+                                                </connections>
+                                            </button>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="When you measure symptoms over time, we turn them into movies for you, like this:" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EI1-NR-6c5">
+                                                <rect key="frame" x="16" y="52" width="318" height="75.5"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="75.5" id="GTS-Ic-JT5"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" type="system" pointSize="21"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <imageView autoresizesSubviews="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="L64-6b-x4a">
+                                                <rect key="frame" x="0.0" y="143.5" width="350" height="632.5"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            </imageView>
+                                        </subviews>
+                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                        <constraints>
+                                            <constraint firstAttribute="bottom" secondItem="L64-6b-x4a" secondAttribute="bottom" id="0b8-hY-tpn"/>
+                                            <constraint firstItem="XeX-wX-K1Y" firstAttribute="leading" secondItem="Wkz-iq-5sm" secondAttribute="leading" constant="8" id="3tg-nH-uHE"/>
+                                            <constraint firstItem="XeX-wX-K1Y" firstAttribute="top" secondItem="Wkz-iq-5sm" secondAttribute="top" constant="8" id="C1o-Wj-IfP"/>
+                                            <constraint firstItem="EI1-NR-6c5" firstAttribute="top" secondItem="XeX-wX-K1Y" secondAttribute="bottom" constant="-4" id="E6n-2l-hft"/>
+                                            <constraint firstAttribute="trailing" secondItem="L64-6b-x4a" secondAttribute="trailing" id="M6X-No-x3B"/>
+                                            <constraint firstItem="L64-6b-x4a" firstAttribute="leading" secondItem="Wkz-iq-5sm" secondAttribute="leading" id="hnT-CI-dVa"/>
+                                            <constraint firstItem="L64-6b-x4a" firstAttribute="top" secondItem="EI1-NR-6c5" secondAttribute="bottom" priority="999" constant="16" id="p6X-Gz-d89"/>
+                                            <constraint firstItem="EI1-NR-6c5" firstAttribute="leading" secondItem="Wkz-iq-5sm" secondAttribute="leading" constant="16" id="sfb-by-nnJ"/>
+                                            <constraint firstAttribute="trailing" secondItem="EI1-NR-6c5" secondAttribute="trailing" constant="16" id="wOy-z7-zM0"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.36696211113987198" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="Wkz-iq-5sm" secondAttribute="trailing" constant="32" id="MGc-H1-vXc"/>
+                                    <constraint firstItem="Wkz-iq-5sm" firstAttribute="leading" secondItem="le5-nH-ROM" secondAttribute="leading" constant="32" id="iCQ-TU-lbY"/>
+                                    <constraint firstItem="Wkz-iq-5sm" firstAttribute="top" secondItem="le5-nH-ROM" secondAttribute="top" constant="60" id="lyF-bq-t8p"/>
+                                    <constraint firstAttribute="bottom" secondItem="Wkz-iq-5sm" secondAttribute="bottom" constant="60" id="xez-gy-eba"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Nbs-X2-0YG"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="KZW-mD-2Iu" firstAttribute="trailing" secondItem="Nbs-X2-0YG" secondAttribute="trailing" id="P8l-gC-uhP"/>
                             <constraint firstItem="KZW-mD-2Iu" firstAttribute="leading" secondItem="Nbs-X2-0YG" secondAttribute="leading" id="U0l-NX-SJ7"/>
+                            <constraint firstItem="le5-nH-ROM" firstAttribute="top" secondItem="BBF-Z0-2IJ" secondAttribute="top" id="VAp-r1-QHv"/>
                             <constraint firstItem="f6y-22-A7T" firstAttribute="leading" secondItem="Nbs-X2-0YG" secondAttribute="leading" id="XS4-H0-1xT"/>
+                            <constraint firstItem="le5-nH-ROM" firstAttribute="leading" secondItem="Nbs-X2-0YG" secondAttribute="leading" id="aP3-8J-M5C"/>
+                            <constraint firstAttribute="bottom" secondItem="le5-nH-ROM" secondAttribute="bottom" id="bY0-zz-vlY"/>
                             <constraint firstItem="f6y-22-A7T" firstAttribute="bottom" secondItem="Nbs-X2-0YG" secondAttribute="bottom" id="pIK-mQ-8oP"/>
+                            <constraint firstItem="le5-nH-ROM" firstAttribute="trailing" secondItem="Nbs-X2-0YG" secondAttribute="trailing" id="rV7-t8-84t"/>
                             <constraint firstItem="KZW-mD-2Iu" firstAttribute="top" secondItem="BBF-Z0-2IJ" secondAttribute="top" id="too-Eh-vOv"/>
                             <constraint firstItem="f6y-22-A7T" firstAttribute="top" secondItem="KZW-mD-2Iu" secondAttribute="bottom" id="y8m-aB-SFZ"/>
                             <constraint firstItem="f6y-22-A7T" firstAttribute="trailing" secondItem="Nbs-X2-0YG" secondAttribute="trailing" id="ytj-nX-JZF"/>
@@ -376,6 +435,10 @@ OCT 2020 to Today</string>
                     <tabBarItem key="tabBarItem" title="Review" image="ReviewTabIcon" id="o4N-IT-I9V"/>
                     <connections>
                         <outlet property="contentBelowHeaderView" destination="f6y-22-A7T" id="JL1-Io-Igd"/>
+                        <outlet property="exampleGifView" destination="L64-6b-x4a" id="Hp7-yf-HJQ"/>
+                        <outlet property="exampleTitleView" destination="EI1-NR-6c5" id="tgX-nw-VrF"/>
+                        <outlet property="exampleVideoView" destination="le5-nH-ROM" id="7YK-En-QgA"/>
+                        <outlet property="exampleVideoViewContent" destination="Wkz-iq-5sm" id="Qi4-PY-fIe"/>
                         <outlet property="tableView" destination="udd-L0-NzR" id="eK9-e7-mdu"/>
                         <outlet property="treatmentButton" destination="kOb-pN-qJH" id="w1N-cA-25m"/>
                         <outlet property="treatmentHeaderView" destination="KZW-mD-2Iu" id="Sy5-hJ-U4o"/>
@@ -1355,6 +1418,7 @@ OCT 2020 to Today</string>
         <image name="AppHeader" width="241" height="41"/>
         <image name="BackDark" width="30" height="31"/>
         <image name="Checkmark" width="24" height="24"/>
+        <image name="CloseIcon" width="30" height="30"/>
         <image name="DemoResearchTabBody" width="670" height="844"/>
         <image name="DemoResearchTabHeader" width="1392" height="241"/>
         <image name="ExportButton" width="24" height="24"/>
