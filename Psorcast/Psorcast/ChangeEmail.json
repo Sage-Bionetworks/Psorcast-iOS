@@ -6,7 +6,7 @@
         "identifier": "provide_email",
         "type": "requestEmailForm",
         "title": "Get compensated for participating!",
-        "text": "On the first day of each month of the study, we'll send you a digital Amazon gift card for $13.99 for completing 75% of the study tasks from the previous month. Please enter your email below where we should send your compensation.",
+        "text": "In the app, you can enroll in optional sub-studies where you may be paid for participating. Please enter your email below where we would send your compensation via digital gift cards.",
         "inputFields": [{
             "type": "string",
             "textFieldOptions": {

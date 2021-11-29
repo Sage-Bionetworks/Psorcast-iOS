@@ -49,6 +49,7 @@ class ProfileTabViewController: UIViewController, UITableViewDelegate, UITableVi
     
     public static let feedbackTaskId = "Feedback"
     public static let withdrawalTaskId = "Withdrawal"
+    public static let changeEmailTaskId = "ChangeEmail"
     
     public static let deepDiveProfileKey = "DeepDive"
     public static let feedbackProfileKey = "feedback"
@@ -58,6 +59,7 @@ class ProfileTabViewController: UIViewController, UITableViewDelegate, UITableVi
     public static let activityMeasuresKey = "activityMeasures"
     public static let licensesKey = "licenses"
     
+    var storedCompensationEmail = ""
     override open func viewDidLoad() {
         super.viewDidLoad()                
         self.setupTableView()
@@ -66,6 +68,7 @@ class ProfileTabViewController: UIViewController, UITableViewDelegate, UITableVi
     override open func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
                 
+        self.fetchCompensationEmailValue()
         self.tableView.reloadData()
     }
     
@@ -121,6 +124,19 @@ class ProfileTabViewController: UIViewController, UITableViewDelegate, UITableVi
     func withdrawProfileItemValue() -> String {
         return Localization.localizedString("CURRENTLY_ENROLLED")
         // Todo: add logic to determine if enrolled, adjust return values here appropriately
+    }
+    
+    func fetchCompensationEmailValue() {
+        BridgeSDK.participantManager.getParticipantRecord(completion: { record, error in
+            DispatchQueue.main.async {
+                guard let participant = record as? SBBStudyParticipant, error == nil else { return }
+                if let compensationEmail = participant.attributes?.dictionaryRepresentation()[RequestEmailViewController.COMPENSATE_ATTRIBUTE] as? String {
+                    // We now have the email address, so save it and have the table view reload
+                    self.storedCompensationEmail = compensationEmail
+                    self.tableView.reloadData()
+                }
+            }
+        })
     }
     
     // MARK: - Table view data source
@@ -195,9 +211,13 @@ class ProfileTabViewController: UIViewController, UITableViewDelegate, UITableVi
                 cell.detailLabel?.text = self.insightProfileItemValue()
             case RSDIdentifier.withdrawTask.rawValue:
                 cell.detailLabel?.text = self.withdrawProfileItemValue()
+            case RSDIdentifier.emailCompensationTask.rawValue:
+                cell.detailLabel?.text = self.storedCompensationEmail
             default:
                 cell.detailLabel?.text = detailText
             }
+        } else {
+            cell.detailLabel?.text = detailText
         }
         
         cell.setDesignSystem(self.design, with: RSDColorTile(RSDColor.white, usesLightStyle: false))
@@ -313,6 +333,11 @@ class ProfileTabViewController: UIViewController, UITableViewDelegate, UITableVi
                 let (_, navVC) = RSDWebViewController.instantiateController(using: AppDelegate.designSystem, action: webAction)
                 navVC.modalPresentationStyle = .pageSheet
                 self.present(navVC, animated: true, completion: nil)
+            } else if profileItem.profileItemKey == RSDIdentifier.emailCompensationTask.rawValue {
+                // Clear the local value of the email so when they come back, it
+                // won't temporarily show the old value until we've updated what it should show
+                self.storedCompensationEmail = ""
+                self.showJsonTaskViewControler(jsonName: ProfileTabViewController.changeEmailTaskId)
             } else if let vc = MasterScheduleManager.shared.instantiateSingleQuestionTreatmentTaskController(for: profileItem.profileItemKey) {
                 vc.delegate = self
                 self.show(vc, sender: self)

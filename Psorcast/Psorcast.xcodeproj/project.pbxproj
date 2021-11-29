@@ -13,6 +13,7 @@
 		043781B1270EB34F001F374F /* ConsentForm_files in Resources */ = {isa = PBXBuildFile; fileRef = 043781B0270EB34F001F374F /* ConsentForm_files */; };
 		043781B7270EC448001F374F /* ConsentFormOnboarding.html in Resources */ = {isa = PBXBuildFile; fileRef = 043781B4270EC374001F374F /* ConsentFormOnboarding.html */; };
 		043781C2270ECCB7001F374F /* Licenses.html in Resources */ = {isa = PBXBuildFile; fileRef = 043781BD270ECCB7001F374F /* Licenses.html */; };
+		0456535F2731F22A00BEA3CA /* PsorcastParticipantCustomAttributes.m in Sources */ = {isa = PBXBuildFile; fileRef = 0456535E2731F22A00BEA3CA /* PsorcastParticipantCustomAttributes.m */; };
 		047C2CCF25F16628006AA52B /* PopTip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047C2CCC25F16628006AA52B /* PopTip.swift */; };
 		047C2CD025F16628006AA52B /* PopTip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047C2CCC25F16628006AA52B /* PopTip.swift */; };
 		047C2CD125F16628006AA52B /* PopTip+Draw.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047C2CCD25F16628006AA52B /* PopTip+Draw.swift */; };
@@ -138,6 +139,7 @@
 		CB778672238D0E440009ECF9 /* DigitalJarOpenCompletionStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB778671238D0E440009ECF9 /* DigitalJarOpenCompletionStepViewController.swift */; };
 		CB778674238D18F30009ECF9 /* DigitalJarOpenCompletionStepViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB778673238D18F30009ECF9 /* DigitalJarOpenCompletionStepViewController.xib */; };
 		CB7CF2482400CFAA003E02A5 /* WelcomeVideo.mov in Resources */ = {isa = PBXBuildFile; fileRef = CB7CF2472400CFAA003E02A5 /* WelcomeVideo.mov */; };
+		CB7E9438274DC6FF0058780E /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBB0F4322643D0C7007442F3 /* HealthKit.framework */; };
 		CB81C92E242D3AB100A84886 /* MeasureTabViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB81C92D242D3AB100A84886 /* MeasureTabViewControllerTests.swift */; };
 		CB85FB52235F505300FDC59B /* PsorcastTaskResultProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB85FB51235F505300FDC59B /* PsorcastTaskResultProcessor.swift */; };
 		CB85FB56235F5C5500FDC59B /* SelectedIdentifiersResultObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB85FB55235F5C5500FDC59B /* SelectedIdentifiersResultObject.swift */; };
@@ -432,6 +434,7 @@
 		043781B0270EB34F001F374F /* ConsentForm_files */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ConsentForm_files; sourceTree = "<group>"; };
 		043781B4270EC374001F374F /* ConsentFormOnboarding.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = ConsentFormOnboarding.html; sourceTree = "<group>"; };
 		043781BD270ECCB7001F374F /* Licenses.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = Licenses.html; sourceTree = "<group>"; };
+		0456535E2731F22A00BEA3CA /* PsorcastParticipantCustomAttributes.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PsorcastParticipantCustomAttributes.m; sourceTree = "<group>"; };
 		047C2CCC25F16628006AA52B /* PopTip.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopTip.swift; sourceTree = "<group>"; };
 		047C2CCD25F16628006AA52B /* PopTip+Draw.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PopTip+Draw.swift"; sourceTree = "<group>"; };
 		047C2CCE25F16628006AA52B /* PopTip+Transitions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PopTip+Transitions.swift"; sourceTree = "<group>"; };
@@ -703,6 +706,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CB7E9438274DC6FF0058780E /* HealthKit.framework in Frameworks */,
 				CBDCDCC523F385AF00E5CEB8 /* BridgeApp.framework in Frameworks */,
 				CBDCDCD423F385DA00E5CEB8 /* Research.framework in Frameworks */,
 				CBDCDCDA23F385EC00E5CEB8 /* ResearchUI.framework in Frameworks */,
@@ -1073,6 +1077,7 @@
 			children = (
 				CBDCDCC123F3855300E5CEB8 /* BuildDateUtil.m */,
 				CBDCDCC323F3857600E5CEB8 /* Psorcast-Bridging-Header.h */,
+				0456535E2731F22A00BEA3CA /* PsorcastParticipantCustomAttributes.m */,
 			);
 			name = ObjC;
 			sourceTree = "<group>";
@@ -1725,6 +1730,7 @@
 				CBDCDCA723F3849E00E5CEB8 /* PsoriasisAreaPhotoImageView.swift in Sources */,
 				CBDCDCAC23F3849E00E5CEB8 /* PsoriasisDrawStepObject.swift in Sources */,
 				CBB0F43A2643D1B0007442F3 /* PassiveDataManager.swift in Sources */,
+				0456535F2731F22A00BEA3CA /* PsorcastParticipantCustomAttributes.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2070,7 +2076,7 @@
 				CODE_SIGN_ENTITLEMENTS = Psorcast/Psorcast.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 11;
+				CURRENT_PROJECT_VERSION = 15;
 				DEVELOPMENT_TEAM = KA9Z8R6M6K;
 				INFOPLIST_FILE = Psorcast/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -2094,7 +2100,7 @@
 				CODE_SIGN_ENTITLEMENTS = Psorcast/Psorcast.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 11;
+				CURRENT_PROJECT_VERSION = 15;
 				DEVELOPMENT_TEAM = KA9Z8R6M6K;
 				INFOPLIST_FILE = Psorcast/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (

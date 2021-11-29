@@ -315,12 +315,6 @@ open class HistoryDataManager {
             let report = self.createHistoryReport(from: taskResult)
             self.addHistoryItemToCoredData(reports: [report])
             self.saveReport(report)
-            
-            // After the new report is saved, we should re-create its treatment video
-            if let treatmentRange = self.currentTreatmentRange {
-                // We should re-export the most recent treatment task video if we have a new frame
-                ImageDataManager.shared.recreateCurrentTreatmentVideo(for: taskResult.identifier, with: treatmentRange)
-            }
         }
         
         // Update the local storage of the singleton data

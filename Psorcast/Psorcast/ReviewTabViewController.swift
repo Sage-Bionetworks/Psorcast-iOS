@@ -55,6 +55,7 @@ open class ReviewTabViewController: UIViewController, UITableViewDataSource, UIT
     var tableViewCellHeight: CGFloat {
         return self.tableView.bounds.height - CGFloat(2 * ReviewSectionHeader.headerHeight)
     }
+    static let tableViewCellCornerRadius : CGFloat = 6.0
     
     // The image manager for the review tab
     var imageManager = ImageDataManager.shared
@@ -340,6 +341,7 @@ open class ReviewTabViewController: UIViewController, UITableViewDataSource, UIT
         
         cell.collectionCellWidth = self.tableViewCellWidth
         cell.collectionCellHeight = self.tableViewCellHeight
+        cell.layer.cornerRadius = ReviewTabViewController.tableViewCellCornerRadius
                 
         cell.isCurrentTreatmentSelected = false
         if let current = self.currentTreatmentRange {
@@ -382,7 +384,7 @@ open class ReviewTabViewController: UIViewController, UITableViewDataSource, UIT
             cell.collectionView.setContentOffset(CGPoint(x: scrollPos, y: cell.collectionView.contentOffset.y), animated: false)
             self.taskRowState[taskId]?.scrollPosition = scrollPos
         })
-                        
+                 
         return cell
     }
     
@@ -682,6 +684,7 @@ public class ReviewTableViewCell: RSDDesignableTableViewCell, UICollectionViewDe
             if let design = designSystem, let colorTile = backgroundColorTile {
                 cell.setDesignSystem(design, with: colorTile)
             }
+            cell.layer.cornerRadius = ReviewTabViewController.tableViewCellCornerRadius
             
             cell.delegate = self
             cell.taskIdentifier = self.taskIdentifier
@@ -700,6 +703,7 @@ public class ReviewTableViewCell: RSDDesignableTableViewCell, UICollectionViewDe
         if let design = designSystem, let colorTile = backgroundColorTile {
             cell.setDesignSystem(design, with: colorTile)
         }
+        cell.layer.cornerRadius = ReviewTabViewController.tableViewCellCornerRadius
         
         let isLastCell = self.historyItems.count == indexPath.row
         let imageFrameIdx = isLastCell ? (indexPath.row - 1) : indexPath.row
@@ -745,7 +749,9 @@ public class ReviewTableViewCell: RSDDesignableTableViewCell, UICollectionViewDe
         cell.loadProgress.isHidden = !isVideoCell
         cell.exportButton.isEnabled = true
         
-        guard let taskIdUnwrapped = self.taskIdentifier else { return cell }
+        guard let taskIdUnwrapped = self.taskIdentifier else {
+            return cell
+        }
         
         cell.checkMarkImage.isHidden = true
         if isVideoCell {
@@ -769,7 +775,7 @@ public class ReviewTableViewCell: RSDDesignableTableViewCell, UICollectionViewDe
                 cell.exportButton.isEnabled = videoIsLoaded
             }
         }
-                               
+                    
         return cell
     }
     
