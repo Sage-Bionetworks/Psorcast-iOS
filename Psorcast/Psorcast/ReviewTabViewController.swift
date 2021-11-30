@@ -48,6 +48,11 @@ open class ReviewTabViewController: UIViewController, UITableViewDataSource, UIT
     @IBOutlet weak var treatmentButton: UIButton!
     @IBOutlet weak var treatmentIndicator: UIButton!
     
+    @IBOutlet weak var exampleVideoViewContent: UIView!
+    @IBOutlet weak var exampleVideoView: UIView!
+    @IBOutlet weak var exampleGifView: UIImageView!
+    @IBOutlet weak var exampleTitleView: UILabel!
+    
     // 80% of screen width you can see about 10% of the next image cell
     var tableViewCellWidth: CGFloat {
         self.tableView.bounds.width * CGFloat(0.85)
@@ -182,6 +187,10 @@ open class ReviewTabViewController: UIViewController, UITableViewDataSource, UIT
         
         self.treatmentButton.setTitleColor(designSystem.colorRules.textColor(on: secondary, for: .small), for: .normal)
         self.treatmentButton.titleLabel?.font = designSystem.fontRules.font(for: .mediumHeader)
+        
+        self.exampleTitleView.font = designSystem.fontRules.font(for: .mediumHeader)
+        self.exampleTitleView.textColor = designSystem.colorRules.textColor(on: RSDColorTile(RSDColor.white, usesLightStyle: false), for: .mediumHeader)
+        self.exampleTitleView.text = Localization.localizedString("REVIEW_EXAMPLE_VIDEO_TITLE")
     }
     
     override open func viewWillAppear(_ animated: Bool) {
@@ -209,17 +218,37 @@ open class ReviewTabViewController: UIViewController, UITableViewDataSource, UIT
             
         self.currentTreatmentRange = currentRange
         
+        var didShowPopTip = false
         if shouldRefreshUi {
-            self.refreshTreatmentContent()
+            didShowPopTip = self.refreshTreatmentContent()
         }
         
+        // PSR-519: Show example video until a user has at least one of their own
+        var atLeastOneMovie = false
+        for taskId in self.allTaskRows {
+            atLeastOneMovie = atLeastOneMovie || (self.taskRowItemMap[taskId]?.count ?? 0) > 1
+        }
+        if (!atLeastOneMovie && !didShowPopTip) {
+            self.exampleGifView.animationDuration = 6
+            self.exampleGifView.withGif(resourceName: "ReviewExample")
+            self.exampleVideoView.isHidden = false
+            self.exampleVideoViewContent.layer.cornerRadius = 8
+            self.exampleVideoViewContent.clipsToBounds = true
+        } else {
+            self.exampleVideoView.isHidden = true
+        }
+        
+        
         // Save analytics
-        MasterScheduleManager.shared.userLookedAtReviewTab()    
+        MasterScheduleManager.shared.userLookedAtReviewTab()
     }
     
-    func refreshTreatmentContent() {
+    /**
+     -Returns true if the pop-tip is shown, false otherwise
+     */
+    func refreshTreatmentContent() -> Bool {
         
-        guard let selectedRange = self.selectedTreatmentRange else { return }
+        guard let selectedRange = self.selectedTreatmentRange else { return false }
         let treatmentsStr = selectedRange.treatments.joined(separator: ", ")
         let treatmentDateRangeStr = selectedRange.createDateRangeString()
         
@@ -262,10 +291,12 @@ open class ReviewTabViewController: UIViewController, UITableViewDataSource, UIT
             }
         }
         
+        var didShowPopTip = false
         // If the first group in the list has an image stored, potentially show the pop-tip
         if let firstTaskRow = self.allTaskRows.first {
             if (taskRowItemMap[firstTaskRow]?.count ?? 0) > 0 {
                 if (PopTipProgress.reviewTabImage.isNotConsumed()) {
+                    didShowPopTip = true
                     // Give tableview/collectionview time to lay itself out
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
                         PopTipProgress.reviewTabImage.consume(on: self)
@@ -276,6 +307,8 @@ open class ReviewTabViewController: UIViewController, UITableViewDataSource, UIT
 
         // Reload table view with the newest data
         self.tableView.reloadData()
+        
+        return didShowPopTip
     }
     
     @IBAction func filterTapped() {
@@ -637,6 +670,10 @@ open class ReviewTabViewController: UIViewController, UITableViewDataSource, UIT
         
         self.scheduleManager.taskController(taskController, didFinishWith: reason, error: error)
         self.dismiss(animated: true, completion: nil)
+    }
+    
+    @IBAction func exampleVideoViewExitTapped() {
+        self.exampleVideoView.isHidden = true
     }
 }
 
