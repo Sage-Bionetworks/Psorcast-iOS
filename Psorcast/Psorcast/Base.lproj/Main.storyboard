@@ -300,7 +300,7 @@ OCT 2020 to Today</string>
                                                                                 </constraints>
                                                                             </view>
                                                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CxB-DG-SQx" customClass="RSDRoundedButton" customModule="ResearchUI">
-                                                                                <rect key="frame" x="32" y="248" width="126" height="52"/>
+                                                                                <rect key="frame" x="32" y="248" width="317" height="52"/>
                                                                                 <state key="normal" title="Add measurement"/>
                                                                                 <connections>
                                                                                     <action selector="addMeasurementTapped" destination="SkY-Tz-cJk" eventType="touchUpInside" id="mSO-19-BIn"/>
@@ -309,7 +309,7 @@ OCT 2020 to Today</string>
                                                                         </subviews>
                                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                         <constraints>
-                                                                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="CxB-DG-SQx" secondAttribute="trailing" id="5KT-Iz-ST3"/>
+                                                                            <constraint firstAttribute="trailing" secondItem="CxB-DG-SQx" secondAttribute="trailing" constant="32" id="5KT-Iz-ST3"/>
                                                                             <constraint firstItem="EKf-xY-2cc" firstAttribute="top" secondItem="WAZ-pn-e47" secondAttribute="top" constant="32" id="6I4-nn-FTb"/>
                                                                             <constraint firstAttribute="trailing" secondItem="EKf-xY-2cc" secondAttribute="trailing" id="I3v-CD-D47"/>
                                                                             <constraint firstAttribute="bottom" secondItem="CxB-DG-SQx" secondAttribute="bottom" constant="32" id="JDv-WE-urn"/>
