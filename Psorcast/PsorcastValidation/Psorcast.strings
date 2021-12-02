@@ -186,3 +186,25 @@
 "POPTIP_UNDO" = "You can undo your drawing at any point with this button";
 "POPTIP_JAR_OPEN" = "This measurement can be tricky, tap the link to see a video of someone doing it";
 "POPTIP_FIRST_MOVIE" = "You’ve unlocked your first Psorcast movie! Tap here in the review tab to find it.";
+
+// Research tab
+"AVAILABLE" = "Available";
+"UPCOMING" = "Upcoming";
+"ENROLLED" = "Enrolled";
+"Open" = "Open";
+"Ready" = "Ready!";
+"Enroll" = "Enroll";
+
+"PSORCAST_OPEN_STUDY" = "Psorcast Open Study";
+"PSORCAST_SEASONAL_STUDY" = "Psorcast Seasonal Study";
+
+"RESEARCH_WEEK_%@" = "Week %@";
+"RESEARCH_DEFAULT_SUBTITLE_%@_%@" = "Duration: %@  |  Progress: %@";
+"RESEARCH_UPCOMING_SUBTITLE_%@" = "Eligible after completing %@ weeks";
+
+"RESEARCH_SEASONAL_PAYMENT" = "$13.99 paid monthly";
+
+"PSORCAST_STUDY_LEARN_MORE_TITLE" = "Your activities and compensation";
+"PSORCAST_SEASONAL_STUDY_DESC" = "We are researching patterns of symptom change over the course of a year, and will compensating you $13.99 per month while you are participating during this time.";
+"PSORCAST_SEASONAL_STUDY_LEARN_MORE_DESC" = "On the first day of each month of the study, we'll send you a digital Amazon gift card for $13.99 for completing 75% of the study tasks from the previous month. Everything else in the app will stay the same.";
+"GET_COMPENSATED" = "Please enter your email below where we would send your compensation via digital gift cards.  Without completing this step, we can't pay you.  You can change your email at any time through your profile.";

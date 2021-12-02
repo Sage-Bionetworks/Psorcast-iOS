@@ -91,6 +91,7 @@ class RequestEmailViewController: RSDTableStepViewController {
             emailCell.textField.text = ""
             emailCell.textField.placeholder = Localization.localizedString("VERIFY_EMAIL")
         } else if emailText == firstEmail {
+            self.setLoadingState(show: true)
             // Validated email, save it and proceed as normal
             var newAttributes = [String: String]()
             newAttributes[RequestEmailViewController.COMPENSATE_ATTRIBUTE] = emailText
@@ -98,6 +99,7 @@ class RequestEmailViewController: RSDTableStepViewController {
             participant[PARTICIPANT_ATTRIBUTES] = newAttributes
             BridgeSDK.participantManager.updateParticipantRecord(withRecord: participant) { response, error in
                 DispatchQueue.main.async {
+                    self.setLoadingState(show: false)
                     if let errorStr = error?.localizedDescription {
                         print(errorStr)
                         let title = Localization.localizedString("ERROR_ADDING_EMAIL")
