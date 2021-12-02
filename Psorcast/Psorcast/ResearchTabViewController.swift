@@ -86,7 +86,8 @@ open class ResearchTabViewController: UIViewController, UITableViewDelegate, UIT
         var upcomingList = [ResearchTableItem]()
         let upcomingSection = ResearchSectionIdentifier.upcoming
         for item in linkerStudies {
-            if studyWeek <= item.availableAfterWeeks {
+            if studyWeek <= item.availableAfterWeeks &&
+                !enrolledLinkerStudies.contains(item.dataGroup) {
                 upcomingList.append(ResearchTableItem(
                     section: upcomingSection, item: item))
             }
