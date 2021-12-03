@@ -39,6 +39,8 @@ extension RSDStepType {
     public static let treatmentSelection: RSDStepType = "treatmentSelection"
     public static let pastTreatmentsCompletion: RSDStepType = "pastTreatmentsCompletion"
     public static let insights: RSDStepType = "insights"
+    public static let linkerStudy: RSDStepType = "linkerStudy"
+    public static let linkerStudyLearnMore: RSDStepType = "linkerStudyLearnMore"
     public static let reminder: RSDStepType = "reminder"
     public static let consentReview: RSDStepType = "consentReview"
     public static let webImageInstruction: RSDStepType = "webImageInstruction"

@@ -71,7 +71,6 @@ open class LinkerStudiesUserDefaultsSingletonReport: UserDefaultsSingletonReport
     open func initializedStudyDates(startDate: Date) {
         var items = [LinkerStudy]()
         items.append(LinkerStudy(identifier: HistoryDataManager.LINKER_STUDY_DEFAULT, startDate: startDate))
-        items.append(LinkerStudy(identifier: HistoryDataManager.LINKER_STUDY_BETA_2021, startDate: startDate))
         // Signal that the new state needs synced with Bridge
         self.append(items: items)
     }
