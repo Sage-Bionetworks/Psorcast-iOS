@@ -132,6 +132,11 @@ open class ImageDataManager {
             // Let the app know about the new image so it can update the UI
             self.postImageFrameAddedNotification(url: newImageUrl)
             
+            // Delay a second to give other events and network calls time to run first
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: {
+                ParticipantFileUploadManager.shared.upload(fileId: imageFileName, fileUrl: newImageUrl, contentType: PSRImageHelper.contentTypeJpeg)
+            })
+            
             return imageFileName
         } else { // Not successful
             debugPrint("Error copying file from \(summaryImageUrl.absoluteURL)" +
