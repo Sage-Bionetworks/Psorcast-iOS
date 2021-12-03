@@ -444,7 +444,7 @@ open class HistoryDataManager {
 
     func deleteAllHistoryEntities() {
         guard let context = self.currentContext else { return }
-        context.perform {
+        context.performAndWait {
             let fetchRequest: NSFetchRequest<HistoryItem> = HistoryItem.fetchRequest()
             fetchRequest.returnsObjectsAsFaults = false
             do {
@@ -453,6 +453,7 @@ open class HistoryDataManager {
                     context.delete(object)
                 }
                 try context.save()
+                print("Successfully deleted all past history items")
             } catch let error {
                 print("Detele all history items encountered error :", error)
             }
