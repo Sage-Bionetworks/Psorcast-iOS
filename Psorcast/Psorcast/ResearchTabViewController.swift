@@ -250,7 +250,7 @@ open class ResearchTableViewCell: RSDTableViewCell {
         }
         
         if studyItem.monthlyEarnings == LinkerStudyTableItem.noPayment {
-            self.paymentLabel.text = nil
+            self.paymentLabel.text = " "
         } else {
             self.paymentLabel.text = studyItem.monthlyEarnings
         }
