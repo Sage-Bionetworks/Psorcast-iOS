@@ -39,6 +39,36 @@ import BridgeApp
 
 open class ExternalIDRegistrationStep : RSDUIStepObject, RSDStepViewControllerVendor, RSDNavigationSkipRule {
     
+    private enum CodingKeys: String, CodingKey, CaseIterable {
+        case signInOnly
+    }
+    
+    var signInOnly: Bool = false
+    
+    open override class func defaultType() -> RSDStepType {
+        return .externalId
+    }
+    
+    public required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.signInOnly = try container.decodeIfPresent(Bool.self, forKey: .signInOnly) ?? false
+        try super.init(from: decoder)
+    }
+    
+    required public init(identifier: String, type: RSDStepType? = nil) {
+        super.init(identifier: identifier, type: type)
+    }
+    
+    /// Override to set the properties of the subclass.
+    override open func copyInto(_ copy: RSDUIStepObject) {
+        super.copyInto(copy)
+        guard let subclassCopy = copy as? ExternalIDRegistrationStep else {
+            assertionFailure("Superclass implementation of the `copy(with:)` protocol should return an instance of this class.")
+            return
+        }
+        subclassCopy.signInOnly = self.signInOnly
+    }
+    
     open func shouldSkipStep(with result: RSDTaskResult?, isPeeking: Bool) -> Bool {
         return BridgeSDK.authManager.isAuthenticated()
     }    
@@ -71,6 +101,14 @@ open class ExternalIDRegistrationViewController: RSDStepViewController, UITextFi
     /// This is helpful for dev, when set, it will auto-login with w/e external id you set here
     let autoLoginExternalId: String? = nil
     
+    open var externalIdStep: ExternalIDRegistrationStep? {
+        return self.step as? ExternalIDRegistrationStep
+    }
+    
+    open var isSignInOnly: Bool {
+        return self.externalIdStep?.signInOnly ?? false
+    }
+    
     override open func viewDidLoad() {
         super.viewDidLoad()
         
@@ -92,6 +130,10 @@ open class ExternalIDRegistrationViewController: RSDStepViewController, UITextFi
         self.textField.textColor = self.designSystem.colorRules.textColor(on: background, for: .largeBody)
         self.textField.delegate = self
         
+        if self.isSignInOnly {
+            self.textField.placeholder = "Enter External ID"
+        }
+        
         // Useful for dev, but should never run in prod
         if let autoLogin = autoLoginExternalId {
             self.textField.text = autoLogin
@@ -105,6 +147,9 @@ open class ExternalIDRegistrationViewController: RSDStepViewController, UITextFi
         self.submitButton.isEnabled = false
         
         self.titleLabel.text = Localization.localizedString("WELCOME_STUDY")
+        if self.uiStep?.title != nil {
+            self.titleLabel.text = self.uiStep?.title
+        }
         self.titleLabel.font = self.designSystem.fontRules.font(for: .xLargeHeader)
         self.titleLabel.textColor = self.designSystem.colorRules.textColor(on: background, for: .xLargeHeader)
     }
@@ -143,7 +188,7 @@ open class ExternalIDRegistrationViewController: RSDStepViewController, UITextFi
         return self.textField.endEditing(false)
     }
     
-    func signUpAndSignIn(completion: @escaping SBBNetworkManagerCompletionBlock) {
+    func authenticatExternalId(completion: @escaping SBBNetworkManagerCompletionBlock) {
         guard let externalId = self.externalId(), !externalId.isEmpty else { return }
         
         let signUp: SBBSignUp = SBBSignUp()
@@ -152,6 +197,14 @@ open class ExternalIDRegistrationViewController: RSDStepViewController, UITextFi
         signUp.password = "\(externalId)foo#$H0"   // Add some additional characters match password requirements
         signUp.dataGroups = ["test_user"]
         signUp.sharingScope = "all_qualified_researchers"
+        
+        if self.isSignInOnly {
+            // Only need to sign in
+            BridgeSDK.authManager.signIn(withExternalId: signUp.externalId!, password: signUp.password!, completion: { (task, result, error) in
+                completion(task, result, error)
+            })
+            return
+        }
         
         BridgeSDK.authManager.signUpStudyParticipant(signUp, completion: { (task, result, error) in
             
@@ -172,13 +225,13 @@ open class ExternalIDRegistrationViewController: RSDStepViewController, UITextFi
             self.submitButton.isEnabled = false
             self.loadingSpinner.isHidden = false
         }
-       self.signUpAndSignIn { (task, result, error) in
+       self.authenticatExternalId { (task, result, error) in
             DispatchQueue.main.async {
                 self.loadingSpinner.isHidden = true
                 self.submitButton.isEnabled = true
-                if error == nil {
+                if error == nil || (error! as NSError).code == SBBErrorCode.serverPreconditionNotMet.rawValue  {
                    self.goForward()
-                } else {
+                } else {                    
                     self.presentAlertWithOk(title: "Error attempting sign in", message: error!.localizedDescription, actionHandler: nil)
                     // TODO: emm 2018-04-25 handle error from Bridge
                     // 400 is the response for an invalid external ID

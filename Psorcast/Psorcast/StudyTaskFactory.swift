@@ -50,6 +50,7 @@ extension RSDStepType {
     public static let consentQuiz: RSDStepType = "consentQuiz"
     public static let onboardingForm: RSDStepType = "onboardingForm"
     public static let requestEmailForm: RSDStepType = "requestEmailForm"
+    public static let externalId: RSDStepType = "externalId"
 }
 
 extension RSDStepNavigatorType {
@@ -96,6 +97,8 @@ open class StudyTaskFactory: TaskFactory {
             return try OnboardingFormStepObject(from: decoder)
         case .requestEmailForm:
             return try RequestEmailStepObject(from: decoder)
+        case .externalId:
+            return try ExternalIDRegistrationStep(from: decoder)
         default:
             return try super.decodeStep(from: decoder, with: type)
         }
