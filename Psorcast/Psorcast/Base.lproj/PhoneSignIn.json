@@ -39,6 +39,14 @@
                 "nextStepIdentifier": "waiting"
              },
              {
+                "identifier":"enterExternalId",
+                "type":"externalId",
+                "title":"Let's get started",
+                "text":"Please enter your External ID that you have been assigned for testing.",
+                "signInOnly": true,
+                "nextStepIdentifier": "completion"
+             },
+             {
                  "identifier":"waiting",
                  "type":"instruction",
                  "title":"Your sign-up code is on its way!",

@@ -1,16 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina5_9" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19162" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina5_9" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19144"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ExternalIDRegistrationViewController" customModule="PsorcastValidation" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ExternalIDRegistrationViewController" customModule="Psorcast" customModuleProvider="target">
             <connections>
                 <outlet property="imageView" destination="kSV-sG-Szr" id="pwh-Od-XRt"/>
                 <outlet property="loadingSpinner" destination="Fum-84-y9Q" id="BMZ-z2-0Pm"/>
@@ -22,7 +20,7 @@
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <view contentMode="scaleToFill" id="Be1-UX-e65" customClass="RSDStepNavigationView" customModule="PsorcastValidation" customModuleProvider="target">
+        <view contentMode="scaleToFill" id="Be1-UX-e65" customClass="RSDStepNavigationView" customModule="Psorcast" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="375" height="700"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
@@ -33,23 +31,23 @@
                             <rect key="frame" x="0.0" y="0.0" width="375" height="624"/>
                             <subviews>
                                 <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Enter Researcher ID" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="c4V-1s-iHv">
-                                    <rect key="frame" x="32" y="466.33333333333331" width="311" height="17"/>
+                                    <rect key="frame" x="32" y="476.33333333333331" width="311" height="18.666666666666686"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                     <textInputTraits key="textInputTraits"/>
                                 </textField>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OUa-ZL-tEd" userLabel="Rule View">
-                                    <rect key="frame" x="32" y="499.33333333333331" width="311" height="1"/>
+                                    <rect key="frame" x="32" y="511" width="311" height="1"/>
                                     <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="1" id="1On-gv-R8T"/>
                                     </constraints>
                                 </view>
                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="AppHeaderPrimary" translatesAutoresizingMaskIntoConstraints="NO" id="8ED-gO-YIL" userLabel="App Logo">
-                                    <rect key="frame" x="48" y="298.66666666666669" width="279" height="16"/>
+                                    <rect key="frame" x="48" y="298.66666666666669" width="279" height="26"/>
                                 </imageView>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Welcome to Psorcast Validation Study" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ztf-Jf-7Ws" userLabel="Title Label">
-                                    <rect key="frame" x="12" y="346.66666666666669" width="351" height="71.666666666666686"/>
+                                    <rect key="frame" x="12" y="356.66666666666669" width="351" height="71.666666666666686"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="30"/>
                                     <nil key="highlightedColor"/>
                                 </label>
@@ -79,7 +77,7 @@
                                 <constraint firstItem="kSV-sG-Szr" firstAttribute="top" secondItem="FUY-ES-cUr" secondAttribute="top" id="tN7-HX-oAw"/>
                             </constraints>
                         </view>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tP3-Sz-Seq" userLabel="Submit Button" customClass="RSDRoundedButton" customModule="ResearchUI">
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tP3-Sz-Seq" userLabel="Submit Button" customClass="RSDRoundedButton" customModule="ResearchUI">
                             <rect key="frame" x="32" y="624" width="311" height="52"/>
                             <state key="normal" title="Button"/>
                             <connections>
@@ -104,6 +102,7 @@
                     </constraints>
                 </view>
             </subviews>
+            <viewLayoutGuide key="safeArea" id="W8i-xX-fUy"/>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
@@ -113,10 +112,14 @@
                 <constraint firstItem="nCy-4g-nIJ" firstAttribute="trailing" secondItem="W8i-xX-fUy" secondAttribute="trailing" id="Xje-i7-OTa"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <viewLayoutGuide key="safeArea" id="W8i-xX-fUy"/>
             <point key="canvasLocation" x="645.60000000000002" y="487.6847290640394"/>
         </view>
     </objects>
+    <designables>
+        <designable name="tP3-Sz-Seq">
+            <size key="intrinsicContentSize" width="46" height="30"/>
+        </designable>
+    </designables>
     <resources>
         <image name="AppHeaderPrimary" width="153" height="26"/>
         <image name="ExternalIDHeader" width="375" height="253"/>
