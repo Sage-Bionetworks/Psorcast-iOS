@@ -70,8 +70,8 @@ public class PopTipController: ShowPopTipDelegate {
         case .measureTabLanding:
             NSLog("Measure Tab Landing showPopTip called")
             if let measureTabViewController = viewController as? MeasureTabViewController {
-                let rect = measureTabViewController.bottomHeader.bounds
-                let popTipRect = rect.offsetBy(dx: (vcBounds.width/2 - rect.width/2), dy: 0)
+                let rect = measureTabViewController.topHeader.bounds
+                let popTipRect = rect.offsetBy(dx: (vcBounds.width/2 - rect.width/2), dy: -8)
                 popTip.show(text: Localization.localizedString("POPTIP_MEASURE_LANDING"), direction: .down, maxWidth: maxWidth, in: measureTabViewController.view, from: popTipRect)
             }
         case .firstTaskComplete:
