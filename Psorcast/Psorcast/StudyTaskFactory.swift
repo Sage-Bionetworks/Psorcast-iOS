@@ -50,7 +50,6 @@ extension RSDStepType {
     public static let consentQuiz: RSDStepType = "consentQuiz"
     public static let onboardingForm: RSDStepType = "onboardingForm"
     public static let requestEmailForm: RSDStepType = "requestEmailForm"
-    public static let externalId: RSDStepType = "externalId"
 }
 
 extension RSDStepNavigatorType {
