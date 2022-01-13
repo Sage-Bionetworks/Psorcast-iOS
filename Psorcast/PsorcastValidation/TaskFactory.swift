@@ -49,6 +49,7 @@ extension RSDStepType {
     public static let digitalJarOpenCompletion: RSDStepType = "digitalJarOpenCompletion"
     public static let endOfValidation: RSDStepType = "endOfValidation"
     public static let noPsoriasis: RSDStepType = "noPsoriasis"
+    public static let externalId: RSDStepType = "externalId"
 }
 
 open class TaskFactory: SBAFactory {
