@@ -37,7 +37,7 @@
             "identifier":"psoriasisDrawInstruction",
             "type":"instruction",
             "title":"Select areas, then draw",
-            "text":"First select the areas of your body that currently have Psoriasis, then 'draw' the approximate size and location in each area.",
+            "text":"First select the areas of your body that you have ever experienced psoriasis, then 'draw' the approximate size and location in each area.",
             "image":{
                 "type": "animated",
                 "imageNames": ["PsoriasisDraw1", "PsoriasisDraw2", "PsoriasisDraw3", "PsoriasisDraw4", "PsoriasisDraw5", "PsoriasisDraw6", "PsoriasisDraw7", "PsoriasisDraw8", "PsoriasisDraw9"],
@@ -54,11 +54,11 @@
         {
             "identifier": "selectionCollection",
             "type": "selectionCollection",
-            "title": "Which areas of your body currently have psoriasis?",
+            "title": "On which areas of your body have you ever had psoriasis?",
             "actions":{
                 "skip": {
                     "type": "navigation",
-                    "buttonTitle" : "No areas have psoriasis",
+                    "buttonTitle" : "No areas have had psoriasis",
                     "skipToIdentifier": "noPsoriasisCompletion"
                 }
             },
