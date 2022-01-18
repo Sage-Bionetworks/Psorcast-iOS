@@ -36,7 +36,7 @@
             "identifier":"jointCountInstruction",
             "type":"instruction",
             "title":"Select areas, then joints",
-            "text":"Select areas of your body that have painful joints, then tap on the individual joints in those areas that are painful or tender.",
+            "text":"Select the areas of your body that you have ever been painful, then tap on the individual joints in those areas that were painful or tender.",
             "image":{
                 "type": "animated",
                 "imageNames": ["JointCount1", "JointCount2", "JointCount3", "JointCount4", "JointCount5", "JointCount6"],
@@ -54,11 +54,11 @@
         {
             "identifier": "selectionCollection",
             "type": "selectionCollection",
-            "title": "Which areas of your body currently have painful joints?",
+            "title": "Which areas of your body have ever had painful joints?",
             "actions":{
                 "skip": {
                     "type": "navigation",
-                    "buttonTitle" : "No areas have painful joints",
+                    "buttonTitle" : "No areas have had painful joints",
                     "skipToIdentifier": "noPsoriasisJointCountCompletion"
                 }
             },
@@ -719,7 +719,7 @@
             "identifier":"completion",
             "type":"completionJointPain",
             "title":"Joint Counting Complete",
-            "detail":"Today you identified",
+            "detail":"You identified",
             "text": "0 Painful joints",
             "textSelectionFormat": "%@ Painful joint",
             "textMultipleSelectionFormat": "%@ Painful joints",
