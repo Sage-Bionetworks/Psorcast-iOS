@@ -97,6 +97,10 @@ public struct SymptomHistoryStepNavigatorObject : RSDConditionalStepNavigator, D
                     uiStep.title = value
                 } else if (split.last == "text") {
                     uiStep.text = value
+                } else if (split.last == "detail") {
+                    uiStep.detail = value
+                } else if (split.last == "skipButtonTitle") {
+                    uiStep.actions?[.navigation(.skip)] = RSDUIActionObject(buttonTitle: value)
                 }
             }
         })
