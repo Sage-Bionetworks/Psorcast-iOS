@@ -362,6 +362,9 @@ open class MeasureTabViewController: UIViewController, UICollectionViewDataSourc
         
         // Refresh to current activity states
         self.refreshActivityState(to: newActivities)
+        
+        // Update weekly reminder notifications if applicable after activity state has been updated
+        ReminderManager.shared.updateWeeklyNotifications()
     }
     
     fileprivate func refreshActivityState(to newActivities: [SBBScheduledActivity]) {

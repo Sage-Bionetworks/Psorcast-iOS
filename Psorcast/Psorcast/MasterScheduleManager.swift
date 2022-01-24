@@ -110,6 +110,14 @@ open class MasterScheduleManager : SBAScheduleManager {
         return sorted.filter { self.isComplete(schedule: $0) }.count
     }
     
+    ///
+    /// - returns: true if all activities are completed this week, not including deep dive surveys, false if not
+    ///
+    public func areAllActivitiesCompletedThisWeek() -> Bool {
+        return self.completedActivitiesCount() >= self.sortedScheduleCount
+        
+    }
+    
     public func isComplete(schedule: SBBScheduledActivity) -> Bool {
         guard let studyDate = HistoryDataManager.shared.baseStudyStartDate else {
             return false
@@ -122,9 +130,20 @@ open class MasterScheduleManager : SBAScheduleManager {
         return false
     }
     
-    func completionRange(date: Date, week: Int) -> ClosedRange<Date> {
+    public func completionRange(date: Date, week: Int) -> ClosedRange<Date> {
         // All schedules are treated as weekly finished on ranges
         let rangeStart = date.startOfDay().addingNumberOfDays(7 * (week - 1))
+        let rangeEnd = rangeStart.addingNumberOfDays(7)
+        return rangeStart...rangeEnd
+    }
+    
+    public func currentBaseStudyCompletionRange() -> ClosedRange<Date>? {
+        guard let studyDate = HistoryDataManager.shared.baseStudyStartDate else {
+            return nil
+        }
+        let week = self.baseStudyWeek()
+        // All schedules are treated as weekly finished on ranges
+        let rangeStart = studyDate.startOfDay().addingNumberOfDays(7 * (week - 1))
         let rangeEnd = rangeStart.addingNumberOfDays(7)
         return rangeStart...rangeEnd
     }

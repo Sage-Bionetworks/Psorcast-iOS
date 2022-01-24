@@ -81,7 +81,7 @@ open class RemindersUserDefaultsSingletonReport: UserDefaultsSingletonReport {
         self.setCurrent(item)
        
         // Update the reminders notification settings on local device
-        ReminderManager.shared.updateNotifications()
+        ReminderManager.shared.updateWeeklyNotifications()
         
         self.syncToBridge()
     }
@@ -130,7 +130,7 @@ open class RemindersUserDefaultsSingletonReport: UserDefaultsSingletonReport {
                 if let newCurrentUnwrapped = newCurrent {
                     self.setCurrent(newCurrentUnwrapped)                    
                     // Update the reminders notification settings on local device
-                    ReminderManager.shared.updateNotifications()
+                    ReminderManager.shared.updateWeeklyNotifications()
                 }
                 
                 // Let's sync our cached version with bridge if our local was out of sync
