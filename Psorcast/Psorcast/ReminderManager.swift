@@ -35,8 +35,10 @@ import Foundation
 import UserNotifications
 import BridgeApp
 import BridgeAppUI
+import SwiftUI
 
 let TaskReminderNotificationCategory = "TaskReminder"
+let LastCallTaskReminderNotificationCategory = "LastCallTaskReminder"
 
 open class ReminderManager : NSObject, UNUserNotificationCenterDelegate {
     public static var shared = ReminderManager()
@@ -90,12 +92,11 @@ open class ReminderManager : NSObject, UNUserNotificationCenterDelegate {
         UIApplication.shared.applicationIconBadgeNumber = 0
     }
     
-    public func cancelNotification(for type: ReminderType) {
-        debugPrint("Cancelling notification for reminder type \(type)")
+    public func cancelNotification(categoryId: String) {
+        debugPrint("Cancelling notification for reminder category \(categoryId)")
         UNUserNotificationCenter.current().getPendingNotificationRequests { (requests) in
             let requestIds: [String] = requests.compactMap {
-                guard $0.content.categoryIdentifier == TaskReminderNotificationCategory,
-                    $0.identifier == type.rawValue else { return nil }
+                guard $0.content.categoryIdentifier == categoryId else { return nil }
                 return $0.identifier
             }
            
@@ -113,33 +114,116 @@ open class ReminderManager : NSObject, UNUserNotificationCenterDelegate {
                                               actions: [],
                                               intentIdentifiers: [], options: [])
         
-        return [defaultCategory]
+        let lastCallCategory = UNNotificationCategory(identifier: LastCallTaskReminderNotificationCategory,
+                                                      actions: [],
+                                                      intentIdentifiers: [], options: [])
+        
+        return [defaultCategory, lastCallCategory]
     }
     
-    public func updateNotifications() {
-        ReminderType.allCases.forEach { (type) in
-            
-            // We have the do not remind answer, which means this reminder
-            // type was saved during this task
-            // Cancel any existing notifications
-            self.cancelNotification(for: type)
-            
-            if !(type.doNotRemindSetting() ?? false),
-                let time = type.timeSetting() {
-                
-                if let day = type.daySetting() {
-                    if let weekly = self.weeklyDateComponents(with: time, on: day) {
-                        self.scheduleReminderNotification(for: type, dateComponents: weekly, identifier: type.rawValue)
-                    }
-                } else if let daily = self.dailyDateComponents(with: time) {
-                    self.scheduleReminderNotification(for: type, dateComponents: daily, identifier: type.rawValue)
+    public func updateWeeklyNotifications() {
+        // Cancel any existing notifications
+        self.cancelNotification(categoryId: TaskReminderNotificationCategory)
+        self.cancelNotification(categoryId: LastCallTaskReminderNotificationCategory)
+        
+        // We have the do not remind answer, which means this reminder
+        // type was saved during this task
+        if (ReminderType.weekly.doNotRemindSetting() ?? false) {
+            return  // User does not want notifications
+        }
+        
+        // use dispatch async to allow the method to return and put updating reminders on the next run loop
+        UNUserNotificationCenter.current().getNotificationSettings { (settings) in
+            DispatchQueue.main.async {
+                switch settings.authorizationStatus {
+                case .denied:
+                break   // Do nothing. We don't want to pester the user with message.
+                case .notDetermined:
+                    // The user has not given authorization, but the app has a record of previously requested.
+                    // we still don't want to message the user about it
+                    self.askForAuthorizationAndRescheduleNotifications()
+                    break
+                case .authorized, .provisional:
+                    // We are authorized, proceed to scheduling notifications
+                    self.scheduleWeeklyNotificationsAfterPermission()
+                    break
+                case .ephemeral:
+                    // Not applicable to our app
+                    break
+                @unknown default:
+                    // Do nothing.
+                    break
                 }
             }
         }
     }
     
-    func scheduleReminderNotification(for type: ReminderType, dateComponents: DateComponents, identifier: String) {
+    fileprivate func scheduleWeeklyNotificationsAfterPermission() {
+        // Update weekly reminder notifications
+        let type = ReminderType.weekly
+        if !(type.doNotRemindSetting() ?? false),
+            let time = type.timeSetting() {
+            
+            if let day = type.daySetting() {
+                if let weekly = self.weeklyDateComponents(with: time, on: day) {
+                    self.scheduleReminderNotification(for: type, dateComponents: weekly, identifier: type.rawValue)
+                    
+                    // Set last call notications if applicable
+                    self.scheduleLastCallNotifications(reminderTimeComponents: weekly)
+                }
+            } else if let daily = self.dailyDateComponents(with: time) {
+                self.scheduleReminderNotification(for: type, dateComponents: daily, identifier: type.rawValue)
+            }
+        }
+    }
+    
+    func scheduleLastCallNotifications(reminderTimeComponents: DateComponents) {
+        guard let lastCallDate = MasterScheduleManager.shared.currentBaseStudyCompletionRange()?.upperBound.addingNumberOfDays(-1) else {
+            return
+        }
         
+        var lastCallDateComponents = Calendar.current.dateComponents([.hour, .minute, .day, .month, .weekOfYear, .year], from: lastCallDate)
+        lastCallDateComponents.setValue(reminderTimeComponents.hour, for: .hour)
+        lastCallDateComponents.setValue(reminderTimeComponents.minute, for: .minute)
+        
+        // If the user has not completed all of their activies this week, schedule
+        // the last call notification
+        if (!MasterScheduleManager.shared.areAllActivitiesCompletedThisWeek()) {
+            self.scheduleLastCallReminderNotification(identifier: "WeeklyLastCall1", lastCallDateComponents: lastCallDateComponents)
+        } else {
+            debugPrint("Not scheduling this weeks last call reminder notification. User has already completed their activities")
+        }
+        
+        // Always schedule next week's last call notification, just in case they don't open
+        // their app for over a week.
+        let nextWeeksLastCallDate = lastCallDate.addingNumberOfDays(7)
+        var nextWeeksLastCallDateComponents = Calendar.current.dateComponents([.hour, .minute, .day, .month, .weekOfYear, .year], from: nextWeeksLastCallDate)
+        nextWeeksLastCallDateComponents.setValue(reminderTimeComponents.hour, for: .hour)
+        nextWeeksLastCallDateComponents.setValue(reminderTimeComponents.minute, for: .minute)
+        self.scheduleLastCallReminderNotification(identifier: "WeeklyLastCall2", lastCallDateComponents: nextWeeksLastCallDateComponents)
+    }
+    
+    func scheduleLastCallReminderNotification(identifier: String, lastCallDateComponents: DateComponents) {
+        debugPrint("Scheduling \(identifier) last call reminder notification at time \(lastCallDateComponents.hour ?? 0):\(lastCallDateComponents.minute ?? 0) on  \(lastCallDateComponents.month ?? -1)/\(lastCallDateComponents.day ?? -1)/\(lastCallDateComponents.year ?? -1)")
+        
+        // Set up the notification
+        let content = UNMutableNotificationContent()
+        content.body = Localization.localizedString("LAST_CALL_NOTIFICATION_TITLE")
+        content.sound = UNNotificationSound.default
+        content.badge = NSNumber(integerLiteral: UIApplication.shared.applicationIconBadgeNumber + 1)
+        content.categoryIdentifier = LastCallTaskReminderNotificationCategory
+        content.threadIdentifier = identifier
+        
+        
+        let trigger = UNCalendarNotificationTrigger(dateMatching: lastCallDateComponents, repeats: false)
+        
+        // Create the request.
+        let request =  UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
+        
+        self.scheduleNotificationRequest(request: request)
+    }
+    
+    func scheduleReminderNotification(for type: ReminderType, dateComponents: DateComponents, identifier: String) {
         debugPrint("Scheduling notification reminder type \(type) at time \(dateComponents.hour ?? 0):\(dateComponents.minute ?? 0) on weekday \(dateComponents.weekday ?? -1)")
         
         // Set up the notification
@@ -156,6 +240,11 @@ open class ReminderManager : NSObject, UNUserNotificationCenterDelegate {
         let request =  UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
         
         // use dispatch async to allow the method to return and put updating reminders on the next run loop
+        self.scheduleNotificationRequest(request: request)
+    }
+    
+    func scheduleNotificationRequest(request: UNNotificationRequest) {
+        // use dispatch async to allow the method to return and put updating reminders on the next run loop
         UNUserNotificationCenter.current().getNotificationSettings { (settings) in
             DispatchQueue.main.async {
                 switch settings.authorizationStatus {
@@ -167,11 +256,30 @@ open class ReminderManager : NSObject, UNUserNotificationCenterDelegate {
                     break
                 case .authorized, .provisional:
                     debugPrint("Notification authorized, adding request \(request)")
-                    UNUserNotificationCenter.current().add(request)
+                    UNUserNotificationCenter.current().add(request) { error in
+                        if (error != nil) {
+                            debugPrint("Error scheduling notification \(request.identifier) \(String(describing: error?.localizedDescription))")
+                        }
+                    }
+                    break
+                case .ephemeral:
+                    // Not applicable to our app
                     break
                 @unknown default:
                     // Do nothing.
                     break
+                }
+            }
+        }
+    }
+    
+    func askForAuthorizationAndRescheduleNotifications() {
+        // Request permission to display alerts and play sounds.
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound])
+        { (granted, error) in
+            DispatchQueue.main.async {
+                if (granted) {
+                    self.updateWeeklyNotifications()
                 }
             }
         }
