@@ -132,6 +132,8 @@ open class ReminderManager : NSObject, UNUserNotificationCenterDelegate {
             return  // User does not want notifications
         }
         
+        guard BridgeSDK.authManager.isAuthenticated() else { return }
+        
         // use dispatch async to allow the method to return and put updating reminders on the next run loop
         UNUserNotificationCenter.current().getNotificationSettings { (settings) in
             DispatchQueue.main.async {
