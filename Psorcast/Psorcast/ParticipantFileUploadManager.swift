@@ -497,6 +497,39 @@ class ParticipantFileUploadManager: NSObject, URLSessionBackgroundDelegate {
         return fileCopy
     }
     
+    public func deleteFile(fileIdentifier: String, fileUrl: URL?, completion: @escaping (Bool) -> Void) {
+        // Request an uploadUrl for the ParticipantFile
+        let requestString = requestUrlString(fileId: fileIdentifier)
+        let headers = NSMutableDictionary()
+        
+        BridgeSDK.authManager.addAuthHeader(toHeaders: headers)
+        
+        guard let requestHeaders = headers as? [String : String] else {
+            assertionFailure()
+            return
+        }
+
+        let deleteRequest = self.netManager.request(method: "DELETE", URLString: requestString, headers: requestHeaders, parameters: "")
+        
+        let task = URLSession.shared.dataTask(with: deleteRequest) {(data, response, error) in
+            if let dataUnwrapped = data {
+                print(String(data: dataUnwrapped, encoding: .utf8)!)
+            }
+            completion(error == nil)
+        }
+
+        task.resume()
+        
+        // Also delete the file from the device
+        if let fileUrlUnwrapped = fileUrl {
+            do {
+                try FileManager.default.removeItem(at: fileUrlUnwrapped)
+            } catch let error as NSError {
+                print("Error deleting image file: \(error.domain)")
+            }
+        }
+    }
+    
     /// Download delegate method.
     func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
         // get the sandbox-relative path to the temp copy of the participant file

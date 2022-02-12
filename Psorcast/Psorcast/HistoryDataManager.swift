@@ -214,10 +214,10 @@ open class HistoryDataManager {
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: HistoryDataManager.historySortKey, ascending: true)]
         
         if let endDate = treatmentRange.endDate { // start through end
-            fetchRequest.predicate = NSPredicate(format: "date > %@ && date < %@",
+            fetchRequest.predicate = NSPredicate(format: "date > %@ && date < %@ && (deletedFromServer == nil || deletedFromServer == NO)",
                                                  treatmentRange.startDate as NSDate, endDate as NSDate)
         } else { // start through today
-            fetchRequest.predicate = NSPredicate(format: "date > %@",
+            fetchRequest.predicate = NSPredicate(format: "date > %@ && (deletedFromServer == nil || deletedFromServer == NO)",
                                                  treatmentRange.startDate as NSDate)
         }
                 
@@ -232,10 +232,10 @@ open class HistoryDataManager {
         // Configure the request's entity, and optionally its predicate
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: HistoryDataManager.historySortKey, ascending: true)]
         if let endDate = treatmentRange.endDate { // start through end
-            fetchRequest.predicate = NSPredicate(format: "taskIdentifier == %@ && date > %@ && date < %@",
+            fetchRequest.predicate = NSPredicate(format: "taskIdentifier == %@ && date > %@ && date < %@ && (deletedFromServer == nil || deletedFromServer == NO)",
                                                  taskIdentifier, treatmentRange.startDate as NSDate, endDate as NSDate)
         } else { // start through today
-            fetchRequest.predicate = NSPredicate(format: "taskIdentifier == %@ && date > %@",
+            fetchRequest.predicate = NSPredicate(format: "taskIdentifier == %@ && date > %@ && (deletedFromServer == nil || deletedFromServer == NO)",
                                                  taskIdentifier, treatmentRange.startDate as NSDate)
         }
         do {
@@ -244,6 +244,30 @@ open class HistoryDataManager {
             print("Error reading history from CoreData \(error)")
         }
         return []
+    }
+    
+    public func deleteHistoryItemReport(historyItem: HistoryItem, imageUrl: URL?) {
+        guard let fileId = historyItem.imageName else {
+            return
+        }
+        self.markHistoryEntityAsDeleted(historyItem: historyItem)
+        // Delete the image file from the file API
+        ParticipantFileUploadManager.shared.deleteFile(fileIdentifier: fileId, fileUrl: imageUrl) { success in
+            if success {
+                self.markHistoryEntityAsFileSynced(historyItem: historyItem)
+            }
+        }
+        // Update the report item to be marked as "deleted", which will have no client data info
+        if let dateUnwrapped = historyItem.date {
+            let report = SBAReport(reportKey: RSDIdentifier.historyReportIdentifier, date: dateUnwrapped, clientData: NSDictionary())
+            self.saveReport(report) { success in
+                if (success) {
+                    self.markHistoryEntityAsReportSynced(historyItem: historyItem)
+                }
+            }
+        }
+        // Notify Synapse that the user deleted this image
+        MasterScheduleManager.shared.uploadReviewTabDeletedMeasurement(historyItem: historyItem)
     }
     
     fileprivate func loadHistoryFromBridge(historyCompleted: @escaping ((Bool) -> Void)) {
@@ -357,22 +381,30 @@ open class HistoryDataManager {
                 
                 if let taskIdentifierStr = (report.clientData as? [String : Any])?["taskIdentifier"] as? String {
                     
-                    let taskIdentifier = RSDIdentifier(rawValue: taskIdentifierStr)
-                    let item = { () -> HistoryItem in
-                        switch taskIdentifier {
-                        case .jointCountingTask:
-                            return JointCountingHistoryItem.createJointCountingHistoryItem(from: context, with: report)
-                        case .psoriasisAreaPhotoTask:
-                            return PsoriasisAreaPhotoHistoryItem.createPsoriasisAreaPhotoHistoryItem(from: context, with: report)
-                        case .psoriasisDrawTask:
-                            return PsoriasisDrawHistoryItem.createPsoriasisDrawHistoryItem(from: context, with: report)
-                        case .digitalJarOpenTask:
-                            return DigitalJarOpenHistoryItem.createDigitalJarOpenHistoryItem(from: context, with: report)
-                        default: // .footImagingTask, .handImagingTask, .walkingTask:
-                            return HistoryItem.createHistoryItem(from: context, with: report)
-                        }
-                    }()
-                    itemsToAdd.append(item)
+                    // Check if this history item was deleted, and we should not show it
+                    var deleted = false
+                    if (((report.clientData as? [String : Any])?["deleted"] as? Bool) == true) {
+                        deleted = true
+                    }
+                    
+                    if !deleted {
+                        let taskIdentifier = RSDIdentifier(rawValue: taskIdentifierStr)
+                        let item = { () -> HistoryItem in
+                            switch taskIdentifier {
+                            case .jointCountingTask:
+                                return JointCountingHistoryItem.createJointCountingHistoryItem(from: context, with: report)
+                            case .psoriasisAreaPhotoTask:
+                                return PsoriasisAreaPhotoHistoryItem.createPsoriasisAreaPhotoHistoryItem(from: context, with: report)
+                            case .psoriasisDrawTask:
+                                return PsoriasisDrawHistoryItem.createPsoriasisDrawHistoryItem(from: context, with: report)
+                            case .digitalJarOpenTask:
+                                return DigitalJarOpenHistoryItem.createDigitalJarOpenHistoryItem(from: context, with: report)
+                            default: // .footImagingTask, .handImagingTask, .walkingTask:
+                                return HistoryItem.createHistoryItem(from: context, with: report)
+                            }
+                        }()
+                        itemsToAdd.append(item)
+                    }
                 }
             }
             do {
@@ -441,6 +473,49 @@ open class HistoryDataManager {
             self.defaults.removeObject(forKey: key)
         }
     }
+    
+    fileprivate func markHistoryEntityAsDeleted(historyItem: HistoryItem) {
+        guard let context = self.currentContext else { return }
+        context.performAndWait {
+            // Unfortunately there isn't an API for deleting an individual report
+            // So we mark it as deleted instead and ignore it
+            historyItem.deletedFromServer = true
+            historyItem.synced = false
+            historyItem.fileSyced = false
+            do {
+                try context.save()
+                print("Successfully marked history item as deleted from the server")
+            } catch let error {
+                print("Marking history item as deleted from the server encountered error :", error)
+            }
+        }
+    }
+    
+    fileprivate func markHistoryEntityAsFileSynced(historyItem: HistoryItem) {
+        guard let context = self.currentContext else { return }
+        context.performAndWait {
+            historyItem.fileSyced = true
+            do {
+                try context.save()
+                print("Successfully marked image file as synced")
+            } catch let error {
+                print("Marking image file as synced encountered error :", error)
+            }
+        }
+    }
+    
+    fileprivate func markHistoryEntityAsReportSynced(historyItem: HistoryItem) {
+        guard let context = self.currentContext else { return }
+        context.performAndWait {
+            historyItem.synced = true
+            do {
+                try context.save()
+                print("Successfully marked history item as synced")
+            } catch let error {
+                print("Marking history item as synced encountered error :", error)
+            }
+        }
+    }
 
     func deleteAllHistoryEntities() {
         guard let context = self.currentContext else { return }
@@ -463,7 +538,7 @@ open class HistoryDataManager {
     /// Save an individual report to Bridge.
     ///
     /// - parameter report: The report object to save to Bridge.
-    public func saveReport(_ report: SBAReport) {
+    public func saveReport(_ report: SBAReport, completion: ((Bool) -> Void)? = nil) {
         let reportIdentifier = report.reportKey.stringValue
         let category = self.reportCategory(for: reportIdentifier)
         let bridgeReport = SBBReportData()
@@ -511,9 +586,11 @@ open class HistoryDataManager {
             DispatchQueue.main.async {
                 guard error == nil else {
                     print("Failed to save report: \(String(describing: error?.localizedDescription))")
+                    completion?(false)
                     self?.failedToSaveReport(report)
                     return
                 }
+                completion?(true)
                 self?.successfullySavedReport(report)
             }
         }
@@ -576,7 +653,7 @@ enum TreatmentClientDataKey : String, Equatable, CaseIterable {
 
 /// The client data keys for the history items
 enum HistoryClientDataKey : String, Equatable, CaseIterable {
-    case taskIdentifier, imageName, coverage, jointCount, selectedZoneIdentifier, leftClockwiseRotation, rightClockwiseRotation, leftCounterRotation, rightCounterRotation
+    case taskIdentifier, deletedFromServer, imageName, coverage, jointCount, selectedZoneIdentifier, leftClockwiseRotation, rightClockwiseRotation, leftCounterRotation, rightCounterRotation
 }
 
 extension RSDIdentifier {

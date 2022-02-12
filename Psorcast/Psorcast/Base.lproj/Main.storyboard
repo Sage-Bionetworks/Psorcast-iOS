@@ -189,10 +189,20 @@ OCT 2020 to Today</string>
                                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cT5-M1-1Ta">
                                                                                 <rect key="frame" x="0.0" y="346" width="381" height="36"/>
                                                                                 <subviews>
+                                                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="U0s-o6-9iq" userLabel="Delete Button">
+                                                                                        <rect key="frame" x="16" y="4" width="21" height="28"/>
+                                                                                        <constraints>
+                                                                                            <constraint firstAttribute="width" secondItem="U0s-o6-9iq" secondAttribute="height" multiplier="26:35" id="84w-Fb-5F1"/>
+                                                                                        </constraints>
+                                                                                        <state key="normal" image="DeleteIcon"/>
+                                                                                        <connections>
+                                                                                            <action selector="deleteTapped" destination="LrK-q2-M3U" eventType="touchUpInside" id="jft-e5-DDr"/>
+                                                                                        </connections>
+                                                                                    </button>
                                                                                     <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Checkmark" translatesAutoresizingMaskIntoConstraints="NO" id="QQb-AO-WUP">
                                                                                         <rect key="frame" x="293" y="6" width="72" height="24"/>
                                                                                     </imageView>
-                                                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XdZ-hy-h7V">
+                                                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XdZ-hy-h7V">
                                                                                         <rect key="frame" x="341" y="6" width="24" height="24"/>
                                                                                         <state key="normal" image="ExportButton"/>
                                                                                         <connections>
@@ -203,12 +213,16 @@ OCT 2020 to Today</string>
                                                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                                 <constraints>
                                                                                     <constraint firstItem="QQb-AO-WUP" firstAttribute="leading" secondItem="XdZ-hy-h7V" secondAttribute="leading" constant="-48" id="0Zy-O0-nwa"/>
+                                                                                    <constraint firstItem="U0s-o6-9iq" firstAttribute="leading" secondItem="cT5-M1-1Ta" secondAttribute="leading" constant="16" id="1vt-eh-xMP"/>
                                                                                     <constraint firstItem="QQb-AO-WUP" firstAttribute="top" secondItem="XdZ-hy-h7V" secondAttribute="top" id="2RE-5f-TcM"/>
+                                                                                    <constraint firstItem="U0s-o6-9iq" firstAttribute="top" secondItem="cT5-M1-1Ta" secondAttribute="top" constant="4" id="KqV-PC-gTU"/>
                                                                                     <constraint firstItem="XdZ-hy-h7V" firstAttribute="centerY" secondItem="cT5-M1-1Ta" secondAttribute="centerY" id="LbR-uD-ReA"/>
                                                                                     <constraint firstItem="QQb-AO-WUP" firstAttribute="trailing" secondItem="XdZ-hy-h7V" secondAttribute="trailing" id="R4e-8e-9vd"/>
                                                                                     <constraint firstItem="QQb-AO-WUP" firstAttribute="bottom" secondItem="XdZ-hy-h7V" secondAttribute="bottom" id="V4Y-uc-g7w"/>
                                                                                     <constraint firstAttribute="trailing" secondItem="XdZ-hy-h7V" secondAttribute="trailing" constant="16" id="Vpx-FW-3Q7"/>
                                                                                     <constraint firstAttribute="height" constant="36" id="aDL-Ui-A1x"/>
+                                                                                    <constraint firstItem="U0s-o6-9iq" firstAttribute="centerY" secondItem="cT5-M1-1Ta" secondAttribute="centerY" id="dj6-Fh-cax"/>
+                                                                                    <constraint firstAttribute="bottom" secondItem="U0s-o6-9iq" secondAttribute="bottom" constant="4" id="j9o-1Z-H3C"/>
                                                                                 </constraints>
                                                                             </view>
                                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cpr-6J-n4P" customClass="RSDShadowGradient" customModule="ResearchUI">
@@ -259,6 +273,7 @@ OCT 2020 to Today</string>
                                                                     <connections>
                                                                         <outlet property="checkMarkImage" destination="QQb-AO-WUP" id="dug-3O-aYP"/>
                                                                         <outlet property="dateLabel" destination="SZi-i2-yVp" id="TaG-3k-DKn"/>
+                                                                        <outlet property="deleteButton" destination="U0s-o6-9iq" id="cdz-Hx-lBy"/>
                                                                         <outlet property="exportButton" destination="XdZ-hy-h7V" id="pxD-t5-ifT"/>
                                                                         <outlet property="imageView" destination="kzt-gc-t9k" id="CkM-Oo-1w9"/>
                                                                         <outlet property="infoLabel" destination="eb4-s8-5HL" id="Klm-Yi-Jru"/>
@@ -300,7 +315,7 @@ OCT 2020 to Today</string>
                                                                                 </constraints>
                                                                             </view>
                                                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CxB-DG-SQx" customClass="RSDRoundedButton" customModule="ResearchUI">
-                                                                                <rect key="frame" x="32" y="270" width="317" height="30"/>
+                                                                                <rect key="frame" x="32" y="248" width="317" height="52"/>
                                                                                 <state key="normal" title="Add measurement"/>
                                                                                 <connections>
                                                                                     <action selector="addMeasurementTapped" destination="SkY-Tz-cJk" eventType="touchUpInside" id="mSO-19-BIn"/>
@@ -1493,7 +1508,7 @@ OCT 2020 to Today</string>
     </scenes>
     <designables>
         <designable name="2cQ-xo-4xc">
-            <size key="intrinsicContentSize" width="123" height="33.5"/>
+            <size key="intrinsicContentSize" width="105" height="30"/>
         </designable>
         <designable name="CxB-DG-SQx">
             <size key="intrinsicContentSize" width="126" height="30"/>
@@ -1508,7 +1523,7 @@ OCT 2020 to Today</string>
             <size key="intrinsicContentSize" width="123" height="33.5"/>
         </designable>
         <designable name="sS2-XF-vKD">
-            <size key="intrinsicContentSize" width="123" height="33.5"/>
+            <size key="intrinsicContentSize" width="105" height="30"/>
         </designable>
     </designables>
     <resources>
@@ -1516,6 +1531,7 @@ OCT 2020 to Today</string>
         <image name="BackDark" width="30" height="31"/>
         <image name="Checkmark" width="24" height="24"/>
         <image name="CloseIcon" width="30" height="30"/>
+        <image name="DeleteIcon" width="26" height="35"/>
         <image name="ExportButton" width="24" height="24"/>
         <image name="FilterUpArrow" width="14" height="8"/>
         <image name="InsightBulb" width="41" height="59"/>

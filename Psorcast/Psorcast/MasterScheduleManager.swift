@@ -732,6 +732,16 @@ open class MasterScheduleManager : SBAScheduleManager {
         }
     }
     
+    public func uploadReviewTabDeletedMeasurement(historyItem: HistoryItem) {
+        guard let taskId = historyItem.taskIdentifier,
+              let date = historyItem.date else {
+            return
+        }
+        let endDateStr =  NSDate.iso8601formatter().string(from: date)
+        self.uploadData(identifier: "ReviewTabDeletedMeasurements", answersMap: [
+            "measurementIdentifier": taskId, "measurementDate": endDateStr], data: nil)
+    }
+    
     public func uploadAnalyticsReviewTab(analytics: ReviewTabAnalytics) {
         do {
             let encoder = JSONEncoder()
@@ -814,4 +824,14 @@ public class ReviewTabAnalytics: Codable {
     
     var jointCountingTaskExportImg: [String] = []
     var jointCountingTaskExportVid: [String] = []
+}
+
+public struct ReviewTabDeletedMeasurement: Codable {
+    public var taskIdentifier: String
+    public var date: String
+    
+    public init(taskId: String, measureDate: String) {
+        self.taskIdentifier = taskId
+        self.date = measureDate
+    }
 }
