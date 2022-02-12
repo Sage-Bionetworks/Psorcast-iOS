@@ -190,6 +190,14 @@ open class ImageDataManager {
         return FileManager.default.url(for: self.storageDir, fileName: imageName)
     }
     
+    public func deleteImage(for historyItem: HistoryItem, taskIdentifier: String, treatmentRange: TreatmentRange, imageUrl: URL?) {
+        // We need to delete the image from the reports API, the file API, and
+        // upload to Synapse notifying the data team that the image was deleted.
+        HistoryDataManager.shared.deleteHistoryItemReport(historyItem: historyItem, imageUrl: imageUrl)
+        // Recreate the video now that an image has been removed
+        self.recreateCurrentTreatmentVideo(for: taskIdentifier, with: treatmentRange)
+    }
+    
     public func createCurrentTreatmentVideo(for taskIdentifier: String) {
         guard let treatmentRange = self.historyData.currentTreatmentRange else { return }
         self.createTreatmentVideo(for: taskIdentifier, with: treatmentRange)

@@ -326,7 +326,7 @@ open class ReviewTabViewController: UIViewController, UITableViewDataSource, UIT
         self.selectedTreatmentRange = vc.selectedTreatment
         self.dismiss(animated: true, completion: {
             if didTreatmentRangeChange {
-                self.refreshTreatmentContent()
+                _ = self.refreshTreatmentContent()
             }
         })
     }
@@ -508,6 +508,42 @@ open class ReviewTabViewController: UIViewController, UITableViewDataSource, UIT
         self.exportTapped(with: nil, taskIdentifier: RSDIdentifier(rawValue: taskId), cellIdx: 0)
     }
     
+    func deleteTapped(with renderFrame: VideoCreator.RenderFrameUrl?, taskIdentifier: RSDIdentifier, cellIdx: Int, reviewTableCell: ReviewTableViewCell) {
+                
+        var cellIdxInDataModel = cellIdx
+        let historyItemCount = reviewTableCell.historyItems.count
+        // Work-around for the extra cell included, when there is only one history item
+        if historyItemCount == 1 {
+            cellIdxInDataModel = 0
+        }
+        
+        let historyItem = reviewTableCell.historyItems[cellIdxInDataModel]
+        guard let tableCellIdx = self.allTaskRows.firstIndex(of: taskIdentifier),
+              cellIdxInDataModel >= 0, cellIdxInDataModel < historyItemCount,
+              let treatmentRange = self.currentTreatmentRange else {
+            return
+        }
+        
+        self.showDeleteVerificationAlert { action in
+            // Delete item from the data model
+            reviewTableCell.historyItems.remove(at: cellIdxInDataModel)
+            self.taskRowItemMap[taskIdentifier]?.remove(at: cellIdxInDataModel)
+            // Refresh UI
+            reviewTableCell.collectionView.performBatchUpdates {
+                reviewTableCell.collectionView.deleteItems(at: [IndexPath(row: cellIdx, section: 0)])
+            }
+            // Delay reloading the full collection view to allow the animation
+            // to visually go through, but we need to update the full row
+            // so that the cell indexes after the deletion are correct again
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.25, execute: {
+                self.tableView.reloadRows(at: [IndexPath(row: 0, section: tableCellIdx)], with: .fade)
+            })
+
+            // This deletes the image from the server as well as re-creating the treatment video
+            ImageDataManager.shared.deleteImage(for: historyItem, taskIdentifier: taskIdentifier.rawValue, treatmentRange: treatmentRange, imageUrl: renderFrame?.url)
+        }
+    }
+    
     func exportTapped(with renderFrame: VideoCreator.RenderFrameUrl?, taskIdentifier: RSDIdentifier, cellIdx: Int) {
 
         self.requestPermission {
@@ -568,6 +604,14 @@ open class ReviewTabViewController: UIViewController, UITableViewDataSource, UIT
     
     func showFirstTimeExportingAlert(yesCompletion: @escaping ((UIAlertAction) -> Void)) {
         let title = Localization.localizedString("PHOTO_LIBRARY_FIRST_ASK_TITLE")
+        let alert = UIAlertController(title: title, message: nil, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: Localization.buttonNo(), style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: Localization.buttonYes(), style: .default, handler: yesCompletion))
+        self.present(alert, animated: true)
+    }
+    
+    func showDeleteVerificationAlert(yesCompletion: @escaping ((UIAlertAction) -> Void)) {
+        let title = Localization.localizedString("DELETE_IMAGE_VERIFICATION_TITLE")
         let alert = UIAlertController(title: title, message: nil, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: Localization.buttonNo(), style: .cancel, handler: nil))
         alert.addAction(UIAlertAction(title: Localization.buttonYes(), style: .default, handler: yesCompletion))
@@ -679,7 +723,7 @@ open class ReviewTabViewController: UIViewController, UITableViewDataSource, UIT
 
 public class ReviewTableViewCell: RSDDesignableTableViewCell, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UIScrollViewDelegate, ReviewImageCollectionViewDelegate, ReviewNotEnoughDataCollectionViewDelegate {
     
-    @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet public weak var collectionView: UICollectionView!
     
     weak var delegate: ReviewTableViewCellDelegate?
     
@@ -688,7 +732,7 @@ public class ReviewTableViewCell: RSDDesignableTableViewCell, UICollectionViewDe
     
     var isCurrentTreatmentSelected = false
     var taskIdentifier: RSDIdentifier?
-    var historyItems = [HistoryItem]()
+    public var historyItems = [HistoryItem]()
     
     // This is a deprecated way of showing the video as the last cell
     let showVideoCellsInCollectionView = false
@@ -833,14 +877,20 @@ public class ReviewTableViewCell: RSDDesignableTableViewCell, UICollectionViewDe
         guard let taskId = self.taskIdentifier else { return }
         self.delegate?.exportTapped(with: renderFrame, taskIdentifier: taskId, cellIdx: cellIdx)
     }
+    
+    func deleteTapped(renderFrame: VideoCreator.RenderFrameUrl?, cellIdx: Int) {
+        guard let taskId = self.taskIdentifier else { return }
+        self.delegate?.deleteTapped(with: renderFrame, taskIdentifier: taskId, cellIdx: cellIdx, reviewTableCell: self)
+    }
 }
 
-protocol ReviewTableViewCellDelegate: class {
+protocol ReviewTableViewCellDelegate: AnyObject {
     func playButtonTapped(with taskIdentifier: RSDIdentifier)
     func videoProgress(with taskIdentifier: RSDIdentifier) -> Float
     func exportStatus(with taskIdentifier: RSDIdentifier, url: URL?) -> Bool
     func collectionViewScrolled(with taskIdentifier: RSDIdentifier, to contentOffsetX: CGFloat)
     func exportTapped(with renderFrame: VideoCreator.RenderFrameUrl?, taskIdentifier: RSDIdentifier, cellIdx: Int)
+    func deleteTapped(with renderFrame: VideoCreator.RenderFrameUrl?, taskIdentifier: RSDIdentifier, cellIdx: Int, reviewTableCell: ReviewTableViewCell)
     func addMeasurementTapped(taskIdentifier: RSDIdentifier)
     func selectedTreatmentDurationStr() -> String
 }
@@ -852,12 +902,17 @@ public class ReviewImageCollectionView: RSDCollectionViewCell {
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var infoLabel: UILabel!
     @IBOutlet weak var exportButton: UIButton!
+    @IBOutlet weak var deleteButton: UIButton!
     @IBOutlet weak var checkMarkImage: UIImageView!
     
     weak var delegate: ReviewImageCollectionViewDelegate?
     
     var renderFrame: VideoCreator.RenderFrameUrl?
-    var isVideoFrame = false
+    var isVideoFrame = false {
+        didSet {
+            self.deleteButton.isHidden = self.isVideoFrame
+        }
+    }
     var cellIdx: Int?
     
     override open func setDesignSystem(_ designSystem: RSDDesignSystem, with background: RSDColorTile) {
@@ -880,6 +935,13 @@ public class ReviewImageCollectionView: RSDCollectionViewCell {
             self.delegate?.exportTapped(renderFrame: nil, cellIdx: cellIdxUnwrapped)
         } else {
             self.delegate?.exportTapped(renderFrame: renderFrame, cellIdx: cellIdxUnwrapped)
+        }
+    }
+    
+    @IBAction func deleteTapped() {
+        guard let cellIdxUnwrapped = self.cellIdx else { return }
+        if !self.isVideoFrame {
+            self.delegate?.deleteTapped(renderFrame: renderFrame, cellIdx: cellIdxUnwrapped)
         }
     }
 }
@@ -1071,10 +1133,11 @@ public class ReviewSectionHeader: UITableViewHeaderFooterView, RSDViewDesignable
     }
 }
 
-protocol ReviewNotEnoughDataCollectionViewDelegate: class {
+protocol ReviewNotEnoughDataCollectionViewDelegate: AnyObject {
     func addMeasurementTapped(taskIdentifier: RSDIdentifier)
 }
 
-protocol ReviewImageCollectionViewDelegate: class {
+protocol ReviewImageCollectionViewDelegate: AnyObject {
     func exportTapped(renderFrame: VideoCreator.RenderFrameUrl?, cellIdx: Int)
+    func deleteTapped(renderFrame: VideoCreator.RenderFrameUrl?, cellIdx: Int)
 }
