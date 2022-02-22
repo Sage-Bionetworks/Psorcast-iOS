@@ -164,7 +164,7 @@
             "actions":{
                 "goForward":{
                     "type":"default",
-                    "buttonTitle":"Do Opposite Direction"
+                    "buttonTitle":"Do Other Hand"
                 }
             },
             "shouldHideActions": ["goBackward"]
