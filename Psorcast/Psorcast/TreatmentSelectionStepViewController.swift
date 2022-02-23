@@ -186,6 +186,7 @@ public class TreatmentSelectionStepViewController: RSDStepViewController, UITabl
         self.addCustomTreatmentLabel.font = design.fontRules.font(for: .mediumHeader)
         self.addCustomTreatmentLabel.textColor = design.colorRules.textColor(on: whiteColor, for: .mediumHeader)
         
+        self.noTreatmentsButton.setTitle(Localization.localizedString("NO_TREATMENTS_BTN_TITLE"), for: .normal)
         self.noTreatmentsButton.setTitleColor(design.colorRules.textColor(on: whiteColor, for: .small), for: .normal)
         self.noTreatmentsButton.titleLabel?.font = design.fontRules.font(for: .small)
         
