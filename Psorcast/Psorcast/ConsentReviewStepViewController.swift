@@ -204,18 +204,31 @@ open class ConsentReviewStepViewController: RSDStepViewController, UITextFieldDe
     
     
     @IBAction func agreePressed(_ sender: Any) {
+        let sharingScope = self.sharingScopeSelection()
         let signatureImage = PSRImageHelper.convertToImage(signatureTextField)
         let userName = signatureTextField.text
         let birthDate = Date().addingNumberOfYears(-19)
         (self.taskController as? RSDTaskViewController)?.showLoadingView()
         if let studyIdentifier = SBBBridgeInfo.shared()?.studyIdentifier {
-            BridgeSDK.consentManager.consentSignature(userName!, forSubpopulationGuid: studyIdentifier, birthdate: birthDate, signatureImage: signatureImage, dataSharing: SBBParticipantDataSharingScope.all, completion: { _ , error in
+            BridgeSDK.consentManager.consentSignature(userName!, forSubpopulationGuid: studyIdentifier, birthdate: birthDate, signatureImage: signatureImage, dataSharing: sharingScope, completion: { _ , error in
                     DispatchQueue.main.async {
                         (self.taskController as? RSDTaskViewController)?.hideLoadingIfNeeded()
                         super.goForward()
                     }
                 })
         }
+    }
+    
+    /// Find the answer to the sharing scope the user selected last,
+    /// and use that in the consent API call
+    private func sharingScopeSelection() -> SBBParticipantDataSharingScope {
+        var sharingScope = SBBParticipantDataSharingScope.study
+        if let sharingScopeResult = (taskController?.taskViewModel.taskResult.stepHistory.last(where: {$0.identifier == "sharingScope"})),
+           let sharingScopeStringResult = (sharingScopeResult as? RSDCollectionResultObject)?.answers()["sharingScope"] as? String,
+           sharingScopeStringResult == "all_qualified_researchers" {
+            sharingScope = SBBParticipantDataSharingScope.all
+        }
+        return sharingScope
     }
     
     @IBAction func disagreePressed(_ sender: Any) {

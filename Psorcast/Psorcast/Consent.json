@@ -372,6 +372,40 @@
                }
              },
              {
+                 "identifier": "sharingScope",
+                 "type": "form",
+                 "title": "Sharing study data",
+                 "text": "The Psorcast study team and its partners will receive your study data from your participation in this study.\n\nSharing your study data more broadly (without information such as your name may benefit this and future research).",
+                 "actions": {
+                     "goForward": {
+                         "type": "default",
+                         "buttonTitle": "Submit"
+                     },
+                     "learnMore":{
+                         "type": "webView",
+                         "buttonTitle": "Learn more",
+                         "url" : "QualifiedResearchers_Consent.html",
+                         "usesBackButton": true
+                     }
+                 },
+                 "inputFields": [
+                         {
+                           "uiHint": "list",
+                           "type": "singleChoice.string",
+                           "choices": [
+                             {
+                               "text": "Yes, share my coded study date with qualified researchers worldwide.",
+                               "value": "all_qualified_researchers"
+                             },
+                             {
+                               "text": "No, only use my coded study date for Psorcast research.",
+                               "value": "sponsors_and_partners"
+                             }
+                           ]
+                         }
+                       ]
+             },
+             {
                "identifier": "consent_review",
                "type": "consentReview",
                "title": "Review",
