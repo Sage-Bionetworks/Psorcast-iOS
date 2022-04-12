@@ -47,9 +47,10 @@ open class ResearchTabViewController: UIViewController, UITableViewDelegate, UIT
     open var researchModel: [[ResearchTableItem]] {
         
         let studyWeek = MasterScheduleManager.shared.baseStudyWeek()
+        
         let enrolledLinkerStudies = (HistoryDataManager.shared.studyDateData?.current ?? []).map({ $0.identifier })
         
-        let linkerStudies = [LinkerStudyTableItem.seasonalStudy]
+        let linkerStudies = [LinkerStudyTableItem.seasonalStudy, LinkerStudyTableItem.hybridStudy]
         
         var itemList = [[ResearchTableItem]]()
         
@@ -290,6 +291,8 @@ public struct LinkerStudyTableItem: Codable {
     public var durationInWeeks: Int
     public var availableAfterWeeks: Int
     public var monthlyEarnings: String
+    public var requiresVerification: Bool = false
+    public var imageName: String
     
     public static let noPayment = "No payment"
     public static let infiniteWeeks = 999999
@@ -301,7 +304,9 @@ public struct LinkerStudyTableItem: Codable {
         dataGroup: HistoryDataManager.LINKER_STUDY_DEFAULT,
         durationInWeeks: LinkerStudyTableItem.infiniteWeeks,
         availableAfterWeeks: 0,
-        monthlyEarnings: noPayment)
+        monthlyEarnings: noPayment,
+        requiresVerification: false,
+        imageName: "LinkerStudyHeader")
     
     public static let seasonalStudy = LinkerStudyTableItem(
         title: Localization.localizedString("PSORCAST_SEASONAL_STUDY"),
@@ -310,5 +315,18 @@ public struct LinkerStudyTableItem: Codable {
         dataGroup: HistoryDataManager.LINKER_STUDY_SEASONAL,
         durationInWeeks: 40,
         availableAfterWeeks: 12,
-        monthlyEarnings: Localization.localizedString("RESEARCH_SEASONAL_PAYMENT"))
+        monthlyEarnings: Localization.localizedString("RESEARCH_SEASONAL_PAYMENT"),
+        requiresVerification: false,
+        imageName: "LinkerStudyHeader")
+    
+    public static let hybridStudy = LinkerStudyTableItem(
+        title: Localization.localizedString("PSORCAST_HYBRID_VALIDATION_STUDY"),
+        description: Localization.localizedString("PSORCAST_HYBRID_STUDY_DESC"),
+        learnMoreDescription: Localization.localizedString("PSORCAST_HYBRID_STUDY_LEARN_MORE_DESC"),
+        dataGroup: HistoryDataManager.LINKER_STUDY_HYBRID_VALIDATION,
+        durationInWeeks: LinkerStudyTableItem.infiniteWeeks,
+        availableAfterWeeks: 0,
+        monthlyEarnings: noPayment,
+        requiresVerification: true,
+        imageName: "HybridStudyHeader")
 }
