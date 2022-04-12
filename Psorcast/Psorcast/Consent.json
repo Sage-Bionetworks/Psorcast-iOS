@@ -375,7 +375,12 @@
                  "identifier": "sharingScope",
                  "type": "form",
                  "title": "Sharing study data",
-                 "text": "The Psorcast study team and its partners will receive your study data from your participation in this study.\n\nSharing your study data more broadly (without information such as your name may benefit this and future research).",
+                 "text": "The Psorcast study team and it’s partners will receive your study data from your participation in this study.\n\nSharing your study data more broadly (without information such as your name) may benefit this and future research.",
+                 "image": {
+                   "type": "fetchable",
+                   "imageName": "SharingScopeIcon",
+                   "placementType": "iconBefore"
+                 },
                  "actions": {
                      "goForward": {
                          "type": "default",
@@ -394,11 +399,11 @@
                            "type": "singleChoice.string",
                            "choices": [
                              {
-                               "text": "Yes, share my coded study date with qualified researchers worldwide.",
+                               "text": "Yes, share my coded study data with qualified researchers worldwide.",
                                "value": "all_qualified_researchers"
                              },
                              {
-                               "text": "No, only use my coded study date for Psorcast research.",
+                               "text": "No, only use my coded study data for Psorcast research.",
                                "value": "sponsors_and_partners"
                              }
                            ]

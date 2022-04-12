@@ -201,6 +201,7 @@
 
 "PSORCAST_OPEN_STUDY" = "Psorcast Open Study";
 "PSORCAST_SEASONAL_STUDY" = "Psorcast Seasonal Study";
+"PSORCAST_HYBRID_VALIDATION_STUDY" = "Hybrid Validation Study";
 
 "RESEARCH_WEEK_%@" = "Week %@";
 "RESEARCH_DEFAULT_SUBTITLE_%@_%@" = "Duration: %@  |  Progress: %@";
@@ -212,3 +213,14 @@
 "PSORCAST_SEASONAL_STUDY_DESC" = "We are researching patterns of symptom change over the course of a year, and will compensating you $13.99 per month while you are participating during this time.";
 "PSORCAST_SEASONAL_STUDY_LEARN_MORE_DESC" = "On the first day of each month of the study, we'll send you a digital Amazon gift card for $13.99 for completing 75% of the study tasks from the previous month. Everything else in the app will stay the same.";
 "GET_COMPENSATED" = "Please enter your email below where we would send your compensation via digital gift cards.  Without completing this step, we can't pay you.  You can change your email at any time through your profile.";
+
+"PSORCAST_HYBRID_STUDY_DESC" = "Enter study code to join";
+"PSORCAST_HYBRID_STUDY_LEARN_MORE_DESC" = "";
+"PLEASE_TRY_AGAIN" = "Please try again.";
+"EMPTY_STUDY_CODE" = "Study code must not be empty.";
+"INVALID_STUDY_CODE" = "That code is not valid.";
+"STUDY_CODE_ALREADY_USED" = "That code is has already been used.";
+
+"BUTTON_GET_STARTED_NOW" = "Get started now";
+"WELCOME_TO_THE_STUDY_%@" = "Welcome to the %@ Study!";
+"WELCOME_TO_THE_STUDY_TEXT" = "Please come back weekly to complete your activities.";

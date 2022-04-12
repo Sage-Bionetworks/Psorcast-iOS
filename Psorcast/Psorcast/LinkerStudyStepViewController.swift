@@ -71,7 +71,8 @@ open class LinkerStudyStepObject: RSDUIStepObject, RSDStepViewControllerVendor {
         
         self.title = linkerStudy.title
         self.text = linkerStudy.description
-        self.imageTheme = RSDFetchableImageThemeElementObject(imageName: "LinkerStudyHeader")
+                
+        self.imageTheme = RSDFetchableImageThemeElementObject(imageName: linkerStudyItem.imageName)
     }
     
     public required init(identifier: String, type: RSDStepType? = nil) {
@@ -91,16 +92,80 @@ open class LinkerStudyStepObject: RSDUIStepObject, RSDStepViewControllerVendor {
 
 public class LinkerStudyStepViewController: RSDStepViewController, RSDTaskViewControllerDelegate {
     
+    let networkQueue = DispatchQueue(label: "VerificationCodeNetworkQueue", qos: .background)
+    
+    let v4SignInPath = "/v4/auth/signIn"
+    
+    @IBOutlet weak var learnMoreUnderlinedButton: UIButton?
+    @IBOutlet weak var verificationCodeText: UITextField?
+    
+    var popUpViewShouldGoBackOnButtonTap = false
+    @IBOutlet weak var popupView: UIView?
+    @IBOutlet weak var popUpViewButton: UIButton?
+    @IBOutlet weak var popUpViewTitleLabel: UILabel?
+    @IBOutlet weak var popUpViewTextLabel: UILabel?
+    @IBOutlet weak var popUpViewImageView: UIImageView?
+    
     var changeEmailTaskId = ""
     
     open var linkerStudyStep: LinkerStudyStepObject? {
         return self.step as? LinkerStudyStepObject
     }
     
+    open override func viewDidLoad() {
+        super.viewDidLoad()
+                        
+        if linkerStudyStep?.linkerStudyItem.learnMoreDescription == nil ||
+            (linkerStudyStep?.linkerStudyItem.learnMoreDescription.count ?? 0) <= 0 {
+            self.learnMoreUnderlinedButton?.isHidden = true
+        }
+        
+        let design = AppDelegate.designSystem
+        let bodyColor = RSDColorTile(RSDColor.white, usesLightStyle: false)
+        
+        if linkerStudyStep?.linkerStudyItem.requiresVerification ?? false {
+            self.verificationCodeText?.isHidden = false
+            self.verificationCodeText?.font = design.fontRules.font(for: .largeBody)
+            self.verificationCodeText?.textColor = design.colorRules.textColor(on: bodyColor, for: .smallHeader)
+        }
+                
+        self.popUpViewTitleLabel?.textColor = design.colorRules.textColor(on: bodyColor, for: .mediumHeader)
+        self.popUpViewTitleLabel?.font = design.fontRules.font(for: .mediumHeader)
+        
+        self.popUpViewTextLabel?.textColor = design.colorRules.textColor(on: bodyColor, for: .body)
+        self.popUpViewTextLabel?.font = design.fontRules.font(for: .body)
+        
+        self.popUpViewButton?.backgroundColor = design.colorRules.palette.secondary.normal.color
+        self.popUpViewButton?.setTitleColor(UIColor.white, for: .normal)
+    }
+
+    override open func setupHeader(_ header: RSDStepNavigationView) {
+        super.setupHeader(header)
+        header.imageView?.backgroundColor = AppDelegate.designSystem.colorRules.backgroundPrimary.color
+    }
+    
+    override open func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        if linkerStudyStep?.linkerStudyItem.requiresVerification ?? false,
+            let frame = self.verificationCodeText?.frame {
+            
+            let bottomLine = CALayer()
+            bottomLine.frame = CGRect(x: 0.0, y: frame.height - 1, width: frame.width, height: 1.0)
+            bottomLine.backgroundColor = UIColor.darkGray.cgColor
+            self.verificationCodeText?.placeholder = "XXXX-XXXX-XXXX-XXXX"
+            self.verificationCodeText?.borderStyle = .none
+            self.verificationCodeText?.layer.addSublayer(bottomLine)
+            
+            self.verificationCodeText?.isHidden = false
+        }
+    }
+    
     @IBAction func learnMoreTapped(_ sender: Any) {
         guard let linkerStudy = self.linkerStudyStep?.linkerStudyItem else {
             return
         }
+        
         let linkerStudyStep = LinkerStudyLearnMoreStepObject(identifier: "LinkerStudyLearnMore", type: .linkerStudyLearnMore, linkerStudy: linkerStudy)
         var navigator = RSDConditionalStepNavigatorObject(with: [linkerStudyStep])
         navigator.progressMarkers = []
@@ -111,14 +176,201 @@ public class LinkerStudyStepViewController: RSDStepViewController, RSDTaskViewCo
     }
     
     override open func goForward() {
+        
+        self.setLoadingState(show: true)
+        
+        // If this linker study requires verification, verify the user's
+        // association with it using a verification code
+        if linkerStudyStep?.linkerStudyItem.requiresVerification ?? false {
+            self.verifyCodeInStudy()
+            return
+        }
+
+        self.updateDataGroupsAndProceed()
+    }
+    
+    public func verifyCodeInStudy() {
         guard let linkerStudy = self.linkerStudyStep?.linkerStudyItem,
               let startDate = HistoryDataManager.shared.baseStudyStartDate else {
-            self.presentAlertWithOk(title: "Error", message: "Could not add you to the study.", actionHandler: nil)
+            self.showErrorPopUpView(title: "Could not add you to the study.")
+            self.setLoadingState(show: false)
             return
         }
         
-        self.setLoadingState(show: true)
+        guard let verificationCode = self.verificationCodeText?.text,
+              verificationCode.count > 0 else {
+            self.showErrorPopUpView(title: Localization.localizedString("EMPTY_STUDY_CODE"))
+            self.setLoadingState(show: false)
+            return
+        }
+        
+        let bridgeId = SBBBridgeInfo.shared().studyIdentifier
+    
+        let url = URL(string: "https://webservices.sagebridge.org/v4/auth/signIn")!
+        var request = URLRequest(url: url)
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpMethod = "POST"
+        let parameters: [String: String] = [
+            "appId": bridgeId,
+            "externalId": verificationCode,
+            "password": verificationCode]
+        
+        do {
+            request.httpBody = try JSONEncoder().encode(parameters)
+        } catch {
+            self.setLoadingState(show: false)
+            self.showErrorPopUpView(title: "Encoding of parameters failed")
+            return
+        }
+        let bundle = Bundle.main
+        let name = bundle.appName()
+        let version = bundle.appVersion()
+        
+        let userAgentHeader = "\(name)/\(version) BridgeSDK/\(BridgeSDKVersionNumber)"
+        request.setValue(userAgentHeader, forHTTPHeaderField: "User-Agent")
+        
+        let acceptLanguageHeader = Locale.preferredLanguages.joined(separator: ", ")
+        request.setValue(acceptLanguageHeader, forHTTPHeaderField: "Accept-Language")
+        
+        request.setValue("no-cache", forHTTPHeaderField: "cache-control")
 
+        networkQueue.async {
+            let task = URLSession.shared.dataTask(with: request) { data, response, error in
+                DispatchQueue.main.async {
+                    
+                    guard let data = data,
+                        let response = response as? HTTPURLResponse,
+                          error == nil else {  // check for fundamental networking error
+                        self.setLoadingState(show: false)
+                        self.showErrorPopUpView(title: "Could not add you to the study.")
+                        return
+                    }
+                    
+                    if (response.statusCode == 412 ||
+                        (response.statusCode >= 200 && response.statusCode <= 299)) {
+                        if let attributesDict = self.readAttributes(data: data),
+                           let sessionToken = self.readSessionToken(data: data) {
+                            if attributesDict["consumed"] == nil ||
+                                attributesDict["consumed"] == "false" {
+                                
+                                let userSessionTokenDict = NSMutableDictionary()
+                                SBBAuthManager.default().addAuthHeader(toHeaders: userSessionTokenDict)
+                                let thisUsersToken = (userSessionTokenDict["Bridge-Session"] as? String) ?? ""
+                                
+                                self.updateUserProfileAttributes(sessionToken: thisUsersToken, key: "consumed", value: verificationCode) { success in
+                                    
+                                    if (success) {
+                                        self.updateUserProfileAttributes(sessionToken: sessionToken, key: "consumed", value: "true") { success in
+                                            if (success) {
+                                                self.updateDataGroupsAndProceed()
+                                            } else {
+                                                self.setLoadingState(show: false)
+                                            }
+                                        }
+                                    } else {
+                                        self.setLoadingState(show: false)
+                                    }
+                                }   
+                            } else {
+                                self.setLoadingState(show: false)
+                                self.showErrorPopUpView(title: Localization.localizedString("STUDY_CODE_ALREADY_USED"))
+                            }
+                        }
+                    } else {
+                        self.setLoadingState(show: false)
+                        print("Error, response = \(response)")
+                        self.showErrorPopUpView(title: Localization.localizedString("INVALID_STUDY_CODE"))
+                    }
+                }
+            }
+
+            task.resume()
+        }
+    }
+    
+    func updateUserProfileAttributes(sessionToken: String, key: String, value: String, completion: ((Bool) -> Void)? = nil) {
+        guard let linkerStudy = self.linkerStudyStep?.linkerStudyItem,
+              let startDate = HistoryDataManager.shared.baseStudyStartDate else {
+            
+            self.showErrorPopUpView(title:"Could not add you to the study.")
+            self.setLoadingState(show: false)
+            completion?(false)
+            return
+        }
+        
+        let url = URL(string: "https://webservices.sagebridge.org/v3/participants/self")!
+        var request = URLRequest(url: url)
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpMethod = "POST"
+        request.httpBody = "{\"attributes\": {\"\(key)\":\"\(value)\"}}".data(using: .utf8)
+        
+        let bundle = Bundle.main
+        let name = bundle.appName()
+        let version = bundle.appVersion()
+        
+        let userAgentHeader = "\(name)/\(version) BridgeSDK/\(BridgeSDKVersionNumber)"
+        request.setValue(userAgentHeader, forHTTPHeaderField: "User-Agent")
+        
+        let acceptLanguageHeader = Locale.preferredLanguages.joined(separator: ", ")
+        request.setValue(acceptLanguageHeader, forHTTPHeaderField: "Accept-Language")
+        
+        request.setValue("no-cache", forHTTPHeaderField: "cache-control")
+        request.setValue(sessionToken, forHTTPHeaderField: "Bridge-Session")
+
+        networkQueue.async {
+            let task = URLSession.shared.dataTask(with: request) { data, response, error in
+                DispatchQueue.main.async {
+                    self.setLoadingState(show: false)
+                    
+                    guard let response = response as? HTTPURLResponse,
+                        error == nil else { // check for fundamental networking error
+                        self.showErrorPopUpView(title: "Could not add you to the study")
+                        completion?(false)
+                        return
+                    }
+                    
+                    if (response.statusCode >= 200 && response.statusCode <= 299) {
+                        completion?(true)
+                    } else {
+                        print("Error, response = \(response)")
+                        self.showErrorPopUpView(title: "Writing attributes failed.")
+                        completion?(false)
+                    }
+                }
+            }
+
+            task.resume()
+        }
+    }
+    
+    func readSessionToken(data: Data) -> String? {
+        do {
+            let jsonDict = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
+            return jsonDict?["sessionToken"] as? String
+        } catch {
+            print(error.localizedDescription)
+        }
+        return nil
+    }
+    
+    func readAttributes(data: Data) -> [String: String]? {
+        do {
+            let jsonDict = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
+            return jsonDict?["attributes"] as? [String: String]
+        } catch {
+            print(error.localizedDescription)
+        }
+        return nil
+    }
+    
+    public func updateDataGroupsAndProceed() {
+        guard let linkerStudy = self.linkerStudyStep?.linkerStudyItem,
+              let startDate = HistoryDataManager.shared.baseStudyStartDate else {
+            self.showErrorPopUpView(title: "Could not add you to the study")
+            self.setLoadingState(show: false)
+            return
+        }
+        
         var dataGroups = Array(SBAParticipantManager.shared.studyParticipant?.dataGroups ?? Set())
         dataGroups.append(linkerStudy.dataGroup)
         
@@ -127,7 +379,7 @@ public class LinkerStudyStepViewController: RSDStepViewController, RSDTaskViewCo
                 self.setLoadingState(show: false)
                 
                 if let errorStr = error?.localizedDescription {
-                    self.presentAlertWithOk(title: "Error", message: errorStr, actionHandler: nil)
+                    self.showErrorPopUpView(title: "Error adding data group.")
                     return
                 }
                 
@@ -147,14 +399,14 @@ public class LinkerStudyStepViewController: RSDStepViewController, RSDTaskViewCo
                 DispatchQueue.main.async {
                     self.setLoadingState(show: false)
                     guard let participant = record as? SBBStudyParticipant, error == nil else {
-                        super.goForward()
+                        self.showStudyJoinedPopUpView()
                         return
                     }
                     guard let _ = participant.attributes?.dictionaryRepresentation()[RequestEmailViewController.COMPENSATE_ATTRIBUTE] as? String else {
                         self.showCompensationEmailScreen()
                         return
                     }
-                    super.goForward()
+                    self.showStudyJoinedPopUpView()
                 }
             }
         })
@@ -181,11 +433,38 @@ public class LinkerStudyStepViewController: RSDStepViewController, RSDTaskViewCo
         }
     }
     
+    @IBAction func popUpButtonTapped(_ sender: Any) {
+        self.popupView?.isHidden = true
+        if self.popUpViewShouldGoBackOnButtonTap {
+            super.goForward()
+        }
+    }
+    
+    public func showStudyJoinedPopUpView() {
+        let title = String(format: Localization.localizedString("WELCOME_TO_THE_STUDY_%@"), self.linkerStudyStep?.title ?? "")
+        let text = Localization.localizedString("WELCOME_TO_THE_STUDY_TEXT")
+        let buttonTitle = Localization.localizedString("BUTTON_GET_STARTED_NOW")
+        self.showPopUpView(imageName: "AlertGreen", title: title, text: text, buttonTitle: buttonTitle, shouldGoBackOnTap: true)
+    }
+    
+    public func showErrorPopUpView(title: String) {
+        self.showPopUpView(imageName: "AlertYellow", title: title, text: Localization.localizedString("PLEASE_TRY_AGAIN"), buttonTitle: Localization.localizedString("BUTTON_OK"), shouldGoBackOnTap: false)
+    }
+    
+    public func showPopUpView(imageName: String, title: String, text: String, buttonTitle: String, shouldGoBackOnTap: Bool) {
+        self.popUpViewShouldGoBackOnButtonTap = shouldGoBackOnTap
+        self.popUpViewTitleLabel?.text = title
+        self.popUpViewTextLabel?.text = text
+        self.popUpViewImageView?.image = UIImage(named: imageName)
+        self.popUpViewButton?.setTitle(buttonTitle, for: .normal)
+        self.popupView?.isHidden = false
+    }
+    
     public func taskController(_ taskController: RSDTaskController, didFinishWith reason: RSDTaskFinishReason, error: Error?) {
         let taskId = taskController.task.identifier
         self.dismiss(animated: true, completion: {
             if taskId == ProfileTabViewController.changeEmailTaskId {
-                super.goForward()
+                self.showStudyJoinedPopUpView()
             }
         })
     }

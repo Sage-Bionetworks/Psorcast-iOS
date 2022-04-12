@@ -40,6 +40,7 @@ open class HistoryDataManager {
     public static let LINKER_STUDY_DEFAULT = "PsorcastUS"
     public static let LINKER_STUDY_BETA_2021 = "BETA2021"
     public static let LINKER_STUDY_SEASONAL = "SEASONAL"
+    public static let LINKER_STUDY_HYBRID_VALIDATION = "HYBRID"
     
     /// For encoding report client data
     lazy var jsonEncoder: JSONEncoder = {
