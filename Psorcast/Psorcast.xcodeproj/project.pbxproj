@@ -2092,6 +2092,7 @@
 				CURRENT_PROJECT_VERSION = 23;
 				DEVELOPMENT_TEAM = KA9Z8R6M6K;
 				INFOPLIST_FILE = Psorcast/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -2117,6 +2118,7 @@
 				CURRENT_PROJECT_VERSION = 23;
 				DEVELOPMENT_TEAM = KA9Z8R6M6K;
 				INFOPLIST_FILE = Psorcast/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -2142,6 +2144,7 @@
 				CURRENT_PROJECT_VERSION = 32;
 				DEVELOPMENT_TEAM = KA9Z8R6M6K;
 				INFOPLIST_FILE = PsorcastValidation/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -2169,6 +2172,7 @@
 				CURRENT_PROJECT_VERSION = 32;
 				DEVELOPMENT_TEAM = KA9Z8R6M6K;
 				INFOPLIST_FILE = PsorcastValidation/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

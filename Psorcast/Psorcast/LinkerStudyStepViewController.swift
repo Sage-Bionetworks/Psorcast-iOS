@@ -92,6 +92,9 @@ open class LinkerStudyStepObject: RSDUIStepObject, RSDStepViewControllerVendor {
 
 public class LinkerStudyStepViewController: RSDStepViewController, RSDTaskViewControllerDelegate {
     
+    // To meet password requiremets on Bridge, append this to the validation code for password
+    public let passwordSuffix = "Hybrid!"
+    
     let networkQueue = DispatchQueue(label: "VerificationCodeNetworkQueue", qos: .background)
     
     let v4SignInPath = "/v4/auth/signIn"
@@ -153,7 +156,8 @@ public class LinkerStudyStepViewController: RSDStepViewController, RSDTaskViewCo
             let bottomLine = CALayer()
             bottomLine.frame = CGRect(x: 0.0, y: frame.height - 1, width: frame.width, height: 1.0)
             bottomLine.backgroundColor = UIColor.darkGray.cgColor
-            self.verificationCodeText?.placeholder = "XXXX-XXXX-XXXX-XXXX"
+            self.verificationCodeText?.placeholder = "########"
+            self.verificationCodeText?.keyboardType = .numberPad
             self.verificationCodeText?.borderStyle = .none
             self.verificationCodeText?.layer.addSublayer(bottomLine)
             
@@ -205,6 +209,7 @@ public class LinkerStudyStepViewController: RSDStepViewController, RSDTaskViewCo
         }
         
         let bridgeId = SBBBridgeInfo.shared().studyIdentifier
+        let password = "\(verificationCode)\(passwordSuffix)"
     
         let url = URL(string: "https://webservices.sagebridge.org/v4/auth/signIn")!
         var request = URLRequest(url: url)
@@ -213,7 +218,7 @@ public class LinkerStudyStepViewController: RSDStepViewController, RSDTaskViewCo
         let parameters: [String: String] = [
             "appId": bridgeId,
             "externalId": verificationCode,
-            "password": verificationCode]
+            "password": password]
         
         do {
             request.httpBody = try JSONEncoder().encode(parameters)
