@@ -92,6 +92,11 @@ open class LinkerStudyStepObject: RSDUIStepObject, RSDStepViewControllerVendor {
 
 public class LinkerStudyStepViewController: RSDStepViewController, RSDTaskViewControllerDelegate {
     
+    public static let CONSUMED_ATTRIBUTE = "consumed"
+    
+    // To meet password requiremets on Bridge, append this to the validation code for password
+    public let passwordSuffix = "Hybrid!"
+    
     let networkQueue = DispatchQueue(label: "VerificationCodeNetworkQueue", qos: .background)
     
     let v4SignInPath = "/v4/auth/signIn"
@@ -153,7 +158,8 @@ public class LinkerStudyStepViewController: RSDStepViewController, RSDTaskViewCo
             let bottomLine = CALayer()
             bottomLine.frame = CGRect(x: 0.0, y: frame.height - 1, width: frame.width, height: 1.0)
             bottomLine.backgroundColor = UIColor.darkGray.cgColor
-            self.verificationCodeText?.placeholder = "XXXX-XXXX-XXXX-XXXX"
+            self.verificationCodeText?.placeholder = "########"
+            self.verificationCodeText?.keyboardType = .numberPad
             self.verificationCodeText?.borderStyle = .none
             self.verificationCodeText?.layer.addSublayer(bottomLine)
             
@@ -205,6 +211,7 @@ public class LinkerStudyStepViewController: RSDStepViewController, RSDTaskViewCo
         }
         
         let bridgeId = SBBBridgeInfo.shared().studyIdentifier
+        let password = "\(verificationCode)\(passwordSuffix)"
     
         let url = URL(string: "https://webservices.sagebridge.org/v4/auth/signIn")!
         var request = URLRequest(url: url)
@@ -213,7 +220,7 @@ public class LinkerStudyStepViewController: RSDStepViewController, RSDTaskViewCo
         let parameters: [String: String] = [
             "appId": bridgeId,
             "externalId": verificationCode,
-            "password": verificationCode]
+            "password": password]
         
         do {
             request.httpBody = try JSONEncoder().encode(parameters)
@@ -246,21 +253,19 @@ public class LinkerStudyStepViewController: RSDStepViewController, RSDTaskViewCo
                         return
                     }
                     
+                    let consumedAttribute = LinkerStudyStepViewController.CONSUMED_ATTRIBUTE
+                    
                     if (response.statusCode == 412 ||
                         (response.statusCode >= 200 && response.statusCode <= 299)) {
                         if let attributesDict = self.readAttributes(data: data),
                            let sessionToken = self.readSessionToken(data: data) {
-                            if attributesDict["consumed"] == nil ||
-                                attributesDict["consumed"] == "false" {
+                            if attributesDict[consumedAttribute] == nil ||
+                                attributesDict[consumedAttribute] == "false" {
                                 
-                                let userSessionTokenDict = NSMutableDictionary()
-                                SBBAuthManager.default().addAuthHeader(toHeaders: userSessionTokenDict)
-                                let thisUsersToken = (userSessionTokenDict["Bridge-Session"] as? String) ?? ""
-                                
-                                self.updateUserProfileAttributes(sessionToken: thisUsersToken, key: "consumed", value: verificationCode) { success in
+                                self.setConsumedCodeOnBridge(code: verificationCode) { success in
                                     
                                     if (success) {
-                                        self.updateUserProfileAttributes(sessionToken: sessionToken, key: "consumed", value: "true") { success in
+                                        self.updateUserProfileAttributes(sessionToken: sessionToken, key: consumedAttribute, value: "true") { success in
                                             if (success) {
                                                 self.updateDataGroupsAndProceed()
                                             } else {
@@ -270,7 +275,7 @@ public class LinkerStudyStepViewController: RSDStepViewController, RSDTaskViewCo
                                     } else {
                                         self.setLoadingState(show: false)
                                     }
-                                }   
+                                }                                 
                             } else {
                                 self.setLoadingState(show: false)
                                 self.showErrorPopUpView(title: Localization.localizedString("STUDY_CODE_ALREADY_USED"))
@@ -286,6 +291,40 @@ public class LinkerStudyStepViewController: RSDStepViewController, RSDTaskViewCo
 
             task.resume()
         }
+    }
+    
+    private func setConsumedCodeOnBridge(code: String, completed: @escaping (Bool) -> Void) {
+        self.setLoadingState(show: true)
+        // Validated email, save it and proceed as normal
+        BridgeSDK.participantManager.getParticipantRecord(completion: { record, error in
+            DispatchQueue.main.async {
+                                
+                guard error == nil,
+                      let participantRecord = record as? SBBStudyParticipant,
+                      let attributes = participantRecord.attributes?.dictionaryRepresentation() as? [String: String] else {
+                    self.showErrorPopUpView(title: "Error retreiving participant attributes from Bridge")
+                    completed(false)
+                    return
+                }
+                
+                var newAttributes = attributes
+                newAttributes[LinkerStudyStepViewController.CONSUMED_ATTRIBUTE] = code
+                var participant = [String: [String: Any]]()
+                participant[RequestEmailViewController.PARTICIPANT_ATTRIBUTES] = newAttributes
+                
+                BridgeSDK.participantManager.updateParticipantRecord(withRecord: participant) { response, error in
+                    DispatchQueue.main.async {
+                        self.setLoadingState(show: false)
+                        if let errorStr = error?.localizedDescription {
+                            self.showErrorPopUpView(title: errorStr)
+                            completed(false)
+                            return
+                        }
+                        completed(true)
+                    }
+                }
+            }
+        })
     }
     
     func updateUserProfileAttributes(sessionToken: String, key: String, value: String, completion: ((Bool) -> Void)? = nil) {

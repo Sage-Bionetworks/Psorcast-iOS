@@ -38,6 +38,7 @@
 @interface SBBStudyParticipantCustomAttributes (customFields)
 
 @property (nonatomic, strong) NSString *compensateEmail;
+@property (nonatomic, strong) NSString *consumed;
 
 
 @end
@@ -45,5 +46,6 @@
 @implementation SBBStudyParticipantCustomAttributes (customFields)
 
 @dynamic compensateEmail;
+@dynamic consumed;
 
 @end

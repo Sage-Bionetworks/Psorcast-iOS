@@ -119,7 +119,6 @@ open class ImageCaptureStepViewController: RSDStepViewController, UIImagePickerC
       label: "CameraFeedOutput",
       qos: .userInteractive)
     
-    @available(iOS 14.0, *)
     private(set) lazy var handPoseRequest: VNDetectHumanHandPoseRequest = {
         let request = VNDetectHumanHandPoseRequest()
         request.maximumHandCount = 2

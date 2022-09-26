@@ -47,8 +47,7 @@ open class RequestEmailStepObject: RSDFormUIStepObject, RSDStepViewControllerVen
 
 class RequestEmailViewController: RSDTableStepViewController {
     public static let COMPENSATE_ATTRIBUTE = "compensateEmail"
-    
-    let PARTICIPANT_ATTRIBUTES = "attributes"
+    public static let PARTICIPANT_ATTRIBUTES = "attributes"
     var firstEmail = ""
     
 
@@ -91,26 +90,7 @@ class RequestEmailViewController: RSDTableStepViewController {
             emailCell.textField.text = ""
             emailCell.textField.placeholder = Localization.localizedString("VERIFY_EMAIL")
         } else if emailText == firstEmail {
-            self.setLoadingState(show: true)
-            // Validated email, save it and proceed as normal
-            var newAttributes = [String: String]()
-            newAttributes[RequestEmailViewController.COMPENSATE_ATTRIBUTE] = emailText
-            var participant = [String: [String: Any]]()
-            participant[PARTICIPANT_ATTRIBUTES] = newAttributes
-            BridgeSDK.participantManager.updateParticipantRecord(withRecord: participant) { response, error in
-                DispatchQueue.main.async {
-                    self.setLoadingState(show: false)
-                    if let errorStr = error?.localizedDescription {
-                        print(errorStr)
-                        let title = Localization.localizedString("ERROR_ADDING_EMAIL")
-                        let alert = UIAlertController(title: title, message: nil, preferredStyle: .alert)
-                        alert.addAction(UIAlertAction(title: Localization.buttonOK(), style: .default, handler: nil))
-                        self.present(alert, animated: true)
-                        return
-                    }
-                    super.goForward()
-                }
-            }
+            self.setEmailOnBridge(email: emailText!)
         } else {
             // They didn't match, show a warning, and begin again
             firstEmail = ""
@@ -121,5 +101,45 @@ class RequestEmailViewController: RSDTableStepViewController {
             alert.addAction(UIAlertAction(title: Localization.buttonOK(), style: .default, handler: nil))
             self.present(alert, animated: true)
         }
+    }
+    
+    private func setEmailOnBridge(email: String) {
+        self.setLoadingState(show: true)
+        // Validated email, save it and proceed as normal
+        BridgeSDK.participantManager.getParticipantRecord(completion: { record, error in
+            DispatchQueue.main.async {
+                                
+                guard error == nil,
+                      let participantRecord = record as? SBBStudyParticipant,
+                      let attributes = participantRecord.attributes?.dictionaryRepresentation() as? [String: String] else {
+                    self.showErrorAlert(errorStr: "Error retreiving participant attributes from Bridge")
+                    return
+                }
+                
+                var newAttributes = attributes
+                newAttributes[RequestEmailViewController.COMPENSATE_ATTRIBUTE] = email
+                var participant = [String: [String: Any]]()
+                participant[RequestEmailViewController.PARTICIPANT_ATTRIBUTES] = newAttributes
+                
+                BridgeSDK.participantManager.updateParticipantRecord(withRecord: participant) { response, error in
+                    DispatchQueue.main.async {
+                        self.setLoadingState(show: false)
+                        if let errorStr = error?.localizedDescription {
+                            self.showErrorAlert(errorStr: errorStr)
+                            return
+                        }
+                        super.goForward()
+                    }
+                }
+            }
+        })
+    }
+            
+    private func showErrorAlert(errorStr: String) {
+        print(errorStr)
+        let title = Localization.localizedString("ERROR_ADDING_EMAIL")
+        let alert = UIAlertController(title: title, message: nil, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: Localization.buttonOK(), style: .default, handler: nil))
+        self.present(alert, animated: true)
     }
 }
