@@ -91,9 +91,11 @@
 "PSORIASIS_AREA_PHOTO_TITLE" = "Psoriasis Area Photo";
 "PSORIASIS_DRAW_TITLE" = "Psoriasis Draw";
 "DIGITAL_JAR_OPEN_TITLE" = "Digital Jar Open";
+"HYBRID_SURVEY_TASK" = "Weekly Questions";
 
 "ONE_MINUTE" = "1 minute";
 "TWO_MINUTES" = "2 minutes";
+"THREE_MINUTES" = "3 minutes";
 
 "TryItFirstInstruction0Title" = "Measure Your Psoriasis";
 "TryItFirstInstruction1Title" = "Animated GIFs of Symptoms";
