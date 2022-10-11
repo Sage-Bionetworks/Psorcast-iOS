@@ -136,7 +136,7 @@ open class LinkerStudiesUserDefaultsSingletonReport: UserDefaultsSingletonReport
                 completion?(true)
             } catch {
                 completion?(false)
-                print("Error parsing clientData for reminders report \(error)")
+                print("Error parsing clientData for linker studies report \(error)")
             }
         }
     }
@@ -157,6 +157,7 @@ open class LinkerStudiesUserDefaultsSingletonReport: UserDefaultsSingletonReport
 public struct LinkerStudy: Codable {
     var identifier: String?
     var startDate: Date?
+    var verificationCode: String?
 }
 
 public struct LinkerStudyDetailed: Codable {

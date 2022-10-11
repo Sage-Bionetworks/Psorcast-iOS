@@ -418,12 +418,18 @@ public class LinkerStudyStepViewController: RSDStepViewController, RSDTaskViewCo
                 self.setLoadingState(show: false)
                 
                 if let errorStr = error?.localizedDescription {
-                    self.showErrorPopUpView(title: "Error adding data group.")
+                    self.showErrorPopUpView(title: "Error adding data group. \(errorStr)")
                     return
                 }
                 
-                // Add the linker study to the data model
-                HistoryDataManager.shared.studyDateData?.append(items: [LinkerStudy(identifier: linkerStudy.dataGroup, startDate: startDate)])
+                if let verificationCode = self.verificationCodeText?.text,
+                   verificationCode.count > 0 {
+                    // Add the linker study to the data model
+                    HistoryDataManager.shared.studyDateData?.append(items: [LinkerStudy(identifier: linkerStudy.dataGroup, startDate: startDate, verificationCode: verificationCode)])
+                } else {
+                    // Add the linker study to the data model
+                    HistoryDataManager.shared.studyDateData?.append(items: [LinkerStudy(identifier: linkerStudy.dataGroup, startDate: startDate)])
+                }
                 
                 // Check if the compensation email has already been recorded
                 self.checkCompensationEmail()
