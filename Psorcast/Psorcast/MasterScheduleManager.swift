@@ -43,10 +43,10 @@ open class MasterScheduleManager : SBAScheduleManager {
     public static let shared = MasterScheduleManager()
     
     /// The schedules will be sorted in this order
-    public static let sortOrder: [RSDIdentifier] = [.psoriasisDrawTask, .psoriasisAreaPhotoTask, .digitalJarOpenTask, .handImagingTask, .footImagingTask, .walkingTask, .jointCountingTask]
+    public static let sortOrder: [RSDIdentifier] = [.psoriasisDrawTask, .psoriasisAreaPhotoTask, .digitalJarOpenTask, .handImagingTask, .footImagingTask, .walkingTask, .jointCountingTask, .hybridSurveyTask]
     
     /// The schedules will filter to only have these tasks
-    public static let filterAll: [RSDIdentifier] = [.psoriasisDrawTask, .psoriasisAreaPhotoTask, .digitalJarOpenTask, .handImagingTask, .footImagingTask, .walkingTask, .jointCountingTask]
+    public static let filterAll: [RSDIdentifier] = [.psoriasisDrawTask, .psoriasisAreaPhotoTask, .digitalJarOpenTask, .handImagingTask, .footImagingTask, .walkingTask, .jointCountingTask, .hybridSurveyTask]
     
     /// Task result identifiers when uploading each task
     public static let resultIdCurrentTreatment  = "currentTreatment"
@@ -597,7 +597,8 @@ open class MasterScheduleManager : SBAScheduleManager {
                 identifier == RSDIdentifier.handImagingTask ||
                 identifier == RSDIdentifier.footImagingTask ||
                 identifier == RSDIdentifier.walkingTask ||
-                identifier == RSDIdentifier.digitalJarOpenTask {
+                identifier == RSDIdentifier.digitalJarOpenTask ||
+                identifier == RSDIdentifier.hybridSurveyTask {
                 return (.weekly, 1)
             } else { // Rest of measures: 1x/month (starting on week 2)
                 return (.monthly, 2)

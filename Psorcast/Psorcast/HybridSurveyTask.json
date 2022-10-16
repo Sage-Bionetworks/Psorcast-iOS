@@ -1,0 +1,669 @@
+{
+  "identifier": "HybridSurveyTask",
+  "catType": "task",
+  "taskIdentifier": "HybridSurveyTask",
+  "schemaIdentifier": "HybridSurveyTask",
+  "progressMarkers": [],
+  "steps": [
+    {
+      "identifier": "intro",
+      "type": "webImageInstruction",
+      "title": "Weekly Questions",
+      "text": "Please select the one best answer for your abilities at this time. Over the LAST WEEK were you able to...",
+      "imageUrl": "https://docs.sagebridge.org/8hjhdT2D4tbXH_Svhs9bF4el.1591145782387",
+      "actions": {
+        "goForward": {
+          "type": "default",
+          "buttonTitle": "Begin"
+        }
+      },
+      "shouldHideActions": [
+        "goBackward"
+      ]
+    },
+    {
+      "identifier": "RAPID3_1a_dressYourself",
+      "type": "form",
+      "title": "Dress yourself, including tying shoelaces and doing buttons?",
+      "inputFields": [
+        {
+          "uiHint": "list",
+          "type": "singleChoice.string",
+          "choices": [
+            {
+              "text": "Without ANY difficulty",
+              "value": "0"
+            },
+            {
+              "text": "With SOME difficulty",
+              "value": "1"
+            },
+            {
+              "text": "With MUCH difficulty",
+              "value": "2"
+            },
+            {
+              "text": "UNABLE to do",
+              "value": "3"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "identifier": "RAPID3_1b_bed",
+      "type": "form",
+      "title": "Get in and out of bed?",
+      "inputFields": [
+        {
+          "uiHint": "list",
+          "type": "singleChoice.string",
+          "choices": [
+            {
+              "text": "Without ANY difficulty",
+              "value": "0"
+            },
+            {
+              "text": "With SOME difficulty",
+              "value": "1"
+            },
+            {
+              "text": "With MUCH difficulty",
+              "value": "2"
+            },
+            {
+              "text": "UNABLE to do",
+              "value": "3"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "identifier": "RAPID3_1c_liftCupOrGlass",
+      "type": "form",
+      "title": "Lift a full cup or glass to your mouth?",
+      "inputFields": [
+        {
+          "uiHint": "list",
+          "type": "singleChoice.string",
+          "choices": [
+            {
+              "text": "Without ANY difficulty",
+              "value": "0"
+            },
+            {
+              "text": "With SOME difficulty",
+              "value": "1"
+            },
+            {
+              "text": "With MUCH difficulty",
+              "value": "2"
+            },
+            {
+              "text": "UNABLE to do",
+              "value": "3"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "identifier": "RAPID3_1d_walkOutdoors",
+      "type": "form",
+      "title": "Walk outdoors on flat ground?",
+      "inputFields": [
+        {
+          "uiHint": "list",
+          "type": "singleChoice.string",
+          "choices": [
+            {
+              "text": "Without ANY difficulty",
+              "value": "0"
+            },
+            {
+              "text": "With SOME difficulty",
+              "value": "1"
+            },
+            {
+              "text": "With MUCH difficulty",
+              "value": "2"
+            },
+            {
+              "text": "UNABLE to do",
+              "value": "3"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "identifier": "RAPID3_1e_washYourBody",
+      "type": "form",
+      "title": "Wash and dry your entire body?",
+      "inputFields": [
+        {
+          "uiHint": "list",
+          "type": "singleChoice.string",
+          "choices": [
+            {
+              "text": "Without ANY difficulty",
+              "value": "0"
+            },
+            {
+              "text": "With SOME difficulty",
+              "value": "1"
+            },
+            {
+              "text": "With MUCH difficulty",
+              "value": "2"
+            },
+            {
+              "text": "UNABLE to do",
+              "value": "3"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "identifier": "RAPID3_1f_bendDownPickUp",
+      "type": "form",
+      "title": "Bend down to pick up clothing from the floor?",
+      "inputFields": [
+        {
+          "uiHint": "list",
+          "type": "singleChoice.string",
+          "choices": [
+            {
+              "text": "Without ANY difficulty",
+              "value": "0"
+            },
+            {
+              "text": "With SOME difficulty",
+              "value": "1"
+            },
+            {
+              "text": "With MUCH difficulty",
+              "value": "2"
+            },
+            {
+              "text": "UNABLE to do",
+              "value": "3"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "identifier": "RAPID3_1g_turnFaucets",
+      "type": "form",
+      "title": "Turn regular faucets on and off?",
+      "inputFields": [
+        {
+          "uiHint": "list",
+          "type": "singleChoice.string",
+          "choices": [
+            {
+              "text": "Without ANY difficulty",
+              "value": "0"
+            },
+            {
+              "text": "With SOME difficulty",
+              "value": "1"
+            },
+            {
+              "text": "With MUCH difficulty",
+              "value": "2"
+            },
+            {
+              "text": "UNABLE to do",
+              "value": "3"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "identifier": "RAPID3_1h_getInCarBusTrainAirplane",
+      "type": "form",
+      "title": "Get in and out of a car, bus, train, or airplane?",
+      "inputFields": [
+        {
+          "uiHint": "list",
+          "type": "singleChoice.string",
+          "choices": [
+            {
+              "text": "Without ANY difficulty",
+              "value": "0"
+            },
+            {
+              "text": "With SOME difficulty",
+              "value": "1"
+            },
+            {
+              "text": "With MUCH difficulty",
+              "value": "2"
+            },
+            {
+              "text": "UNABLE to do",
+              "value": "3"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "identifier": "RAPID3_1i_walk2miles",
+      "type": "form",
+      "title": "Walk two miles or three kilometers, if you wish?",
+      "inputFields": [
+        {
+          "uiHint": "list",
+          "type": "singleChoice.string",
+          "choices": [
+            {
+              "text": "Without ANY difficulty",
+              "value": "0"
+            },
+            {
+              "text": "With SOME difficulty",
+              "value": "1"
+            },
+            {
+              "text": "With MUCH difficulty",
+              "value": "2"
+            },
+            {
+              "text": "UNABLE to do",
+              "value": "3"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "identifier": "RAPID3_1j_recreationAndSports",
+      "type": "form",
+      "title": "Participate in recreational activities and sports as you would like, if you wish?",
+      "inputFields": [
+        {
+          "uiHint": "list",
+          "type": "singleChoice.string",
+          "choices": [
+            {
+              "text": "Without ANY difficulty",
+              "value": "0"
+            },
+            {
+              "text": "With SOME difficulty",
+              "value": "1"
+            },
+            {
+              "text": "With MUCH difficulty",
+              "value": "2"
+            },
+            {
+              "text": "UNABLE to do",
+              "value": "3"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "identifier": "RAPID3_1k_sleep",
+      "type": "form",
+      "title": "Get a good night's sleep?",
+      "inputFields": [
+        {
+          "uiHint": "list",
+          "type": "singleChoice.string",
+          "choices": [
+            {
+              "text": "Without ANY difficulty",
+              "value": "0"
+            },
+            {
+              "text": "With SOME difficulty",
+              "value": "1"
+            },
+            {
+              "text": "With MUCH difficulty",
+              "value": "2"
+            },
+            {
+              "text": "UNABLE to do",
+              "value": "3"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "identifier": "RAPID3_1l_anxiety",
+      "type": "form",
+      "title": "Deal with feelings of anxiety or being nervous?",
+      "inputFields": [
+        {
+          "uiHint": "list",
+          "type": "singleChoice.string",
+          "choices": [
+            {
+              "text": "Without ANY difficulty",
+              "value": "0"
+            },
+            {
+              "text": "With SOME difficulty",
+              "value": "1"
+            },
+            {
+              "text": "With MUCH difficulty",
+              "value": "2"
+            },
+            {
+              "text": "UNABLE to do",
+              "value": "3"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "identifier": "RAPID3_1m_depression",
+      "type": "form",
+      "title": "Deal with feelings of depression or feeling blue?",
+      "inputFields": [
+        {
+          "uiHint": "list",
+          "type": "singleChoice.string",
+          "choices": [
+            {
+              "text": "Without ANY difficulty",
+              "value": "0"
+            },
+            {
+              "text": "With SOME difficulty",
+              "value": "1"
+            },
+            {
+              "text": "With MUCH difficulty",
+              "value": "2"
+            },
+            {
+              "text": "UNABLE to do",
+              "value": "3"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "identifier": "RAPID3_2_pain",
+      "type": "form",
+      "title": "How much pain have you had because of your condition OVER THE PAST WEEK? Please indicate below how severe your pain has been:",
+      "inputFields": [
+        {
+          "uiHint": "list",
+          "type": "singleChoice.string",
+          "choices": [
+            {
+              "text": "0 = NO PAIN",
+              "value": "0"
+            },
+            {
+              "text": "0.5",
+              "value": "0.5"
+            },
+            {
+              "text": "1.0",
+              "value": "1"
+            },
+            {
+              "text": "1.5",
+              "value": "1.5"
+            },
+            {
+              "text": "2.0",
+              "value": "2"
+            },
+            {
+              "text": "2.5",
+              "value": "2.5"
+            },
+            {
+              "text": "3.0",
+              "value": "3"
+            },
+            {
+              "text": "3.5",
+              "value": "3.5"
+            },
+            {
+              "text": "4.0",
+              "value": "4"
+            },
+            {
+              "text": "4.5",
+              "value": "4.5"
+            },
+            {
+              "text": "5.0",
+              "value": "5"
+            },
+            {
+              "text": "5.5",
+              "value": "5.5"
+            },
+            {
+              "text": "6.0",
+              "value": "6"
+            },
+            {
+              "text": "6.5",
+              "value": "6.5"
+            },
+            {
+              "text": "7.0",
+              "value": "7"
+            },
+            {
+              "text": "7.5",
+              "value": "7.5"
+            },
+            {
+              "text": "8.0",
+              "value": "8"
+            },
+            {
+              "text": "8.5",
+              "value": "8.5"
+            },
+            {
+              "text": "9.0",
+              "value": "9"
+            },
+            {
+              "text": "9.5",
+              "value": "9.5"
+            },
+            {
+              "text": "10.0 = PAIN AS BAD AS IT COULD BE",
+              "value": "10"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "identifier": "RAPID3_3_overall",
+      "type": "form",
+      "title": "Considering all the ways in which illness and health conditions may affect you at this time, please indicate below how you are doing:",
+      "inputFields": [
+        {
+          "uiHint": "list",
+          "type": "singleChoice.string",
+          "choices": [
+            {
+              "text": "0 = VERY WELL",
+              "value": "0"
+            },
+            {
+              "text": "0.5",
+              "value": "0.5"
+            },
+            {
+              "text": "1.0",
+              "value": "1"
+            },
+            {
+              "text": "1.5",
+              "value": "1.5"
+            },
+            {
+              "text": "2.0",
+              "value": "2"
+            },
+            {
+              "text": "2.5",
+              "value": "2.5"
+            },
+            {
+              "text": "3.0",
+              "value": "3"
+            },
+            {
+              "text": "3.5",
+              "value": "3.5"
+            },
+            {
+              "text": "4.0",
+              "value": "4"
+            },
+            {
+              "text": "4.5",
+              "value": "4.5"
+            },
+            {
+              "text": "5.0",
+              "value": "5"
+            },
+            {
+              "text": "5.5",
+              "value": "5.5"
+            },
+            {
+              "text": "6.0",
+              "value": "6"
+            },
+            {
+              "text": "6.5",
+              "value": "6.5"
+            },
+            {
+              "text": "7.0",
+              "value": "7"
+            },
+            {
+              "text": "7.5",
+              "value": "7.5"
+            },
+            {
+              "text": "8.0",
+              "value": "8"
+            },
+            {
+              "text": "8.5",
+              "value": "8.5"
+            },
+            {
+              "text": "9.0",
+              "value": "9"
+            },
+            {
+              "text": "9.5",
+              "value": "9.5"
+            },
+            {
+              "text": "10.0 = VERY POORLY",
+              "value": "10"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "identifier": "Fatigue_nrs",
+      "type": "form",
+      "title": "Please rate your fatigue (weariness, tiredness) by selecting the number that describes your worst level of fatigue during the past 7 days.",
+      "inputFields": [
+        {
+          "uiHint": "list",
+          "type": "singleChoice.string",
+          "choices": [
+            {
+              "text": "0 = No Fatigue",
+              "value": "0"
+            },
+            {
+              "text": "1",
+              "value": "1"
+            },
+            {
+              "text": "2",
+              "value": "2"
+            },
+            {
+              "text": "3",
+              "value": "3"
+            },
+            {
+              "text": "4",
+              "value": "4"
+            },
+            {
+              "text": "5",
+              "value": "5"
+            },
+            {
+              "text": "6",
+              "value": "6"
+            },
+            {
+              "text": "7",
+              "value": "7"
+            },
+            {
+              "text": "8",
+              "value": "8"
+            },
+            {
+              "text": "9",
+              "value": "9"
+            },
+            {
+              "text": "10.0 = As bad as you can imagine",
+              "value": "10"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "identifier": "outro",
+      "type": "webImageInstruction",
+      "title": "Thank you!",
+      "text": "Your answers really help our research.",
+      "imageUrl": "https://docs.sagebridge.org/wqNZE-fnXbNN9QSNWuzNdpqv.1589338892533",
+      "actions": {
+        "goForward": {
+          "type": "default",
+          "buttonTitle": "Done"
+        }
+      },
+      "shouldHideActions": [
+        "goBackward"
+      ]
+    }
+  ]
+}

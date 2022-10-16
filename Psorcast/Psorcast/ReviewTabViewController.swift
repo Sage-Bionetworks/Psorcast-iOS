@@ -88,7 +88,8 @@ open class ReviewTabViewController: UIViewController, UITableViewDataSource, UIT
         .handImagingTask,
         .footImagingTask,
         .digitalJarOpenTask,
-        .jointCountingTask
+        .jointCountingTask,
+        .hybridSurveyTask
     ]
 
     fileprivate var taskRowState = [RSDIdentifier : TaskRowState]()

@@ -39,7 +39,7 @@ import MotorControl
 /// Subclass the schedule manager to set up a predicate to filter the schedules.
 public class TryItFirstTaskScheduleManager : SBAScheduleManager {
     
-    public let tasks: [RSDIdentifier] = [.psoriasisDrawTask, .psoriasisAreaPhotoTask, .jointCountingTask, .digitalJarOpenTask, .handImagingTask, .footImagingTask, .walkingTask]
+    public let tasks: [RSDIdentifier] = [.psoriasisDrawTask, .psoriasisAreaPhotoTask, .jointCountingTask, .digitalJarOpenTask, .handImagingTask, .footImagingTask, .walkingTask, .hybridSurveyTask]
         
     ///
     /// - returns: the total table row count including activities
@@ -84,6 +84,8 @@ public class TryItFirstTaskScheduleManager : SBAScheduleManager {
             return Localization.localizedString("TOES_PHOTO_TITLE")
         case .walkingTask:
             return Localization.localizedString("THIRTY_SECOND_WALK_TITLE")
+        case .hybridSurveyTask:
+            return Localization.localizedString("HYBRID_SURVEY_TASK")
         default:
             return taskId.rawValue
         }
@@ -111,6 +113,8 @@ public class TryItFirstTaskScheduleManager : SBAScheduleManager {
             return Localization.localizedString("ONE_MINUTE")
         case .walkingTask:
             return Localization.localizedString("ONE_MINUTE")
+        case .hybridSurveyTask:
+            return Localization.localizedString("THREE_MINUTES")
         default:
             return taskId.rawValue
         }

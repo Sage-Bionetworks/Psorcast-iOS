@@ -184,7 +184,7 @@ class MasterScheduleManagerTests: XCTestCase {
             XCTAssertEqual(timingInfo.startWeek, 2)
         }
 
-        weeklyIdentifiers = [.jointCountingTask, .handImagingTask, .footImagingTask, .walkingTask, .digitalJarOpenTask]
+        weeklyIdentifiers = [.jointCountingTask, .handImagingTask, .footImagingTask, .walkingTask, .digitalJarOpenTask, .hybridSurveyTask]
         monthlyIdentifiers = Array(MasterScheduleManager.filterAll).filter({ !weeklyIdentifiers.contains($0) })
         
         // If user has joint issues but no skin issue, only do joint tasks weekly

@@ -41,6 +41,7 @@
 		04F265872686DCE5004140B7 /* FollowUp_Consent.html in Resources */ = {isa = PBXBuildFile; fileRef = 04F265862686DCE5004140B7 /* FollowUp_Consent.html */; };
 		04F2658B2686DD2E004140B7 /* Quit_Consent.html in Resources */ = {isa = PBXBuildFile; fileRef = 04F2658A2686DD2E004140B7 /* Quit_Consent.html */; };
 		04F265A0268701E6004140B7 /* ConsentQuizStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F2659F268701E6004140B7 /* ConsentQuizStepViewController.swift */; };
+		0701CFED28E4C070008EFE61 /* HybridSurveyTask.json in Resources */ = {isa = PBXBuildFile; fileRef = 0701CFEC28E4C070008EFE61 /* HybridSurveyTask.json */; };
 		60396E09266EDC5100DB7126 /* MockURLSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60396E08266EDC5100DB7126 /* MockURLSession.swift */; };
 		605B872A268E644C006BA0AA /* ParticipantFileUploadManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 605B8729268E644C006BA0AA /* ParticipantFileUploadManagerTests.swift */; };
 		605B8730268E73F1006BA0AA /* failed-upload-request-response.json in Resources */ = {isa = PBXBuildFile; fileRef = 605B872F268E73F1006BA0AA /* failed-upload-request-response.json */; };
@@ -462,6 +463,7 @@
 		04F265862686DCE5004140B7 /* FollowUp_Consent.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = FollowUp_Consent.html; sourceTree = "<group>"; };
 		04F2658A2686DD2E004140B7 /* Quit_Consent.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = Quit_Consent.html; sourceTree = "<group>"; };
 		04F2659F268701E6004140B7 /* ConsentQuizStepViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsentQuizStepViewController.swift; sourceTree = "<group>"; };
+		0701CFEC28E4C070008EFE61 /* HybridSurveyTask.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = HybridSurveyTask.json; sourceTree = "<group>"; };
 		60396E08266EDC5100DB7126 /* MockURLSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockURLSession.swift; sourceTree = "<group>"; };
 		605B8729268E644C006BA0AA /* ParticipantFileUploadManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParticipantFileUploadManagerTests.swift; sourceTree = "<group>"; };
 		605B872F268E73F1006BA0AA /* failed-upload-request-response.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "failed-upload-request-response.json"; sourceTree = "<group>"; };
@@ -1101,6 +1103,7 @@
 				CBFF927025E08CA400EC34DB /* PhoneSignIn.json */,
 				04E61C9D2671CE5E00B371E9 /* Consent.json */,
 				0409632F272B52AB003200D5 /* ChangeEmail.json */,
+				0701CFEC28E4C070008EFE61 /* HybridSurveyTask.json */,
 			);
 			name = JSON;
 			sourceTree = "<group>";
@@ -1541,6 +1544,7 @@
 				CB7281A52624DBBD00AAEB2C /* Withdrawal.json in Resources */,
 				CBDCDCA423F3849E00E5CEB8 /* PsoriasisAreaPhotoStepViewController.xib in Resources */,
 				CB9F5E2022E0BED3003FBCEF /* lato_bold.ttf in Resources */,
+				0701CFED28E4C070008EFE61 /* HybridSurveyTask.json in Resources */,
 				CBDCDCB623F3849E00E5CEB8 /* DigitalJarOpenInstructionStepViewController.xib in Resources */,
 				CBB7BD5C275570DF00FF70B1 /* ReviewExample.gif in Resources */,
 			);
@@ -2089,7 +2093,7 @@
 				CODE_SIGN_ENTITLEMENTS = Psorcast/Psorcast.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 23;
+				CURRENT_PROJECT_VERSION = 24;
 				DEVELOPMENT_TEAM = KA9Z8R6M6K;
 				INFOPLIST_FILE = Psorcast/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
@@ -2115,7 +2119,7 @@
 				CODE_SIGN_ENTITLEMENTS = Psorcast/Psorcast.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 23;
+				CURRENT_PROJECT_VERSION = 24;
 				DEVELOPMENT_TEAM = KA9Z8R6M6K;
 				INFOPLIST_FILE = Psorcast/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;

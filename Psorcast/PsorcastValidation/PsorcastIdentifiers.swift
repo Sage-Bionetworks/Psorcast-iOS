@@ -47,6 +47,7 @@ public extension RSDIdentifier {
     static let psoriasisAreaPhotoTask: RSDIdentifier = "PsoriasisAreaPhoto"
     static let psoriasisDrawTask: RSDIdentifier = "PsoriasisDraw"
     static let digitalJarOpenTask: RSDIdentifier = "DigitalJarOpen"
+    static let hybridSurveyTask: RSDIdentifier = "HybridSurveyTask"
     
     // Profile tasks
     static let treatmentTask: RSDIdentifier = "Treatment"
