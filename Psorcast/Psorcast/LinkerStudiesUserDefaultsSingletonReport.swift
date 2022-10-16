@@ -136,7 +136,7 @@ open class LinkerStudiesUserDefaultsSingletonReport: UserDefaultsSingletonReport
                 completion?(true)
             } catch {
                 completion?(false)
-                print("Error parsing clientData for reminders report \(error)")
+                print("Error parsing clientData for linker studies report \(error)")
             }
         }
     }
@@ -157,17 +157,20 @@ open class LinkerStudiesUserDefaultsSingletonReport: UserDefaultsSingletonReport
 public struct LinkerStudy: Codable {
     var identifier: String?
     var startDate: Date?
+    var verificationCode: String?
 }
 
 public struct LinkerStudyDetailed: Codable {
     var identifier: String?
     var startDate: Date?
+    var verificationCode: String?
     var weekInStudy: Int?
     
     public static func create(from study: LinkerStudy,
                               manager: MasterScheduleManager) -> LinkerStudyDetailed {
         return LinkerStudyDetailed(identifier: study.identifier,
                                    startDate: study.startDate,
+                                   verificationCode: study.verificationCode,
                                    weekInStudy: manager.studyWeek(for: study.identifier ?? ""))
     }
 }
