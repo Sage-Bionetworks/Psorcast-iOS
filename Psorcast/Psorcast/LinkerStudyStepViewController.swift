@@ -111,6 +111,9 @@ public class LinkerStudyStepViewController: RSDStepViewController, RSDTaskViewCo
     @IBOutlet weak var popUpViewTextLabel: UILabel?
     @IBOutlet weak var popUpViewImageView: UIImageView?
     
+    @IBOutlet weak var imageRatioOriginalConstraint: NSLayoutConstraint?
+    @IBOutlet weak var imageRatioKeyboardConstraint: NSLayoutConstraint?
+    
     var changeEmailTaskId = ""
     
     open var linkerStudyStep: LinkerStudyStepObject? {
@@ -142,6 +145,26 @@ public class LinkerStudyStepViewController: RSDStepViewController, RSDTaskViewCo
         
         self.popUpViewButton?.backgroundColor = design.colorRules.palette.secondary.normal.color
         self.popUpViewButton?.setTitleColor(UIColor.white, for: .normal)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification , object:nil)
+
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: UIResponder.keyboardWillHideNotification , object:nil)
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
+    @objc func keyboardWillShow(notification: NSNotification) {
+        self.imageRatioOriginalConstraint?.isActive = false
+        self.imageRatioKeyboardConstraint?.isActive = true
+        self.view.layoutIfNeeded()
+    }
+
+    @objc func keyboardWillHide(notification: NSNotification) {
+        self.imageRatioOriginalConstraint?.isActive = true
+        self.imageRatioKeyboardConstraint?.isActive = false
+        self.view.layoutIfNeeded()
     }
 
     override open func setupHeader(_ header: RSDStepNavigationView) {

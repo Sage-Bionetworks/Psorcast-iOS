@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19162" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21225" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina5_9" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19144"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21207"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -11,6 +11,8 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="LinkerStudyStepViewController" customModule="Psorcast" customModuleProvider="target">
             <connections>
+                <outlet property="imageRatioKeyboardConstraint" destination="Iyc-fO-w8V" id="ZG6-gG-0dH"/>
+                <outlet property="imageRatioOriginalConstraint" destination="qda-po-mGE" id="1kn-f4-D86"/>
                 <outlet property="learnMoreUnderlinedButton" destination="MPK-90-ucm" id="YUN-5E-z1O"/>
                 <outlet property="navigationFooter" destination="3Lq-Dk-zju" id="HNF-N2-LkA"/>
                 <outlet property="navigationHeader" destination="QCQ-Lz-ZTv" id="lRn-cV-BMf"/>
@@ -32,10 +34,10 @@
                     <rect key="frame" x="0.0" y="0.0" width="375" height="700"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QCQ-Lz-ZTv" userLabel="Header" customClass="RSDNavigationHeaderView" customModule="ResearchUI">
-                            <rect key="frame" x="0.0" y="0.0" width="375" height="300"/>
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="250"/>
                             <subviews>
                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="EndOfValidationHeader" translatesAutoresizingMaskIntoConstraints="NO" id="Whf-Zg-2Hh">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="300"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="250"/>
                                 </imageView>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2dF-mf-W6N" userLabel="Cancel Button">
                                     <rect key="frame" x="8" y="24" width="50" height="50"/>
@@ -51,15 +53,21 @@
                             <constraints>
                                 <constraint firstItem="Whf-Zg-2Hh" firstAttribute="top" secondItem="QCQ-Lz-ZTv" secondAttribute="top" id="7Tr-ah-Zh1"/>
                                 <constraint firstItem="Whf-Zg-2Hh" firstAttribute="leading" secondItem="QCQ-Lz-ZTv" secondAttribute="leading" id="Adw-Nj-iyK"/>
-                                <constraint firstAttribute="width" secondItem="QCQ-Lz-ZTv" secondAttribute="height" multiplier="375:300" id="Iyc-fO-w8V"/>
+                                <constraint firstAttribute="width" secondItem="QCQ-Lz-ZTv" secondAttribute="height" multiplier="4:1" id="Iyc-fO-w8V"/>
                                 <constraint firstItem="Whf-Zg-2Hh" firstAttribute="leading" secondItem="QCQ-Lz-ZTv" secondAttribute="leading" id="LSr-yp-LFy"/>
                                 <constraint firstAttribute="bottom" secondItem="Whf-Zg-2Hh" secondAttribute="bottom" id="Ns3-Ou-LxR"/>
                                 <constraint firstItem="2dF-mf-W6N" firstAttribute="top" secondItem="QCQ-Lz-ZTv" secondAttribute="top" constant="24" id="Uml-3B-dwT"/>
                                 <constraint firstAttribute="trailing" secondItem="Whf-Zg-2Hh" secondAttribute="trailing" id="bxW-dD-liK"/>
                                 <constraint firstAttribute="bottom" secondItem="Whf-Zg-2Hh" secondAttribute="bottom" id="eDH-ab-xSN"/>
                                 <constraint firstAttribute="trailing" secondItem="Whf-Zg-2Hh" secondAttribute="trailing" id="mvA-Un-PLY"/>
+                                <constraint firstAttribute="width" secondItem="QCQ-Lz-ZTv" secondAttribute="height" multiplier="150:100" id="qda-po-mGE"/>
                                 <constraint firstItem="2dF-mf-W6N" firstAttribute="leading" secondItem="QCQ-Lz-ZTv" secondAttribute="leading" constant="8" id="sdS-d3-e6p"/>
                             </constraints>
+                            <variation key="default">
+                                <mask key="constraints">
+                                    <exclude reference="Iyc-fO-w8V"/>
+                                </mask>
+                            </variation>
                             <connections>
                                 <outlet property="cancelButton" destination="2dF-mf-W6N" id="1oR-NC-187"/>
                                 <outlet property="imageView" destination="Whf-Zg-2Hh" id="nww-pV-kjT"/>
@@ -68,22 +76,22 @@
                             </connections>
                         </view>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Activity complete" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pcn-bA-mPL" userLabel="Title Label">
-                            <rect key="frame" x="12" y="332" width="351" height="36"/>
+                            <rect key="frame" x="12" y="282" width="351" height="36"/>
                             <fontDescription key="fontDescription" type="system" pointSize="30"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Select all that apply" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="taC-dp-6oh" userLabel="Text Label">
-                            <rect key="frame" x="12" y="392" width="351" height="20.333333333333314"/>
+                            <rect key="frame" x="12" y="342" width="351" height="20.333333333333314"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3Lq-Dk-zju" userLabel="Footer" customClass="RSDGenericNavigationFooterView" customModule="ResearchUI">
+                        <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3Lq-Dk-zju" userLabel="Footer" customClass="RSDGenericNavigationFooterView" customModule="ResearchUI">
                             <rect key="frame" x="0.0" y="599" width="375" height="101"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </view>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MPK-90-ucm" customClass="RSDUnderlinedButton" customModule="ResearchUI">
-                            <rect key="frame" x="12" y="420" width="351" height="34"/>
+                            <rect key="frame" x="12" y="370" width="351" height="34"/>
                             <fontDescription key="fontDescription" type="system" pointSize="18"/>
                             <state key="normal" title="Learn more">
                                 <color key="titleColor" red="0.1450980392" green="0.1843137255" blue="0.2666666667" alpha="1" colorSpace="calibratedRGB"/>
@@ -93,7 +101,7 @@
                             </connections>
                         </button>
                         <textField hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="agf-Jf-lDl">
-                            <rect key="frame" x="24" y="436.33333333333331" width="327" height="48"/>
+                            <rect key="frame" x="24" y="386.33333333333331" width="327" height="48"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="48" id="9qR-UT-aRg"/>
                             </constraints>
@@ -208,7 +216,10 @@
     </objects>
     <designables>
         <designable name="MPK-90-ucm">
-            <size key="intrinsicContentSize" width="91" height="33.333333333333336"/>
+            <size key="intrinsicContentSize" width="91" height="34"/>
+        </designable>
+        <designable name="Ume-2o-ksW">
+            <size key="intrinsicContentSize" width="64.333333333333329" height="34.333333333333336"/>
         </designable>
     </designables>
     <resources>
