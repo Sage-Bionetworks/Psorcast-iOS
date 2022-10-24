@@ -161,11 +161,31 @@ public class LinkerStudyStepViewController: RSDStepViewController, RSDTaskViewCo
             self.verificationCodeText?.placeholder = "########"
             self.verificationCodeText?.keyboardType = .numberPad
             self.verificationCodeText?.borderStyle = .none
+            self.verificationCodeText?.returnKeyType = .done
             self.verificationCodeText?.layer.addSublayer(bottomLine)
             
             self.verificationCodeText?.isHidden = false
+            self.addDoneButtonOnKeyboard()
         }
     }
+    
+    func addDoneButtonOnKeyboard(){
+        let doneToolbar: UIToolbar = UIToolbar(frame: CGRect.init(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 50))
+        doneToolbar.barStyle = .default
+
+        let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        let done: UIBarButtonItem = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(self.doneButtonAction))
+
+        let items = [flexSpace, done]
+        doneToolbar.items = items
+        doneToolbar.sizeToFit()
+
+        self.verificationCodeText?.inputAccessoryView = doneToolbar
+    }
+    
+    @objc func doneButtonAction() {
+        self.verificationCodeText?.resignFirstResponder()
+   }
     
     @IBAction func learnMoreTapped(_ sender: Any) {
         guard let linkerStudy = self.linkerStudyStep?.linkerStudyItem else {
