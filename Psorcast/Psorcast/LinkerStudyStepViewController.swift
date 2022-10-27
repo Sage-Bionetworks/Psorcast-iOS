@@ -474,50 +474,9 @@ public class LinkerStudyStepViewController: RSDStepViewController, RSDTaskViewCo
                     HistoryDataManager.shared.studyDateData?.append(items: [LinkerStudy(identifier: linkerStudy.dataGroup, startDate: startDate)])
                 }
                 
-                // Check if the compensation email has already been recorded
-                self.checkCompensationEmail()
+                // Show study joined pop up
+                self.showStudyJoinedPopUpView()
             }
-        }
-    }
-    
-    public func checkCompensationEmail() {
-        self.setLoadingState(show: true)
-        BridgeSDK.participantManager.getParticipantRecord(completion: { record, error in
-            DispatchQueue.main.async {
-                DispatchQueue.main.async {
-                    self.setLoadingState(show: false)
-                    guard let participant = record as? SBBStudyParticipant, error == nil else {
-                        self.showStudyJoinedPopUpView()
-                        return
-                    }
-                    guard let _ = participant.attributes?.dictionaryRepresentation()[RequestEmailViewController.COMPENSATE_ATTRIBUTE] as? String else {
-                        self.showCompensationEmailScreen()
-                        return
-                    }
-                    self.showStudyJoinedPopUpView()
-                }
-            }
-        })
-    }
-    
-    public func showCompensationEmailScreen() {
-        let jsonName = ProfileTabViewController.changeEmailTaskId
-        do {
-            let resourceTransformer = RSDResourceTransformerObject(
-                resourceName: jsonName)
-            let task = try RSDFactory.shared.decodeTask(with: resourceTransformer)
-            self.changeEmailTaskId = task.identifier
-            let taskViewModel = RSDTaskViewModel(task: task)
-            let vc = RSDTaskViewController(taskViewModel: taskViewModel)
-            // Re-crate the task as a single question
-            if let step = vc.task.stepNavigator.step(with: "provide_email") as? RequestEmailStepObject {
-                step.text = Localization.localizedString("GET_COMPENSATED")
-                step.actions?[.navigation(.skip)] = nil
-            }
-            vc.delegate = self
-            self.present(vc, animated: true, completion: nil)
-        } catch let err {
-            fatalError("Failed to decode the task. \(err)")
         }
     }
     
