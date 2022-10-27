@@ -529,6 +529,9 @@ public class LinkerStudyStepViewController: RSDStepViewController, RSDTaskViewCo
     }
     
     public func showStudyJoinedPopUpView() {
+        // New study has been joined, update the schedules
+        SBAParticipantManager.shared.updateSchedules()
+        
         let title = String(format: Localization.localizedString("WELCOME_TO_THE_STUDY_%@"), self.linkerStudyStep?.title ?? "")
         let text = Localization.localizedString("WELCOME_TO_THE_STUDY_TEXT")
         let buttonTitle = Localization.localizedString("BUTTON_GET_STARTED_NOW")
