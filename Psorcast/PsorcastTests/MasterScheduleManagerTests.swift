@@ -226,11 +226,58 @@ class MasterScheduleManagerTests: XCTestCase {
         }
     }
     
-    func testFilterList() {
+    func testFilterListNoHybrid() {
         
         let skinTasks: [RSDIdentifier] = [.psoriasisDrawTask, .psoriasisAreaPhotoTask]
         let jointTaks: [RSDIdentifier] = [.digitalJarOpenTask, .handImagingTask, .footImagingTask, .walkingTask, .jointCountingTask]
         
+        mockManager.mockInHybridStudy = false
+        mockManager.mockNow = date(28, 5, 12, 0)  // week 1
+        mockManager.mockTreatmentDate = date(25, 5, 0, 0)
+
+        // Both show all tasks always
+        mockManager.mockSymptoms = HistoryDataManager.symptomsBothAnswer
+        mockManager.mockDiagnosis = HistoryDataManager.diagnosisBothAnswer
+        for i in 1...10 { // Weeks 1-10
+            mockManager.mockNow = date(28 + ((i-1) * 7), 5, 12, 0)
+            XCTAssertEqual(mockManager.filterList, MasterScheduleManager.filterAllNoHybridTask)
+        }
+        // None show all tasks always
+        mockManager.mockSymptoms = HistoryDataManager.symptomsNoneAnswer
+        mockManager.mockDiagnosis = HistoryDataManager.diagnosisNoneAnswer
+        for i in 1...10 { // Weeks 1-10
+            mockManager.mockNow = date(28 + ((i-1) * 7), 5, 12, 0)
+            XCTAssertEqual(mockManager.filterList, MasterScheduleManager.filterAllNoHybridTask)
+        }
+        
+        // Only joint tasks show weekly
+        mockManager.mockSymptoms = HistoryDataManager.symptomsJointsAnswer
+        mockManager.mockDiagnosis = HistoryDataManager.diagnosisArthritisAnswer
+        for i in 1...10 { // Weeks 1-10
+            mockManager.mockNow = date(28 + ((i-1) * 7), 5, 12, 0)
+            if i == 2 || i == 6 || i == 10 {
+                XCTAssertEqual(mockManager.filterList, MasterScheduleManager.filterAllNoHybridTask)
+            } else {
+                XCTAssertEqual(mockManager.filterList, jointTaks)
+            }
+        }
+        
+        // Only skin tasks show weekly
+        mockManager.mockSymptoms = HistoryDataManager.symptomsSkinAnswer
+        mockManager.mockDiagnosis = HistoryDataManager.diagnosisPsoriasisAnswer
+        for i in 1...10 { // Weeks 1-10
+            mockManager.mockNow = date(28 + ((i-1) * 7), 5, 12, 0)
+            if i == 2 || i == 6 || i == 10 {
+                XCTAssertEqual(mockManager.filterList, MasterScheduleManager.filterAllNoHybridTask)
+            } else {
+                XCTAssertEqual(mockManager.filterList, skinTasks)
+            }
+        }
+    }
+    
+    func testFilterListInHybrid() {
+        
+        mockManager.mockInHybridStudy = true
         mockManager.mockNow = date(28, 5, 12, 0)  // week 1
         mockManager.mockTreatmentDate = date(25, 5, 0, 0)
 
@@ -257,7 +304,7 @@ class MasterScheduleManagerTests: XCTestCase {
             if i == 2 || i == 6 || i == 10 {
                 XCTAssertEqual(mockManager.filterList, MasterScheduleManager.filterAll)
             } else {
-                XCTAssertEqual(mockManager.filterList, jointTaks)
+                XCTAssertEqual(mockManager.filterList, MasterScheduleManager.filterAll)
             }
         }
         
@@ -269,7 +316,7 @@ class MasterScheduleManagerTests: XCTestCase {
             if i == 2 || i == 6 || i == 10 {
                 XCTAssertEqual(mockManager.filterList, MasterScheduleManager.filterAll)
             } else {
-                XCTAssertEqual(mockManager.filterList, skinTasks)
+                XCTAssertEqual(mockManager.filterList, MasterScheduleManager.filterAll)
             }
         }
     }
@@ -303,5 +350,10 @@ open class MockMasterScheduleManager: MasterScheduleManager {
     var mockDiagnosis: String?
     override open func diagnosis() -> String? {
         return mockDiagnosis
+    }
+    
+    var mockInHybridStudy = false
+    override open func isInHybridValidationStudy() -> Bool {
+        return mockInHybridStudy
     }
 }

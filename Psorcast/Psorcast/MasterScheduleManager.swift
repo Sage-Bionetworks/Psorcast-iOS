@@ -48,6 +48,9 @@ open class MasterScheduleManager : SBAScheduleManager {
     /// The schedules will filter to only have these tasks
     public static let filterAll: [RSDIdentifier] = [.psoriasisDrawTask, .psoriasisAreaPhotoTask, .digitalJarOpenTask, .handImagingTask, .footImagingTask, .walkingTask, .jointCountingTask, .hybridSurveyTask]
     
+    /// The schedules will filter to only have these tasks
+    public static let filterAllNoHybridTask: [RSDIdentifier] = [.psoriasisDrawTask, .psoriasisAreaPhotoTask, .digitalJarOpenTask, .handImagingTask, .footImagingTask, .walkingTask, .jointCountingTask]
+    
     /// Task result identifiers when uploading each task
     public static let resultIdCurrentTreatment  = "currentTreatment"
     public static let resultIdTreatmentWeek     = "treatmentWeek"
@@ -183,7 +186,14 @@ open class MasterScheduleManager : SBAScheduleManager {
     open var filterList: [RSDIdentifier] {
         let studyWeek = self.baseStudyWeek()
         var includeList = [RSDIdentifier]()
-        for rsdIdentifier in MasterScheduleManager.filterAll {
+        
+        // Do not include the hybrid survey task unless the participant is in that study
+        var filterAll = MasterScheduleManager.filterAll
+        if !self.isInHybridValidationStudy() {
+            filterAll.remove(where: { $0 == .hybridSurveyTask })
+        }
+        
+        for rsdIdentifier in filterAll {
             let timingInfo = self.scheduleFrequency(for: rsdIdentifier)
             if timingInfo.freq == .weekly {
                 // All weekly activities are included
@@ -574,11 +584,22 @@ open class MasterScheduleManager : SBAScheduleManager {
         return []
     }
     
+    open func isInHybridValidationStudy() -> Bool {
+        let enrolledLinkerStudies = (HistoryDataManager.shared.studyDateData?.current ?? []).map({ $0.identifier })
+        return enrolledLinkerStudies.contains(where: { $0 == HistoryDataManager.LINKER_STUDY_HYBRID_VALIDATION })
+    }
+    
     /// Based on study requirements to make the schedules apply more to users
     /// that have certain diagnosis and symptom requirements, set frequency per scheduled activity
     public func scheduleFrequency(for identifier: RSDIdentifier) -> (freq: StudyScheduleFrequency, startWeek: Int) {
+        
         guard let symptoms = self.symptoms(),
             let diagnosis = self.diagnosis() else {
+            return (.weekly, 1)
+        }
+        
+        // PSR-546, hybrid validtion participants see all tasks weekly
+        if (self.isInHybridValidationStudy()) {
             return (.weekly, 1)
         }
         
