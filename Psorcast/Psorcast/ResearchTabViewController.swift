@@ -50,9 +50,7 @@ open class ResearchTabViewController: UIViewController, UITableViewDelegate, UIT
         
         let enrolledLinkerStudies = (HistoryDataManager.shared.studyDateData?.current ?? []).map({ $0.identifier })
         
-        // TODO: mdephillips 11/3/22 add back in once hybrid IRB is approved
-        //let linkerStudies: [LinkerStudyTableItem] = [.hybridStudy]
-        let linkerStudies: [LinkerStudyTableItem] = []
+        let linkerStudies: [LinkerStudyTableItem] = [.hybridStudy]        
         
         var itemList = [[ResearchTableItem]]()
         
